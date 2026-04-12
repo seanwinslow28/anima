@@ -1,0 +1,21 @@
+Using the uploaded character sketch as the EXACT style and character reference, create a single full-body character drawing of this same person in a new pose. This is frame A-3 in a pencil test animation sequence — a contemplative beat between idle and action.
+
+Present as a single character study on a sheet of warm cream animation paper (#FAF5E8 approximate). The paper has visible grain texture, subtle aging marks and dust specks, three hole-punch marks centered at the bottom edge, and a hand-written production label "A-3" circled in pencil in the top-left corner. The character occupies roughly 60-70% of the vertical canvas height, centered on the page with space above and below.
+
+Match the uploaded reference EXACTLY in style: traditional animation pencil test drawing with hand-drawn graphite pencil lines. Lines are warm gray (NOT black ink, NOT solid black outlines) with natural stroke-weight variation — thicker contour outlines at 2-3px equivalent, thinner interior details at 1px equivalent. Visible construction line artifacts beneath the final drawing — faint vertical center line through face and torso, horizontal eye-line, rough oval head shape, gesture line through spine. Subtle cross-hatching and directional pencil strokes for shading on clothing folds, under chin, and shadow areas. Line confidence suggests a professional animator's hand — fluid, gestural strokes, not stiff or mechanical.
+
+Color is extremely limited and desaturated: dark navy flat fill on the crew-neck t-shirt, cool gray flat fill on slim jeans with cuffed ankles, warm skin tones, muted sandy blonde hair. Pencil lines remain visible through and on top of color fills. No color gradients.
+
+Character proportions are slightly stylized — Disney/Pixar pre-production adjacent, roughly 7-7.5 heads tall with a slightly larger head than photorealistic. Appealing, warm character design language. NOT anime, NOT hyper-realistic, NOT exaggerated cartoon.
+
+CRITICAL CONTINUITY — STYLUS HAND: The stylus MUST be in the character's RIGHT hand — the same hand that holds it in the uploaded reference image. The RIGHT hand is on the LEFT side of the image (camera left) when the character faces the viewer. Do NOT place the stylus in the left hand.
+
+POSE CHANGE FROM REFERENCE: The character's head tilts downward approximately 15 degrees, with his eyes looking down at the stylus pen in his right hand. His chin drops slightly toward his chest. His right shoulder dips about 1 inch lower than the left, as if the weight of thought is pulling that side down. The rest of the body remains in the same relaxed standing position as the reference — same weight distribution, same left hand position, same leg stance, same sneakers.
+
+EXPRESSION: Contemplative. The half-smile from the reference softens to a neutral, thoughtful expression. Mouth closed. Brow relaxes — not furrowed, just calm focus. He is looking at his tool and considering what to make next.
+
+Maintain perfect identity consistency with the uploaded reference. The character must be immediately recognizable as the same person: same hair shape and volume, same jaw angle, same eye spacing, same nose shape, same body proportions, same clothing. Only the head angle and expression change.
+
+Lighting is soft and even — no dramatic directional light. Shadows are achieved through cross-hatching and pencil density, not through color. The limited color fills are flat and uniform within each region. Same lighting angle and intensity as the reference.
+
+Output a warm, analog-feeling animation production drawing. The image should look like a high-resolution scan of the next page in the same animator's pencil test sequence — same artist, same pencil, same paper. No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines.

@@ -1,0 +1,64 @@
+{
+  "permissions": {
+    "default": "ask",
+    "rules": [
+      {
+        "pattern": "**/.env*",
+        "permission": "deny"
+      },
+      {
+        "pattern": "**/secrets/**",
+        "permission": "deny"
+      },
+      {
+        "pattern": "**/*secret*",
+        "permission": "deny"
+      },
+      {
+        "pattern": "**/*.csv",
+        "permission": "deny"
+      }
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/block-secrets.py"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/require-confirm-highrisk.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/log-tool-use.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/format-on-edit.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+Generate a traditional animation pencil test drawing on warm cream animation paper, graphite pencil lines HB to 2B range, varied line weight with thick contour and thin interior detail, visible construction line artifacts, cross-hatching in shadows, three hole-punch marks at bottom edge. Draw the SAME character shown in Image 1 (identity reference) and Image 2 (the previous keyframe for style continuity). Place the character in the EXACT body pose shown by the colored skeleton in Image 3 (the pose reference). The character is head turned slightly left looking at a small RPG warrior sprite character sitting on left shoulder. Beginning a satisfied nod, chin starting to dip. Warm smirk expression. The character wears a DARK NAVY BLUE t-shirt (not white, not gray — dark navy like the keyframes). The character holds a stylus/pencil in their right hand. Hand-written production label 'A-7b' in top-left corner circle.
+
+References:
+  Image 1: images/2D-Character-Sketch-Sean-v1.png (identity)
+  Image 2: approved/PT_A1_F31_key.png (style continuity)
+  Image 3: skeleton_F31toF36_IB01_00001_.png (pose)

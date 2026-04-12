@@ -1,0 +1,41 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "skeleton_F01.png"
+    },
+    "_meta": {"title": "Skeleton A (Start Keyframe)"}
+  },
+  "2": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "skeleton_F06.png"
+    },
+    "_meta": {"title": "Skeleton B (End Keyframe)"}
+  },
+  "3": {
+    "class_type": "ImageBlend",
+    "inputs": {
+      "blend_factor": 0.5,
+      "blend_mode": "normal",
+      "image1": ["1", 0],
+      "image2": ["2", 0]
+    },
+    "_meta": {"title": "Blend Skeletons (adjust blend_factor per Odd Rule)"}
+  },
+  "4": {
+    "class_type": "PreviewImage",
+    "inputs": {
+      "images": ["3", 0]
+    },
+    "_meta": {"title": "Preview Blended Skeleton"}
+  },
+  "5": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "skeleton_interp",
+      "images": ["3", 0]
+    },
+    "_meta": {"title": "Save Interpolated Skeleton"}
+  }
+}

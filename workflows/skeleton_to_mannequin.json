@@ -1,0 +1,100 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "v1-5-pruned-emaonly.safetensors"
+    },
+    "_meta": {"title": "Load SD 1.5 Checkpoint"}
+  },
+  "2": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "vae-ft-mse-840000-ema-pruned.safetensors"
+    },
+    "_meta": {"title": "Load VAE"}
+  },
+  "3": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a simple gray crash test dummy standing on a flat bright green floor, solid bright green wall behind, the dummy has a smooth medium gray body with orange dots painted on the joints at shoulders elbows wrists hips knees and ankles, simple 3D render, full body centered, clean studio lighting, crash test mannequin, featureless face",
+      "clip": ["1", 1]
+    },
+    "_meta": {"title": "Positive Prompt (Mannequin)"}
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "realistic human, skin texture, face details, ((clothing)), ((shirt)), ((pants)), ((shoes)), hair, background details, text, watermark, orange skin, orange body, flesh tone, tan, brown, gradient background, patterned background, floor details",
+      "clip": ["1", 1]
+    },
+    "_meta": {"title": "Negative Prompt"}
+  },
+  "5": {
+    "class_type": "ControlNetLoader",
+    "inputs": {
+      "control_net_name": "control_v11p_sd15_openpose.pth"
+    },
+    "_meta": {"title": "Load OpenPose ControlNet"}
+  },
+  "6": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "skeleton_F01_00001_.png"
+    },
+    "_meta": {"title": "Load Skeleton Image"}
+  },
+  "7": {
+    "class_type": "ControlNetApplyAdvanced",
+    "inputs": {
+      "strength": 0.95,
+      "start_percent": 0.0,
+      "end_percent": 1.0,
+      "positive": ["3", 0],
+      "negative": ["4", 0],
+      "control_net": ["5", 0],
+      "image": ["6", 0]
+    },
+    "_meta": {"title": "Apply OpenPose ControlNet (High Strength)"}
+  },
+  "8": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 432,
+      "batch_size": 1
+    },
+    "_meta": {"title": "Empty Latent 768x432 (16:9)"}
+  },
+  "9": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 25,
+      "cfg": 8.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "normal",
+      "denoise": 1.0,
+      "model": ["1", 0],
+      "positive": ["7", 0],
+      "negative": ["7", 1],
+      "latent_image": ["8", 0]
+    },
+    "_meta": {"title": "KSampler"}
+  },
+  "10": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": ["9", 0],
+      "vae": ["2", 0]
+    },
+    "_meta": {"title": "VAE Decode"}
+  },
+  "11": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mannequin_F01",
+      "images": ["10", 0]
+    },
+    "_meta": {"title": "Save Mannequin Image"}
+  }
+}

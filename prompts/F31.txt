@@ -1,0 +1,21 @@
+Using the uploaded character sketch as the EXACT style and character reference, create a single full-body character drawing of this same person in a new pose. This is frame A-7 in a pencil test animation sequence — a moment of quiet satisfaction after creating something.
+
+Present as a single character study on a sheet of warm cream animation paper (#FAF5E8 approximate). The paper has visible grain texture, subtle aging marks and dust specks, three hole-punch marks centered at the bottom edge, and a hand-written production label "A-7" circled in pencil in the top-left corner. The character occupies roughly 60-70% of the vertical canvas height, centered on the page.
+
+Match the uploaded reference EXACTLY in style: traditional animation pencil test drawing with hand-drawn graphite pencil lines. Lines are warm gray (NOT black ink) with natural stroke-weight variation — thicker contour outlines at 2-3px equivalent, thinner interior details at 1px equivalent. Visible construction line artifacts beneath the final drawing — faint center lines, head oval, gesture line through spine. Cross-hatching for shading on clothing folds, under chin, and shadow areas. The energy of the linework should feel settled and calm compared to the dynamic poses earlier in the sequence — this is a moment of stillness.
+
+Color is extremely limited and desaturated: dark navy flat fill on the crew-neck t-shirt, cool gray flat fill on slim jeans with cuffed ankles, warm skin tones, muted sandy blonde hair. Pencil lines visible through color fills. No color gradients.
+
+Character proportions are slightly stylized — Disney/Pixar pre-production adjacent, roughly 7-7.5 heads tall. NOT anime, NOT hyper-realistic, NOT exaggerated cartoon.
+
+CRITICAL CONTINUITY — STYLUS HAND: The stylus MUST be in the character's RIGHT hand — held loosely at his right side. The RIGHT hand is on the LEFT side of the image (camera left) when the character faces the viewer. Do NOT place the stylus in the left hand.
+
+POSE: The character's body has returned to a relaxed standing position similar to the reference, but with key differences. His head is turned to the LEFT, looking at his own left shoulder. His right arm has lowered back to a natural resting position, the stylus held loosely at his side. His left shoulder is raised VERY slightly — about a quarter inch higher than normal — because there is something small resting on it (a tiny sprite character, which will be composited separately — DO NOT draw the sprite, DO NOT draw anything on the shoulder). Weight is evenly distributed, settled and relaxed after the energetic gesture.
+
+EXPRESSION: Looking to his left at his own shoulder with a warm, quiet smirk — the satisfaction of a craftsman looking at something he just created. Not a big smile — understated, genuine pride. One eyebrow raised just slightly, as if pleasantly surprised by what appeared.
+
+Maintain perfect identity consistency with the uploaded reference. The character must be immediately recognizable as the same person: same hair shape and volume, same jaw angle, same eye spacing, same nose, same body proportions. Consistent head size relative to body. Same clothing — identical dark navy crew-neck t-shirt, same slim jeans, same sneakers.
+
+Lighting is soft and even — no dramatic directional light. Shadows achieved through cross-hatching and pencil density. Same lighting angle and intensity as the reference. Color fills flat and uniform.
+
+Output a warm, analog-feeling animation production drawing that captures quiet creative satisfaction. The image should look like a high-resolution scan of the same animator's pencil test sequence. No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines.

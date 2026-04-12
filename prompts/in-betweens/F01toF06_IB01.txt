@@ -1,0 +1,6 @@
+Generate a traditional animation pencil test drawing on warm cream animation paper, graphite pencil lines HB to 2B range, varied line weight with thick contour and thin interior detail, visible construction line artifacts, cross-hatching in shadows, three hole-punch marks at bottom edge. Draw the SAME character shown in Image 1 (identity reference) and Image 2 (the previous keyframe for style continuity). Place the character in the EXACT body pose shown by the colored skeleton in Image 3 (the pose reference). The character is standing in a relaxed three-quarter view, head just barely beginning to tilt downward, eyes still looking forward, subtle weight shift. Between idle and looking down. The character holds a stylus/pencil in their right hand. Hand-written production label 'A-2b' in top-left corner circle.
+
+References:
+  Image 1: images/2D-Character-Sketch-Sean-v1.png (identity)
+  Image 2: approved/PT_A1_F01_key.png (style continuity)
+  Image 3: skeleton_F01toF06_IB01_00001_.png (pose)

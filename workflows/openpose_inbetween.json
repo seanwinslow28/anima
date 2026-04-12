@@ -1,0 +1,139 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "v1-5-pruned-emaonly.safetensors"
+    },
+    "_meta": {"title": "Load SD 1.5 Checkpoint"}
+  },
+  "2": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "vae-ft-mse-840000-ema-pruned.safetensors"
+    },
+    "_meta": {"title": "Load VAE"}
+  },
+  "3": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "traditional animation pencil test drawing on warm cream paper, graphite pencil lines HB to 2B range, varied line weight with thick contour and thin interior detail, visible construction line artifacts beneath final drawing, cross-hatching in shadow areas, three hole-punch marks at bottom edge, hand-written production label in top-left corner circle, warm cream paper with visible grain texture, limited desaturated flat color fills, standing male character, front three-quarter view",
+      "clip": ["1", 1]
+    },
+    "_meta": {"title": "Positive Prompt (Pencil Style)"}
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "vector lines, solid black ink, cel shading, anime style, digital art, gradient shading, airbrush, pure white background, saturated colors, vibrant colors, photorealistic, 3D render, smooth clean lines, watermark, text, blurry, deformed",
+      "clip": ["1", 1]
+    },
+    "_meta": {"title": "Negative Prompt"}
+  },
+  "5": {
+    "class_type": "ControlNetLoader",
+    "inputs": {
+      "control_net_name": "control_v11p_sd15_openpose.pth"
+    },
+    "_meta": {"title": "Load OpenPose ControlNet"}
+  },
+  "6": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "skeleton_interpolated.png"
+    },
+    "_meta": {"title": "Load Interpolated Skeleton"}
+  },
+  "7": {
+    "class_type": "ControlNetApplyAdvanced",
+    "inputs": {
+      "strength": 0.90,
+      "start_percent": 0.0,
+      "end_percent": 0.85,
+      "positive": ["3", 0],
+      "negative": ["4", 0],
+      "control_net": ["5", 0],
+      "image": ["6", 0]
+    },
+    "_meta": {"title": "Apply OpenPose ControlNet"}
+  },
+  "8": {
+    "class_type": "IPAdapterUnifiedLoader",
+    "inputs": {
+      "model": ["1", 0],
+      "preset": "STANDARD (medium strength)"
+    },
+    "_meta": {"title": "Load IPAdapter + CLIPVision (Unified)"}
+  },
+  "10": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "2D-Character-Sketch-Sean-v1.png"
+    },
+    "_meta": {"title": "Load A-2 Anchor (Identity Reference)"}
+  },
+  "11": {
+    "class_type": "IPAdapter",
+    "inputs": {
+      "weight": 0.65,
+      "weight_type": "standard",
+      "start_at": 0.0,
+      "end_at": 1.0,
+      "model": ["8", 0],
+      "ipadapter": ["8", 1],
+      "image": ["10", 0]
+    },
+    "_meta": {"title": "Apply IPAdapter (Identity Lock)"}
+  },
+  "12": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 432,
+      "batch_size": 1
+    },
+    "_meta": {"title": "Latent Image (768x432 SD 1.5)"}
+  },
+  "13": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 28,
+      "cfg": 7.5,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "normal",
+      "denoise": 1.0,
+      "model": ["11", 0],
+      "positive": ["7", 0],
+      "negative": ["7", 1],
+      "latent_image": ["12", 0]
+    },
+    "_meta": {"title": "KSampler"}
+  },
+  "14": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": ["13", 0],
+      "vae": ["2", 0]
+    },
+    "_meta": {"title": "VAE Decode"}
+  },
+  "15": {
+    "class_type": "ImageScale",
+    "inputs": {
+      "upscale_method": "lanczos",
+      "width": 1376,
+      "height": 768,
+      "crop": "disabled",
+      "image": ["14", 0]
+    },
+    "_meta": {"title": "Upscale to 1376x768"}
+  },
+  "16": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "PT_A1_inbetween",
+      "images": ["15", 0]
+    },
+    "_meta": {"title": "Save In-Between Frame"}
+  }
+}

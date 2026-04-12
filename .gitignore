@@ -1,0 +1,24 @@
+# Per-run output (large generated images)
+runs/
+
+# Environment secrets
+.env
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# macOS
+.DS_Store
+
+# Editor
+*.swp
+*.swo
+*~
+
+# Claude Code logs
+.claude/tool-use.log
+.claude/plans/

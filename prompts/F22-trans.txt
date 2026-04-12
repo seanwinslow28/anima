@@ -1,0 +1,25 @@
+Using the uploaded character drawings as references, recreate the main character drawing EXACTLY with ONE modification: the pencil trail lines have gathered into a tight swirling cluster.
+
+The first uploaded reference is the current frame to match — the character's pose, expression, clothing, and position must be reproduced identically. The second uploaded reference shows the previous stage of the pencil trails (intensified, converging lines) — the swirl in this frame occupies the same region where those trails were converging.
+
+Present as a single character study on a sheet of warm cream animation paper (#FAF5E8 approximate). The paper has visible grain texture, subtle aging marks and dust specks, three hole-punch marks centered at the bottom edge, and a hand-written production label "A-6" circled in pencil in the top-left corner. The character occupies roughly 60-70% of the vertical canvas height, centered on the page.
+
+Match the uploaded references EXACTLY in style: traditional animation pencil test drawing with hand-drawn graphite pencil lines. Lines are warm gray (NOT black ink) with natural stroke-weight variation — thicker contour outlines at 2-3px equivalent, thinner interior details at 1px equivalent. Visible construction line artifacts beneath the final drawing. Cross-hatching for shading on clothing folds and shadow areas.
+
+Color is extremely limited and desaturated: dark navy flat fill on the crew-neck t-shirt, cool gray flat fill on slim jeans with cuffed ankles, warm skin tones, muted sandy blonde hair. Pencil lines visible through color fills. No color gradients.
+
+THE CHARACTER MUST BE IDENTICAL TO THE REFERENCE. Same pose — left arm extended forward with stylus, body leaning forward, right arm back for counterbalance. Same expression — joyful wide smile, eyes looking forward. Same clothing, same hair, same proportions, same position on the page. Reproduce him exactly.
+
+THE ONLY CHANGE — PENCIL SWIRL: The separate pencil trail lines from the previous frame have gathered into a single tight swirling cluster. The cluster floats in the air above and slightly behind the character's right shoulder (camera right side of frame), roughly the size of a fist relative to the character's body. The swirl is a dense knot of overlapping circular pencil strokes — like an animator scribbling rapidly in one spot.
+
+The swirl has a vaguely circular upper mass and a shorter lower mass — hinting at a head-and-body proportion but still FULLY ABSTRACT. Think of a rough thumbnail gesture scribble drawn in 2 seconds. There are NO recognizable features — no eyes, no limbs, no hair details. Just concentrated pencil energy forming a rough organic shape.
+
+A few loose trailing pencil lines still connect the swirl back toward the stylus tip — residual traces of the trail lines that converged to form this cluster. These trailing wisps are faint and thin.
+
+The swirl is drawn in the same warm gray graphite as the character — it looks like pencil marks on the animation paper, not a magical effect. The density of strokes makes the center of the swirl slightly darker than the edges.
+
+Maintain perfect identity consistency with the uploaded reference. The character must be immediately recognizable as the same person in the same pose.
+
+Lighting is soft and even. Shadows achieved through cross-hatching and pencil density.
+
+Output a warm, analog-feeling animation production drawing. No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines.

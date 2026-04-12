@@ -1,0 +1,13 @@
+Create a single small character drawing of a classic 8-bit retro platformer hero, rendered in traditional animation pencil test style on warm cream animation paper.
+
+The character should be drawn with BLOCKY PIXEL-ART PROPORTIONS translated into pencil: a large square-ish head taking up about 1/3 of the body height, a small compact torso, and short stubby legs. The overall silhouette should read as "8-bit video game character" immediately — chunky, geometric, simplified. Think the proportions of an NES-era hero like Mario or Mega Man, but drawn in warm graphite pencil instead of pixels.
+
+DESIGN — RETRO PLATFORMER HERO: The character has a simple round helmet or cap (like a classic game hero), large round dot eyes with a determined expression, a tiny nose or no nose, and a small confident mouth. Simple armor or tunic over the torso — drawn with just a few pencil strokes suggesting the shape. Short boots. One hand in a fist at the side, the other arm slightly raised in a ready pose. The character stands in a classic idle stance — weight even, facing 3/4 to the right, like a sprite's default standing frame.
+
+KEY CONSTRAINT — BLOCKY, NOT CUTE: This must read as a VIDEO GAME SPRITE drawn in pencil, not a cute chibi character. Keep the shapes angular and blocky. Squared-off head, rectangular body, simple geometric limbs. The appeal comes from the charm of translating pixel-art's rigid geometry into warm hand-drawn pencil lines — the contrast between digital blockiness and analog warmth.
+
+Present on warm cream animation paper (#FAF5E8) with visible grain texture, three hole-punch marks at bottom edge, production label "S-A" circled in top-left. The character is small on the page — about 35-40% of canvas height, centered.
+
+STYLE: Traditional pencil test — warm gray graphite lines (NOT black ink), natural line weight variation, visible construction lines, cross-hatching for shadow areas. Extremely limited desaturated color — just hints of color to suggest the character's palette. The drawing should feel like an animator quickly sketched a game character on their sketchpad.
+
+No vector lines. No solid black outlines. No cel shading. No anime. No gradients. No digital effects. No pure white background. No actual pixel rendering — this is pencil graphite, not pixels.

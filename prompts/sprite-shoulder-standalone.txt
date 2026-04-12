@@ -1,0 +1,20 @@
+Generate a single character drawing of a tiny RPG warrior sprite character, drawn in traditional animation pencil test style on warm cream animation paper.
+
+This is a STANDALONE character sheet of a small companion sprite character. Draw ONLY the sprite — no other characters, no background elements, no other figures.
+
+CRITICAL REFERENCE: The character in Image 1 is a CROPPED REFERENCE showing exactly how this sprite looks when seated on another character's shoulder. Match this design EXACTLY — same spiky hair, same face shape, same tunic, same belt with sword, same boots, same arm bracers, same proportions. Image 2 shows the full standalone character sheet for additional design reference.
+
+POSE: The sprite is seated as if perched on a curved surface (like a shoulder). The body leans very slightly to the character's right for balance. Legs dangle down, slightly bent at the knees — NOT straight down like sitting on a flat ledge. The right hand braces slightly against the surface for stability. The left hand rests on the lap near the sword hilt. Head tilted very slightly, with a confident little smirk.
+
+FACING DIRECTION: The sprite faces CAMERA LEFT (the character's right side is closer to the viewer). This is critical — the sprite must face LEFT, not right.
+
+STYLE — PENCIL ANIMATION:
+Traditional animation pencil test drawing. Hand-drawn graphite pencil lines on warm cream animation paper. Lines are warm gray (NOT black) with natural stroke-weight variation — thicker on contour outlines, thinner on interior details. Visible construction line artifacts beneath the final drawing. Subtle cross-hatching for shading. NO color fills — this sprite should be DESATURATED GRAPHITE ONLY, matching the pencil-only look, NOT the colored version. Pencil lines only, no green tunic fills, no skin tone fills.
+
+Paper: Warm cream/off-white background with visible paper grain texture. Hand-written production label "S-3" circled in pencil in the top-left corner. Three hole-punch marks at bottom edge.
+
+The sprite should occupy roughly 70-80% of the vertical canvas, centered on the page. Draw the sprite large and clear — this is a character reference sheet, not a tiny element in a scene.
+
+Character proportions: Chibi/super-deformed RPG style — roughly 2.5-3 heads tall, large expressive head, compact body. Spiky anime-influenced hair. Round face with simple but expressive features. Equipped with a short sword at the belt, wearing a tunic with belt, arm bracers, and chunky boots.
+
+NEGATIVES: No second character. No large figure behind the sprite. No Sean. No human figure. ONLY the sprite character on paper. No color fills. No green. No saturated tones. Desaturated graphite pencil only. No vector-clean lines. No solid black outlines. No cel shading. No digital painting look.

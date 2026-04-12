@@ -1,0 +1,13 @@
+Create a single small character drawing of a classic arcade-era pixel hero, rendered in traditional animation pencil test style on warm cream animation paper.
+
+The character should be drawn with EXTREMELY BLOCKY, MINIMAL PIXEL-ART PROPORTIONS translated into pencil: a large square head, a tiny rectangular body, and simple stick-like limbs ending in block feet. The overall silhouette should be as SIMPLE and ICONIC as possible — like the most basic, recognizable "video game character" shape. Think early arcade era — Pac-Man level simplicity meets a humanoid character. Just enough detail to read as a person: head, body, arms, legs.
+
+DESIGN — MINIMAL ARCADE HERO: The character has a perfectly square or round head with two simple dot eyes and nothing else for facial features — maximum simplicity. A single-color rectangular body (drawn as a simple pencil shape). Straight-line arms, one slightly raised in a wave or idle gesture. Block feet. No accessories, no weapons, no complex clothing — this is the ESSENCE of a game character reduced to its most basic geometric forms. Standing in a simple front-facing or slight 3/4 idle pose.
+
+KEY CONSTRAINT — MAXIMUM SIMPLICITY: This should be the most stripped-down, iconic video game character possible. If you squint, it should look like it could be drawn on a 16x16 pixel grid. Every shape is a rectangle, square, or circle. The charm is in how SIMPLE it is — a few pencil strokes creating an instantly recognizable "game character" through pure geometric economy. This is not a detailed character — it's an icon.
+
+Present on warm cream animation paper (#FAF5E8) with visible grain texture, three hole-punch marks at bottom edge, production label "S-C" circled in top-left. The character is small on the page — about 30-35% of canvas height, centered.
+
+STYLE: Traditional pencil test — warm gray graphite lines (NOT black ink), natural line weight variation, visible construction lines beneath. Minimal to no color — let the pencil shapes speak. The drawing should feel like a quick margin doodle of a game character.
+
+No vector lines. No solid black outlines. No cel shading. No anime. No gradients. No digital effects. No pure white background. No actual pixel rendering — pencil graphite, not pixels.
