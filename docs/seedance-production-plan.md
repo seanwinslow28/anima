@@ -4,6 +4,45 @@
 
 ---
 
+## Creative Alignment (from Phase 1 Interview — 2026-04-12)
+
+### North Star
+**"This person bridges traditional craft and modern tools."** The piece should feel hand-drawn from first frame to last. Viewers experience the warmth of traditional 2D animation and only discover the AI workflow when they explore the portfolio projects. The thesis: craft is craft, the tool is just the tool — the Pixar argument for the AI era.
+
+### Audience
+- **Primary:** Portfolio visitors — hiring managers, creative directors, collaborators
+- **Secondary:** AI film festival submissions — the meta-narrative is festival-ready
+
+### The Pipeline Philosophy: Seedance Finds the Motion, NB2 Protects the Aesthetic
+
+Seedance 2.0 is the motion *discovery* engine — fluid character animation, camera movement, expressions, squash and stretch. But output frames are *reference*, not final art:
+
+1. **Seedance generates** — fluid motion between anchor keyframes
+2. **Extract frames** — pull frames with best timing, arcs, and acting
+3. **Review and select** — identify proper animation timing, where smears/holds are needed
+4. **NB2 redraws** — clean up selected frames to restore full pencil test fidelity (line weight, construction lines, paper texture, stylus continuity, hand anatomy)
+5. **Procreate traces** — for elements like sprite motion, trace over Seedance output to create standalone hand-drawn frames
+
+### Quality Bar
+- Every frame must read as hand-drawn pencil on cream paper — in motion at 12fps AND in isolation
+- If it looks digital, clean, or AI-generated to a casual viewer, the thesis fails
+- Identity match to A-2 anchor is the #1 blocker
+- The existing Seedance test (Act-1-Test-Seedance-2.0.mp4) proved the aesthetic survives interpolation, but NB2 cleanup is mandatory for final frames
+
+### Act 1 Approach
+**Enhance, don't restrict.** The 42-frame structure is a foundation, not a limit. Seedance can add fluidity and expressiveness. If a moment wants more time, let it breathe. The frame count serves the animation.
+
+### Act 2 Approach
+**Seedance-guided exploration.** Test beats incrementally. Let results inform scope. Stay open to creative possibilities beyond the original storyboard. Build from proven results, not blind plans.
+
+### Sprite Strategy
+The existing Seedance test produced sprite motion that matched Sean's vision exactly. Use Seedance output as motion reference, trace in Procreate for standalone sprite frames with hand-drawn fidelity.
+
+### Engine Truth (Unchanged)
+> If the loop plays smoothly at 12fps and the character is recognizably Sean in pencil test style on cream animation paper, it ships.
+
+---
+
 ## Architecture Decisions
 
 ### Separate Seedance runs for Act 1 and Act 2

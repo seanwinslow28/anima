@@ -1,5 +1,76 @@
 # Changelog
 
+## Seedance 2.0 Pipeline — Research & Planning
+
+**Date:** 2026-04-12
+
+### Creative Interview + Alignment
+
+Conducted Phase 1 creative interview to establish the north star for the Seedance pipeline integration. Key decisions:
+
+**North star:** "This person bridges traditional craft and modern tools." The piece should feel hand-drawn; viewers shouldn't realize it's an AI workflow until they dig into the portfolio projects. The Pixar analogy — they didn't abandon the 12 principles when they moved to CGI.
+
+**Pipeline philosophy — "Seedance finds the motion, NB2 protects the aesthetic":**
+Seedance 2.0 generates fluid motion between anchor keyframes. Extracted frames are then redrawn/cleaned by NB2 to restore full pencil test fidelity (line weight, construction lines, paper texture, stylus continuity). This is a two-engine pipeline: Seedance for motion intelligence, NB2 for aesthetic protection.
+
+**Act 1 approach:** Enhance, don't restrict. The existing 42-frame structure is a foundation, not a ceiling. Seedance can add fluidity and breathing room. Frame count is flexible.
+
+**Act 2 approach:** Seedance-guided exploration. Test beats incrementally, let results inform scope. Don't commit to all 250 frames upfront. Stay open to creative possibilities beyond the storyboard.
+
+**Sprite strategy:** The existing Seedance test (`Act-1-Test-Seedance-2.0.mp4`) produced sprite motion that matched Sean's vision. Plan: trace Seedance sprite motion in Procreate to create standalone hand-drawn sprite frames.
+
+**Quality bar:** Every frame must pass the "is this hand-drawn?" test both in motion at 12fps AND in isolation. If it looks digital to a casual viewer, it fails.
+
+### Seedance 2.0 Deep Research
+
+Comprehensive research across three parallel investigations: model capabilities + API, prompting strategies + style preservation, and community results + comparisons.
+
+**Key findings:**
+- **Start+end frame interpolation:** Supported. Generates "plausible path between two known states." End frame match is approximate, not pixel-exact.
+- **Resolution:** 480p, 720p (no native 1080p). 720p adequate for web portfolio.
+- **Duration:** 4–15 seconds per generation at 24fps.
+- **Fal.ai API:** `bytedance/seedance-2.0/image-to-video` (standard) and `fast/image-to-video`. Pricing: ~$0.24–0.30/sec. Auth via `FAL_KEY` env var. Python SDK: `fal-client`.
+- **Prompting:** 60–80 words. Action-focused (what happens, not body mechanics). Include "fixed camera, locked tripod" always. Include "stylus in right hand" always (feature erosion risk). No "cinematic", "4K", "glow" keywords.
+- **Style preservation:** Model handles illustrated/non-photorealistic styles well (anime, cel, line art). No one has tested pencil-on-paper specifically. Risks: "thin, high-contrast edges" are a known limitation; paper texture may "crawl."
+- **Character consistency:** 2–3 reference images max. Start+end frame mode is the strongest consistency tool.
+- **No negative prompt parameter** on fal.ai. Style control is prompt-only via positive descriptors.
+- **Content filters:** Aggressive for realistic human faces, but pencil drawings should pass without issues.
+- **Best model for our use case:** Seedance > Kling for illustrated styles. Already proven with our test.
+
+**Documents created:**
+- `docs/seedance-research-findings.md` — Full research findings with API specs, prompting guide, code examples
+- `docs/seedance-production-plan.md` — Beat-by-beat production plan with all Seedance prompts, QA gates, cost estimates
+
+**Estimated cost:** ~$35 for all 13 clips (26 generations including retries at Fast tier). Budget $50–75 with experimentation.
+
+### Seedance Test Review
+
+Reviewed the existing Seedance 2.0 test output (`Act-1-Test-Seedance-2.0.mp4`): 6 seconds, 1280x720, 24fps, 145 frames.
+
+**What Seedance nailed:**
+- Pencil test aesthetic survived (cream paper, warm gray graphite lines, A-2 label)
+- Sprite motion arc along pencil trails was exactly as envisioned — natural physics path
+- Character identity held across all frames (same hair, jaw, proportions)
+- Production label convention (A-2 → A-7) was picked up from anchor frames
+
+**What needs NB2 cleanup (expected):**
+- Line weight softened compared to NB2 keyframes — cross-hatching and construction lines diminished
+- Stylus disappeared by mid-clip (feature erosion)
+- Hand anatomy lost definition in later frames
+
+These findings validated the two-engine pipeline: Seedance contributes motion intelligence, NB2/Procreate restores aesthetic fidelity.
+
+### Lessons Learned
+
+13. **Seedance finds motion, NB2 protects aesthetic** — use video models for motion discovery and image models for final frame quality. Two engines, each doing what they're best at.
+14. **Video model prompts: action arcs, not body mechanics** — describe WHAT happens in 60–80 words. Include "fixed camera" and prop continuity notes ("stylus in right hand"). Avoid "cinematic", "4K", or style-pulling keywords.
+15. **Start+end frame interpolation is the key mode** — providing both anchor frames produces more constrained, coherent motion than extrapolation from a single frame.
+16. **Short clips hold style better** — 4–5 second Seedance clips maintain pencil test aesthetic; longer clips risk style drift.
+17. **Feature erosion targets small props first** — the stylus disappears before other features drift. Include explicit prop anchoring in every prompt.
+18. **Test cheaply before committing** — use Fast tier at 480p/4s for initial tests, scale to 720p Standard only after validating aesthetic survival.
+
+---
+
 ## Run: run_2026-04-04_174805
 
 ### Phase 2: In-Between Generation — OpenPose ControlNet → Gemini Workflow

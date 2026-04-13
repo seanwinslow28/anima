@@ -15,20 +15,32 @@ A manifest-driven animation production pipeline for generating a pencil test ani
 | Keyframe Prompts | `docs/act1-keyframe-prompts.md` | 6 ready-to-run Gemini prompts for Act 1 key poses with post-generation checklist |
 | A-2 Anchor | `images/2D-Character-Sketch-Sean-v1.png` | Identity reference — all generated frames must match this character |
 | Manifest | `manifest.yaml` | Pipeline configuration — single source of truth for generation, audit, and export settings |
+| Seedance Research | `docs/seedance-research-findings.md` | Seedance 2.0 capabilities, API specs, prompting guide, style preservation strategies |
+| Seedance Production Plan | `docs/seedance-production-plan.md` | Beat-by-beat Seedance prompts, frame extraction maps, QA gates, cost estimates |
 | Changelog | `CHANGELOG.md` | Decision history — what changed, why, and lessons learned for prompt engineering |
 | Original Pipeline | `docs/Sprite-Sheet-Automation-Project_OG-Workflow-Summary.md` | Architectural reference (manifest-driven design, audit loop, retry ladder) |
 
 ## Pipeline Architecture
 
 ```
-Phase A          Phase B           Phase C          Phase D          Phase E
-SCAFFOLD    -->  GENERATE     -->  AUDIT       -->  ASSEMBLE    -->  QA REVIEW
+Phase A          Phase B           Phase B.5          Phase C          Phase D          Phase E
+SCAFFOLD    -->  GENERATE     -->  MOTION         -->  AUDIT       -->  ASSEMBLE    -->  QA REVIEW
                                                     
-manifest.yaml    generate.py       audit.py         assemble.sh      creative-director
-directory        Gemini API        Claude vision     FFmpeg           critique rubric
-structure        frame chaining    hard/soft fails   hold timing      2d-animation QA
-                                   retry ladder      GIF/WebM/MP4     "done" checklist
+manifest.yaml    generate.py       Seedance 2.0       audit.py         assemble.sh      creative-director
+directory        Gemini API        Fal.ai API         Claude vision     FFmpeg           critique rubric
+structure        frame chaining    start+end frame    hard/soft fails   hold timing      2d-animation QA
+                                   extract → NB2      retry ladder      GIF/WebM/MP4     "done" checklist
 ```
+
+### Seedance Pipeline (Phase B.5)
+
+**Philosophy: Seedance finds the motion, NB2 protects the aesthetic.**
+
+1. Seedance 2.0 generates fluid motion video between approved NB2 anchor keyframes
+2. Extract frames at 12fps from Seedance output
+3. Review and select frames with best timing, arcs, and acting
+4. NB2 redraws selected frames to restore full pencil test fidelity
+5. Procreate traces for sprite motion and special elements
 
 ### Core Loop (adapted from sprite pipeline)
 
@@ -50,6 +62,7 @@ Generate frame --> Audit (hard fails? reject) --> Soft fails? --> Retry (max 3) 
 | `comfyui-workflows` | B (In-betweens) | OpenPose ControlNet in-between generation, IPAdapter identity lock, video model node integration |
 | `video-animation-production` | D (Assembly) | FFmpeg frame sequence assembly, two-pass GIF optimization, WebM/MP4 export |
 | `gemini-image-gen` | B (Generation, Act 2) | Non-pencil assets — zone backgrounds, props (deferred to Act 2) |
+| `video-animation-production` | B.5 (Motion), D (Assembly) | Seedance frame extraction, FFmpeg assembly, format conversion |
 
 ## Directory Structure
 
@@ -231,17 +244,55 @@ Checks 8 continuity dimensions across all consecutive frame pairs:
 
 Log findings: `python3 pipeline/continuity_audit.py --run-dir runs/{run_id} --log-finding CC01 F13 "description"`
 
+## Seedance Generation
+
+Generate a Seedance 2.0 video with start+end frame interpolation:
+```python
+import fal_client, os
+os.environ["FAL_KEY"] = os.getenv("FAL_KEY")
+
+result = fal_client.subscribe(
+    "bytedance/seedance-2.0/image-to-video",
+    arguments={
+        "prompt": "[COMPRESSED ACTION PROMPT — 60-80 words]",
+        "image_url": "[START FRAME URL]",
+        "end_image_url": "[END FRAME URL]",
+        "resolution": "720p",
+        "duration": "5",
+        "generate_audio": False,
+    },
+)
+video_url = result["video"]["url"]
+```
+
+Extract frames at 12fps from Seedance output:
+```bash
+ffmpeg -i seedance_output.mp4 -vf fps=12 frame_%04d.png
+```
+
+**Seedance prompting rules:**
+- 60–80 words, action-focused (WHAT happens, not body mechanics)
+- Always include: "fixed camera, locked tripod" and "stylus in right hand"
+- Never use: "cinematic", "4K", "glow", "epic", unqualified "fast"
+- Don't re-describe the character — the start/end frames provide that
+- See `docs/seedance-research-findings.md` for full prompting guide
+
 ## Dependencies
 
 ```bash
-pip install pyyaml Pillow google-genai
+pip install pyyaml Pillow google-genai fal-client
 ```
 
 - **PyYAML** — manifest parsing in generate.py
 - **Pillow** — aspect ratio check in audit.py (HF01)
 - **google-genai** — Gemini API calls in generate_image.py
+- **fal-client** — Seedance 2.0 API calls via fal.ai
 - **FFmpeg** — frame assembly in assemble.sh (`brew install ffmpeg`)
 - **bc** — GIF size calculation in assemble.sh (pre-installed on macOS)
+
+Environment variables (in `.env`):
+- `GEMINI_API_KEY` — Google Gemini API key
+- `FAL_KEY` — Fal.ai API key for Seedance 2.0
 
 ## Prompt Files
 
