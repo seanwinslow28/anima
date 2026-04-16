@@ -1,9 +1,5 @@
 # Act 2 Visual Exploration — Kickoff Session Prompt
 
-> Copy-paste the prompt below into a new Claude Code session to begin Round 1 concept art generation. Make sure `GEMINI_API_KEY` is set in `.env` before starting.
-
----
-
 ## The Prompt
 
 ```
