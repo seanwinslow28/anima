@@ -1,0 +1,41 @@
+Using the uploaded character sketches as the EXACT style and character references — Sean, the AI companion (terracotta loaf creature), and the RPG warrior sprite (chibi spiky-haired warrior with sword) — create an ULTRA-WIDE pencil-drawn panorama showing the entire timeline of Sean's creative journey in a single frame. This is the FINAL HOLD POSE in Act 2 of a pencil test animation, the moment before the title card appears. Camera has pulled back to reveal everything.
+
+THE TWO COMPANION CHARACTERS:
+- THE AI COMPANION: a friendly pencil-drawn creature with a rounded square loaf body, two dot eyes with expressive eyebrows, small curved smile, four stubby legs, small stubby arms. Warm terracotta/clay-orange color, desaturated. Drawn with lighter pencil strokes around its base to suggest hovering.
+- THE RPG WARRIOR SPRITE: a small chibi pencil-drawn warrior with spiky pointed sandy-blonde hair, a determined expression with a slight smirk, wearing a light cream/tan tunic with a belt, cuffed wristbands and boots, a sword sheathed on his back. Roughly 3-4 heads tall, classic chibi RPG proportions. The sprite is RIDING on top of the AI companion's back, sitting with one leg dangling, arms relaxed.
+
+ENVIRONMENT — THE FULL JOURNEY PANORAMA, LEFT TO RIGHT:
+
+LEFT SECTION — FILM ORIGINS: A pencil-drawn movie camera on a tripod, film reels, drifting strips of film negatives, a clapperboard, a director's chair, a vintage projector with a soft pencil-shaded light beam. This is where the journey began.
+
+LEFT-CENTER SECTION — ANIMATION CRAFT: Storyboard panels on a wall, gesture drawing pages, a flip book, an animation light box (suggested by lighter pencil strokes), an animator's desk with a stack of paper and a pencil cup. Where the love of drawing took shape.
+
+CENTER SECTION — AI DISCOVERY: Floating newspaper clippings with hand-lettered headlines like "ChatGPT NEW IMAGE MODEL", "AI IS TAKING JOBS?", "VIBE CODING", a small Studio Ghibli-style cartoon face beneath one headline, video thumbnail rectangles with play buttons, hand-lettered words like "ANTHROPIC", "GEMINI" floating among them. The moment hype broke through.
+
+CENTER-RIGHT SECTION — THE WORKSHOP / TOOLS: A pencil-drawn modern desk with a laptop showing terminal text, a second monitor showing a chat interface, a coffee mug, a code editor sketch on a tablet. Where Sean tested AI for himself.
+
+RIGHT SECTION — CONVERGENCE / PM ROLE: A pencil-drawn KANBAN BOARD with hand-lettered columns "BACKLOG / IN PROGRESS / REVIEW / DONE" with note cards mixing storyboard thumbnails, code snippets, and sprite icons. Sticky notes with "SPRINT", "ROADMAP", "STANDUP". Status indicators floating above. This is where Sean stands now.
+
+The transitions between sections are SOFT — pencil strokes blend gradually; there are no hard borders between zones. Faint dotted pencil lines trace a winding path along the bottom of the panorama, showing the journey's flow. The whole scene shares the same cream animation paper, same line weight, same pencil aesthetic — what shifts is only the subject matter.
+
+NOTE: There is NO dedicated game/platforms section in this panorama. There are no pixel platforms, no health bars as part of a game world, no XP counters in a video game context. The game elements that exist (the warrior sprite, status indicators repurposed as PM tools) appear naturally integrated within other sections, not as their own dedicated zone.
+
+Present on warm cream animation paper (#FAF5E8 approximate). The paper has visible grain texture, subtle aging marks, three hole-punch marks centered at the bottom edge.
+
+POSE — THE FINAL HOLD: Sean stands at the FAR RIGHT of the panorama within the Convergence section. His body is turned to face LEFT, looking back across his entire journey stretching out behind him. His RIGHT HAND is raised, holding a stylus pen up casually — not drawing with it, just holding it like a painter stepping back from the canvas to look at the finished work. His left hand rests at his side. His feet are planted, weight balanced. His head is turned to scan the panorama.
+
+THE COMPANIONS: At Sean's RIGHT SHOULDER (which is the side closer to the panorama since Sean faces left) hovers the AI companion. The RPG warrior sprite sits on the companion's back, riding it. Both are positioned just behind and slightly above Sean's shoulder height — close enough to read as "with him," not so far they read as separate elements. The companion's eyes look toward Sean. The sprite looks out at the panorama. This is the FULL CIRCLE callback — the character Sean drew in Act 1 has returned, riding the new partner Sean discovered in Act 2.
+
+EXPRESSION — QUIET PRIDE: A small, content closed-mouth smile. Eyes scanning the journey with calm satisfaction. This is the moment of arrival. The look of someone who sees how every chapter led to this moment.
+
+Match the uploaded reference EXACTLY in Sean's character style and identity: same hair, jaw, eye spacing, nose, body proportions, dark navy t-shirt, cool gray jeans. Match the AI companion and RPG warrior sprite references EXACTLY for their designs.
+
+CRITICAL: All elements (panorama sections, characters, all UI/text) MUST be drawn in the same pencil test style. Graphite lines, cream paper, hand-drawn quality. All text in headlines, Kanban columns, sticky notes is HAND-LETTERED in pencil — never typeset.
+
+Color is extremely limited and desaturated: dark navy t-shirt, cool gray jeans, warm skin tones, sandy blonde hair, terracotta-orange companion. The sprite is mostly graphite with the same desaturated cream tunic. Environment elements primarily graphite with minimal color accents.
+
+Character proportions for Sean: Disney/Pixar pre-production adjacent, roughly 7-7.5 heads tall. Companion: half of Sean's torso. Sprite: small chibi, 3-4 heads tall, much smaller than Sean.
+
+Lighting is soft and even. Shadows via cross-hatching and pencil density.
+
+No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines. No photorealism. No 3D rendering.

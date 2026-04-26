@@ -1,0 +1,37 @@
+Using the uploaded character sketch and the AI companion reference sketches as the EXACT style and character references, create a wide establishing shot of this same character in a pencil-drawn environment. This is Beat 4 in Act 2 of a pencil test animation — the moment of REVELATION. After Sean met the AI companion in his terminal, the walls of his small workspace have fallen away and the entire universe of AI possibility has unfolded around him. This is NOT a literal explosion. It is a quiet, awe-inspiring REVEAL. A new world opening up.
+
+THE AI COMPANION: A friendly pencil-drawn creature with a rounded square loaf-shaped body, two small dot eyes with expressive eyebrows, a small curved smile, four short stubby legs, and small stubby cylindrical arms. Warm terracotta/clay-orange color (desaturated, NOT bright). Graphite pencil lines visible through color fill. The companion now hovers next to Sean at his RIGHT shoulder, drawn with slightly lighter pencil strokes around its base to suggest it's floating. Its eyes are looking up at Sean, gesturing with one stubby arm toward the surrounding world as if to say "look at all this."
+
+ENVIRONMENT — THE REVEALED AVENUES: Around Sean (who is no longer at a desk — the desk has effectively dissolved away), the cream paper opens up into a constellation-like map of pencil-drawn AI concepts and possibilities, all drawn in the same graphite pencil style. Floating elements connected by faint pencil lines fanning outward like a mind map:
+- A pencil-drawn chat interface with conversation bubbles
+- A code editor window with hand-lettered code visible
+- A neural network diagram (circles connected by lines)
+- A flowchart showing "PROMPT → MODEL → OUTPUT"
+- A pencil-drawn API endpoint diagram with "POST /generate" hand-lettered
+- A floating sketch of a 3D model wireframe
+- A pencil-drawn image-generation visual: a prompt arrow pointing to a small generated image
+- Hand-lettered phrases in a casual handwritten style: "VIBE CODING", "AGENTS", "PIPELINES", "GENERATE"
+- A pencil-sketched robot face outline
+- Floating documents/papers with code snippets
+- Long faint pencil arrows radiating outward from the center of the scene, suggesting expansion
+- Tiny stars or sparkle marks scattered through the space to give a sense of wonder
+
+Present on warm cream animation paper (#FAF5E8 approximate). The paper has visible grain texture, subtle aging marks, three hole-punch marks centered at the bottom edge. The environment elements fill the entire frame — this is a WIDE SHOT showing the character at roughly 40-50% of vertical canvas height, surrounded on all sides by the floating possibilities.
+
+POSE — REACHING INTO POSSIBILITY: The character stands at center, body in motion, torso slightly rotated as he reaches OUT with both hands toward different floating concepts. One hand reaches forward and to the left toward the chat interface. The other hand reaches forward and to the right toward the code editor. His head is tilted slightly upward, eyes wide, scanning everything. He's not just observing — he's actively connecting, exploring, beginning to understand. His feet are planted wide for stability as he reaches. His weight is forward, leaning into the new world.
+
+EXPRESSION: Wonder + ignition. The career-pivot moment. A genuine open-mouthed half-smile of astonishment. Eyes bright. Eyebrows lifted. The look of someone who just realized "I can do ALL of this."
+
+CRITICALLY IMPORTANT: There is NO sword-wielding RPG warrior sprite in this scene. The sprite character is intentionally absent and will not appear until later in the sequence. ONLY Sean and the AI companion are present as characters in this frame.
+
+Match the uploaded reference EXACTLY in Sean's character style and identity: same hair, jaw, eye spacing, nose, body proportions, dark navy t-shirt, cool gray jeans. Match the AI companion references EXACTLY for the companion's design.
+
+CRITICAL: All elements in the frame — Sean, the companion, the floating AI avenues — MUST be drawn in the same pencil test style. Graphite lines, cream paper, hand-drawn quality. No digital aesthetic. The terminal text, code, chat interfaces, and labels are all HAND-LETTERED, never typeset.
+
+Color is extremely limited and desaturated: dark navy t-shirt, cool gray jeans, warm skin tones, sandy blonde hair, terracotta-orange companion. Environment elements primarily graphite. Pencil lines visible through all color fills.
+
+Character proportions for Sean: Disney/Pixar pre-production adjacent, roughly 7-7.5 heads tall. The companion is much smaller — roughly half the size of Sean's torso.
+
+Lighting is soft and even. Shadows via cross-hatching and pencil density.
+
+No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines. No photorealism. No 3D rendering.

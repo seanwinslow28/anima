@@ -1,0 +1,29 @@
+Using the uploaded character sketch as the EXACT style and character reference, create a wide establishing shot of this same character in a pencil-drawn environment. This is Beat 1c in Act 2 of a pencil test animation — the character continues walking right, and the floating world around him has transitioned again, now full of news headlines, articles, and clips about the rise of AI. This is the moment AI hype starts breaking into his consciousness.
+
+ENVIRONMENT — THE FLOATING AI DISCOVERY WORLD: The character walks through a surreal space where oversized pencil-drawn news clippings, magazine articles, and digital headlines float around him on the cream paper, all hand-lettered as if torn from real newspapers and magazines. Floating elements should include:
+- A large rectangular newspaper-style headline that reads "ChatGPT NEW IMAGE MODEL" in hand-lettered bold pencil text, with a small Studio Ghibli-style cartoon character (round face, big eyes, simple appealing design) drawn in pencil beneath it as the article photo
+- A magazine clipping with the headline "AI IS TAKING JOBS?" and a tiny pencil-sketch worker figure with a question mark
+- A floating article fragment titled "VIBE CODING GOES VIRAL" with a small terminal window beneath it
+- A pencil-drawn newspaper byline with "ANDREJ KARPATHY" in hand-lettered text and a small profile silhouette
+- A clipping titled "AI IN YOUR TERMINAL" with a simple terminal prompt sketch
+- A torn piece of paper with "OPEN-SOURCE MODELS RISING" hand-lettered
+- Hand-lettered logo-style words floating among the elements: "ChatGPT", "Anthropic", "Gemini", drawn as simple pencil text-marks (not real logos — sketched approximations)
+- A few floating video thumbnail rectangles with simple play-button triangles drawn in their centers
+- A pencil-sketched chat interface bubble with text inside
+All elements look like they were ripped or torn from publications, with rough edges and fold lines. Faint pencil construction lines connect some of the floating elements like constellation lines.
+
+Present on warm cream animation paper (#FAF5E8 approximate). The paper has visible grain texture, subtle aging marks, three hole-punch marks centered at the bottom edge. The environment elements fill the frame — this is a WIDE SHOT showing the character at roughly 40-50% of vertical canvas height with the floating headline world surrounding him.
+
+The character continues walking from left to right, mid-stride, but his pace has slowed. His head is turned slightly to the side, eyes scanning the floating headlines. ONE EYEBROW IS RAISED in genuine curiosity. His mouth is slightly parted as he reads. Right hand at his side. Left arm raised slightly, fingers loosely turned upward as if catching one of the floating clippings to read it. Expression: PURE CURIOSITY — the look of someone who keeps hearing about a topic everywhere and is starting to think he should pay attention. The character is grounded while the headlines float around him.
+
+Match the uploaded reference EXACTLY in character style: traditional animation pencil test drawing with hand-drawn graphite pencil lines. Lines are warm gray (NOT black ink) with natural stroke-weight variation. Visible construction lines beneath the final drawing. Cross-hatching for shading.
+
+CRITICAL: The environment elements (newspaper clippings, headlines, video thumbnails, etc.) MUST also be drawn in pencil test style — same graphite lines, same cream paper, same hand-drawn quality. The newspaper print, magazine layouts, and brand names must look HAND-LETTERED in pencil, not typeset, not digital. Everything in the frame looks like it was drawn by the same animator on the same paper. No style changes between character and environment.
+
+Color is extremely limited and desaturated: dark navy t-shirt, cool gray jeans, warm skin tones, sandy blonde hair. Environment elements are primarily graphite with minimal color accents where needed. Pencil lines visible through all color fills.
+
+Character proportions: Disney/Pixar pre-production adjacent, roughly 7-7.5 heads tall. NOT anime, NOT hyper-realistic.
+
+Lighting is soft and even. Shadows via cross-hatching and pencil density. No dramatic directional light.
+
+No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines. No photorealism. No 3D rendering.

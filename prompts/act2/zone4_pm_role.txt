@@ -1,0 +1,25 @@
+Using the uploaded character sketch and the AI companion reference sketches as the EXACT style and character references, create a wide establishing shot of this same character in a pencil-drawn environment. This is Beat 5 in Act 2 of a pencil test animation — the moment Sean's role as a Product Manager / Creative Technologist solidifies. The AI revelation has settled into a new identity. He is now actively claiming this role.
+
+THE AI COMPANION: A friendly pencil-drawn creature with a rounded square loaf-shaped body, two small dot eyes with expressive eyebrows, a small curved smile, four short stubby legs, and small stubby cylindrical arms. Warm terracotta/clay-orange color (desaturated, NOT bright). Graphite pencil lines visible through color fill. The companion hovers at SEAN'S RIGHT SHOULDER (which is on the LEFT side of the image when the character faces the Kanban board at 3/4 angle). Drawn with slightly lighter pencil strokes around its base to suggest it's floating.
+
+ENVIRONMENT — THE PM CONVERGENCE WORKSPACE: A pencil-drawn workspace dedicated to product management and creative technology. The dominant element of the scene is a large pencil-drawn KANBAN BOARD spanning most of the back wall. The Kanban board has clear vertical column dividers, with hand-lettered column headers in pencil: "BACKLOG", "IN PROGRESS", "REVIEW", "DONE". Each column contains pencil-drawn note cards stuck to the board — some cards are blank, some show tiny storyboard thumbnail sketches, some show mini code snippets, some show character sprite icons. Note: the cards are an interesting mix, hinting at his cross-disciplinary work. Stuck around the edges of the Kanban board are hand-lettered yellow-toned sticky notes with pencil text: "BACKLOG", "SPRINT", "ROADMAP", "RETRO", "STANDUP". A pencil-drawn terminal window sits on a side desk in the periphery showing an ongoing chat. Floating near the top of the frame: pencil-drawn project status indicators rendered as game UI — a "FEATURE_COMPLETE" progress bar, an "XP" counter, small status icons. Other office details: a small bookshelf, a coffee mug with steam, a pencil-drawn laptop. The space feels organized, productive, claimed.
+
+Present on warm cream animation paper (#FAF5E8 approximate). The paper has visible grain texture, subtle aging marks, three hole-punch marks centered at the bottom edge. The environment elements fill the frame — this is a WIDE SHOT showing the character at roughly 50-60% of vertical canvas height with the Kanban board environment around him.
+
+POSE — CLAIMING THE ROLE: The character stands facing 3/4 toward the Kanban board (which is to his right and behind him). His body is angled at the board, weight on his front foot. His RIGHT HAND is RAISED UP, fingers reaching toward one of the cards on the Kanban board — he is in the act of grabbing or moving a card, actively organizing the work. His left hand is at his side or slightly extended for balance. His head is tilted slightly upward toward the card he's reaching for. Stylus is NOT in his hand — both hands are free for the work itself.
+
+EXPRESSION — DETERMINED OWNERSHIP: A confident, focused expression. Slight closed-mouth smile, eyebrows set. The look of someone who has decided "this is the work I'm doing now." This is HIS board, HIS process, HIS role.
+
+CRITICALLY IMPORTANT: There is NO sword-wielding RPG warrior sprite in this scene. The sprite character is intentionally absent in this beat. ONLY Sean and the AI companion are present as characters in this frame.
+
+Match the uploaded reference EXACTLY in Sean's character style and identity: same hair, jaw, eye spacing, nose, body proportions, dark navy t-shirt, cool gray jeans. Match the AI companion references EXACTLY.
+
+CRITICAL: All elements (Kanban board, sticky notes, status indicators, terminal, characters) MUST be drawn in the same pencil test style. Graphite lines, cream paper, hand-drawn quality. The Kanban column headers, sticky note text, and status indicators are all HAND-LETTERED in pencil — never typeset.
+
+Color is extremely limited and desaturated: dark navy t-shirt, cool gray jeans, warm skin tones, sandy blonde hair, terracotta-orange companion. Environment elements primarily graphite. The sticky notes can have a faint warm yellow tint but stay desaturated.
+
+Character proportions for Sean: Disney/Pixar pre-production adjacent, roughly 7-7.5 heads tall. The companion is much smaller — roughly half the size of Sean's torso.
+
+Lighting is soft and even. Shadows via cross-hatching and pencil density.
+
+No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines. No photorealism. No 3D rendering.
