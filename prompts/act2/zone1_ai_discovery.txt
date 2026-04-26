@@ -1,6 +1,21 @@
-Using the uploaded character sketch as the EXACT style and character reference, create a wide establishing shot of this same character in a pencil-drawn environment. This is Beat 1c in Act 2 of a pencil test animation — the character continues walking right, and the floating world around him has transitioned again, now full of news headlines, articles, and clips about the rise of AI. This is the moment AI hype starts breaking into his consciousness.
+Using the uploaded character sketch (A-2 anchor) as the EXACT style and character reference, AND using the additional reference images as style/composition continuity anchors for the walking-through-history sequence, create a wide establishing 16:9 shot of this same character continuing his walk through the floating AI Discovery world. This is the third panel in a three-panel walking sequence (Film world → Animation world → AI Discovery world). The character must read as the same person, on the same walk, on the same paper, on the same day as the previous two panels.
 
-ENVIRONMENT — THE FLOATING AI DISCOVERY WORLD: The character walks through a surreal space where oversized pencil-drawn news clippings, magazine articles, and digital headlines float around him on the cream paper, all hand-lettered as if torn from real newspapers and magazines. Floating elements should include:
+PRESENTATION — CREAM ANIMATION PAPER:
+Present on warm cream animation paper (#FAF5E8 approximate). The paper has visible grain texture, subtle aging marks and dust specks, three hole-punch marks centered at the bottom edge. Hand-written production label "A-2" circled in pencil in the top-left corner. The label is ONLY "A-2" — do NOT write "Beat 1c", "Act 2", any beat numbers, scene numbers, or any other stage-direction language anywhere in the image. The "A-2" label is the only handwritten production text allowed.
+
+COMPOSITION — WIDE WALK SHOT:
+The character occupies roughly 40-50% of vertical canvas height, positioned at the center-right of the frame, mid-stride walking from left to right. The floating AI-discovery elements surround him filling the rest of the frame. Same visual scale and ground line as the previous two walking panels (film.png, animation.png).
+
+POSE — CONTINUOUS WALK, MOMENT OF CURIOSITY:
+The character continues walking right, mid-stride. His pace has slightly slowed compared to the previous two panels — this is the panel where the walk is starting to register the gravity of what he sees. Head turned slightly to camera-left, eyes scanning the floating headlines around him. ONE EYEBROW IS RAISED in genuine curiosity. Mouth slightly parted as he reads. Right hand at his side. Left arm raised slightly forward, fingers loosely turned upward as if catching one of the floating clippings to read it. Expression: PURE CURIOSITY — the look of someone who keeps hearing about a topic everywhere and is starting to think he should pay attention. The character is grounded while the headlines float around him.
+
+IDENTITY CONSTRAINTS — MATCH A-2 ANCHOR EXACTLY:
+The character must be immediately recognizable as the same person from the A-2 reference: same sandy-blonde hair shape, volume, and parting; same jaw angle; same eye spacing; same nose shape; same body proportions (Disney/Pixar pre-production adjacent, roughly 7-7.5 heads tall); same dark navy crew-neck t-shirt; same cool gray slim jeans with cuffed ankles; same gray-cream sneakers.
+
+CRITICAL — CLEAN-SHAVEN FACE: The character is CLEAN-SHAVEN with NO stubble, NO 5-o'clock shadow, NO facial hair of any kind. This matches the previous walking panels (film.png and animation.png) — the walking sequence happens BEFORE the desk-work sequence where stubble appears. If you draw any stubble, beard, or facial hair the image fails. His face is smooth and clean-shaven like the A-2 anchor.
+
+ENVIRONMENT — THE FLOATING AI DISCOVERY WORLD:
+The character walks through a surreal pencil-drawn space where oversized news clippings, magazine articles, and digital headlines float around him on the cream paper, all hand-lettered as if torn from real newspapers and magazines. Floating elements include:
 - A large rectangular newspaper-style headline that reads "ChatGPT NEW IMAGE MODEL" in hand-lettered bold pencil text, with a small Studio Ghibli-style cartoon character (round face, big eyes, simple appealing design) drawn in pencil beneath it as the article photo
 - A magazine clipping with the headline "AI IS TAKING JOBS?" and a tiny pencil-sketch worker figure with a question mark
 - A floating article fragment titled "VIBE CODING GOES VIRAL" with a small terminal window beneath it
@@ -10,20 +25,23 @@ ENVIRONMENT — THE FLOATING AI DISCOVERY WORLD: The character walks through a s
 - Hand-lettered logo-style words floating among the elements: "ChatGPT", "Anthropic", "Gemini", drawn as simple pencil text-marks (not real logos — sketched approximations)
 - A few floating video thumbnail rectangles with simple play-button triangles drawn in their centers
 - A pencil-sketched chat interface bubble with text inside
+
 All elements look like they were ripped or torn from publications, with rough edges and fold lines. Faint pencil construction lines connect some of the floating elements like constellation lines.
 
-Present on warm cream animation paper (#FAF5E8 approximate). The paper has visible grain texture, subtle aging marks, three hole-punch marks centered at the bottom edge. The environment elements fill the frame — this is a WIDE SHOT showing the character at roughly 40-50% of vertical canvas height with the floating headline world surrounding him.
+STYLE — TRADITIONAL ANIMATION PENCIL TEST:
+Match the A-2 reference and the previous walking panels EXACTLY: traditional animation pencil test drawing with hand-drawn graphite pencil lines. Lines are warm gray (NOT black ink, NOT solid black outlines) with natural stroke-weight variation — thicker contour outlines at 2-3px equivalent, thinner interior details at 1px equivalent. Visible construction line artifacts beneath the final drawing. Cross-hatching and directional pencil strokes for shading on clothing folds, under chin, and shadow areas. Line confidence suggests a professional animator's hand — fluid, gestural strokes, not stiff or mechanical.
 
-The character continues walking from left to right, mid-stride, but his pace has slowed. His head is turned slightly to the side, eyes scanning the floating headlines. ONE EYEBROW IS RAISED in genuine curiosity. His mouth is slightly parted as he reads. Right hand at his side. Left arm raised slightly, fingers loosely turned upward as if catching one of the floating clippings to read it. Expression: PURE CURIOSITY — the look of someone who keeps hearing about a topic everywhere and is starting to think he should pay attention. The character is grounded while the headlines float around him.
+CRITICAL — UNIFORM AESTHETIC: The environment elements (newspaper clippings, headlines, video thumbnails, brand names) MUST also be drawn in pencil test style — same graphite lines, same cream paper, same hand-drawn quality. The newspaper print, magazine layouts, and brand names must look HAND-LETTERED in pencil, not typeset, not digital. Everything in the frame looks like it was drawn by the same animator on the same paper. No style changes between character and environment.
 
-Match the uploaded reference EXACTLY in character style: traditional animation pencil test drawing with hand-drawn graphite pencil lines. Lines are warm gray (NOT black ink) with natural stroke-weight variation. Visible construction lines beneath the final drawing. Cross-hatching for shading.
+COLOR — LIMITED, DESATURATED, FLAT:
+Color is extremely limited: dark navy flat fill on the crew-neck t-shirt, cool gray flat fill on slim jeans with cuffed ankles, warm skin tones, muted sandy-blonde hair. Environment elements are primarily graphite with minimal color accents only where needed. Pencil lines remain visible through and on top of all color fills. No color gradients.
 
-CRITICAL: The environment elements (newspaper clippings, headlines, video thumbnails, etc.) MUST also be drawn in pencil test style — same graphite lines, same cream paper, same hand-drawn quality. The newspaper print, magazine layouts, and brand names must look HAND-LETTERED in pencil, not typeset, not digital. Everything in the frame looks like it was drawn by the same animator on the same paper. No style changes between character and environment.
+LIGHTING:
+Soft and even — no dramatic directional light. Shadows are achieved through cross-hatching and pencil density, not through color or gradient. Same lighting angle and intensity as the previous walking panels.
 
-Color is extremely limited and desaturated: dark navy t-shirt, cool gray jeans, warm skin tones, sandy blonde hair. Environment elements are primarily graphite with minimal color accents where needed. Pencil lines visible through all color fills.
+OUTPUT:
+A warm, analog-feeling animation production drawing. The image should look like a high-resolution scan of the third page in a three-page walking sequence — same artist, same pencil, same paper, same character continuity, same lighting.
 
-Character proportions: Disney/Pixar pre-production adjacent, roughly 7-7.5 heads tall. NOT anime, NOT hyper-realistic.
+NO STAGE-DIRECTION TEXT: Do NOT write "Beat 1c", "Act 2", "Scene", "1c", "Act II", or any beat/scene/act labels anywhere in the image. Do NOT include any planning or production language as visible text. The ONLY hand-written text allowed in this image is: (1) the "A-2" production label in upper-left, and (2) the hand-lettered newspaper/magazine headline content listed in the ENVIRONMENT section above.
 
-Lighting is soft and even. Shadows via cross-hatching and pencil density. No dramatic directional light.
-
-No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines. No photorealism. No 3D rendering.
+NO vector-clean lines. NO solid black outlines. NO cel shading. NO anime style. NO heavy color saturation. NO digital painting look. NO gradient shading. NO airbrush effects. NO pure white background. NO pure black lines. NO photorealism. NO 3D rendering. NO stubble or facial hair.

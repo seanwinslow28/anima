@@ -16,7 +16,9 @@ A manifest-driven animation production pipeline for generating a pencil test ani
 | A-2 Anchor | `images/2D-Character-Sketch-Sean-v1.png` | Identity reference — all generated frames must match this character |
 | Manifest | `manifest.yaml` | Pipeline configuration — single source of truth for generation, audit, and export settings |
 | Seedance Research | `docs/seedance-research-findings.md` | Seedance 2.0 capabilities, API specs, prompting guide, style preservation strategies |
-| Seedance Production Plan | `docs/seedance-production-plan.md` | Beat-by-beat Seedance prompts, frame extraction maps, QA gates, cost estimates |
+| **Act 2 Seedance Shot List** | `docs/act2-seedance-shot-list.md` | **Current source of truth for Act 2 Seedance work.** 10 clips + 4 holds, anchor frame paths, draft Seedance prompts, fallback strategies (Round 3 deliverable, 2026-04-26) |
+| Round 2 Beat Decisions | `runs/act2-exploration/concepts/round2-decisions.md` | Locked Act 2 11-beat sheet (transition pick, revelation pick, panorama pick) — feeds the Act 2 shot list |
+| Seedance Production Plan | `docs/seedance-production-plan.md` | ⚠️ **SUPERSEDED for Act 2** by `act2-seedance-shot-list.md`. Act 1 sections still valid as historical reference. |
 | Changelog | `CHANGELOG.md` | Decision history — what changed, why, and lessons learned for prompt engineering |
 | Original Pipeline | `docs/Sprite-Sheet-Automation-Project_OG-Workflow-Summary.md` | Architectural reference (manifest-driven design, audit loop, retry ladder) |
 

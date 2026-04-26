@@ -1,5 +1,11 @@
 # Seedance 2.0 — Production Plan
 
+> ⚠️ **SUPERSEDED (2026-04-26).** This doc was written 2026-04-12 against an older Act 2 structure (zone-based with sprite/companion compositing, frames F43–F210). Round 2 (April 2026) replaced that structure with an 11-beat sheet — see `runs/act2-exploration/concepts/round2-decisions.md`.
+>
+> **For Act 2 Seedance work, use:** `docs/act2-seedance-shot-list.md` (Round 3 deliverable — 10 clips + 4 holds, anchor frames complete).
+>
+> Act 1 sections of this doc may still be relevant as historical reference; Act 2 sections are stale and should not be followed.
+
 > Beat-by-beat production checklist for the full storyboard (Act 1 + Act 2) using Seedance 2.0 as motion generation engine and NB2 for anchor frame generation and cleanup.
 
 ---

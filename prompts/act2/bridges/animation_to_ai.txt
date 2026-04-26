@@ -1,0 +1,50 @@
+The SECOND and THIRD reference images (animation.png and ai_discovery.png) are the EXACT visual style, character continuity, line confidence, and walking-pose anchors. Match their pencil test fidelity exactly. The FIRST reference (A-2 anchor) locks Sean's identity. This image is a BRIDGE FRAME — the moment Sean transitions from the Animation world (left) into the AI Discovery world (right). It will be used as the END of the Walk Animation Seedance clip AND the START of the Walk AI Seedance clip, so it must cut cleanly into both neighboring frames.
+
+Create a wide 16:9 pencil-drawn establishing shot of Sean mid-stride at the THRESHOLD between two floating worlds. The frame is divided roughly into thirds: left third belongs to the Animation world (now FADING — figure studies, anatomy sketches partially erased), center third holds Sean walking; right two-thirds belongs to the AI Discovery world (NOW EMERGING — news headlines, AI clippings drawn at full pencil weight).
+
+PRESENTATION — CREAM ANIMATION PAPER:
+Warm cream animation paper (#FAF5E8 approximate). Visible grain texture, subtle aging marks, three hole-punch marks centered at the bottom edge. Hand-written production label "A-2" circled in pencil in the top-left corner. The label is ONLY "A-2" — do NOT write "Bridge", "Transition", "A→AI", any beat numbers, scene numbers, or other stage-direction language as visible text.
+
+COMPOSITION — THRESHOLD MOMENT:
+Sean occupies roughly 40-50% of vertical canvas height, positioned at the visual center of the frame, mid-stride walking from left to right. Same scale, same ground line, same horizon as animation.png and ai_discovery.png. Floating world elements surround him.
+
+LEFT THIRD (FADING ANIMATION WORLD):
+Same Animation-world props from animation.png, but rendered with LIGHTER pencil pressure / partial erasure / ghosting:
+- A pencil-figure-study sketch with gesture-line construction, partially faded
+- An open animation textbook with running-man flip animation, fading
+- A pencil-drawn light box with paper stack, glow now barely present
+- A small skeleton anatomy reference figure, partially erased
+These elements should look like they're dissolving — visible construction lines but reduced final-line weight, paper showing through.
+
+CENTER THIRD (SEAN WALKING — FULL WEIGHT):
+Sean mid-stride, right foot forward, left foot pushing off. Head turned slightly toward camera-right, beginning to register the AI headlines emerging. Eyebrows starting to lift in early curiosity (subtler than ai_discovery.png — this is the moment BEFORE the curiosity fully lands). Right arm swinging back, left arm swinging slightly forward. Same continuous walk energy as the previous bridge and the locked walking concepts.
+
+RIGHT TWO-THIRDS (EMERGING AI DISCOVERY WORLD):
+Same AI-discovery props from ai_discovery.png, but rendered FRESH and confident — actively appearing:
+- A small newspaper clipping with hand-lettered "ChatGPT" headline beginning to materialize on the upper right
+- A floating headline reading "AI IS TAKING JOBS?" with a tiny worker silhouette and question mark
+- A torn-paper fragment with hand-lettered "VIBE CODING" emerging
+- A small video-thumbnail rectangle with a pencil-drawn play-button triangle
+- A floating chat-bubble interface beginning to appear
+These should look like they're just being drawn — confident lines, slight motion lines suggesting recent appearance.
+
+IDENTITY CONSTRAINTS — MATCH A-2 ANCHOR EXACTLY:
+Same sandy-blonde hair shape, volume, and parting; same jaw angle; same eye spacing; same nose shape; same body proportions (Disney/Pixar pre-production adjacent, roughly 7-7.5 heads tall); same dark navy crew-neck t-shirt; same cool gray slim jeans with cuffed ankles; same gray-cream sneakers.
+
+CRITICAL — CLEAN-SHAVEN FACE: Sean is CLEAN-SHAVEN with NO stubble, NO 5-o'clock shadow, NO facial hair. This is the walking sequence — stubble does NOT appear until the desk-work beats. If you draw any facial hair the image fails.
+
+STYLE — TRADITIONAL ANIMATION PENCIL TEST:
+Match the animation.png and ai_discovery.png references EXACTLY. Hand-drawn graphite pencil lines, warm gray (NOT black ink), natural stroke-weight variation — 2-3px equivalent contour outlines, 1px equivalent interior details. Visible construction lines beneath final drawing. Cross-hatching for shading. Polished, confident line weight (NOT sketchy or loose).
+
+UNIFORM AESTHETIC: All environment elements MUST be drawn in the same pencil test style — same graphite, same paper, same hand-drawn quality. Newspaper print and brand names are HAND-LETTERED in pencil, not typeset.
+
+COLOR — LIMITED, DESATURATED, FLAT:
+Dark navy t-shirt, cool gray jeans, warm skin tones, sandy-blonde hair. Environment is graphite-only with minimal color accents. Pencil lines visible through all color fills. No gradients.
+
+LIGHTING:
+Soft and even, matching the neighboring walking panels. Shadows via cross-hatching and pencil density only.
+
+OUTPUT:
+A warm, analog-feeling animation production drawing that reads as the ideal frozen midpoint between animation.png and ai_discovery.png — same artist, same pencil, same paper.
+
+NO STAGE-DIRECTION TEXT in the image. NO vector-clean lines. NO solid black outlines. NO cel shading. NO anime style. NO heavy color saturation. NO digital painting. NO gradient shading. NO airbrush. NO pure white background. NO pure black lines. NO photorealism. NO 3D rendering. NO stubble or facial hair.

@@ -1,0 +1,41 @@
+The SECOND reference image (transition_pulled_in.png) is the EXACT visual style, composition framing, line confidence, environment, and lighting anchor for this image. The FIRST reference (A-2 anchor) locks Sean's identity. The THIRD reference (companion turnaround) locks the AI companion creature's design. This image is a SETUP FRAME — the moment immediately BEFORE the hand-grab that pulls Sean into the laptop. It will be the START frame of the Hand Grab Seedance clip, with transition_pulled_in.png as the end frame.
+
+Create a wide 16:9 pencil-drawn shot showing Sean leaning toward his laptop with a surprised, curious expression, while the AI companion's terracotta-orange arm has JUST begun to emerge from the terminal screen — the arm is only about 1/3 of the way out, the hand has not yet grabbed Sean. This is the held breath BEFORE contact.
+
+PRESENTATION — CREAM ANIMATION PAPER:
+Warm cream animation paper (#FAF5E8 approximate). Same paper grain, aging marks, hole-punch marks at bottom edge as transition_pulled_in.png. Hand-written production label "A-2" circled in pencil in the top-left corner. The label is ONLY "A-2" — do NOT write "Bridge", "Pre-pulled", any beat or scene numbers, or other stage-direction language as visible text.
+
+COMPOSITION — MATCH transition_pulled_in.png EXACTLY:
+Same camera angle, same desk surface, same laptop position, same lighting. Sean occupies roughly the same screen real estate (left two-thirds of frame, leaning forward toward the laptop on the right). Coffee mug visible in same position. Pencil/stylus on desk visible in same position to the right of laptop. The laptop screen shows the same mind-map diagram (network nodes, code editor windows, chat bubbles).
+
+THE DIFFERENCE — pre-grab SETUP (vs. transition_pulled_in's full grab):
+- Sean is leaning forward but LESS dramatically than in transition_pulled_in.png — he's tilted forward maybe 20 degrees from upright (vs the 45-degree dramatic lunge of the full transition). Front foot stepping forward, weight just starting to commit.
+- His face shows SURPRISE and CURIOSITY (eyes wide, eyebrows raised, mouth slightly open in a "wait, what?" expression) but NOT the full open-mouthed lean of the grab moment.
+- His RIGHT arm is reaching forward toward the laptop screen, hand open, fingers extended — but his hand has NOT yet been grabbed by the companion. There is empty space between Sean's hand and the companion's emerging hand.
+- The AI companion's terracotta-orange arm has JUST emerged from the laptop screen, only about 1/3 of the way out. The companion's body is still mostly INSIDE the terminal (visible as a rounded terracotta shape behind the screen). One small terracotta hand is visible at the end of the emerging arm, fingers extending toward Sean but not yet touching him.
+- A few small pencil sparkle marks around the screen edge where the arm has broken through.
+- Slight motion-line marks suggesting Sean's lean is JUST beginning.
+
+IDENTITY CONSTRAINTS — MATCH A-2 ANCHOR EXACTLY:
+Same sandy-blonde hair shape, volume, and parting; same jaw angle; same eye spacing; same nose shape; same body proportions; same dark navy crew-neck t-shirt; same cool gray slim jeans with cuffed ankles; same gray-cream sneakers.
+
+STUBBLE: Sean has the SAME subtle 5-o'clock shadow stubble as transition_pulled_in.png and the rest of the desk-work sequence. (This is the desk sequence; clean-shaven is only the walking sequence.)
+
+COMPANION DESIGN — MATCH TURNAROUND REFERENCE EXACTLY:
+The AI companion is the terracotta-orange loaf creature from the turnaround reference: rounded loaf body, simple dot eyes, small smile, stubby arms and legs. The arm visible in this frame is the same terracotta orange. The hand is small with stubby fingers.
+
+STYLE — TRADITIONAL ANIMATION PENCIL TEST:
+Match transition_pulled_in.png EXACTLY in line weight, cross-hatching density, and overall finish. Hand-drawn graphite pencil lines, warm gray (NOT black ink), natural stroke-weight variation. Visible construction lines beneath final drawing. Polished, confident line work (NOT sketchy).
+
+UNIFORM AESTHETIC: All environment elements (laptop, desk, mug, pencil/stylus on desk, screen contents) drawn in the same pencil test style as transition_pulled_in.png.
+
+COLOR — LIMITED, DESATURATED, FLAT:
+Dark navy t-shirt, cool gray jeans, warm skin tones, sandy-blonde hair. Companion arm is muted terracotta orange. Mug has faint warm tone. Laptop is graphite gray. Pencil lines visible through all color fills. No gradients.
+
+LIGHTING:
+Soft, even desk lighting matching transition_pulled_in.png. A subtle cool blue tint on Sean's face and the front of his shirt from the laptop screen's glow. Shadows via cross-hatching only.
+
+OUTPUT:
+A warm, analog-feeling animation production drawing that reads as the precise frame ~1 second BEFORE transition_pulled_in.png — the same desk, same Sean, same companion, same lighting, just earlier in the action.
+
+NO STAGE-DIRECTION TEXT. NO vector-clean lines. NO solid black outlines. NO cel shading. NO anime style. NO heavy color saturation. NO digital painting. NO gradient shading. NO airbrush. NO pure white background. NO pure black lines. NO photorealism. NO 3D rendering.
