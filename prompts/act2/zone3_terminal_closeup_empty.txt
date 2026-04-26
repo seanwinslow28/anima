@@ -1,24 +1,47 @@
-Create a tight, straight-on, head-on 16:9 pencil-drawn close-up shot of a laptop computer sitting on a desk. The viewer is positioned directly facing the laptop screen. This is the moment before something happens — a held beat. The terminal is blinking, waiting.
+The FIRST reference image (terminal_closeup_companion.png) is the EXACT visual style, framing, line weight, cross-hatching density, laptop design, terminal window styling, coffee mug placement, paper grain, and overall polish you must match. Reproduce that image identically, but with the AI companion creature REMOVED from inside the terminal and the screen text changed to "c:\>_ what is...". Every other element — the laptop body, the screen border, the window controls, the keyboard, the coffee mug, the A-2 label, the paper texture, the cream background — must be the same. The second reference (Sean A-2 anchor) is only for fingertip continuity.
 
-COMPOSITION — STRAIGHT-ON CLOSE-UP: The pencil-drawn laptop dominates the frame, centered. The screen is angled to face the camera directly (we are looking head-on into the screen). The laptop fills approximately 70-80% of the frame width. We can see the keyboard at the bottom of the frame as a foreshortened plane. The very edges of the frame show the desk surface and ambient details — a corner of a coffee mug with steam wisps on the right, AND the very tips of Sean's fingers resting at the bottom edge of the keyboard, hovering over the keys (suggesting Sean is there but he is mostly out of frame). The frame is intentionally tight to focus all attention on the screen.
+Create a tight, straight-on, head-on 16:9 pencil-drawn close-up shot of a laptop computer sitting on a desk, in the EXACT polished pencil test style of the companion reference image. This is the moment before something happens — a held beat. The terminal is blinking, waiting, EMPTY.
 
-THE TERMINAL: The screen of the laptop is filled with a dark cross-hatched terminal window. The terminal has a thin pencil-drawn border with small window controls (minimize/maximize/close icons drawn as simple shapes). On the dark cross-hatched background, hand-lettered in white/light pencil strokes:
-- A command prompt line: "c:\>_ what is..." in a monospace style
-- A blinking cursor (a solid lit rectangle) at the end of the typed text to suggest it's blinking
-- The rest of the terminal is mostly empty, suggesting waiting/anticipation
+COMPOSITION — STRAIGHT-ON CLOSE-UP (match companion reference exactly):
+- The pencil-drawn laptop dominates the frame, centered, screen angled to face camera directly (head-on)
+- Laptop fills approximately 70-80% of the frame width
+- Same rounded laptop body shape as the companion reference, with the same dark cross-hatching density on the laptop chassis
+- Keyboard visible at the bottom of the frame as a foreshortened plane with detailed key rendering
+- Coffee mug at right edge with steam wisps — IDENTICAL placement, shape, and rendering to the companion image
+- Production label "A-2" hand-written in pencil and circled, positioned in upper-left corner — IDENTICAL to companion image
+- Sean's fingertips visible at the bottom edge of the keyboard, hovering over keys (same fingertip rendering style as companion)
+- Cream paper background visible at edges of frame, same paper grain and warm tone as companion
 
-The terminal text is ALL HAND-LETTERED in a monospace style — never typeset. The lettering is slightly imperfect, has the natural inconsistency of pencil work.
+THE TERMINAL — EMPTY AND WAITING:
+- Same dark cross-hatched terminal window as companion image (same size, same border, same window control icons in upper-right: minimize/maximize/close drawn as simple pencil shapes)
+- Hand-lettered in white/light pencil strokes on the dark cross-hatched background:
+  - Command prompt line: "c:\>_ what is..." in monospace style (same lettering style and size as the "c:\>_ hello, sean..." in the companion image)
+  - A blinking cursor (solid lit white/light rectangle block) at the very end of "..." to suggest blinking
+- The rest of the terminal is EMPTY — no companion creature, no other content, just dark cross-hatching suggesting waiting/anticipation
+- The terminal text is ALL HAND-LETTERED in monospace style — never typeset
+- The lettering has the natural pencil inconsistency seen in the companion reference
+
+CRITICAL DIFFERENCES FROM COMPANION REFERENCE (these are the ONLY changes):
+1. The terracotta-orange AI companion creature is REMOVED entirely from inside the terminal
+2. The terminal text reads "c:\>_ what is..." instead of "c:\>_ hello, sean..."
+3. A blinking cursor block appears at the end of the text
+4. NO sparkles, NO glow rays around where the creature was — just empty dark cross-hatched terminal interior
+EVERYTHING ELSE MUST BE IDENTICAL.
 
 ABSOLUTELY NO PENCIL, NO PEN, NO STYLUS: There must be NO pencil, NO pen, NO stylus, and NO drawing or writing implement of any kind anywhere in this image. The desk surface, the keyboard, the area around the laptop — none of these should contain a pencil or any similar object. Sean's hands are EMPTY — only his fingertips are visible at the very bottom of the keyboard, hovering over keys, with no implement held.
 
-Present on warm cream animation paper (#FAF5E8 approximate). The paper has visible grain texture, subtle aging marks, three hole-punch marks centered at the bottom edge. Even though the laptop dominates the frame, the cream paper background is visible at the edges and beyond the laptop. Production label "A-2" hand-written in pencil and circled in the upper-left corner of the frame.
+STYLE FIDELITY — MATCH COMPANION REFERENCE EXACTLY:
+- Polished, confident pencil test line weight (NOT sketchy, NOT loose)
+- Dense, layered cross-hatching matching the companion's shading depth
+- Warm graphite gray pencil lines (NOT black ink, NOT solid black outlines)
+- Visible construction lines beneath final drawing
+- Cross-hatching on laptop body, desk surface, terminal interior, and shadow areas
+- Same line confidence and finish quality as the companion reference
 
-Sean is mostly out of frame — only the very tips of his fingers are visible at the bottom of the keyboard. His face, body, and most of his arms are NOT visible — this is a moment focused entirely on the terminal as a story object.
+Color is extremely limited and desaturated, matching the companion image: graphite gray laptop body, dark cross-hatching for terminal interior, warm gray pencil throughout. Coffee mug has the same faint warm tone as in the companion.
 
-The laptop, terminal, coffee mug, desk surface, and any visible details are all drawn in PENCIL TEST STYLE: traditional animation pencil test drawing with hand-drawn graphite pencil lines. Lines are warm gray (NOT black ink) with natural stroke-weight variation. Visible construction lines beneath the final drawing. Cross-hatching for shading on the laptop body, the desk, and shadow areas under the laptop.
+Lighting is soft and even, matching the companion. Shadows via cross-hatching and pencil density. Subtle pencil-drawn glow from terminal screen, suggested by lighter pencil strokes around the laptop edges (same as companion).
 
-Color is extremely limited and desaturated: graphite gray laptop body, dark cross-hatching for terminal interior, warm gray pencil throughout. Coffee mug can have a faint warm tone.
-
-Lighting is soft and even. Shadows via cross-hatching and pencil density. Subtle pencil-drawn glow can radiate softly from the terminal screen, suggested by lighter pencil strokes around the laptop.
+Present on warm cream animation paper (#FAF5E8 approximate), same paper grain as companion. Three hole-punch marks centered at the bottom edge of the paper.
 
 No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines. No photorealism. No 3D rendering.
