@@ -1,0 +1,22 @@
+Create a tight, straight-on, head-on 16:9 pencil-drawn close-up shot of a laptop computer sitting on a desk. The viewer is positioned directly facing the laptop screen. This is the moment before something happens — a held beat. The terminal is blinking, waiting.
+
+COMPOSITION — STRAIGHT-ON CLOSE-UP: The pencil-drawn laptop dominates the frame, centered. The screen is angled to face the camera directly (we are looking head-on into the screen). The laptop fills approximately 70-80% of the frame width. We can see the keyboard at the bottom of the frame as a foreshortened plane. The very edges of the frame show the desk surface and ambient details — a corner of a coffee mug with steam wisps on the right, perhaps the very tips of fingers resting on the bottom edge of the keyboard (suggesting Sean is there but he is mostly out of frame). The frame is intentionally tight to focus all attention on the screen.
+
+THE TERMINAL: The screen of the laptop is filled with a dark cross-hatched terminal window. The terminal has a thin pencil-drawn border with small window controls (minimize/maximize/close icons drawn as simple shapes). On the dark cross-hatched background, hand-lettered in white/light pencil strokes:
+- A command prompt line: "c:\>" or ">" followed by a few characters of typed text, perhaps something like "> hello" or "> what is..."
+- A blinking cursor "│" or "_" rendered crisply at the end of the typed text — show the cursor as a solid lit rectangle to suggest it's blinking
+- The rest of the terminal is mostly empty, suggesting waiting/anticipation
+
+The terminal text is ALL HAND-LETTERED in a monospace style — never typeset. The lettering is slightly imperfect, has the natural inconsistency of pencil work.
+
+Present on warm cream animation paper (#FAF5E8 approximate). The paper has visible grain texture, subtle aging marks, three hole-punch marks centered at the bottom edge. Even though the laptop dominates the frame, the cream paper background is visible at the edges and beyond the laptop.
+
+The character of Sean is NOT visible in this frame — only suggested by the partial fingertips at the bottom of the keyboard if at all. This is a moment focused entirely on the terminal as a story object.
+
+The laptop, terminal, coffee mug, desk surface, and any visible details are all drawn in PENCIL TEST STYLE: traditional animation pencil test drawing with hand-drawn graphite pencil lines. Lines are warm gray (NOT black ink) with natural stroke-weight variation. Visible construction lines beneath the final drawing. Cross-hatching for shading on the laptop body, the desk, and shadow areas under the laptop.
+
+Color is extremely limited and desaturated: graphite gray laptop body, dark cross-hatching for terminal interior, warm gray pencil throughout. Coffee mug can have a faint warm tone.
+
+Lighting is soft and even. Shadows via cross-hatching and pencil density. Subtle pencil-drawn glow can radiate softly from the terminal screen, suggested by lighter pencil strokes around the laptop.
+
+No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines. No photorealism. No 3D rendering.

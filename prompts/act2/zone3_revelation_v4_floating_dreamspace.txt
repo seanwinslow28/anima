@@ -1,0 +1,27 @@
+Using the uploaded character sketch and the AI companion reference sketches as the EXACT style and character references, create a 16:9 wide pencil-drawn shot — the REVELATION moment, atmospheric variant. The approach: Sean and his desk are now FLOATING in an open dream-space of cream paper, surrounded by the elements of AI possibility drifting around him like a gentle constellation.
+
+ATMOSPHERIC APPROACH — FLOATING IN DREAM-SPACE: The literal floor and walls are gone — Sean and his chair (and a fragment of the desk) are floating in an undefined space of cream paper, with no ground plane and no horizon. The mind-map elements drift around him at varying distances and depths, some closer to camera, some farther — creating a sense of three-dimensional dream space rendered in 2D pencil. There are no edges, no boundaries; the space feels infinite. The whole image has a quiet, suspended quality — like time has paused for this moment of comprehension.
+
+THE AI COMPANION: A friendly pencil-drawn creature with a rounded square loaf-shaped body, two dot eyes with expressive eyebrows, a small curved smile, four stubby legs, small stubby cylindrical arms. Warm desaturated terracotta/clay-orange color. The companion hovers next to Sean's RIGHT shoulder, looking out into the dream-space alongside him, sharing the moment.
+
+ENVIRONMENT — DRIFTING POSSIBILITIES: The mind-map elements DRIFT in the space around Sean rather than being fixed in a layout: a pencil-drawn chat interface with conversation bubbles drifting horizontally past, a code editor window rotated slightly off-axis, a neural network diagram floating at an angle, "PROMPT → MODEL → OUTPUT" flowchart hand-lettered along an arc, "POST /generate" API diagram tucked among other elements, hand-lettered phrases ("VIBE CODING", "AGENTS", "PIPELINES", "GENERATE", "TOOL USE") drifting in different orientations, 3D wireframe shapes rotating slowly, small robot face outline peering, image-generation prompt-to-output sketch, scattered sparkle/star marks like stars in space, faint connecting pencil lines between some elements like loose constellation lines.
+
+The elements have varying depths — some are larger and closer to camera (they "feel" close), others smaller and farther away (they "feel" distant). This creates the impression that Sean is floating in the middle of a galaxy of AI ideas.
+
+POSE — SEATED, DRIFTING, CONTEMPLATIVE: Sean is still SEATED in his office chair (which floats with him in the space — only the chair, no desk). His pose is more contemplative than active. His hands rest gently on the armrests of the chair. His head turns to look around at the floating elements with quiet wonder. The chair could be slowly rotating in the space, suggested by very faint pencil motion arcs at its base.
+
+EXPRESSION — QUIET COMPREHENSION: A soft, closed-mouth smile. Eyes scanning the drifting world with calm wonder. Eyebrows slightly lifted. This is the moment of synthesis — he's putting the pieces together. The expression is more inward than outward, more contemplative than reactive. Subtle 5-o'clock shadow on jaw.
+
+CRITICALLY IMPORTANT: There is NO sword-wielding RPG warrior sprite in this scene. ONLY Sean and the AI companion are present as characters in this frame.
+
+Present on warm cream animation paper (#FAF5E8 approximate). Paper grain texture, aging marks, three hole-punch marks centered at the bottom edge. The cream paper IS the dream-space — there are no other backgrounds.
+
+Match the uploaded reference EXACTLY in Sean's character style and identity. Match the AI companion references EXACTLY.
+
+CRITICAL: All elements drawn in pencil test style. Graphite lines, cream paper, hand-drawn quality. Hand-lettered text in any UI/elements.
+
+Color is extremely limited and desaturated: dark navy t-shirt, cool gray jeans, warm skin tones, sandy blonde hair, terracotta-orange companion. The floating elements are primarily graphite.
+
+Lighting is soft and even — there is no clear directional light source because there is no defined space. Soft uniform pencil shading throughout. A subtle warm tonal cast across the whole image to suggest the warmth of revelation.
+
+No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines. No photorealism. No 3D rendering.

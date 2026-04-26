@@ -1,0 +1,29 @@
+Using the uploaded character sketch as the EXACT style and character reference for Sean, create a tight, straight-on 16:9 pencil-drawn close-up shot from the TERMINAL'S POINT OF VIEW — we are looking out from inside the terminal screen at Sean. This is the reverse shot from the previous "companion in terminal" frame.
+
+COMPOSITION — REVERSE SHOT, INSIDE-THE-TERMINAL POV: The viewer/camera is positioned INSIDE the terminal looking OUT at Sean. Sean fills the frame in a tighter close-up than the wide establishing shots — head and shoulders fill approximately 70-80% of vertical canvas height. Sean is roughly centered horizontally. The very edges of the frame have subtle suggestions that we are inside a screen looking out:
+- Faint horizontal scan lines drifting across the image (very subtle, like CRT-monitor pencil hatching)
+- A subtle inward curvature at the corners of the frame (slight monitor-bezel effect)
+- A slight darker pencil border around the entire image edge (the terminal window frame)
+- A few faint hand-lettered terminal characters or symbols (a ">" prompt, "_" cursor) faintly visible at the corners or edges, suggesting we're inside the screen
+
+These framing elements are SUBTLE — the focus is on Sean's face and reaction.
+
+POSE — SEAN'S SURPRISED REACTION: Sean's torso is leaning back in his chair away from the camera (away from the terminal). His head is tilted back slightly. His EYES ARE WIDE OPEN — significantly wider than his neutral expression — eyebrows raised high in genuine surprise. His MOUTH is slightly open, parted lips of "wait, what?" — not a cartoon gasp, but genuine human surprise. His shoulders are pulled up and back. Both hands have stopped mid-air at the bottom of the frame, fingers spread, frozen — captured mid-typing. This is the classic animator's "take" — Milt Kahl subtlety, not Tex Avery cartoon-shock.
+
+EXPRESSION — WONDER MIXED WITH DISBELIEF: Not fear, not concern — pure surprised curiosity. The look of someone whose computer just started talking back. A subtle 5-o'clock shadow on Sean's jaw (continuity with other Act 2 frames where he's been working at his desk).
+
+Behind Sean (visible at the edges of the frame beyond his head and shoulders): a soft pencil-rendered suggestion of his workspace — maybe the back of his chair, a hint of the room behind him. Kept loose and ambient so the focus remains on Sean's face.
+
+Match the uploaded reference EXACTLY in style: traditional animation pencil test drawing with hand-drawn graphite pencil lines. Lines are warm gray (NOT black ink) with natural stroke-weight variation. Visible construction line artifacts beneath the final drawing — faint vertical center line through face, horizontal eye-line, head construction. Cross-hatching for shading.
+
+Maintain perfect identity consistency with the uploaded reference. Same hair shape and volume, same jaw angle, same eye spacing, same nose shape, same dark navy crew-neck t-shirt. Sandy blonde hair. Subtle 5-o'clock shadow.
+
+Color is extremely limited and desaturated: dark navy t-shirt, warm skin tones, sandy blonde hair. Pencil lines visible through color fills.
+
+Character proportions: Disney/Pixar pre-production adjacent.
+
+Lighting is soft and even, but with a subtle cool tone on Sean's face — the suggestion that light from a computer screen is illuminating him. Suggested by slightly cooler cross-hatching on the side of his face nearest the implied screen (the camera/viewer). Shadows via cross-hatching and pencil density.
+
+The frame is presented on warm cream animation paper (#FAF5E8 approximate) with visible grain texture, subtle aging marks, three hole-punch marks centered at the bottom edge. Even though we are "inside the terminal," the entire image is still drawn on the same cream paper aesthetic — this is a STYLIZED POV, not a literal screen.
+
+No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines. No photorealism. No 3D rendering.
