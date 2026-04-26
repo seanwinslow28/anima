@@ -1,0 +1,54 @@
+Using the uploaded character sketches as the EXACT style and character references — Sean, the AI companion (terracotta loaf creature), and the RPG warrior sprite (chibi spiky-haired warrior with sword) — create an ULTRA-WIDE pencil-drawn panorama showing the entire timeline of Sean's creative journey in a single frame. This is the FINAL HOLD POSE in Act 2 of a pencil test animation, the moment before the title card appears. Camera has pulled back to reveal everything.
+
+THE TWO COMPANION CHARACTERS:
+- AI COMPANION: a friendly pencil-drawn creature with a rounded square loaf body, two dot eyes with expressive eyebrows, small curved smile, four stubby legs, small stubby arms. Warm desaturated terracotta/clay-orange color. Drawn with lighter pencil strokes around its base to suggest hovering.
+- RPG WARRIOR SPRITE: a small chibi pencil-drawn warrior with spiky pointed sandy-blonde hair, a determined expression with a slight smirk, wearing a light cream/tan tunic with a belt, cuffed wristbands and boots, a sword sheathed on his back. Roughly 3-4 heads tall. The sprite RIDES on top of the AI companion's back, sitting with one leg dangling.
+
+CRITICAL POSE — SEAN AT THE FAR RIGHT, BODY 3/4 TOWARD CAMERA: Sean stands at the FAR RIGHT of the panorama. His torso and shoulders are angled in a 3/4 turn TOWARD THE VIEWER/CAMERA — NOT in profile facing left, NOT facing away, but turned mostly forward toward the camera with his body slightly angled to camera-left. His feet are planted shoulder-width apart on a subtle ground plane.
+
+HEAD AND GAZE: His head is gently turned to HIS LEFT (camera's left), looking back across the panorama with a calm scanning gaze. His head turns about 30-45 degrees off forward — enough to read as "looking at his work," not so much that we lose his face to profile. We can see roughly 3/4 of his face.
+
+ARMS AND HANDS: His RIGHT HAND is raised in front of his chest, holding a stylus pen up casually like a painter stepping back from the canvas to look at the finished work. The stylus is held loosely between his thumb and forefinger, pointing slightly upward. His LEFT ARM hangs relaxed at his side. His shoulders are relaxed and open — confident but settled.
+
+EXPRESSION: A quiet, content closed-mouth smile. Eyes scanning the panorama with calm satisfaction. Subtle 5-o'clock shadow on his jaw. The look of a craftsman who has finished something and is taking it in.
+
+THE COMPANIONS' POSITION: Just to Sean's RIGHT (which is camera-LEFT of his body since he's facing 3/4 to camera), at roughly his shoulder height, the AI companion HOVERS in the air with the RPG warrior sprite RIDING on its back. The companion's body is positioned at Sean's shoulder level, oriented slightly toward Sean. The sprite sits on top of the companion's back with one leg dangling, sword visible. They are clearly "with" Sean, close enough to read as his companions, not separate elements.
+
+ENVIRONMENT — THE FULL JOURNEY PANORAMA STRETCHING BEHIND SEAN, READING LEFT TO RIGHT:
+
+On the far left of the frame: a pencil-drawn movie camera on a tripod next to floating film reels, drifting strips of film negatives curving through the air, a clapperboard, a director's chair, a vintage projector with a soft pencil-shaded light beam.
+
+Continuing rightward: a cluster of animation craft elements — storyboard panels, gesture drawing pages with loose figure sketches, a flip book fanning open, a pencil-drawn light box with a sheet of animation paper on it, an animator's desk with a stack of paper and a pencil cup.
+
+In the middle: a cluster of floating newspaper clippings and magazine articles, all hand-lettered. The required headlines and labels in this cluster, each appearing EXACTLY ONCE in the entire image:
+- A newspaper clipping titled "ChatGPT NEW IMAGE MODEL" with a small Studio Ghibli-style cartoon face beneath it as the article photo
+- A newspaper clipping titled "AI IS TAKING JOBS?"
+- A magazine article titled "VIBE CODING"
+- A newspaper-style article titled "AI AGENTS RUN WORKFLOWS" with a small flowchart diagram beneath it showing "AGENT → TOOL → RESULT" with arrows
+- A few video thumbnail rectangles with simple play buttons
+
+Sprinkled among the news clippings, hand-lettered floating word-labels in pencil text. Each appearing EXACTLY ONCE in the entire image, NEVER repeated:
+- The word "Anthropic"
+- The word "Gemini"
+- The phrase "AGENT HARNESS"
+- The phrase "TOOL USE"
+
+Continuing rightward: a pencil-drawn modern desk with an open laptop showing a terminal window, a second monitor showing a chat interface, a coffee mug with steam, and a code editor sketch on a tablet propped beside the laptop.
+
+Behind Sean on the far right (he stands IN FRONT of it, slightly off-center, with his body to camera): a large pencil-drawn KANBAN BOARD with hand-lettered columns "BACKLOG", "IN PROGRESS", "REVIEW", "DONE". Note cards mix storyboard thumbnails, code snippets, and small sprite icons. Yellow-toned sticky notes around the edges read "SPRINT", "ROADMAP", "STANDUP" — each appearing once. Status indicators float above the board. The Kanban board is BEHIND Sean — Sean is the foreground subject; the board is the wall he stands in front of.
+
+The transitions between visual content clusters are SOFT — pencil strokes blend gradually; no hard borders, no dividers. A faint dotted pencil line traces a winding path along the bottom of the panorama, suggesting the journey's flow.
+
+There is NO dedicated game/platforms section. Game elements (the warrior sprite, status indicators repurposed as PM tools) integrate naturally within other content.
+
+ABSOLUTE TEXT CONSTRAINTS — DO NOT WRITE ANY OF THE FOLLOWING WORDS OR PHRASES IN THE RENDERED IMAGE: "FILM ORIGINS", "ANIMATION CRAFT", "AI DISCOVERY", "THE WORKSHOP", "TOOLS", "CONVERGENCE", "PM ROLE", "SECTION", "LEFT", "RIGHT", "CENTER", "FINAL HOLD POSE", "SUGGESTION", "ANIMATION'S FLIP BOOKS", or any other instructional or descriptive caption. The image must contain only diegetic text — text that lives WITHIN the news clippings, code snippets, Kanban column names, sticky note words, and hand-lettered floating brand-name labels listed above. No callouts, no captions, no annotations, no labels pointing at things.
+
+Match the uploaded reference EXACTLY in Sean's character style and identity: same hair, jaw, eye spacing, nose, body proportions, dark navy crew-neck t-shirt, cool gray slim jeans with cuffed ankles, sneakers. Match the AI companion and RPG warrior sprite references EXACTLY for their designs.
+
+CRITICAL: All elements drawn in pencil test style. Graphite lines, cream paper, hand-drawn quality. Lines are warm gray (NOT black ink) with natural stroke-weight variation. Construction lines visible beneath drawings. Cross-hatching for shading. All allowed text is HAND-LETTERED in pencil — never typeset.
+
+Color is extremely limited and desaturated: dark navy t-shirt, cool gray jeans, warm skin tones, sandy blonde hair, terracotta-orange companion. Sprite mostly graphite with cream tunic. Sticky notes faint warm yellow tint. Environment primarily graphite.
+
+Present on warm cream animation paper (#FAF5E8 approximate) with paper grain texture, aging marks, three hole-punch marks centered at the bottom edge.
+
+No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines. No photorealism. No 3D rendering.
