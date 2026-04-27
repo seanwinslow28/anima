@@ -1,5 +1,36 @@
 # Changelog
 
+## 2026-04-27 — Task 4: Add `--all` async batch mode to `seedance_generate.py` + run 9-shot batch
+
+**What changed:** Replaced the `NotImplementedError` stub in `pipeline/seedance_generate.py` with a full async batch implementation. New code:
+
+- `_API_MIN_DURATION = 4` moved to module level (shared constant for sync and async paths).
+- `_build_arguments(shot, start_url, end_url, resolution)` — builds fal.ai API arguments dict with duration clamp; returns `(arguments, raw_duration, effective_duration)`.
+- `_download_mp4(video_url, local_mp4, run_dir)` — download helper that raises `RuntimeError` instead of calling `sys.exit` (lets batch continue on failure).
+- `_submit_one(shot, model_id, run_dir, tier, resolution, attempt, cache_path)` — uploads anchors, logs `seedance_submit` + `seedance_submit_async` events, calls `fal_client.submit()`, captures `handler.request_id`, returns in-flight job dict.
+- `run_all_async(args)` — main batch orchestrator: resolves run dir, pre-flight skips (explicit `--skip` + defensive MP4-exists check), uploads all unique anchors with HIT/UPLOAD console feedback, submits all jobs in sequence, polls every 10s using `fal_client.status()` + `Queued/InProgress/Completed` type checks, downloads + writes meta JSON per completed job, logs `seedance_generated`/`seedance_failed` events, prints final summary with success list, failure list, wall-clock, cost estimate, cache entry count, and human gate instructions.
+- `--skip` arg added to `build_parser()` with `action="append"` (repeatable: `--skip T2 --skip W1`).
+- `--seed` guard in `main()`: rejected with clear error message in `--all` mode.
+
+**Batch run result (2026-04-27, ~$9.12 at Fast tier 720p):**
+- Command: `python3 pipeline/seedance_generate.py --all --skip T2 --tier fast --resolution 720p --run-dir runs/act2-seedance-2026-04-27`
+- Submitted: W1, W2, W3, S0, T0, TR, REV, PM, PB (9 shots)
+- Generated: all 9 — 0 failures
+- Wall-clock: 2m 7s (all 9 jobs processed in parallel on fal.ai, first result at ~98s)
+- Total cost: ~$9.12 (38s effective × $0.24/s fast tier; TR and PM clamped 3s→4s)
+- Cache: 2 entries (T2 anchors) → 13 entries (all unique anchors across 9 shots uploaded)
+- JSONL log: 30 lines (2 submit events × 9 shots + 9 seedance_generated events + 3 pre-existing T2 lines)
+- Per-shot seeds: W1=1372653108, W2=2049001023, W3=1537961300, S0=268853034, T0=1934474032, TR=376898827, REV=76012933, PM=2104407469, PB=1936106111
+- MP4 sizes: W1=2.51MB, W2=3.27MB, W3=3.04MB, S0=2.60MB, T0=3.46MB, TR=1.54MB, REV=2.63MB, PM=1.20MB, PB=4.52MB
+- fal request IDs recorded in each meta JSON (not None this time — `submit()` exposes `handler.request_id`)
+- **Human gate queued:** All 10 MP4s in `runs/act2-seedance-2026-04-27/seedance/` surfaced for visual review before Task 5 (frame extraction).
+
+**Anomalies:** Cache landed at 13 entries (not 14 as the Task 1 spec estimated) — the spec counted `final_panorama_v3_a.png` twice (as PB end + FIN hold anchor), and T2's two anchors were already cached. 14 was an overcount; 13 unique paths is correct for T2 + the 9 new shots.
+
+**Why:** Async batch via `fal_client.submit()` + 10s polling is the right approach for 9 independent shots. All 9 were processing in parallel on fal.ai (all showed IN_PROGRESS immediately after submit), which cut wall-clock from ~18 min sequential to 2m 7s. The `--skip` mechanism with defensive MP4-exists detection ensures re-runs and partial batches are safe. Capturing `handler.request_id` at submit time (not result time) means fal request IDs are in the log even if a download fails — the clip can be recovered manually via the logged URL.
+
+---
+
 ## 2026-04-27 — Task 3: Build `pipeline/seedance_generate.py` + run T2 sync test shot
 
 **What changed:** Created `pipeline/seedance_generate.py` — the Seedance orchestrator with sync `--shot <ID>` mode (Task 3) and a stubbed `--all` mode that raises `NotImplementedError` (Task 4 lands that). The script:
