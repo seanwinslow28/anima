@@ -148,14 +148,29 @@ def run_shot_sync(
     seedance_dir.mkdir(exist_ok=True)
 
     local_mp4 = seedance_dir / f"{shot['id']}_attempt_{attempt_str}.mp4"
+    if local_mp4.exists():
+        sys.exit(
+            f"Refusing to overwrite existing {local_mp4}. "
+            f"Use --attempt {attempt + 1} to record a new attempt, or delete the file first."
+        )
     print(f"\n  Downloading MP4 -> {local_mp4}")
     try:
-        urllib.request.urlretrieve(video_url, local_mp4)
+        try:
+            urllib.request.urlretrieve(video_url, local_mp4)
+        except Exception as exc:
+            # Fallback: read-and-write manually
+            print(f"  urlretrieve failed ({exc}), trying urlopen fallback …")
+            with urllib.request.urlopen(video_url) as resp:
+                local_mp4.write_bytes(resp.read())
     except Exception as exc:
-        # Fallback: read-and-write manually
-        print(f"  urlretrieve failed ({exc}), trying urlopen fallback …")
-        with urllib.request.urlopen(video_url) as resp:
-            local_mp4.write_bytes(resp.read())
+        # Surface the fal.ai URL + log path so the user can recover the asset manually
+        log_path = run_dir / "audit" / "seedance_log.jsonl"
+        sys.exit(
+            f"Download of {video_url} failed: {exc}.\n"
+            f"  The clip was generated successfully on fal.ai — fetch it manually, e.g.:\n"
+            f"    curl -L -o {local_mp4} '{video_url}'\n"
+            f"  Or inspect {log_path} for the full submit/generate trace."
+        )
 
     video_size_bytes = local_mp4.stat().st_size
 
@@ -202,9 +217,15 @@ def run_shot_sync(
     est_cost = effective_duration * cost_per_s
     size_mb = video_size_bytes / (1024 * 1024)
 
-    # Relative paths for display (relative to project root)
-    rel_mp4 = local_mp4.relative_to(Path.cwd()) if local_mp4.is_absolute() else local_mp4
-    rel_meta = meta_path.relative_to(Path.cwd()) if meta_path.is_absolute() else meta_path
+    # Relative paths for display (relative to project root); fall back to absolute
+    # if run_dir is outside cwd (e.g. user passed --run-dir to a different drive).
+    def _rel(p: Path) -> Path:
+        try:
+            return p.relative_to(Path.cwd()) if p.is_absolute() else p
+        except ValueError:
+            return p
+    rel_mp4 = _rel(local_mp4)
+    rel_meta = _rel(meta_path)
 
     print(f"\n  {shot['id']} attempt {attempt_str} generated")
     print(f"     MP4:    {rel_mp4} ({size_mb:.2f} MB)")
