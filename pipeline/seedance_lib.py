@@ -45,7 +45,11 @@ def load_shotlist(path: str | Path) -> dict:
 def load_env(env_file: str | Path = ".env") -> None:
     """Parse a .env file (KEY=VALUE per line) and merge into os.environ.
 
-    Rules (mirrors generate_image.py:29-36):
+    Same correctness rules as generate_image.py (skip blanks/comments, strip
+    whitespace, no-clobber); extends it with general single/double quote
+    stripping rather than the key-specific stripping in that script.
+
+    Rules:
     - Skip blank lines and lines starting with '#'.
     - Strip whitespace around both KEY and VALUE.
     - Strip surrounding single or double quotes from VALUE.
