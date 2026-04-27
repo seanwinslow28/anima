@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-04-27 — Update Act 2 shot list with execution-discovered constraints
+
+**What changed:** Added two sections to `docs/act2-seedance-shot-list.md`:
+- New "Production Constraints" block (between Camera Discipline and Continuity Rules) capturing fal.ai API behaviors that surfaced during the first execution batch — 4s API minimum (affects T2/TR/PM duration clamping), Fast tier as locked default, 720p default resolution, `generate_audio: false`. Anyone regenerating manually via the fal.ai web UI now sees the 4s minimum without having to read the orchestrator code.
+- New bullet under Continuity Rules calling out the **stylus rule reversal** vs Act 1: stylus is NOT in Sean's hand in Act 2; the pencil visible on the desk in `transition_pulled_in.png` and `pre_pulled_in.png` is an incidental desk prop. Prevents an Act 1-trained prompt-engineer from re-introducing the rule.
+
+**Why:** The shot list was creatively complete but missed two production-relevant facts that emerged during the first execution pass — the 4s API floor (T2's first 3s submit was rejected and clamped) and the Act 2 stylus-prop framing. Both are creative-spec-relevant: anyone working from the shot list alone would have hit the API rejection and could plausibly have written prompts that put the stylus back in Sean's hand. The handoff doc captures these in execution context; the shot list now captures them in spec context.
+
+---
+
 ## 2026-04-27 — Pause Task 4 human gate; create manual-generation handoff doc
 
 **What changed:** Added `docs/2026-04-27-seedance-manual-handoff.md` capturing the paused state of the 12-task plan and a self-contained inventory for running Seedance manually outside the Python orchestrator: per-shot start/end anchor paths, verbatim prompts, durations (raw + API-clamped), seeds used in the first batch, fal.media cached URLs, holds/hard-cuts/assembly-order, drop-zone for winning MP4s on return, and a list of deferred code-fixes flagged by the spec/quality reviewers (sync path missing `fal_request_id`, partial meta on download failure, duplicate `seedance_submit` log events, `--skip` ID validation).

@@ -38,6 +38,15 @@ no glossy polish.
 - Avoid: "cinematic", "4K", "glow", "glimmer", "epic", unqualified "fast"
 - Always include: "Even, diffuse lighting" or shot-specific lighting (the single biggest quality lever per the research findings)
 
+## Production Constraints (fal.ai API behaviors discovered in execution)
+
+> Added 2026-04-27 after first execution batch. Update if API behavior changes.
+
+- **fal.ai Seedance 2.0 minimum duration is 4s.** Durations below 4s are rejected by the API even though the model card lists 4–15. T2, TR, and PM are creatively spec'd at 3s below; in execution they are clamped to 4s and the extra second is trimmed in FFmpeg assembly. All three sit immediately before a hard cut, so the trim is invisible. **If regenerating manually via fal.ai's web UI, send 4s for those shots, not 3s — the playback duration in the final cut is still 3s.**
+- **Locked tier for the first generation pass: Fast** (`bytedance/seedance-2.0/fast/image-to-video`, $0.24/s @ 720p). Per-shot escalation to Standard ($0.30/s) only if Fast fails identity/aesthetic on a specific shot.
+- **Default resolution: 720p.** Native max for Seedance 2.0; output aspect inherits from the start frame (the `aspect_ratio` parameter is ignored in start+end frame mode).
+- **`generate_audio: false` always** — no diegetic audio in scope; disabling cuts latency and avoids stripping a silent track downstream.
+
 ## Continuity Rules (locked across all shots)
 
 - **Walking sequence (W1, W2, W3):** Sean is CLEAN-SHAVEN
@@ -45,6 +54,7 @@ no glossy polish.
 - **S0 (arrive at desk)** is the transition shot where stubble grows in — call this out in the prompt
 - **AI Companion design:** terracotta-orange loaf creature, dot eyes, stubby arms — locked from companion turnaround references
 - **Sean's wardrobe:** dark navy crew-neck T-shirt, cool gray jeans (cuffed), gray-cream sneakers — LOCKED, no variation
+- **Stylus rule reversal vs Act 1:** the Act 1 "stylus in Sean's right hand" rule does **NOT** apply in Act 2. Sean's hands are on the keyboard, reaching, or empty. The pencil/stylus visible on the desk in `transition_pulled_in.png` and `pre_pulled_in.png` is an **incidental desk prop**, not held. Do not write Act 2 prompts that say "stylus in right hand."
 
 ## Shot List
 
