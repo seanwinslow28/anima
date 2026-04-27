@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-04-27 — Pause Task 4 human gate; create manual-generation handoff doc
+
+**What changed:** Added `docs/2026-04-27-seedance-manual-handoff.md` capturing the paused state of the 12-task plan and a self-contained inventory for running Seedance manually outside the Python orchestrator: per-shot start/end anchor paths, verbatim prompts, durations (raw + API-clamped), seeds used in the first batch, fal.media cached URLs, holds/hard-cuts/assembly-order, drop-zone for winning MP4s on return, and a list of deferred code-fixes flagged by the spec/quality reviewers (sync path missing `fal_request_id`, partial meta on download failure, duplicate `seedance_submit` log events, `--skip` ID validation).
+
+**Why:** The Task 4 batch ran successfully (10/10 MP4s generated) but the human-gate review found mixed quality across the 9 new clips. The user paused execution to redo failing shots manually via the fal.ai web UI rather than auto-retrying through the script, then plans to bring winning MP4s back so the controller can resume at Task 5 (frame extraction). The handoff doc keeps the runtime context (seeds, cached URLs, deferred fixes) findable without trawling the JSONL log.
+
+---
+
 ## 2026-04-27 — Task 4: Add `--all` async batch mode to `seedance_generate.py` + run 9-shot batch
 
 **What changed:** Replaced the `NotImplementedError` stub in `pipeline/seedance_generate.py` with a full async batch implementation. New code:
