@@ -1,5 +1,25 @@
 # Changelog
 
+## 2026-04-27 — Task 2: Build `pipeline/seedance_lib.py` shared helper library
+
+**What changed:** Created `pipeline/seedance_lib.py` — the shared helper module imported by all four upcoming Seedance pipeline scripts (`seedance_generate.py`, `seedance_extract.py`, `seedance_cleanup.py`, `seedance_audit.py`). Implements 7 helpers:
+
+- `load_shotlist(path)` — YAML loader with explicit FileNotFoundError.
+- `load_env(env_file)` — `.env` parser that mirrors `generate_image.py`'s behavior: skips blanks/comments, strips whitespace and quotes, never overwrites existing env vars.
+- `make_run_dir(prefix, base)` — creates `runs/{prefix}-{YYYY-MM-DD}/` with 6 standard subdirs (`seedance/`, `extracted/`, `cleanup/`, `shots/`, `audit/`, `export/`); idempotent.
+- `upload_anchor(path, cache_path)` — uploads a local anchor to fal.ai, caches the resulting URL in a JSON file, returns cached URL on repeat calls without re-uploading.
+- `log_event(run_dir, event)` — appends a JSON line to `{run_dir}/audit/seedance_log.jsonl`; auto-injects `timestamp` and 8-char `event_id`; never mutates the caller's dict.
+- `frame_count_at_12fps(duration_s)` — returns `int(duration_s * 12)`.
+- `reencode_to_png(path)` — re-encodes a file in place to true PNG format, fixing the JPEG-as-PNG gotcha (same fix as `assemble.sh:153-169` but as a reusable Python helper).
+
+`fal_client` and `PIL` imports are deferred to their respective functions so importing the module never fails when those dependencies are absent or keys are unset.
+
+Both smoke tests passed: `make_run_dir` + `log_event` (2.2) and `upload_anchor` cache round-trip against `zone1/film.png` (2.3 — first call uploaded to fal.ai, second returned same URL instantly from JSON cache).
+
+**Why:** Centralizing these helpers prevents the same logic from being copy-pasted across four scripts. `load_env` and `upload_anchor` in particular have subtle correctness requirements (don't overwrite os.environ, deferred fal_client import, atomic-ish cache writes); doing them once and testing them here means the downstream scripts are mechanical. The JPEG-as-PNG issue has already burned Act 1 assembly; encoding the fix as a named helper makes it impossible to forget in Act 2.
+
+---
+
 ## 2026-04-27 — Task 1: Freeze shot list as machine-readable YAML
 
 **What changed:** Created `pipeline/seedance_shotlist.yaml` — a machine-readable translation of `docs/act2-seedance-shot-list.md`. Encodes all 10 Seedance shots (W1, W2, W3, S0, T0, T2, TR, REV, PM, PB) with id, type, duration, risk level, start/end anchor paths, verbatim prompts, and fallback strategies. Encodes all 4 holds (S1 static, T1 cursor_blink, T3 static, FIN ken_burns with requires_manual_cleanup) and the 3 hard cuts. Assembly order (14 entries) matches the shot list spec. All 14 unique anchor paths validated as present on disk.
