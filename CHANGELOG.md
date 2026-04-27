@@ -1,5 +1,36 @@
 # Changelog
 
+## 2026-04-27 — Task 1: Freeze shot list as machine-readable YAML
+
+**What changed:** Created `pipeline/seedance_shotlist.yaml` — a machine-readable translation of `docs/act2-seedance-shot-list.md`. Encodes all 10 Seedance shots (W1, W2, W3, S0, T0, T2, TR, REV, PM, PB) with id, type, duration, risk level, start/end anchor paths, verbatim prompts, and fallback strategies. Encodes all 4 holds (S1 static, T1 cursor_blink, T3 static, FIN ken_burns with requires_manual_cleanup) and the 3 hard cuts. Assembly order (14 entries) matches the shot list spec. All 14 unique anchor paths validated as present on disk.
+
+**Why:** The orchestrator (`seedance_generate.py`), extractor (`seedance_extract.py`), cleanup loop (`seedance_cleanup.py`), auditor (`seedance_audit.py`), and assembler (`seedance_assemble.sh`) — all to be built in Tasks 2–11 — need a single machine-readable source of truth to drive generation, hold construction, hard-cut placement, and assembly order. Freezing this as YAML before writing any scripts ensures the spec is authoritative and version-controlled, not embedded in script logic.
+
+---
+
+## Seedance Execution Kickoff Prompt
+
+**Date:** 2026-04-27
+
+### What changed
+
+Wrote `prompts/2026-04-27-seedance-execution-kickoff.md` — a fresh-session kickoff prompt for executing the locked 12-task plan in `docs/2026-04-27-act2-seedance-execution-plan.md`. Constructed via the `prompt-engineering` skill checklist: clarity (mode declaration up front, "do NOT enter plan mode"), XML structure (`<execution_mode>`, `<your_first_task>`, `<key_file_paths>`, `<project_rules>`, `<known_persistent_issues>`, `<budget_expectations>`, `<reasoning>`), validation (explicit human-gate enumeration with Task IDs), long-context-at-top with first-task-at-bottom.
+
+### Why
+
+The plan is now in-repo and the prior planning handoff (`prompts/COMPLETED/2026-04-27-seedance-generation-handoff.md`) was about *writing* the plan. This new prompt is about *executing* it — a different mode with different guardrails (real money spent, hard human gates, fallback playbook on failure). Specifically encodes:
+
+- **Mode lock:** "Do NOT enter plan mode" — prevents a fresh session from re-planning the already-resolved 12 decisions.
+- **Sub-skill recommendation:** `superpowers:subagent-driven-development` per the plan's frontmatter (fresh subagent per task, two-stage review).
+- **Hard human gates listed by Task ID:** 3.4, 4.3, 6.3, 8.3, 8.4, 10.1, 11.3 — pause-and-wait, no auto-proceed.
+- **Spend triggers requiring explicit user OK:** before `--all` Seedance batch (~$9), before `--all` cleanup (~$10), before any Tier C / Standard escalation; do not silently exceed $25 cumulative.
+- **Critical inheritances:** Maintenance Conventions (CHANGELOG every commit), the JPEG-as-PNG re-encode requirement (silent failure mode), the `audit.py` stdout-vs-disk departure for the new auditor, and the "stylus is NOT in Sean's hand in Act 2" clarification (Act 1 rule does not transfer).
+- **Fallback playbook:** explicitly references the shot-list-documented fallbacks for S0, REV, PB rather than inventing new ones at runtime.
+
+The prompt itself ends with self-care instructions: move to `prompts/COMPLETED/` after Task 12 ships, per the archive convention.
+
+---
+
 ## Repo Reorganization + Maintenance Conventions
 
 **Date:** 2026-04-27
