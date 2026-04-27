@@ -93,6 +93,9 @@ def make_run_dir(
     Idempotent: if the directory already exists the subdirs are ensured and
     the path is returned without error.
 
+    *base* is resolved relative to the current working directory; pass an
+    absolute path if your caller runs from a non-repo cwd.
+
     Returns the Path to the run directory.
     """
     date_stamp = datetime.now().strftime("%Y-%m-%d")
@@ -120,24 +123,33 @@ def upload_anchor(path: str | Path, cache_path: str | Path) -> str:
     """
     import fal_client  # noqa: PLC0415 — deferred intentionally
 
-    path_key = str(Path(path))
-    cache_path = Path(cache_path)
+    if not Path(path).exists():
+        raise FileNotFoundError(f"Anchor image not found: {path}")
 
-    # Load existing cache (treat missing file as empty).
-    if cache_path.exists():
-        with open(cache_path) as f:
-            cache: dict[str, str] = json.load(f)
+    path_key = str(Path(path))
+    cache_file = Path(cache_path)
+
+    # Load existing cache (treat missing file as empty; surface corrupt JSON clearly).
+    if cache_file.exists():
+        try:
+            cache: dict[str, str] = json.loads(cache_file.read_text())
+        except json.JSONDecodeError as e:
+            raise RuntimeError(
+                f"Anchor URL cache is corrupt at {cache_file}: {e}. "
+                f"Delete or fix the file and re-run."
+            ) from e
     else:
         cache = {}
 
     if path_key in cache:
         return cache[path_key]
 
-    # Upload and persist.
+    # Upload and persist atomically (crash mid-write won't corrupt the cache).
     url: str = fal_client.upload_file(path_key)
     cache[path_key] = url
-    with open(cache_path, "w") as f:
-        json.dump(cache, f, indent=2)
+    tmp = cache_file.with_suffix(cache_file.suffix + ".tmp")
+    tmp.write_text(json.dumps(cache, indent=2))
+    tmp.replace(cache_file)
 
     return url
 
@@ -176,6 +188,9 @@ def log_event(run_dir: str | Path, event: dict) -> None:
 def frame_count_at_12fps(duration_s: float | int) -> int:
     """Return the number of frames in a clip of *duration_s* seconds at 12fps.
 
+    Returns `int(duration_s * 12)` — truncates fractional frames; durations
+    in our shotlist are integers, so this is exact.
+
     Example: frame_count_at_12fps(5) → 60
     """
     return int(duration_s * 12)
@@ -195,9 +210,13 @@ def reencode_to_png(path: str | Path) -> None:
     internal format.  Calling it on a file that is already a valid PNG is
     safe and idempotent.
 
+    Preserves alpha channel if the source has one.
+
     See pipeline/assemble.sh:153-169 for the shell-script equivalent.
     """
     from PIL import Image  # noqa: PLC0415 — deferred to avoid hard PIL dep at import
 
     img_path = Path(path)
-    Image.open(img_path).convert("RGB").save(img_path, format="PNG")
+    img = Image.open(img_path)
+    target_mode = "RGBA" if img.mode in ("RGBA", "LA") or "transparency" in img.info else "RGB"
+    img.convert(target_mode).save(img_path, format="PNG")
