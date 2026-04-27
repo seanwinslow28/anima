@@ -1,5 +1,123 @@
 # Changelog
 
+## Repo Reorganization + Maintenance Conventions
+
+**Date:** 2026-04-27
+
+### What changed
+
+- **Saved the canonical Seedance execution plan in-repo with a date prefix:** `docs/2026-04-27-act2-seedance-execution-plan.md`. The plan is the refined version of the prior execution plan, with three validation refinements baked in (`seedance_audit.py` writes markdown to disk vs `audit.py`'s stdout pattern, `reencode_to_png` helper for the JPEG-as-PNG gotcha, anchor sizes confirmed at 700KB–1MB). Defaults to Tier A+B cleanup. Mirror copy of the planning artifact at `~/.claude/plans/please-read-through-prompts-seedance-gen-twinkly-cake.md`.
+- **Deleted the prior duplicate** `docs/act2-seedance-execution-plan.md` (untracked, superseded by the dated version above).
+- **Reorganized `docs/` and `prompts/`:** introduced `COMPLETED/` (shipped/done plans + prompts) and `OLD/` (superseded docs) subfolders inside each. The roots now contain only active source-of-truth material.
+  - **Moved to `docs/COMPLETED/`:** `act1-keyframe-prompts.md`, `kickoff-phase3-sprite-transformation.md`, `phase4-compositing-plan.md`, `procreate-sprite-extraction-guide.md`.
+  - **Moved to `docs/OLD/`:** `seedance-production-plan.md`, `Seedance 2 Skill.md`, `kickoff-phase2-comfyui-inbetweens.md`, `kimodo-setup-guide.md`, `phase2-model-requirements.md`, `seedance-pipeline-session-prompt.md`. Debug screenshots (`api-error-2.png`, `sw-portfolio-animation-structure-{1,2}.png`, `ultra-plan-issue.png`) moved to `docs/OLD/screenshots/`.
+  - **Moved to `prompts/COMPLETED/`:** all Act 1 keyframe (F06/F10/F13/F18/F31/F36), transition (F20–F28), sprite (F31/F36 with-sprite + 6 sprite design prompts), the entire `in-betweens/` subdir, and the just-completed `seedance-generation-handoff.md` (renamed `2026-04-27-seedance-generation-handoff.md`).
+  - **Moved to `prompts/OLD/`:** `act2-continuation-handoff.md`, `act2-exploration-kickoff-prompt.md`, `seedance-pipeline-session-prompt.md`.
+- **Updated CLAUDE.md** to match the new layout: fixed four stale path references, updated the Directory Structure diagram to show `COMPLETED/OLD`, rewrote the Prompt Files section.
+- **Patched `pipeline/generate.py`** prompt-loader: now checks `prompts/F{##}.txt` first and falls back to `prompts/COMPLETED/F{##}.txt`, so Act 1 re-runs still work after the move.
+- **Added a `Maintenance Conventions` section to CLAUDE.md** declaring two rules for every future Claude Code session:
+  1. **CHANGELOG.md — update on every change** (what + why).
+  2. **CLAUDE.md — update on significant project changes** (so it always reflects current state).
+  Plus the archive-folder convention itself.
+
+### Why
+
+Sean started this session in plan mode because he couldn't find the prior Seedance execution plan — it had been written but buried among ~25 other unsorted files in `docs/` (10+ of them stale or shipped). The same pattern applied to `prompts/`: 16 Act 1 prompt files mixed with 3 superseded handoffs and 1 active handoff, no separation between active and archived.
+
+Two systemic fixes:
+1. **Active vs archived separation.** `COMPLETED/` and `OLD/` subfolders inside `docs/` and `prompts/` keep the roots scannable. Findability for the *current* work is the primary goal.
+2. **Maintenance discipline as a documented convention.** The reason this drift accumulated is that there was no rule about updating CLAUDE.md / CHANGELOG.md as the project evolved. Encoding both as Maintenance Conventions in CLAUDE.md (which is auto-loaded into every session's context) means every future Claude reads the rule before doing any work. No hook is needed because Claude does the writing — a hook would just duplicate what CLAUDE.md already says.
+
+### Lessons learned
+
+25. **Findability is a system property, not a documentation problem.** Adding a sixth README to explain where things live is worse than reorganizing so the location is obvious. Active material in roots, archives in subfolders.
+26. **Conventions live in CLAUDE.md, not in memory or hooks.** CLAUDE.md is project-scoped, version-controlled, and auto-loaded — the right home for "every session must do X." Memory is per-user and per-machine; hooks can't write content that requires judgment.
+27. **Date-prefix dated artifacts.** `2026-04-27-act2-seedance-execution-plan.md` sorts naturally and tells you when it was authored at a glance. Avoid generic `act2-seedance-execution-plan.md` for things you'll author multiple times.
+28. **`git mv` over `mv` for tracked files.** Preserves history and makes the rename visible in `git log --follow`. Use `mv` only for untracked files.
+
+---
+
+## Act 2 Pre-Production Complete — Rounds 1, 2, 3 + Seedance Execution Plan
+
+**Date:** 2026-04-26
+
+### Round 1 — Act 2 Concept Exploration
+
+Generated initial concept frames across the 4 storyworlds (Film, Animation, AI Discovery, Workshop) and explored the AI Companion creature design. Final companion design selected: terracotta-orange loaf creature with dot eyes and stubby arms. Companion turnaround locked at `runs/act2-exploration/concepts/companion/turnaround_02.png`.
+
+Concept directories: `runs/act2-exploration/concepts/zone1/`, `zone3/`, `zone4/`, `companion/`.
+
+### Round 2 — Beat Sheet Locked
+
+**Date:** 2026-04-25
+
+Locked an 11-beat sheet for Act 2: clean walking sequence through Film → Animation → AI Discovery, sit at desk, terminal close-ups (empty + companion appears + Sean POV), pulled-in transition, original revelation moment with mind-map words, PM Kanban scene with grab, pull-back to workshop panorama v3a.
+
+Decision document: `runs/act2-exploration/concepts/round2-decisions.md`.
+
+### Round 3 — Production Anchor Frames + Seedance Shot List
+
+**Date:** 2026-04-26 (commit `84ffa9d`)
+
+Audited the 11 Round 2 concepts against a 6-criterion production checklist (Identity / Aesthetic / Line confidence / Aspect / Continuity / Clean for Seedance). Result: 10 PASS, 1 FAIL.
+
+**Failure caught and fixed:** `zone1/ai_discovery.png`
+1. **Stage-direction text leak:** "Beat 1c / Act 2" rendered as visible hand-lettered text in the upper-left next to the production label — NB2 had interpreted prompt planning language as a string to draw.
+2. **Stubble continuity break:** Sean had 5-o'clock shadow stubble despite the surrounding walking sequence (`film.png`, `animation.png`) being clean-shaven. The stubble convention is desk-only, not for the walking-through-history beats.
+
+Regenerated with explicit "DO NOT WRITE STAGE-DIRECTION LANGUAGE" + "clean-shaven, no stubble" constraints — passed re-audit.
+
+**4 NEW bridge anchors generated** to support smooth Seedance interpolation between non-adjacent storyboard beats:
+- `bridges/film_to_animation.png` (W1→W2 transition)
+- `bridges/animation_to_ai.png` (W2→W3 transition)
+- `bridges/pre_pulled_in.png` (TR shot start anchor)
+- `bridges/pm_role_grabbed.png` (PM end / PB start)
+
+**Act 2 Seedance Shot List written** (`docs/act2-seedance-shot-list.md`): 10 Seedance interpolation clips + 4 FFmpeg holds + 3 hard cuts → ~50s total Act 2 runtime. Each Seedance shot has a start anchor, end anchor, draft 60–100 word prompt, duration, risk tier, and documented fallback strategy.
+
+**Audit document:** `runs/act2-exploration/round3-audit.md`.
+
+### Seedance Generation Phase — Execution Plan Approved
+
+**Date:** 2026-04-26
+
+Wrote and locked the 12-task implementation plan for the Seedance generation phase: `docs/act2-seedance-execution-plan.md`. Resolved 12 architectural decisions from the handoff prompt with explicit justification for each:
+
+| # | Decision | Choice |
+|---|---|---|
+| 1 | Test shot | T2 (companion appears) on Fast tier 720p — locked camera, single element materializes, gold-standard anchors |
+| 2 | Frame hosting | `fal_client.upload_file()` once, cache URLs in `anchor_urls.json` |
+| 3 | Orchestration | New `pipeline/seedance_generate.py` modeled on `generate.py`. Sync test mode + async batch (`fal_client.submit` + poll) for production |
+| 4 | Audio | `generate_audio: false` (saves latency, avoids stripping silent audio) |
+| 5 | Output dir | `runs/act2-seedance-{YYYY-MM-DD}/` with `seedance/`, `extracted/`, `cleanup/`, `shots/`, `audit/`, `export/` subdirs |
+| 6 | Frame extraction | Per-clip inside orchestrator at 12fps |
+| 7 | NB2 cleanup | **Tiered:** A (always) + B (every 3rd) by default; C (skip) unless flicker observed. 3-reference chaining per call: A-2 + start anchor + extracted frame |
+| 8 | Procreate gate | Hard wait at FIN — assembly script blocks until `manual_panorama_cleaned.png` exists |
+| 9 | Hard cuts + holds | New `seedance_assemble.sh` with concat demuxer; no default cross-fades (the 3 hard cuts are intentional) |
+| 10 | QA enforcement | Hybrid — automated PIL/SSIM checks + structured markdown for Claude vision review (mirrors existing `audit.py` pattern) |
+| 11 | Phase boundary | Plan includes assembly through to watchable Act 2 MP4. Two milestones: M1 rough cut, M2 full-fidelity |
+| 12 | Cost & time | M1: ~40 min, ~$10. M2: ~3 hr, ~$20 total. Worst-case Tier C: ~$60 |
+
+**6 new pipeline scripts to build** plus 1 YAML to freeze:
+- `pipeline/seedance_shotlist.yaml` — machine-readable copy of the shot list
+- `pipeline/seedance_lib.py` — shared helpers (fal upload caching, JSONL log, run dir)
+- `pipeline/seedance_generate.py` — orchestrator (sync + async batch)
+- `pipeline/seedance_extract.py` — FFmpeg `-vf fps=12` wrapper
+- `pipeline/seedance_cleanup.py` — NB2 cleanup loop (subprocess to existing `generate_image.py`)
+- `pipeline/seedance_audit.py` — automated checks + structured markdown for vision review
+- `pipeline/seedance_assemble.sh` — per-shot MP4 build + concat to final Act 2
+
+### Lessons Learned (Act 2 Pre-Production)
+
+19. **Round-based pre-production scales.** Splitting Act 2 prep into Round 1 (concepts) → Round 2 (beat sheet) → Round 3 (production anchors + shot list) prevented scope creep. Each round produced a locked deliverable that the next round consumed without revisiting.
+20. **Audit anchor frames against neighbors, not just the A-2 anchor.** The `ai_discovery.png` failure was a within-sequence continuity break (stubble state) that a single-anchor identity audit missed. Continuity-against-neighbors should be its own audit step.
+21. **NB2 leaks prompt stage-direction language as visible text.** Words like "Beat 1c", "Act 2", or scene-direction phrasing in the prompt sometimes get rendered into the image as hand-lettered text. Add explicit "DO NOT RENDER STAGE-DIRECTION TEXT" negative to all production prompts; treat it as a continuity gate during audit.
+22. **Two-engine philosophy validated at the planning level.** "Seedance finds the motion, NB2 protects the aesthetic" became the structural backbone of the plan: Seedance owns motion intelligence (10 clips, ~$10), NB2 owns aesthetic restoration (Tier A+B cleanup, ~$10). Cost split is ~50/50 — neither engine dominates the other.
+23. **Plan with milestones, not endpoints.** Splitting the Seedance phase into M1 (rough cut, no cleanup) → M2 (full-fidelity) lets the user catch unusable Seedance clips before paying for cleanup of those clips. The rough cut is the single highest-leverage QA gate in the plan.
+24. **Make decisions, don't ask 12 questions.** The execution plan resolved all 12 architectural decisions from the handoff with explicit justification rather than punting to the user. The user can override any decision they disagree with — but starting from a concrete recommendation is faster than starting from a question.
+
+---
+
 ## Seedance 2.0 Pipeline — Research & Planning
 
 **Date:** 2026-04-12

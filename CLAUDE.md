@@ -6,19 +6,32 @@ A manifest-driven animation production pipeline for generating a pencil test ani
 
 **Always check `docs/production-checklist.md` first.** It tracks what's been completed, what's in progress, and what's blocked across all production phases. Update it as work is completed.
 
+## Maintenance Conventions
+
+These rules apply to **every** Claude Code session working in this project. They override default behavior — keep CLAUDE.md and CHANGELOG.md trustworthy, or future sessions start from a wrong premise.
+
+- **CHANGELOG.md — update on every change.** Whenever you add, modify, remove, refactor, or reorganize anything (code, docs, prompts, manifest, repo structure, conventions), append a CHANGELOG entry. Capture **what changed and why** so future sessions understand the rationale and don't undo intentional decisions. Date the entry. Group related changes under one heading. The CHANGELOG is the project's decision log — not a release-note tally.
+
+- **CLAUDE.md — update on significant project changes.** When the project's structure, pipeline phases, conventions, source-of-truth documents, naming, or active phase shifts, update CLAUDE.md so it reflects the **current** state. CLAUDE.md is what every future session reads first; if it points at the wrong files or describes a stale architecture, the session starts wrong.
+  - "Significant" = anything that changes how someone works on the project: new pipeline phase, new directory layout, new source-of-truth doc, new tools/dependencies, document moves, new conventions.
+  - Routine code edits, single-file content tweaks, small bug fixes do NOT require a CLAUDE.md update — only a CHANGELOG entry.
+
+- **Archive convention — `COMPLETED/` and `OLD/` subfolders.** Within `docs/` and `prompts/`, completed (shipped, done) and old (superseded) artifacts live in `COMPLETED/` and `OLD/` subdirectories respectively. The roots stay focused on what's active. When you finish a phase or supersede a doc, move it into the correct archive folder rather than leaving it in the root. Use `git mv` so renames are tracked.
+
 ## Source of Truth Documents
 
 | Document | Path | Role |
 |----------|------|------|
 | **Production Checklist** | `docs/production-checklist.md` | **Check first every session** — current status of all phases, frames, and assets |
 | Storyboard | `docs/pencil-test-storyboard.md` | Complete production storyboard — 7 beats, 2 acts, frame counts, key pose descriptions |
-| Keyframe Prompts | `docs/act1-keyframe-prompts.md` | 6 ready-to-run Gemini prompts for Act 1 key poses with post-generation checklist |
+| Keyframe Prompts (Act 1, archived) | `docs/COMPLETED/act1-keyframe-prompts.md` | 6 Gemini prompts that produced the Act 1 key poses (Act 1 hero loop has shipped — kept for re-runs) |
 | A-2 Anchor | `images/2D-Character-Sketch-Sean-v1.png` | Identity reference — all generated frames must match this character |
 | Manifest | `manifest.yaml` | Pipeline configuration — single source of truth for generation, audit, and export settings |
 | Seedance Research | `docs/seedance-research-findings.md` | Seedance 2.0 capabilities, API specs, prompting guide, style preservation strategies |
 | **Act 2 Seedance Shot List** | `docs/act2-seedance-shot-list.md` | **Current source of truth for Act 2 Seedance work.** 10 clips + 4 holds, anchor frame paths, draft Seedance prompts, fallback strategies (Round 3 deliverable, 2026-04-26) |
+| **Act 2 Seedance Execution Plan** | `docs/2026-04-27-act2-seedance-execution-plan.md` | **Approved 12-task implementation plan for the Seedance generation phase.** New scripts (`seedance_generate.py`, `seedance_extract.py`, `seedance_cleanup.py`, `seedance_audit.py`, `seedance_assemble.sh`, `seedance_lib.py`), tiered NB2 cleanup, Procreate gate, two-milestone delivery (rough cut → full-fidelity cut). Pick this up to start execution. |
 | Round 2 Beat Decisions | `runs/act2-exploration/concepts/round2-decisions.md` | Locked Act 2 11-beat sheet (transition pick, revelation pick, panorama pick) — feeds the Act 2 shot list |
-| Seedance Production Plan | `docs/seedance-production-plan.md` | ⚠️ **SUPERSEDED for Act 2** by `act2-seedance-shot-list.md`. Act 1 sections still valid as historical reference. |
+| Seedance Production Plan (archived) | `docs/OLD/seedance-production-plan.md` | ⚠️ **SUPERSEDED for Act 2** by `act2-seedance-shot-list.md`. Act 1 sections still valid as historical reference. |
 | Changelog | `CHANGELOG.md` | Decision history — what changed, why, and lessons learned for prompt engineering |
 | Original Pipeline | `docs/Sprite-Sheet-Automation-Project_OG-Workflow-Summary.md` | Architectural reference (manifest-driven design, audit loop, retry ladder) |
 
@@ -72,10 +85,19 @@ Generate frame --> Audit (hard fails? reject) --> Soft fails? --> Retry (max 3) 
 sw-portfolio-animation-pipeline/
 ├── CLAUDE.md                         # This file — project manual
 ├── manifest.yaml                     # Pipeline source of truth
-├── docs/                             # Source of truth documents
+├── docs/                             # Active source-of-truth documents
 │   ├── pencil-test-storyboard.md
-│   ├── act1-keyframe-prompts.md
-│   └── Sprite-Sheet-Automation-Project_OG-Workflow-Summary.md
+│   ├── act2-seedance-shot-list.md            # Current Act 2 spec
+│   ├── 2026-04-27-act2-seedance-execution-plan.md  # Current Act 2 plan
+│   ├── seedance-research-findings.md
+│   ├── production-checklist.md
+│   ├── Sprite-Sheet-Automation-Project_OG-Workflow-Summary.md
+│   ├── COMPLETED/                    # Shipped/done plans + prompts (e.g. Act 1)
+│   └── OLD/                          # Superseded docs (do not act on)
+├── prompts/                          # Active prompts only
+│   ├── act2/                         # Current Act 2 prompts
+│   ├── COMPLETED/                    # Shipped Act 1 prompts, in-betweens, completed handoffs
+│   └── OLD/                          # Superseded handoffs / session prompts
 ├── images/                           # Reference assets
 │   └── 2D-Character-Sketch-Sean-v1.png   # A-2 anchor character
 ├── pipeline/                         # Pipeline scripts
@@ -156,7 +178,7 @@ The `manifest.yaml` file is the pipeline's single source of truth. See `manifest
 
 ### Retry Ladder
 
-1. **Attempt 1:** Original prompt from `act1-keyframe-prompts.md`
+1. **Attempt 1:** Original prompt from `docs/COMPLETED/act1-keyframe-prompts.md`
 2. **Attempt 2:** Re-anchor from A-2 + specific correction notes based on failure
 3. **Attempt 3:** Tighten prompt with refinement tips from `pencil-animation-prompt-templates.md`
 4. **Attempt 4:** STOP — flag for human review with diagnostic report
@@ -298,9 +320,9 @@ Environment variables (in `.env`):
 
 ## Prompt Files
 
-Individual prompt text files live in `prompts/F{##}.txt` (e.g., `prompts/F06.txt`). These are the 7-Layer formatted prompts extracted from `docs/act1-keyframe-prompts.md`.
+Active Act 2 prompts live under `prompts/act2/`. Shipped Act 1 keyframe + transition + sprite prompts are archived at `prompts/COMPLETED/F{##}.txt` (e.g. `prompts/COMPLETED/F06.txt`) — extracted from `docs/COMPLETED/act1-keyframe-prompts.md`.
 
-The generate.py orchestrator auto-loads prompts from this directory. Override with `--prompt "..."` or `--prompt-file path.txt`.
+`pipeline/generate.py` auto-loads `prompts/F{##}.txt` first, then falls back to `prompts/COMPLETED/F{##}.txt`. Override with `--prompt "..."` or `--prompt-file path.txt`.
 
 ## Engine Truth
 
