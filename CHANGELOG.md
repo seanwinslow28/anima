@@ -1,5 +1,33 @@
 # Changelog
 
+## 2026-04-27 — Task 3: Build `pipeline/seedance_generate.py` + run T2 sync test shot
+
+**What changed:** Created `pipeline/seedance_generate.py` — the Seedance orchestrator with sync `--shot <ID>` mode (Task 3) and a stubbed `--all` mode that raises `NotImplementedError` (Task 4 lands that). The script:
+
+- Parses args with argparse (`--shotlist`, `--shot`, `--tier`, `--resolution`, `--attempt`, `--seed`, `--run-dir`).
+- Loads `.env` and shot list via `seedance_lib` helpers.
+- Resolves the shot by id from `shots[]`, failing with available ids listed if not found.
+- Uploads/caches both anchor images to fal.ai via `upload_anchor` (JSON cache at `{run_dir}/anchor_urls.json`).
+- Clamps duration to API minimum of 4s when the shotlist specifies < 4s (T2 is 3s; API rejects anything below 4). Logs a warning; the extra second is trimmed in assembly. Records both `duration_s` (requested) and `effective_duration_s` (sent to API) in the meta JSON.
+- Calls `fal_client.subscribe(model_id, arguments={...})` — blocks until result lands.
+- Downloads the MP4 via `urllib.request.urlretrieve` with fallback to `urlopen`.
+- Writes `{run_dir}/seedance/{shot_id}_attempt_{NN}.meta.json` with full provenance (model_id, seed, request_id, urls, paths, sizes, timestamps, wall-clock).
+- Logs `seedance_submit` and `seedance_generated` events to `audit/seedance_log.jsonl` via `log_event`.
+- Prints a human-readable summary block to stdout.
+
+**T2 test shot result (real money: ~$0.96 at 4s fast tier):**
+- MP4: `runs/act2-seedance-2026-04-27/seedance/T2_attempt_01.mp4` — 1.37 MB.
+- ffprobe duration: 4.04s (4s requested from API; assembly will trim to 3s).
+- Seed: 96653238. fal_request_id: None (subscribe mode doesn't return one).
+- Wall-clock: 118s. JSONL log: 3 events (2 submit + 1 generated — first submit was from the failed 3s attempt that surfaced the API minimum).
+- **Human gate queued:** MP4 surfaced for visual review before proceeding to Task 4 batch.
+
+**Why:** T2 (companion materializes in terminal) is the highest-leverage validation in the plan — locked camera, single new element, both anchors are gold-standard Round 3 fidelity. If it passes, the 9-shot batch (Task 4, ~$9) is authorized. If it fails, we surface before spending the batch budget. The API minimum duration discovery (4s not 3s) is a real finding: the shotlist spec for T2 (3s) and TR (3s) will generate 4s clips that get trimmed to their spec length in `seedance_assemble.sh`. Both are hard-cut shots, so the extra second is fine — it just means the materialization and pull-in animations may extend slightly before the cut.
+
+**Note:** The T2 MP4 lives in `runs/` (gitignored). Only the script is committed.
+
+---
+
 ## 2026-04-27 — Task 2: Build `pipeline/seedance_lib.py` shared helper library
 
 **What changed:** Created `pipeline/seedance_lib.py` — the shared helper module imported by all four upcoming Seedance pipeline scripts (`seedance_generate.py`, `seedance_extract.py`, `seedance_cleanup.py`, `seedance_audit.py`). Implements 7 helpers:
