@@ -1,0 +1,21 @@
+Using the uploaded character sketch as the EXACT style and character reference, create a wide establishing shot of this same character in a pencil-drawn environment. This is Beat 2 in Act 2 of a pencil test animation — the character has finished walking through his memory of film and animation and the floating AI headlines, and now he's sat down at his computer to investigate the AI hype for himself. He has not yet discovered anything — this is the moment of beginning.
+
+ENVIRONMENT — THE TECHNOLOGIST'S DESK: A pencil-drawn modern desk setup. A laptop sits open in front of the character with a terminal window visible on the screen — the terminal shows a hand-lettered command prompt cursor (a blinking line "│" or simple ">") on a dark cross-hatched background. A second monitor sits to the right of the laptop showing a pencil-drawn chat interface (empty conversation, just a text input field at the bottom). A pencil-drawn coffee cup with steam wisps sits next to the laptop. A computer mouse and a desk pad. The desk surface is clean — NO sticky notes, NO post-it notes, NO writing on the walls. This is a clean workspace, the moment before discovery.
+
+On the LEFT side of the frame, faint and lighter in pencil tone (suggesting they belong to his past): a corner of an old animation desk with a stack of animation paper, a pencil cup, a small sketchbook — these are the remnants of his animator self, fading at the edges of his new tech-focused workspace. They imply continuity between his past creative life and this new chapter.
+
+Present on warm cream animation paper (#FAF5E8 approximate). The paper has visible grain texture, subtle aging marks, three hole-punch marks centered at the bottom edge. The environment elements fill the frame — this is a WIDE SHOT showing the character at roughly 40-50% of vertical canvas height with the desk environment around him.
+
+The character sits at the desk in a chair drawn at a 3/4 angle so we see his profile and the screen content. His hands hover over a pencil-drawn keyboard, fingers mid-type or about to type. His posture is engaged — leaning slightly forward, shoulders active. He's looking at the terminal screen with concentrated focus, the same expression an animator has when starting a new drawing — but now the tool is a keyboard. Expression: focused determination with a slight smile — he's curious, ready to experiment, about to dive in.
+
+Match the uploaded reference EXACTLY in character style: traditional animation pencil test drawing with hand-drawn graphite pencil lines. Lines are warm gray (NOT black ink) with natural stroke-weight variation. Visible construction lines beneath the final drawing. Cross-hatching for shading.
+
+CRITICAL: The environment elements (desk, laptop, monitor, terminal screen, keyboard, coffee cup, etc.) MUST also be drawn in pencil test style — same graphite lines, same cream paper, same hand-drawn quality. Everything in the frame looks like it was drawn by the same animator on the same paper. No style changes between character and environment. NO sticky notes anywhere in the scene.
+
+Color is extremely limited and desaturated: dark navy t-shirt, cool gray jeans, warm skin tones, sandy blonde hair. Environment elements are primarily graphite with minimal color accents where needed. Pencil lines visible through all color fills.
+
+Character proportions: Disney/Pixar pre-production adjacent, roughly 7-7.5 heads tall. NOT anime, NOT hyper-realistic.
+
+Lighting is soft and even. Shadows via cross-hatching and pencil density. No dramatic directional light.
+
+No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines. No photorealism. No 3D rendering.

@@ -1,0 +1,27 @@
+Using the uploaded character sketch and the AI companion reference sketches as the EXACT style and character references, create a 16:9 wide pencil-drawn establishing shot — the REVELATION moment, atmospheric variant. The approach: Sean stands at the center of a radiating pencil-light burst, with the AI possibilities arranged in a rosette pattern around him.
+
+ATMOSPHERIC APPROACH — RADIATING LIGHT BURST: The image has a clear focal point — Sean — with concentric, radial pencil strokes emanating outward from him in a symmetric burst. The radial lines are gestural and varied in length, like a sun-burst pattern but rendered as pencil strokes rather than rays. Some are longer and reach to the edges of the frame; others are shorter and create a sense of layered depth. Between the radial lines, the AI possibility elements are arranged in a rosette/circular composition around Sean — each element appearing to be illuminated by the radiating warmth.
+
+THE AI COMPANION: A friendly pencil-drawn creature with a rounded square loaf-shaped body, two dot eyes with expressive eyebrows, a small curved smile, four stubby legs, small stubby cylindrical arms. Warm desaturated terracotta/clay-orange color. The companion hovers at SEAN'S RIGHT SHOULDER, drawn with motion lines beneath it suggesting hover.
+
+ENVIRONMENT — ROSETTE OF POSSIBILITY: Arranged in a near-circular pattern around Sean (with empty space close to him for breathing room), distributed elements include: a pencil-drawn chat interface with conversation bubbles (upper left), a code editor window with hand-lettered code (left), a neural network diagram (lower left), a flowchart "PROMPT → MODEL → OUTPUT" (top), a "POST /generate" API diagram (upper right), a 3D wireframe sketch (right), a small robot face outline (lower right), an image-generation prompt-to-output visual (bottom), hand-lettered phrases ("VIBE CODING", "AGENTS", "PIPELINES", "GENERATE") woven among the elements, floating documents with code, scattered sparkle/star marks. Each element is connected to Sean by a faint pencil line, and the elements are arranged so the eye flows naturally around him.
+
+The radial pencil-burst pattern in the background gives the composition a sense of SACRED-GEOMETRY-LIKE order — this is the moment of synthesis, not chaos. Sean is the center of his own becoming.
+
+POSE — CENTERED AWE, ARMS OPENING: Sean stands at the center of the frame, slightly forward of center if needed for compositional balance. His feet are planted, weight evenly distributed. His ARMS are SLIGHTLY OPENED OUTWARD to the sides at hip-to-shoulder height, palms facing slightly forward — a gesture of openness, of receiving. Not as dramatic as active reaching; more like opening himself to the possibility. His head is tilted slightly upward, eyes scanning across the rosette of elements.
+
+EXPRESSION — AWE OPENING INTO RESOLVE: A genuine open-mouthed half-smile. Eyes bright, eyebrows lifted. There is wonder, but also the beginning of resolve — the moment AFTER the surprise, when he realizes he's going to actually pursue this. Subtle 5-o'clock shadow on jaw.
+
+CRITICALLY IMPORTANT: There is NO sword-wielding RPG warrior sprite in this scene. ONLY Sean and the AI companion are present as characters in this frame.
+
+Present on warm cream animation paper (#FAF5E8 approximate). Paper grain texture, aging marks, three hole-punch marks centered at the bottom edge.
+
+Match the uploaded reference EXACTLY in Sean's character style and identity. Match the AI companion references EXACTLY.
+
+CRITICAL: All elements drawn in pencil test style. Graphite lines, cream paper, hand-drawn quality. Hand-lettered text in any UI/elements — never typeset. The radiating burst must use pencil strokes — never digital effects.
+
+Color is extremely limited and desaturated: dark navy t-shirt, cool gray jeans, warm skin tones, sandy blonde hair, terracotta-orange companion. The radial pencil burst is mostly graphite with subtle warm tonal variation.
+
+Lighting is soft and even, but with the implied light source at Sean's chest center — a warm pencil glow that gradually softens outward.
+
+No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines. No photorealism. No 3D rendering.

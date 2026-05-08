@@ -1,0 +1,19 @@
+Using the uploaded character sketch as the EXACT style and character reference, create a wide establishing shot of this same character in a pencil-drawn environment. This is a concept frame for Act 2 of a pencil test animation — the character walks through different worlds representing chapters of his career.
+
+ENVIRONMENT: The character is surrounded by floating pencil-drawn concepts connected by hand-drawn lines — like a mind map exploding outward. At the center: a pencil-drawn laptop with a glowing screen (the glow suggested by lighter pencil strokes radiating outward). Connected by pencil lines to: a chat interface sketch, a code block, a robot face outline, a brain diagram, an API endpoint diagram ("POST /generate"), a pencil-drawn Claude logo (simple geometric shapes), data flow arrows. The connections multiply outward, filling the frame. Some connections loop back to elements from Zone 1 (a storyboard panel) and Zone 2 (a game sprite) — showing how AI connects to his past work.
+
+Present on warm cream animation paper (#FAF5E8 approximate). The paper has visible grain texture, subtle aging marks, three hole-punch marks centered at the bottom edge. The environment elements fill the frame — this is a WIDE SHOT showing the character at roughly 40-50% of vertical canvas height with the zone world surrounding him.
+
+The character reaches out with both hands, touching two of the floating connection nodes — physically connecting ideas. One hand reaches toward the chat interface, the other toward a storyboard panel from Zone 1. His body is in motion — torso rotated, weight shifting — he's actively making connections, not passively observing. Expression: intense focus with excitement underneath — the look of someone who sees how everything fits together. Feet planted wide for stability as he reaches.
+
+Match the uploaded reference EXACTLY in character style: traditional animation pencil test drawing with hand-drawn graphite pencil lines. Lines are warm gray (NOT black ink) with natural stroke-weight variation. Visible construction lines beneath the final drawing. Cross-hatching for shading.
+
+CRITICAL: The environment elements (mind map, laptop, chat interface, code blocks, neural network, etc.) MUST also be drawn in pencil test style — same graphite lines, same cream paper, same hand-drawn quality. Everything in the frame looks like it was drawn by the same animator on the same paper. No style changes between character and environment.
+
+Color is extremely limited and desaturated: dark navy t-shirt, cool gray jeans, warm skin tones, sandy blonde hair. Environment elements are primarily graphite with minimal color accents where needed. Pencil lines visible through all color fills.
+
+Character proportions: Disney/Pixar pre-production adjacent, roughly 7-7.5 heads tall. NOT anime, NOT hyper-realistic.
+
+Lighting is soft and even. Shadows via cross-hatching and pencil density. No dramatic directional light.
+
+No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines. No photorealism. No 3D rendering.

@@ -1,0 +1,25 @@
+Using the uploaded character sketch and the AI companion reference sketches as the EXACT style and character references, create a single composed pencil-drawn frame. This is Beat 3 in Act 2 of a pencil test animation — the character has been examining his blinking terminal, and out of nowhere, the AI companion has just APPEARED inside the terminal screen. This is the moment of first contact between Sean and the AI.
+
+THE AI COMPANION CHARACTER: A friendly pencil-drawn creature with a rounded square loaf-shaped body, two small dot eyes with subtle expressive eyebrows above them, a small simple mouth (a curved pencil line that hints at a smile), four short stubby legs, and small stubby cylindrical arms protruding from each side. Its color is a warm desaturated terracotta/clay-orange tone (NOT bright, NOT saturated), with the same graphite pencil lines visible through and over the color fill, exactly like Sean's own clothing color treatment. The companion is drawn in the SAME pencil test style as Sean — graphite lines, construction line artifacts, cross-hatching shadow. It looks hand-drawn on the same cream paper.
+
+ENVIRONMENT: A tighter view of the technologist's desk than the previous beat — we are closer to the action. A pencil-drawn laptop dominates the right side of the frame with its screen turned slightly toward the camera so the terminal content is partially visible. The terminal window shows a dark cross-hatched background with a hand-lettered command prompt and a blinking cursor. Inside the terminal screen, peeking out as if the screen is a window or doorway — the AI companion. The companion's rounded loaf body fills the lower portion of the terminal window. Its dot eyes are wide, looking out at Sean. Its small stubby arms rest on the bottom edge of the terminal frame, as if it's leaning out. Faint pencil "appearance" lines (small motion lines or sparkle dots) surround the companion to suggest it has just materialized.
+
+A pencil-drawn coffee cup with steam wisps sits to the side. The desk surface is otherwise clean — NO sticky notes. The frame composition is balanced: Sean on the LEFT, the laptop+companion on the RIGHT, the terminal window roughly at frame-center vertically.
+
+Present on warm cream animation paper (#FAF5E8 approximate). The paper has visible grain texture, subtle aging marks, three hole-punch marks centered at the bottom edge. The environment elements fill the frame — this is a WIDE SHOT (16:9) but framed CLOSER than a full establishing shot — Sean's body fills roughly 60-70% of vertical canvas height, occupying the left half of the frame, with the laptop and companion occupying the right half.
+
+POSE — THE SURPRISE REACTION: The character has leaned BACK in his chair from the surprise. His torso pulls backward away from the screen. His head tilts back slightly, eyes WIDE OPEN (significantly wider than his normal expression), eyebrows raised high in genuine surprise. His mouth is slightly open — not a big gasp, but parted lips of "wait, what?" Both hands have stopped mid-air over the keyboard, fingers spread, frozen in surprise. His shoulders are pulled up and back. This is the classic animator's "take" — Milt Kahl subtlety, not Tex Avery cartoon-shock. Real, human surprise.
+
+EXPRESSION: Wonder mixed with disbelief. Not fear, not concern — pure surprised curiosity. The look of someone whose computer just started talking back.
+
+Match the uploaded reference EXACTLY in Sean's character style and identity: same hair, jaw, eye spacing, nose, body proportions, dark navy t-shirt, cool gray jeans. Match the AI companion references EXACTLY for the companion's design: rounded square body, terracotta color, dot eyes with eyebrows, stubby arms and legs, small mouth.
+
+CRITICAL: Both characters and the environment MUST all be drawn in the same pencil test style — graphite lines, cream paper, hand-drawn quality. The companion is NOT digital, NOT CGI — it is a pencil drawing that has somehow appeared in a pencil drawing of a terminal.
+
+Color is extremely limited and desaturated: dark navy t-shirt, cool gray jeans, warm skin tones, sandy blonde hair, terracotta-orange companion. Environment elements are primarily graphite with minimal color accents.
+
+Character proportions for Sean: Disney/Pixar pre-production adjacent, roughly 7-7.5 heads tall. The companion is much smaller — roughly half the size of Sean's torso.
+
+Lighting is soft and even. Shadows via cross-hatching and pencil density.
+
+No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines. No photorealism. No 3D rendering.

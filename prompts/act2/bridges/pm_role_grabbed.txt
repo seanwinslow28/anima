@@ -1,0 +1,38 @@
+The SECOND reference image (pm_role.png) is the EXACT visual style, composition framing, environment, character pose, line confidence, and lighting anchor for this image. The FIRST reference (A-2 anchor) locks Sean's identity. This image is the END FRAME of the Grab Kanban Seedance clip — it is the moment ~1 second AFTER pm_role.png, where Sean has just plucked one of the Kanban cards off the board and is now holding it in his right hand. EVERYTHING ELSE in the frame must be IDENTICAL to pm_role.png — same camera, same Kanban board layout, same sticky notes, same companion position, same lighting, same paper.
+
+PRESENTATION — CREAM ANIMATION PAPER:
+Warm cream animation paper (#FAF5E8 approximate). Same paper grain, aging marks, hole-punch marks at bottom edge as pm_role.png. Hand-written production label "A-2" circled in pencil in the top-left corner. The label is ONLY "A-2" — do NOT write "Bridge", "PM Grabbed", any beat or scene numbers, or other stage-direction language as visible text.
+
+COMPOSITION — IDENTICAL TO pm_role.png EXCEPT FOR THE CARD:
+Same camera position, same crop, same Sean position (3/4 view from camera-right, slightly turned toward the Kanban board), same Kanban board filling the upper background with four columns hand-lettered "BACKLOG", "IN PROGRESS", "REVIEW", "DONE". Same gamified UI strip across the top with "FEATURE_COMPLETE" progress bar and "XP" indicator and the icon row in upper-right. Same yellow/cream sticky notes scattered around the board edges hand-lettered "SPRINT", "ROADMAP", "RETRO", "STANDUP". Same desk in the bottom edge with laptop, coffee mug. Same AI companion (terracotta-orange loaf creature) floating in same position to camera-right behind Sean.
+
+THE ONLY DIFFERENCE — KANBAN CARD NOW IN SEAN'S HAND:
+- One of the Kanban cards from the "IN PROGRESS" column is NO LONGER on the board (the empty slot where it was should show just the column outline, no card)
+- That card is now held in Sean's RIGHT hand (the hand that was reaching in pm_role.png). The card is roughly business-card-sized, hand-drawn in pencil, showing a small character icon and a few hand-lettered code lines.
+- Sean's right arm pose has shifted slightly: instead of reaching toward the board with fingers extended, the arm is now bent at the elbow with the card held flat in front of him at chest height, as if he just plucked it off the board and is bringing it down to read.
+- Sean's facial expression has shifted slightly: from the focused "selecting" look to a small satisfied half-smile, as if he just claimed the card. Eyes still on the card, looking down at it slightly.
+- A faint motion-line trail (3-4 short pencil strokes) connects the empty slot on the board to the card in Sean's hand, suggesting the card was just moved.
+
+IDENTITY CONSTRAINTS — MATCH A-2 ANCHOR EXACTLY:
+Same sandy-blonde hair shape, volume, and parting; same jaw angle; same eye spacing; same nose shape; same body proportions; same dark navy crew-neck t-shirt; same cool gray slim jeans with cuffed ankles; same gray-cream sneakers.
+
+STUBBLE: Sean has the SAME subtle 5-o'clock shadow stubble as pm_role.png. (Desk-work sequence — stubble continues.)
+
+COMPANION:
+Same terracotta-orange loaf creature in same position as pm_role.png. Floating to camera-right of Sean, near shoulder height. Same dot eyes, small mouth, stubby arms. No change in the companion between frames.
+
+STYLE — TRADITIONAL ANIMATION PENCIL TEST:
+Match pm_role.png EXACTLY in line weight, cross-hatching density, and overall finish. Hand-drawn graphite pencil lines, warm gray (NOT black ink), natural stroke-weight variation. Visible construction lines beneath final drawing. Polished, confident line work.
+
+UNIFORM AESTHETIC: All environment elements (Kanban board, sticky notes, gamified UI, desk, laptop, mug, sticky-notes book) drawn in the same pencil test style as pm_role.png. Hand-lettered text on board columns and sticky notes.
+
+COLOR — LIMITED, DESATURATED, FLAT:
+Dark navy t-shirt, cool gray jeans, warm skin tones, sandy-blonde hair. Sticky notes in muted yellow/cream. Companion in muted terracotta orange. Coffee mug faint warm tone. Otherwise graphite-only with minimal color accents. Pencil lines visible through all color fills. No gradients.
+
+LIGHTING:
+Soft, even matching pm_role.png. Shadows via cross-hatching only.
+
+OUTPUT:
+A warm, analog-feeling animation production drawing that reads as the precise frame ~1 second AFTER pm_role.png — the same scene, same Sean, same companion, same lighting, same Kanban board, just one card moved into his hand and the empty slot left on the board.
+
+NO STAGE-DIRECTION TEXT. NO vector-clean lines. NO solid black outlines. NO cel shading. NO anime style. NO heavy color saturation. NO digital painting. NO gradient shading. NO airbrush. NO pure white background. NO pure black lines. NO photorealism. NO 3D rendering.

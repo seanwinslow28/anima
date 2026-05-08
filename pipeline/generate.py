@@ -276,10 +276,12 @@ def main():
             prompt = Path(args.prompt_file).read_text().strip()
         else:
             prompt_file = Path(f"prompts/F{frame_num:02d}.txt")
+            if not prompt_file.exists():
+                prompt_file = Path(f"prompts/COMPLETED/F{frame_num:02d}.txt")
             if prompt_file.exists():
                 prompt = prompt_file.read_text().strip()
             else:
-                print(f"  No prompt found. Provide --prompt, --prompt-file, or create prompts/F{frame_num:02d}.txt")
+                print(f"  No prompt found. Provide --prompt, --prompt-file, or create prompts/F{frame_num:02d}.txt or prompts/COMPLETED/F{frame_num:02d}.txt")
                 continue
 
         candidate = generate_frame(frame_num, prompt, references, manifest, run_dir)

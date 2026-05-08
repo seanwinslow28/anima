@@ -1,0 +1,50 @@
+The SECOND and THIRD reference images (film.png and animation.png) are the EXACT visual style, character continuity, line confidence, and walking-pose anchors. Match their pencil test fidelity exactly. The FIRST reference (A-2 anchor) locks Sean's identity. This image is a BRIDGE FRAME — the moment Sean transitions from the Film world (left) into the Animation world (right). It will be used as the END of the Walk Film Seedance clip AND the START of the Walk Animation Seedance clip, so it must cut cleanly into both neighboring frames.
+
+Create a wide 16:9 pencil-drawn establishing shot of Sean mid-stride at the THRESHOLD between two floating worlds. The frame is divided roughly into thirds: left third belongs to the Film world (now FADING — elements partially erased, lighter pencil pressure, ghosted), center third holds Sean walking; right two-thirds belongs to the Animation world (NOW EMERGING — elements drawn at full pencil weight, fresh, confident).
+
+PRESENTATION — CREAM ANIMATION PAPER:
+Present on warm cream animation paper (#FAF5E8 approximate). Visible grain texture, subtle aging marks, three hole-punch marks centered at the bottom edge. Hand-written production label "A-2" circled in pencil in the top-left corner. The label is ONLY "A-2" — do NOT write "Bridge", "Transition", "F→A", any beat numbers, scene numbers, or other stage-direction language as visible text.
+
+COMPOSITION — THRESHOLD MOMENT:
+Sean occupies roughly 40-50% of vertical canvas height, positioned at the visual center of the frame, mid-stride walking from left to right. Same scale, same ground line, same horizon as film.png and animation.png. Floating world elements surround him.
+
+LEFT THIRD (FADING FILM WORLD):
+Same Film-world props from film.png, but rendered with LIGHTER pencil pressure / partial erasure / ghosting:
+- A pencil-sketched ARRI film camera on tripod, partially faded
+- A film reel with curling celluloid strip trailing off
+- A clapperboard reading "FILM LOVE / SCENE / TAKE"
+- Hints of a director's chair fading at the bottom-left
+These elements should look like they're dissolving — visible construction lines but reduced final-line weight, faint outlines, paper showing through. Like the animator is erasing them.
+
+CENTER THIRD (SEAN WALKING — FULL WEIGHT):
+Sean mid-stride, right foot forward, left foot pushing off. Head facing camera-right (toward the Animation world). Eyes alert, slight half-smile of curiosity. Right arm swinging back, left arm swinging slightly forward. Same walk pose energy as film.png and animation.png — continuous walk, same animator's hand. Sean is rendered at FULL pencil weight (not faded).
+
+RIGHT TWO-THIRDS (EMERGING ANIMATION WORLD):
+Same Animation-world props from animation.png, but rendered FRESH and confident — actively appearing:
+- A pencil-figure-study sketch (gesture-line construction, anatomy reference) emerging on the right edge
+- An open animation textbook with a small running-man flip animation visible on its pages
+- A pencil-drawn light box with paper stack on top, glowing softly with a hint of warm amber
+- A floating storyboard panel with three small thumbnails
+- A floating skeleton anatomy reference figure
+These should look like they're just being drawn — confident lines, slight motion lines suggesting recent appearance.
+
+IDENTITY CONSTRAINTS — MATCH A-2 ANCHOR EXACTLY:
+Same sandy-blonde hair shape, volume, and parting; same jaw angle; same eye spacing; same nose shape; same body proportions (Disney/Pixar pre-production adjacent, roughly 7-7.5 heads tall); same dark navy crew-neck t-shirt; same cool gray slim jeans with cuffed ankles; same gray-cream sneakers.
+
+CRITICAL — CLEAN-SHAVEN FACE: Sean is CLEAN-SHAVEN with NO stubble, NO 5-o'clock shadow, NO facial hair. This is the walking sequence — stubble does NOT appear until the desk-work beats. If you draw any facial hair the image fails.
+
+STYLE — TRADITIONAL ANIMATION PENCIL TEST:
+Match the film.png and animation.png references EXACTLY. Hand-drawn graphite pencil lines, warm gray (NOT black ink), natural stroke-weight variation — 2-3px equivalent contour outlines, 1px equivalent interior details. Visible construction lines beneath final drawing. Cross-hatching for shading. Polished, confident line weight matching the references (NOT sketchy or loose).
+
+UNIFORM AESTHETIC: All environment elements (camera, reels, clapperboard, figure-studies, lightbox, books, storyboards) MUST be drawn in the same pencil test style — same graphite, same paper, same hand-drawn quality. No style breaks between character and environment.
+
+COLOR — LIMITED, DESATURATED, FLAT:
+Dark navy t-shirt, cool gray jeans, warm skin tones, sandy-blonde hair. Faint warm amber glow from the lightbox in the right third. Otherwise environment is graphite-only with minimal color accents. Pencil lines visible through all color fills. No gradients.
+
+LIGHTING:
+Soft and even, matching film.png and animation.png. Shadows via cross-hatching and pencil density only.
+
+OUTPUT:
+A warm, analog-feeling animation production drawing that reads as the ideal frozen midpoint between film.png and animation.png — what an animator would draw as the keyframe BETWEEN those two scenes. Same artist, same pencil, same paper.
+
+NO STAGE-DIRECTION TEXT in the image. NO vector-clean lines. NO solid black outlines. NO cel shading. NO anime style. NO heavy color saturation. NO digital painting. NO gradient shading. NO airbrush. NO pure white background. NO pure black lines. NO photorealism. NO 3D rendering. NO stubble or facial hair.

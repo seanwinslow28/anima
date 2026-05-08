@@ -1,0 +1,224 @@
+version: 1
+created: 2026-04-27
+style_anchor: |
+  Hand-drawn pencil animation on cream paper. Maintain pencil line quality,
+  graphite shading, paper grain texture, and consistent line weight throughout.
+  Visible construction marks. No digital effects, no photorealistic rendering,
+  no glossy polish.
+
+shots:
+  - id: W1
+    type: seedance
+    duration: 4
+    risk: low
+    start: runs/act2-exploration/concepts/zone1/film.png
+    end: runs/act2-exploration/concepts/bridges/film_to_animation.png
+    prompt: |
+      Hand-drawn pencil animation on cream paper. Sean walks steadily from left
+      to right at a relaxed pace, mid-stride throughout, head turning slightly
+      to take in the floating Film props around him. The Film props remain
+      stationary; only Sean walks. Fixed camera, locked tripod. Even, diffuse
+      natural lighting. Maintain pencil line quality, graphite shading, paper
+      grain, consistent line weight, visible construction marks. No digital
+      effects. Smooth 4-second walking interpolation.
+    fallback: null
+
+  - id: W2
+    type: seedance
+    duration: 4
+    risk: low
+    start: runs/act2-exploration/concepts/bridges/film_to_animation.png
+    end: runs/act2-exploration/concepts/bridges/animation_to_ai.png
+    prompt: |
+      Hand-drawn pencil animation on cream paper. Sean continues walking left
+      to right at the same steady pace through the Animation world. The Film
+      props on the left fade out via lightening pencil pressure; the Animation
+      props (figure studies, light box, animation books) brighten then start
+      to fade as the AI headlines emerge on the right. Fixed camera, locked
+      tripod. Even, diffuse lighting. Maintain pencil line quality, paper
+      grain, consistent line weight. No digital effects. Smooth 4-second
+      walking interpolation.
+    fallback: null
+
+  - id: W3
+    type: seedance
+    duration: 4
+    risk: low
+    start: runs/act2-exploration/concepts/bridges/animation_to_ai.png
+    end: runs/act2-exploration/concepts/zone1/ai_discovery.png
+    prompt: |
+      Hand-drawn pencil animation on cream paper. Sean continues walking left
+      to right at the same steady pace, eyebrow lifting and head turning in
+      growing curiosity. The remaining Animation props fade out; the AI news
+      clippings (ChatGPT, Karpathy, Vibe Coding, Anthropic, Gemini headlines)
+      solidify with hand-lettered text. Fixed camera, locked tripod. Even,
+      diffuse lighting. Maintain pencil line quality, hand-lettered text
+      quality, paper grain, consistent line weight. No digital effects.
+      Smooth 4-second walking interpolation.
+    fallback: null
+
+  - id: S0
+    type: seedance
+    duration: 4
+    risk: high
+    start: runs/act2-exploration/concepts/zone1/ai_discovery.png
+    end: runs/act2-exploration/concepts/zone3/sit_down.png
+    prompt: |
+      Hand-drawn pencil animation on cream paper. The floating AI news headlines
+      dissolve away from the frame as the desk, laptop, second monitor, coffee
+      mug, and chair materialize in their place. Sean transitions from a
+      mid-stride walk to a seated working pose at the desk. A subtle 5-o'clock
+      shadow stubble grows in on his face as time passes. Fixed camera, locked
+      tripod. Even, diffuse desk lighting. Maintain pencil line quality, paper
+      grain, consistent line weight. No digital effects. Smooth 4-second
+      transition interpolation.
+    fallback: "hard cut from ai_discovery.png to sit_down.png with 0.3s cross-fade in FFmpeg post"
+
+  - id: T0
+    type: seedance
+    duration: 4
+    risk: medium
+    start: runs/act2-exploration/concepts/zone3/sit_down.png
+    end: runs/act2-exploration/concepts/zone3/terminal_closeup_empty.png
+    prompt: |
+      Hand-drawn pencil animation on cream paper. Camera pushes slowly forward
+      into the laptop screen on the desk. Sean's hands settle onto the keyboard
+      as the camera approaches. The laptop and dark cross-hatched terminal
+      window grow to fill the frame as the desk surroundings recede outside
+      the frame. Single slow camera push-in, no other movement. Even, diffuse
+      desk lighting. Maintain pencil line quality, graphite shading, paper
+      grain, consistent line weight. No digital effects. Smooth 4-second
+      push-in interpolation.
+    fallback: "split into S1.5 (Sean settles hands, no camera move) + T0 (pure camera push-in, Sean static) if jitter appears"
+
+  - id: T2
+    type: seedance
+    duration: 3
+    risk: low
+    start: runs/act2-exploration/concepts/zone3/terminal_closeup_empty.png
+    end: runs/act2-exploration/concepts/zone3/terminal_closeup_companion.png
+    prompt: |
+      Hand-drawn pencil animation on cream paper. The terracotta-orange AI
+      companion creature materializes inside the dark cross-hatched terminal
+      window. Small pencil sparkle marks appear around it as it forms. The
+      terminal text shifts from "c:\>_ what is..." to "c:\>_ hello, sean...".
+      Fixed camera, locked tripod. Even, diffuse lighting from the laptop
+      screen. Maintain pencil line quality, cross-hatching density, hand-
+      lettered text quality, paper grain. Consistent line weight. No digital
+      effects. Smooth 3-second materialization interpolation.
+    fallback: null
+
+  - id: TR
+    type: seedance
+    duration: 3
+    risk: medium
+    start: runs/act2-exploration/concepts/bridges/pre_pulled_in.png
+    end: runs/act2-exploration/concepts/zone3/transition_pulled_in.png
+    prompt: |
+      Hand-drawn pencil animation on cream paper. The companion's terracotta
+      arm fully emerges from the laptop screen and the small terracotta hand
+      reaches across and grabs Sean's right hand. Sean leans further forward
+      and his eyes widen as he is pulled toward the screen. A few pencil
+      motion-line marks accentuate the lean. Fixed camera, locked tripod.
+      Even, diffuse desk lighting with cool blue screen-light tint on Sean's
+      face. Maintain pencil line quality, paper grain, consistent line weight.
+      No digital effects. Smooth 3-second action interpolation.
+    fallback: null
+
+  - id: REV
+    type: seedance
+    duration: 5
+    risk: high
+    start: runs/act2-exploration/concepts/zone3/transition_pulled_in.png
+    end: runs/act2-exploration/concepts/zone3/revelation.png
+    prompt: |
+      Hand-drawn pencil animation on cream paper. Sean is pulled forward by
+      the companion. The desk and laptop dissolve into open cream paper space.
+      Hand-lettered concept words (VIBE CODING, AGENTS, PIPELINES, GENERATE)
+      and small pencil-drawn diagrams (code editors, neural network nodes,
+      prompt-to-output flow) emerge around Sean and the companion as a mind-
+      map. Sean stands upright with arms spreading outward in a moment of
+      revelation. The companion floats nearby. Fixed camera, locked tripod.
+      Even, diffuse lighting. Maintain pencil line quality, hand-lettered
+      text, paper grain, consistent line weight. No digital effects. Smooth
+      5-second revelation interpolation.
+    fallback: "first: drop duration to 4s; second: generate intermediate bridges/being_pulled.png and split into REV1 (transition_pulled_in.png -> being_pulled.png, 3s) + REV2 (being_pulled.png -> revelation.png, 3s)"
+
+  - id: PM
+    type: seedance
+    duration: 3
+    risk: low
+    start: runs/act2-exploration/concepts/zone4/pm_role.png
+    end: runs/act2-exploration/concepts/bridges/pm_role_grabbed.png
+    prompt: |
+      Hand-drawn pencil animation on cream paper. Sean reaches forward to the
+      Kanban board, plucks one card from the IN PROGRESS column with his right
+      hand, and brings it down to chest height. His expression shifts from
+      focused selection to a small satisfied half-smile. The companion floats
+      steadily in the same position camera-right of Sean. The Kanban board
+      columns and sticky notes remain stationary. Fixed camera, locked tripod.
+      Even, diffuse lighting. Maintain pencil line quality, hand-lettered text
+      on the board, paper grain, consistent line weight. No digital effects.
+      Smooth 3-second action interpolation.
+    fallback: null
+
+  - id: PB
+    type: seedance
+    duration: 5
+    risk: medium
+    start: runs/act2-exploration/concepts/bridges/pm_role_grabbed.png
+    end: runs/act2-exploration/concepts/zone4/final_panorama_v3_a.png
+    prompt: |
+      Hand-drawn pencil animation on cream paper. Camera pulls slowly backward
+      from the medium PM scene, revealing the wider workshop panorama with
+      Film camera, Animation reference materials, AI news clippings, and
+      agentic workflow diagrams arranged across the cream paper space. Sean
+      and the companion remain in their positions on the right side of the
+      frame as the panorama widens around them. Single slow camera pull-back,
+      no other movement. Even, diffuse lighting. Maintain pencil line quality,
+      hand-lettered text, paper grain. No digital effects. Smooth 5-second
+      pull-back interpolation.
+    fallback: "hard cut from pm_role_grabbed.png to final_panorama_v3_a.png with 0.4s cross-fade in FFmpeg"
+
+holds:
+  - id: S1
+    type: static
+    duration: 2
+    frame: runs/act2-exploration/concepts/zone3/sit_down.png
+
+  - id: T1
+    type: cursor_blink
+    duration: 2
+    frame: runs/act2-exploration/concepts/zone3/terminal_closeup_empty.png
+
+  - id: T3
+    type: static
+    duration: 2
+    frame: runs/act2-exploration/concepts/zone3/terminal_pov_sean.png
+
+  - id: FIN
+    type: ken_burns
+    duration: 5
+    frame: runs/act2-exploration/concepts/zone4/final_panorama_v3_a.png
+    requires_manual_cleanup: true
+
+hard_cuts:
+  - [T2, T3]
+  - [T3, TR]
+  - [REV, PM]
+
+assembly_order:
+  - W1
+  - W2
+  - W3
+  - S0
+  - S1
+  - T0
+  - T1
+  - T2
+  - T3
+  - TR
+  - REV
+  - PM
+  - PB
+  - FIN

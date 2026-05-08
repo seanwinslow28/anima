@@ -1,0 +1,19 @@
+Using the uploaded character sketch as the EXACT style and character reference, create a wide establishing shot of this same character in a pencil-drawn environment. This is a concept frame for Act 2 of a pencil test animation — the character walks through different worlds representing chapters of his career.
+
+ENVIRONMENT: An ultra-wide pencil-drawn panorama showing Sean's entire journey in a single frame. From left to right: Zone 1 elements (animation desk, storyboards, film elements) blend gradually into Zone 2 (game platforms, health bars, pixel-style terrain) which blend into Zone 3 (terminals, code, AI diagrams) which arrive at Zone 4 (the convergence workspace with Kanban board). The zones share the same cream paper and pencil style throughout — the transitions are in subject matter, not aesthetic. The panorama reads like a timeline drawn by an animator. Faint dotted pencil lines trace the path through all zones, showing the journey.
+
+Present on warm cream animation paper (#FAF5E8 approximate). The paper has visible grain texture, subtle aging marks, three hole-punch marks centered at the bottom edge. The environment elements fill the frame — this is a WIDE SHOT showing the character at roughly 40-50% of vertical canvas height with the zone world surrounding him.
+
+The character stands at the far right of the panorama (in the Zone 4 convergence area), turned to face LEFT — looking back at his entire journey stretching behind him. The AI companion hovers at his right shoulder. The RPG warrior sprite sits on the companion. Stylus held up in right hand — not drawing, just holding it like a painter stepping back from the canvas. Expression: quiet pride, slight smile, eyes scanning the full panorama. This is the final hold pose — the moment before the title card.
+
+Match the uploaded reference EXACTLY in character style: traditional animation pencil test drawing with hand-drawn graphite pencil lines. Lines are warm gray (NOT black ink) with natural stroke-weight variation. Visible construction lines beneath the final drawing. Cross-hatching for shading.
+
+CRITICAL: The environment elements (all zone worlds, panorama, AI companion, sprite, etc.) MUST also be drawn in pencil test style — same graphite lines, same cream paper, same hand-drawn quality. Everything in the frame looks like it was drawn by the same animator on the same paper. No style changes between character and environment.
+
+Color is extremely limited and desaturated: dark navy t-shirt, cool gray jeans, warm skin tones, sandy blonde hair. Environment elements are primarily graphite with minimal color accents where needed. Pencil lines visible through all color fills.
+
+Character proportions: Disney/Pixar pre-production adjacent, roughly 7-7.5 heads tall. NOT anime, NOT hyper-realistic.
+
+Lighting is soft and even. Shadows via cross-hatching and pencil density. No dramatic directional light.
+
+No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines. No photorealism. No 3D rendering.

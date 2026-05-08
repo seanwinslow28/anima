@@ -1,0 +1,27 @@
+Using the uploaded character sketch and the AI companion reference sketches as the EXACT style and character references, create a 16:9 wide pencil-drawn establishing shot — the REVELATION moment where Sean's workspace dissolves into a vast new world of AI possibility. This is an alternative atmospheric variant of the revelation beat.
+
+ATMOSPHERIC APPROACH — DISSOLVING WALLS: Unlike a literal explosion, the boundaries of Sean's small desk workspace are visibly DISSOLVING into pencil strokes that become the surrounding world. The corners of the room, the edges of the desk, parts of the walls, the chair — all are partially solid and partially fragmenting into loose pencil scribbles, gestural strokes, and small drifting elements that re-form as parts of the new mind-map world. The transformation is happening in real time. Some of the pencil strokes that "were" desk are clearly becoming the lines of a chat interface or a code block in the surrounding space. The dissolution feels gentle and magical — like reality is reorganizing into something larger.
+
+THE AI COMPANION: A friendly pencil-drawn creature with a rounded square loaf-shaped body, two dot eyes with expressive eyebrows, a small curved smile, four stubby legs, small stubby cylindrical arms. Warm desaturated terracotta/clay-orange color. Drawn with lighter pencil strokes around its base to suggest hovering. The companion floats next to Sean at his RIGHT shoulder, looking up at him with one stubby arm gesturing toward the dissolving boundaries — as if to say "see what's possible."
+
+ENVIRONMENT — DESK BECOMING WORLD: Sean stands in what WAS his desk space, but the desk itself is partially dissolving into the cream paper. His chair is half-formed, half-pencil-strokes. Behind and around him, the new world is emerging from the dissolution: hand-drawn chat interfaces, code editor windows, neural network diagrams, "PROMPT → MODEL → OUTPUT" flowcharts, "POST /generate" API diagrams, hand-lettered phrases ("VIBE CODING", "AGENTS", "PIPELINES", "GENERATE"), 3D wireframe shapes, robot face outlines, image-generation visuals, floating documents with code, faint pencil arrows fanning outward, small stars and sparkle marks.
+
+The composition has a sense of QUIET REVELATION — not chaos. The mind-map elements are arranged with breathing room, not crammed. There's a sense of awe, like discovering the night sky for the first time. Faint radiating pencil strokes emanate from Sean's chest area outward, suggesting the world is opening from his perspective.
+
+POSE — STILL, IN AWE: Different from the active reaching pose of the first revelation variant. Here, Sean stands more still, taken in by the moment. He has stood up from his chair (the chair partially dissolved behind him). His arms are slightly raised at his sides, palms turning upward — a quieter "wow" gesture rather than active reaching. His head turns to scan the new world. Weight evenly distributed, body open and receptive.
+
+EXPRESSION — QUIET WONDER: An open-mouthed soft smile. Eyes bright, scanning, taking everything in. Eyebrows lifted with awe. The look of someone realizing a much bigger world has just opened up. Subtle 5-o'clock shadow on jaw.
+
+CRITICALLY IMPORTANT: There is NO sword-wielding RPG warrior sprite in this scene. The sprite character is intentionally absent and will not appear until later in the sequence. ONLY Sean and the AI companion are present as characters in this frame.
+
+Present on warm cream animation paper (#FAF5E8 approximate). Paper grain texture, aging marks, three hole-punch marks centered at the bottom edge.
+
+Match the uploaded reference EXACTLY in Sean's character style and identity. Match the AI companion references EXACTLY.
+
+CRITICAL: All elements drawn in pencil test style. Graphite lines, cream paper, hand-drawn quality. Hand-lettered text in any UI/elements — never typeset. The dissolution effect must use pencil strokes (gesture lines, hash marks, scribbles) — never digital effects, never gradients, never blur effects.
+
+Color is extremely limited and desaturated: dark navy t-shirt, cool gray jeans, warm skin tones, sandy blonde hair, terracotta-orange companion.
+
+Lighting is soft and even with a subtle warm pencil glow emanating from Sean's chest area outward — the energy of the realization spreading through the space, suggested through lighter pencil strokes.
+
+No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines. No photorealism. No 3D rendering.

@@ -1,0 +1,21 @@
+Using the uploaded character sketches as style and character references, create a single full-body character drawing of this same person in a new pose. This is frame A-5 in a pencil test animation sequence — the anticipation beat before a sweeping drawing gesture.
+
+Present as a single character study on a sheet of warm cream animation paper (#FAF5E8 approximate). The paper has visible grain texture, subtle aging marks and dust specks, three hole-punch marks centered at the bottom edge, and a hand-written production label "A-5" circled in pencil in the top-left corner. The character occupies roughly 60-70% of the vertical canvas height, centered on the page.
+
+Match the uploaded references EXACTLY in style: traditional animation pencil test drawing with hand-drawn graphite pencil lines. Lines are warm gray (NOT black ink) with natural stroke-weight variation — thicker contour outlines at 2-3px equivalent, thinner interior details at 1px equivalent. Visible construction line artifacts beneath the final drawing — faint center lines, head oval, gesture line through the spine showing the forward lean, rough circles at the joints (shoulders, elbows, hips, knees). Cross-hatching for shading on clothing folds, under chin, and shadow areas.
+
+Color is extremely limited and desaturated: dark navy flat fill on the crew-neck t-shirt, cool gray flat fill on slim jeans with cuffed ankles, warm skin tones, muted sandy blonde hair. Pencil lines visible through color fills. No color gradients.
+
+Character proportions are slightly stylized — Disney/Pixar pre-production adjacent, roughly 7-7.5 heads tall. Appealing, warm character design. NOT anime, NOT hyper-realistic, NOT exaggerated cartoon.
+
+CRITICAL CONTINUITY — STYLUS HAND: The stylus MUST be in the character's RIGHT hand — the same hand that holds it in both uploaded reference images. The RIGHT hand is on the LEFT side of the image (camera left) when the character faces the viewer. Do NOT place the stylus in the left hand. Do NOT switch hands. The stylus stays in the RIGHT hand throughout this entire animation sequence.
+
+POSE — ANTICIPATION: The character's RIGHT arm (the arm on the LEFT side of the image, camera left) is raised with the elbow leading the motion upward. The RIGHT hand holding the stylus is at approximately head height, the stylus tip pointing upward and slightly to the character's right. The RIGHT elbow is bent at roughly 90 degrees. The LEFT hand (the hand on the RIGHT side of the image, camera right) has come out of the relaxed position and is slightly extended to the character's left for balance — fingers spread naturally, palm facing slightly downward, this hand is EMPTY with no stylus. Weight has shifted forward onto the front foot, torso leans forward approximately 5 degrees. Knees bend slightly more than the idle pose. This is a classic animation anticipation pose — the body coils before a big action, loaded with potential energy like a spring about to release.
+
+EXPRESSION: Focused confidence. The excited smile from the previous frame settles into a determined, focused expression — mouth in a slight smirk, eyes narrowed just a fraction with creative intent. He knows exactly what he is about to draw.
+
+Maintain perfect identity consistency with the uploaded references. The character must be immediately recognizable as the same person: same hair shape and volume, same jaw angle, same eye spacing, same nose, same body proportions. Consistent head size relative to body across all frames. Same clothing — identical dark navy crew-neck t-shirt, same slim jeans, same sneakers.
+
+Lighting is soft and even — no dramatic directional light. Shadows achieved through cross-hatching and pencil density. Same lighting angle and intensity as the references. Color fills flat and uniform.
+
+Output a warm, analog-feeling animation production drawing that looks like the next page in the same animator's pencil test sequence. No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines.

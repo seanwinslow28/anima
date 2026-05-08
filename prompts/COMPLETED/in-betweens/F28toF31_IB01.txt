@@ -1,0 +1,18 @@
+Generate a traditional animation pencil test drawing on warm cream animation paper, graphite pencil lines HB to 2B range, varied line weight with thick contour and thin interior detail, visible construction line artifacts, cross-hatching in shadows, three hole-punch marks at bottom edge.
+
+Draw the SAME character shown in Image 1 (identity reference — the A-2 anchor). Use Image 2 (F28 keyframe) as the style and pose departure point. Use Image 3 (F31 keyframe) as the pose destination — this in-between is 40% of the way from F28 toward F31.
+
+IMPORTANT: Draw ONLY Sean — NO small sprite character, NO RPG warrior, NO companion figure, NO tiny character anywhere in the frame. Sean is ALONE in this drawing. The sprite will be composited separately.
+
+POSE — 40% FROM F28 TO F31 (ease-out, fast departure):
+The character has ALREADY moved significantly from the F28 pose. The right arm (which was fully extended forward with stylus in F28) has dropped to roughly 45 degrees — the arm is about halfway down, elbow bending, stylus pointing downward-right. The left arm (which was extended back for balance in F28) is relaxing toward the body, coming to a more neutral position at the side. The head has begun turning to the character's left (camera right) — about 15-20 degrees of rotation from the forward-facing F28 position, starting to look toward where the sprite will land on the shoulder. Weight is shifting back from the forward lean of F28 toward a more centered stance. Knees straightening from the athletic crouch.
+
+EXPRESSION: Transitioning from the enthusiastic grin of F28 to a softer, pleased expression. The wide smile is relaxing. Eyes are beginning to track leftward (toward the shoulder).
+
+The character is in a 3/4 FRONT VIEW — his face is clearly visible to the viewer. His body is centered on the page in the same general position as both reference frames.
+
+CRITICAL SCALE CONSTRAINT: The character must occupy the SAME vertical proportion of the frame as in Image 2 and Image 3 — approximately 60-65% of the canvas height. Match the head-to-frame-edge ratio from the reference images.
+
+The character wears a DARK NAVY BLUE crew-neck t-shirt (NOT white, NOT gray, NOT light blue), cool gray slim jeans with cuffed ankles, and sneakers matching Image 1. Stylus is in the RIGHT hand throughout. Hand-written production label 'A-6b' in top-left corner circle.
+
+NEGATIVES: No small character. No sprite. No companion. No second figure. No pixel art character. Sean is completely alone in the frame. No vector-clean lines. No solid black outlines. No cel shading. No anime style. No digital painting look.

@@ -1,0 +1,50 @@
+Using the uploaded character sketches as the EXACT style and character references — Sean, the AI companion (terracotta loaf creature), and the RPG warrior sprite (chibi spiky-haired warrior with sword) — create an ULTRA-WIDE pencil-drawn panorama showing the entire timeline of Sean's creative journey in a single frame. This is the FINAL HOLD POSE in Act 2 of a pencil test animation, the moment before the title card appears. Camera has pulled back to reveal everything.
+
+THE TWO COMPANION CHARACTERS:
+- AI COMPANION: a friendly pencil-drawn creature with a rounded square loaf body, two dot eyes with expressive eyebrows, small curved smile, four stubby legs, small stubby arms. Warm desaturated terracotta/clay-orange color. Drawn with lighter pencil strokes around its base to suggest hovering.
+- RPG WARRIOR SPRITE: a small chibi pencil-drawn warrior with spiky pointed sandy-blonde hair, a determined expression with a slight smirk, wearing a light cream/tan tunic with a belt, cuffed wristbands and boots, a sword sheathed on his back. Roughly 3-4 heads tall. The sprite is RIDING on top of the AI companion's back, sitting with one leg dangling.
+
+ENVIRONMENT — THE FULL JOURNEY PANORAMA, READING LEFT TO RIGHT, WITH SOFT VISUAL TRANSITIONS:
+
+On the far left of the frame is a pencil-drawn movie camera on a tripod next to floating film reels, drifting strips of film negatives curving through the air, a clapperboard, a director's chair, and a vintage projector with a soft light beam.
+
+Continuing rightward, a cluster of animation craft elements: storyboard panels, gesture drawing pages with loose figure sketches, a flip book fanning open, a pencil-drawn light box with a sheet of animation paper on it, an animator's desk with a stack of paper and a pencil cup.
+
+In the middle of the frame, a cluster of floating newspaper clippings and magazine articles, all hand-lettered. The required headlines and labels in this cluster, each appearing EXACTLY ONCE in the entire image:
+- A newspaper clipping titled "ChatGPT NEW IMAGE MODEL" with a small Studio Ghibli-style cartoon face beneath it as the article photo
+- A newspaper clipping titled "AI IS TAKING JOBS?"
+- A magazine article titled "VIBE CODING"
+- A newspaper-style article titled "AI AGENTS RUN WORKFLOWS" with a small flowchart diagram beneath it showing "AGENT → TOOL → RESULT" with arrows
+- A few video thumbnail rectangles with simple play buttons
+
+Sprinkled among the news clippings, hand-lettered floating word-labels in pencil text. Each of these words must appear EXACTLY ONCE in the entire image, NOT repeated:
+- The word "Anthropic"
+- The word "Gemini"
+- The phrase "AGENT HARNESS"
+- The phrase "TOOL USE"
+
+Continuing rightward, a pencil-drawn modern desk with an open laptop showing a terminal window, a second monitor showing a chat interface, a coffee mug with steam, and a code editor sketch on a tablet.
+
+On the far right of the frame, a large pencil-drawn KANBAN BOARD with hand-lettered columns labeled "BACKLOG", "IN PROGRESS", "REVIEW", and "DONE". Note cards on the board mix storyboard thumbnails, code snippets, and small sprite icons. Yellow-toned sticky notes around the edges of the board read "SPRINT", "ROADMAP", "STANDUP" — each word appearing once. Status indicators float above the board.
+
+The transitions between these visual content clusters are SOFT — pencil strokes blend gradually; no hard borders, no dividers. A faint dotted pencil line traces a winding path along the bottom of the panorama, suggesting the journey's flow.
+
+There is NO dedicated game/platforms section. Game elements (the warrior sprite, status indicators repurposed as PM tools) integrate naturally within other content.
+
+ABSOLUTE TEXT CONSTRAINTS — DO NOT WRITE ANY OF THE FOLLOWING WORDS OR PHRASES IN THE RENDERED IMAGE: "FILM ORIGINS", "ANIMATION CRAFT", "AI DISCOVERY", "THE WORKSHOP", "TOOLS", "CONVERGENCE", "PM ROLE", "SECTION", "LEFT", "RIGHT", "CENTER", "FINAL HOLD POSE", "SUGGESTION", "LIGHT BOX", "REQUIRED", "EXACTLY ONCE", or any other instructional or descriptive caption. The image must contain only diegetic text — text that lives WITHIN the news clippings, code snippets, Kanban column names, sticky note words, and hand-lettered floating brand-name labels listed above. No callouts, no captions, no annotations, no labels pointing at things. Each word listed above (Anthropic, Gemini, AGENT HARNESS, TOOL USE, ChatGPT, VIBE CODING, etc.) must appear ONLY ONCE in the image — never repeated.
+
+POSE — THE FINAL HOLD: Sean stands at the FAR RIGHT of the panorama (next to the Kanban board). His body is turned to face LEFT, looking back across his entire journey stretching out behind him. His RIGHT HAND is raised, holding a stylus pen up casually like a painter stepping back from the canvas. His left hand rests at his side. Feet planted, weight balanced. Head turned to scan the panorama.
+
+THE COMPANIONS' POSITION: At Sean's RIGHT SHOULDER hovers the AI companion. The RPG warrior sprite sits on the companion's back, riding it. Both positioned just behind and slightly above Sean's shoulder height. Companion's eyes look toward Sean. Sprite looks out at the panorama.
+
+EXPRESSION: A small, content closed-mouth smile. Eyes scanning with calm satisfaction. Subtle 5-o'clock shadow on Sean's jaw.
+
+Match the uploaded reference EXACTLY in Sean's character style and identity. Match the AI companion and RPG warrior sprite references EXACTLY for their designs.
+
+CRITICAL: All elements drawn in pencil test style. Graphite lines, cream paper, hand-drawn quality. All allowed text is HAND-LETTERED in pencil — never typeset.
+
+Color is extremely limited and desaturated: dark navy t-shirt, cool gray jeans, warm skin tones, sandy blonde hair, terracotta-orange companion. Sprite mostly graphite with cream tunic. Sticky notes faint warm yellow tint. Environment primarily graphite.
+
+Present on warm cream animation paper (#FAF5E8 approximate) with paper grain texture, aging marks, three hole-punch marks centered at the bottom edge.
+
+No vector-clean lines. No solid black outlines. No cel shading. No anime style. No heavy color saturation. No digital painting look. No gradient shading. No airbrush effects. No pure white background. No pure black lines. No photorealism. No 3D rendering.
