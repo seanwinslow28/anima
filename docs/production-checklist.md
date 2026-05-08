@@ -2,8 +2,9 @@
 
 > **Status document.** Check this at the start of every session to understand where production stands. Update checkboxes and notes as work is completed. See `docs/pencil-test-storyboard.md` for full creative direction and `CHANGELOG.md` for decision history.
 
-**Last updated:** 2026-04-07
-**Active run:** `runs/run_2026-04-04_174805`
+**Last updated:** 2026-04-26
+**Active run (Act 1):** `runs/run_2026-04-04_174805`
+**Active plan (Act 2):** `docs/act2-seedance-execution-plan.md` — 12 tasks, two milestones (M1 rough cut → M2 full-fidelity)
 
 ---
 
@@ -181,29 +182,61 @@
 - [ ] Export final hero loop
 - [ ] **Ship to portfolio**
 
-### Phase 5: Act 2 Zone Backgrounds — NOT STARTED
-- [ ] Generate pencil zone background (sketchy animation reference sheets)
-- [ ] Generate pixel zone background (game terrain with UI elements)
-- [ ] Generate wireframe zone background (grid with UI wireframes)
-- [ ] Create transition textures between zones
+### Phase 5: Act 2 Pre-Production — COMPLETE
+**Three rounds delivered the locked spec for Act 2.** Full storyboard was redesigned around Seedance interpolation between hand-drawn anchor frames (NOT separate zone backgrounds).
 
-### Phase 6: AI Companion Character Design — NOT STARTED
-- [ ] Design companion character (simple geometric form, expressive)
-- [ ] Generate key poses: assembly from wireframe, idle hover, card gesture, nod
-- [ ] Create pulsing idle loop
+#### Round 1 — Concept Exploration
+- [x] Generated concept frames for the 4 storyworlds (Film, Animation, AI Discovery, Workshop) and the workshop panorama
+- [x] AI Companion design exploration → terracotta-orange loaf creature with dot eyes selected
+- [x] Companion turnaround sheet — `runs/act2-exploration/concepts/companion/turnaround_02.png`
 
-### Phase 7: Act 2 Character Animation — NOT STARTED
-- [ ] Generate key poses for Sean walking through zones
-- [ ] Zone interaction poses (flipping thumbnail, looking at health bar, receiving card)
-- [ ] Final survey pose and hold
-- [ ] In-between generation
+#### Round 2 — Beat Sheet Locked (2026-04-25)
+- [x] 11-beat sheet locked: pulled-in transition, original revelation moment, panorama v3a
+- [x] Decision document: `runs/act2-exploration/concepts/round2-decisions.md`
 
-### Phase 8: Act 2 Compositing + Sound — NOT STARTED
-- [ ] Full composite with all zones, characters, and effects
-- [ ] Title card draw-on effect ("Sean Winslow" / "Creative Technologist")
-- [ ] Page lift transition
-- [ ] Sound design (pencil scratches, paper sounds, ambient)
-- [ ] Export full piece for festival submission
+#### Round 3 — Production Anchor Frames + Shot List (2026-04-26)
+- [x] Audited 11 Round 2 concepts vs production checklist → 10 PASS, 1 FAIL
+- [x] Regenerated failed anchor (`zone1/ai_discovery.png`) with corrected stubble + stage-direction-text fixes
+- [x] Generated 4 NEW bridge anchors:
+  - `bridges/film_to_animation.png`
+  - `bridges/animation_to_ai.png`
+  - `bridges/pre_pulled_in.png`
+  - `bridges/pm_role_grabbed.png`
+- [x] Wrote Act 2 Seedance Shot List — 10 Seedance clips + 4 FFmpeg holds + 3 hard cuts → ~50s runtime
+- [x] Audit: `runs/act2-exploration/round3-audit.md`
+- [x] Spec: `docs/act2-seedance-shot-list.md`
+
+### Phase 6: Act 2 Seedance Generation — READY TO EXECUTE
+**Plan:** `docs/act2-seedance-execution-plan.md` | **Two-milestone delivery:** M1 rough cut → M2 full-fidelity cut
+
+**Architecture:** New `pipeline/seedance_*` orchestrator scripts drive `bytedance/seedance-2.0` via `fal-client`. Each clip's extracted frames get tiered NB2 cleanup (Tier A+B by default) using the existing `generate_image.py` for aesthetic restoration. Final assembly via new `seedance_assemble.sh` with concat demuxer + Ken Burns pan + cursor blink overlay.
+
+#### M1 — Rough Cut (Tasks 1–6) — ~40 min, ~$10
+- [ ] **Task 1:** Freeze shot list as YAML (`pipeline/seedance_shotlist.yaml`)
+- [ ] **Task 2:** Build shared library (`pipeline/seedance_lib.py`)
+- [ ] **Task 3:** Test-shot mode — generate T2 (companion appears) on Fast tier 720p
+- [ ] **Task 4:** Batch mode — generate the remaining 9 Seedance clips in parallel
+- [ ] **Task 5:** Frame extraction at 12fps (`pipeline/seedance_extract.py`)
+- [ ] **Task 6:** Naive rough-cut assembly → `runs/{run_id}/export/pencil-test-act2-rough.mp4`
+
+#### M2 — Full-Fidelity Cut (Tasks 7–12) — ~3 hr additional, ~$10 additional
+- [ ] **Task 7:** QA audit script (`pipeline/seedance_audit.py`) + per-shot vision review
+- [ ] **Task 8:** NB2 cleanup loop (`pipeline/seedance_cleanup.py`) — Tier A+B frames per shot
+- [ ] **Task 9:** T1 cursor blink — generate cursor variants + 1Hz blink overlay
+- [ ] **Task 10:** Procreate panorama gate — manual cleanup of brand-label glitches in `final_panorama_v3_a.png`
+- [ ] **Task 11:** Full-fidelity assembly → `runs/{run_id}/export/pencil-test-act2.mp4`
+- [ ] **Task 12:** Update CLAUDE.md + this checklist on completion
+
+### Phase 7: Act 2 Polish + Sound — NOT STARTED
+- [ ] Tier C cleanup if M2 review reveals visible flicker between cleaned and uncleaned frames
+- [ ] Cross-fade tuning if any hard cut reads as too jarring
+- [ ] Sound design (pencil scratches, paper sounds, ambient music) — deferred to post phase
+- [ ] Title card / "Sean Winslow / Creative Technologist" draw-on effect — TBD scope
+
+### Phase 8: Ship to Portfolio — NOT STARTED
+- [ ] Combine Act 1 hero loop + Act 2 ~50s piece (transition TBD)
+- [ ] Final exports (GIF, WebM, MP4) at portfolio-ready dimensions
+- [ ] Embed in portfolio site
 
 ---
 
@@ -211,18 +244,25 @@
 
 | Item | Location |
 |------|----------|
-| Active run | `runs/run_2026-04-04_174805/` |
-| Approved keyframes | `runs/run_2026-04-04_174805/approved/` |
-| Exports | `runs/run_2026-04-04_174805/export/` |
-| Sprite assets | `runs/run_2026-04-04_174805/candidates/sprite/` |
-| Anchor image | `images/2D-Character-Sketch-Sean-v1.png` |
+| **Act 1 — active run** | `runs/run_2026-04-04_174805/` |
+| Act 1 approved keyframes | `runs/run_2026-04-04_174805/approved/` |
+| Act 1 exports | `runs/run_2026-04-04_174805/export/` |
+| Act 1 sprite assets | `runs/run_2026-04-04_174805/candidates/sprite/` |
+| **Act 2 — execution plan** | `docs/act2-seedance-execution-plan.md` |
+| Act 2 shot list (spec) | `docs/act2-seedance-shot-list.md` |
+| Act 2 anchor frames | `runs/act2-exploration/concepts/{zone1,zone3,zone4,bridges}/` |
+| Act 2 round-3 audit | `runs/act2-exploration/round3-audit.md` |
+| Act 2 beat sheet | `runs/act2-exploration/concepts/round2-decisions.md` |
+| AI Companion turnaround | `runs/act2-exploration/concepts/companion/turnaround_02.png` |
+| Seedance research findings | `docs/seedance-research-findings.md` |
+| Anchor image (A-2) | `images/2D-Character-Sketch-Sean-v1.png` |
 | Red circle markers | `images/PT_A1_F31_key_red-circle.png`, `images/PT_A1_F36_key_red-circle.png` |
 | ComfyUI data | `/Users/seanwinslow/Code-Brain/Comfy-UI` |
 | Phase 2 model requirements | `docs/phase2-model-requirements.md` |
 | ComfyUI workflows | `workflows/` |
 | In-between generator | `pipeline/generate_inbetweens.py` |
 | Storyboard | `docs/pencil-test-storyboard.md` |
-| Keyframe prompts | `docs/act1-keyframe-prompts.md` |
+| Keyframe prompts (Act 1) | `docs/act1-keyframe-prompts.md` |
 | Prompt files | `prompts/` |
 | Decision history | `CHANGELOG.md` |
 | Pipeline config | `manifest.yaml` |
