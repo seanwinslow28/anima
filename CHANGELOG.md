@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-05-09 — Add load_bakeoff_variants + make_bakeoff_run_dir helpers; establish tests/ directory
+
+**What changed:**
+1. `pipeline/seedance_lib.py` — appended two new helpers at end of file (after `reencode_to_png`):
+   - `load_bakeoff_variants(path)` — loads and validates the bake-off variants YAML, raises `FileNotFoundError` for missing files and `ValueError` for missing required top-level keys (`test_shots`, `seeds`, `variants`).
+   - `make_bakeoff_run_dir(base)` — creates `runs/seedance-bakeoff-{YYYY-MM-DD}/` and returns the Path; idempotent.
+   No existing imports were added (yaml, datetime, Path already at module top).
+2. `tests/__init__.py` — empty file; establishes the `tests/` package, the first unit-test directory in the codebase.
+3. `tests/test_seedance_bakeoff_lib.py` — 5 unit tests covering the two new helpers: dict-shape validation, FileNotFoundError on missing file, ValueError on missing required key, date-stamped dir creation, and idempotency.
+
+**Why:** Task 2 of the Seedance Prompt Bake-off plan (2026-05-09). The bake-off orchestrator (Task 3) needs a validated way to load the variants YAML and a stable run-dir naming scheme that matches the standard `runs/` layout. Pure-function helpers are isolated here so they can be unit-tested without any fal.ai API calls — matching the existing pattern where `upload_anchor` (API-dependent) has no unit tests and only integration coverage via live smoke runs. TDD cycle followed: tests written first (Step 3 confirmed `ImportError: cannot import name 'load_bakeoff_variants'`), then implementation, then 5/5 passing (Step 5).
+
+---
+
 ## 2026-05-02 — Add Act 1 Seedance integration plan + supporting reference artifacts
 
 **What changed:** Added five additional artifacts created during the v2/v3 Seedance prompt iteration and the Act 1 finishing kickoff:
