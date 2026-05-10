@@ -33,6 +33,7 @@ These are baked in by the research priors and the bake-off evidence. Modifying t
 6. **Affirmative material descriptors only.** "Graphite on cream paper, organic line wavering, warm ivory tone" — what you DO want, never what you don't.
 7. **Genre anchor is load-bearing.** Always lead with `Traditional 2D animation pencil test in the style of classic Disney rough animation.` Removing it crashed V06's score by 8 points.
 8. **No AUDIO line.** V04's audio cues crushed scores by 8 points even with `generate_audio: False` — in-prompt audio descriptors leak into the visual generation as confounds.
+9. **Use Fast tier (`bytedance/seedance-2.0/fast/image-to-video`) as the production default.** Two Standard-tier verifications (V08/S0 identity-stress + V08/PM→PB panorama harder scene) both showed Fast producing smoother motion and cleaner transitions than Standard at half the cost. Standard tier is reserved for cases where Fast has a known regression — none observed in the bake-off or follow-up tests.
 
 ## Per-axis verdicts (from the bake-off)
 

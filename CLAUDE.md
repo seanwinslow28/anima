@@ -28,6 +28,7 @@ These rules apply to **every** Claude Code session working in this project. They
 | A-2 Anchor | `images/2D-Character-Sketch-Sean-v1.png` | Identity reference — all generated frames must match this character |
 | Manifest | `manifest.yaml` | Pipeline configuration — single source of truth for generation, audit, and export settings |
 | Seedance Research | `docs/seedance-research-findings.md` | Seedance 2.0 capabilities, API specs, prompting guide, style preservation strategies |
+| **Seedance Prompt Template (v4)** | `prompts/seedance-template-v4.md` | **Canonical Seedance 2.0 prompt template — copy/fill for every new shot.** Locked 2026-05-10 from a 9-variant bake-off. Use Fast tier as the production default. Supersedes v3 (`docs/2026-05-02-act2-seedance-prompts-v3-conversation-style.md`). |
 | **Act 2 Seedance Shot List** | `docs/act2-seedance-shot-list.md` | **Current source of truth for Act 2 Seedance work.** 10 clips + 4 holds, anchor frame paths, draft Seedance prompts, fallback strategies (Round 3 deliverable, 2026-04-26) |
 | **Act 2 Seedance Execution Plan** | `docs/2026-04-27-act2-seedance-execution-plan.md` | **Approved 12-task implementation plan for the Seedance generation phase.** New scripts (`seedance_generate.py`, `seedance_extract.py`, `seedance_cleanup.py`, `seedance_audit.py`, `seedance_assemble.sh`, `seedance_lib.py`), tiered NB2 cleanup, Procreate gate, two-milestone delivery (rough cut → full-fidelity cut). Pick this up to start execution. |
 | Round 2 Beat Decisions | `runs/act2-exploration/concepts/round2-decisions.md` | Locked Act 2 11-beat sheet (transition pick, revelation pick, panorama pick) — feeds the Act 2 shot list |
@@ -299,6 +300,7 @@ ffmpeg -i seedance_output.mp4 -vf fps=12 frame_%04d.png
 - Always include: "fixed camera, locked tripod" and "stylus in right hand"
 - Never use: "cinematic", "4K", "glow", "epic", unqualified "fast"
 - Don't re-describe the character — the start/end frames provide that
+- **For all new shots, use the v4 template at `prompts/seedance-template-v4.md`.** Fill the `[BRACKETED]` placeholders; do not modify the structural scaffolding. Run at Fast tier as the production default.
 - See `docs/seedance-research-findings.md` for full prompting guide
 
 ## Dependencies

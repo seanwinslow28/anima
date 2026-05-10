@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-05-10 — Seedance prompt template v4 (bake-off)
+
+- **Locked `prompts/seedance-template-v4.md`** as the canonical Seedance 2.0 prompt template, replacing v3 (`docs/2026-05-02-act2-seedance-prompts-v3-conversation-style.md`).
+- Winning variant: **V08 combined_best** — score 12/20 across W1 (walk shot) + S0 (identity-stress shot) test shots. Three-way tie at 12 (V01, V02, V08); V08 won tiebreaker 1 (S0 score = 6 vs V01's 4) and tiebreaker 2 (shorter prompt at ~91 words vs V02's ~95 words). Sean confirmed V08 has the best overall outputs for walking, background movements, head movements, and transitions.
+- **Fast tier locked as production default.** Two Standard-tier verifications (V08/S0 identity-stress + V08/PM→PB panorama harder scene) both showed Fast producing smoother motion and cleaner transitions at half the cost. The design-spec assumption that "Standard ≥ Fast" was wrong for pencil-test aesthetic content.
+- Process: 3-phase plan (deep research → 9-variant structured bake-off → tier verification). Spec at [docs/2026-05-09-seedance-prompt-bakeoff-design.md](docs/2026-05-09-seedance-prompt-bakeoff-design.md). Results at [docs/2026-05-09-seedance-prompt-bakeoff-results.md](docs/2026-05-09-seedance-prompt-bakeoff-results.md). Phase 1 deep research surfaced 5 settled priors (drop negation; trim word count; don't redescribe frames; banned-words list; structured prose beats JSON). Phase 2 bake-off resolved 6 testable axes with empirical evidence on Sean's specific aesthetic.
+- Per-axis findings:
+  - Genre anchor ("classic Disney rough animation"): **load-bearing** (V06 without it dropped to 4/20).
+  - Transition-arc framing ("Starting with… transitioning through… ending with…"): **helps S0 by +2 points**.
+  - Animation-timing language (anticipation/weight shift/follow-through): **helps W1, hurts S0** — embed only on physical-motion shots.
+  - In-prompt audio descriptors: **catastrophic** (V04 = 4/20). Never use.
+  - "Micro push-in 2%, 50mm look" canonical camera: hurts standalone (V05 = 8/20) but works inside the V08 stack.
+  - Trimmed style block ("Graphite on cream paper, organic line wavering, warm ivory tone"): hurts standalone (V07 = 6/20) but works inside the V08 stack.
+- Total cost: $39.36 (Phase 1 free; Phase 2 = $0.96 smoke + $33.60 full bake-off + $1.92 S0 verify + $2.88 PM→PB Fast+Standard verify). Total wall-clock: ~11 min for generation; manual scoring + analysis spread across 2026-05-09 / 2026-05-10.
+- New infrastructure: `pipeline/seedance_bakeoff.py` (orchestrator), `pipeline/seedance_bakeoff_variants.yaml` (variant matrix), `tests/test_seedance_bakeoff_lib.py` (first unit tests in the repo). Helpers `load_bakeoff_variants()` and `make_bakeoff_run_dir()` added to `pipeline/seedance_lib.py`.
+- Sean used a 3-tier ordinal scoring system (great / liked / not noted) instead of the 5-binary-criteria rubric the plan anticipated — translated to {5, 3, 1} per cell. Halt 2 (≥14/20) was raised under strict reading; Sean reviewed the per-axis findings and confirmed V08 as winner. Halt 1 (V00 wins by 2+ over V01) did not fire — V01 actually beat V00 by 2, validating Phase 1 research priors.
+
+---
+
 ## 2026-05-09 — Add load_bakeoff_variants + make_bakeoff_run_dir helpers; establish tests/ directory
 
 **What changed:**
