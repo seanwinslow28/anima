@@ -62,3 +62,47 @@ V04 (audio_cues) and V06 (no_genre_anchor) scored 4/20 — disqualified as broke
 ## Decision
 
 Lock template based on V08 structure. See `prompts/seedance-template-v4.md`.
+
+## Standard-tier verification
+
+Two Fast vs Standard comparisons were run on the locked V08 prompt structure. **In both cases, Fast tier won on visual quality** — Standard's higher bitrate did not translate to smoother motion or cleaner transitions for hand-drawn pencil-test content.
+
+### Verification 1: V08/S0 (identity-stress shot)
+
+| | Fast | Standard |
+|---|---|---|
+| Run dir | `runs/seedance-bakeoff-2026-05-09/V08_combined_best/S0/seed_0042/` | `runs/seedance-bakeoff-2026-05-09-standard-verify/V08_combined_best/S0/seed_0042/` |
+| File size | 2.42 MB | 3.12 MB |
+| Wall clock | 517 s | 183 s |
+| Cost | $0.96 | $1.92 |
+| Seed | 42 | 42 |
+| Sean's score | 5/5 ("great") | < 5 (not as smooth) |
+
+**Verdict:** Fast wins. Sean's note: "The fast output is better in this case. The movement and transition was smoother."
+
+### Verification 2: V08 PM→PB panorama (harder scene)
+
+A follow-up test on a harder scene to confirm the Fast > Standard finding holds under more demanding content (multiple elements appearing, pose change, mascot transformation, panorama widening).
+
+- **Anchors:**
+  - Start: `runs/act2-exploration/flipbook/12_PM-end_PB-start_pm-role-grabbed.png` (Sean at Kanban board pinning a code card to REVIEW)
+  - End: `runs/act2-exploration/flipbook/13_PB-end_final-panorama.png` (wide panorama with film camera, animation refs, AI headlines, flying Claude mascot)
+- **Prompt:** V08-style transition-arc following the locked v4 template (~98 words). See `runs/v4-template-verify-pm-pb-2026-05-10/{fast,standard}/meta.json` for the verbatim prompt.
+
+| | Fast | Standard |
+|---|---|---|
+| Output | `runs/v4-template-verify-pm-pb-2026-05-10/fast/output.mp4` | `runs/v4-template-verify-pm-pb-2026-05-10/standard/output.mp4` |
+| File size | 3.46 MB | 3.62 MB |
+| Wall clock | 170 s | 154 s |
+| Cost | $0.96 | $1.92 |
+| Seed | 42 | 42 (deterministic pair) |
+
+**Verdict:** Fast still wins. Sean's note: "Honestly, yes, fast still wins."
+
+### Combined verdict
+
+**Use Fast tier by default for V08-style prompts.** Two independent verifications (one identity-stress, one panorama-reveal) both showed Fast producing smoother motion and cleaner transitions than Standard at half the cost. Standard tier is reserved for cases where Fast has a known regression — none observed in the bake-off.
+
+This is contra the design-spec assumption ("Standard should be at least as good; usually slightly cleaner"). For pencil-test aesthetic content, the design assumption was wrong: Fast tier produces better motion fidelity for hand-drawn aesthetics, possibly because Standard's higher-resolution model adds detail that doesn't fit the loose pencil-test rendering style.
+
+**Cost impact:** Halving per-clip cost from $1.92 → $0.96 cuts Act 2 production budget significantly. Estimated ~14 Act 2 shots × ($1.92 - $0.96) = ~$13.44 saved across the pipeline.
