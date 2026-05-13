@@ -81,7 +81,18 @@ def test_retry_attempt_prompts_differ():
 
 @patch("pipeline.seedance_v2_cleanup.subprocess.run")
 def test_run_cleanup_invokes_generate_image_with_refs(mock_run, tmp_path):
-    mock_run.return_value.returncode = 0
+    def fake_subprocess(cmd, *args, **kwargs):
+        # Find the --output path and touch it so reencode_and_resize succeeds
+        out_idx = cmd.index("--output") + 1
+        out_path = Path(cmd[out_idx])
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        # Touch with valid PNG so reencode_and_resize doesn't crash.
+        # The simplest cross-platform approach is to write a 1x1 PNG.
+        from PIL import Image
+        Image.new("RGB", (10, 10), (255, 255, 255)).save(out_path, "PNG")
+        mock_result = type("Result", (), {"returncode": 0, "stderr": ""})
+        return mock_result()
+    mock_run.side_effect = fake_subprocess
     row = make_row(5, "24fps", ["approved/PT_A1_F22_key.png"])
     (tmp_path / "approved").mkdir()
     (tmp_path / "approved" / "PT_A1_F01_key.png").touch()

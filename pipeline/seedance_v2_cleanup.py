@@ -19,6 +19,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -141,14 +142,17 @@ def run_cleanup_for_slot(
         "--env-file",
         ".env",
     ]
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
     if result.returncode != 0:
         raise RuntimeError(
             f"generate_image.py failed for slot {row.slot} attempt {attempt}:\n"
             f"stderr: {result.stderr}"
         )
-    if out_path.exists():
-        reencode_and_resize(out_path)
+    if not out_path.exists():
+        raise RuntimeError(
+            f"generate_image.py exited 0 but did not write {out_path} for slot {row.slot} attempt {attempt}"
+        )
+    reencode_and_resize(out_path)
     return out_path
 
 
@@ -222,7 +226,7 @@ def main() -> int:
                     prev_cleaned=prev_cleaned,
                     attempt=attempt,
                 )
-            except RuntimeError as e:
+            except (RuntimeError, subprocess.TimeoutExpired) as e:
                 print(f"  Slot {row.slot:03d} attempt {attempt}: ERROR — {e}", file=sys.stderr)
                 continue
             print(f"  Slot {row.slot:03d} attempt {attempt}: {out_path}")
@@ -231,8 +235,14 @@ def main() -> int:
                 success = True
                 chosen_attempt = attempt
                 break
-            # Audit-and-retry is handled by seedance_v2_audit.py in a separate
-            # step; for now, accept attempt 1 and let audit flag failures.
+            # The retry loop above only re-iterates on subprocess failures
+            # (RuntimeError / TimeoutExpired). Soft-fail retries (style drift,
+            # identity drift, etc.) are NOT driven by this script — they are
+            # invoked manually for flagged slots via direct library calls to
+            # run_cleanup_for_slot(...attempt=2 or 3...) per Task 7 Step 7.
+            # `args.first_attempt_only` is preserved for the rough-cut pass
+            # described in Task 7 Step 2; both branches currently do the same
+            # thing because soft-fail audit is run separately.
             success = True
             chosen_attempt = attempt
             break
@@ -241,7 +251,6 @@ def main() -> int:
             chosen = args.clean_dir / f"PT_A1_v2_slot{row.slot:03d}_attempt_{chosen_attempt:02d}.png"
             stable = args.clean_dir / f"PT_A1_v2_slot{row.slot:03d}.png"
             if chosen.exists():
-                import shutil
                 shutil.copy(chosen, stable)
                 prev_cleaned = stable
                 prev_cadence = row.cadence
