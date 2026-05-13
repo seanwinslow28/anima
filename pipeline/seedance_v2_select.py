@@ -117,13 +117,15 @@ def main() -> int:
     ap.add_argument(
         "--anchor-root",
         type=Path,
-        default=Path.cwd(),
-        help="Root for resolving anchor paths (default: cwd)",
+        default=None,
+        help="Root for resolving anchor paths (default: derived from selection.md location)",
     )
     args = ap.parse_args()
 
+    anchor_root = args.anchor_root if args.anchor_root is not None else args.selection_md.parent.parent
+
     rows = parse_selection_md(args.selection_md)
-    errors = validate_selection(rows, args.anchor_root)
+    errors = validate_selection(rows, anchor_root)
     if errors:
         for e in errors:
             print(f"  ERROR: {e}", file=sys.stderr)
