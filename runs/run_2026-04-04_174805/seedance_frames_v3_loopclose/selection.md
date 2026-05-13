@@ -3,7 +3,7 @@
 **Source MP4:** `runs/run_2026-04-04_174805/export/seedance-2.0-output/Act-1-Test-3-Seedance-2.0.mp4`
 **Extraction:** `runs/run_2026-04-04_174805/seedance_frames_v3_loopclose/raw_24fps/frame_NNNN.png` (166 frames @ 24fps, 6.92s)
 **Design spec:** `docs/2026-05-12-act1-seedance-v2-integration-design.md`
-**Signed off by:** [User name + date when approved]
+**Signed off by:** Sean Winslow — 2026-05-13
 
 > **How to read this file.** Each row is one extracted 24fps frame (or a HOLD-COLLAPSE range of consecutive frames covered by the surrounding KEEP slot). Slot numbering CONTINUES from `seedance_frames/selection.md` — v2 ends at slot 074, so this file begins at slot 075 and ends at slot 140.
 >

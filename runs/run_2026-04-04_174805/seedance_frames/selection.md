@@ -3,7 +3,7 @@
 **Source MP4:** `runs/run_2026-04-04_174805/export/seedance-2.0-output/Act-1-Test-2-Seedance-2.0.mp4`
 **Extraction:** `runs/run_2026-04-04_174805/seedance_frames/raw_24fps/frame_NNNN.png` (166 frames @ 24fps, 6.92s)
 **Design spec:** `docs/2026-05-12-act1-seedance-v2-integration-design.md`
-**Signed off by:** [User name + date when approved]
+**Signed off by:** Sean Winslow — 2026-05-13
 
 > **How to read this file.** Each row is one extracted 24fps frame (or a HOLD-COLLAPSE range of consecutive frames covered by the surrounding KEEP slot). KEEP rows get a unique slot number — these are the frames that go through NB2 cleanup and end up in the final assembly. HOLD-COLLAPSE ranges are dropped from the pipeline but the preceding KEEP frame is held at assembly time to cover their duration. Slot numbering is contiguous across this file and `seedance_frames_v3_loopclose/selection.md` — v2 ends at slot 074, v3 starts at slot 075.
 >
