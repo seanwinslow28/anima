@@ -26,6 +26,13 @@ from pathlib import Path
 
 from PIL import Image
 
+# Allow direct invocation via `python3 pipeline/seedance_v2_X.py ...` by
+# putting the project root on sys.path. Pytest already handles this via
+# pipeline/tests/__init__.py.
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
+
 from pipeline.seedance_v2_select import SelectionRow, parse_selection_md
 
 
