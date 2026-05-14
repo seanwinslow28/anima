@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-05-14 — Reorganize research notes into `docs/research/` + update CLAUDE.md pointers
+
+- **Moved:** `docs/seedance-research-findings.md` → `docs/research/seedance-research-findings.md`. The new `docs/research/` directory now collects external research source material (Seedance findings, ChatGPT/Gemini/Perplexity query packets, autoresearch skill optimizer prompt) separate from active project plans in `docs/`.
+- **CLAUDE.md path fixes:** Source-of-truth table row for Seedance Research, the directory-tree diagram, and the Seedance prompting rules link all now point at the new path.
+- **Why:** keeps the active `docs/` root focused on production plans/specs; research dumps were starting to clutter the root and obscure what's actionable.
+
+---
+
+## 2026-05-10 — Package Seedance v4 template as portable `seedance-prompting` skill
+
+- **New skill:** `~/.claude/skills/seedance-prompting/SKILL.md` — packages the locked v4 template + bake-off-derived rules as a personal Claude Code skill so the prompt structure is available in any project, not just this one.
+- **Scope:** Universal Seedance 2.0 image-to-video prompting principles (word count, no negation, banned words, no audio, single camera, transition-arc framing, Fast tier default, dual-seed runs) plus the locked pencil-test fills (genre anchor, style block) and an "Adapting to other aesthetics" section with substitution patterns for cel/gouache/rotoscope styles.
+- **Skill description triggers** on "Seedance", "fal.ai video", "image-to-video", "I2V", "video between two keyframes", "animate keyframes", "pencil test video", "in-between video model", "Bytedance video model".
+- **Validated via TDD:** Baseline subagent (no skill) violated 7 of 9 locked rules on a generic mouse/cardboard-moon test shot (negation, frame re-description, multi-camera directives, missing genre anchor, missing transition-arc, wrong style block, ~105 words). Verification subagent with skill invoked produced textbook compliance — exact locked structure, ~95 words, all 9 rules satisfied, Fast tier + dual-seed recommendation.
+- **Cross-references added:** `prompts/seedance-template-v4.md` notes the portable skill in its header. `CLAUDE.md` row for the v4 template now mentions the skill path.
+- **Why a separate skill rather than just relying on the project doc:** project-local files only load when working in this repo; the portable skill lets future Claude Code sessions on other animation projects (or repurposed pencil-test work in other directories) automatically apply the bake-off-validated structure without copying files around.
+
+---
+
 ## 2026-05-10 — Seedance prompt template v4 (bake-off)
 
 - **Locked `prompts/seedance-template-v4.md`** as the canonical Seedance 2.0 prompt template, replacing v3 (`docs/2026-05-02-act2-seedance-prompts-v3-conversation-style.md`).

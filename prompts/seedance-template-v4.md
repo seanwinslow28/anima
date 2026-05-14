@@ -1,6 +1,7 @@
 # Seedance 2.0 Prompt Template — v4
 
 > **Status:** Locked 2026-05-10 — winning structure from the prompt bake-off (Variant V08 combined_best, score 12/20).
+> **Portable skill:** This template is also packaged as the personal `seedance-prompting` skill (`~/.claude/skills/seedance-prompting/SKILL.md`) so it loads automatically in any Claude Code session, on any project. This file remains the project-local reference with Pencil Test Act 2 example fills.
 > **Supersedes:** [docs/2026-05-02-act2-seedance-prompts-v3-conversation-style.md](../docs/2026-05-02-act2-seedance-prompts-v3-conversation-style.md) (v3)
 > **Evidence:** [docs/2026-05-09-seedance-prompt-bakeoff-results.md](../docs/2026-05-09-seedance-prompt-bakeoff-results.md)
 > **Design spec:** [docs/2026-05-09-seedance-prompt-bakeoff-design.md](../docs/2026-05-09-seedance-prompt-bakeoff-design.md)
