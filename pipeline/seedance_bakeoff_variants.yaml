@@ -1,0 +1,239 @@
+# Seedance Prompt Template Bake-off — Variant Matrix
+# Spec: docs/2026-05-09-seedance-prompt-bakeoff-design.md
+# Each variant defines the same prompt structure for both test shots (W1, S0).
+# The orchestrator iterates: variant × shot × seed (42, 1337).
+
+version: 1
+created: 2026-05-09
+
+# Test shots (anchors come from pipeline/seedance_shotlist.yaml at runtime).
+test_shots:
+  - W1
+  - S0
+
+# Seeds used per (variant, shot). Two seeds per cell => stable signal under model variance.
+seeds: [42, 1337]
+
+# Run defaults (overridable via CLI).
+defaults:
+  tier: fast
+  resolution: 720p
+  duration: 4
+  generate_audio: false
+
+variants:
+  - id: V00
+    name: v3_control
+    description: "v3 baseline (control). Original wording, ~115 words."
+    isolates_axis: control
+    prompts:
+      W1: |
+        Traditional 2D animation pencil test in the style of classic Disney rough animation. Sean walks left to right across the frame at a steady, relaxed pace. His head turns slightly as he takes in the floating Film props around him. The props remain stationary — only Sean moves. Sean is clean-shaven throughout.
+
+        CAMERA: Completely static, locked tripod. No pan, no zoom, no jitter, no rotation.
+
+        CRITICAL STYLE REQUIREMENTS:
+        - Rough graphite pencil line quality on every frame
+        - Cream paper grain texture stays consistent
+        - Visible construction marks on the character
+        - Bold dark pencil outlines, no anti-aliasing on edges
+        - Flat graphite shading only, no digital gradients or smooth blending
+        - Even diffuse animation paper lighting, no cinematic shadows
+        - No anime stylization, no digital cleanness, no glossy polish
+
+        Duration: 4 seconds.
+      S0: |
+        Traditional 2D animation pencil test in the style of classic Disney rough animation. The floating AI news headlines dissolve away from the frame as the desk, laptop, second monitor, coffee mug, and chair materialize in their place. Sean transitions from a mid-stride walk to a seated working pose at the desk. A subtle 5-o'clock shadow stubble grows in on his face as time passes.
+
+        CAMERA: Completely static, locked tripod. No pan, no zoom, no jitter, no rotation.
+
+        CRITICAL STYLE REQUIREMENTS:
+        - Rough graphite pencil line quality on every frame
+        - Cream paper grain texture stays consistent
+        - Visible construction marks on the character
+        - Bold dark pencil outlines, no anti-aliasing on edges
+        - Flat graphite shading only, no digital gradients or smooth blending
+        - Even diffuse desk lighting, no cinematic shadows
+        - No anime stylization, no digital cleanness, no glossy polish
+
+        Duration: 4 seconds.
+
+  - id: V01
+    name: research_corrected_baseline
+    description: "v3 with negations dropped, word count trimmed, redundant style description removed. ~80 words."
+    isolates_axis: research_priors_applied
+    prompts:
+      W1: |
+        Traditional 2D animation pencil test in the style of classic Disney rough animation. Sean walks left to right across the frame at a steady, relaxed pace. His head turns slightly as he takes in the floating Film props around him. The props stay stationary; only Sean moves. Sean is clean-shaven throughout.
+
+        CAMERA: Completely static, locked tripod.
+
+        STYLE: Graphite on cream paper, rough pencil line quality, organic line wavering, visible construction marks, warm ivory paper tone, flat graphite shading.
+
+        Duration: 4 seconds.
+      S0: |
+        Traditional 2D animation pencil test in the style of classic Disney rough animation. The floating AI news headlines dissolve away as the desk, laptop, monitor, coffee mug, and chair materialize. Sean transitions from a mid-stride walk to a seated working pose at the desk. A subtle 5-o'clock shadow stubble grows in on his face as time passes.
+
+        CAMERA: Completely static, locked tripod.
+
+        STYLE: Graphite on cream paper, rough pencil line quality, organic line wavering, visible construction marks, warm ivory paper tone, flat graphite shading.
+
+        Duration: 4 seconds.
+
+  - id: V02
+    name: transition_arc
+    description: "V1 + transition-arc framing (Starting with… transitioning to… ending with…)."
+    isolates_axis: B
+    prompts:
+      W1: |
+        Traditional 2D animation pencil test in the style of classic Disney rough animation. Starting with Sean stepping into frame from the left amid floating Film props, transitioning to him walking steadily across the frame with his head turning to take in the props, ending with him approaching the right edge as the Film props give way. The props stay stationary; only Sean moves. Sean is clean-shaven throughout.
+
+        CAMERA: Completely static, locked tripod.
+
+        STYLE: Graphite on cream paper, rough pencil line quality, organic line wavering, visible construction marks, warm ivory paper tone, flat graphite shading.
+
+        Duration: 4 seconds.
+      S0: |
+        Traditional 2D animation pencil test in the style of classic Disney rough animation. Starting with Sean mid-stride amid floating AI news headlines, transitioning to him approaching and lowering himself into the chair as the desk, laptop, monitor, coffee mug, and chair materialize and the headlines dissolve, ending with Sean seated at the desk in a working pose with subtle 5-o'clock shadow stubble grown in.
+
+        CAMERA: Completely static, locked tripod.
+
+        STYLE: Graphite on cream paper, rough pencil line quality, organic line wavering, visible construction marks, warm ivory paper tone, flat graphite shading.
+
+        Duration: 4 seconds.
+
+  - id: V03
+    name: animation_timing
+    description: "V1 + animation-timing motion language (anticipation, hold, snap, settle)."
+    isolates_axis: C
+    prompts:
+      W1: |
+        Traditional 2D animation pencil test in the style of classic Disney rough animation. Sean walks left to right across the frame: anticipation as his weight shifts forward, settled walk cycle through the middle, head turning with a slight delayed follow-through to take in the floating Film props. The props stay stationary; only Sean moves. Sean is clean-shaven throughout.
+
+        CAMERA: Completely static, locked tripod.
+
+        STYLE: Graphite on cream paper, rough pencil line quality, organic line wavering, visible construction marks, warm ivory paper tone, flat graphite shading.
+
+        Duration: 4 seconds.
+      S0: |
+        Traditional 2D animation pencil test in the style of classic Disney rough animation. The floating AI news headlines fade out as the desk, laptop, monitor, coffee mug, and chair materialize. Sean's mid-stride walk anticipates a slow-down, settles into a chair-bend with weight shift, holds momentarily in seated pose. A subtle 5-o'clock shadow stubble grows in across the duration.
+
+        CAMERA: Completely static, locked tripod.
+
+        STYLE: Graphite on cream paper, rough pencil line quality, organic line wavering, visible construction marks, warm ivory paper tone, flat graphite shading.
+
+        Duration: 4 seconds.
+
+  - id: V04
+    name: audio_cues
+    description: "V1 + minimal subtle audio descriptors. generate_audio remains False; tests whether audio cues drive visual physics."
+    isolates_axis: D
+    prompts:
+      W1: |
+        Traditional 2D animation pencil test in the style of classic Disney rough animation. Sean walks left to right across the frame at a steady, relaxed pace. His head turns slightly as he takes in the floating Film props around him. The props stay stationary; only Sean moves. Sean is clean-shaven throughout.
+
+        AUDIO: Soft footsteps on paper, faint pencil scratch, paper rustle.
+
+        CAMERA: Completely static, locked tripod.
+
+        STYLE: Graphite on cream paper, rough pencil line quality, organic line wavering, visible construction marks, warm ivory paper tone, flat graphite shading.
+
+        Duration: 4 seconds.
+      S0: |
+        Traditional 2D animation pencil test in the style of classic Disney rough animation. The floating AI news headlines dissolve away as the desk, laptop, monitor, coffee mug, and chair materialize. Sean transitions from a mid-stride walk to a seated working pose at the desk. A subtle 5-o'clock shadow stubble grows in on his face as time passes.
+
+        AUDIO: Faint paper rustle, soft chair creak, quiet pencil tap.
+
+        CAMERA: Completely static, locked tripod.
+
+        STYLE: Graphite on cream paper, rough pencil line quality, organic line wavering, visible construction marks, warm ivory paper tone, flat graphite shading.
+
+        Duration: 4 seconds.
+
+  - id: V05
+    name: canonical_camera
+    description: "V1 + canonical camera syntax (locked tripod, micro push-in 2%, 50mm look)."
+    isolates_axis: E
+    prompts:
+      W1: |
+        Traditional 2D animation pencil test in the style of classic Disney rough animation. Sean walks left to right across the frame at a steady, relaxed pace. His head turns slightly as he takes in the floating Film props around him. The props stay stationary; only Sean moves. Sean is clean-shaven throughout.
+
+        CAMERA: Locked tripod, micro push-in 2%, 50mm look.
+
+        STYLE: Graphite on cream paper, rough pencil line quality, organic line wavering, visible construction marks, warm ivory paper tone, flat graphite shading.
+
+        Duration: 4 seconds.
+      S0: |
+        Traditional 2D animation pencil test in the style of classic Disney rough animation. The floating AI news headlines dissolve away as the desk, laptop, monitor, coffee mug, and chair materialize. Sean transitions from a mid-stride walk to a seated working pose at the desk. A subtle 5-o'clock shadow stubble grows in on his face as time passes.
+
+        CAMERA: Locked tripod, micro push-in 2%, 50mm look.
+
+        STYLE: Graphite on cream paper, rough pencil line quality, organic line wavering, visible construction marks, warm ivory paper tone, flat graphite shading.
+
+        Duration: 4 seconds.
+
+  - id: V06
+    name: no_genre_anchor
+    description: "V1 minus genre anchor. Tests whether 'classic Disney rough animation' is load-bearing."
+    isolates_axis: A
+    prompts:
+      W1: |
+        Sean walks left to right across the frame at a steady, relaxed pace. His head turns slightly as he takes in the floating Film props around him. The props stay stationary; only Sean moves. Sean is clean-shaven throughout.
+
+        CAMERA: Completely static, locked tripod.
+
+        STYLE: Graphite on cream paper, rough pencil line quality, organic line wavering, visible construction marks, warm ivory paper tone, flat graphite shading.
+
+        Duration: 4 seconds.
+      S0: |
+        The floating AI news headlines dissolve away as the desk, laptop, monitor, coffee mug, and chair materialize. Sean transitions from a mid-stride walk to a seated working pose at the desk. A subtle 5-o'clock shadow stubble grows in on his face as time passes.
+
+        CAMERA: Completely static, locked tripod.
+
+        STYLE: Graphite on cream paper, rough pencil line quality, organic line wavering, visible construction marks, warm ivory paper tone, flat graphite shading.
+
+        Duration: 4 seconds.
+
+  - id: V07
+    name: trimmed_style_block
+    description: "V1 with hyper-trimmed style block (3 affirmative descriptors only)."
+    isolates_axis: F
+    prompts:
+      W1: |
+        Traditional 2D animation pencil test in the style of classic Disney rough animation. Sean walks left to right across the frame at a steady, relaxed pace. His head turns slightly as he takes in the floating Film props around him. The props stay stationary; only Sean moves. Sean is clean-shaven throughout.
+
+        CAMERA: Completely static, locked tripod.
+
+        STYLE: Graphite on cream paper, organic line wavering, warm ivory tone.
+
+        Duration: 4 seconds.
+      S0: |
+        Traditional 2D animation pencil test in the style of classic Disney rough animation. The floating AI news headlines dissolve away as the desk, laptop, monitor, coffee mug, and chair materialize. Sean transitions from a mid-stride walk to a seated working pose at the desk. A subtle 5-o'clock shadow stubble grows in on his face as time passes.
+
+        CAMERA: Completely static, locked tripod.
+
+        STYLE: Graphite on cream paper, organic line wavering, warm ivory tone.
+
+        Duration: 4 seconds.
+
+  - id: V08
+    name: combined_best
+    description: "Combined-best: V2 + V3 + V5 + V7. Tests whether non-mutually-exclusive winners stack."
+    isolates_axis: stack
+    prompts:
+      W1: |
+        Traditional 2D animation pencil test in the style of classic Disney rough animation. Starting with Sean stepping into frame from the left amid floating Film props, transitioning through a steady walk cycle with anticipation in his forward weight shift and a slight delayed follow-through as his head turns to take in the props, ending as he approaches the right edge. The props stay stationary; only Sean moves. Sean is clean-shaven throughout.
+
+        CAMERA: Locked tripod, micro push-in 2%, 50mm look.
+
+        STYLE: Graphite on cream paper, organic line wavering, warm ivory tone.
+
+        Duration: 4 seconds.
+      S0: |
+        Traditional 2D animation pencil test in the style of classic Disney rough animation. Starting with Sean mid-stride amid floating AI news headlines, transitioning through a slow-down anticipation and chair-bend with weight shift settling into a seated pose as the desk, laptop, monitor, coffee mug, and chair materialize, ending in held seated working pose with subtle 5-o'clock shadow stubble grown in.
+
+        CAMERA: Locked tripod, micro push-in 2%, 50mm look.
+
+        STYLE: Graphite on cream paper, organic line wavering, warm ivory tone.
+
+        Duration: 4 seconds.
