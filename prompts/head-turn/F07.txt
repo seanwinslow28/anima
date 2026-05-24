@@ -1,0 +1,63 @@
+[LABEL — STATED FIRST FOR EMPHASIS]
+The production label in the top-left corner MUST read "HT-7". This is
+non-negotiable. Do NOT write "A-2" in the corner. The label is "HT-7".
+
+[TASK DECLARATION]
+Generate FRAME 7 of a 9-frame head-turn animation cycle. This frame must
+match the EXACT head pose, tilt, angle, eye-line, and silhouette shown in
+the POSE REFERENCE (3rd attached image — head-turn-7). Render as the SEAN
+CHARACTER shown in the IDENTITY REFERENCES (1st and 2nd images) and
+maintain identity continuity with the PREVIOUS FRAME (4th attached image
+— approved frame 6).
+
+The pose reference is SCAFFOLD ONLY. The previous frame is the
+IDENTITY/STYLE ANCHOR.
+
+This is frame 7 — the character is mid-rise. His head has lifted notably
+from the dip, his chin is starting to come back up, and his eyes are
+beginning to open. He is rotating further toward facing the canvas's RIGHT.
+This is the mirror equivalent of F3 (just on the rising side).
+
+[POSE LOCK — ABSOLUTE CANVAS DIRECTIONS]
+- The head is now angled toward the RIGHT side of the canvas (about
+  30-45 degrees off-frontal toward right). The face is no longer
+  forward-tilted-down; it has come up to a more horizontal carriage
+  but is not yet looking fully up.
+- The chin has lifted from the F6 tucked position but is not yet at the
+  "looking up" angle. Head is in a near-level forward gaze with a
+  slight rightward rotation.
+- The eyes are starting to OPEN — half-lidded / partially open. Lashes
+  visible, a hint of iris may be peeking through. Not fully open like
+  F1/F9, not fully closed like F5.
+- The nose points toward the RIGHT side of the canvas, roughly
+  horizontally (with a slight downward tilt still).
+- The visible ear is the LEFT ear (on the canvas-left side of the head).
+- The hair swoop is now lifting up and angling toward the canvas's RIGHT
+  — beginning to mirror the F3 swoop direction.
+- The mouth is small, slightly parted or gently closed.
+- A short neck stub is visible at the bottom, angled slightly toward
+  the canvas's left.
+
+[FRAMING LOCK — MATCH F6]
+- Canvas is 16:9 landscape.
+- Head occupies approximately 35-45% of canvas height — match F6.
+- Head positioned near canvas center (gradually drifting toward
+  slightly-right of center as the rotation progresses).
+- Generous negative space surrounds the head.
+
+[IDENTITY + STYLE LOCK]
+Match the character design, line weight, color treatment, and rendering
+style of the PREVIOUS FRAME (4th reference) exactly.
+
+[CONTINUITY CONSTRAINT]
+This is the rising counterpart of F3 (which was the dipping pose). Imagine
+F3 mirrored — face turned toward canvas-right instead of canvas-left, but
+otherwise similar level of rotation and chin angle.
+
+[OUTPUT SPECS + NEGATIVES]
+- Label reads "HT-7" not "A-2"
+- NO black ink, NO white background, NO rubber-hose features
+- NO bald cap, NO torso, NO shoulders — head and neck stub only
+- Eyes HALF-OPEN — partially opened, not closed and not fully open
+- Face direction is RIGHTWARD — face must NOT face left or straight
+  forward

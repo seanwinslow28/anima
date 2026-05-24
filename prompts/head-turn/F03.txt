@@ -1,0 +1,64 @@
+[LABEL — STATED FIRST FOR EMPHASIS]
+The production label in the top-left corner MUST read "HT-3". This is
+non-negotiable. Do NOT write "A-2" in the corner. The label is "HT-3".
+
+[TASK DECLARATION]
+Generate FRAME 3 of a 9-frame head-turn animation cycle. This frame must
+match the EXACT head pose, tilt, angle, eye-line, and silhouette shown in
+the POSE REFERENCE (3rd attached image — head-turn-3). Render as the SEAN
+CHARACTER shown in the IDENTITY REFERENCES (1st and 2nd images) and
+maintain identity continuity with the PREVIOUS FRAME (4th attached image
+— approved frame 2).
+
+The pose reference is SCAFFOLD ONLY. The previous frame is the
+IDENTITY/STYLE ANCHOR — match its line weight, color treatment, framing,
+and face shape exactly.
+
+This is frame 3 — the character is mid-descent. His head has rotated more
+toward facing forward, has tipped significantly downward, and his eyes
+are nearly fully closed as he continues into the dip.
+
+[POSE LOCK — ABSOLUTE CANVAS DIRECTIONS]
+- The head is rotating from "3/4 facing left" toward "more forward-facing."
+  Still slightly angled to viewer's left of center, but much closer to
+  frontal than F2.
+- The head is tilted DOWNWARD and FORWARD. The chin is starting to drop
+  toward the chest. The forehead is becoming more visible.
+- The eyes are mostly CLOSED — heavy-lidded, nearly shut. Just the
+  closed-lid curves and lashes are visible. No visible iris.
+- The nose points slightly LEFT and significantly DOWNWARD.
+- Both ears beginning to become visible as the face rotates toward
+  forward — the LEFT ear (canvas-right side of head) is fully visible,
+  the right ear (canvas-left side) is just starting to peek out.
+- The hair swoop is now more upright / less side-curled — it sits more
+  on top of the head with the bangs falling forward over the brow.
+- The mouth is small and gently closed.
+- A short neck stub is visible at the bottom of the head, angled
+  slightly toward the canvas's right.
+
+[FRAMING LOCK — MATCH F2]
+- Canvas is 16:9 landscape.
+- Head occupies approximately 35-45% of canvas height — match the size
+  and canvas position of the previous frame.
+- Head positioned near canvas center (slightly left of dead-center as
+  it transitions through the turn).
+- Generous negative space surrounds the head.
+
+[IDENTITY + STYLE LOCK]
+Match the character design, line weight, color treatment, and rendering
+style of the PREVIOUS FRAME (4th reference) exactly. Sandy blonde swoop,
+blue eyes (now closed), light scruff, normal nose, full head of hair,
+warm graphite pencil on cream paper.
+
+[CONTINUITY CONSTRAINT]
+Face shape, hair, color, line weight must match F2 (4th reference) exactly.
+Only the pose has progressed between F2 and this frame.
+
+[OUTPUT SPECS + NEGATIVES]
+- Label reads "HT-3" not "A-2"
+- NO black ink, NO white background, NO rubber-hose features
+- NO bald cap — Sean has a full head of sandy blonde hair
+- NO torso, NO shoulders — head and neck stub only
+- Eyes should be MOSTLY CLOSED — nearly shut, no visible iris
+- Head pose is MID-DESCENT — between F1's "looking up-left" and F5's
+  "fully chin-tucked." Do not skip ahead to full chin-tuck.
