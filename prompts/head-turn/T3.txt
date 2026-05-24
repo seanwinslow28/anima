@@ -1,0 +1,121 @@
+[LABEL — STATED FIRST FOR EMPHASIS]
+The production label in the top-left corner MUST read "HT-9". This is
+non-negotiable. Do NOT write "A-2" in the corner. The label is "HT-9".
+
+[TASK DECLARATION]
+Generate ONE keyframe of a head-turn animation cycle. This frame must match
+the EXACT head pose, tilt, angle, eye-line, and silhouette shown in the
+POSE REFERENCE (3rd attached image), but rendered as the SEAN CHARACTER
+shown in the IDENTITY REFERENCES (1st and 2nd attached images).
+
+The pose reference is SCAFFOLD ONLY — copy its geometry and orientation,
+NOT its style. The identity references define WHO the character is and
+HOW he is drawn. This is FRAME 9 — the END FRAME — of a 9-frame head-turn
+cycle. The character has just finished swinging his head UP and to the
+right after a downward dip — he is GAZING UPWARD at the upper-right.
+
+[POSE LOCK — ABSOLUTE CANVAS DIRECTIONS]
+Use canvas-absolute spatial language (left/right refer to the LEFT and
+RIGHT edges of the OUTPUT CANVAS, not the character's body).
+
+CRITICAL POSE NOTES (the previous attempt missed these):
+- The chin is LIFTED. The head is tilted BACK. The character is GAZING
+  UPWARD, not horizontally. This is NOT a level-headed profile shot.
+- The view is 3/4 (about 60-70 degrees off-frontal), NOT a pure
+  90-degree side profile. The FAR eyebrow and a sliver of the FAR
+  cheek must remain visible on the left side of the face.
+- Both eyes are visible (the near eye fully, the far eye partially).
+
+Continuing the pose description:
+- The head and face are oriented toward the RIGHT side of the canvas.
+  The character is looking up and toward the UPPER-RIGHT corner.
+- The nose points toward the UPPER-RIGHT (UP and to the right, not
+  horizontally right).
+- The visible ear is on the LEFT side of the head (the side closer to
+  the canvas's left edge).
+- The hair swoop / front cowlick lifts UP and curls toward the RIGHT.
+- The throat / underside of the chin is visible because the head is
+  tilted back — there is a clear line under the jaw catching light.
+- The mouth is subtly parted in a small soft "oh" / smirk — barely open,
+  small lips, NOT full open mouth.
+- A short neck stub is visible at the bottom of the head, angled
+  slightly toward the canvas's left (the head turns away from a body
+  that would be slightly behind and to the left).
+
+This is the END FRAME of the 9-frame head turn cycle. It is essentially
+a MIRROR of frame 1 — the character has completed the turn and now
+looks toward the upper-right instead of the upper-left.
+
+[FRAMING LOCK — STRICT MATCH TO POSE REFERENCE]
+Match the framing of the pose reference for a clean side-by-side
+comparison:
+- Canvas is 16:9 landscape.
+- The head occupies approximately 35-40% of the canvas height.
+  THIS IS IMPORTANT: the head should NOT fill the canvas. The head
+  is SMALL relative to the canvas — there is large negative space
+  above the head and to the left of the head. Imagine the head as
+  taking up a circle that fits in the right half of the canvas with
+  significant cream paper above and around it.
+- The head is positioned slightly RIGHT of canvas center, vertically
+  roughly centered (the top of the hair sits in the upper third of
+  the canvas; the neck stub ends near the vertical middle).
+- Generous negative space surrounds the head on all sides.
+- The paper background (cream texture + production label + hole
+  punches) fills the rest of the canvas.
+
+[IDENTITY LOCK — copy character design from identity refs]
+This is SEAN. Match the character design from the turnaround and A-2 refs:
+- Sandy blonde hair with a pronounced front swoop / quiff bangs.
+- Slightly larger-than-realistic head proportions, appealing animation
+  design.
+- Blue eyes, light scruff / short stubble along jaw, soft warm features.
+- Normal proportional nose — NOT a giant rubber-hose nose.
+- Hair fully covers the top and back of the head — NO bald cap.
+- Immediately recognizable as the same person as in the turnaround and
+  in head-turn frame 1.
+
+[STYLE — Pencil Animation Style Cluster, COLOR ALLOWED]
+Traditional animation pencil test drawing. Hand-drawn warm graphite
+pencil lines on warm cream animation paper (#FAF5E8 approximate). Lines
+are WARM GRAY graphite (NOT black ink) with natural stroke-weight
+variation. Visible construction line artifacts beneath the final
+drawing (faint center line through face, light oval head guide,
+eye-line, mouth-line). Light gestural strokes around the hair. Subtle
+cross-hatching only where needed (under chin, behind ear).
+
+Color treatment: limited, desaturated flat color fills layered OVER the
+pencil drawing — muted skin tones, sandy blonde hair, light scruff,
+blue eyes. Match the color treatment of the A-2 reference. No vibrancy.
+
+Paper: warm cream background with visible grain texture, subtle dust
+specks, three evenly-spaced circular hole-punch marks centered along
+the bottom edge of the canvas. Hand-drawn circular production label
+in the top-left corner reading "HT-9" (for "Head Turn, Frame 9"),
+written by hand with the same pencil. THE LABEL MUST SAY "HT-9", NOT
+"A-2".
+
+[CONSISTENCY CONSTRAINTS]
+Pencil weight uniform: contour lines heaviest, interior details
+lighter, construction lines lightest.
+
+[OUTPUT SPECS + NEGATIVES]
+Output a single keyframe.
+
+DO NOT copy from the pose reference:
+- NO black ink / solid black outlines
+- NO white background
+- NO rubber-hose simplified style
+- NO giant bulbous protruding nose
+- NO bald cap on top of the head
+- NO simplified caricature features
+
+DO NOT introduce:
+- NO digital painting, NO vector lines, NO cel shading
+- NO anime style, NO chibi proportions
+- NO gradient shading, NO airbrush effects
+- NO pure white background, NO pure black lines
+- NO torso, NO shoulders, NO arms — head and neck stub ONLY (no shirt
+  collar visible, no hint of shoulder)
+- DO NOT mirror or flip the pose direction — the face MUST point toward
+  the RIGHT edge of the canvas, gazing toward the upper-right corner
+- Label must read "HT-9", not "A-2"

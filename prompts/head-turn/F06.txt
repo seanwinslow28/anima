@@ -1,0 +1,66 @@
+[LABEL — STATED FIRST FOR EMPHASIS]
+The production label in the top-left corner MUST read "HT-6". This is
+non-negotiable. Do NOT write "A-2" in the corner. The label is "HT-6".
+
+[TASK DECLARATION]
+Generate FRAME 6 of a 9-frame head-turn animation cycle. This frame must
+match the EXACT head pose, tilt, angle, eye-line, and silhouette shown in
+the POSE REFERENCE (3rd attached image — head-turn-6). Render as the SEAN
+CHARACTER shown in the IDENTITY REFERENCES (1st and 2nd images) and
+maintain identity continuity with the PREVIOUS FRAME (4th attached image
+— approved frame 5).
+
+The pose reference is SCAFFOLD ONLY. The previous frame is the
+IDENTITY/STYLE ANCHOR.
+
+This is frame 6 — the character has just passed the bottom of the dip
+and is now starting to lift his head. His chin is still tucked but
+beginning to rise. He is now subtly rotating toward the canvas's RIGHT
+(beginning the second half of the turn).
+
+[POSE LOCK — ABSOLUTE CANVAS DIRECTIONS]
+- The head is roughly facing FORWARD but very slightly rotating toward
+  the RIGHT side of the canvas (about 10-15 degrees off-center toward
+  right). Still very close to a forward-facing tilted-down view.
+- The chin is still tucked downward but slightly LESS tucked than F5.
+  The head is beginning its rise.
+- The top of the head / hair is still visually dominant (similar to F5)
+  but the face is beginning to come back into view.
+- The eyes remain CLOSED — gentle relaxed closed-lid arcs. The character
+  is still in the "eyes-closed" portion of the cycle.
+- The nose points DOWNWARD but now slightly toward canvas-RIGHT instead
+  of left (the rotation direction has flipped).
+- Both ears are visible. The LEFT ear (canvas's left side) is now more
+  prominent than in F5 as the head rotates rightward.
+- The hair swoop / cowlick is mostly seen from above, lifting upward
+  from the crown. It begins to angle slightly toward the canvas's RIGHT.
+- The mouth is small and gently closed.
+- A short neck stub is visible directly below the chin, angled slightly
+  toward the canvas's LEFT (the body is below-and-slightly-left of the
+  rotated head).
+
+[FRAMING LOCK — MATCH F5]
+- Canvas is 16:9 landscape.
+- Head occupies approximately 35-45% of canvas height — match F5.
+- Head positioned near canvas CENTER, vertically roughly centered.
+- Generous negative space surrounds the head.
+
+[IDENTITY + STYLE LOCK]
+Match the character design, line weight, color treatment, and rendering
+style of the PREVIOUS FRAME (4th reference) exactly. Sandy blonde swoop
+visible from above (just slightly rotated), blue eyes (closed), light
+scruff, normal nose, full head of hair, warm graphite pencil on cream paper.
+
+[CONTINUITY CONSTRAINT]
+This is ONE TICK after F5 — the rotation has barely begun, the chin has
+barely lifted. The head should look ALMOST identical to F5 but with a
+subtle rightward rotation and a hint of chin rising.
+
+[OUTPUT SPECS + NEGATIVES]
+- Label reads "HT-6" not "A-2"
+- NO black ink, NO white background, NO rubber-hose features
+- NO bald cap
+- NO torso, NO shoulders — head and neck stub only
+- Eyes CLOSED
+- DO NOT skip ahead — the head should still be largely tilted down,
+  just barely starting to lift and rotate rightward

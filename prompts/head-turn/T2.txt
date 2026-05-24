@@ -1,0 +1,115 @@
+[TASK DECLARATION]
+Generate ONE keyframe of a head-turn animation cycle. This frame must match
+the EXACT head pose, tilt, angle, eye-line, and silhouette shown in the
+POSE REFERENCE (3rd attached image), but rendered as the SEAN CHARACTER
+shown in the IDENTITY REFERENCES (1st and 2nd attached images).
+
+The pose reference is SCAFFOLD ONLY — copy its geometry and orientation,
+NOT its style. The identity references define WHO the character is and
+HOW he is drawn. This is FRAME 5 of a 9-frame head-turn cycle: the
+midpoint where the character has dipped his head fully down.
+
+[POSE LOCK — ABSOLUTE CANVAS DIRECTIONS]
+Use canvas-absolute spatial language (left/right refer to the LEFT and
+RIGHT edges of the OUTPUT CANVAS, not the character's body).
+
+- The head is tilted FORWARD and DOWN. The TOP of the head (the crown
+  and the hair) faces the viewer — we are seeing the head largely from
+  ABOVE, looking down at it.
+- The chin is TUCKED in toward the chest. The face is angled steeply
+  downward.
+- The eyes are CLOSED (drawn as gentle downward-curving arc lines —
+  closed-eye notation). NO open eyes, NO visible pupils, NO visible
+  whites.
+- The forehead and top of the hair dominate the visible silhouette.
+  Cheeks and brow are visible but the lower face is foreshortened.
+- The nose points DOWNWARD and slightly toward the canvas's LEFT.
+  It barely protrudes from the face profile from this top-down angle.
+- The mouth is small, slightly parted or pursed — a soft barely-visible
+  shape near the bottom of the visible face area.
+- Both ears are visible on either side of the head (the head is roughly
+  facing forward toward the viewer at this tilt, so both ears poke out).
+- A short neck stub is visible directly below the chin, angled slightly
+  toward the canvas's RIGHT (the body would be below and slightly to
+  the right).
+- The hair swoop / front cowlick is now visible mostly as a hair
+  silhouette on top, since we are looking down at it — it lifts upward
+  from the crown.
+
+This is the LOWEST point of the head-turn arc. The character has dropped
+his head fully forward as part of the turn.
+
+[FRAMING LOCK — STRICT MATCH TO POSE REFERENCE]
+Match the framing of the pose reference for a clean side-by-side
+comparison:
+- Canvas is 16:9 landscape.
+- The head occupies approximately 35-40% of the canvas height.
+- The head is positioned roughly at canvas CENTER (slightly left of
+  dead-center), vertically roughly centered.
+- Generous negative space surrounds the head on all sides.
+- The paper background (cream texture + production label + hole
+  punches) fills the rest of the canvas.
+
+[IDENTITY LOCK — copy character design from identity refs]
+This is SEAN. Even at this top-down angle the character must be
+recognizable as Sean:
+- Sandy blonde hair with the signature front swoop visible from above
+  (since we are looking down, we see the part / top of the swoop).
+- Slightly larger-than-realistic head proportions, appealing animation
+  design.
+- Light scruff / short stubble along the visible jaw / chin area.
+- Soft warm features, normal proportional nose (foreshortened at this
+  angle) — NOT a giant rubber-hose nose.
+- Hair fully covers the top and back of the head — NO bald cap.
+- The character must read as the same person as in the turnaround sheet
+  and the previous head-turn frame.
+
+[STYLE — Pencil Animation Style Cluster, COLOR ALLOWED]
+Traditional animation pencil test drawing. Hand-drawn warm graphite
+pencil lines on warm cream animation paper (#FAF5E8 approximate). Lines
+are WARM GRAY graphite (NOT black ink) with natural stroke-weight
+variation. Visible construction line artifacts beneath the final
+drawing (faint center line through face, light oval head guide,
+eye-line, mouth-line). Light gestural strokes around the hair. Subtle
+cross-hatching only where needed (under chin, behind ear, in hair
+shadow).
+
+Color treatment: limited, desaturated flat color fills layered OVER the
+pencil drawing — muted skin tones, sandy blonde hair, light scruff.
+Match the color treatment of the A-2 reference. No vibrancy.
+
+Paper: warm cream background with visible grain texture, subtle dust
+specks, three evenly-spaced circular hole-punch marks centered along
+the bottom edge of the canvas. Hand-drawn circular production label
+in the top-left corner reading "HT-5" (for "Head Turn, Frame 5"),
+written by hand with the same pencil. THE LABEL MUST SAY "HT-5", NOT
+"A-2".
+
+[CONSISTENCY CONSTRAINTS]
+Pencil weight uniform: contour lines heaviest, interior details
+lighter, construction lines lightest. The closed-eye notation should
+be a simple downward arc — like a relaxed, gentle eye-closure (NOT a
+hard squint, NOT a tight scrunch).
+
+[OUTPUT SPECS + NEGATIVES]
+Output a single keyframe.
+
+DO NOT copy from the pose reference:
+- NO black ink / solid black outlines
+- NO white background
+- NO rubber-hose simplified style
+- NO giant bulbous protruding nose
+- NO bald cap on top of the head — Sean has a full head of sandy
+  blonde hair, even seen from above
+- NO simplified caricature features
+
+DO NOT introduce:
+- NO digital painting, NO vector lines, NO cel shading
+- NO anime style, NO chibi proportions
+- NO gradient shading, NO airbrush effects
+- NO pure white background, NO pure black lines
+- NO torso, NO shoulders, NO arms — head and neck stub ONLY
+- NO open eyes — eyes must be CLOSED at this frame
+- DO NOT show the face at a regular forward-looking angle — the head
+  must be tilted DOWN with the crown/top of head dominant in the view
+- Label must read "HT-5", not "A-2"

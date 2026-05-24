@@ -1,0 +1,112 @@
+[CRITICAL OUTPUT MODE — READ FIRST]
+OUTPUT IS A BLACK-AND-WHITE PENCIL LINE DRAWING. Despite the color treatment
+visible in the IDENTITY REFERENCE images (turnaround + A-2 sketch), this
+output must STRIP ALL COLOR and be rendered in WARM GRAPHITE PENCIL ONLY.
+No skin tone. No hair color. No eye color. No clothing color. No flat fills
+of any kind. The identity references are color, but THIS frame is a clean
+pencil test in graphite on cream paper — only pencil lines, paper, and
+the paper's grain. The white-of-the-eye and skin are simply the cream
+paper showing through with no fill.
+
+[TASK DECLARATION]
+Generate ONE keyframe of a head-turn animation cycle. This frame must match
+the EXACT head pose, tilt, angle, eye-line, and silhouette shown in the
+POSE REFERENCE (3rd attached image), but rendered as the SEAN CHARACTER
+shown in the IDENTITY REFERENCES (1st and 2nd attached images).
+
+The pose reference is SCAFFOLD ONLY — copy its geometry and orientation,
+NOT its style. The identity references define WHO the character is and
+HOW he is drawn, but NOT his color treatment for this frame.
+
+[POSE LOCK — ABSOLUTE CANVAS DIRECTIONS]
+Use canvas-absolute spatial language (left/right refer to the LEFT and
+RIGHT edges of the OUTPUT CANVAS, not the character's body).
+
+- The head and face are oriented toward the LEFT side of the canvas.
+  The character is looking up and toward the UPPER-LEFT corner.
+- The nose points toward the LEFT edge of the canvas.
+- The visible ear is on the RIGHT side of the head (the side closer to
+  the canvas's right edge).
+- The hair swoop / front cowlick lifts UP and curls toward the LEFT.
+- The chin is lifted; the head is tilted slightly BACK (looking up).
+- The eyes gaze UP and toward the UPPER-LEFT corner of the canvas.
+- The mouth is subtly parted in a small soft "oh" / smirk — barely open.
+- A short neck stub is visible at the bottom of the head, angled
+  slightly toward the canvas's right (the head turns away from a body
+  that would be slightly behind and to the right).
+
+This is the START FRAME of a 9-frame head turn cycle. The character is
+mid-look toward the upper-left.
+
+[FRAMING LOCK — STRICT MATCH TO POSE REFERENCE]
+Match the framing of the pose reference for a clean side-by-side
+comparison:
+- Canvas is 16:9 landscape.
+- The head occupies approximately 35-40% of the canvas height
+  (NOT a tight head crop, NOT zoomed in).
+- The head is positioned slightly LEFT of canvas center, vertically
+  roughly centered (the top of the hair sits in the upper third of
+  the canvas; the neck stub ends near the vertical middle).
+- Generous negative space surrounds the head on all sides.
+- The paper background (cream texture + production label + hole
+  punches) fills the rest of the canvas.
+
+[IDENTITY LOCK — copy character design from identity refs]
+This is SEAN. Match the character design from the turnaround and A-2 refs:
+- Sandy blonde hair with a pronounced front swoop / quiff bangs.
+- Slightly larger-than-realistic head proportions, appealing animation
+  design.
+- Blue eyes (drawn as pencil-only contour, no color fill).
+- Light scruff / short stubble along the jaw and chin.
+- Soft warm features, normal proportional nose — NOT a giant rubber-hose
+  nose.
+- Hair fully covers the top and back of the head — NO bald cap.
+- Immediately recognizable as the same person as in the turnaround,
+  drawn at this exact head angle.
+
+[STYLE — Pencil-Only Variant of Pencil Animation Style Cluster]
+Traditional animation pencil test drawing. Hand-drawn warm graphite
+pencil lines on warm cream animation paper (#FAF5E8 approximate). Lines
+are WARM GRAY graphite (NOT black ink) with natural stroke-weight
+variation. Visible construction line artifacts beneath the final
+drawing (faint center line through face, light oval head guide,
+eye-line, mouth-line). Light gestural strokes around the hair. Subtle
+cross-hatching only where needed (under chin, behind ear, in hair
+shadow).
+
+PENCIL ONLY — NO COLOR FILLS ANYWHERE. The whole rendering is graphite
+on cream paper.
+
+Paper: warm cream background with visible grain texture, subtle dust
+specks, three evenly-spaced circular hole-punch marks centered along
+the bottom edge of the canvas. Hand-drawn circular production label
+in the top-left corner reading "HT-1" (for "Head Turn, Frame 1"),
+written by hand with the same pencil.
+
+[CONSISTENCY CONSTRAINTS]
+Pencil weight uniform: contour lines heaviest, interior details
+lighter, construction lines lightest. The hair swoop reads as Sean's
+sandy-blonde quiff (in pencil only — no color), not as the simplified
+hook of the pose reference.
+
+[OUTPUT SPECS + NEGATIVES]
+Output a single pencil-only keyframe.
+
+DO NOT copy from the pose reference:
+- NO black ink / solid black outlines
+- NO white background
+- NO rubber-hose simplified style
+- NO giant bulbous protruding nose
+- NO bald cap on top of the head
+- NO simplified caricature features
+
+DO NOT introduce:
+- NO COLOR of any kind (no skin tone, no hair color, no eye color,
+  no shirt color, no flat color fills, no marker wash)
+- NO digital painting, NO vector lines, NO cel shading
+- NO anime style, NO chibi proportions
+- NO gradient shading, NO airbrush effects
+- NO pure white background, NO pure black lines
+- NO torso, NO shoulders, NO arms — head and neck stub ONLY
+- DO NOT mirror or flip the pose direction — the face MUST point toward
+  the LEFT edge of the canvas, not the right
