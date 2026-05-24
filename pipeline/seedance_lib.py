@@ -220,3 +220,47 @@ def reencode_to_png(path: str | Path) -> None:
     img = Image.open(img_path)
     target_mode = "RGBA" if img.mode in ("RGBA", "LA") or "transparency" in img.info else "RGB"
     img.convert(target_mode).save(img_path, format="PNG")
+
+
+# ---------------------------------------------------------------------------
+# Bake-off helpers (Phase 2 prompt template bake-off)
+# ---------------------------------------------------------------------------
+
+
+def load_bakeoff_variants(path: str | Path) -> dict:
+    """Load and validate the bake-off variants YAML.
+
+    The file must contain at minimum: 'test_shots' (list of shot IDs),
+    'seeds' (list of ints), and 'variants' (list of variant dicts, each
+    with 'id', 'name', 'isolates_axis', and 'prompts' keys, where
+    'prompts' is a dict mapping shot ID -> prompt string).
+
+    Raises FileNotFoundError if missing, ValueError if a required top-level
+    key is absent.
+    """
+    path = Path(path)
+    if not path.exists():
+        raise FileNotFoundError(f"Bake-off variants YAML not found: {path}")
+    with open(path) as f:
+        data = yaml.safe_load(f)
+
+    for required in ("test_shots", "seeds", "variants"):
+        if required not in data:
+            raise ValueError(
+                f"Bake-off variants YAML at {path} missing required key: '{required}'"
+            )
+    return data
+
+
+def make_bakeoff_run_dir(base: str | Path = "runs") -> Path:
+    """Create runs/seedance-bakeoff-{YYYY-MM-DD}/ and return its path.
+
+    Idempotent: returns the existing path if the directory already exists.
+    Does NOT create per-variant subdirs — the orchestrator does that as it
+    iterates so partial runs are visible (one variant dir per completed
+    variant).
+    """
+    date_stamp = datetime.now().strftime("%Y-%m-%d")
+    run_dir = Path(base) / f"seedance-bakeoff-{date_stamp}"
+    run_dir.mkdir(parents=True, exist_ok=True)
+    return run_dir

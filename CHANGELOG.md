@@ -16,6 +16,58 @@
 
 ---
 
+## 2026-05-14 — Reorganize research notes into `docs/research/` + update CLAUDE.md pointers
+
+- **Moved:** `docs/seedance-research-findings.md` → `docs/research/seedance-research-findings.md`. The new `docs/research/` directory now collects external research source material (Seedance findings, ChatGPT/Gemini/Perplexity query packets, autoresearch skill optimizer prompt) separate from active project plans in `docs/`.
+- **CLAUDE.md path fixes:** Source-of-truth table row for Seedance Research, the directory-tree diagram, and the Seedance prompting rules link all now point at the new path.
+- **Why:** keeps the active `docs/` root focused on production plans/specs; research dumps were starting to clutter the root and obscure what's actionable.
+
+---
+
+## 2026-05-10 — Package Seedance v4 template as portable `seedance-prompting` skill
+
+- **New skill:** `~/.claude/skills/seedance-prompting/SKILL.md` — packages the locked v4 template + bake-off-derived rules as a personal Claude Code skill so the prompt structure is available in any project, not just this one.
+- **Scope:** Universal Seedance 2.0 image-to-video prompting principles (word count, no negation, banned words, no audio, single camera, transition-arc framing, Fast tier default, dual-seed runs) plus the locked pencil-test fills (genre anchor, style block) and an "Adapting to other aesthetics" section with substitution patterns for cel/gouache/rotoscope styles.
+- **Skill description triggers** on "Seedance", "fal.ai video", "image-to-video", "I2V", "video between two keyframes", "animate keyframes", "pencil test video", "in-between video model", "Bytedance video model".
+- **Validated via TDD:** Baseline subagent (no skill) violated 7 of 9 locked rules on a generic mouse/cardboard-moon test shot (negation, frame re-description, multi-camera directives, missing genre anchor, missing transition-arc, wrong style block, ~105 words). Verification subagent with skill invoked produced textbook compliance — exact locked structure, ~95 words, all 9 rules satisfied, Fast tier + dual-seed recommendation.
+- **Cross-references added:** `prompts/seedance-template-v4.md` notes the portable skill in its header. `CLAUDE.md` row for the v4 template now mentions the skill path.
+- **Why a separate skill rather than just relying on the project doc:** project-local files only load when working in this repo; the portable skill lets future Claude Code sessions on other animation projects (or repurposed pencil-test work in other directories) automatically apply the bake-off-validated structure without copying files around.
+
+---
+
+## 2026-05-10 — Seedance prompt template v4 (bake-off)
+
+- **Locked `prompts/seedance-template-v4.md`** as the canonical Seedance 2.0 prompt template, replacing v3 (`docs/2026-05-02-act2-seedance-prompts-v3-conversation-style.md`).
+- Winning variant: **V08 combined_best** — score 12/20 across W1 (walk shot) + S0 (identity-stress shot) test shots. Three-way tie at 12 (V01, V02, V08); V08 won tiebreaker 1 (S0 score = 6 vs V01's 4) and tiebreaker 2 (shorter prompt at ~91 words vs V02's ~95 words). Sean confirmed V08 has the best overall outputs for walking, background movements, head movements, and transitions.
+- **Fast tier locked as production default.** Two Standard-tier verifications (V08/S0 identity-stress + V08/PM→PB panorama harder scene) both showed Fast producing smoother motion and cleaner transitions at half the cost. The design-spec assumption that "Standard ≥ Fast" was wrong for pencil-test aesthetic content.
+- Process: 3-phase plan (deep research → 9-variant structured bake-off → tier verification). Spec at [docs/2026-05-09-seedance-prompt-bakeoff-design.md](docs/2026-05-09-seedance-prompt-bakeoff-design.md). Results at [docs/2026-05-09-seedance-prompt-bakeoff-results.md](docs/2026-05-09-seedance-prompt-bakeoff-results.md). Phase 1 deep research surfaced 5 settled priors (drop negation; trim word count; don't redescribe frames; banned-words list; structured prose beats JSON). Phase 2 bake-off resolved 6 testable axes with empirical evidence on Sean's specific aesthetic.
+- Per-axis findings:
+  - Genre anchor ("classic Disney rough animation"): **load-bearing** (V06 without it dropped to 4/20).
+  - Transition-arc framing ("Starting with… transitioning through… ending with…"): **helps S0 by +2 points**.
+  - Animation-timing language (anticipation/weight shift/follow-through): **helps W1, hurts S0** — embed only on physical-motion shots.
+  - In-prompt audio descriptors: **catastrophic** (V04 = 4/20). Never use.
+  - "Micro push-in 2%, 50mm look" canonical camera: hurts standalone (V05 = 8/20) but works inside the V08 stack.
+  - Trimmed style block ("Graphite on cream paper, organic line wavering, warm ivory tone"): hurts standalone (V07 = 6/20) but works inside the V08 stack.
+- Total cost: $39.36 (Phase 1 free; Phase 2 = $0.96 smoke + $33.60 full bake-off + $1.92 S0 verify + $2.88 PM→PB Fast+Standard verify). Total wall-clock: ~11 min for generation; manual scoring + analysis spread across 2026-05-09 / 2026-05-10.
+- New infrastructure: `pipeline/seedance_bakeoff.py` (orchestrator), `pipeline/seedance_bakeoff_variants.yaml` (variant matrix), `tests/test_seedance_bakeoff_lib.py` (first unit tests in the repo). Helpers `load_bakeoff_variants()` and `make_bakeoff_run_dir()` added to `pipeline/seedance_lib.py`.
+- Sean used a 3-tier ordinal scoring system (great / liked / not noted) instead of the 5-binary-criteria rubric the plan anticipated — translated to {5, 3, 1} per cell. Halt 2 (≥14/20) was raised under strict reading; Sean reviewed the per-axis findings and confirmed V08 as winner. Halt 1 (V00 wins by 2+ over V01) did not fire — V01 actually beat V00 by 2, validating Phase 1 research priors.
+
+---
+
+## 2026-05-09 — Add load_bakeoff_variants + make_bakeoff_run_dir helpers; establish tests/ directory
+
+**What changed:**
+1. `pipeline/seedance_lib.py` — appended two new helpers at end of file (after `reencode_to_png`):
+   - `load_bakeoff_variants(path)` — loads and validates the bake-off variants YAML, raises `FileNotFoundError` for missing files and `ValueError` for missing required top-level keys (`test_shots`, `seeds`, `variants`).
+   - `make_bakeoff_run_dir(base)` — creates `runs/seedance-bakeoff-{YYYY-MM-DD}/` and returns the Path; idempotent.
+   No existing imports were added (yaml, datetime, Path already at module top).
+2. `tests/__init__.py` — empty file; establishes the `tests/` package, the first unit-test directory in the codebase.
+3. `tests/test_seedance_bakeoff_lib.py` — 5 unit tests covering the two new helpers: dict-shape validation, FileNotFoundError on missing file, ValueError on missing required key, date-stamped dir creation, and idempotency.
+
+**Why:** Task 2 of the Seedance Prompt Bake-off plan (2026-05-09). The bake-off orchestrator (Task 3) needs a validated way to load the variants YAML and a stable run-dir naming scheme that matches the standard `runs/` layout. Pure-function helpers are isolated here so they can be unit-tested without any fal.ai API calls — matching the existing pattern where `upload_anchor` (API-dependent) has no unit tests and only integration coverage via live smoke runs. TDD cycle followed: tests written first (Step 3 confirmed `ImportError: cannot import name 'load_bakeoff_variants'`), then implementation, then 5/5 passing (Step 5).
+
+---
+
 ## 2026-05-02 — Add Act 1 Seedance integration plan + supporting reference artifacts
 
 **What changed:** Added five additional artifacts created during the v2/v3 Seedance prompt iteration and the Act 1 finishing kickoff:
