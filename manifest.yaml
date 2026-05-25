@@ -1,7 +1,7 @@
 project:
-  name: "Pencil Test — Sean Winslow"
-  version: "1.0"
-  description: "Portfolio hero animation — pencil test style on vintage animation paper"
+  name: "anima"
+  version: "2.0-draft"
+  description: "Human + AI 2D animation pipeline. First reference implementation: Pencil Test — Sean Winslow (Act 1 shipped, Act 2 in progress)."
 
 anchor:
   path: "images/2D-Character-Sketch-Sean-v1.png"
@@ -165,3 +165,54 @@ export:
       codec: "libx264"
       crf: 18
       description: "archival quality"
+
+# ---------------------------------------------------------------------------
+# anima v2 architecture — additive optional blocks
+# ---------------------------------------------------------------------------
+# Everything below is schema for the v2 architecture locked 2026-05-25. The
+# blocks are intentionally minimal in commit 1; per-phase wiring lands across
+# commits 2-7. Existing pencil-test workflows above this line are not affected.
+#
+# Authoritative spec: docs/pipeline-architecture-v1.md
+# ---------------------------------------------------------------------------
+
+# Phase definitions for the 10-phase architecture.
+# Authoritative spec: docs/pipeline-architecture-v1.md §The 10 Phases
+phases:
+  # Listed sequentially; per-phase definitions live in the architecture doc.
+  # For commit 1 this block is schema-only — phase wiring lands with the
+  # DAG refactor (commit 4).
+  enabled: []  # commit 4 enables 'phase_0' through 'phase_9' as their nodes land
+
+# Draft → Pro tier escalation defaults.
+# Authoritative spec: docs/pipeline-architecture-v1.md §Draft → Pro Coverage by Phase
+tiering:
+  default_tier: draft
+  # per-phase overrides land with commit 5 (Draft → Pro DAG implementation)
+
+# Critic checkpoint placement (declared now, implemented across commits 8-9).
+# Authoritative spec: docs/pipeline-architecture-v1.md §Critic Stack (Full)
+critics:
+  placement:
+    post_animatic: T3
+    per_frame_generate: [T1, T2]
+    post_motion: T2
+    post_assemble: T2
+    pre_museum_publish: T3
+
+# Character Bible registry.
+# Authoritative spec: docs/pipeline-architecture-v1.md §The Character Bible Primitive
+# Commit 2 migrates images/2D-Character-Sketch-Sean-v1.png → characters/sean-anchor/.
+characters: []
+
+# Museum auto-capture configuration.
+# Authoritative spec: docs/pipeline-architecture-v1.md §Museum (orthogonal capture layer)
+museum:
+  publishing_target: sw-ai-pm-portfolio
+  format: astro_content_collection
+
+# Brief & Plan (Phase 0) configuration.
+# Authoritative spec: docs/pipeline-architecture-v1.md §Phase 0 — BRIEF & PLAN
+brief:
+  path: docs/brief.md  # convention; not required until commit 3
+  format: markdown

@@ -1,10 +1,14 @@
-# Pencil Test — Sean Winslow
+# anima
 
-A manifest-driven animation production pipeline for generating a pencil test animation portfolio hero piece. Hand-drawn 2D character on vintage animation production paper, orchestrated with Python scripts and Claude Code.
+A pipeline for 2D animation made by a human and a fleet of agents working together. The name is Latin — *breath*, *soul* — short enough to fit anywhere, available enough to grow into.
+
+The premise is older than the tools: the human owns timing, casting, and taste. The agents own everything that can be made cheap, parallel, and structured — and they *propose*, they don't decide. The pipeline is where the two meet. Brief becomes plan; plan becomes animatic; animatic constrains motion; motion gets cleaned to the aesthetic; everything that happened along the way gets captured into a public walkthrough.
+
+anima came out of shipping a single piece — **Pencil Test — Sean Winslow** (Act 1 shipped, Act 2 in progress). That work is the first reference implementation, not the project's definition. The shape of the system was suggested by three structural ancestors worth crediting: Higgsfield's plan-approve-execute pattern, OiiOii's small named-agent crew, and Krea's content-addressed node graph. None of them are the same thing as this — but they were the right places to steal architecture from.
 
 ## Start Here
 
-**Always check `docs/production-checklist.md` first.** It tracks what's been completed, what's in progress, and what's blocked across all production phases. Update it as work is completed.
+Every session, read **[`docs/pipeline-architecture-v1.md`](docs/pipeline-architecture-v1.md)** first — it's the canonical lock document for the 10-phase architecture. After that, **[`docs/production-checklist.md`](docs/production-checklist.md)** tracks where the current work actually is (Pencil Test status across acts and frames). Update the checklist as work completes.
 
 ## Maintenance Conventions
 
@@ -18,117 +22,188 @@ These rules apply to **every** Claude Code session working in this project. They
 
 - **Archive convention — `COMPLETED/` and `OLD/` subfolders.** Within `docs/` and `prompts/`, completed (shipped, done) and old (superseded) artifacts live in `COMPLETED/` and `OLD/` subdirectories respectively. The roots stay focused on what's active. When you finish a phase or supersede a doc, move it into the correct archive folder rather than leaving it in the root. Use `git mv` so renames are tracked.
 
+## The 10-Phase Pipeline
+
+```
+Phase 0  BRIEF & PLAN       brief.md → planner agent → plan.md + cost estimate → human gate
+Phase 1  SCAFFOLD           project structure + manifest skeleton
+Phase 2  CHARACTER BIBLE    characters/{id}/ folders authored or referenced
+Phase 3  STORYBOARD         beat sheet + shot list (largely human-authored)
+Phase 4  ANIMATIC           shape-block timing pass (Procreate Dreams / Procreate PNG)
+                            ⚖ T3 critic gate
+Phase 5  GENERATE           NB2 stills, DAG-orchestrated, multi-character Bible-loaded
+                            ⚖ T1 + T2 critics
+Phase 6  MOTION             Seedance video between approved anchors, draft → pro escalation
+                            ⚖ T2 critic
+Phase 7  AUDIT              consolidation — routes critic findings to retry ladder
+Phase 8  ASSEMBLE           FFmpeg, comparison GIFs, museum capture fires
+                            ⚖ T2 critic
+Phase 9  QA REVIEW          creative-director + final human gate
+
+(parallel)  MUSEUM          every approve/reject/retry writes capture artifacts
+                            ⚖ T3 critic gate before publish
+```
+
+**Phase 0 — Brief & Plan.** A free-text markdown brief becomes a structured plan: which phases run, how many frames, which characters get loaded, draft prompts, retry budget, and an *estimated* model spend. Approval is a human gate; nothing burns compute until the plan is approved.
+
+**Phase 1 — Scaffold.** File structure, manifest skeleton, run directory layout. Free.
+
+**Phase 2 — Character Bible.** Each character lives in its own folder with an anchor, turnarounds, expression sheets, and a `character.yaml`. The single-anchor pattern from the pencil-test era is gone; a character is a whole library that the generator loads selectively per shot.
+
+**Phase 3 — Storyboard.** Beat sheet plus shot list. Mostly human-authored — agents assist with prompt drafts and continuity checks; they don't pick beats.
+
+**Phase 4 — Animatic.** The load-bearing pre-production stage. Sean blocks motion and timing in simple shapes — Procreate Dreams when the artifact wants to be a video, Procreate PNG sequences when it wants to be a stack of hand-drawn keys. The pipeline ingests either as a motion-and-timing constraint downstream. A **T3 critic gate** runs here because everything after this point is expensive; if the timing arc didn't land in shapes, no amount of Seedance compute will save it.
+
+**Phase 5 — Generate.** NB2 produces stills, DAG-orchestrated with content-hashed caching so editing one prompt only re-runs its node and downstream. Character Bibles load per shot. **T1** is the existing HF/SF rule gates; **T2** is a vision critic that reads the frame against the beat description and *proposes* prompt diffs, not pass/fail.
+
+**Phase 6 — Motion.** Seedance generates fluid motion video between approved anchor stills. Draft tier (Fast) is the production default; pro tier (Standard) is reserved for shots that need it. A **T2 critic** reviews motion arc and identity drift in video output — the existing gap where Seedance currently isn't QA'd beyond visual review.
+
+**Phase 7 — Audit.** Consolidation. Used to be where critique happened; now it's where critique findings from Phases 4-6 get *routed* to the retry ladder. No new critique here.
+
+**Phase 8 — Assemble.** FFmpeg builds the cut. Comparison GIFs render automatically where a manual reference exists. Museum capture hooks fire as nodes complete. A **T2 critic** reads loop coherence and pacing across the whole cut, not just per-frame.
+
+**Phase 9 — QA Review.** The `creative-director` skill runs its critique rubric, and a human takes the last look. Single human pass; no escalation.
+
+**Museum (orthogonal).** Not a phase — a capture layer that runs in parallel with everything else. Every approval, every reject, every retry decision writes structured artifacts to a `museum/{project_slug}/` tree. At the end of a run, a static site generator (Astro content collection targeted at `sw-ai-pm-portfolio`) renders a public walkthrough. The **T3 critic gate** before publish gives multi-CLI variance the strongest read on whether narrative + comparison artifacts hold up under independent eyes.
+
+The full per-phase spec (inputs, outputs, draft/pro tiers, status) lives in [`docs/pipeline-architecture-v1.md`](docs/pipeline-architecture-v1.md). This section is the orientation.
+
+## The Critic Stack
+
+The critic earns its keep when it proposes fixes, not when it flags problems. Three tiers, escalating in cost and signal:
+
+| Tier | What it is | When it runs | Cost / latency |
+|------|------------|--------------|----------------|
+| **T1** | Rule gates — HF/SF/CC reason codes, PIL dimension checks. Deterministic, instant. | Every frame, every node | $0, <100ms |
+| **T2** | Vision critic — Claude or Gemini reviews output against beat description + style guide. **Proposes prompt diffs**, not pass/fail. | Per major node output (Generate, Motion, Assemble) | ~$0.01–0.05 per call, 5–15s |
+| **T3** | Multi-CLI variance — Codex CLI + Anti-Gravity CLI run in parallel. The vault-critic pattern, $0 incremental on subscriptions. | Phase transitions only | $0 incremental, ~120s per CLI |
+
+Placement of the five named checkpoints is locked here in commit 1. Implementation of T2 + T3 belongs to the agent-fleet session. Phase 7 Audit's role has changed: it is no longer *where critique happens*; it is where critique findings are *consolidated and routed* to the retry ladder.
+
+## Draft → Pro Escalation
+
+Every expensive node declares a draft tier and a pro tier. Default behavior: run draft, present the preview, escalate to pro on approval or critic-pass. The Seedance Fast→Pro pattern already in [`prompts/seedance-template-v4.md`](prompts/seedance-template-v4.md) is the prototype; anima generalizes it to a pipeline-wide convention.
+
+Seven of the ten phases participate. Cost-light or human-only phases (Scaffold, Audit, QA Review) opt out. The principle pairs naturally with museum capture: draft outputs aren't waste, they're evidence of iteration — the walkthrough renders "we tried draft, here's what it showed, here's why we committed to pro." A compute-cost optimization becomes a narrative asset.
+
+Full per-phase coverage table lives in [`docs/pipeline-architecture-v1.md`](docs/pipeline-architecture-v1.md) §Draft → Pro Coverage.
+
+## The Character Bible Primitive
+
+A character is no longer a single PNG. It is a folder.
+
+```
+characters/{character_id}/
+├── character.yaml        # palette, proportions, identity-drift triggers
+├── anchor.png            # primary identity reference (replaces the old A-2 single anchor)
+├── turnarounds/          # front, 3-quarter, profile, back
+├── expressions/          # 8-12 emotional states
+├── costumes/{variant}/   # outfit variations
+└── props/                # key prop attachments (the stylus, etc.)
+```
+
+The manifest references characters by ID; the generator auto-loads the relevant Bible sheets per shot. Bible authoring is itself a use case anima supports — the same pipeline that consumes a Bible can also produce one, with its own Project-Type template (authoring-first).
+
+The migration from `images/2D-Character-Sketch-Sean-v1.png` → `characters/sean-anchor/` lands in commit 2. For now, the old path still works; pencil-test workflows in flight are not disturbed.
+
 ## Source of Truth Documents
 
 | Document | Path | Role |
 |----------|------|------|
-| **Production Checklist** | `docs/production-checklist.md` | **Check first every session** — current status of all phases, frames, and assets |
-| Storyboard | `docs/pencil-test-storyboard.md` | Complete production storyboard — 7 beats, 2 acts, frame counts, key pose descriptions |
-| Keyframe Prompts (Act 1, archived) | `docs/COMPLETED/act1-keyframe-prompts.md` | 6 Gemini prompts that produced the Act 1 key poses (Act 1 hero loop has shipped — kept for re-runs) |
-| A-2 Anchor | `images/2D-Character-Sketch-Sean-v1.png` | Identity reference — all generated frames must match this character |
-| Manifest | `manifest.yaml` | Pipeline configuration — single source of truth for generation, audit, and export settings |
-| Seedance Research | `docs/research/seedance-research-findings.md` | Seedance 2.0 capabilities, API specs, prompting guide, style preservation strategies |
-| **Seedance Prompt Template (v4)** | `prompts/seedance-template-v4.md` | **Canonical Seedance 2.0 prompt template — copy/fill for every new shot.** Locked 2026-05-10 from a 9-variant bake-off. Use Fast tier as the production default. Also packaged as the portable `seedance-prompting` skill at `~/.claude/skills/seedance-prompting/SKILL.md` (auto-loads in any project). Supersedes v3 (`docs/2026-05-02-act2-seedance-prompts-v3-conversation-style.md`). |
-| **Act 2 Seedance Shot List** | `docs/act2-seedance-shot-list.md` | **Current source of truth for Act 2 Seedance work.** 10 clips + 4 holds, anchor frame paths, draft Seedance prompts, fallback strategies (Round 3 deliverable, 2026-04-26) |
-| **Act 2 Seedance Execution Plan** | `docs/2026-04-27-act2-seedance-execution-plan.md` | **Approved 12-task implementation plan for the Seedance generation phase.** New scripts (`seedance_generate.py`, `seedance_extract.py`, `seedance_cleanup.py`, `seedance_audit.py`, `seedance_assemble.sh`, `seedance_lib.py`), tiered NB2 cleanup, Procreate gate, two-milestone delivery (rough cut → full-fidelity cut). Pick this up to start execution. |
-| Round 2 Beat Decisions | `runs/act2-exploration/concepts/round2-decisions.md` | Locked Act 2 11-beat sheet (transition pick, revelation pick, panorama pick) — feeds the Act 2 shot list |
-| Seedance Production Plan (archived) | `docs/OLD/seedance-production-plan.md` | ⚠️ **SUPERSEDED for Act 2** by `act2-seedance-shot-list.md`. Act 1 sections still valid as historical reference. |
-| Changelog | `CHANGELOG.md` | Decision history — what changed, why, and lessons learned for prompt engineering |
-| Original Pipeline | `docs/Sprite-Sheet-Automation-Project_OG-Workflow-Summary.md` | Architectural reference (manifest-driven design, audit loop, retry ladder) |
+| **Pipeline Architecture (v1)** | [`docs/pipeline-architecture-v1.md`](docs/pipeline-architecture-v1.md) | **Canonical architecture lock — read first every session.** 10-phase spec, critic stack, draft→pro, Character Bible primitive, museum layer, reserved open questions |
+| **Production Checklist** | [`docs/production-checklist.md`](docs/production-checklist.md) | Current status of the in-flight pencil-test work — phases, frames, assets |
+| Pipeline v2 Brainstorm | [`docs/2026-05-24-pipeline-v2-brainstorm.md`](docs/2026-05-24-pipeline-v2-brainstorm.md) | Historical artifact — the 15-idea PM/Designer/Engineer brainstorm that produced the v2 lock. Read for *why*, not *what* |
+| Pipeline v2 Change Map | [`docs/2026-05-24-pipeline-v2-change-map.md`](docs/2026-05-24-pipeline-v2-change-map.md) | Historical artifact — 9-commit sequence, file-by-file delta, DAG library rationale, evals workstream scope |
+| Manifest | [`manifest.yaml`](manifest.yaml) | Pipeline configuration — current state has both the pencil-test reference blocks and the new optional v2 schema blocks |
+| Changelog | [`CHANGELOG.md`](CHANGELOG.md) | Decision history — what changed, why, and lessons learned |
+| **Seedance Prompt Template (v4)** | [`prompts/seedance-template-v4.md`](prompts/seedance-template-v4.md) | Canonical Seedance 2.0 prompt template. Fast tier is the production default. Also packaged as the portable `seedance-prompting` skill at `~/.claude/skills/seedance-prompting/SKILL.md` |
+| Seedance Research | [`docs/research/seedance-research-findings.md`](docs/research/seedance-research-findings.md) | Seedance 2.0 capabilities, API specs, prompting guide |
 
-## Pipeline Architecture
+### Pencil Test — First Reference Implementation
 
-```
-Phase A          Phase B           Phase B.5          Phase C          Phase D          Phase E
-SCAFFOLD    -->  GENERATE     -->  MOTION         -->  AUDIT       -->  ASSEMBLE    -->  QA REVIEW
-                                                    
-manifest.yaml    generate.py       Seedance 2.0       audit.py         assemble.sh      creative-director
-directory        Gemini API        Fal.ai API         Claude vision     FFmpeg           critique rubric
-structure        frame chaining    start+end frame    hard/soft fails   hold timing      2d-animation QA
-                                   extract → NB2      retry ladder      GIF/WebM/MP4     "done" checklist
-```
+The pencil-test work is anima's first reference implementation, not the whole project. Its docs are still authoritative for that piece, and are framed accordingly:
 
-### Seedance Pipeline (Phase B.5)
-
-**Philosophy: Seedance finds the motion, NB2 protects the aesthetic.**
-
-1. Seedance 2.0 generates fluid motion video between approved NB2 anchor keyframes
-2. Extract frames at 12fps from Seedance output
-3. Review and select frames with best timing, arcs, and acting
-4. NB2 redraws selected frames to restore full pencil test fidelity
-5. Procreate traces for sprite motion and special elements
-
-### Core Loop (adapted from sprite pipeline)
-
-```
-Generate frame --> Audit (hard fails? reject) --> Soft fails? --> Retry (max 3) --> Approve
-                                                                                      |
-                                                                           Copy to approved/
-```
+| Document | Path | Role (within Pencil Test) |
+|----------|------|---------------------------|
+| Storyboard | [`docs/pencil-test-storyboard.md`](docs/pencil-test-storyboard.md) | Complete storyboard — 7 beats, 2 acts, frame counts |
+| Keyframe Prompts (Act 1, archived) | [`docs/COMPLETED/act1-keyframe-prompts.md`](docs/COMPLETED/act1-keyframe-prompts.md) | 6 Gemini prompts that produced the Act 1 key poses (shipped — kept for re-runs) |
+| A-2 Anchor | [`images/2D-Character-Sketch-Sean-v1.png`](images/2D-Character-Sketch-Sean-v1.png) | Identity reference for the Sean character. Migrates to `characters/sean-anchor/anchor.png` in commit 2 |
+| Act 2 Seedance Shot List | [`docs/act2-seedance-shot-list.md`](docs/act2-seedance-shot-list.md) | Current source of truth for Act 2 — 10 clips + 4 holds, anchor frame paths, draft prompts, fallback strategies |
+| Act 2 Seedance Execution Plan | [`docs/2026-04-27-act2-seedance-execution-plan.md`](docs/2026-04-27-act2-seedance-execution-plan.md) | Approved 12-task implementation plan for the Seedance generation phase |
+| Round 2 Beat Decisions | [`runs/act2-exploration/concepts/round2-decisions.md`](runs/act2-exploration/concepts/round2-decisions.md) | Locked Act 2 11-beat sheet |
+| Seedance Production Plan (archived) | [`docs/OLD/seedance-production-plan.md`](docs/OLD/seedance-production-plan.md) | Superseded for Act 2; Act 1 sections valid as historical reference |
+| Original Pipeline Notes | [`docs/Sprite-Sheet-Automation-Project_OG-Workflow-Summary.md`](docs/Sprite-Sheet-Automation-Project_OG-Workflow-Summary.md) | Architectural ancestor — manifest-driven design, audit loop, retry ladder |
 
 ## Skills Map
 
-| Skill | Pipeline Phase | Role |
-|-------|---------------|------|
-| `gemini-pencil-animation-image-gen` | B (Generation) | Primary keyframe generator — pencil test style via Gemini Nano Banana 2 API |
-| `image-generator-prompt-science` | B (Generation) | 7-Layer prompt framework, refinement tips for retries |
-| `animation-pipeline` | A-E (All phases) | Pipeline orchestration — manifest-driven generation, frame chaining, QA gates (HF/SF/CC), assembly |
-| `2d-animation-principles` | C (Audit), D (Assembly) | Animation physics, timing/spacing validation, expression arc (CC08), hold duration, AI frame validation |
-| `creative-director` | E (QA Review) | Critique rubric (Identity/Style/Composition/Continuity/Technical), prompt refinement as art direction |
-| `comfyui-workflows` | B (In-betweens) | OpenPose ControlNet in-between generation, IPAdapter identity lock, video model node integration |
-| `video-animation-production` | D (Assembly) | FFmpeg frame sequence assembly, two-pass GIF optimization, WebM/MP4 export |
-| `gemini-image-gen` | B (Generation, Act 2) | Non-pencil assets — zone backgrounds, props (deferred to Act 2) |
-| `video-animation-production` | B.5 (Motion), D (Assembly) | Seedance frame extraction, FFmpeg assembly, format conversion |
+Skills map to the 10-phase architecture. Most carry over from the pencil-test era; a few are pending the agent-fleet session.
+
+| Skill | Phase(s) | Role |
+|-------|----------|------|
+| `gemini-pencil-animation-image-gen` | 5 Generate | Primary keyframe generator — pencil test style via Gemini Nano Banana 2 |
+| `gemini-image-gen` | 5 Generate | Non-pencil assets — zone backgrounds, props |
+| `image-generator-prompt-science` | 5 Generate | 7-Layer prompt framework, refinement tips for retries |
+| `animation-pipeline` | All | Pipeline orchestration — manifest-driven generation, frame chaining, QA gates (HF/SF/CC), assembly |
+| `2d-animation-principles` | 4 Animatic, 7 Audit, 8 Assemble | Animation physics, timing/spacing validation, expression arc, hold duration |
+| `creative-director` | 9 QA Review | Critique rubric (Identity/Style/Composition/Continuity/Technical), prompt refinement as art direction |
+| `comfyui-workflows` | 5 Generate (in-betweens) | OpenPose ControlNet in-between generation, IPAdapter identity lock |
+| `seedance-prompting` (portable) | 6 Motion | Locked v4 Seedance prompt template; auto-loads in any project |
+| `video-animation-production` | 6 Motion, 8 Assemble | FFmpeg frame sequence assembly, two-pass GIF optimization, WebM/MP4 export |
+| _(planner agent)_ | 0 Brief & Plan | Pending agent-fleet session — Haiku draft / Sonnet pro tier |
+| _(vision critic)_ | 5, 6, 8 (T2 checkpoints) | Pending agent-fleet session — Claude Sonnet vs Gemini 3 Pro bake-off |
+| _(CLI critic)_ | 4→5, pre-Museum (T3 checkpoints) | Pending agent-fleet session — Codex + Anti-Gravity parallel |
 
 ## Directory Structure
 
+The working directory is `sw-portfolio-animation-pipeline/` for now. The rename to `anima/` happens at public-repo creation time so git history stays clean during the transition. New top-level conventions (`characters/`, `museum/`, `evals/`) are marked planned — they land across commits 2-8.
+
 ```
-sw-portfolio-animation-pipeline/
-├── CLAUDE.md                         # This file — project manual
-├── manifest.yaml                     # Pipeline source of truth
-├── docs/                             # Active source-of-truth documents
-│   ├── pencil-test-storyboard.md
-│   ├── act2-seedance-shot-list.md            # Current Act 2 spec
-│   ├── 2026-04-27-act2-seedance-execution-plan.md  # Current Act 2 plan
+sw-portfolio-animation-pipeline/        # renames to anima/ at public-repo creation
+├── CLAUDE.md                            # This file — anima project manual
+├── CHANGELOG.md                         # Decision log (append on every change)
+├── manifest.yaml                        # Pipeline configuration (v1 + v2 blocks coexist)
+├── docs/                                # Active source-of-truth documents
+│   ├── pipeline-architecture-v1.md      # Canonical architecture lock
 │   ├── production-checklist.md
-│   ├── Sprite-Sheet-Automation-Project_OG-Workflow-Summary.md
-│   ├── research/                     # External research notes (Seedance findings, query packets)
-│   ├── COMPLETED/                    # Shipped/done plans + prompts (e.g. Act 1)
-│   └── OLD/                          # Superseded docs (do not act on)
-├── prompts/                          # Active prompts only
-│   ├── act2/                         # Current Act 2 prompts
-│   ├── COMPLETED/                    # Shipped Act 1 prompts, in-betweens, completed handoffs
-│   └── OLD/                          # Superseded handoffs / session prompts
-├── images/                           # Reference assets
-│   └── 2D-Character-Sketch-Sean-v1.png   # A-2 anchor character
-├── pipeline/                         # Pipeline scripts
-│   ├── generate.py                   # Generation orchestrator with frame chaining
-│   ├── audit.py                      # QA gate checker (PIL + structured vision prompts)
-│   └── assemble.sh                   # FFmpeg assembly commands
-└── runs/                             # Per-run output (gitignored)
-    └── {run_id}/                     # e.g., run_2026-04-04_001
-        ├── manifest.lock.yaml        # Frozen config snapshot
-        ├── candidates/               # All generated candidates (preserved)
-        │   └── F{##}/                # Per-frame candidate directory
-        │       ├── attempt_01.png
-        │       └── attempt_02.png
-        ├── approved/                 # Approved keyframes
-        │   ├── PT_A1_F01_key.png
-        │   └── PT_A1_F06_key.png
-        ├── rejected/                 # Rejected frames with failure codes
-        │   └── F{##}_attempt_{##}_{FAIL_CODE}.png
-        ├── audit/                    # Audit logs
-        │   ├── audit_log.jsonl
-        │   └── run_summary.json
-        └── export/                   # Final outputs
-            ├── pencil-test-act1.gif
-            ├── pencil-test-act1.webm
-            └── pencil-test-act1.mp4
+│   ├── 2026-05-24-pipeline-v2-brainstorm.md
+│   ├── 2026-05-24-pipeline-v2-change-map.md
+│   ├── pencil-test-storyboard.md
+│   ├── act2-seedance-shot-list.md
+│   ├── 2026-04-27-act2-seedance-execution-plan.md
+│   ├── research/                        # External research notes
+│   ├── COMPLETED/                       # Shipped/done plans + prompts (Act 1)
+│   └── OLD/                             # Superseded docs (do not act on)
+├── prompts/
+│   ├── seedance-template-v4.md          # Canonical Seedance prompt template
+│   ├── act2/                            # Current Act 2 prompts
+│   ├── COMPLETED/                       # Shipped Act 1 prompts
+│   └── OLD/                             # Superseded session prompts
+├── images/                              # Reference assets (Pencil Test era)
+│   └── 2D-Character-Sketch-Sean-v1.png  # Migrates to characters/sean-anchor/ in commit 2
+├── pipeline/                            # Pipeline scripts
+│   ├── generate.py                      # Generation orchestrator with frame chaining
+│   ├── audit.py                         # T1 rule gate runner
+│   ├── continuity_audit.py              # CC01-CC08 frame-to-frame continuity
+│   ├── assemble.sh                      # FFmpeg assembly
+│   ├── seedance_*.py                    # Seedance 2.0 generation, extract, audit, cleanup
+│   └── (planned) dag.py + nodes/*       # DAG runner lands in commit 4
+├── characters/                          # PLANNED (commit 2) — Character Bible folders
+├── museum/                              # PLANNED (commit 6) — capture artifacts per run
+├── evals/                               # PLANNED (commit 3b) — agent eval suites + bake-offs
+└── runs/                                # Per-run output (gitignored)
+    └── {run_id}/
+        ├── manifest.lock.yaml           # Frozen config snapshot
+        ├── candidates/                  # All generated candidates (preserved)
+        ├── approved/                    # Approved keyframes
+        ├── rejected/                    # Rejected frames with failure codes
+        ├── audit/                       # Audit logs
+        ├── animatic/                    # PLANNED (commit 7) — shape-block timing artifact
+        └── export/                      # Final outputs
 ```
 
 ## Asset Naming Convention
 
-Adapted from `animation-pipeline` skill's `{SequenceID}_{SceneID}_{ShotID}_{Layer}_{FrameNumber}.{ext}` pattern:
+The current naming pattern stays in place for the pencil-test reference implementation:
 
 ```
 PT_{ActID}_{FrameNumber}_{AssetType}.{ext}
@@ -143,17 +218,30 @@ PT_{ActID}_{FrameNumber}_{AssetType}.{ext}
 Candidates: `F{##}/attempt_{##}.png` (e.g., `F06/attempt_01.png`)
 Rejected: `F{##}_attempt_{##}_{FAIL_CODE}.png` (e.g., `F06_attempt_01_SF01.png`)
 
+Future anima projects use their own project prefixes (`{PROJECT}_{ActID}_{FrameNumber}_{AssetType}.{ext}`).
+
 ## Manifest Schema
 
-The `manifest.yaml` file is the pipeline's single source of truth. See `manifest.yaml` for the full config. Key sections:
+`manifest.yaml` carries two generations of schema side by side. The pencil-test reference implementation uses the original blocks; the v2 architecture is declared in new additive blocks that point at the architecture doc for their semantics.
 
-- **project** — Name, version, description
-- **anchor** — Path to A-2 character reference, label, description
-- **style** — Aesthetic constraints: paper color, line color, required elements, negatives
-- **generation** — Model, aspect ratio, script path, max retries
-- **act1** — Keyframe list with frame numbers, labels, poses, references (for chaining), hold durations
-- **audit** — Hard fails (HF01-HF05), soft fails (SF01-SF05), retry ladder
-- **export** — Output format specs (GIF, WebM, MP4)
+**Existing (untouched, backward-compatible):**
+
+- `project:` — name, version, description (only `name` updated to `"anima"` in commit 1; description retained)
+- `anchor:` — single-character reference (deprecated by `characters:`; still authoritative for Act 2 in flight)
+- `style:` — pencil-test aesthetic constraints
+- `generation:` — Gemini NB2 model config
+- `act1:` — Act 1 keyframe definitions
+- `audit:` — Hard fails (HF01-HF05) + soft fails (SF01-SF05) + retry ladder
+- `export:` — GIF / WebM / MP4 specs
+
+**New (additive, schema-only in commit 1; wiring lands across commits 2-7):**
+
+- `phases:` — 10-phase architecture node enablement. See [`docs/pipeline-architecture-v1.md`](docs/pipeline-architecture-v1.md)
+- `tiering:` — draft → pro escalation defaults per phase
+- `critics:` — T1/T2/T3 checkpoint placement
+- `characters:` — Character Bible registry (commit 2)
+- `museum:` — auto-capture configuration + publishing target
+- `brief:` — Phase 0 brief file convention (commit 3)
 
 ## QA Gates
 
@@ -300,8 +388,8 @@ ffmpeg -i seedance_output.mp4 -vf fps=12 frame_%04d.png
 - Always include: "fixed camera, locked tripod" and "stylus in right hand"
 - Never use: "cinematic", "4K", "glow", "epic", unqualified "fast"
 - Don't re-describe the character — the start/end frames provide that
-- **For all new shots, use the v4 template at `prompts/seedance-template-v4.md`.** Fill the `[BRACKETED]` placeholders; do not modify the structural scaffolding. Run at Fast tier as the production default.
-- See `docs/research/seedance-research-findings.md` for full prompting guide
+- **For all new shots, use the v4 template at [`prompts/seedance-template-v4.md`](prompts/seedance-template-v4.md).** Fill the `[BRACKETED]` placeholders; do not modify the structural scaffolding. Run at Fast tier as the production default.
+- See [`docs/research/seedance-research-findings.md`](docs/research/seedance-research-findings.md) for full prompting guide
 
 ## Dependencies
 
@@ -328,6 +416,6 @@ Active Act 2 prompts live under `prompts/act2/`. Shipped Act 1 keyframe + transi
 
 ## Engine Truth
 
-> If the loop plays smoothly at 12fps and the character is recognizably Sean in pencil test style on cream animation paper, it ships.
+> If the loop plays smoothly and the character is recognizably itself in its intended medium, it ships.
 
-This is the project's north star — adapted from the original sprite pipeline's "if it plays cleanly in Phaser, it ships." The final animation in its target medium (browser GIF/WebM loop) is the ultimate arbiter of quality.
+This is the inherited north star from the pencil-test era — adapted from the original sprite pipeline's "if it plays cleanly in Phaser, it ships." The final piece in its target medium (browser GIF/WebM loop, public museum walkthrough, wherever the work lives) is the ultimate arbiter of quality. Everything else — phase counts, critic tiers, manifest schemas — is in service of that one test.
