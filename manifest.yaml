@@ -45,6 +45,12 @@ act1:
   resolution: "1920x1080"
   total_frames: 42
 
+  # Each keyframe may carry an optional impact_tags list. When a tag matches
+  # critics.t2.escalation_tags (above), Em (the T2 vision critic) forces the
+  # Opus 4.7 escalation path regardless of Gemini's confidence. Tags currently
+  # honored: [hero, identity_critical]. Maya (commit 3, Phase 0 planner) will
+  # populate impact_tags from the brief; for the pencil-test reference
+  # implementation, the field stays optional and unset.
   keyframes:
     - frame: 1
       label: "A-2"
@@ -228,6 +234,27 @@ critics:
     post_motion: T2
     post_assemble: T2
     pre_museum_publish: T3
+
+  # T2 — Em (vision critic). Locked per docs/2026-05-26-agent-fleet-brainstorm-v2.md §6.
+  # Gemini 3.1 Pro via Anti-Gravity CLI is the default; Opus 4.7 via Claude Agent SDK
+  # is the escalation hatch on confidence < escalation_threshold OR impact_tag in
+  # escalation_tags. Both paths are subscription-absorbed on Sean's plan.
+  #
+  # auto_apply: false is the v2 lock — patches stage, Sean reviews. Per-call and
+  # wall budgets mirror the vault_critic precedent so the contract surface stays
+  # consistent across critic agents.
+  t2:
+    default_model: "gemini-3.1-pro-via-anti-gravity"
+    escalation_model: "claude-opus-4-7-via-sdk"
+    escalation_threshold: 0.7
+    escalation_tags: [hero, identity_critical]
+    default_context_files:
+      - PHILOSOPHY.md
+      - CLAUDE.md
+      - docs/pipeline-architecture-v1.md
+    auto_apply: false
+    per_call_timeout_s: 120
+    wall_budget_s: 600
 
 # Character Bible registry.
 # Authoritative spec: docs/pipeline-architecture-v1.md §The Character Bible Primitive

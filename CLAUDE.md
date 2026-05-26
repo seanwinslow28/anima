@@ -150,7 +150,7 @@ Skills map to the 10-phase architecture. Most carry over from the pencil-test er
 | `seedance-prompting` (portable) | 6 Motion | Locked v4 Seedance prompt template; auto-loads in any project |
 | `video-animation-production` | 6 Motion, 8 Assemble | FFmpeg frame sequence assembly, two-pass GIF optimization, WebM/MP4 export |
 | _(planner agent)_ | 0 Brief & Plan | Pending agent-fleet session — Haiku draft / Sonnet pro tier |
-| _(vision critic)_ | 5, 6, 8 (T2 checkpoints) | Pending agent-fleet session — Claude Sonnet vs Gemini 3 Pro bake-off |
+| `vision_critic` — Em | 5, 6, 8 (T2 checkpoints) | Gemini 3.1 Pro via Anti-Gravity CLI default, Opus 4.7 via Claude Agent SDK escalation. Patches stage in `manifest.lock.yaml`. Commit 8 shipped 2026-05-26 |
 | _(CLI critic)_ | 4→5, pre-Museum (T3 checkpoints) | Pending agent-fleet session — Codex + Anti-Gravity parallel |
 
 ## Directory Structure
@@ -186,13 +186,22 @@ sw-portfolio-animation-pipeline/        # renames to anima/ at public-repo creat
 │   ├── continuity_audit.py              # CC01-CC08 frame-to-frame continuity
 │   ├── assemble.sh                      # FFmpeg assembly
 │   ├── seedance_*.py                    # Seedance 2.0 generation, extract, audit, cleanup
-│   ├── agents/                          # AgentSpec Protocol + dataclasses (commit 4)
+│   ├── agents/                          # AgentSpec Protocol + critic agents
+│   │   ├── __init__.py                  # AgentSpec, AgentResult, Patch, register_node (commit 4)
+│   │   ├── vision_critic.py             # Em — T2 vision critic (commit 8)
+│   │   ├── cli_runners.py               # Anti-Gravity CLI wrapper + stub fallback (commit 8)
+│   │   ├── sdk_runners.py               # Claude Agent SDK / anthropic SDK wrapper + stub (commit 8)
+│   │   ├── patch_stager.py              # post_run hook → runs/{run_id}/manifest.lock.yaml (commit 8)
+│   │   └── prompts/                     # Persona standing-context preambles (commit 8)
+│   ├── cli/                             # `python -m pipeline.cli` subcommands
+│   │   └── patches.py                   # `patches list` — survey staged proposed_patches (commit 8)
 │   ├── criteria.py                      # acceptance_criteria.json schema + lock enforcement (commit 4)
 │   ├── dag.py                           # Hand-rolled DAG runner (commit 4)
 │   └── nodes/                           # AgentSpec wrappers around legacy scripts (commit 4)
 ├── characters/                          # PLANNED (commit 2) — Character Bible folders
 ├── museum/                              # PLANNED (commit 6) — capture artifacts per run
-├── evals/                               # PLANNED (commit 3b) — agent eval suites + bake-offs
+├── evals/                               # Agent eval suites + dated bake-offs
+│   └── vision-critic/                   # Em eval suite (commit 8 baseline trace, 8b adds cases.yaml + runner.py)
 └── runs/                                # Per-run output (gitignored)
     └── {run_id}/
         ├── manifest.lock.yaml           # Frozen config snapshot
@@ -332,6 +341,20 @@ file hash, so a tier change or a criteria mutation invalidates downstream
 nodes. The runner declines to mutate a locked criteria file without
 `--force-criteria-mutation` plus an actor + reason; the override is
 audited to `runs/{run_id}/criteria_audit.jsonl`.
+
+### Surveying staged patches (commit 8+)
+
+Em (and from commit 9, the T3 stack) emit `proposed_patches:` that stage into
+`runs/{run_id}/manifest.lock.yaml` via the DAG runner's `post_run` hook.
+Stage-first per v2 lock; never auto-apply. Survey them with:
+
+```bash
+python -m pipeline.cli patches list --run-dir runs/{run_id}
+```
+
+Output groups patches by persona (`em-vision-critic`, future `codie` / `annie`
+/ `sage`) with target / path / operation / value / rationale / cites_criteria
+/ node_id. Read-only — interactive accept/reject is commit 8b or commit 10.
 
 ### Frame Sequence (12fps, Act 1 hero loop)
 ```bash

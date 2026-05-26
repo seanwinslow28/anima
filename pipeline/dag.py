@@ -384,6 +384,12 @@ def run_from_legacy_cli(node_id: str, argv: list[str]) -> int:
         if cp.exists():
             criteria_path = cp
     runner = Runner(run_dir=run_dir, manifest=manifest, criteria=criteria_path)
+    # Em (commit 8) and the T3 stack (commit 9) emit proposed_patches in their
+    # AgentResults. The stager hook writes any non-empty list into the run-dir's
+    # manifest.lock.yaml under a top-level proposed_patches: block. Stage-first
+    # per v2 brainstorm §2.5 + §10; never auto-apply.
+    from pipeline.agents.patch_stager import stage_patches_hook
+    runner.add_hook("post_run", stage_patches_hook(run_dir))
     graph = load_graph_from_manifest(manifest)
     runner.execute(graph)
     return 0
