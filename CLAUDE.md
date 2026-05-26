@@ -8,7 +8,7 @@ anima came out of shipping a single piece — **Pencil Test — Sean Winslow** (
 
 ## Start Here
 
-Every session, read **[`docs/pipeline-architecture-v1.md`](docs/pipeline-architecture-v1.md)** first — it's the canonical lock document for the 10-phase architecture. After that, **[`docs/production-checklist.md`](docs/production-checklist.md)** tracks where the current work actually is (Pencil Test status across acts and frames). Update the checklist as work completes.
+Every session, read **[`PHILOSOPHY.md`](PHILOSOPHY.md)** first — it's the load-bearing intent document, the soul of what anima is for. The architecture serves the philosophy, not the other way around. Then **[`docs/pipeline-architecture-v1.md`](docs/pipeline-architecture-v1.md)** for the canonical 10-phase architecture lock. After that, **[`docs/production-checklist.md`](docs/production-checklist.md)** tracks where the current work actually is (Pencil Test status across acts and frames). Update the checklist as work completes.
 
 ## Maintenance Conventions
 
@@ -181,12 +181,15 @@ sw-portfolio-animation-pipeline/        # renames to anima/ at public-repo creat
 ├── images/                              # Reference assets (Pencil Test era)
 │   └── 2D-Character-Sketch-Sean-v1.png  # Migrates to characters/sean-anchor/ in commit 2
 ├── pipeline/                            # Pipeline scripts
-│   ├── generate.py                      # Generation orchestrator with frame chaining
-│   ├── audit.py                         # T1 rule gate runner
+│   ├── generate.py                      # Generation orchestrator with frame chaining (USE_DAG_RUNNER=1 routes to dag.py)
+│   ├── audit.py                         # T1 rule gate runner (USE_DAG_RUNNER=1 routes to dag.py)
 │   ├── continuity_audit.py              # CC01-CC08 frame-to-frame continuity
 │   ├── assemble.sh                      # FFmpeg assembly
 │   ├── seedance_*.py                    # Seedance 2.0 generation, extract, audit, cleanup
-│   └── (planned) dag.py + nodes/*       # DAG runner lands in commit 4
+│   ├── agents/                          # AgentSpec Protocol + dataclasses (commit 4)
+│   ├── criteria.py                      # acceptance_criteria.json schema + lock enforcement (commit 4)
+│   ├── dag.py                           # Hand-rolled DAG runner (commit 4)
+│   └── nodes/                           # AgentSpec wrappers around legacy scripts (commit 4)
 ├── characters/                          # PLANNED (commit 2) — Character Bible folders
 ├── museum/                              # PLANNED (commit 6) — capture artifacts per run
 ├── evals/                               # PLANNED (commit 3b) — agent eval suites + bake-offs
@@ -310,6 +313,25 @@ python3 pipeline/audit.py --run-dir runs/{run_id} --frame F06 --attempt 1
 ```bash
 bash pipeline/assemble.sh runs/{run_id}
 ```
+
+### DAG-orchestrated run (commit 4+, opt-in)
+
+The hand-rolled DAG runner orchestrates pipeline phases as typed nodes with
+content-addressed caching. The legacy linear path stays usable; opt in by
+setting `USE_DAG_RUNNER=1` or invoking the runner directly:
+
+```bash
+USE_DAG_RUNNER=1 python pipeline/generate.py --manifest manifest.yaml
+# or
+python -m pipeline.dag run --manifest manifest.yaml --run-dir runs/{run_id}
+```
+
+Cache lives at `runs/{run_id}/.cache/{sha256}.json` per node invocation.
+Cache keys include tier (`draft | pro`) and the `acceptance_criteria.json`
+file hash, so a tier change or a criteria mutation invalidates downstream
+nodes. The runner declines to mutate a locked criteria file without
+`--force-criteria-mutation` plus an actor + reason; the override is
+audited to `runs/{run_id}/criteria_audit.jsonl`.
 
 ### Frame Sequence (12fps, Act 1 hero loop)
 ```bash

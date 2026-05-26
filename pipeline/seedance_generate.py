@@ -30,6 +30,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import time
 import urllib.request
@@ -770,6 +771,11 @@ def build_parser() -> argparse.ArgumentParser:
 # ---------------------------------------------------------------------------
 
 def main() -> None:
+    if os.environ.get("USE_DAG_RUNNER") == "1":
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from pipeline.dag import run_from_legacy_cli
+        run_from_legacy_cli(node_id="seedance_motion", argv=sys.argv[1:])
+        return
     parser = build_parser()
     args = parser.parse_args()
 

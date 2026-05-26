@@ -178,10 +178,39 @@ export:
 
 # Phase definitions for the 10-phase architecture.
 # Authoritative spec: docs/pipeline-architecture-v1.md §The 10 Phases
+#
+# Commit 4 extends this block with per-phase `nodes:` sub-lists declaring
+# which AgentSpec implementations run in each phase. The DAG runner
+# (pipeline/dag.py, USE_DAG_RUNNER=1) reads these and assembles a graph.
+# Each node entry:
+#   id: unique node id (string, unique across the whole manifest)
+#   node: NODE_REGISTRY key (e.g., "frame_generate", "audit_gate",
+#         "seedance_motion", "assemble")
+#   config: static node config (dict; optional, default {})
+#   inputs: dict of port name → binding spec; one of
+#           "literal:foo" | "node:other_id.port" | "manifest:dotted.path"
+#   depends_on: list of upstream node ids (optional, default [])
+#   tier: draft | pro (optional, default "draft")
+#
+# Example wiring (commented out — Act 2 work continues on the legacy path):
+#
+#   phase_5:
+#     nodes:
+#       - id: f06_generate
+#         node: frame_generate
+#         inputs:
+#           frame_num: literal:6
+#           prompt: literal:"glance down — head tilts ~15 degrees..."
+#           references: literal:["images/2D-Character-Sketch-Sean-v1.png"]
+#       - id: f06_audit
+#         node: audit_gate
+#         depends_on: [f06_generate]
+#         inputs:
+#           candidate_path: node:f06_generate.candidate_path
+#           frame_num: literal:6
+#           pose_description: literal:"glance down ..."
 phases:
   # Listed sequentially; per-phase definitions live in the architecture doc.
-  # For commit 1 this block is schema-only — phase wiring lands with the
-  # DAG refactor (commit 4).
   enabled: []  # commit 4 enables 'phase_0' through 'phase_9' as their nodes land
 
 # Draft → Pro tier escalation defaults.
@@ -216,3 +245,14 @@ museum:
 brief:
   path: docs/brief.md  # convention; not required until commit 3
   format: markdown
+
+# Acceptance criteria — the rubric Maya emits at Phase 0 post-approval.
+# Authoritative spec: docs/2026-05-26-agent-fleet-brainstorm-v2.md §2.3 + §5 Pattern B.
+#
+# Empty in commit 4; Maya populates the file in commit 3. The runner enforces
+# criteria_locked: true via pipeline/criteria.py — any mutation after lock
+# requires --force-criteria-mutation and writes an entry to
+# runs/{run_id}/criteria_audit.jsonl naming the actor and the reason.
+acceptance_criteria:
+  path: docs/acceptance_criteria.json
+  criteria_locked: false

@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "locked": false,
+  "criteria": [
+    {
+      "id": "AC01",
+      "phase": "phase_5",
+      "description": "Every keyframe character match must score ≥ 0.85 CLIP similarity against the Bible anchor.",
+      "severity": "blocking"
+    },
+    {
+      "id": "AC02",
+      "phase": "phase_6",
+      "description": "Stylus stays in right hand across the motion clip.",
+      "severity": "blocking"
+    },
+    {
+      "id": "AC03",
+      "phase": "phase_8",
+      "description": "Final hero loop reads cleanly as pencil test, not digital cleanup.",
+      "severity": "advisory"
+    }
+  ]
+}

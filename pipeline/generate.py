@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -200,6 +201,10 @@ def get_frames_to_generate(manifest: dict, chain: int | None = None, frame: str 
 
 
 def main():
+    if os.environ.get("USE_DAG_RUNNER") == "1":
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from pipeline.dag import run_from_legacy_cli
+        return run_from_legacy_cli(node_id="frame_generate", argv=sys.argv[1:])
     parser = argparse.ArgumentParser(description="Pencil Test — Generation Orchestrator")
     parser.add_argument("--manifest", default="manifest.yaml", help="Path to manifest.yaml")
     parser.add_argument("--frame", help="Generate a specific frame (e.g., F06)")

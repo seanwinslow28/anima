@@ -1,0 +1,21 @@
+# Minimal manifest exercising only the assemble node via the DAG runner.
+# Used by Task 7 verification — see /Users/seanwinslow/.claude/plans/you-re-picking-up-the-velvet-dove.md.
+# Demonstrates that a graph with a single phase + single node assembles
+# correctly through pipeline.dag, with byte-identical output vs the
+# legacy assemble.sh invocation.
+project:
+  name: "anima-test"
+anchor:
+  path: "images/2D-Character-Sketch-Sean-v1.png"
+  label: "A-2"
+acceptance_criteria:
+  path: "docs/acceptance_criteria.json"
+  criteria_locked: false
+phases:
+  enabled: ["phase_8"]
+  phase_8:
+    nodes:
+      - id: assemble_act1
+        node: assemble
+        inputs:
+          run_dir: literal:runs/run_2026-04-04_174805

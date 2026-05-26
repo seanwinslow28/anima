@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 #
 # Pencil Test Animation — Assembly Script
+# anima — Phase 8 assembly. Behavior unchanged in commit 4.
+# DAG-orchestrated invocation: USE_DAG_RUNNER=1 python -m pipeline.dag run
 #
 # Takes approved keyframes and in-betweens from a run directory, builds an
 # interleaved frame sequence (42 frames for Act 1), and exports GIF, WebM, and MP4.

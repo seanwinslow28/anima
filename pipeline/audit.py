@@ -14,6 +14,7 @@ Usage:
 
 import argparse
 import json
+import os
 import shutil
 import sys
 from datetime import datetime
@@ -190,6 +191,10 @@ def generate_run_summary(run_dir: Path):
 
 
 def main():
+    if os.environ.get("USE_DAG_RUNNER") == "1":
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from pipeline.dag import run_from_legacy_cli
+        return run_from_legacy_cli(node_id="audit_gate", argv=sys.argv[1:])
     parser = argparse.ArgumentParser(description="Pencil Test — Audit Script")
     parser.add_argument("--run-dir", required=True, help="Path to run directory")
     parser.add_argument("--frame", help="Frame to audit (e.g., F06)")
