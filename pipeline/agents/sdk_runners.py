@@ -23,6 +23,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 OPUS_MODEL = "claude-opus-4-7"
+SONNET_MODEL = "claude-sonnet-4-6"
 STUB_MODEL = "stub-fallback"
 
 
@@ -207,6 +208,180 @@ async def _call_claude_agent_sdk(sdk_module, content_blocks: list[dict]) -> str:
     if isinstance(result, dict) and "text" in result:
         return str(result["text"])
     return str(result)
+
+
+# ---------------------------------------------------------------------------
+# Text-only invocations (Maya — commit 3)
+#
+# Maya's three-phase flow needs text-only calls to Opus + Sonnet (no images;
+# the brief is markdown). Stubs return deterministic JSON shaped for the
+# planner's _parse_opus and _parse_sonnet helpers so commit 3 tests stay
+# green on a fresh machine.
+# ---------------------------------------------------------------------------
+
+
+def _stub_opus_text(prompt: str) -> SDKResponse:
+    """Stub planning envelope. Shape matches Maya's _parse_opus expectations."""
+    payload = {
+        "production_brief_md": (
+            "---\npiece_id: \"stub-piece\"\nphases_enabled: [0, 5, 6, 8]\n"
+            "characters_loaded: [sean-anchor]\ntarget_medium: gif\n---\n\n"
+            "# Production Brief (STUB)\n\nSTUB FALLBACK — Opus SDK unavailable. "
+            "Maya's primary pass returned this deterministic envelope so "
+            "downstream tests exercise the parser + audit shape end-to-end. "
+            "Install claude-agent-sdk or set ANTHROPIC_API_KEY for real planning."
+        ),
+        "criteria_json": {
+            "version": "1.1",
+            "locked": False,
+            "criteria": [
+                {
+                    "id": "AC.technical.aspect-ratio-16-9",
+                    "description": "STUB criterion — every frame is 16:9 within 2% tolerance.",
+                    "cites_phase": [5],
+                    "cites_personas": ["em"],
+                    "impact_tag": "structural",
+                    "parent_id": None,
+                    "derived_from": ["production_brief.target_medium"],
+                }
+            ],
+        },
+        "plan_md": (
+            "# Plan (STUB)\n\nSTUB FALLBACK — Opus SDK unavailable. "
+            "Maya's clean-markdown plan output would render here.\n\n"
+            "## Cost preview\n\nStub run: $0 incremental (subscription-absorbed agents only).\n"
+        ),
+    }
+    return SDKResponse(
+        model=STUB_MODEL,
+        text=json.dumps(payload),
+        duration_s=0.0,
+        exit_code=0,
+        error=None,
+        stub_fallback=True,
+    )
+
+
+def _stub_sonnet_text(prompt: str) -> SDKResponse:
+    """Stub adversarial-validation envelope. Shape matches _parse_sonnet."""
+    payload = {
+        "flag": None,
+        "low_signal": True,
+        "reasoning": (
+            "STUB FALLBACK — Sonnet SDK unavailable. Returning low_signal=True "
+            "so Maya's escalation hatch fires a second Opus pass on the routing "
+            "test. Install claude-agent-sdk or set ANTHROPIC_API_KEY to get "
+            "real adversarial validation."
+        ),
+    }
+    return SDKResponse(
+        model=STUB_MODEL,
+        text=json.dumps(payload),
+        duration_s=0.0,
+        exit_code=0,
+        error=None,
+        stub_fallback=True,
+    )
+
+
+async def invoke_opus_text(
+    *,
+    prompt: str,
+    timeout_s: int = 120,
+) -> SDKResponse:
+    """Invoke Opus 4.7 with a text-only prompt. Maya's primary + resolution passes."""
+    return await _invoke_text(
+        model=OPUS_MODEL,
+        prompt=prompt,
+        timeout_s=timeout_s,
+        stub_fn=_stub_opus_text,
+    )
+
+
+async def invoke_sonnet_text(
+    *,
+    prompt: str,
+    timeout_s: int = 120,
+) -> SDKResponse:
+    """Invoke Sonnet 4.6 with a text-only prompt. Maya's adversarial validation pass."""
+    return await _invoke_text(
+        model=SONNET_MODEL,
+        prompt=prompt,
+        timeout_s=timeout_s,
+        stub_fn=_stub_sonnet_text,
+    )
+
+
+async def _invoke_text(
+    *,
+    model: str,
+    prompt: str,
+    timeout_s: int,
+    stub_fn,
+) -> SDKResponse:
+    """Shared text-only call path. Mirrors invoke_opus_vision sans images."""
+    if not _sdk_available():
+        return stub_fn(prompt)
+
+    start = time.monotonic()
+    try:
+        return await asyncio.wait_for(
+            _invoke_real_text(model=model, prompt=prompt),
+            timeout=timeout_s,
+        )
+    except asyncio.TimeoutError:
+        return SDKResponse(
+            model=model,
+            text="",
+            duration_s=time.monotonic() - start,
+            exit_code=124,
+            error=f"timeout after {timeout_s}s",
+        )
+    except Exception as exc:
+        return SDKResponse(
+            model=model,
+            text="",
+            duration_s=time.monotonic() - start,
+            exit_code=1,
+            error=str(exc)[:500],
+        )
+
+
+async def _invoke_real_text(*, model: str, prompt: str) -> SDKResponse:
+    """Real text-only call. Mirrors _invoke_real but with no image content blocks."""
+    start = time.monotonic()
+    content_blocks = [{"type": "text", "text": prompt}]
+
+    try:
+        import claude_agent_sdk  # type: ignore[import-not-found]
+        text = await _call_claude_agent_sdk(claude_agent_sdk, content_blocks)
+        return SDKResponse(
+            model=model,
+            text=text,
+            duration_s=time.monotonic() - start,
+            exit_code=0,
+            error=None,
+        )
+    except ImportError:
+        pass
+
+    import anthropic  # type: ignore[import-not-found]
+    client = anthropic.AsyncAnthropic()
+    resp = await client.messages.create(
+        model=model,
+        max_tokens=4096,
+        messages=[{"role": "user", "content": content_blocks}],
+    )
+    text = "".join(
+        block.text for block in resp.content if getattr(block, "type", "") == "text"
+    )
+    return SDKResponse(
+        model=model,
+        text=text,
+        duration_s=time.monotonic() - start,
+        exit_code=0,
+        error=None,
+    )
 
 
 def _to_image_block(path: Path) -> dict:

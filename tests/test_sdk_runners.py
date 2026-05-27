@@ -66,3 +66,50 @@ def test_stub_fallback_handles_empty_image_paths(monkeypatch):
     assert resp.ok is True
     payload = json.loads(resp.text)
     assert payload["verdict"] in {"pass", "borderline", "fail"}
+
+
+# ---------------------------------------------------------------------------
+# Text-only invocations — Maya planner (commit 3)
+# ---------------------------------------------------------------------------
+
+
+def test_invoke_opus_text_stub_returns_planning_envelope(monkeypatch):
+    """No SDK → invoke_opus_text returns Maya's planning-envelope shape."""
+    from pipeline.agents import sdk_runners
+
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.setattr(sdk_runners, "_sdk_available", lambda: False)
+    resp = asyncio.run(sdk_runners.invoke_opus_text(
+        prompt="draft a plan",
+        timeout_s=5,
+    ))
+    assert resp.ok is True
+    assert resp.stub_fallback is True
+    payload = json.loads(resp.text)
+    assert "production_brief_md" in payload
+    assert "criteria_json" in payload
+    assert "plan_md" in payload
+    assert payload["criteria_json"]["version"] == "1.1"
+    # Stub plan_md must be clean markdown — no box characters.
+    for ch in "╔═╗║╚╝┌─┐│└┘":
+        assert ch not in payload["plan_md"], f"stub plan_md contains {ch!r}"
+
+
+def test_invoke_sonnet_text_stub_returns_adversarial_envelope(monkeypatch):
+    """No SDK → invoke_sonnet_text returns the adversarial-validation shape."""
+    from pipeline.agents import sdk_runners
+
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.setattr(sdk_runners, "_sdk_available", lambda: False)
+    resp = asyncio.run(sdk_runners.invoke_sonnet_text(
+        prompt="adversarial validation",
+        timeout_s=5,
+    ))
+    assert resp.ok is True
+    assert resp.stub_fallback is True
+    assert resp.model == "stub-fallback"
+    payload = json.loads(resp.text)
+    assert "flag" in payload
+    assert "low_signal" in payload
+    # The stub flags low_signal so Maya's second-Opus escalation path fires.
+    assert payload["low_signal"] is True
