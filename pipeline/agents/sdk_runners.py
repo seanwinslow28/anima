@@ -140,26 +140,35 @@ async def invoke_opus_vision(
 async def _invoke_real(*, prompt: str, image_paths: list[Path]) -> SDKResponse:
     """Real Opus 4.7 vision call. Tries claude-agent-sdk first, then anthropic.
 
-    Both paths build the same content-block shape (text + image_data blocks
-    with base64-encoded PNGs) and request a JSON response so vision_critic.py
-    can parse the verdict/confidence/reasoning/patches/cites_criteria
-    structure directly.
+    Vision via claude-agent-sdk uses the async-iterable form of `query` so
+    image content blocks ride alongside the text in the user message. The
+    anthropic SDK path builds the equivalent `messages.create` payload.
+    Both return JSON conforming to vision_critic.py's parser expectations
+    (the model's system prompt instructs the JSON schema).
     """
     start = time.monotonic()
     image_blocks = [_to_image_block(p) for p in image_paths]
     content_blocks = [{"type": "text", "text": prompt}, *image_blocks]
 
-    # Path 1: claude-agent-sdk (subscription-absorbed)
+    # Path 1: claude-agent-sdk (subscription-absorbed via `claude` CLI)
     try:
         import claude_agent_sdk  # type: ignore[import-not-found]
-        text = await _call_claude_agent_sdk(claude_agent_sdk, content_blocks)
-        return SDKResponse(
-            model=OPUS_MODEL,
-            text=text,
-            duration_s=time.monotonic() - start,
-            exit_code=0,
-            error=None,
-        )
+        try:
+            text = await _call_csdk(
+                claude_agent_sdk,
+                model=OPUS_MODEL,
+                content_blocks=content_blocks,
+            )
+            return SDKResponse(
+                model=OPUS_MODEL,
+                text=text,
+                duration_s=time.monotonic() - start,
+                exit_code=0,
+                error=None,
+            )
+        except claude_agent_sdk.CLINotFoundError:
+            # `claude` CLI not installed — fall through to anthropic SDK.
+            pass
     except ImportError:
         pass
 
@@ -183,31 +192,68 @@ async def _invoke_real(*, prompt: str, image_paths: list[Path]) -> SDKResponse:
     )
 
 
-async def _call_claude_agent_sdk(sdk_module, content_blocks: list[dict]) -> str:
-    """Adapter for claude-agent-sdk's query interface.
+async def _call_csdk(
+    sdk_module,
+    *,
+    model: str,
+    content_blocks: list[dict] | None = None,
+    text_prompt: str | None = None,
+) -> str:
+    """Adapter for claude-agent-sdk's actual API (v0.2.x).
 
-    The SDK's exact API surface may evolve; this function isolates that
-    coupling so the rest of anima doesn't depend on the SDK's specific
-    function names. When the SDK is actually installed and a real call
-    needs to happen, this function gets fleshed out against the installed
-    version's API. Until then, an ImportError-or-AttributeError trips the
-    fallback chain in _invoke_real.
+    The SDK's `query()` returns an AsyncIterator of {User, Assistant, System,
+    Result}Message + StreamEvent + RateLimitEvent. We collect text from
+    AssistantMessage.content TextBlocks; AssistantMessage.error surfaces
+    auth/billing/rate-limit conditions which we promote to a raised exception
+    so the outer wrapper's error-path catches them.
+
+    Two call shapes:
+      - text-only: pass `text_prompt=str` (string prompt to query())
+      - with images: pass `content_blocks=[...text+image]` (async-iterable
+        prompt yielding a user message with mixed text + image content)
     """
-    # Defer to whichever query entry point the installed SDK version exposes.
-    query_fn = getattr(sdk_module, "query", None) or getattr(sdk_module, "complete", None)
-    if query_fn is None:
-        raise ImportError("claude-agent-sdk: no compatible query function found")
-    result = query_fn(
-        model=OPUS_MODEL,
-        messages=[{"role": "user", "content": content_blocks}],
+    options = sdk_module.ClaudeAgentOptions(
+        model=model,
+        # Headless mode — no tools, single turn, bypass interactive permission
+        # prompts. Maya and Em both want one structured response, no tool use.
+        permission_mode="bypassPermissions",
+        max_turns=1,
+        allowed_tools=[],
+        disallowed_tools=[],
     )
-    if asyncio.iscoroutine(result):
-        result = await result
-    if isinstance(result, str):
-        return result
-    if isinstance(result, dict) and "text" in result:
-        return str(result["text"])
-    return str(result)
+
+    if text_prompt is not None:
+        # Text-only path — string prompt is the simplest form.
+        return await _drain_csdk_query(sdk_module, prompt=text_prompt, options=options)
+
+    if content_blocks is None:
+        raise ValueError("_call_csdk requires either text_prompt or content_blocks")
+
+    # Vision path — wrap content blocks in the SDK's async-iterable message
+    # stream so image content rides alongside text in a user message.
+    async def message_stream():
+        yield {
+            "type": "user",
+            "message": {
+                "role": "user",
+                "content": content_blocks,
+            },
+        }
+
+    return await _drain_csdk_query(sdk_module, prompt=message_stream(), options=options)
+
+
+async def _drain_csdk_query(sdk_module, *, prompt, options) -> str:
+    """Iterate the SDK's AsyncIterator, collect assistant text, raise on error."""
+    text_parts: list[str] = []
+    async for msg in sdk_module.query(prompt=prompt, options=options):
+        if isinstance(msg, sdk_module.AssistantMessage):
+            if msg.error:
+                raise RuntimeError(f"claude-agent-sdk error: {msg.error}")
+            for block in msg.content:
+                if isinstance(block, sdk_module.TextBlock):
+                    text_parts.append(block.text)
+    return "".join(text_parts)
 
 
 # ---------------------------------------------------------------------------
@@ -350,27 +396,32 @@ async def _invoke_text(
 async def _invoke_real_text(*, model: str, prompt: str) -> SDKResponse:
     """Real text-only call. Mirrors _invoke_real but with no image content blocks."""
     start = time.monotonic()
-    content_blocks = [{"type": "text", "text": prompt}]
 
+    # Path 1: claude-agent-sdk (subscription-absorbed via `claude` CLI)
     try:
         import claude_agent_sdk  # type: ignore[import-not-found]
-        text = await _call_claude_agent_sdk(claude_agent_sdk, content_blocks)
-        return SDKResponse(
-            model=model,
-            text=text,
-            duration_s=time.monotonic() - start,
-            exit_code=0,
-            error=None,
-        )
+        try:
+            text = await _call_csdk(claude_agent_sdk, model=model, text_prompt=prompt)
+            return SDKResponse(
+                model=model,
+                text=text,
+                duration_s=time.monotonic() - start,
+                exit_code=0,
+                error=None,
+            )
+        except claude_agent_sdk.CLINotFoundError:
+            # `claude` CLI not installed — fall through to anthropic SDK.
+            pass
     except ImportError:
         pass
 
+    # Path 2: anthropic SDK with API key
     import anthropic  # type: ignore[import-not-found]
     client = anthropic.AsyncAnthropic()
     resp = await client.messages.create(
         model=model,
         max_tokens=4096,
-        messages=[{"role": "user", "content": content_blocks}],
+        messages=[{"role": "user", "content": [{"type": "text", "text": prompt}]}],
     )
     text = "".join(
         block.text for block in resp.content if getattr(block, "type", "") == "text"
