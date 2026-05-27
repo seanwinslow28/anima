@@ -45,6 +45,12 @@ act1:
   resolution: "1920x1080"
   total_frames: 42
 
+  # Each keyframe may carry an optional impact_tags list. When a tag matches
+  # critics.t2.escalation_tags (above), Em (the T2 vision critic) forces the
+  # Opus 4.7 escalation path regardless of Gemini's confidence. Tags currently
+  # honored: [hero, identity_critical]. Maya (commit 3, Phase 0 planner) will
+  # populate impact_tags from the brief; for the pencil-test reference
+  # implementation, the field stays optional and unset.
   keyframes:
     - frame: 1
       label: "A-2"
@@ -229,6 +235,27 @@ critics:
     post_assemble: T2
     pre_museum_publish: T3
 
+  # T2 — Em (vision critic). Locked per docs/2026-05-26-agent-fleet-brainstorm-v2.md §6.
+  # Gemini 3.1 Pro via Anti-Gravity CLI is the default; Opus 4.7 via Claude Agent SDK
+  # is the escalation hatch on confidence < escalation_threshold OR impact_tag in
+  # escalation_tags. Both paths are subscription-absorbed on Sean's plan.
+  #
+  # auto_apply: false is the v2 lock — patches stage, Sean reviews. Per-call and
+  # wall budgets mirror the vault_critic precedent so the contract surface stays
+  # consistent across critic agents.
+  t2:
+    default_model: "gemini-3.1-pro-via-anti-gravity"
+    escalation_model: "claude-opus-4-7-via-sdk"
+    escalation_threshold: 0.7
+    escalation_tags: [hero, identity_critical]
+    default_context_files:
+      - PHILOSOPHY.md
+      - CLAUDE.md
+      - docs/pipeline-architecture-v1.md
+    auto_apply: false
+    per_call_timeout_s: 120
+    wall_budget_s: 600
+
 # Character Bible registry.
 # Authoritative spec: docs/pipeline-architecture-v1.md §The Character Bible Primitive
 # Commit 2 migrates images/2D-Character-Sketch-Sean-v1.png → characters/sean-anchor/.
@@ -242,9 +269,18 @@ museum:
 
 # Brief & Plan (Phase 0) configuration.
 # Authoritative spec: docs/pipeline-architecture-v1.md §Phase 0 — BRIEF & PLAN
+# Two-tier brief per Maya brainstorm TOP-1. Maya the planner (commit 3) reads
+# from active_dir and writes the production brief, criteria, and plan back
+# into the same directory. `pipeline plan init --target <active_dir>` scaffolds
+# the templates; `pipeline plan show / approve / mutate` operate against the
+# files Maya emits.
 brief:
-  path: docs/brief.md  # convention; not required until commit 3
-  format: markdown
+  active_dir: briefs/2026-05-27-pencil-test-act2   # adjust per piece
+  studio_brief: 00_studio_brief.md
+  production_brief: 01_production_brief.md
+  criteria: acceptance_criteria.json               # symlink to a versioned file post-mutation
+  plan: plan.md
+  cost_preview: cost-preview.png                   # optional; non-blocking enhancement
 
 # Acceptance criteria — the rubric Maya emits at Phase 0 post-approval.
 # Authoritative spec: docs/2026-05-26-agent-fleet-brainstorm-v2.md §2.3 + §5 Pattern B.

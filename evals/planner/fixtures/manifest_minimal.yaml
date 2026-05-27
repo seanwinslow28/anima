@@ -1,0 +1,9 @@
+# Manifest fixture — minimal shape for cases that don't care about routing.
+generation:
+  routing: {}
+tiering: {}
+phases:
+  phase_0: {}
+  phase_5:
+    frame_count_hero: 1
+    frame_count_standard: 1

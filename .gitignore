@@ -18,6 +18,13 @@ venv/
 *.swp
 *.swo
 *~
+.vscode/
+
+# Antigravity CLI local config (per-machine OAuth tokens etc.)
+.antigravitycli/
+
+# Deep-research session state (per-run metadata, not source artifacts)
+docs/research/.sessions/
 
 # Claude Code logs
 .claude/tool-use.log

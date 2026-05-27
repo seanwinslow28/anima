@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "locked": false,
+  "criteria": [
+    {
+      "id": "AC01",
+      "phase": "phase_5",
+      "description": "Each Phase 5 keyframe must read unambiguously as Sean's character (identity coherence with the A-2 anchor) and as a traditional pencil test drawing (cream paper, visible graphite line weight, construction lines).",
+      "severity": "blocking"
+    },
+    {
+      "id": "AC02",
+      "phase": "phase_6",
+      "description": "Phase 6 motion clips must preserve stylus-in-right-hand continuity across every extracted frame and keep identity drift within the SF02 envelope established by the bracketing keyframes.",
+      "severity": "blocking"
+    },
+    {
+      "id": "AC03",
+      "phase": "phase_8",
+      "description": "The Phase 8 assembled cut must loop seamlessly (closing pose matches opening pose) and read as a single coherent pencil-test sequence, not a stitched composite of model artifacts.",
+      "severity": "blocking"
+    }
+  ]
+}
