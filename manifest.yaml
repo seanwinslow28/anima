@@ -269,9 +269,18 @@ museum:
 
 # Brief & Plan (Phase 0) configuration.
 # Authoritative spec: docs/pipeline-architecture-v1.md §Phase 0 — BRIEF & PLAN
+# Two-tier brief per Maya brainstorm TOP-1. Maya the planner (commit 3) reads
+# from active_dir and writes the production brief, criteria, and plan back
+# into the same directory. `pipeline plan init --target <active_dir>` scaffolds
+# the templates; `pipeline plan show / approve / mutate` operate against the
+# files Maya emits.
 brief:
-  path: docs/brief.md  # convention; not required until commit 3
-  format: markdown
+  active_dir: briefs/2026-05-27-pencil-test-act2   # adjust per piece
+  studio_brief: 00_studio_brief.md
+  production_brief: 01_production_brief.md
+  criteria: acceptance_criteria.json               # symlink to a versioned file post-mutation
+  plan: plan.md
+  cost_preview: cost-preview.png                   # optional; non-blocking enhancement
 
 # Acceptance criteria — the rubric Maya emits at Phase 0 post-approval.
 # Authoritative spec: docs/2026-05-26-agent-fleet-brainstorm-v2.md §2.3 + §5 Pattern B.
