@@ -1,16 +1,24 @@
-"""Async subprocess wrapper for Anti-Gravity CLI with image input + stub fallback.
+"""Async subprocess wrapper for Antigravity CLI with image input + stub fallback.
 
 Mirrors code-brain/agents-sdk/lib/cli_runners.py structurally. v2 brainstorm §6
-locked Gemini 3.1 Pro via Anti-Gravity CLI as Em's default model. When the
+locked Gemini 3.1 Pro via Antigravity CLI as Em's default model. When the
 binary is not on PATH (typical for fresh machines, CI, or first-hour
 verification), the stub fallback returns a deterministic structured response so
 tests stay green and the routing logic in vision_critic.py is verifiable
 offline.
 
 Subscription-absorbed in production via Sean's Google personal OAuth on the
-Anti-Gravity CLI. The wrapper is the single point in this codebase that knows
+Antigravity CLI. The wrapper is the single point in this codebase that knows
 the CLI's invocation flags and rate-cap signatures; vision_critic.py imports
 from here and never shells out directly.
+
+Commit 8.1 (2026-05-27) migrated from the pre-Antigravity Gemini CLI to the
+new `agy` binary per docs/research/2026-05-26-anti-gravity-cli-findings.md:
+- ANTI_GRAVITY_BIN: `anti-gravity` → `agy`
+- Flag shape: `--prompt PROMPT --json --image PATH` → `-p PROMPT --output-format json`
+- Image attachment: `--image PATH` flag → `@path` inline references in prompt text
+The sunset for the consumer-tier Gemini CLI is 2026-06-18; the migration is
+mechanical and Gemini 3.1 Pro stays accessible by name.
 """
 
 from __future__ import annotations
@@ -23,7 +31,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
-ANTI_GRAVITY_BIN = "anti-gravity"
+ANTI_GRAVITY_BIN = "agy"
 
 # Signatures the wrapper recognizes as rate-capped responses. Per the
 # vault_critic precedent, treat rate-capped responses as failures even when
@@ -71,11 +79,12 @@ def _stub_response(prompt: str, image_paths: list[Path]) -> CLIResponse:
         "verdict": "borderline",
         "confidence": 0.65,
         "reasoning": (
-            "STUB FALLBACK — anti-gravity binary not found on PATH. Returning "
-            "a borderline verdict at confidence 0.65 so the escalation hatch "
+            "STUB FALLBACK — agy binary not found on PATH. Returning a "
+            "borderline verdict at confidence 0.65 so the escalation hatch "
             "and downstream contract tests exercise the full path. Install "
-            "the Anti-Gravity CLI (and authenticate) to get real Gemini 3.1 "
-            "Pro critique against the pencil-test aesthetic."
+            "the Antigravity CLI (curl -fsSL https://antigravity.google/cli/install.sh | bash) "
+            "and authenticate to get real Gemini 3.1 Pro critique against "
+            "the pencil-test aesthetic."
         ),
         "proposed_patches": [],
         "cites_criteria": ["AC01"],
@@ -98,20 +107,28 @@ async def run_antigravity_with_image(
     image_paths: list[Path],
     timeout_s: int = 120,
 ) -> CLIResponse:
-    """Invoke Anti-Gravity CLI with a prompt + one-or-more images.
+    """Invoke Antigravity CLI with a prompt + one-or-more images.
 
     Returns CLIResponse with the parsed text, exit code, and rate-cap status.
     Falls back to a deterministic stub when the binary isn't on PATH so
     commit 8's tests stay green on a fresh machine and the stub trace under
     evals/vision-critic/traces/baseline-2026-05-26.md is reproducible.
+
+    Image attachment uses the `@path` inline syntax (the Gemini CLI idiom
+    carried forward into Antigravity CLI per the migration findings doc),
+    not a separate `--image` flag. The wrapper formats image paths into the
+    prompt body and lets the agent's file-reading capability resolve them.
     """
     if shutil.which(ANTI_GRAVITY_BIN) is None:
         return _stub_response(prompt, image_paths)
 
     start = time.monotonic()
-    cmd: list[str] = [ANTI_GRAVITY_BIN, "--json", "--prompt", prompt]
-    for p in image_paths:
-        cmd.extend(["--image", str(p)])
+    if image_paths:
+        attachments = "\n\nAttached images:\n" + "\n".join(f"@{p}" for p in image_paths)
+        full_prompt = prompt + attachments
+    else:
+        full_prompt = prompt
+    cmd: list[str] = [ANTI_GRAVITY_BIN, "-p", full_prompt, "--output-format", "json"]
 
     try:
         proc = await asyncio.create_subprocess_exec(
