@@ -123,12 +123,41 @@ async def run_antigravity_with_image(
         return _stub_response(prompt, image_paths)
 
     start = time.monotonic()
+    # agy v1.0.2 reads image / file references when the workspace contains
+    # them. The pre-Antigravity Gemini CLI's `@path` syntax did not carry
+    # forward — instead, you pass each image's parent via `--add-dir` to
+    # grant workspace access, and reference the path as plain text in the
+    # prompt body. agy resolves the read via its built-in file tool.
     if image_paths:
-        attachments = "\n\nAttached images:\n" + "\n".join(f"@{p}" for p in image_paths)
+        attachments = "\n\nAttached images:\n" + "\n".join(str(p) for p in image_paths)
         full_prompt = prompt + attachments
     else:
         full_prompt = prompt
-    cmd: list[str] = [ANTI_GRAVITY_BIN, "-p", full_prompt, "--output-format", "json"]
+    # One --add-dir per unique parent directory of the image paths so agy
+    # can resolve any of them. De-duped to keep the command line tight.
+    add_dirs: list[str] = []
+    seen_dirs: set[str] = set()
+    for p in image_paths:
+        parent = str(Path(p).resolve().parent)
+        if parent not in seen_dirs:
+            seen_dirs.add(parent)
+            add_dirs.extend(["--add-dir", parent])
+    # `-p` is the only print-mode flag; there is no `--output-format json`.
+    # Output comes back as raw text; the model's system prompt (Em's role
+    # addendum) tells it to return a JSON envelope, which `vision_critic.py`'s
+    # parser strips of any code fence before json.loads.
+    #
+    # --dangerously-skip-permissions: required in headless mode. Without it
+    # agy blocks waiting for an interactive permission grant when the prompt
+    # references a file. Em runs read-only against project images; no tool
+    # permissions to be tightened.
+    cmd: list[str] = [
+        ANTI_GRAVITY_BIN,
+        "--dangerously-skip-permissions",
+        *add_dirs,
+        "-p",
+        full_prompt,
+    ]
 
     try:
         proc = await asyncio.create_subprocess_exec(
