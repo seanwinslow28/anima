@@ -1,0 +1,147 @@
+# Maya the Planner — eval cases.
+#
+# Cases are grounded in real or near-real briefs, not imagined failure modes.
+# Some cases ship intentionally red — the failure is the artifact (per the v2
+# change-map §7 eval discipline lifted from Hamel Husain + Shreya Shankar:
+# pre-fix → post-fix improvement is the portfolio content).
+#
+# Schema per case:
+#   name: kebab-case slug; doubles as the pytest parametrize id
+#   description: one-line summary surfaced in pytest output
+#   fixture_brief: path under evals/planner/fixtures/ to a Studio Brief
+#   fixture_manifest: path under evals/planner/fixtures/ to a manifest YAML
+#   mocked_responses:
+#     opus: list of JSON strings (planning envelopes or revision envelopes)
+#     sonnet: list of JSON strings (adversarial envelopes)
+#   expected:
+#     plan_emitted: bool
+#     criteria_min_count: int
+#     criteria_must_include_categories: [list of category names from the closed vocab]
+#     cost_estimate_in_range: [low_usd_min, high_usd_max] for the median band
+#     adversarial_should_flag: bool — does Sonnet surface a real flag?
+#     opus_call_count: int — exact total Opus calls (1, 2, or 3)
+#     sonnet_call_count: int — exact total Sonnet calls (always 1 in current design)
+#     is_intentionally_red: bool — case documents a known failure mode
+
+cases:
+
+  - name: pencil-test-act1-reproduction
+    description: "Reproduce a Pencil-Test-Act-1-shaped plan. Baseline pass — Sonnet returns clean."
+    fixture_brief: brief_pencil_test_act1.md
+    fixture_manifest: manifest_pencil_test_act1.yaml
+    mocked_responses:
+      opus:
+        - kind: planning_envelope
+          criteria_categories: [identity, tone, technical, structural]
+      sonnet:
+        - kind: clean
+    expected:
+      plan_emitted: true
+      criteria_min_count: 4
+      criteria_must_include_categories: [identity, tone, technical]
+      cost_estimate_in_range: [1.0, 30.0]   # v2 §7 baseline: P5 $5-40, P6 $10-20
+      adversarial_should_flag: false
+      opus_call_count: 1
+      sonnet_call_count: 1
+      is_intentionally_red: false
+
+  - name: multi-character-scene
+    description: "Two-character piece. Maya should surface continuity criteria for both."
+    fixture_brief: brief_two_characters.md
+    fixture_manifest: manifest_two_characters.yaml
+    mocked_responses:
+      opus:
+        - kind: planning_envelope
+          criteria_categories: [identity, continuity, tone, technical]
+      sonnet:
+        - kind: clean
+    expected:
+      plan_emitted: true
+      criteria_min_count: 4
+      criteria_must_include_categories: [identity, continuity]
+      cost_estimate_in_range: [5.0, 40.0]
+      adversarial_should_flag: false
+      opus_call_count: 1
+      sonnet_call_count: 1
+      is_intentionally_red: false
+
+  - name: authoring-first-bible
+    description: "Project-Type = Bible authoring (not animation). Plan should center Phase 2."
+    fixture_brief: brief_bible_authoring.md
+    fixture_manifest: manifest_bible_authoring.yaml
+    mocked_responses:
+      opus:
+        - kind: planning_envelope
+          criteria_categories: [identity, proportion]
+      sonnet:
+        - kind: clean
+    expected:
+      plan_emitted: true
+      criteria_min_count: 2
+      criteria_must_include_categories: [identity]
+      cost_estimate_in_range: [0.0, 10.0]
+      adversarial_should_flag: false
+      opus_call_count: 1
+      sonnet_call_count: 1
+      is_intentionally_red: false
+
+  - name: ambiguous-tone-brief
+    description: "Brief tone is contradictory. Sonnet's adversarial pass surfaces a real flag."
+    fixture_brief: brief_ambiguous_tone.md
+    fixture_manifest: manifest_minimal.yaml
+    mocked_responses:
+      opus:
+        - kind: planning_envelope
+          criteria_categories: [tone, structural]
+        - kind: planning_envelope
+          criteria_categories: [tone, structural]
+          revised: true
+      sonnet:
+        - kind: flag
+          flag_text: "AC.tone.warm-and-melancholy — untestable; tone vector is contradictory in the Studio Brief"
+    expected:
+      plan_emitted: true
+      criteria_min_count: 2
+      adversarial_should_flag: true
+      opus_call_count: 2
+      sonnet_call_count: 1
+      is_intentionally_red: false
+
+  - name: under-spec-brief-needs-clarification
+    description: "Brief is missing key fields (no deadline, no medium). Documents the under-spec failure mode."
+    fixture_brief: brief_under_spec.md
+    fixture_manifest: manifest_minimal.yaml
+    mocked_responses:
+      opus:
+        - kind: planning_envelope
+          criteria_categories: [structural]
+      sonnet:
+        - kind: low_signal
+    expected:
+      plan_emitted: true
+      criteria_min_count: 1
+      adversarial_should_flag: false
+      opus_call_count: 2
+      sonnet_call_count: 1
+      is_intentionally_red: true
+      # Red because: under-spec briefs SHOULD produce a "Maya needs clarification"
+      # outcome, but the current planner ships a plan and notes uncertainty in
+      # confidence notes rather than refusing. Track until prompt iteration tightens it.
+
+  - name: cost-undercount-trap
+    description: "Manifest declares 50 hero keyframes. Estimator should NOT under-estimate."
+    fixture_brief: brief_50_hero_frames.md
+    fixture_manifest: manifest_50_hero_frames.yaml
+    mocked_responses:
+      opus:
+        - kind: planning_envelope
+          criteria_categories: [structural, technical]
+      sonnet:
+        - kind: clean
+    expected:
+      plan_emitted: true
+      cost_estimate_in_range: [3.0, 50.0]
+      adversarial_should_flag: false
+      opus_call_count: 1
+      sonnet_call_count: 1
+      is_intentionally_red: false

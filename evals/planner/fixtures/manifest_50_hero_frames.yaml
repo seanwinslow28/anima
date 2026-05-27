@@ -1,0 +1,22 @@
+# Manifest fixture — 50 hero-tier keyframes. Used to verify the cost
+# estimator doesn't under-estimate when the piece is hero-heavy.
+generation:
+  routing:
+    hero_keyframe:
+      model: nb-pro
+      usd_per_frame: 0.15
+    standard_keyframe:
+      model: nb2
+      usd_per_frame: 0.07
+tiering:
+  phase_5: pro
+  phase_6: pro
+phases:
+  phase_0: {}
+  phase_5:
+    frame_count_hero: 50
+    frame_count_standard: 0
+  phase_6:
+    clip_count: 15
+    seconds_per_clip: 6
+  phase_8: {}

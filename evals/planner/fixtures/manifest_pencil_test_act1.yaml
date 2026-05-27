@@ -1,0 +1,22 @@
+# Manifest fixture — Pencil Test Act 1 shape.
+generation:
+  routing:
+    hero_keyframe:
+      model: nb-pro
+      usd_per_frame: 0.15
+    standard_keyframe:
+      model: nb2
+      usd_per_frame: 0.07
+tiering:
+  phase_5: draft
+  phase_6: draft
+  phase_8: draft
+phases:
+  phase_0: {}
+  phase_5:
+    frame_count_hero: 2
+    frame_count_standard: 6
+  phase_6:
+    clip_count: 4
+    seconds_per_clip: 5
+  phase_8: {}

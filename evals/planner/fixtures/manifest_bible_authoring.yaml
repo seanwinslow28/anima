@@ -1,0 +1,12 @@
+# Manifest fixture — authoring-first Bible run. Phase 2 only, no animation.
+generation:
+  routing:
+    hero_keyframe:
+      model: nb-pro
+      usd_per_frame: 0.15
+tiering:
+  phase_2: pro
+phases:
+  phase_0: {}
+  phase_2:
+    sheets_count: 14   # 1 anchor + 3 turnarounds + 8 expressions + 2 costumes

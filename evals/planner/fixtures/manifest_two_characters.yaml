@@ -1,0 +1,23 @@
+# Manifest fixture — two-character piece. Larger Phase 5 keyframe count
+# because every shot loads two characters; Phase 6 clip count up too.
+generation:
+  routing:
+    hero_keyframe:
+      model: nb-pro
+      usd_per_frame: 0.15
+    standard_keyframe:
+      model: nb2
+      usd_per_frame: 0.07
+tiering:
+  phase_5: pro
+  phase_6: draft
+phases:
+  phase_0: {}
+  phase_2: {}
+  phase_5:
+    frame_count_hero: 6
+    frame_count_standard: 20
+  phase_6:
+    clip_count: 8
+    seconds_per_clip: 4
+  phase_8: {}
