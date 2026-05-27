@@ -1,0 +1,33 @@
+{
+  "version": "1.1",
+  "locked": false,
+  "criteria": [
+    {
+      "id": "AC.tone.melancholy-not-grief",
+      "description": "Beat 3's hold reads as melancholic, not grieving. Adult registers, not childlike.",
+      "cites_phase": [4, 5, 6, 8],
+      "cites_personas": ["em", "cy", "sage", "chairman"],
+      "impact_tag": "aesthetic",
+      "parent_id": null,
+      "derived_from": ["studio_brief.tone", "philosophy.engine-truth"]
+    },
+    {
+      "id": "AC.identity.front-pose",
+      "description": "Front-facing keyframes match the Bible's front turnaround within identity-drift tolerance.",
+      "cites_phase": [5],
+      "cites_personas": ["em", "cy"],
+      "impact_tag": "identity_critical",
+      "parent_id": null,
+      "derived_from": ["studio_brief.character"]
+    },
+    {
+      "id": "AC.technical.aspect-ratio-16-9",
+      "description": "Every frame is 16:9 within 2% tolerance.",
+      "cites_phase": [5],
+      "cites_personas": [],
+      "impact_tag": "structural",
+      "parent_id": null,
+      "derived_from": ["production_brief.target_medium"]
+    }
+  ]
+}
