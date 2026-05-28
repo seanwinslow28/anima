@@ -130,7 +130,14 @@ class CharacterDesignerNode:
             studio_brief=studio_brief,
             character_dir=character_dir,
         )
-        opus_resp = asyncio.run(invoke_opus_text(prompt=opus_prompt))
+        # 900s timeout for Cy's Pass-1: the prompt is ~55KB (anima preamble
+        # + Cy addendum + 2d-animation-principles skill inline + per-Bible
+        # brief) and the envelope is ~50KB (character.yaml + 15-20 IR.* rules
+        # + risk-bible + confidence-notes + plate plan). Observed wall time
+        # against real Opus on the sean-anchor authoring run: ~500s. The
+        # invoke_opus_text default of 120s would cleanly time out before
+        # Pass 1 ever completed.
+        opus_resp = asyncio.run(invoke_opus_text(prompt=opus_prompt, timeout_s=900))
 
         parsed = self._parse_pass1_envelope(
             opus_resp.text,
@@ -453,10 +460,24 @@ class CharacterDesignerNode:
         source = str(plate.get("source", "generate"))
         cites_rules = tuple(plate.get("cites_identity_rules", []))
         prompt_text = str(plate.get("prompt", ""))
-        reference_images = [
-            character_dir / ref for ref in plate.get("reference_images", [])
-            if ref
-        ]
+        # Opus is supposed to emit character-dir-relative paths per the
+        # addendum's "What good looks like" example ("anchor.png", not
+        # "characters/sean-anchor/anchor.png"). In practice the first
+        # sean-anchor authoring run emitted project-root-relative paths
+        # anyway, so resolve defensively: prefer character-dir, fall back
+        # to project root if that doesn't exist (same pattern the ingest
+        # path uses at the start of this function).
+        reference_images = []
+        for ref in plate.get("reference_images", []):
+            if not ref:
+                continue
+            ref_path = Path(ref)
+            candidate = character_dir / ref_path
+            if not candidate.exists():
+                fallback = _PROJECT_ROOT / ref_path
+                if fallback.exists():
+                    candidate = fallback
+            reference_images.append(candidate)
 
         status: dict[str, Any] = {
             "status": "pending",

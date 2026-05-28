@@ -1,0 +1,17 @@
+Loop <_UnixSelectorEventLoop running=False closed=True debug=False> that handles pid 26399 is closed
+Loop <_UnixSelectorEventLoop running=False closed=True debug=False> that handles pid 26696 is closed
+Authoring sean-anchor Bible — Pass 1 (Opus) → Pass 2 (NB Pro) → Pass 3 (Gemini)
+  source-refs: 24 file(s)
+  run dir:     runs/2026-05-28-cy-sean-anchor-bake
+
+
+emitted:
+  character_yaml_path: characters/sean-anchor/character.yaml
+  criteria_path: characters/sean-anchor/acceptance_criteria.json
+  risk_bible_path: characters/sean-anchor/risk-bible.md
+  cy_confidence_notes_path: characters/sean-anchor/cy-confidence-notes.md
+  plate_generation_plan_path: characters/sean-anchor/plate_generation_plan.json
+  plates: 24 total
+    1 plate(s) flagged for human gate — review before approval
+
+next: `python -m pipeline.cli bible show --character-dir characters/sean-anchor` to review, then `pipeline bible approve` to lock the criteria graph.

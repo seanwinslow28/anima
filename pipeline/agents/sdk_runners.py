@@ -214,10 +214,17 @@ async def _call_csdk(
     """
     options = sdk_module.ClaudeAgentOptions(
         model=model,
-        # Headless mode — no tools, single turn, bypass interactive permission
-        # prompts. Maya and Em both want one structured response, no tool use.
+        # Headless mode — no tools, bypass interactive permission prompts.
+        # Maya and Em both want one structured response, no tool use; Cy's
+        # Pass-1 emission is a single ~50KB JSON envelope. max_turns=1 was
+        # too low for those complex emissions — claude-agent-sdk surfaced
+        # "Reached maximum number of turns (1)" before any AssistantMessage
+        # text streamed through, dropping us silently into the empty-text
+        # error path. Raised to 10: still no tool use possible (the tool
+        # lists are empty), but the SDK has room for whatever internal
+        # turn-accounting it does on extended thinking + structured output.
         permission_mode="bypassPermissions",
-        max_turns=1,
+        max_turns=10,
         allowed_tools=[],
         disallowed_tools=[],
     )

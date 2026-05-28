@@ -30,6 +30,24 @@ from pipeline.agents.nb_pro_runner import (
 )
 
 
+@pytest.fixture(autouse=True)
+def _isolate_env_file(monkeypatch, tmp_path_factory):
+    """Repoint the runner's .env source at a guaranteed-empty path.
+
+    The runner's GEMINI_API_KEY gate honors both the live process env AND
+    the project .env file (the skill script's --env-file source). Tests
+    that monkeypatch.delenv('GEMINI_API_KEY') would silently fail to land
+    on the stub path if the real .env file at the repo root carried the
+    key — which it does during a developer's live run. This fixture
+    repoints _ENV_FILE at a never-existing path so tests express their
+    intent ('no key available → stub fallback') correctly.
+    """
+    sentinel = tmp_path_factory.mktemp("nb_pro_env_isolation") / "absent.env"
+    monkeypatch.setattr(
+        "pipeline.agents.nb_pro_runner._ENV_FILE", sentinel
+    )
+
+
 @pytest.fixture
 def fake_reference_image(tmp_path):
     """A tiny PNG file used as a stand-in reference image."""

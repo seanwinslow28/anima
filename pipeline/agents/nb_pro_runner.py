@@ -49,6 +49,32 @@ _SKILL_SCRIPT = (
     _PROJECT_ROOT / ".claude" / "skills" / "gemini-pencil-animation-image-gen"
     / "scripts" / "generate_image.py"
 )
+_ENV_FILE = _PROJECT_ROOT / ".env"
+
+
+def _has_gemini_api_key() -> bool:
+    """True if GEMINI_API_KEY resolves either from the live process env or
+    the project .env file. The skill script reads .env via its --env-file
+    flag, so the runner's stub-fallback gate must respect the same source —
+    otherwise a Bible authoring run on a machine with a populated .env but
+    no exported var silently falls back to placeholder PNGs while the skill
+    script (and direct CLI invocations) would have generated real plates.
+    """
+    if os.environ.get("GEMINI_API_KEY"):
+        return True
+    if not _ENV_FILE.exists():
+        return False
+    try:
+        for line in _ENV_FILE.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            if key.strip() == "GEMINI_API_KEY" and value.strip():
+                return True
+    except OSError:
+        return False
+    return False
 
 
 @dataclass(frozen=True)
@@ -121,7 +147,9 @@ def invoke_nb_pro(
         )
 
     # Stub fallback when the env isn't set up for real calls. Tests run here.
-    if not os.environ.get("GEMINI_API_KEY"):
+    # The check honors both live env and .env file — the skill script reads
+    # .env via --env-file, so the runner's gate respects the same source.
+    if not _has_gemini_api_key():
         _write_placeholder_png(output_path)
         # Also cache the placeholder so the cache-hit test on a second call
         # behaves the same as it would with a real generation.
