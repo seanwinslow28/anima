@@ -332,6 +332,84 @@ def enforce_lock(
             f.write(json.dumps(record) + "\n")
 
 
+def load_all_criteria(manifest: dict) -> CriteriaBundle:
+    """Read every criteria file the manifest's criteria_sources block names
+    and merge them into a single CriteriaBundle.
+
+    The manifest schema (additive, per Task 1.8):
+
+        criteria_sources:
+          brief_file: briefs/{slug}/acceptance_criteria.json   # Maya's AC.*
+          bibles:
+            - characters/sean-anchor/acceptance_criteria.json  # Cy's IR.sean.*
+            - characters/claude-mascot/acceptance_criteria.json # IR.claude-mascot.*
+
+    Merge rules:
+      - Concatenate every source's criteria list into one bundle.
+      - Files that don't exist on disk are logged and skipped (Bible not yet
+        authored, no Maya brief yet). This is non-fatal — Phase 5 runs can
+        proceed against the AC.* criteria alone if a Bible hasn't shipped.
+      - Duplicate IDs across files raise ValueError naming both files. The
+        v1.2 graph treats IDs as globally unique within a run — Cy's
+        per-character namespacing (IR.{character_id}.*) makes accidental
+        collisions structurally rare, but a brief and a Bible both authoring
+        AC.identity.stylus-right-hand would collide.
+
+    The merged bundle inherits the highest version across its sources (v1.2
+    if any IR.* file participates). `locked` is True only if every source was
+    locked — a partially-locked merge surfaces as draft so downstream consumers
+    treat the bundle as in-flight.
+    """
+    sources_block = manifest.get("criteria_sources") or {}
+    file_paths: list[Path] = []
+
+    brief_file = sources_block.get("brief_file")
+    if brief_file:
+        file_paths.append(Path(brief_file))
+
+    bible_paths = sources_block.get("bibles") or []
+    for entry in bible_paths:
+        file_paths.append(Path(entry))
+
+    merged_criteria: list[AcceptanceCriterion] = []
+    id_to_source: dict[str, str] = {}
+    versions: list[str] = []
+    all_locked = True
+    any_loaded = False
+
+    for path in file_paths:
+        if not path.exists():
+            # Bible not yet authored, or Maya brief still being drafted.
+            # Skip without raising — surfaces in caller's logs if needed.
+            continue
+        bundle = load_criteria(path)
+        any_loaded = True
+        versions.append(bundle.version)
+        if not bundle.locked:
+            all_locked = False
+        for c in bundle.criteria:
+            if c.id in id_to_source:
+                raise ValueError(
+                    f"Duplicate criterion id {c.id!r} across criteria sources: "
+                    f"first seen in {id_to_source[c.id]}, also in {path}"
+                )
+            id_to_source[c.id] = str(path)
+            merged_criteria.append(c)
+
+    if not any_loaded:
+        # No sources resolved — return an empty bundle so downstream code
+        # doesn't crash on a missing manifest block during early-pipeline runs.
+        return CriteriaBundle(version="1.2", locked=False, criteria=[])
+
+    # Highest version wins; v1.2 > v1.1 > v1.0.
+    merged_version = max(versions, default="1.0")
+    return CriteriaBundle(
+        version=merged_version,
+        locked=all_locked,
+        criteria=merged_criteria,
+    )
+
+
 def bump_version(criteria_path: Path, *, new_version: str) -> Path:
     """Write a new semver-bumped criteria file and re-point the symlink.
 
