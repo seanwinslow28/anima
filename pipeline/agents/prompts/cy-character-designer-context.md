@@ -132,6 +132,10 @@ What this means for your rule authoring: every rule's `description` field must b
 
 ## What good looks like
 
+Two parallel examples — one pencil-test-colored register (sean-anchor), one pixel-art-8bit register (claude-mascot). They sit side by side under this heading on purpose: the schema is style-agnostic by construction; the rules describe whatever the register requires. Read them as comparative examples, not as the default shape your output must mirror.
+
+### Example A — sean-anchor (`style_register: pencil-test-colored`)
+
 Three IR.* entries drawn from sean-anchor, in the rule-graph contract above:
 
 ```json
@@ -177,6 +181,56 @@ And a four-paragraph risk-bible.md excerpt:
 > The expression set is interpretive. Cy authored neutral, focused, surprised, concerned, contemplative — five emotions. Em should treat any verdict citing an expression rule outside this set as a Bible silence (no rule authored), not a Bible violation (rule violated). When Sean wants additional expressions, run `pipeline bible iterate --target expressions --add curious,frustrated,delighted` and Cy generates the new plates without re-running the whole Bible.
 >
 > The palette is locked at four primary colors: warm cream paper, warm graphite gray line, navy shirt, cool gray jeans. Skin tones are intentionally absent — the pencil-test register flattens skin to paper-base + cross-hatching shadow. If a downstream piece needs lit skin tones, that's a style register escalation, not a Bible mutation.
+
+### Example B — claude-mascot (`style_register: pixel-art-8bit`)
+
+Three IR.* entries for the Claude Mascot Bible, anchored against a fundamentally different style register:
+
+```json
+[
+  {
+    "id": "IR.claude-mascot.palette.limited-orange-cream-vocabulary",
+    "description": "The Claude Mascot palette is locked at four indexed colors. Primary orange `#E89B6B` (skin + body fill, ±10 RGB units tolerance); cream highlight `#F4DDB8` (face highlight, top-of-head shine, hand fingertips); warm brown shadow `#A86B45` (under-jaw shadow, fold lines, outer contour); deep brown `#5C3A24` (eye dots, mouth line, accent strokes). Any color outside this four-step indexed palette is a palette violation. Anti-aliased gradients between palette entries are also violations — the register is index-mode pixel art, not paletted-with-AA.",
+    "cites_phase": [5, 6, 8],
+    "cites_personas": ["em"],
+    "impact_tag": "identity_critical",
+    "character_id": "claude-mascot",
+    "derived_from": ["characters/claude-mascot/anchor.png#region:palette", "characters/claude-mascot/source-refs/claude-mascot-2.png"]
+  },
+  {
+    "id": "IR.claude-mascot.proportion.head-to-body-2-to-3-chibi",
+    "description": "Claude Mascot reads as chibi-leaning: head height is roughly two-thirds of total body height (head-to-body 2:3, measured from crown of forehead-tuft to base of feet). Body width at shoulders is approximately 1.2× the head width; the silhouette reads as 'round-topped lozenge' rather than 'standing figure.' The proportion is the load-bearing recognizability cue at sub-32px display sizes.",
+    "cites_phase": [5, 6],
+    "cites_personas": ["em"],
+    "impact_tag": "identity_critical",
+    "character_id": "claude-mascot",
+    "derived_from": ["characters/claude-mascot/anchor.png", "characters/claude-mascot/turnarounds/body-front.png"]
+  },
+  {
+    "id": "IR.claude-mascot.style.integer-pixel-grid-no-anti-aliasing",
+    "description": "Every contour, every shape edge, every interior fill change lands on an integer pixel boundary. No sub-pixel anti-aliasing is permitted — diagonal lines render as stair-stepped pixel runs, not as smoothed gradients between palette steps. Dithering for shadow areas uses a vertical 2-pixel-spaced pattern in the warm-brown shadow color over the primary orange fill; no other dither patterns are in the register's vocabulary.",
+    "cites_phase": [5, 6, 8],
+    "cites_personas": ["em"],
+    "impact_tag": "identity_critical",
+    "character_id": "claude-mascot",
+    "derived_from": ["characters/claude-mascot/anchor.png#region:edge-detail", "characters/claude-mascot/source-refs/claude-mascot-1.png#region:dither-shadow"]
+  }
+]
+```
+
+And a four-paragraph risk-bible.md excerpt for claude-mascot that mirrors the sean-anchor structure:
+
+> **What the claude-mascot Bible covers and doesn't cover.**
+>
+> The Bible authors against Claude Mascot's pixel-art-8bit register. Plates exist for front, 3-quarter, and profile views; the back angle is extrapolated from the front silhouette and the front-top diagonal — Cy's confidence note hedges this. No motion plates exist yet. The walk cycle, gesture set, and idle animation would need to be authored against the proportion + palette + grid IR rules before any Phase 6 motion clip involving the mascot can cite IR.claude-mascot.motion.* rules confidently.
+>
+> The costume covers a single outfit — the mascot is its own design; no secondary costume variants exist or are planned for commit 2. If a future piece needs the mascot in a swappable accessory (a hat, a tool), that's a new variant under `characters/claude-mascot/costumes/{variant}/` and a separate Bible authoring pass.
+>
+> The expression set is interpretive and minimal. Cy authored neutral, surprised, contemplative — three expressions, against three references in `source-refs/`. A full emotional range (anger, confusion, frustration, delight) would need authoring before Em can cite expression-specific IR.claude-mascot.face.* rules outside the authored set. Treat any verdict citing an unauthored expression as a Bible silence (no rule for this), not a Bible violation (rule violated).
+>
+> The palette is locked at four indexed colors (see `IR.claude-mascot.palette.limited-orange-cream-vocabulary`). No anti-aliasing, no gradient interpolation between palette entries. If a downstream piece needs the mascot in a different lighting condition — neon-lit, candle-lit, moonlit — that's a style-register escalation to a separate Bible variant, not a palette extension in this one. The pixel-art-8bit register is brittle by design; the brittleness is the aesthetic.
+
+Both examples land the same schema. The rules describe whatever the register requires — Sean's stylus and cowlick belong to pencil-test-colored; Claude Mascot's integer-pixel grid and four-step indexed palette belong to pixel-art-8bit. Style register is what the rules orient against; the schema is what they fit into.
 
 Specific, honest about scope, prose that reads like a real animation studio's character bible note. No ASCII boxes — the CLI renders those.
 

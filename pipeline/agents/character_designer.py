@@ -356,8 +356,16 @@ class CharacterDesignerNode:
         exist. Used when the underlying Opus call returned a stub (no real model
         available) so downstream pipeline paths still exercise. Production runs
         should never hit this path; tests run on the monkeypatched-Opus path.
+
+        The style_register inference is folder-name-aware so the stub Bible
+        for a pixel-art character (e.g. `claude-mascot/`) doesn't get the
+        pencil-test-colored default the rest of the pipeline would silently
+        coerce against. This is intentional-test-only — real Cy reads
+        source-refs and infers the register from the material, not from the
+        folder name.
         """
         character_id = character_dir.name
+        stub_register = _infer_stub_style_register(character_id)
         ir_entries = [
             {
                 "id": f"IR.{character_id}.style.stub-rule",
@@ -377,7 +385,7 @@ class CharacterDesignerNode:
             "character_yaml": {
                 "character_id": character_id,
                 "display_name": character_id.replace("-", " ").title(),
-                "style_register": "pencil-test-colored",
+                "style_register": stub_register,
                 "palette": [],
                 "proportions": {"head_to_body": "", "shoulder_to_hip": "", "notes": ""},
                 "identity_rules_pointer": "./acceptance_criteria.json",
@@ -584,3 +592,34 @@ def _atomic_write_text(path: Path, content: str) -> None:
     tmp = path.with_suffix(path.suffix + ".tmp")
     tmp.write_text(content, encoding="utf-8")
     tmp.replace(path)
+
+
+# Folder-name heuristics for the stub fallback's style_register inference.
+# Intentional-test-only: real Cy reads source-refs and infers the register
+# from the material; this map exists so the stub Bible for a pixel-art
+# character doesn't get the pencil-test-colored default the rest of the
+# pipeline would silently coerce against. Extend conservatively; new entries
+# are a deliberate commit, not an inline tweak.
+_STUB_STYLE_REGISTER_BY_KEYWORD = {
+    "mascot": "pixel-art-8bit",
+    "pixel": "pixel-art-8bit",
+    "watercolor": "watercolor",
+    "lineart": "line-art-only",
+    "photoreal": "photoreal",
+    "3d": "3d-rendered",
+}
+
+
+def _infer_stub_style_register(character_id: str) -> str:
+    """Guess a sensible style_register from the folder name for stub Bibles.
+
+    The default remains pencil-test-colored because the Pencil-Test reference
+    implementation is anima's first reference style and most existing character
+    folders carry it. The folder-name match is conservative — a substring hit
+    on a known keyword wins; anything else falls through to the default.
+    """
+    name = character_id.lower()
+    for keyword, register in _STUB_STYLE_REGISTER_BY_KEYWORD.items():
+        if keyword in name:
+            return register
+    return "pencil-test-colored"
