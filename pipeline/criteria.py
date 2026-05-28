@@ -46,10 +46,28 @@ VALID_IMPACT_TAGS = frozenset({
     "aesthetic", "structural", "technical",
 })
 
+# v1.2 closed vocabulary for Cy's character-bound identity rules. Per Cy
+# brainstorm TOP-2 (2026-05-27): IR.* entries are first-class criteria living
+# in the same acceptance_criteria.json graph as Maya's AC.* entries, but use
+# their own ten-category vocabulary because Cy reasons in character-design
+# terms (anatomy, hair, face, palette, pose) rather than spec-design terms
+# (identity, proportion, tone). Em loads style register before identity rules
+# and routes its citation rubric against this vocab when judging Phase 5 + 6
+# frames against the Bible.
+VALID_IR_CATEGORIES = frozenset({
+    "anatomy", "hair", "face", "proportion", "palette",
+    "costume", "prop", "pose", "motion", "style",
+})
+
 # Mnemonic ID pattern: AC.{category}.{handle}. Category is one of the closed
 # vocab above; handle is kebab-or-snake lowercase. Em's escalation hatch keys
 # off impact_tag (not the ID parse), so handle stays flexible.
 _MNEMONIC_ID_PATTERN = re.compile(r"^AC\.([a-z_]+)\.([a-z0-9\-]+)$")
+
+# v1.2 IR.* pattern: three dotted segments — IR.{character_id}.{category}.{handle}.
+# character_id is lowercase-kebab (matches the folder name in characters/).
+# category is one of VALID_IR_CATEGORIES. handle stays flexible.
+_IR_ID_PATTERN = re.compile(r"^IR\.([a-z0-9\-]+)\.([a-z_]+)\.([a-z0-9\-]+)$")
 
 
 @dataclass(frozen=True)
@@ -58,11 +76,13 @@ class AcceptanceCriterion:
 
     v1.0 records carry `phase` and `severity`; v1.1 fields default to empty.
     v1.1 records carry the graph fields; v1.0 fields default to None.
+    v1.2 records (Cy's IR.* identity rules) carry `character_id` populated
+    from the parsed mnemonic ID; AC.* records keep character_id=None.
     Consumers that only care about one version inspect the relevant fields.
     """
     id: str
     description: str
-    # v1.0 fields (None on v1.1 records).
+    # v1.0 fields (None on v1.1 / v1.2 records).
     phase: str | None = None
     severity: Severity | None = None
     # v1.1 graph fields (empty / None on v1.0 records).
@@ -71,6 +91,8 @@ class AcceptanceCriterion:
     impact_tag: str | None = None
     parent_id: str | None = None
     derived_from: tuple[str, ...] = ()
+    # v1.2 Bible-layer field (None on AC.* records; required on IR.* records).
+    character_id: str | None = None
 
 
 @dataclass
@@ -89,6 +111,16 @@ class CriteriaBundle:
     def query_by_persona(self, persona: str) -> list[AcceptanceCriterion]:
         """Return v1.1 criteria citing the given persona name."""
         return [c for c in self.criteria if persona in c.cites_personas]
+
+    def query_by_character(self, character_id: str) -> list[AcceptanceCriterion]:
+        """Return v1.2 IR.* criteria bound to the given character_id.
+
+        Returns an empty list on AC.*-only bundles since no records carry a
+        character_id there. The Bible authoring workflow calls this when Em
+        needs to surface 'just the rules for the character in this Phase 5
+        frame' from a merged CriteriaBundle that holds multiple characters.
+        """
+        return [c for c in self.criteria if c.character_id == character_id]
 
 
 class CriteriaLockViolation(RuntimeError):
@@ -109,6 +141,10 @@ def load_criteria(path: Path) -> CriteriaBundle:
                 severity=c["severity"],
             ))
         else:
+            # v1.1 + v1.2 share the graph fields; v1.2 IR.* records additionally
+            # carry character_id. The validator has already enforced that IR.*
+            # records' character_id field matches the parsed prefix, so we can
+            # trust the value here.
             criteria_list.append(AcceptanceCriterion(
                 id=c["id"],
                 description=c["description"],
@@ -117,6 +153,7 @@ def load_criteria(path: Path) -> CriteriaBundle:
                 impact_tag=c.get("impact_tag"),
                 parent_id=c.get("parent_id"),
                 derived_from=tuple(c.get("derived_from") or ()),
+                character_id=c.get("character_id"),
             ))
     return CriteriaBundle(
         version=version,
@@ -133,8 +170,10 @@ def validate_criteria(raw: dict) -> None:
     version = str(raw["version"])
     if version.startswith("1.0"):
         _validate_v1_0(raw["criteria"])
-    elif version.startswith("1.1") or version.startswith("1.2"):
+    elif version.startswith("1.1"):
         _validate_v1_1(raw["criteria"])
+    elif version.startswith("1.2"):
+        _validate_v1_2(raw["criteria"])
     else:
         raise ValueError(f"unsupported criteria schema version: {version}")
 
@@ -176,6 +215,77 @@ def _validate_v1_1(criteria: list[dict]) -> None:
         if c["id"] in seen:
             raise ValueError(f"Duplicate criterion id: {c['id']}")
         seen.add(c["id"])
+        impact = c.get("impact_tag")
+        if impact is not None and impact not in VALID_IMPACT_TAGS:
+            raise ValueError(
+                f"Criterion {c['id']!r} has unknown impact_tag {impact!r}; "
+                f"expected one of {sorted(VALID_IMPACT_TAGS)}"
+            )
+
+
+def _validate_v1_2(criteria: list[dict]) -> None:
+    """v1.2 schema: AC.* and IR.* IDs coexist in the same graph.
+
+    AC.* entries validate against the v1.1 rules (AC category vocab, optional
+    impact_tag, etc.); they may omit `character_id` (it defaults to None on
+    the loaded record). IR.* entries validate against the IR category vocab,
+    require a `character_id` field that matches the parsed character_id from
+    the ID, and may carry `derived_from` entries with the `#region:X`
+    plate-pointer suffix (the validator treats the suffix as opaque metadata —
+    a sensible follow-up commit may tighten this to verify the path exists
+    on disk, but commit 2 keeps it schema-level only).
+    """
+    seen: set[str] = set()
+    for c in criteria:
+        for field_name in ("id", "description", "cites_phase", "cites_personas"):
+            if field_name not in c:
+                raise ValueError(f"Criterion missing required field: {field_name}")
+        if c["id"] in seen:
+            raise ValueError(f"Duplicate criterion id: {c['id']}")
+        seen.add(c["id"])
+
+        ir_match = _IR_ID_PATTERN.match(c["id"])
+        ac_match = _MNEMONIC_ID_PATTERN.match(c["id"])
+
+        if ir_match:
+            # IR.{character_id}.{category}.{handle}
+            parsed_char_id = ir_match.group(1)
+            parsed_category = ir_match.group(2)
+            if parsed_category not in VALID_IR_CATEGORIES:
+                raise ValueError(
+                    f"Criterion {c['id']!r} has unknown IR category "
+                    f"{parsed_category!r}; expected one of "
+                    f"{sorted(VALID_IR_CATEGORIES)}"
+                )
+            # character_id field is required and must match the parsed prefix.
+            if "character_id" not in c or c["character_id"] is None:
+                raise ValueError(
+                    f"Criterion {c['id']!r} is IR.* but missing required "
+                    f"character_id field (must match parsed prefix "
+                    f"{parsed_char_id!r})"
+                )
+            if c["character_id"] != parsed_char_id:
+                raise ValueError(
+                    f"Criterion {c['id']!r} has character_id "
+                    f"{c['character_id']!r} that does not match parsed prefix "
+                    f"{parsed_char_id!r}"
+                )
+        elif ac_match:
+            # AC.{category}.{handle} — existing v1.1 rules.
+            parsed_category = ac_match.group(1)
+            if parsed_category not in VALID_CATEGORIES:
+                raise ValueError(
+                    f"Criterion {c['id']!r} has unknown category "
+                    f"{parsed_category!r}; expected one of "
+                    f"{sorted(VALID_CATEGORIES)}"
+                )
+        else:
+            raise ValueError(
+                f"Criterion {c['id']!r} has malformed id; expected pattern "
+                f"AC.<category>.<handle> (Maya) or "
+                f"IR.<character_id>.<category>.<handle> (Cy)"
+            )
+
         impact = c.get("impact_tag")
         if impact is not None and impact not in VALID_IMPACT_TAGS:
             raise ValueError(
