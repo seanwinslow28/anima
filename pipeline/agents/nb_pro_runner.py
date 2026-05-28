@@ -38,6 +38,7 @@ import hashlib
 import os
 import shutil
 import subprocess
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -86,7 +87,7 @@ def invoke_nb_pro(
     cache_dir: Path,
     cites_identity_rules: tuple[str, ...] = (),
     reject_reason: str | None = None,
-    model: str = "nano-banana-pro",
+    model: str = "gemini-3-pro-image-preview",
     timeout_s: int = 180,
 ) -> NBProResponse:
     """Generate (or fetch from cache) one NB Pro plate.
@@ -242,9 +243,16 @@ def _build_skill_cmd(
     output_path: Path,
     model: str,
 ) -> list[str]:
-    """The exact argv the skill script expects. Matches its --help shape."""
+    """The exact argv the skill script expects. Matches its --help shape.
+
+    Uses `sys.executable` rather than a PATH-resolved `python3` so the skill
+    script runs against the same interpreter (and therefore the same
+    site-packages — google-genai, Pillow, etc.) as the caller. The previous
+    PATH-based shape silently failed against system Python on machines where
+    .venv carries the dependencies and the system interpreter does not.
+    """
     cmd = [
-        "python3",
+        sys.executable,
         str(_SKILL_SCRIPT),
         prompt,
         "--output", str(output_path),
