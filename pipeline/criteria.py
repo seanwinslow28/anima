@@ -353,7 +353,11 @@ def bump_version(criteria_path: Path, *, new_version: str) -> Path:
     tmp_path = versioned_path.with_suffix(versioned_path.suffix + ".tmp")
     tmp_path.write_text(json.dumps(raw, indent=2), encoding="utf-8")
     tmp_path.replace(versioned_path)
-    if criteria_path.is_symlink():
+    # First mutation of a regular-file criteria.json (Cy's Pass-1 write,
+    # Maya's Opus emit) converts it to a symlink; subsequent mutations just
+    # re-point the symlink. Either path leaves criteria_path resolving to the
+    # latest versioned file.
+    if criteria_path.is_symlink() or criteria_path.exists():
         criteria_path.unlink()
     criteria_path.symlink_to(versioned_path.name)
     return versioned_path
