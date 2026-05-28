@@ -4,7 +4,12 @@ project:
   description: "Human + AI 2D animation pipeline. First reference implementation: Pencil Test — Sean Winslow (Act 1 shipped, Act 2 in progress)."
 
 anchor:
-  path: "images/2D-Character-Sketch-Sean-v1.png"
+  # Commit 2.0 migrated the anchor to characters/sean-anchor/anchor.png as part
+  # of the Character Bible primitive (per brainstorm TOP-1). The legacy path
+  # images/2D-Character-Sketch-Sean-v1.png is a back-compat symlink through
+  # commit 7 (Animatic ingestion lands and Act 2 work is structurally complete).
+  # Pencil-test scripts that haven't been updated yet resolve through the symlink.
+  path: "characters/sean-anchor/anchor.png"
   label: "A-2"
   description: "Sean character design — identity reference for all generated frames"
 

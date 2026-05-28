@@ -104,7 +104,7 @@ characters/{character_id}/
 
 The manifest references characters by ID; the generator auto-loads the relevant Bible sheets per shot. Bible authoring is itself a use case anima supports — the same pipeline that consumes a Bible can also produce one, with its own Project-Type template (authoring-first).
 
-The migration from `images/2D-Character-Sketch-Sean-v1.png` → `characters/sean-anchor/` lands in commit 2. For now, the old path still works; pencil-test workflows in flight are not disturbed.
+The migration from `images/2D-Character-Sketch-Sean-v1.png` → `characters/sean-anchor/anchor.png` shipped in commit 2.0 (2026-05-28). The legacy path is now a back-compat symlink resolving to the new location; it stays in place through commit 7 (Animatic ingestion lands and Act 2 work is structurally complete), then retires. Pencil-test scripts that haven't been updated to the new path keep working unchanged during the back-compat window.
 
 ## Source of Truth Documents
 
@@ -129,7 +129,7 @@ The pencil-test work is anima's first reference implementation, not the whole pr
 |----------|------|---------------------------|
 | Storyboard | [`docs/pencil-test-storyboard.md`](docs/pencil-test-storyboard.md) | Complete storyboard — 7 beats, 2 acts, frame counts |
 | Keyframe Prompts (Act 1, archived) | [`docs/COMPLETED/act1-keyframe-prompts.md`](docs/COMPLETED/act1-keyframe-prompts.md) | 6 Gemini prompts that produced the Act 1 key poses (shipped — kept for re-runs) |
-| A-2 Anchor | [`images/2D-Character-Sketch-Sean-v1.png`](images/2D-Character-Sketch-Sean-v1.png) | Identity reference for the Sean character. Migrates to `characters/sean-anchor/anchor.png` in commit 2 |
+| A-2 Anchor | [`characters/sean-anchor/anchor.png`](characters/sean-anchor/anchor.png) | Identity reference for the Sean character. Migrated 2026-05-28 in commit 2.0; legacy path [`images/2D-Character-Sketch-Sean-v1.png`](images/2D-Character-Sketch-Sean-v1.png) is a back-compat symlink through commit 7 |
 | Act 2 Seedance Shot List | [`docs/act2-seedance-shot-list.md`](docs/act2-seedance-shot-list.md) | Current source of truth for Act 2 — 10 clips + 4 holds, anchor frame paths, draft prompts, fallback strategies |
 | Act 2 Seedance Execution Plan | [`docs/2026-04-27-act2-seedance-execution-plan.md`](docs/2026-04-27-act2-seedance-execution-plan.md) | Approved 12-task implementation plan for the Seedance generation phase |
 | Round 2 Beat Decisions | [`runs/act2-exploration/concepts/round2-decisions.md`](runs/act2-exploration/concepts/round2-decisions.md) | Locked Act 2 11-beat sheet |
@@ -181,7 +181,7 @@ sw-portfolio-animation-pipeline/        # renames to anima/ at public-repo creat
 │   ├── COMPLETED/                       # Shipped Act 1 prompts
 │   └── OLD/                             # Superseded session prompts
 ├── images/                              # Reference assets (Pencil Test era)
-│   └── 2D-Character-Sketch-Sean-v1.png  # Migrates to characters/sean-anchor/ in commit 2
+│   └── 2D-Character-Sketch-Sean-v1.png  # Back-compat symlink → characters/sean-anchor/anchor.png (retires commit 7)
 ├── pipeline/                            # Pipeline scripts
 │   ├── generate.py                      # Generation orchestrator with frame chaining (USE_DAG_RUNNER=1 routes to dag.py)
 │   ├── audit.py                         # T1 rule gate runner (USE_DAG_RUNNER=1 routes to dag.py)
@@ -200,7 +200,15 @@ sw-portfolio-animation-pipeline/        # renames to anima/ at public-repo creat
 │   ├── criteria.py                      # acceptance_criteria.json schema + lock enforcement (commit 4)
 │   ├── dag.py                           # Hand-rolled DAG runner (commit 4)
 │   └── nodes/                           # AgentSpec wrappers around legacy scripts (commit 4)
-├── characters/                          # PLANNED (commit 2) — Character Bible folders
+├── characters/                          # Character Bible folders (commit 2.0 scaffolds sean-anchor; commit 2 lands Cy + bible content)
+│   └── sean-anchor/                     # Sean's Bible — anchor migrated 2026-05-28; bible content lands in commit 2
+│       ├── anchor.png                   # The migrated A-2 reference (legacy path is a symlink → here)
+│       ├── turnarounds/                 # Empty; Cy populates in commit 2
+│       ├── expressions/                 # Empty; Cy populates in commit 2
+│       ├── motion_plates/               # walk-cycle/ + head-turn/, each with source/ + derived/
+│       ├── costumes/default/            # Empty; Cy populates in commit 2
+│       ├── props/                       # Empty; Cy populates in commit 2
+│       └── source-refs/3d-mannequin/    # Empty; Sean drops 3D refs here; Cy reads
 ├── museum/                              # PLANNED (commit 6) — capture artifacts per run
 ├── evals/                               # Agent eval suites + dated bake-offs
 │   └── vision-critic/                   # Em eval suite (commit 8 baseline trace, 8b adds cases.yaml + runner.py)
