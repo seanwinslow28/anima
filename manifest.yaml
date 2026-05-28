@@ -269,13 +269,15 @@ critics:
 # Sean's Bible authoring runs in Tasks 1.10 + 1.11, sean-anchor and claude-mascot
 # are the two real Bibles authored end-to-end on commit 2's first day. Empty list
 # stays valid for back-compat (Pencil Test Act 2 runs against the anchor: block above).
-characters: {}
-  # sean-anchor:
-  #   folder: characters/sean-anchor/
-  #   style_register: pencil-test-colored
-  # claude-mascot:
-  #   folder: characters/claude-mascot/
-  #   style_register: pixel-art-8bit
+characters:
+  sean-anchor:
+    folder: characters/sean-anchor/
+    style_register: pencil-test-colored   # First reference implementation — Pencil Test.
+  claude-mascot:
+    folder: characters/claude-mascot/
+    style_register: pixel-art-8bit        # Second-character validation that the schema is
+                                          # style-agnostic across registers. Source refs in
+                                          # characters/claude-mascot/source-refs/.
 
 # Criteria sources — multi-file merge for the DAG runner.
 # Authoritative spec: Cy brainstorm TOP-1 + Task 1.8.
@@ -283,9 +285,17 @@ characters: {}
 # it concatenates the brief's AC.* graph + every loaded Bible's IR.* graph
 # into one CriteriaBundle. Duplicate IDs across files raise; per-character IR
 # namespacing (IR.{character_id}.*) prevents accidental collisions.
+#
+# The bibles: list references files that exist on disk when Cy has authored
+# the Bible (Tasks 1.10 + 1.11 land the real Pass-1 artifacts via real Opus +
+# NB Pro + Gemini calls in Sean's authoring session). Missing files are
+# skipped non-fatally by load_all_criteria — listing them ahead of authoring
+# is safe.
 criteria_sources:
   brief_file: ""                          # briefs/{slug}/acceptance_criteria.json (Maya's AC.*)
-  bibles: []                              # list of characters/{id}/acceptance_criteria.json paths
+  bibles:
+    - characters/sean-anchor/acceptance_criteria.json
+    - characters/claude-mascot/acceptance_criteria.json
 
 # Museum auto-capture configuration.
 # Authoritative spec: docs/pipeline-architecture-v1.md §Museum (orthogonal capture layer)
