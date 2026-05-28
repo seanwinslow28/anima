@@ -16,3 +16,4 @@ from pipeline.nodes import (  # noqa: F401
 from pipeline.agents import vision_critic  # noqa: F401
 from pipeline.agents import cost_estimator  # noqa: F401
 from pipeline.agents import planner  # noqa: F401
+from pipeline.agents import character_designer  # noqa: F401
