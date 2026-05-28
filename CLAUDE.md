@@ -152,7 +152,8 @@ Skills map to the 10-phase architecture. Most carry over from the pencil-test er
 | `comfyui-workflows` | 5 Generate (in-betweens) | OpenPose ControlNet in-between generation, IPAdapter identity lock |
 | `seedance-prompting` (portable) | 6 Motion | Locked v4 Seedance prompt template; auto-loads in any project |
 | `video-animation-production` | 6 Motion, 8 Assemble | FFmpeg frame sequence assembly, two-pass GIF optimization, WebM/MP4 export |
-| `planner` — Maya | 0 Brief & Plan | Opus 4.7 primary → Sonnet 4.6 adversarial validation → human gate. Emits two-tier brief (Studio + Production) + v1.1 graph-shaped `acceptance_criteria.json` + clean-markdown `plan.md` + `RunCostEstimate` from `CostEstimatorNode`. Three-call ceiling. CLI: `python -m pipeline.cli plan init/show/approve/mutate`. Commit 3 shipped 2026-05-27 |
+| `planner` — Maya | 0 Brief & Plan | Opus 4.7 primary → Sonnet 4.6 adversarial validation → human gate. Emits two-tier brief (Studio + Production) + v1.1 graph-shaped `acceptance_criteria.json` + clean-markdown `plan.md` + `RunCostEstimate` from `CostEstimatorNode`. Three-call ceiling. `project_type: bible_authoring` scopes plan.md to Phase 0 + Phase 2 only. CLI: `python -m pipeline.cli plan init/show/approve/mutate`. Commit 3 shipped 2026-05-27 |
+| `character_designer` — Cy | 2 Character Bible | Opus 4.7 authors (Pass 1) → NB Pro generates plates (Pass 2) → Gemini 3.1 Pro verifies via `agy` (Pass 3). Three-attempt ceiling per plate. Emits `character.yaml` + per-character `acceptance_criteria.json` (v1.2 graph with `IR.{character_id}.*` entries) + `risk-bible.md` + `cy-confidence-notes.md` + `plate_generation_plan.json`. CLI: `python -m pipeline.cli bible init/show/approve/mutate/iterate`. Commit 2 shipped 2026-05-28 |
 | `vision_critic` — Em | 5, 6, 8 (T2 checkpoints) | Gemini 3.1 Pro via Anti-Gravity CLI default, Opus 4.7 via Claude Agent SDK escalation. Patches stage in `manifest.lock.yaml`. Commit 8 shipped 2026-05-26 |
 | _(CLI critic)_ | 4→5, pre-Museum (T3 checkpoints) | Pending agent-fleet session — Codex + Anti-Gravity parallel |
 
@@ -197,19 +198,30 @@ sw-portfolio-animation-pipeline/        # renames to anima/ at public-repo creat
 │   │   ├── patch_stager.py              # post_run hook → runs/{run_id}/manifest.lock.yaml (commit 8)
 │   │   └── prompts/                     # Persona standing-context preambles (commit 8)
 │   ├── cli/                             # `python -m pipeline.cli` subcommands
-│   │   └── patches.py                   # `patches list` — survey staged proposed_patches (commit 8)
-│   ├── criteria.py                      # acceptance_criteria.json schema + lock enforcement (commit 4)
+│   │   ├── patches.py                   # `patches list` — survey staged proposed_patches (commit 8)
+│   │   ├── plan.py                      # Maya plan init/show/approve/mutate (commit 3)
+│   │   └── bible.py                     # Cy bible init/show/approve/mutate/iterate (commit 2)
+│   ├── criteria.py                      # acceptance_criteria.json v1.2 schema (AC.* + IR.* graph) + lock enforcement (commit 4 + commit 2)
 │   ├── dag.py                           # Hand-rolled DAG runner (commit 4)
+│   ├── agents/character_designer.py    # Cy's three-phase AgentSpec (commit 2)
+│   ├── agents/nb_pro_runner.py         # NB Pro plate-generation wrapper, content-addressed cache (commit 2)
 │   └── nodes/                           # AgentSpec wrappers around legacy scripts (commit 4)
-├── characters/                          # Character Bible folders (commit 2.0 scaffolds sean-anchor; commit 2 lands Cy + bible content)
-│   └── sean-anchor/                     # Sean's Bible — anchor migrated 2026-05-28; bible content lands in commit 2
-│       ├── anchor.png                   # The migrated A-2 reference (legacy path is a symlink → here)
-│       ├── turnarounds/                 # Empty; Cy populates in commit 2
-│       ├── expressions/                 # Empty; Cy populates in commit 2
-│       ├── motion_plates/               # walk-cycle/ + head-turn/, each with source/ + derived/
-│       ├── costumes/default/            # Empty; Cy populates in commit 2
-│       ├── props/                       # Empty; Cy populates in commit 2
-│       └── source-refs/3d-mannequin/    # Empty; Sean drops 3D refs here; Cy reads
+├── characters/                          # Character Bible folders (Bible primitive — commit 2.0 + commit 2 scaffolded sean-anchor + claude-mascot)
+│   ├── sean-anchor/                     # Sean's Bible — pencil-test-colored register; first reference implementation
+│   │   ├── anchor.png                   # The migrated A-2 reference (legacy path is a symlink → here)
+│   │   ├── character.yaml               # Scaffolded template; Cy populates in Task 1.10's real authoring run
+│   │   ├── turnarounds/ expressions/ motion_plates/ costumes/default/ props/  # Cy populates per Pass-1 plate plan
+│   │   └── source-refs/                 # POPULATED: notes.md, turnaround-{1,2}.png, head-turn/{1..9}.png,
+│   │                                    #   walk-cycle/{source,derived-v1,derived-v2}.png, 3d-mannequin/
+│   ├── claude-mascot/                   # Claude Mascot Bible — pixel-art-8bit register; second-character schema validation
+│   │   ├── anchor.png                   # claude-mascot-2.png (2048×2048), the canonical identity reference
+│   │   ├── character.yaml               # Scaffolded template; Cy populates in Task 1.11's real authoring run
+│   │   ├── turnarounds/ expressions/ motion_plates/ costumes/default/ props/
+│   │   └── source-refs/                 # POPULATED: notes.md (palette + proportion + grid invariants),
+│   │                                    #   claude-mascot-{1,3}.png as secondary references
+│   └── _per-character_                  # Each Bible folder is self-contained; manifest's characters: dict
+│                                        #   registers folder + style_register. criteria_sources: lists the
+│                                        #   per-character acceptance_criteria.json paths for runtime merge.
 ├── museum/                              # PLANNED (commit 6) — capture artifacts per run
 ├── evals/                               # Agent eval suites + dated bake-offs
 │   └── vision-critic/                   # Em eval suite (commit 8 baseline trace, 8b adds cases.yaml + runner.py)
@@ -366,6 +378,54 @@ python -m pipeline.cli patches list --run-dir runs/{run_id}
 Output groups patches by persona (`em-vision-critic`, future `codie` / `annie`
 / `sage`) with target / path / operation / value / rationale / cites_criteria
 / node_id. Read-only — interactive accept/reject is commit 8b or commit 10.
+
+### Character Bible authoring (commit 2+)
+
+Cy's CLI surface mirrors Maya's plan CLI structurally. Five subcommands:
+
+```bash
+# Scaffold a new character bible folder (idempotent — re-running won't overwrite).
+python -m pipeline.cli bible init --target characters/{character_id}/
+
+# Render the Bible as a terminal tear sheet: header / ANSI palette swatch /
+# proportions / IR.* rules grouped by category / motion plate inventory /
+# risks / Cy's confidence hedges. Boxes live in the renderer; clean prose on disk.
+python -m pipeline.cli bible show --character-dir characters/{character_id}/
+
+# Flip locked=true on the character's acceptance_criteria.json. Idempotent.
+python -m pipeline.cli bible approve --character-dir characters/{character_id}/
+
+# Audited mutation of a locked Bible. Refuses without --force. Bumps semver,
+# re-points the symlink, appends to runs/{run_id}/bible_audit.jsonl.
+python -m pipeline.cli bible mutate --force --actor <name> --reason "<why>" \
+    --target IR.<character_id>.<category>.<handle> --field <field> --value <value> \
+    --character-dir characters/{character_id}/ --run-dir runs/{run_id} \
+    --new-version 1.3.0
+
+# Re-run Cy narrowed to rejected plates; cached passing plates are preserved.
+python -m pipeline.cli bible iterate --character-dir characters/{character_id}/ \
+    --target turnarounds,expressions --reject neutral,surprised \
+    --reason "<why>" --run-dir runs/{run_id}
+```
+
+To actually author a Bible end-to-end (Tasks 1.10 + 1.11 in Sean's
+authoring session, with live Opus + NB Pro + Gemini calls), use the
+orchestrator:
+
+```bash
+python scripts/author_bible.py characters/sean-anchor/ \
+    --studio-brief "Pencil Test reference character — see source-refs/notes.md" \
+    --run-dir runs/2026-MM-DD-cy-sean-anchor-bake/
+
+python scripts/author_bible.py characters/claude-mascot/ \
+    --studio-brief "Pixel-art mascot — see source-refs/notes.md" \
+    --run-dir runs/2026-MM-DD-cy-claude-mascot-bake/
+```
+
+Cy's three-phase loop fires (Opus authors → NB Pro generates → Gemini
+verifies); stub fallback runs end-to-end without API credentials so the
+contract layer exercises in CI. Real authoring requires `GEMINI_API_KEY`
+in `.env` for NB Pro and `agy` on PATH for Gemini verification.
 
 ### Frame Sequence (12fps, Act 1 hero loop)
 ```bash
