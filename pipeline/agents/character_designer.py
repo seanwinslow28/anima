@@ -147,75 +147,54 @@ class CharacterDesignerNode:
                 f"and drop source material per source-refs-checklist.md first."
             )
 
-        # ---------- Pass 1 — Opus authors ----------
-        studio_brief = str(ctx.inputs.get("studio_brief", ""))
-        opus_prompt = self._build_pass1_prompt(
-            studio_brief=studio_brief,
-            character_dir=character_dir,
-        )
-        # 1800s timeout for Cy's Pass-1: the prompt is ~55KB (anima preamble
-        # + Cy addendum + 2d-animation-principles skill inline + per-Bible
-        # brief) and the envelope is ~50KB (character.yaml + 15-20 IR.* rules
-        # + risk-bible + confidence-notes + plate plan). Observed wall time
-        # against real Opus 4.7 on the sean-anchor authoring run: ~500s. The
-        # 2026-05-29 Opus 4.8 bump pushed Pass-1 past the previous 900s ceiling
-        # (4.8 spends more on extended thinking for a large structured
-        # emission); a real re-bake hit the 900s wall and silently stubbed.
-        # Raised to 1800s with headroom. The invoke_opus_text default of 120s
-        # would cleanly time out before Pass 1 ever completed.
-        opus_resp = asyncio.run(invoke_opus_text(prompt=opus_prompt, timeout_s=1800))
-        # A timed-out / unavailable Opus call returns empty text (and, for the
-        # no-SDK path, stub_fallback=True). Either way Pass-1 is a stub. Surface
-        # it loudly in notes so the orchestrator fails instead of silently
-        # shipping a STUB FALLBACK Bible (the must-fix lesson: a successful exit
-        # code can lie about what happened).
-        pass1_stub = (
-            bool(getattr(opus_resp, "stub_fallback", False))
-            or getattr(opus_resp, "exit_code", 0) != 0
-            or not (opus_resp.text or "").strip()
-        )
-
-        parsed = self._parse_pass1_envelope(
-            opus_resp.text,
-            character_dir=character_dir,
-            stub_fallback=bool(getattr(opus_resp, "stub_fallback", False)),
-        )
-        # The parser builds the synthetic stub when the Opus text is empty OR
-        # non-empty-but-unparseable. That second case is the one the response-
-        # field check above misses, so fold the parser's own verdict in.
-        pass1_stub = pass1_stub or bool(parsed.get("_pass1_stub"))
-
-        character_yaml: dict = parsed["character_yaml"]
-        ir_entries: list[dict] = parsed["ir_entries"]
-        risk_bible_md: str = parsed["risk_bible_md"]
-        cy_confidence_notes_md: str = parsed["cy_confidence_notes_md"]
-        plate_plan: dict = parsed["plate_generation_plan"]
-
-        # Contract: prose artifacts must be clean markdown (no terminal-aesthetic).
-        self._enforce_clean_markdown(risk_bible_md, "risk-bible.md")
-        self._enforce_clean_markdown(cy_confidence_notes_md, "cy-confidence-notes.md")
-
-        # Build + validate the per-character acceptance_criteria.json.
-        criteria_json = {
-            "version": "1.2",
-            "locked": False,
-            "criteria": ir_entries,
-        }
-        validate_criteria(criteria_json)  # raises on invalid IR.* entries
-
-        # Write Pass-1 artifacts atomically.
-        character_dir.mkdir(parents=True, exist_ok=True)
+        # ---------- Pass 1 — author OR load an approved Bible ----------
+        # A locked Bible (or an explicit plates_only request) must NOT be
+        # re-authored. The director approved those rules and the committed
+        # plate_generation_plan.json carries hand-curated ingest sources and
+        # prompts (trimmed stylus, manual body-turnaround crops). Re-running
+        # Opus Pass 1 would overwrite both and flip locked back to false. So in
+        # that case we LOAD the on-disk Bible and run Passes 2+3 against it —
+        # a plates-only bake that honors the approval.
         character_yaml_path = character_dir / "character.yaml"
         criteria_path = character_dir / "acceptance_criteria.json"
         risk_bible_path = character_dir / "risk-bible.md"
         confidence_notes_path = character_dir / "cy-confidence-notes.md"
         plate_plan_path = character_dir / "plate_generation_plan.json"
 
-        _atomic_write_text(character_yaml_path, yaml.safe_dump(character_yaml, sort_keys=False))
-        _atomic_write_text(criteria_path, json.dumps(criteria_json, indent=2))
-        _atomic_write_text(risk_bible_path, risk_bible_md)
-        _atomic_write_text(confidence_notes_path, cy_confidence_notes_md)
-        _atomic_write_text(plate_plan_path, json.dumps(plate_plan, indent=2))
+        if self._resolve_plates_only(ctx, character_dir):
+            character_yaml, ir_entries, plate_plan = self._load_existing_bible(
+                character_dir
+            )
+            pass1_stub = False
+        else:
+            (
+                character_yaml,
+                ir_entries,
+                risk_bible_md,
+                cy_confidence_notes_md,
+                plate_plan,
+                pass1_stub,
+            ) = self._author_pass1(ctx, character_dir)
+
+            # Contract: prose artifacts must be clean markdown (no terminal-aesthetic).
+            self._enforce_clean_markdown(risk_bible_md, "risk-bible.md")
+            self._enforce_clean_markdown(cy_confidence_notes_md, "cy-confidence-notes.md")
+
+            # Build + validate the per-character acceptance_criteria.json.
+            criteria_json = {
+                "version": "1.2",
+                "locked": False,
+                "criteria": ir_entries,
+            }
+            validate_criteria(criteria_json)  # raises on invalid IR.* entries
+
+            # Write Pass-1 artifacts atomically.
+            character_dir.mkdir(parents=True, exist_ok=True)
+            _atomic_write_text(character_yaml_path, yaml.safe_dump(character_yaml, sort_keys=False))
+            _atomic_write_text(criteria_path, json.dumps(criteria_json, indent=2))
+            _atomic_write_text(risk_bible_path, risk_bible_md)
+            _atomic_write_text(confidence_notes_path, cy_confidence_notes_md)
+            _atomic_write_text(plate_plan_path, json.dumps(plate_plan, indent=2))
 
         # ---------- Passes 2 + 3 — per-plate generate + verify ----------
         nb_pro_cache_dir = ctx.cache_dir / "nb_pro"
@@ -262,6 +241,114 @@ class CharacterDesignerNode:
             tier=ctx.tier,
             cites_criteria=cites,
             notes=notes,
+        )
+
+    # ----- Pass 1 — author vs. load -----
+
+    def _resolve_plates_only(self, ctx: AgentContext, character_dir: Path) -> bool:
+        """Decide whether this run bakes plates against an existing Bible
+        (skipping Pass 1) or authors a fresh one.
+
+        Plates-only is triggered by EITHER an explicit ctx.inputs['plates_only']
+        OR a locked acceptance_criteria.json on disk. The locked auto-detect is
+        the safety net: an approved Bible must never be silently re-authored,
+        even if the caller forgets the flag."""
+        if ctx.inputs.get("plates_only"):
+            return True
+        criteria_path = character_dir / "acceptance_criteria.json"
+        if criteria_path.exists():
+            try:
+                payload = json.loads(criteria_path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                return False
+            if payload.get("locked"):
+                return True
+        return False
+
+    def _load_existing_bible(self, character_dir: Path) -> tuple[dict, list[dict], dict]:
+        """Load an already-authored Bible from disk for a plates-only bake.
+
+        Returns (character_yaml, ir_entries, plate_plan). Raises FileNotFoundError
+        if the Bible was never authored (no criteria / no plate plan) — a
+        plates-only bake has nothing to bake against in that case."""
+        criteria_path = character_dir / "acceptance_criteria.json"
+        plate_plan_path = character_dir / "plate_generation_plan.json"
+        if not criteria_path.exists():
+            raise FileNotFoundError(
+                f"plates-only bake requested but no acceptance_criteria.json at "
+                f"{criteria_path}. Author the Bible first (run without --plates-only)."
+            )
+        if not plate_plan_path.exists():
+            raise FileNotFoundError(
+                f"plates-only bake requested but no plate_generation_plan.json at "
+                f"{plate_plan_path}. Author the Bible first (run without --plates-only)."
+            )
+        criteria_json = json.loads(criteria_path.read_text(encoding="utf-8"))
+        ir_entries = list(criteria_json.get("criteria", []))
+        plate_plan = json.loads(plate_plan_path.read_text(encoding="utf-8"))
+        character_yaml: dict = {}
+        character_yaml_path = character_dir / "character.yaml"
+        if character_yaml_path.exists():
+            try:
+                character_yaml = yaml.safe_load(
+                    character_yaml_path.read_text(encoding="utf-8")
+                ) or {}
+            except yaml.YAMLError:
+                character_yaml = {}
+        return character_yaml, ir_entries, plate_plan
+
+    def _author_pass1(
+        self, ctx: AgentContext, character_dir: Path
+    ) -> tuple[dict, list[dict], str, str, dict, bool]:
+        """Pass 1 — Opus authors the five-artifact envelope.
+
+        Returns (character_yaml, ir_entries, risk_bible_md, cy_confidence_notes_md,
+        plate_plan, pass1_stub). The caller enforces clean markdown, validates +
+        writes the criteria, and writes the artifacts."""
+        studio_brief = str(ctx.inputs.get("studio_brief", ""))
+        opus_prompt = self._build_pass1_prompt(
+            studio_brief=studio_brief,
+            character_dir=character_dir,
+        )
+        # 1800s timeout for Cy's Pass-1: the prompt is ~55KB (anima preamble
+        # + Cy addendum + 2d-animation-principles skill inline + per-Bible
+        # brief) and the envelope is ~50KB (character.yaml + 15-20 IR.* rules
+        # + risk-bible + confidence-notes + plate plan). Observed wall time
+        # against real Opus 4.7 on the sean-anchor authoring run: ~500s. The
+        # 2026-05-29 Opus 4.8 bump pushed Pass-1 past the previous 900s ceiling
+        # (4.8 spends more on extended thinking for a large structured
+        # emission); a real re-bake hit the 900s wall and silently stubbed.
+        # Raised to 1800s with headroom. The invoke_opus_text default of 120s
+        # would cleanly time out before Pass 1 ever completed.
+        opus_resp = asyncio.run(invoke_opus_text(prompt=opus_prompt, timeout_s=1800))
+        # A timed-out / unavailable Opus call returns empty text (and, for the
+        # no-SDK path, stub_fallback=True). Either way Pass-1 is a stub. Surface
+        # it loudly in notes so the orchestrator fails instead of silently
+        # shipping a STUB FALLBACK Bible (the must-fix lesson: a successful exit
+        # code can lie about what happened).
+        pass1_stub = (
+            bool(getattr(opus_resp, "stub_fallback", False))
+            or getattr(opus_resp, "exit_code", 0) != 0
+            or not (opus_resp.text or "").strip()
+        )
+
+        parsed = self._parse_pass1_envelope(
+            opus_resp.text,
+            character_dir=character_dir,
+            stub_fallback=bool(getattr(opus_resp, "stub_fallback", False)),
+        )
+        # The parser builds the synthetic stub when the Opus text is empty OR
+        # non-empty-but-unparseable. That second case is the one the response-
+        # field check above misses, so fold the parser's own verdict in.
+        pass1_stub = pass1_stub or bool(parsed.get("_pass1_stub"))
+
+        return (
+            parsed["character_yaml"],
+            parsed["ir_entries"],
+            parsed["risk_bible_md"],
+            parsed["cy_confidence_notes_md"],
+            parsed["plate_generation_plan"],
+            pass1_stub,
         )
 
     # ----- prompt builders -----

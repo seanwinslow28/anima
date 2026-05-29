@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-05-29 — Phase 4a: plates-only bake mode — regenerate plates without re-authoring an approved Bible
+
+**What changed:** Added the missing capability the "approve → bake" flow assumes. `CharacterDesignerNode.run` always ran Pass 1 (Opus re-authors the whole envelope — `character.yaml`, `acceptance_criteria.json` with `locked: false`, risk-bible, confidence-notes, **and `plate_generation_plan.json`**). So baking an *approved* Bible via `author_bible.py` would have overwritten the locked rules AND the hand-curated plate plan (the trimmed stylus + Sean's manual body-turnaround crops). The plan's own invariant — "approved rules (locked: true) are not touched by a bake" — had no enforcement.
+
+- **`run()` now branches** ([`pipeline/agents/character_designer.py`](pipeline/agents/character_designer.py)). `_resolve_plates_only(ctx, character_dir)` returns True when `ctx.inputs['plates_only']` is set OR the on-disk `acceptance_criteria.json` is `locked: true` (the auto-detect is the safety net — an approved Bible is never silently re-authored). When True, `_load_existing_bible` reads `character.yaml` + `acceptance_criteria.json` (ir_entries) + `plate_generation_plan.json` from disk and Passes 2+3 run against them; **none of the Pass-1 artifacts are rewritten**. When False, the existing authoring path runs (now extracted to `_author_pass1`).
+- **`_load_existing_bible` fails loudly** if the Bible was never authored (no criteria or no plan) — a plates-only bake has nothing to bake against.
+- **`scripts/author_bible.py --plates-only`** plumbs the flag through; the intro line names the mode. A locked criteria auto-routes even without the flag.
+- **Tests** (3 added → 182 green): plates-only skips Opus and leaves the locked criteria byte-for-byte unchanged while still generating plates; a locked criteria auto-routes to plates-only with no flag; a plates-only request against an un-authored Bible raises.
+
+**Why:** The director approves the rules, then the plates are baked *against* those approved rules — not re-authored each time. Without this, Phase 5 would have destroyed Phases 1, 2, and 4 on the first bake. The locked-criteria auto-detect makes the protection structural, not a flag you have to remember.
+
 ## 2026-05-29 — Phase 2: body turnarounds use Sean's hand-trimmed crops; head crops tightened
 
 **What changed:** Finalized the sean-anchor turnaround source plates. The committed `#region` crop mechanism worked, but two boxes needed work and Sean elected to hand-crop the bodies.

@@ -876,3 +876,134 @@ def test_prop_plate_not_anchor_similarity_rejected(
     # ...but the gate is record-only and the reject flag is never set.
     assert status.get("similarity_gate") == "record-only (prop plate — not identity-scored)"
     assert "similarity_flag" not in status
+
+
+# ---------------------------------------------------------------------------
+# Plates-only bake — bake against an approved (locked) Bible without re-authoring
+# ---------------------------------------------------------------------------
+
+
+def _seed_bible_on_disk(character_dir: Path, *, locked: bool, plates: list[dict]):
+    """Write a minimal authored Bible to disk so the plates-only path can load
+    it instead of re-authoring via Opus Pass 1."""
+    criteria = {
+        "version": "1.2",
+        "locked": locked,
+        "criteria": [{
+            "id": "IR.test-char.hair.center-cowlick",
+            "description": "Center cowlick visible at the crown.",
+            "cites_phase": [5],
+            "cites_personas": ["em"],
+            "impact_tag": "identity_critical",
+            "character_id": "test-char",
+            "derived_from": ["characters/test-char/anchor.png#region:hair"],
+        }],
+    }
+    (character_dir / "acceptance_criteria.json").write_text(json.dumps(criteria, indent=2))
+    (character_dir / "plate_generation_plan.json").write_text(
+        json.dumps({"plates": plates}, indent=2)
+    )
+    (character_dir / "character.yaml").write_text("character_id: test-char\n")
+
+
+def test_plates_only_skips_opus_and_preserves_locked_criteria(
+    base_ctx, character_dir, monkeypatch
+):
+    """A plates-only bake must NOT call Opus Pass 1, must read the on-disk plan,
+    and must leave the locked acceptance_criteria.json untouched (the
+    director-approved rules are not re-authored by a bake)."""
+    _real_png(character_dir / "anchor.png")
+    _seed_bible_on_disk(character_dir, locked=True, plates=[{
+        "target_path": "expressions/neutral.png",
+        "source": "generate",
+        "prompt": "neutral expression",
+        "reference_images": ["anchor.png"],
+        "cites_identity_rules": ["IR.test-char.hair.center-cowlick"],
+    }])
+    criteria_before = (character_dir / "acceptance_criteria.json").read_text()
+
+    opus_calls: list[str] = []
+
+    async def tracking_opus(*, prompt: str, **kwargs):
+        opus_calls.append(prompt)
+        return _FakeSDKResponse(text="```json\n" + json.dumps(_make_pass1_envelope()) + "\n```")
+
+    async def fake_gemini(*, prompt: str, image_paths: list, timeout_s: int = 120):
+        return _FakeCLIResponse(text=_make_gemini_verdict("pass"))
+
+    def fake_nb_pro(*, output_path, cache_dir, **kwargs):
+        _real_png(output_path, color=(170, 130, 80))
+        return NBProResponse(
+            output_path=output_path, cache_key="k", cache_hit=False,
+            stub_fallback=False, exit_code=0,
+        )
+
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", tracking_opus)
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+    )
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_nb_pro", fake_nb_pro)
+
+    base_ctx.inputs["plates_only"] = True
+    result = CharacterDesignerNode().run(base_ctx)
+
+    # Opus Pass 1 was NOT invoked.
+    assert opus_calls == [], "plates-only must not re-author via Opus"
+    # The locked criteria on disk is byte-for-byte unchanged.
+    assert (character_dir / "acceptance_criteria.json").read_text() == criteria_before
+    # Plates were still generated + verified from the on-disk plan.
+    assert "expressions/neutral.png" in result.outputs["plate_results"]
+    assert "pass1_stub=False" in result.notes
+
+
+def test_locked_criteria_auto_routes_to_plates_only(base_ctx, character_dir, monkeypatch):
+    """Even without an explicit plates_only flag, a locked criteria on disk must
+    auto-route to the plates-only path — a locked Bible is never re-authored."""
+    _real_png(character_dir / "anchor.png")
+    _seed_bible_on_disk(character_dir, locked=True, plates=[{
+        "target_path": "expressions/neutral.png",
+        "source": "generate",
+        "prompt": "neutral expression",
+        "reference_images": ["anchor.png"],
+        "cites_identity_rules": ["IR.test-char.hair.center-cowlick"],
+    }])
+
+    opus_calls: list[str] = []
+
+    async def tracking_opus(*, prompt: str, **kwargs):
+        opus_calls.append(prompt)
+        return _FakeSDKResponse(text="```json\n" + json.dumps(_make_pass1_envelope()) + "\n```")
+
+    async def fake_gemini(*, prompt: str, image_paths: list, timeout_s: int = 120):
+        return _FakeCLIResponse(text=_make_gemini_verdict("pass"))
+
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", tracking_opus)
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+    )
+
+    def fake_nb_pro(*, output_path, cache_dir, **kwargs):
+        _real_png(output_path, color=(170, 130, 80))
+        return NBProResponse(
+            output_path=output_path, cache_key="k", cache_hit=False,
+            stub_fallback=False, exit_code=0,
+        )
+
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_nb_pro", fake_nb_pro)
+
+    # No plates_only flag passed — the locked criteria alone must trigger it.
+    CharacterDesignerNode().run(base_ctx)
+    assert opus_calls == [], "a locked Bible must auto-route to plates-only"
+
+
+def test_plates_only_without_authored_bible_raises(base_ctx, character_dir, monkeypatch):
+    """plates_only requested but no plate_generation_plan.json on disk → a clear
+    error (can't bake plates against a Bible that was never authored)."""
+    # No Bible seeded on disk.
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.invoke_opus_text",
+        lambda **kw: _FakeSDKResponse(text=""),
+    )
+    base_ctx.inputs["plates_only"] = True
+    with pytest.raises(FileNotFoundError, match="Author the Bible first"):
+        CharacterDesignerNode().run(base_ctx)
