@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-05-29 — Phase 2: body turnarounds use Sean's hand-trimmed crops; head crops tightened
+
+**What changed:** Finalized the sean-anchor turnaround source plates. The committed `#region` crop mechanism worked, but two boxes needed work and Sean elected to hand-crop the bodies.
+
+- **Body turnarounds now ingest Sean's manual crops.** The 4 body plates (`body-3quarter`, `body-profile-left`, `body-profile-right`, `body-back`) ingest hand-trimmed PNGs from the new [`characters/sean-anchor/source-refs/body-turnarounds/`](characters/sean-anchor/source-refs/body-turnarounds/) — one clean figure each, no neighbor bleed. The top-row sheet has no distinct *front* body pose (it's front-ish / profile-L / profile-R / back), so the old `body-front` plate is **dropped** and `body-profile-left` is **added**; the leftmost near-front figure is the canonical `body-3quarter`. cites_identity_rules migrated to match (front-pose costume/proportion rules → body-3quarter; jaw-angular → both profiles).
+- **The "(A-2)" production label is trimmed off `body-3quarter`.** Sean's crop kept it; per his call it's shaved off the left edge (17% / 134px) so the canonical reference plate ships clean like the other three — the exact annotation Phase 2 set out to remove.
+- **Head crops keep the `#region` mechanism, head-front box tightened.** [`turnaround-1.regions.json`](characters/sean-anchor/source-refs/turnaround-1.regions.json) `head-front` top edge nudged `0.64 → 0.66` to drop a sliver of the body-row feet; `head-3quarter` and `head-profile` unchanged (clean). The now-unused `body-*` region boxes were retired from the sidecar (bodies use manual crops).
+
+**Why:** The engine truth is a visual one — Sean eyeballed the 7 candidate crops and chose to hand-crop the bodies for framing he was happy with, keeping the deterministic head crops. The result is a clean, label-free turnaround source set for the Phase 5 bake. 179 tests green (no code-behavior change; data + assets).
+
 ## 2026-05-29 — Phase 1: prop plates are isolated objects (no anchor, no identity gate, no caption)
 
 **What changed:** Taught Cy's runner that a prop plate is a distinct class from a character plate. The 2026-05-29 fidelity fix made the runner inject `anchor.png` unconditionally and frame every plate around "match Image 1 exactly" — correct for turnarounds/expressions, **wrong for props**. The re-baked `props/stylus.png` rendered the full character with a stylus floating beside an empty-gripping hand, because the full-body anchor told NB Pro to draw the whole person.

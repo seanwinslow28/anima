@@ -1,31 +1,30 @@
 {
   "plates": [
     {
-      "target_path": "turnarounds/body-front.png",
-      "source": "ingest:source-refs/turnaround-1.png#region:body-front",
+      "target_path": "turnarounds/body-3quarter.png",
+      "source": "ingest:source-refs/body-turnarounds/body-3quarter.png",
       "cites_identity_rules": [
         "IR.sean.proportion.head-to-body-1-to-7",
         "IR.sean.proportion.shoulder-width-1-5-head-widths",
-        "IR.sean.proportion.hip-to-floor-4-head-heights",
         "IR.sean.costume.default-outfit-locked",
         "IR.sean.costume.navy-tee-cool-gray-jeans",
         "IR.sean.style.construction-lines-visible-beneath-final"
       ]
     },
     {
-      "target_path": "turnarounds/body-3quarter.png",
-      "source": "ingest:source-refs/turnaround-1.png#region:body-3quarter",
+      "target_path": "turnarounds/body-profile-left.png",
+      "source": "ingest:source-refs/body-turnarounds/body-profile-left.png",
       "cites_identity_rules": [
         "IR.sean.proportion.head-to-body-1-to-7",
-        "IR.sean.prop.stylus-right-hand-always",
-        "IR.sean.prop.stylus-grip-three-fingers",
+        "IR.sean.proportion.hip-to-floor-4-head-heights",
+        "IR.sean.face.jaw-line-angular-not-rounded",
         "IR.sean.costume.default-outfit-locked",
         "IR.sean.style.construction-lines-visible-beneath-final"
       ]
     },
     {
       "target_path": "turnarounds/body-profile-right.png",
-      "source": "ingest:source-refs/turnaround-1.png#region:body-profile-right",
+      "source": "ingest:source-refs/body-turnarounds/body-profile-right.png",
       "cites_identity_rules": [
         "IR.sean.proportion.head-to-body-1-to-7",
         "IR.sean.proportion.hip-to-floor-4-head-heights",
@@ -36,7 +35,7 @@
     },
     {
       "target_path": "turnarounds/body-back.png",
-      "source": "ingest:source-refs/turnaround-1.png#region:body-back",
+      "source": "ingest:source-refs/body-turnarounds/body-back.png",
       "cites_identity_rules": [
         "IR.sean.proportion.head-to-body-1-to-7",
         "IR.sean.proportion.shoulder-width-1-5-head-widths",

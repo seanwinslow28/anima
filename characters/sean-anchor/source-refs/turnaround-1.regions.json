@@ -1,10 +1,6 @@
 {
-  "_comment": "Crop boxes for Cy's #region ingest, fractions [left,top,right,bottom] of the 2400x1792 sheet. Top row = 4 colored body views; bottom row = 3 colored head views. Estimated 2026-05-29 from visual inspection; Sean refines on review.",
-  "body-front":         [0.02, 0.01, 0.26, 0.60],
-  "body-3quarter":      [0.26, 0.01, 0.50, 0.60],
-  "body-profile-right": [0.50, 0.01, 0.74, 0.60],
-  "body-back":          [0.74, 0.01, 0.99, 0.60],
-  "head-front":         [0.03, 0.64, 0.37, 1.00],
+  "_comment": "Crop boxes for Cy's #region ingest, fractions [left,top,right,bottom] of the 2400x1792 sheet. HEAD row only — the 4 body turnarounds now ingest Sean's hand-trimmed crops from source-refs/body-turnarounds/ (label removed, one clean figure each), so the body-* region boxes were retired 2026-05-29. head-front top edge nudged 0.64->0.66 to drop a sliver of the body-row feet.",
+  "head-front":         [0.03, 0.66, 0.37, 1.00],
   "head-3quarter":      [0.37, 0.64, 0.65, 1.00],
   "head-profile":       [0.65, 0.64, 0.98, 1.00]
 }
