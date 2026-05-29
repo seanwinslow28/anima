@@ -94,6 +94,14 @@ _GENERATED_PLATE_DIRS = frozenset(
     {"turnarounds", "expressions", "props", "motion_plates", "costumes"}
 )
 
+# Subdirectories whose plates are ISOLATED OBJECTS, not the character. A prop
+# plate (the stylus, etc.) must NOT get the full-body anchor injected — doing so
+# tells NB Pro to draw the whole person beside a floating prop (the re-baked
+# props/stylus.png defect). Prop plates also skip the Pass-2.5 anchor-similarity
+# gate entirely: scored against a full-character anchor they always land near
+# zero, which would spuriously reject/regenerate a perfectly good object plate.
+_PROP_PLATE_DIRS = frozenset({"props"})
+
 # Pass-3 Gemini timeout per plate. Same default Em uses in vision_critic.py.
 _GEMINI_TIMEOUT_S = 120
 
@@ -512,7 +520,7 @@ class CharacterDesignerNode:
         # keeps only source-refs/ angle targets, and strips any reference to
         # another generated plate (no chaining). For an ingest plate there are
         # no references — the pixel is Sean's own source.
-        reference_images, has_pose_ref = _resolve_generate_references(
+        reference_images, has_pose_ref, is_prop = _resolve_generate_references(
             plate, character_dir
         )
         # Wrap the plate's short intent in the role-tag framing NB Pro responds
@@ -520,8 +528,13 @@ class CharacterDesignerNode:
         # identity). The verbose verbal character-descriptions are gone; the
         # runner owns the framing so a too-wordy Opus prompt can't reintroduce
         # prompt-dominance, and the anti-caption guardrail kills the stylus.png
-        # caption failure mode (§3b).
-        prompt_text = _build_nb_pro_prompt(plate_intent, has_pose_ref=has_pose_ref)
+        # caption failure mode (§3b). A prop plate uses the isolated-object
+        # framing instead — no anchor was fed, so a "match Image 1" prompt would
+        # be incoherent and would re-invite the floating-figure defect.
+        if is_prop:
+            prompt_text = _build_prop_prompt(plate_intent)
+        else:
+            prompt_text = _build_nb_pro_prompt(plate_intent, has_pose_ref=has_pose_ref)
 
         status: dict[str, Any] = {
             "status": "pending",
@@ -583,7 +596,7 @@ class CharacterDesignerNode:
         # but doesn't look like the character is surfaced numerically rather
         # than masked (post-mortem §2.3). Recorded, not hard-blocked — see
         # similarity_gate for why the coarse PIL metric is a flag this commit.
-        self._score_plate_identity(target_path, character_dir, status)
+        self._score_plate_identity(target_path, character_dir, status, is_prop=is_prop)
 
         # ----- Pass 3 — Gemini verifies (and regenerates on fail, up to ceiling) -----
         for attempt in range(1, _PLATE_ATTEMPT_CEILING + 1):
@@ -636,20 +649,27 @@ class CharacterDesignerNode:
                 return status
 
             # Re-score the freshly regenerated plate against the anchor.
-            self._score_plate_identity(target_path, character_dir, status)
+            self._score_plate_identity(target_path, character_dir, status, is_prop=is_prop)
 
         # Shouldn't reach here — the loop returns on every branch.
         return status
 
     def _score_plate_identity(
-        self, target_path: Path, character_dir: Path, status: dict
+        self, target_path: Path, character_dir: Path, status: dict,
+        *, is_prop: bool = False,
     ) -> None:
         """Compute + record the Pass-2.5 similarity of a plate vs the anchor.
 
         Mutates `status` in place with similarity_score / similarity_method /
         similarity_reference, and similarity_flag='below_threshold' when the
         score is low. Never raises — a scoring failure must not fail a plate
-        (the gate is a signal, not a blocker this commit)."""
+        (the gate is a signal, not a blocker this commit).
+
+        Prop plates are an EXCEPTION: an isolated object scored against the
+        full-character anchor always lands near zero, so the score is recorded
+        for a complete audit trail but the gate is marked record-only and the
+        below-threshold reject flag is never set — a prop is never identity-
+        scored against the character anchor."""
         anchor_path = character_dir / "anchor.png"
         if not target_path.exists() or not anchor_path.exists():
             return
@@ -661,6 +681,9 @@ class CharacterDesignerNode:
         status["similarity_score"] = round(sim.score, 4)
         status["similarity_method"] = sim.method
         status["similarity_reference"] = "anchor.png"
+        if is_prop:
+            status["similarity_gate"] = "record-only (prop plate — not identity-scored)"
+            return
         if sim.below_threshold:
             status["similarity_flag"] = "below_threshold"
 
@@ -874,38 +897,59 @@ def _classify_reference(ref: str, character_dir: Path) -> tuple[Path | None, str
     return resolved, "external"
 
 
+def _is_prop_plate(plate: dict) -> bool:
+    """True when the plate is an isolated-object (prop) plate, not the character.
+
+    Identified by target_path landing under a _PROP_PLATE_DIRS subdir
+    (props/). Prop plates skip anchor injection and the identity-similarity gate
+    — a full-body anchor is the wrong reference for an isolated object.
+    """
+    target = str(plate.get("target_path", ""))
+    head = target.split("/", 1)[0] if "/" in target else ""
+    return head in _PROP_PLATE_DIRS
+
+
 def _resolve_generate_references(
     plate: dict, character_dir: Path
-) -> tuple[list[Path], bool]:
+) -> tuple[list[Path], bool, bool]:
     """Build the reference list a generate plate is actually fed.
 
     The runner — not Opus — owns this. Policy (post-mortem §3d + §5 item 2):
-      1. anchor.png is ALWAYS first, injected unconditionally.
+      1. anchor.png is ALWAYS first, injected unconditionally — EXCEPT for prop
+         plates, where the full-body anchor is the wrong reference (it makes
+         NB Pro draw the whole figure beside a floating object).
       2. source-refs/ material Opus named (the angle/pose target) is kept.
       3. references to other generated plates are STRIPPED (no chaining).
 
-    Returns (ordered_deduped_paths, has_pose_ref) where has_pose_ref is True
-    when at least one non-anchor reference survived (so the prompt can name it
-    as the angle/pose target).
+    Returns (ordered_deduped_paths, has_pose_ref, is_prop) where has_pose_ref is
+    True when at least one non-anchor reference survived (so the prompt can name
+    it as the angle/pose target), and is_prop signals the prop-plate class so
+    the caller picks the isolated-object prompt + record-only similarity gate.
     """
+    is_prop = _is_prop_plate(plate)
     refs: list[Path] = []
     seen: set[Path] = set()
 
-    anchor_path, anchor_kind = _classify_reference("anchor.png", character_dir)
-    if anchor_kind == "anchor" and anchor_path is not None:
-        refs.append(anchor_path)
-        seen.add(anchor_path)
+    if not is_prop:
+        anchor_path, anchor_kind = _classify_reference("anchor.png", character_dir)
+        if anchor_kind == "anchor" and anchor_path is not None:
+            refs.append(anchor_path)
+            seen.add(anchor_path)
 
     has_pose_ref = False
     for raw in plate.get("reference_images", []):
         path, kind = _classify_reference(str(raw), character_dir)
+        # For a prop plate the anchor is dropped too (it's the character, not
+        # the object); only genuine source-ref/external object refs survive.
+        if kind == "anchor" and is_prop:
+            continue
         if kind in {"source_ref", "external"} and path is not None and path not in seen:
             refs.append(path)
             seen.add(path)
             has_pose_ref = True
-        # 'anchor' already injected; 'generated' dropped (no chaining);
-        # 'missing' skipped.
-    return refs, has_pose_ref
+        # 'anchor' already injected (non-prop); 'generated' dropped (no
+        # chaining); 'missing' skipped.
+    return refs, has_pose_ref, is_prop
 
 
 def _build_nb_pro_prompt(plate_intent: str, *, has_pose_ref: bool) -> str:
@@ -934,6 +978,26 @@ def _build_nb_pro_prompt(plate_intent: str, *, has_pose_ref: bool) -> str:
         "add any text, labels, captions, annotations, or watermarks to the image."
     )
     return " ".join(lines)
+
+
+def _build_prop_prompt(plate_intent: str) -> str:
+    """Frame a prop plate as an isolated object — no figure, no text.
+
+    A prop plate (the stylus, etc.) is an object reference, not the character.
+    The full-body anchor is deliberately NOT fed (see _resolve_generate_references),
+    so the prompt must not invite a figure: NB Pro otherwise draws the whole
+    person beside a floating object (the re-baked props/stylus.png defect). The
+    anti-text clause is the same guardrail the character prompt carries,
+    strengthened here because the original stylus plate rendered its meta-prose
+    as handwritten captions (post-mortem §3b)."""
+    intent = plate_intent.strip() or "a single isolated prop object"
+    return (
+        "Render ONLY the isolated object described below, centered on a warm "
+        "cream paper background. Do NOT draw any person, character, hand, body, "
+        "or figure. Do NOT render any text, caption, label, handwriting, or "
+        "annotation anywhere in the image. "
+        f"Render: {intent}."
+    )
 
 
 def _atomic_write_text(path: Path, content: str) -> None:

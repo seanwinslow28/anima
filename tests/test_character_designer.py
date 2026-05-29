@@ -26,6 +26,7 @@ import pytest
 from pipeline.agents import AgentContext, AgentResult
 from pipeline.agents.character_designer import CharacterDesignerNode
 from pipeline.agents.nb_pro_runner import NBProResponse
+from pipeline.agents.similarity_gate import SIMILARITY_FLAG_THRESHOLD
 
 
 # ---------------------------------------------------------------------------
@@ -767,3 +768,111 @@ def test_ingested_plate_still_runs_gemini_verification(
     # plate_results records the ingest.
     plate_results = result.outputs["plate_results"]
     assert plate_results["expressions/neutral.png"]["status"] == "ingested"
+
+
+# ---------------------------------------------------------------------------
+# Prop plates — isolated objects, not characters (the props/stylus.png bug)
+# ---------------------------------------------------------------------------
+
+
+def test_prop_plate_gets_anchor_free_reference_list(character_dir):
+    """A props/* plate must NOT get anchor.png injected. The full-body anchor
+    told NB Pro to draw the whole person beside a floating stylus (re-bake
+    defect). For the stylus (no source-refs named) the ref list is empty, and
+    the resolver signals is_prop=True."""
+    from pipeline.agents.character_designer import _resolve_generate_references
+
+    prop_plate = {
+        "target_path": "props/stylus.png",
+        "source": "generate",
+        "prompt": "an isolated stylus on cream paper",
+        "reference_images": ["anchor.png"],  # Opus named the anchor; runner must drop it for props
+        "cites_identity_rules": [],
+    }
+    refs, has_pose_ref, is_prop = _resolve_generate_references(prop_plate, character_dir)
+    assert is_prop is True
+    assert refs == [], "prop plate must be anchor-free (and have no other refs here)"
+    assert has_pose_ref is False
+
+    # Contrast: a character plate still gets the anchor injected first.
+    char_plate = {
+        "target_path": "expressions/neutral.png",
+        "source": "generate",
+        "prompt": "neutral expression",
+        "reference_images": [],
+        "cites_identity_rules": [],
+    }
+    refs2, _has_pose, is_prop2 = _resolve_generate_references(char_plate, character_dir)
+    assert is_prop2 is False
+    assert refs2 and refs2[0] == (character_dir / "anchor.png"), "character plate keeps anchor"
+
+
+def test_prop_prompt_forbids_figure_and_text():
+    """The prop prompt frames an isolated object and forbids any person/figure
+    AND any rendered text — the props/stylus.png plate rendered both a full
+    figure and the prompt's meta-prose as captions."""
+    from pipeline.agents.character_designer import _build_prop_prompt
+
+    prompt = _build_prop_prompt("a single working-illustrator's stylus at a 60-degree diagonal")
+    low = prompt.lower()
+    # No-figure clause.
+    assert "do not draw" in low
+    for forbidden in ("person", "character", "hand", "body", "figure"):
+        assert forbidden in low, f"prop prompt must forbid drawing a {forbidden}"
+    # No-text clause.
+    assert "do not render any text" in low or ("no text" in low)
+    assert "caption" in low
+    # The plate's own short intent survives.
+    assert "stylus" in low
+
+
+def test_prop_plate_not_anchor_similarity_rejected(
+    base_ctx, character_dir, monkeypatch
+):
+    """A prop plate scored against the full-character anchor will land near
+    zero — that must be recorded for the audit trail but marked record-only and
+    never flagged for reject/regeneration."""
+    # Anchor is a solid white field; the generated 'stylus' plate is solid
+    # black — forces the PIL similarity well below threshold so we prove the
+    # exemption (not just a coincidentally-high score) is what suppresses the flag.
+    _real_png(character_dir / "anchor.png", color=(255, 255, 255))
+
+    plates = [{
+        "target_path": "props/stylus.png",
+        "source": "generate",
+        "prompt": "isolated stylus on cream paper",
+        "reference_images": ["anchor.png"],
+        "cites_identity_rules": [],
+    }]
+    envelope = _make_pass1_envelope(plates=plates)
+
+    async def fake_opus(*, prompt: str, **kwargs):
+        return _FakeSDKResponse(text="```json\n" + json.dumps(envelope) + "\n```")
+
+    async def fake_gemini(*, prompt: str, image_paths: list, timeout_s: int = 120):
+        return _FakeCLIResponse(text=_make_gemini_verdict("pass"))
+
+    def black_nb_pro(*, output_path, cache_dir, **kwargs):
+        _real_png(output_path, color=(0, 0, 0))
+        return NBProResponse(
+            output_path=output_path, cache_key="k", cache_hit=False,
+            stub_fallback=False, exit_code=0,
+        )
+
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", fake_opus)
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+    )
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.invoke_nb_pro", black_nb_pro
+    )
+
+    result = CharacterDesignerNode().run(base_ctx)
+    status = result.outputs["plate_results"]["props/stylus.png"]
+
+    # Score IS recorded (audit trail), and it's genuinely low...
+    assert "similarity_score" in status
+    assert status["similarity_score"] < SIMILARITY_FLAG_THRESHOLD
+    # ...but the gate is record-only and the reject flag is never set.
+    assert status.get("similarity_gate") == "record-only (prop plate — not identity-scored)"
+    assert "similarity_flag" not in status

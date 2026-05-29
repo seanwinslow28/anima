@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-05-29 — Phase 1: prop plates are isolated objects (no anchor, no identity gate, no caption)
+
+**What changed:** Taught Cy's runner that a prop plate is a distinct class from a character plate. The 2026-05-29 fidelity fix made the runner inject `anchor.png` unconditionally and frame every plate around "match Image 1 exactly" — correct for turnarounds/expressions, **wrong for props**. The re-baked `props/stylus.png` rendered the full character with a stylus floating beside an empty-gripping hand, because the full-body anchor told NB Pro to draw the whole person.
+
+- **Prop-plate predicate.** Added `_PROP_PLATE_DIRS = {"props"}` + `_is_prop_plate(plate)` (target_path under `props/`) in [`pipeline/agents/character_designer.py`](pipeline/agents/character_designer.py), mirroring `_GENERATED_PLATE_DIRS`.
+- **No anchor injection for props.** `_resolve_generate_references` now returns a 3-tuple `(refs, has_pose_ref, is_prop)`; for prop plates it skips the unconditional anchor and drops any anchor Opus named, keeping only genuine source-ref/external object refs (the stylus has none → empty list — a pure text-to-image isolated-object render).
+- **Isolated-object prompt.** New `_build_prop_prompt` frames the generation as an isolated object on cream paper, explicitly forbidding any person/character/hand/body/figure AND any text/caption/label/annotation. `_run_plate` branches prop → `_build_prop_prompt`, else the existing character `_build_nb_pro_prompt`.
+- **Prop plates exempt from the Pass-2.5 anchor-similarity reject.** An isolated object scored against the full-character anchor always lands near zero. `_score_plate_identity(..., is_prop=True)` still records the score (audit-trail completeness) but marks `similarity_gate: "record-only (prop plate — not identity-scored)"` and never sets the below-threshold reject flag.
+- **Trimmed the stylus plate prompt.** [`characters/sean-anchor/plate_generation_plan.json`](characters/sean-anchor/plate_generation_plan.json) `props/stylus.png` prompt is now a short object-intent only ("a single working-illustrator's stylus: straight cylindrical barrel ~14cm…"); the long meta-prose that NB Pro rendered as handwritten captions (post-mortem §3b) is gone, and `reference_images` is empty (the runner owns reference policy).
+- **Tests.** 3 added to [`tests/test_character_designer.py`](tests/test_character_designer.py): a `props/*` plate gets an anchor-free ref list (and is_prop=True) while a character plate keeps the anchor; the prop prompt carries the no-figure + no-text clauses; a prop plate that scores below threshold is record-only with no `similarity_flag`. **179 tests green** (176 baseline + 3).
+
+**Why:** The fidelity fix correctly made the runner the source of truth for character identity, but "every plate is the character" over-generalized — an object plate is not a character and must not be conditioned on, or scored against, the full-body anchor. This restores the stylus as a clean isolated-object reference without weakening the identity grounding that character plates depend on.
+
 ## 2026-05-29 — rename: sw-portfolio-animation-pipeline → anima
 
 **What changed:** Executed the directory + repo rename per [`docs/2026-05-29-anima-rename-plan.md`](docs/2026-05-29-anima-rename-plan.md). The v2 change-map deferred this to "public-repo creation time so git history stays clean"; with the visual-fidelity fix shipped, the 176-test baseline green, and two Bibles locked, the window opened.
