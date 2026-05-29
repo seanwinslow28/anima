@@ -148,7 +148,7 @@
     {
       "target_path": "expressions/focused.png",
       "source": "generate",
-      "prompt": "Pencil test character expression sheet, focused state. Sean Winslow \u2014 see anchor and neutral expression for baseline. Front-facing head and upper shoulders crop. Eyes narrowed slightly (upper lid descends to cover the top of the iris, lower lid raises slightly); the brow line drops a fraction and pulls inward toward the bridge of the nose \u2014 this is the working-illustrator concentration read, not anger. Mouth closed, lips slightly tightened (corners drawn in marginally, not down). The whole expression should read as 'attention narrowed onto the work,' not as a generic concerned or stern look. Eye spacing approximately one eye-width at inner corners. Brow line still reads as roughly horizontal at the outer ends but pulled in at the inner ends \u2014 closer to a flat slight-frown shape than a deep arch. Angular jaw line. Render in pencil-test-colored register: warm graphite line weight #3D3530, warm cream paper background #F2E6CC with grain, no explicit skin tone, cross-hatching for shadow areas. Visible construction lines beneath the final drawing. Hand-drawn pencil aesthetic.",
+      "prompt": "focused expression, front-facing head and upper shoulders: eyes narrowed slightly (upper lid lowered over the top of the iris), brow dropped and pulled inward toward the bridge of the nose (working-illustrator concentration, not anger), mouth closed with lips slightly tightened",
       "reference_images": [
         "anchor.png",
         "turnarounds/head-front.png",
@@ -295,7 +295,7 @@
     {
       "target_path": "props/stylus.png",
       "source": "generate",
-      "prompt": "a single working-illustrator's stylus: straight cylindrical barrel ~14cm, tapered conical tip, rounded blunt end, no clip, lying at a ~60-degree diagonal",
+      "prompt": "a single working-illustrator's stylus drawn in warm-graphite pencil-test line style on cream paper (hand-drawn HB-2B line weight, a visible construction line through the barrel axis, cross-hatched shadow) — NOT photorealistic, NOT metallic: straight cylindrical barrel ~14cm, tapered conical tip, rounded blunt end, no clip, lying at a ~60-degree diagonal",
       "reference_images": [],
       "cites_identity_rules": [
         "IR.sean.prop.stylus-right-hand-always",

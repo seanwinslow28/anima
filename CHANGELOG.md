@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-05-29 — Phase 5: bake the sean-anchor production plates against the approved Bible
+
+**What changed:** Ran the first production plate bake against the locked full-color Bible — via the new plates-only path, so Pass 1 was skipped entirely (no Opus call, no transient-stub risk). 24 plates regenerated into `characters/sean-anchor/{turnarounds,expressions,props,motion_plates}/`.
+
+- **The mechanism + prop fix validated live.** `props/stylus.png` came back a clean isolated object (no figure, no caption) — the Phase 1 fix working under real NB Pro. The generated expression + head plates recovered identity in full color (blonde, blue eyes, warm skin, navy tee, construction lines, cross-hatch) — recognizably Sean, a categorical improvement over the pre-fix monochrome "different person."
+- **Two plates re-rolled at Sean's call.** `expressions/focused.png` first baked **monochrome** (the plate's leftover verbose prompt — "no explicit skin tone", heavy "warm graphite #3D3530" — fought the runner's "keep full color" framing and won; the reject-reason feedback loop amplified it). Trimming the plan prompt to a short expression-intent let the runner's anchor framing drive: re-roll came back full color, similarity 0.23 → **0.81**. `props/stylus.png` re-rolled in the pencil-test line register (was metallic-realistic) by naming the register in the plate intent — isolated-object framing preserved. Both via a surgical single-plate re-run (changed prompt → cache-bust) so the passing plates were untouched.
+- **Housekeeping.** Deleted the stale `turnarounds/body-front.png` (dropped from the plan in Phase 2). Patched `plate_verdicts.jsonl` for the two re-rolls. The "12 human-gated" plates were 10 ingests (Sean's own crops + line-art motion frames — Gemini-skeptical of small crops, not real failures) + the 2 re-rolled.
+- **Known item logged** (`cy-confidence-notes.md` §6): the generated faces lean a touch more realistic than the round-cartoon anchor — a stylization-amount drift, not identity drift. Shipped knowingly; flagged for a future tuning pass (prompt nudge or a round-anchor LoRA).
+
+**Why:** This is the bake the whole fidelity arc was building toward — the approved rules rendered into a recognizable, full-color, in-register plate set. The plates-only path meant it ran against the approved Bible without re-authoring it. 182 tests green.
+
 ## 2026-05-29 — Phase 4: full-color doc consistency pass + approve the sean-anchor Bible
 
 **What changed:** Propagated the full-color decision into the Bible's sibling docs (commit 3 only updated `acceptance_criteria.json`), then locked the Bible.
