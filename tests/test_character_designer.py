@@ -640,6 +640,72 @@ def test_pass1_stub_is_flagged_in_result_notes(base_ctx, character_dir, monkeypa
     assert "pass1_stub=True" in result.notes
 
 
+def test_parse_envelope_extracts_prose_wrapped_fence():
+    """Opus 4.8 narrates around the JSON ('Here is the envelope:' ... ```json ...
+    ``` ... authoring notes). The parser must extract the fenced JSON from the
+    middle of prose, not require the whole response to be the fence. This is the
+    exact failure that silently stubbed the live re-bake."""
+    from pipeline.agents.character_designer import _parse_json_envelope
+
+    text = (
+        "I'm Cy, authoring Pass 1. Here is the Pass 1 envelope.\n\n"
+        '```json\n{"character_yaml": {"character_id": "x"}, "ir_entries": []}\n```\n\n'
+        "A few authoring notes worth flagging before you run Pass 2: ..."
+    )
+    payload = _parse_json_envelope(text)
+    assert payload["character_yaml"]["character_id"] == "x"
+    assert payload["ir_entries"] == []
+
+
+def test_parse_envelope_falls_back_to_balanced_braces_without_fence():
+    """If the model emits prose + a bare JSON object (no fence), extract the
+    first balanced-brace object."""
+    from pipeline.agents.character_designer import _parse_json_envelope
+
+    text = 'Sure, here it is: {"a": {"b": 2}, "c": [1, 2]} — let me know!'
+    payload = _parse_json_envelope(text)
+    assert payload == {"a": {"b": 2}, "c": [1, 2]}
+
+
+def test_parse_envelope_still_handles_bare_fence_and_raw_json():
+    """Regression: the pre-existing clean shapes (whole-string fence; raw JSON)
+    must keep working."""
+    from pipeline.agents.character_designer import _parse_json_envelope
+
+    assert _parse_json_envelope('```json\n{"a": 1}\n```')["a"] == 1
+    assert _parse_json_envelope('{"a": 2}')["a"] == 2
+
+
+def test_pass1_unparseable_nonempty_text_flagged_as_stub(
+    base_ctx, character_dir, monkeypatch
+):
+    """Opus returning non-empty text that ISN'T the JSON envelope (exit 0,
+    stub_fallback=False) must still be flagged pass1_stub=True — the parser
+    falls back to the synthetic stub, and that silent fallback is exactly what
+    slipped past the first guard on the live re-bake."""
+    async def prose_opus(*, prompt: str, **kwargs):
+        return _FakeSDKResponse(
+            text="Sure! Here is the character bible you asked for. (no JSON here)",
+            stub_fallback=False,
+        )
+
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", prose_opus)
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.run_antigravity_with_image",
+        lambda **kw: _FakeCLIResponse(text=_make_gemini_verdict("pass")),
+    )
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.invoke_nb_pro",
+        lambda **kw: NBProResponse(
+            output_path=kw["output_path"], cache_key="k", cache_hit=False,
+            stub_fallback=True, exit_code=0,
+        ),
+    )
+
+    result = CharacterDesignerNode().run(base_ctx)
+    assert "pass1_stub=True" in result.notes
+
+
 def test_pass1_real_envelope_not_flagged_as_stub(base_ctx, character_dir, monkeypatch):
     """A real (non-stub) Pass-1 envelope must NOT be flagged as a stub."""
     _patch_runners(monkeypatch)

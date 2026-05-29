@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-05-29 — Commit 2c: robust JSON-envelope parser (Opus 4.8 narrates around the fence) + accurate stub detection
+
+**What changed:** The second live re-bake (now under the 1800s timeout) stubbed *again* — but this time it returned in **329s, exit 0, 26KB of text**, so it wasn't a timeout. Captured the raw Opus 4.8 Pass-1 output and found the real cause: **Opus 4.8 wraps the JSON envelope in conversational prose** ("I'm Cy, authoring Pass 1… Here is the Pass 1 envelope:" before the ` ```json ` fence, and authoring notes after it). Cy's `_CODE_FENCE_RE` was anchored to the whole string (`^…$`), so prose around the fence broke the match → `json.loads` on the whole blob failed → silent synthetic stub. The Opus 4.8 "honesty/narration" disposition is the trigger; 4.7 emitted a bare fence.
+
+- **Robust `_parse_json_envelope` (`character_designer.py`).** Three-rung ladder: (1) the first ` ```json ``` ` fenced block found *anywhere* in the text (regex de-anchored + `finditer`); (2) the whole stripped text as raw JSON; (3) `_extract_first_json_object` — a brace-depth scanner (string/escape-aware) that pulls the first balanced `{…}` object out of surrounding prose. Validated against the **real captured 26KB Opus 4.8 output**: parses cleanly to 14 IR rules + 17 plates + a full-color palette (sandy blonde hair, light warm skin, cool blue eyes, navy shirt, gray jeans) — Opus 4.8 authored full-color rules naturally from the notes + anchor (decision (e) honored at authoring time).
+- **Accurate stub detection.** The synthetic stub envelope now carries a `_pass1_stub` marker; `run()` ORs it into `pass1_stub` so the loud-fail guard fires on the non-empty-but-unparseable case too — the exact path that slipped past commit 2b's response-field-only check on the live re-bake.
+- **5 new tests:** prose-wrapped fence extraction; no-fence balanced-brace fallback; bare-fence + raw-JSON regression; and the unparseable-nonempty → `pass1_stub=True` flag. 172 green (168 + 4 parser/stub additions across 2b→2c; net +4 since the 168 baseline included 2b's 2).
+
+**Why:** This is the second-order consequence of the Opus 4.8 bump (commit 1) — a more conversational model breaks a parser that assumed terse structured output. The capture-the-raw-output discipline (rather than guessing) pinpointed it in one shot, and the fix is model-agnostic robustness that will hold as models get chattier. With this, live Bible authoring under 4.8 works end-to-end; the clean re-bake follows.
+
 ## 2026-05-29 — Commit 2b: Opus 4.8 Pass-1 timeout fix + loud stub-fallback (surfaced by the first live re-bake)
 
 **What changed:** The first live re-bake under Opus 4.8 (non-destructive scratch copy of sean-anchor) **silently stubbed** — it ran for exactly 900s, hit Cy's Pass-1 timeout, returned empty text, and the parser fell back to a STUB FALLBACK envelope (0 plates, placeholder rules) while `author_bible.py` still exited 0. This is precisely the "a successful exit code can lie about what actually happened" failure mode the 2026-05-28 test report named. Two fixes, plus the mechanism validation that came out of debugging it.

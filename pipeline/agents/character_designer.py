@@ -65,9 +65,12 @@ ANIMATION_PRINCIPLES_SKILL_FILE = (
     _PROJECT_ROOT / ".claude" / "skills" / "2d-animation-principles" / "SKILL.md"
 )
 
-# JSON code-fence stripper. LLMs habitually wrap structured output in
-# ```json ... ```; the parser tolerates either shape.
-_CODE_FENCE_RE = re.compile(r"^\s*```(?:json)?\s*\n?(.*?)\n?\s*```\s*$", re.DOTALL)
+# JSON code-fence finder. LLMs wrap structured output in ```json ... ```.
+# Searched ANYWHERE in the text (not anchored to the whole string): Opus 4.8
+# narrates around the envelope — "Here is the Pass 1 envelope:" before the
+# fence and authoring notes after it — so a whole-string anchor silently fails
+# to find the JSON and falls back to the synthetic stub (the live-re-bake bug).
+_CODE_FENCE_RE = re.compile(r"```(?:json)?\s*\n?(.*?)```", re.DOTALL)
 
 # Box-drawing characters forbidden in risk-bible.md + cy-confidence-notes.md.
 # Same contract enforcement Maya applies to plan.md — the CLI renders boxes
@@ -169,6 +172,10 @@ class CharacterDesignerNode:
             character_dir=character_dir,
             stub_fallback=bool(getattr(opus_resp, "stub_fallback", False)),
         )
+        # The parser builds the synthetic stub when the Opus text is empty OR
+        # non-empty-but-unparseable. That second case is the one the response-
+        # field check above misses, so fold the parser's own verdict in.
+        pass1_stub = pass1_stub or bool(parsed.get("_pass1_stub"))
 
         character_yaml: dict = parsed["character_yaml"]
         ir_entries: list[dict] = parsed["ir_entries"]
@@ -447,6 +454,12 @@ class CharacterDesignerNode:
                 f"Confidence is artificial. Do not approve."
             ),
             "plate_generation_plan": {"plates": []},
+            # Marker so run() can tell a synthetic stub envelope apart from a
+            # real Opus emission, regardless of WHY we stubbed (timeout → empty
+            # text, no SDK, OR non-empty-but-unparseable output). The first
+            # live re-bake stubbed via the last case and slipped past a guard
+            # that only checked the Opus response fields.
+            "_pass1_stub": True,
         }
 
     def _parse_gemini_verdict(self, text: str) -> dict:
@@ -678,15 +691,81 @@ class CharacterDesignerNode:
 
 
 def _parse_json_envelope(text: str) -> dict:
-    """Strip a ```json``` code fence if present, then json.loads."""
+    """Extract a JSON object from an LLM response, tolerant of prose.
+
+    Conversational models (Opus 4.8 especially) narrate around the structured
+    output — preamble before the fence, authoring notes after it. The ladder:
+      1. The first ```json ... ``` fenced block anywhere in the text.
+      2. The whole (stripped) text as raw JSON.
+      3. The first balanced-brace {...} object embedded in the text.
+    Raises ValueError only if all three fail.
+    """
     if not text.strip():
         raise ValueError("Empty response")
-    match = _CODE_FENCE_RE.match(text.strip())
-    body = match.group(1) if match else text
+
+    # 1. Fenced block anywhere in the text (not anchored to the whole string).
+    for m in _CODE_FENCE_RE.finditer(text):
+        candidate = m.group(1).strip()
+        try:
+            return json.loads(candidate)
+        except json.JSONDecodeError:
+            continue
+
+    # 2. Whole text as raw JSON.
     try:
-        return json.loads(body)
-    except json.JSONDecodeError as exc:
-        raise ValueError(f"Response is not parseable JSON: {exc}") from exc
+        return json.loads(text.strip())
+    except json.JSONDecodeError:
+        pass
+
+    # 3. First balanced-brace object embedded in surrounding prose.
+    obj = _extract_first_json_object(text)
+    if obj is not None:
+        return obj
+
+    raise ValueError("Response is not parseable JSON (no fence, raw, or object found)")
+
+
+def _extract_first_json_object(text: str) -> dict | None:
+    """Return the first balanced-brace {...} object that json.loads accepts.
+
+    Scans for a '{', tracks brace depth (ignoring braces inside JSON strings,
+    honoring backslash escapes), and attempts json.loads on each balanced span.
+    Returns None if no decodable object is found.
+    """
+    start = None
+    depth = 0
+    in_string = False
+    escaped = False
+    for i, ch in enumerate(text):
+        if start is None:
+            if ch == "{":
+                start = i
+                depth = 1
+                in_string = False
+                escaped = False
+            continue
+        if in_string:
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            continue
+        if ch == '"':
+            in_string = True
+        elif ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                candidate = text[start:i + 1]
+                try:
+                    return json.loads(candidate)
+                except json.JSONDecodeError:
+                    # Not valid — restart the search after this opening brace.
+                    start = None
+    return None
 
 
 def _classify_reference(ref: str, character_dir: Path) -> tuple[Path | None, str]:
