@@ -46,10 +46,28 @@ VALID_IMPACT_TAGS = frozenset({
     "aesthetic", "structural", "technical",
 })
 
+# v1.2 closed vocabulary for Cy's character-bound identity rules. Per Cy
+# brainstorm TOP-2 (2026-05-27): IR.* entries are first-class criteria living
+# in the same acceptance_criteria.json graph as Maya's AC.* entries, but use
+# their own ten-category vocabulary because Cy reasons in character-design
+# terms (anatomy, hair, face, palette, pose) rather than spec-design terms
+# (identity, proportion, tone). Em loads style register before identity rules
+# and routes its citation rubric against this vocab when judging Phase 5 + 6
+# frames against the Bible.
+VALID_IR_CATEGORIES = frozenset({
+    "anatomy", "hair", "face", "proportion", "palette",
+    "costume", "prop", "pose", "motion", "style",
+})
+
 # Mnemonic ID pattern: AC.{category}.{handle}. Category is one of the closed
 # vocab above; handle is kebab-or-snake lowercase. Em's escalation hatch keys
 # off impact_tag (not the ID parse), so handle stays flexible.
 _MNEMONIC_ID_PATTERN = re.compile(r"^AC\.([a-z_]+)\.([a-z0-9\-]+)$")
+
+# v1.2 IR.* pattern: three dotted segments — IR.{character_id}.{category}.{handle}.
+# character_id is lowercase-kebab (matches the folder name in characters/).
+# category is one of VALID_IR_CATEGORIES. handle stays flexible.
+_IR_ID_PATTERN = re.compile(r"^IR\.([a-z0-9\-]+)\.([a-z_]+)\.([a-z0-9\-]+)$")
 
 
 @dataclass(frozen=True)
@@ -58,11 +76,13 @@ class AcceptanceCriterion:
 
     v1.0 records carry `phase` and `severity`; v1.1 fields default to empty.
     v1.1 records carry the graph fields; v1.0 fields default to None.
+    v1.2 records (Cy's IR.* identity rules) carry `character_id` populated
+    from the parsed mnemonic ID; AC.* records keep character_id=None.
     Consumers that only care about one version inspect the relevant fields.
     """
     id: str
     description: str
-    # v1.0 fields (None on v1.1 records).
+    # v1.0 fields (None on v1.1 / v1.2 records).
     phase: str | None = None
     severity: Severity | None = None
     # v1.1 graph fields (empty / None on v1.0 records).
@@ -71,6 +91,8 @@ class AcceptanceCriterion:
     impact_tag: str | None = None
     parent_id: str | None = None
     derived_from: tuple[str, ...] = ()
+    # v1.2 Bible-layer field (None on AC.* records; required on IR.* records).
+    character_id: str | None = None
 
 
 @dataclass
@@ -89,6 +111,16 @@ class CriteriaBundle:
     def query_by_persona(self, persona: str) -> list[AcceptanceCriterion]:
         """Return v1.1 criteria citing the given persona name."""
         return [c for c in self.criteria if persona in c.cites_personas]
+
+    def query_by_character(self, character_id: str) -> list[AcceptanceCriterion]:
+        """Return v1.2 IR.* criteria bound to the given character_id.
+
+        Returns an empty list on AC.*-only bundles since no records carry a
+        character_id there. The Bible authoring workflow calls this when Em
+        needs to surface 'just the rules for the character in this Phase 5
+        frame' from a merged CriteriaBundle that holds multiple characters.
+        """
+        return [c for c in self.criteria if c.character_id == character_id]
 
 
 class CriteriaLockViolation(RuntimeError):
@@ -109,6 +141,10 @@ def load_criteria(path: Path) -> CriteriaBundle:
                 severity=c["severity"],
             ))
         else:
+            # v1.1 + v1.2 share the graph fields; v1.2 IR.* records additionally
+            # carry character_id. The validator has already enforced that IR.*
+            # records' character_id field matches the parsed prefix, so we can
+            # trust the value here.
             criteria_list.append(AcceptanceCriterion(
                 id=c["id"],
                 description=c["description"],
@@ -117,6 +153,7 @@ def load_criteria(path: Path) -> CriteriaBundle:
                 impact_tag=c.get("impact_tag"),
                 parent_id=c.get("parent_id"),
                 derived_from=tuple(c.get("derived_from") or ()),
+                character_id=c.get("character_id"),
             ))
     return CriteriaBundle(
         version=version,
@@ -133,8 +170,10 @@ def validate_criteria(raw: dict) -> None:
     version = str(raw["version"])
     if version.startswith("1.0"):
         _validate_v1_0(raw["criteria"])
-    elif version.startswith("1.1") or version.startswith("1.2"):
+    elif version.startswith("1.1"):
         _validate_v1_1(raw["criteria"])
+    elif version.startswith("1.2"):
+        _validate_v1_2(raw["criteria"])
     else:
         raise ValueError(f"unsupported criteria schema version: {version}")
 
@@ -184,6 +223,77 @@ def _validate_v1_1(criteria: list[dict]) -> None:
             )
 
 
+def _validate_v1_2(criteria: list[dict]) -> None:
+    """v1.2 schema: AC.* and IR.* IDs coexist in the same graph.
+
+    AC.* entries validate against the v1.1 rules (AC category vocab, optional
+    impact_tag, etc.); they may omit `character_id` (it defaults to None on
+    the loaded record). IR.* entries validate against the IR category vocab,
+    require a `character_id` field that matches the parsed character_id from
+    the ID, and may carry `derived_from` entries with the `#region:X`
+    plate-pointer suffix (the validator treats the suffix as opaque metadata —
+    a sensible follow-up commit may tighten this to verify the path exists
+    on disk, but commit 2 keeps it schema-level only).
+    """
+    seen: set[str] = set()
+    for c in criteria:
+        for field_name in ("id", "description", "cites_phase", "cites_personas"):
+            if field_name not in c:
+                raise ValueError(f"Criterion missing required field: {field_name}")
+        if c["id"] in seen:
+            raise ValueError(f"Duplicate criterion id: {c['id']}")
+        seen.add(c["id"])
+
+        ir_match = _IR_ID_PATTERN.match(c["id"])
+        ac_match = _MNEMONIC_ID_PATTERN.match(c["id"])
+
+        if ir_match:
+            # IR.{character_id}.{category}.{handle}
+            parsed_char_id = ir_match.group(1)
+            parsed_category = ir_match.group(2)
+            if parsed_category not in VALID_IR_CATEGORIES:
+                raise ValueError(
+                    f"Criterion {c['id']!r} has unknown IR category "
+                    f"{parsed_category!r}; expected one of "
+                    f"{sorted(VALID_IR_CATEGORIES)}"
+                )
+            # character_id field is required and must match the parsed prefix.
+            if "character_id" not in c or c["character_id"] is None:
+                raise ValueError(
+                    f"Criterion {c['id']!r} is IR.* but missing required "
+                    f"character_id field (must match parsed prefix "
+                    f"{parsed_char_id!r})"
+                )
+            if c["character_id"] != parsed_char_id:
+                raise ValueError(
+                    f"Criterion {c['id']!r} has character_id "
+                    f"{c['character_id']!r} that does not match parsed prefix "
+                    f"{parsed_char_id!r}"
+                )
+        elif ac_match:
+            # AC.{category}.{handle} — existing v1.1 rules.
+            parsed_category = ac_match.group(1)
+            if parsed_category not in VALID_CATEGORIES:
+                raise ValueError(
+                    f"Criterion {c['id']!r} has unknown category "
+                    f"{parsed_category!r}; expected one of "
+                    f"{sorted(VALID_CATEGORIES)}"
+                )
+        else:
+            raise ValueError(
+                f"Criterion {c['id']!r} has malformed id; expected pattern "
+                f"AC.<category>.<handle> (Maya) or "
+                f"IR.<character_id>.<category>.<handle> (Cy)"
+            )
+
+        impact = c.get("impact_tag")
+        if impact is not None and impact not in VALID_IMPACT_TAGS:
+            raise ValueError(
+                f"Criterion {c['id']!r} has unknown impact_tag {impact!r}; "
+                f"expected one of {sorted(VALID_IMPACT_TAGS)}"
+            )
+
+
 def enforce_lock(
     criteria_path: Path,
     *,
@@ -222,6 +332,84 @@ def enforce_lock(
             f.write(json.dumps(record) + "\n")
 
 
+def load_all_criteria(manifest: dict) -> CriteriaBundle:
+    """Read every criteria file the manifest's criteria_sources block names
+    and merge them into a single CriteriaBundle.
+
+    The manifest schema (additive, per Task 1.8):
+
+        criteria_sources:
+          brief_file: briefs/{slug}/acceptance_criteria.json   # Maya's AC.*
+          bibles:
+            - characters/sean-anchor/acceptance_criteria.json  # Cy's IR.sean.*
+            - characters/claude-mascot/acceptance_criteria.json # IR.claude-mascot.*
+
+    Merge rules:
+      - Concatenate every source's criteria list into one bundle.
+      - Files that don't exist on disk are logged and skipped (Bible not yet
+        authored, no Maya brief yet). This is non-fatal — Phase 5 runs can
+        proceed against the AC.* criteria alone if a Bible hasn't shipped.
+      - Duplicate IDs across files raise ValueError naming both files. The
+        v1.2 graph treats IDs as globally unique within a run — Cy's
+        per-character namespacing (IR.{character_id}.*) makes accidental
+        collisions structurally rare, but a brief and a Bible both authoring
+        AC.identity.stylus-right-hand would collide.
+
+    The merged bundle inherits the highest version across its sources (v1.2
+    if any IR.* file participates). `locked` is True only if every source was
+    locked — a partially-locked merge surfaces as draft so downstream consumers
+    treat the bundle as in-flight.
+    """
+    sources_block = manifest.get("criteria_sources") or {}
+    file_paths: list[Path] = []
+
+    brief_file = sources_block.get("brief_file")
+    if brief_file:
+        file_paths.append(Path(brief_file))
+
+    bible_paths = sources_block.get("bibles") or []
+    for entry in bible_paths:
+        file_paths.append(Path(entry))
+
+    merged_criteria: list[AcceptanceCriterion] = []
+    id_to_source: dict[str, str] = {}
+    versions: list[str] = []
+    all_locked = True
+    any_loaded = False
+
+    for path in file_paths:
+        if not path.exists():
+            # Bible not yet authored, or Maya brief still being drafted.
+            # Skip without raising — surfaces in caller's logs if needed.
+            continue
+        bundle = load_criteria(path)
+        any_loaded = True
+        versions.append(bundle.version)
+        if not bundle.locked:
+            all_locked = False
+        for c in bundle.criteria:
+            if c.id in id_to_source:
+                raise ValueError(
+                    f"Duplicate criterion id {c.id!r} across criteria sources: "
+                    f"first seen in {id_to_source[c.id]}, also in {path}"
+                )
+            id_to_source[c.id] = str(path)
+            merged_criteria.append(c)
+
+    if not any_loaded:
+        # No sources resolved — return an empty bundle so downstream code
+        # doesn't crash on a missing manifest block during early-pipeline runs.
+        return CriteriaBundle(version="1.2", locked=False, criteria=[])
+
+    # Highest version wins; v1.2 > v1.1 > v1.0.
+    merged_version = max(versions, default="1.0")
+    return CriteriaBundle(
+        version=merged_version,
+        locked=all_locked,
+        criteria=merged_criteria,
+    )
+
+
 def bump_version(criteria_path: Path, *, new_version: str) -> Path:
     """Write a new semver-bumped criteria file and re-point the symlink.
 
@@ -243,7 +431,11 @@ def bump_version(criteria_path: Path, *, new_version: str) -> Path:
     tmp_path = versioned_path.with_suffix(versioned_path.suffix + ".tmp")
     tmp_path.write_text(json.dumps(raw, indent=2), encoding="utf-8")
     tmp_path.replace(versioned_path)
-    if criteria_path.is_symlink():
+    # First mutation of a regular-file criteria.json (Cy's Pass-1 write,
+    # Maya's Opus emit) converts it to a symlink; subsequent mutations just
+    # re-point the symlink. Either path leaves criteria_path resolving to the
+    # latest versioned file.
+    if criteria_path.is_symlink() or criteria_path.exists():
         criteria_path.unlink()
     criteria_path.symlink_to(versioned_path.name)
     return versioned_path

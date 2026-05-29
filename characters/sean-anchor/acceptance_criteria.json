@@ -1,0 +1,383 @@
+{
+  "version": "1.2",
+  "locked": false,
+  "criteria": [
+    {
+      "id": "IR.sean.prop.stylus-right-hand-always",
+      "description": "Sean's stylus stays in his right hand in every frame. The right hand grips the stylus near the barrel; the left hand never holds the stylus. Visible in front, 3-quarter, and profile views; back view shows the right arm's silhouette carrying the grip. This is the load-bearing prop-continuity rule that the shipped Act 1 frames are calibrated against; any Phase 5 frame that places the stylus in the left hand, or that omits the stylus entirely, is a hard violation.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "annie"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png#region:right-hand",
+        "characters/sean-anchor/source-refs/turnaround-1.png#region:body-3quarter-right-hand"
+      ]
+    },
+    {
+      "id": "IR.sean.prop.stylus-grip-three-fingers",
+      "description": "The stylus grip shows three fingers visible at the barrel \u2014 thumb wrapping the near side, index finger laid along the top toward the tip, middle finger curled underneath. Ring and pinky fingers are either tucked or barely visible. The grip is the working-illustrator hold (loose, near the tip), not a clenched fist or a child's pencil grip. Visible at any framing that shows the right hand at readable scale.",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png#region:right-hand-detail"
+      ]
+    },
+    {
+      "id": "IR.sean.hair.center-cowlick",
+      "description": "Sean's hair carries a visible center cowlick at the crown, roughly 2cm forward of the back of the skull and the highest point of the head silhouette. The cowlick reads as a small upward tuft, not a flattened cap or a smooth dome. Visible in front, 3-quarter, and profile views; obscured in pure back view where the crown sits below the upper silhouette line.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png#region:hair-crown",
+        "characters/sean-anchor/source-refs/head-turn/head-turn-5.png#region:crown"
+      ]
+    },
+    {
+      "id": "IR.sean.hair.silhouette-tousled-medium-short",
+      "description": "Sean's hair silhouette is medium-short and tousled \u2014 sits roughly half an eye-height above the forehead at the front, tapers to skin at the temples and nape. Not buzzed, not styled-with-product, not long enough to break the jawline. The outer contour shows two or three irregular tufts rather than a clean parabolic curve.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/source-refs/turnaround-1.png#region:head-silhouette",
+        "characters/sean-anchor/source-refs/head-turn/head-turn-5.png"
+      ]
+    },
+    {
+      "id": "IR.sean.face.eye-spacing-one-eye-width",
+      "description": "Eye spacing measures approximately one eye-width between the inner corners \u2014 the gap between the eyes is the same horizontal distance as a single eye's length. The eyes sit slightly above the head's vertical midline (above the half-height of the face from crown to chin). Visible in front and 3-quarter views; only one eye reads in profile.",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png#region:face",
+        "characters/sean-anchor/source-refs/head-turn/head-turn-5.png#region:face"
+      ]
+    },
+    {
+      "id": "IR.sean.face.jaw-line-angular-not-rounded",
+      "description": "The jaw line carries a defined angle at the mandibular corner \u2014 the silhouette turns through approximately 100-110 degrees at the back of the jaw rather than tracing a smooth curve from ear to chin. The chin itself is squared (flat across roughly one-quarter eye-width at the base) rather than pointed. Reads strongly in 3-quarter and profile; less load-bearing in pure front.",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/source-refs/turnaround-1.png#region:head-profile",
+        "characters/sean-anchor/source-refs/head-turn/head-turn-1.png"
+      ]
+    },
+    {
+      "id": "IR.sean.face.brow-line-strong-horizontal",
+      "description": "The brow line reads as a strong horizontal \u2014 both brows sit on a single horizontal axis with only minimal arch, and the brow weight is heavier than the surrounding line work (drawn with closer to 2B than HB). The brow strength carries the focused-illustrator read at small scales; a softened or arched brow drifts the character toward a different identity.",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png#region:brows"
+      ]
+    },
+    {
+      "id": "IR.sean.proportion.head-to-body-1-to-7",
+      "description": "Sean reads as heroic-realistic proportion: head height fits seven times into total body height (1:7), measured from crown to sole at neutral upright stance. This is the load-bearing proportion that distinguishes Sean from chibi (Claude Mascot's 2:3), stylized-tall (1:8+ fashion proportion), or naturalistic-short (1:6 everyday proportion).",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em",
+        "annie"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/source-refs/turnaround-1.png#region:full-body-front",
+        "characters/sean-anchor/source-refs/walk-cycle/source.png"
+      ]
+    },
+    {
+      "id": "IR.sean.proportion.shoulder-width-1-5-head-widths",
+      "description": "Shoulder width at neutral pose is approximately 1.5 head-widths, measured outside-of-deltoid to outside-of-deltoid. The shoulder line is roughly horizontal at neutral (not sloped or hunched); the trapezius rises gently from shoulder peak to neck base over approximately a third of a head-width on each side.",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/source-refs/turnaround-1.png#region:shoulders-front"
+      ]
+    },
+    {
+      "id": "IR.sean.proportion.hip-to-floor-4-head-heights",
+      "description": "Hip line sits approximately four head-heights above the floor at neutral stance \u2014 the lower body is structurally longer than the upper body in the Sean register. Knees fall at roughly two head-heights from the floor; the ankle break is at roughly one-half head-height. Useful for verifying that Phase 6 motion plates haven't shortened the legs.",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/source-refs/turnaround-1.png#region:full-body-front",
+        "characters/sean-anchor/source-refs/walk-cycle/source.png"
+      ]
+    },
+    {
+      "id": "IR.sean.palette.full-color-pencil-test-vocabulary",
+      "description": "Sean's palette is full-color but limited and desaturated, rendered in the pencil-test register (flat color fills with warm-graphite cross-hatched shadow, never gradient- or cel-shaded). Named colors: cream paper #F2E6CC (background substrate), warm graphite line #3D3530 (HB-2B construction + contour + cross-hatch, never pure black), light warm skin #F0DFCB (face and hands, a light warm tint distinct from the paper base, with cross-hatched graphite shadow for form), dirty-blonde hair #AD9468 (warm light-brown top volume, not platinum, not dark brown), navy tee #243044, cool-gray jeans #5C6471, warm-gray sneakers #7E807B (white soles/laces as paper-base), blue eyes (see IR.sean.face.blue-eyes). Full-color is canonical Sean; the earlier four-step monochrome-graphite spec was the visual-fidelity bug fixed 2026-05-29.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png",
+        "characters/sean-anchor/source-refs/turnaround-1.png"
+      ]
+    },
+    {
+      "id": "IR.sean.palette.warm-skin-tone",
+      "description": "Sean's skin is a light warm tone (#F0DFCB, sampled from the anchor) \u2014 distinct from the cream paper base (#F2E6CC) by a slightly warmer, pinker cast, not left as bare paper. Shadow on the skin renders as warm-graphite cross-hatching following the form (under the jaw, the brow, the nose), never a flat gray fill. This reverses the earlier 'no explicit skin tone / skin is paper-base' rule: full-color is canonical Sean (director decision, 2026-05-29).",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "aesthetic",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png#region:face",
+        "characters/sean-anchor/source-refs/head-turn/head-turn-5.png"
+      ]
+    },
+    {
+      "id": "IR.sean.costume.default-outfit-locked",
+      "description": "The default and only authored Sean outfit is: dark navy tee (short-sleeve crew neck, untucked, sits at mid-hip) plus cool-gray jeans (straight-leg, no taper, sits at natural waist, breaks at the ankle) plus the stylus prop. No belt is visible. No shoes are detailed in the canonical references \u2014 feet read as silhouette-level shapes at the cream-paper base. Any outfit variation (hoodie, jacket, formal wear) is out of scope for commit 2; future variants live under costumes/{variant}/ and require a separate Bible pass.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png#region:torso-and-legs",
+        "characters/sean-anchor/source-refs/turnaround-1.png"
+      ]
+    },
+    {
+      "id": "IR.sean.costume.navy-tee-cool-gray-jeans",
+      "description": "Tee and jeans color rule is closed-vocabulary against the palette: the tee fills with #243044 navy, the jeans fill with #5C6471 cool gray. A black tee, a white tee, denim-blue jeans, or any plaid/pattern fill is a costume violation. Cross-hatching on both garments uses warm-graphite #3D3530, not a darker shade of the garment color.",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png"
+      ]
+    },
+    {
+      "id": "IR.sean.style.construction-lines-visible-beneath-final",
+      "description": "Construction lines remain visible beneath the final drawing. The horizontal eye-line, the vertical face-midline, and the cylinder/sphere construction marks at the joints (shoulders, hips, knees) read at roughly half the line weight of the final contour. A Phase 5 frame with no construction lines visible \u2014 a fully cleaned-up vector or digital-finish look \u2014 is a register violation. The construction layer is the pencil-test signature.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png",
+        "characters/sean-anchor/source-refs/turnaround-2.png"
+      ]
+    },
+    {
+      "id": "IR.sean.style.cross-hatching-shadow-areas",
+      "description": "Shadow areas render as cross-hatching, not as filled tonal shapes. Hatch direction roughly follows the form (curved cross-hatching on cylindrical limbs, parallel sets at flat surfaces). Standard shadow placements: under jaw, side of nose, inside the eye socket, under the tee collar, at jeans fold pockets, behind the right ear, and under the stylus where the grip casts shadow on the hand. Cell shading, airbrush gradient, or filled silhouette shadows are register violations.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png#region:shadow-areas"
+      ]
+    },
+    {
+      "id": "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
+      "description": "Line weight ranges from HB-equivalent (~0.5px at the construction layer and lighter contour passes) to 2B-equivalent (~1.5-2px at the heaviest final contour and brow weight). The line color is warm graphite #3D3530 throughout \u2014 never pure black, never cool gray. Vector-uniform line weight, or a single line weight across all marks, is a register violation. The weight variation is what makes the drawing read as hand-drawn.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "aesthetic",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png",
+        "characters/sean-anchor/source-refs/turnaround-1.png"
+      ]
+    },
+    {
+      "id": "IR.sean.style.cream-paper-texture-grain",
+      "description": "Every frame carries a visible cream paper texture beneath the drawing \u2014 grain, occasional fiber speckle, and the warmth of the paper substrate read through. The background is never pure flat #F2E6CC vector fill; the paper has weight. A digitally-clean cream rectangle behind a clean drawing is a register violation. This rule is shared with the existing T1 HF02 'missing paper texture' rule gate but stated here at Bible level for downstream consumers who don't run T1.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "aesthetic",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png"
+      ]
+    },
+    {
+      "id": "IR.sean.motion.walk-cycle-neutral-gait-source-plate",
+      "description": "The canonical walk-cycle reference is the single source-line-art plate at motion_plates/walk-cycle-source.png \u2014 a neutral upright gait pose, not a full 12-frame cycle. The plate establishes stride length (approximately one head-height of horizontal foot displacement at full step), arm swing (approximately 30 degrees from neutral at the shoulder, opposite-arm to opposite-leg phasing), and posture (vertical torso with no forward lean). A Phase 6 motion clip that interpolates a walk should match this gait's proportion and rhythm. The derived plates in source-refs/walk-cycle/ are stylistic experiments and are NOT authoritative for IR.sean.motion.* rules.",
+      "cites_phase": [
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/source-refs/walk-cycle/source.png"
+      ]
+    },
+    {
+      "id": "IR.sean.motion.head-turn-9-frame-sequence",
+      "description": "The canonical head-turn reference is the 9-frame Procreate sequence at motion_plates/head-turn-{01..09}.png. Frames 01 and 09 are anchor-grade end-of-turn poses; frame 05 is the front-facing midpoint (cy-confidence flagged); frames 02-04 and 06-08 are intermediate rotations and may carry minor identity drift in the back-of-skull silhouette where the source refs didn't fully resolve. A Phase 6 motion clip that interpolates a head turn should keep eye-lead timing (eyes shift to the turn target 2-3 frames before the head per the animation-principles appendix) and should not introduce hair-silhouette drift beyond what the sequence already shows.",
+      "cites_phase": [
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/source-refs/head-turn/head-turn-1.png",
+        "characters/sean-anchor/source-refs/head-turn/head-turn-5.png",
+        "characters/sean-anchor/source-refs/head-turn/head-turn-9.png"
+      ]
+    },
+    {
+      "id": "IR.sean.hair.dirty-blonde-color",
+      "description": "Sean's hair color is dirty-blonde \u2014 warm light-brown #AD9468, not platinum-blonde and not dark brown. Rendered as a flat color fill with warm-graphite cross-hatching for the shadowed underside and the part, consistent across all colored views. In line-only motion plates the hair is contour plus a few interior strokes with no color fill.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png#region:hair"
+      ]
+    },
+    {
+      "id": "IR.sean.face.blue-eyes",
+      "description": "Sean's irises are blue \u2014 a mid cool blue (approx #4A6D8C, adjust on review) reading clearly against the paper-base sclera in colored plates. The eyes sit on the head's horizontal midline, roughly one eye-width apart (see IR.sean.face.eye-spacing-one-eye-width). In line-only motion plates the eye is a simple lidded almond with no iris fill.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png#region:eyes"
+      ]
+    }
+  ]
+}

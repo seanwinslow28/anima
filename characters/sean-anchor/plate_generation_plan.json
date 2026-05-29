@@ -1,0 +1,314 @@
+{
+  "plates": [
+    {
+      "target_path": "turnarounds/body-front.png",
+      "source": "ingest:source-refs/turnaround-1.png#region:body-front",
+      "cites_identity_rules": [
+        "IR.sean.proportion.head-to-body-1-to-7",
+        "IR.sean.proportion.shoulder-width-1-5-head-widths",
+        "IR.sean.proportion.hip-to-floor-4-head-heights",
+        "IR.sean.costume.default-outfit-locked",
+        "IR.sean.costume.navy-tee-cool-gray-jeans",
+        "IR.sean.style.construction-lines-visible-beneath-final"
+      ]
+    },
+    {
+      "target_path": "turnarounds/body-3quarter.png",
+      "source": "ingest:source-refs/turnaround-1.png#region:body-3quarter",
+      "cites_identity_rules": [
+        "IR.sean.proportion.head-to-body-1-to-7",
+        "IR.sean.prop.stylus-right-hand-always",
+        "IR.sean.prop.stylus-grip-three-fingers",
+        "IR.sean.costume.default-outfit-locked",
+        "IR.sean.style.construction-lines-visible-beneath-final"
+      ]
+    },
+    {
+      "target_path": "turnarounds/body-profile-right.png",
+      "source": "ingest:source-refs/turnaround-1.png#region:body-profile-right",
+      "cites_identity_rules": [
+        "IR.sean.proportion.head-to-body-1-to-7",
+        "IR.sean.proportion.hip-to-floor-4-head-heights",
+        "IR.sean.face.jaw-line-angular-not-rounded",
+        "IR.sean.costume.default-outfit-locked",
+        "IR.sean.face.blue-eyes"
+      ]
+    },
+    {
+      "target_path": "turnarounds/body-back.png",
+      "source": "ingest:source-refs/turnaround-1.png#region:body-back",
+      "cites_identity_rules": [
+        "IR.sean.proportion.head-to-body-1-to-7",
+        "IR.sean.proportion.shoulder-width-1-5-head-widths",
+        "IR.sean.costume.default-outfit-locked",
+        "IR.sean.prop.stylus-right-hand-always"
+      ]
+    },
+    {
+      "target_path": "turnarounds/head-profile-left.png",
+      "source": "ingest:source-refs/turnaround-1.png#region:head-profile",
+      "cites_identity_rules": [
+        "IR.sean.face.jaw-line-angular-not-rounded",
+        "IR.sean.hair.center-cowlick",
+        "IR.sean.hair.silhouette-tousled-medium-short",
+        "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
+      ]
+    },
+    {
+      "target_path": "turnarounds/head-profile-right.png",
+      "source": "generate",
+      "cites_identity_rules": [
+        "IR.sean.face.jaw-line-angular-not-rounded",
+        "IR.sean.hair.center-cowlick",
+        "IR.sean.hair.silhouette-tousled-medium-short",
+        "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
+      ],
+      "prompt": "right-facing profile head-and-shoulders view, neutral expression",
+      "reference_images": [
+        "anchor.png"
+      ]
+    },
+    {
+      "target_path": "turnarounds/head-front.png",
+      "source": "ingest:source-refs/turnaround-1.png#region:head-front",
+      "cites_identity_rules": [
+        "IR.sean.hair.center-cowlick",
+        "IR.sean.hair.silhouette-tousled-medium-short",
+        "IR.sean.face.eye-spacing-one-eye-width",
+        "IR.sean.face.jaw-line-angular-not-rounded",
+        "IR.sean.face.brow-line-strong-horizontal",
+        "IR.sean.palette.full-color-pencil-test-vocabulary",
+        "IR.sean.palette.warm-skin-tone",
+        "IR.sean.style.construction-lines-visible-beneath-final",
+        "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
+        "IR.sean.style.cream-paper-texture-grain",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
+      ]
+    },
+    {
+      "target_path": "turnarounds/head-3quarter.png",
+      "source": "ingest:source-refs/turnaround-1.png#region:head-3quarter",
+      "cites_identity_rules": [
+        "IR.sean.hair.center-cowlick",
+        "IR.sean.hair.silhouette-tousled-medium-short",
+        "IR.sean.face.eye-spacing-one-eye-width",
+        "IR.sean.face.jaw-line-angular-not-rounded",
+        "IR.sean.face.brow-line-strong-horizontal",
+        "IR.sean.palette.full-color-pencil-test-vocabulary",
+        "IR.sean.style.construction-lines-visible-beneath-final",
+        "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
+      ]
+    },
+    {
+      "target_path": "turnarounds/head-back.png",
+      "source": "generate",
+      "prompt": "Pencil test character head turnaround, back view (camera directly behind the head, ears symmetric in silhouette). Sean Winslow \u2014 see profile-left and profile-right references for the hair silhouette and ear placement. Hair: tousled medium-short; the center cowlick is below the upper silhouette line in pure back view and reads as a small interior tuft rather than the silhouette peak. The hair contour tapers to skin at the temples and nape. The crown of the skull is the highest point of the back silhouette. Render in pencil-test-colored register: warm graphite line weight #3D3530 ranging HB-light through 2B-heavy, warm cream paper background #F2E6CC with visible grain, no explicit skin tone (paper substrate at the nape and behind the ears), cross-hatching for shadow areas where the hair meets the nape. Visible construction lines beneath the final drawing. Hand-drawn pencil aesthetic. NOTE: this plate is extrapolated from front and profile references and carries Cy's visible-confidence hedge \u2014 see cy-confidence-notes.md.",
+      "reference_images": [
+        "turnarounds/head-profile-left.png",
+        "turnarounds/head-profile-right.png",
+        "turnarounds/head-front.png"
+      ],
+      "cites_identity_rules": [
+        "IR.sean.hair.silhouette-tousled-medium-short",
+        "IR.sean.palette.full-color-pencil-test-vocabulary",
+        "IR.sean.style.construction-lines-visible-beneath-final",
+        "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
+        "IR.sean.style.cream-paper-texture-grain",
+        "IR.sean.hair.dirty-blonde-color"
+      ]
+    },
+    {
+      "target_path": "expressions/neutral.png",
+      "source": "generate",
+      "prompt": "Pencil test character expression sheet, neutral state. Sean Winslow \u2014 see anchor and head-front references for identity. Front-facing head and upper shoulders crop. Eyes open at normal aperture (upper lid sits roughly two-thirds up the iris, lower lid just below); brow line horizontal at neutral position. Mouth closed, lips relaxed, the corners neither rising nor falling. The neutral state is the working-illustrator baseline \u2014 focused but not concentrating, present but not reacting. Eye spacing approximately one eye-width at inner corners. Strong horizontal brow line drawn with heavier line weight than surrounding contour. Angular jaw line at the mandibular corner. Render in pencil-test-colored register: warm graphite line weight #3D3530, warm cream paper background #F2E6CC with grain, no explicit skin tone, cross-hatching for shadow areas under jaw and beside nose. Visible construction lines beneath the final drawing. Hand-drawn pencil aesthetic.",
+      "reference_images": [
+        "anchor.png",
+        "turnarounds/head-front.png"
+      ],
+      "cites_identity_rules": [
+        "IR.sean.face.eye-spacing-one-eye-width",
+        "IR.sean.face.brow-line-strong-horizontal",
+        "IR.sean.face.jaw-line-angular-not-rounded",
+        "IR.sean.hair.center-cowlick",
+        "IR.sean.palette.full-color-pencil-test-vocabulary",
+        "IR.sean.palette.warm-skin-tone",
+        "IR.sean.style.construction-lines-visible-beneath-final",
+        "IR.sean.style.cross-hatching-shadow-areas",
+        "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
+      ]
+    },
+    {
+      "target_path": "expressions/focused.png",
+      "source": "generate",
+      "prompt": "Pencil test character expression sheet, focused state. Sean Winslow \u2014 see anchor and neutral expression for baseline. Front-facing head and upper shoulders crop. Eyes narrowed slightly (upper lid descends to cover the top of the iris, lower lid raises slightly); the brow line drops a fraction and pulls inward toward the bridge of the nose \u2014 this is the working-illustrator concentration read, not anger. Mouth closed, lips slightly tightened (corners drawn in marginally, not down). The whole expression should read as 'attention narrowed onto the work,' not as a generic concerned or stern look. Eye spacing approximately one eye-width at inner corners. Brow line still reads as roughly horizontal at the outer ends but pulled in at the inner ends \u2014 closer to a flat slight-frown shape than a deep arch. Angular jaw line. Render in pencil-test-colored register: warm graphite line weight #3D3530, warm cream paper background #F2E6CC with grain, no explicit skin tone, cross-hatching for shadow areas. Visible construction lines beneath the final drawing. Hand-drawn pencil aesthetic.",
+      "reference_images": [
+        "anchor.png",
+        "turnarounds/head-front.png",
+        "expressions/neutral.png"
+      ],
+      "cites_identity_rules": [
+        "IR.sean.face.eye-spacing-one-eye-width",
+        "IR.sean.face.brow-line-strong-horizontal",
+        "IR.sean.face.jaw-line-angular-not-rounded",
+        "IR.sean.palette.full-color-pencil-test-vocabulary",
+        "IR.sean.palette.warm-skin-tone",
+        "IR.sean.style.construction-lines-visible-beneath-final",
+        "IR.sean.style.cross-hatching-shadow-areas",
+        "IR.sean.face.blue-eyes"
+      ]
+    },
+    {
+      "target_path": "expressions/surprised.png",
+      "source": "generate",
+      "prompt": "Pencil test character expression sheet, surprised state. Sean Winslow \u2014 see anchor and neutral expression for baseline. Front-facing head and upper shoulders crop. Eyes widened: upper lids raise to expose the full iris and a thin ring of cream paper above the iris at the upper edge; lower lids lower very slightly. Brows raise vertically by roughly half an eye-height and pull apart marginally \u2014 the inner ends rise more than the outer ends, producing a gentle inverted-V shape. Mouth opens slightly, lips part by approximately one-eighth of an eye-width vertically \u2014 not a gasp, not an O, just an interrupted breath. The whole expression should read as 'caught by something unexpected,' not as fear or shock. Eye spacing approximately one eye-width at inner corners. Render in pencil-test-colored register: warm graphite line weight #3D3530, warm cream paper background #F2E6CC with grain, no explicit skin tone, cross-hatching for shadow areas. Visible construction lines beneath the final drawing. Hand-drawn pencil aesthetic.",
+      "reference_images": [
+        "anchor.png",
+        "turnarounds/head-front.png",
+        "expressions/neutral.png"
+      ],
+      "cites_identity_rules": [
+        "IR.sean.face.eye-spacing-one-eye-width",
+        "IR.sean.face.brow-line-strong-horizontal",
+        "IR.sean.face.jaw-line-angular-not-rounded",
+        "IR.sean.palette.full-color-pencil-test-vocabulary",
+        "IR.sean.palette.warm-skin-tone",
+        "IR.sean.style.construction-lines-visible-beneath-final",
+        "IR.sean.style.cross-hatching-shadow-areas",
+        "IR.sean.face.blue-eyes"
+      ]
+    },
+    {
+      "target_path": "expressions/contemplative.png",
+      "source": "generate",
+      "prompt": "Pencil test character expression sheet, contemplative state. Sean Winslow \u2014 see anchor and neutral expression for baseline. Slightly 3-quarter head, eyes shifted off-camera to upper-left as if tracking a thought. Eyes at normal aperture but the iris is rotated up and to the side \u2014 the working-illustrator's 'thinking past the page' read. Brow line stays horizontal at the outer ends, with the inner ends raising slightly \u2014 closer to a soft questioning shape than a furrowed concentration. Mouth closed, lips relaxed, lower lip slightly more visible than upper (as if the chin has tilted down a degree). The whole expression should read as 'turning something over in the mind,' not as worry or distraction. Eye spacing approximately one eye-width at inner corners (with the slight 3-quarter foreshortening). Angular jaw at the mandibular corner. Render in pencil-test-colored register: warm graphite line weight #3D3530, warm cream paper background #F2E6CC with grain, no explicit skin tone, cross-hatching for shadow areas under the jaw and beside the nose. Visible construction lines beneath the final drawing. Hand-drawn pencil aesthetic.",
+      "reference_images": [
+        "anchor.png",
+        "turnarounds/head-front.png",
+        "turnarounds/head-3quarter.png",
+        "expressions/neutral.png"
+      ],
+      "cites_identity_rules": [
+        "IR.sean.face.eye-spacing-one-eye-width",
+        "IR.sean.face.brow-line-strong-horizontal",
+        "IR.sean.face.jaw-line-angular-not-rounded",
+        "IR.sean.hair.center-cowlick",
+        "IR.sean.palette.full-color-pencil-test-vocabulary",
+        "IR.sean.palette.warm-skin-tone",
+        "IR.sean.style.construction-lines-visible-beneath-final",
+        "IR.sean.style.cross-hatching-shadow-areas",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
+      ]
+    },
+    {
+      "target_path": "motion_plates/walk-cycle-source.png",
+      "source": "ingest:source-refs/walk-cycle/source.png",
+      "cites_identity_rules": [
+        "IR.sean.proportion.head-to-body-1-to-7",
+        "IR.sean.proportion.hip-to-floor-4-head-heights",
+        "IR.sean.motion.walk-cycle-neutral-gait-source-plate"
+      ]
+    },
+    {
+      "target_path": "motion_plates/head-turn-01.png",
+      "source": "ingest:source-refs/head-turn/head-turn-1.png",
+      "cites_identity_rules": [
+        "IR.sean.motion.head-turn-9-frame-sequence",
+        "IR.sean.hair.silhouette-tousled-medium-short",
+        "IR.sean.face.jaw-line-angular-not-rounded",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
+      ]
+    },
+    {
+      "target_path": "motion_plates/head-turn-02.png",
+      "source": "ingest:source-refs/head-turn/head-turn-2.png",
+      "cites_identity_rules": [
+        "IR.sean.motion.head-turn-9-frame-sequence"
+      ]
+    },
+    {
+      "target_path": "motion_plates/head-turn-03.png",
+      "source": "ingest:source-refs/head-turn/head-turn-3.png",
+      "cites_identity_rules": [
+        "IR.sean.motion.head-turn-9-frame-sequence"
+      ]
+    },
+    {
+      "target_path": "motion_plates/head-turn-04.png",
+      "source": "ingest:source-refs/head-turn/head-turn-4.png",
+      "cites_identity_rules": [
+        "IR.sean.motion.head-turn-9-frame-sequence"
+      ]
+    },
+    {
+      "target_path": "motion_plates/head-turn-05.png",
+      "source": "ingest:source-refs/head-turn/head-turn-5.png",
+      "cites_identity_rules": [
+        "IR.sean.motion.head-turn-9-frame-sequence",
+        "IR.sean.hair.center-cowlick",
+        "IR.sean.face.eye-spacing-one-eye-width",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
+      ]
+    },
+    {
+      "target_path": "motion_plates/head-turn-06.png",
+      "source": "ingest:source-refs/head-turn/head-turn-6.png",
+      "cites_identity_rules": [
+        "IR.sean.motion.head-turn-9-frame-sequence"
+      ]
+    },
+    {
+      "target_path": "motion_plates/head-turn-07.png",
+      "source": "ingest:source-refs/head-turn/head-turn-7.png",
+      "cites_identity_rules": [
+        "IR.sean.motion.head-turn-9-frame-sequence"
+      ]
+    },
+    {
+      "target_path": "motion_plates/head-turn-08.png",
+      "source": "ingest:source-refs/head-turn/head-turn-8.png",
+      "cites_identity_rules": [
+        "IR.sean.motion.head-turn-9-frame-sequence"
+      ]
+    },
+    {
+      "target_path": "motion_plates/head-turn-09.png",
+      "source": "ingest:source-refs/head-turn/head-turn-9.png",
+      "cites_identity_rules": [
+        "IR.sean.motion.head-turn-9-frame-sequence",
+        "IR.sean.hair.silhouette-tousled-medium-short",
+        "IR.sean.face.jaw-line-angular-not-rounded",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
+      ]
+    },
+    {
+      "target_path": "props/stylus.png",
+      "source": "generate",
+      "prompt": "Pencil test prop reference plate, isolated stylus on cream paper. A working-illustrator's stylus \u2014 straight cylindrical barrel approximately 14cm long, tapered conical tip at the working end, rounded blunt end at the eraser end, no pocket clip. The stylus is drawn alone at roughly 60-degree diagonal angle on the cream paper substrate, with no hand gripping it. Render in pencil-test-colored register: warm graphite line weight #3D3530 ranging from HB-light at the construction layer through 2B-heavy at the final contour, warm cream paper background #F2E6CC with visible grain, cross-hatching in warm graphite for the shadow cast by the stylus onto the paper and for the shaded side of the barrel. Visible construction line through the center axis of the barrel at roughly half final-contour weight. The plate serves as the canonical prop reference for IR.sean.prop.stylus-right-hand-always and IR.sean.prop.stylus-grip-three-fingers \u2014 downstream agents reference this plate when verifying that a Phase 5 frame's stylus matches the Bible's stylus form. Hand-drawn pencil aesthetic; no vector cleanup, no digital finish.",
+      "reference_images": [
+        "anchor.png"
+      ],
+      "cites_identity_rules": [
+        "IR.sean.prop.stylus-right-hand-always",
+        "IR.sean.prop.stylus-grip-three-fingers",
+        "IR.sean.palette.full-color-pencil-test-vocabulary",
+        "IR.sean.style.construction-lines-visible-beneath-final",
+        "IR.sean.style.cross-hatching-shadow-areas",
+        "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
+        "IR.sean.style.cream-paper-texture-grain"
+      ]
+    }
+  ]
+}

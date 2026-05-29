@@ -4,7 +4,12 @@ project:
   description: "Human + AI 2D animation pipeline. First reference implementation: Pencil Test — Sean Winslow (Act 1 shipped, Act 2 in progress)."
 
 anchor:
-  path: "images/2D-Character-Sketch-Sean-v1.png"
+  # Commit 2.0 migrated the anchor to characters/sean-anchor/anchor.png as part
+  # of the Character Bible primitive (per brainstorm TOP-1). The legacy path
+  # images/2D-Character-Sketch-Sean-v1.png is a back-compat symlink through
+  # commit 7 (Animatic ingestion lands and Act 2 work is structurally complete).
+  # Pencil-test scripts that haven't been updated yet resolve through the symlink.
+  path: "characters/sean-anchor/anchor.png"
   label: "A-2"
   description: "Sean character design — identity reference for all generated frames"
 
@@ -258,8 +263,39 @@ critics:
 
 # Character Bible registry.
 # Authoritative spec: docs/pipeline-architecture-v1.md §The Character Bible Primitive
-# Commit 2 migrates images/2D-Character-Sketch-Sean-v1.png → characters/sean-anchor/.
-characters: []
+# Commit 2.0 migrated images/2D-Character-Sketch-Sean-v1.png → characters/sean-anchor/.
+# Commit 2 / Task 1.8: per-character registry entries declare folder + style_register.
+# Flo's Phase 5 routing reads style_register to pick the right generator. Per
+# Sean's Bible authoring runs in Tasks 1.10 + 1.11, sean-anchor and claude-mascot
+# are the two real Bibles authored end-to-end on commit 2's first day. Empty list
+# stays valid for back-compat (Pencil Test Act 2 runs against the anchor: block above).
+characters:
+  sean-anchor:
+    folder: characters/sean-anchor/
+    style_register: pencil-test-colored   # First reference implementation — Pencil Test.
+  claude-mascot:
+    folder: characters/claude-mascot/
+    style_register: pixel-art-8bit        # Second-character validation that the schema is
+                                          # style-agnostic across registers. Source refs in
+                                          # characters/claude-mascot/source-refs/.
+
+# Criteria sources — multi-file merge for the DAG runner.
+# Authoritative spec: Cy brainstorm TOP-1 + Task 1.8.
+# The runner calls pipeline.criteria.load_all_criteria(manifest) at run start;
+# it concatenates the brief's AC.* graph + every loaded Bible's IR.* graph
+# into one CriteriaBundle. Duplicate IDs across files raise; per-character IR
+# namespacing (IR.{character_id}.*) prevents accidental collisions.
+#
+# The bibles: list references files that exist on disk when Cy has authored
+# the Bible (Tasks 1.10 + 1.11 land the real Pass-1 artifacts via real Opus +
+# NB Pro + Gemini calls in Sean's authoring session). Missing files are
+# skipped non-fatally by load_all_criteria — listing them ahead of authoring
+# is safe.
+criteria_sources:
+  brief_file: ""                          # briefs/{slug}/acceptance_criteria.json (Maya's AC.*)
+  bibles:
+    - characters/sean-anchor/acceptance_criteria.json
+    - characters/claude-mascot/acceptance_criteria.json
 
 # Museum auto-capture configuration.
 # Authoritative spec: docs/pipeline-architecture-v1.md §Museum (orthogonal capture layer)

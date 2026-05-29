@@ -9,6 +9,16 @@ Usage:
       --target AC.<id> --field <field> --value <value> \
       --brief-dir briefs/{date}-{slug} --run-dir runs/{run_id} \
       --new-version 1.2.0
+  python -m pipeline.cli bible init --target characters/{character_id}/
+  python -m pipeline.cli bible show --character-dir characters/{character_id}/
+  python -m pipeline.cli bible approve --character-dir characters/{character_id}/
+  python -m pipeline.cli bible mutate --force --actor <name> --reason "<why>" \
+      --target IR.<character_id>.<category>.<handle> --field <field> --value <value> \
+      --character-dir characters/{character_id}/ --run-dir runs/{run_id} \
+      --new-version 1.3.0
+  python -m pipeline.cli bible iterate --character-dir characters/{character_id}/ \
+      --target turnarounds,expressions --reject neutral,surprised \
+      --reason "<why>" --run-dir runs/{run_id}
 """
 
 from __future__ import annotations
@@ -16,7 +26,7 @@ from __future__ import annotations
 import argparse
 import sys
 
-from pipeline.cli import patches, plan
+from pipeline.cli import bible, patches, plan
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -55,6 +65,49 @@ def main(argv: list[str] | None = None) -> int:
     mutate_p.add_argument("--run-dir", required=True, type=str)
     mutate_p.add_argument("--new-version", required=True, type=str)
 
+    # ----- bible (Cy — character designer) -----
+    bible_p = sub.add_parser(
+        "bible",
+        help="Cy the character designer — init / show / approve / mutate / iterate.",
+    )
+    bible_sub = bible_p.add_subparsers(dest="bible_cmd", required=True)
+
+    b_init = bible_sub.add_parser("init", help="Scaffold a new character bible folder.")
+    b_init.add_argument("--target", required=True, type=str)
+
+    b_show = bible_sub.add_parser("show", help="Render the Bible as a terminal tear sheet.")
+    b_show.add_argument("--character-dir", required=True, type=str)
+
+    b_approve = bible_sub.add_parser("approve", help="Lock the character's criteria file.")
+    b_approve.add_argument("--character-dir", required=True, type=str)
+
+    b_mutate = bible_sub.add_parser("mutate", help="Audited mutation of an approved Bible.")
+    b_mutate.add_argument("--force", action="store_true")
+    b_mutate.add_argument("--actor", default="", type=str)
+    b_mutate.add_argument("--reason", default="", type=str)
+    b_mutate.add_argument("--target", required=True, type=str)
+    b_mutate.add_argument("--field", required=True, type=str)
+    b_mutate.add_argument("--value", required=True, type=str)
+    b_mutate.add_argument("--character-dir", required=True, type=str)
+    b_mutate.add_argument("--run-dir", required=True, type=str)
+    b_mutate.add_argument("--new-version", required=True, type=str)
+
+    b_iterate = bible_sub.add_parser(
+        "iterate",
+        help="Re-run Cy narrowed to rejected plates (preserves cache hits).",
+    )
+    b_iterate.add_argument("--character-dir", required=True, type=str)
+    b_iterate.add_argument(
+        "--target", default="", type=str,
+        help="Comma-separated plate categories (turnarounds,expressions,motion_plates,...).",
+    )
+    b_iterate.add_argument(
+        "--reject", default="", type=str,
+        help="Comma-separated plate handles to regenerate (e.g., neutral,surprised).",
+    )
+    b_iterate.add_argument("--reason", default="", type=str)
+    b_iterate.add_argument("--run-dir", default="", type=str)
+
     args = parser.parse_args(argv if argv is not None else sys.argv[1:])
 
     if args.cmd == "patches" and args.patches_cmd == "list":
@@ -78,6 +131,36 @@ def main(argv: list[str] | None = None) -> int:
                 field=args.field,
                 value=args.value,
                 new_version=args.new_version,
+            )
+
+    if args.cmd == "bible":
+        if args.bible_cmd == "init":
+            return bible.init_bible(args.target)
+        if args.bible_cmd == "show":
+            return bible.show_bible(args.character_dir)
+        if args.bible_cmd == "approve":
+            return bible.approve_bible(args.character_dir)
+        if args.bible_cmd == "mutate":
+            return bible.mutate_bible(
+                run_dir=args.run_dir,
+                character_dir=args.character_dir,
+                force=args.force,
+                actor=args.actor,
+                reason=args.reason,
+                target=args.target,
+                field=args.field,
+                value=args.value,
+                new_version=args.new_version,
+            )
+        if args.bible_cmd == "iterate":
+            targets = [t.strip() for t in args.target.split(",") if t.strip()]
+            rejected = [r.strip() for r in args.reject.split(",") if r.strip()]
+            return bible.iterate_bible(
+                character_dir=args.character_dir,
+                targets=targets,
+                rejected=rejected,
+                reason=args.reason,
+                run_dir=args.run_dir or None,
             )
 
     return 1

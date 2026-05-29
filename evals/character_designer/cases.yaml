@@ -1,0 +1,195 @@
+# Cy the Character Designer — eval cases.
+#
+# Cases are grounded in the two real Bibles authored end-to-end during commit 2
+# (sean-anchor pencil-test-colored + claude-mascot pixel-art-8bit), plus the
+# under-specified failure mode + the closing-the-loop test that is intentionally
+# red on commit 2b's first day.
+#
+# Per the eval-suite discipline lifted from commit 3b (planner): pre-fix red is
+# portfolio content. The closing-the-loop test's xfail-to-green arc when Em's
+# prompt is tightened to load IR.* rules is the museum content this suite
+# anticipates.
+#
+# Schema per case:
+#   name: kebab-case slug; doubles as the pytest parametrize id
+#   description: one-line summary surfaced in pytest output
+#   fixture_dir: which fixture subfolder under fixtures/ to read source-refs from
+#   character_id: the character_id Cy authors against
+#   mocked_responses:
+#     opus: list of {kind: pass1_envelope, character_id, style_register, ir_count}
+#     gemini: list of {kind: pass | borderline | fail, reasoning}
+#   expected:
+#     plate_results_all_passed: bool
+#     min_ir_rules: int
+#     min_ir_categories: int
+#     style_register: expected character.yaml.style_register value
+#     plate_human_gate_count: int (number of plates that should land in human_gate_required)
+#     is_intentionally_red: bool
+
+cases:
+
+  - name: sean-anchor-reproduction
+    description: "Reproduce the sean-anchor Bible. Pencil-test-colored register; clean Pass-3 across all plates."
+    fixture_dir: well-specified-source-refs
+    character_id: sean-anchor
+    mocked_responses:
+      opus:
+        - kind: pass1_envelope
+          character_id: sean-anchor
+          style_register: pencil-test-colored
+          ir_count: 8
+          ir_categories: [hair, prop, proportion, palette, face]
+      gemini:
+        - kind: pass
+        - kind: pass
+        - kind: pass
+        - kind: pass
+        - kind: pass
+    expected:
+      plate_results_all_passed: true
+      min_ir_rules: 8
+      min_ir_categories: 5
+      style_register: pencil-test-colored
+      plate_human_gate_count: 0
+      is_intentionally_red: false
+
+  - name: claude-mascot-reproduction
+    description: "Reproduce the claude-mascot Bible. Pixel-art-8bit register; the schema-against-second-register validation."
+    fixture_dir: multi-character-source-refs
+    character_id: claude-mascot
+    mocked_responses:
+      opus:
+        - kind: pass1_envelope
+          character_id: claude-mascot
+          style_register: pixel-art-8bit
+          ir_count: 5
+          ir_categories: [palette, proportion, style]
+      gemini:
+        - kind: pass
+        - kind: pass
+        - kind: pass
+    expected:
+      plate_results_all_passed: true
+      min_ir_rules: 5
+      min_ir_categories: 3
+      style_register: pixel-art-8bit
+      plate_human_gate_count: 0
+      is_intentionally_red: false
+
+  - name: gemini-flags-then-converges
+    description: "Gemini flags 1 plate on attempt 1; passes on attempt 2. NB Pro called with reject_reason."
+    fixture_dir: well-specified-source-refs
+    character_id: sean-anchor
+    mocked_responses:
+      opus:
+        - kind: pass1_envelope
+          character_id: sean-anchor
+          style_register: pencil-test-colored
+          ir_count: 5
+          ir_categories: [hair, prop, palette]
+      gemini:
+        # First plate: fail then pass.
+        - kind: fail
+          reasoning: "hair cowlick drifted left of crown"
+        - kind: pass
+        # Remaining plates: pass on first attempt.
+        - kind: pass
+        - kind: pass
+    expected:
+      plate_results_all_passed: true
+      min_ir_rules: 5
+      min_ir_categories: 3
+      style_register: pencil-test-colored
+      plate_human_gate_count: 0
+      is_intentionally_red: false
+
+  - name: three-attempt-ceiling-hits-human-gate
+    description: "Gemini flags the same plate on all three attempts → status = human_gate_required."
+    fixture_dir: well-specified-source-refs
+    character_id: sean-anchor
+    mocked_responses:
+      opus:
+        - kind: pass1_envelope
+          character_id: sean-anchor
+          style_register: pencil-test-colored
+          ir_count: 3
+          ir_categories: [hair, prop]
+      gemini:
+        # Single-plate plan — three consecutive fails.
+        - kind: fail
+          reasoning: "fail attempt 1"
+        - kind: fail
+          reasoning: "fail attempt 2"
+        - kind: fail
+          reasoning: "fail attempt 3"
+    expected:
+      plate_results_all_passed: false
+      min_ir_rules: 3
+      min_ir_categories: 2
+      style_register: pencil-test-colored
+      plate_human_gate_count: 1
+      is_intentionally_red: false
+
+  - name: schema-validates-across-style-registers
+    description: "Both sean-anchor (pencil-test-colored) and claude-mascot (pixel-art-8bit) load into one CriteriaBundle without ID collisions."
+    fixture_dir: multi-character-source-refs
+    character_id: schema-cross-register-validation
+    mocked_responses:
+      opus: []
+      gemini: []
+    expected:
+      plate_results_all_passed: true
+      min_ir_rules: 0
+      min_ir_categories: 0
+      style_register: ""
+      plate_human_gate_count: 0
+      is_intentionally_red: false
+
+  - name: under-specified-source-refs-flags-risk-bible
+    description: "Under-specified source-refs → Cy's risk-bible names the gaps explicitly. Intentionally red on first land — calibration lands during real Bible authoring."
+    fixture_dir: under-specified-source-refs
+    character_id: under-spec-char
+    mocked_responses:
+      opus:
+        - kind: pass1_envelope
+          character_id: under-spec-char
+          style_register: pencil-test-colored
+          ir_count: 2
+          ir_categories: [hair]
+      gemini:
+        - kind: pass
+    expected:
+      plate_results_all_passed: true
+      min_ir_rules: 2
+      min_ir_categories: 1
+      style_register: pencil-test-colored
+      plate_human_gate_count: 0
+      is_intentionally_red: true
+      # Red because: the first-pass Opus prompt isn't yet calibrated for
+      # risk-bible specificity. Cy's stub envelope risk-bible is a single
+      # generic paragraph; the real authoring run reveals whether the prompt
+      # tightens the gap-naming. Track until the real claude-mascot bake.
+
+  - name: closing-the-loop-em-cites-cy-rules
+    description: "Em cites at least one IR.sean.* rule when verdicting the deliberately-broken Phase 5 frame. xfail on commit 2b's first day — the diff to green is the museum content."
+    fixture_dir: well-specified-source-refs
+    character_id: sean-anchor
+    mocked_responses:
+      opus:
+        - kind: pass1_envelope
+          character_id: sean-anchor
+          style_register: pencil-test-colored
+          ir_count: 5
+          ir_categories: [hair, prop, proportion]
+      gemini: []
+    expected:
+      plate_results_all_passed: true
+      min_ir_rules: 5
+      min_ir_categories: 3
+      style_register: pencil-test-colored
+      plate_human_gate_count: 0
+      is_intentionally_red: true
+      # Red because: Em's prompt doesn't yet load Cy's IR.* rules into context.
+      # The xfail-to-green diff when Em's prompt is tightened to load the merged
+      # CriteriaBundle's IR.* entries is the structural fix synthesis §5 demands
+      # operationalized at the T2-critic-cites-Bible-rules layer.

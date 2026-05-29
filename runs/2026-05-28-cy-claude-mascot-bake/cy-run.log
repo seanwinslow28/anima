@@ -1,0 +1,16 @@
+Loop <_UnixSelectorEventLoop running=False closed=True debug=False> that handles pid 32023 is closed
+Authoring claude-mascot Bible — Pass 1 (Opus) → Pass 2 (NB Pro) → Pass 3 (Gemini)
+  source-refs: 4 file(s)
+  run dir:     runs/2026-05-28-cy-claude-mascot-bake
+
+
+emitted:
+  character_yaml_path: characters/claude-mascot/character.yaml
+  criteria_path: characters/claude-mascot/acceptance_criteria.json
+  risk_bible_path: characters/claude-mascot/risk-bible.md
+  cy_confidence_notes_path: characters/claude-mascot/cy-confidence-notes.md
+  plate_generation_plan_path: characters/claude-mascot/plate_generation_plan.json
+  plates: 8 total
+    1 plate(s) flagged for human gate — review before approval
+
+next: `python -m pipeline.cli bible show --character-dir characters/claude-mascot` to review, then `pipeline bible approve` to lock the criteria graph.

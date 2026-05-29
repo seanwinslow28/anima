@@ -1,0 +1,58 @@
+character_id: claude-mascot
+display_name: Claude Mascot
+style_register: pixel-art-8bit
+palette:
+- name: primary_orange
+  hex: '#E89B6B'
+  tolerance_rgb: 10
+  role: "Skin, body fill, exposed limbs \u2014 the dominant silhouette color across\
+    \ the character at every angle."
+- name: cream_highlight
+  hex: '#F4DDB8'
+  tolerance_rgb: 6
+  role: "Face highlight, crown-of-head shine, fingertip highlights \u2014 applied\
+    \ sparingly to lit areas only."
+- name: warm_brown_shadow
+  hex: '#A86B45'
+  tolerance_rgb: 6
+  role: Under-jaw shadow, fold lines, outer-contour shadow side; also the color used
+    in the dither pattern over primary orange.
+- name: deep_brown
+  hex: '#5C3A24'
+  tolerance_rgb: 4
+  role: "Eye dots, mouth line, accent strokes \u2014 the single darkest entry, reserved\
+    \ for facial features and accent detail."
+proportions:
+  head_to_body_ratio: '2:3'
+  head_to_body_ratio_note: Head height (crown to chin) is roughly two-thirds of total
+    body height (crown to soles). Chibi register.
+  body_to_head_width_ratio: 1.2:1
+  silhouette_descriptor: "round-topped lozenge \u2014 circular head tapers into a\
+    \ slightly narrower rectangular body base"
+  thumbnail_floor_px: 32
+  thumbnail_floor_note: Silhouette must remain readable as the mascot at 32px or smaller;
+    the round-topped lozenge shape is the load-bearing recognizability cue at sub-32px
+    sizes.
+identity_rules_pointer: characters/claude-mascot/acceptance_criteria.json
+cy_confidence_notes: characters/claude-mascot/cy-confidence-notes.md
+risks: characters/claude-mascot/risk-bible.md
+expressions_authored:
+- neutral
+- surprised
+- contemplative
+expressions_authored_note: "Closed set for commit 2. Frames requesting expressions\
+  \ outside this set are Bible silences, not violations \u2014 escalate before verdict."
+costumes_authored:
+- default
+costumes_authored_note: Single design at commit 2. No hats, tools, accessories, or
+  alternate outfits exist.
+motion_plates_authored: []
+motion_plates_authored_note: None at commit 2. Phase 6 motion shots involving the
+  mascot require motion-plate authoring as a prior step (pipeline bible iterate --target
+  motion_plates).
+flux_lora_seed_plates:
+- anchor.png
+- turnarounds/body-front.png
+- turnarounds/body-3quarter.png
+- turnarounds/body-profile-right.png
+- turnarounds/head-front.png

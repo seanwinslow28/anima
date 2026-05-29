@@ -20,7 +20,9 @@ explicit low/median/high bands per phase.
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import ClassVar
 
 from pipeline.agents import (
@@ -32,15 +34,29 @@ from pipeline.agents import (
 
 # Subscription-absorbed via Sean's Anthropic Pro + OpenAI Plus + Google
 # personal OAuth tiers (v2 brainstorm §7). Phases whose only compute is
-# agent-fleet runtime cost $0 incremental.
+# agent-fleet runtime cost $0 incremental. Phase 2 is NOT in this set as of
+# commit 2 / Task 1.6 — Cy's NB Pro plate generation is real variable spend
+# (~$0.15 per generate plate); _phase_2_cost(manifest) prices it from each
+# character's plate_generation_plan.json on disk.
 SUBSCRIPTION_ABSORBED_PHASES = frozenset({
     "phase_0",   # Maya planning
     "phase_1",   # Scaffold (no compute)
-    "phase_2",   # Cy Bible authoring (Opus + NB Pro generation priced under phase_5)
     "phase_3",   # Sam + Bea storyboard
     "phase_7",   # Audit consolidation (no model calls)
     "phase_9",   # Human QA review
 })
+
+# Phase 2 NB Pro plate price (Image-Model-DR SYNTHESIS §2 hero tier).
+# Authoritative cost source: Cy's plate_generation_plan.json files on disk
+# under each character folder. Ingested plates contribute $0.
+_NB_PRO_USD_PER_PLATE = 0.15
+# Per-plate three-attempt ceiling drives the high band: every generate plate
+# may regenerate twice before surfacing to the human gate.
+_PHASE_2_HIGH_MULTIPLIER = 3.0
+# Median band assumption: ~30% of plates trigger a single regeneration on
+# Gemini-flagged Pass 3 verdicts. Tighten via the eval suite's bake-off data
+# (commit 2b's failure-modes.md baseline) once 2+ real Bibles exist.
+_PHASE_2_MEDIAN_MULTIPLIER = 1.30
 
 # Phase 6 Seedance prices per the existing Fast→Pro contract.
 _SEEDANCE_FAST_USD_PER_S = 0.24
@@ -98,6 +114,7 @@ class CostEstimatorNode:
             if phase_id in SUBSCRIPTION_ABSORBED_PHASES:
                 by_phase[phase_id] = {"low_usd": 0.0, "median_usd": 0.0, "high_usd": 0.0}
 
+        by_phase["phase_2"] = self._phase_2_cost(manifest)
         by_phase["phase_5"] = self._phase_5_cost(manifest)
         by_phase["phase_6"] = self._phase_6_cost(manifest)
         by_phase["phase_8"] = {"low_usd": 0.0, "median_usd": 0.0, "high_usd": 0.0}
@@ -119,6 +136,49 @@ class CostEstimatorNode:
             tier=ctx.tier,
             notes=f"cost_estimator phases={sorted(by_phase)} low=${low:.2f} high=${high:.2f}",
         )
+
+    def _phase_2_cost(self, manifest: dict) -> dict[str, float]:
+        """Phase 2 Cy Bible authoring spend.
+
+        Reads each registered character's plate_generation_plan.json (if
+        present on disk) and prices every `generate` plate at NB Pro's
+        per-plate rate. Ingested plates contribute $0 (the pixel comes from
+        Sean's source-refs, not from a generation call).
+
+        When the manifest has no `characters:` block or the block is empty,
+        Phase 2 spend is $0 — animation-piece runs against already-authored
+        Bibles don't re-pay NB Pro to load the Bible. When the registry has
+        characters but their plate plans don't yet exist on disk (Bible
+        hasn't been authored yet), spend is also $0 — surfaces the unknown
+        as zero rather than guessing a budget envelope.
+        """
+        chars = manifest.get("characters")
+        if not chars or not isinstance(chars, dict):
+            return {"low_usd": 0.0, "median_usd": 0.0, "high_usd": 0.0}
+
+        total_generate_plates = 0
+        for cfg in chars.values():
+            folder_str = (cfg or {}).get("folder") if isinstance(cfg, dict) else None
+            if not folder_str:
+                continue
+            plan_path = Path(folder_str) / "plate_generation_plan.json"
+            if not plan_path.exists():
+                continue
+            try:
+                plan = json.loads(plan_path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                continue
+            for plate in plan.get("plates", []):
+                source = str(plate.get("source", "generate"))
+                if not source.startswith("ingest:"):
+                    total_generate_plates += 1
+
+        base = total_generate_plates * _NB_PRO_USD_PER_PLATE
+        return {
+            "low_usd": round(base, 2),
+            "median_usd": round(base * _PHASE_2_MEDIAN_MULTIPLIER, 2),
+            "high_usd": round(base * _PHASE_2_HIGH_MULTIPLIER, 2),
+        }
 
     def _phase_5_cost(self, manifest: dict) -> dict[str, float]:
         """Phase 5 keyframe generation. Reads generation.routing: per Flo."""

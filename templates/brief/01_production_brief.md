@@ -1,5 +1,12 @@
 ---
 piece_id: "{slug}"                  # kebab-case, e.g. "pencil-test-act2"
+project_type: animation_piece       # animation_piece | bible_authoring.
+                                    # animation_piece (default): Maya plans
+                                    # all enabled phases. bible_authoring:
+                                    # Maya scopes the plan to Phase 0 + Phase
+                                    # 2 only — Cy authors a Character Bible
+                                    # as the deliverable; Phases 3-9 are out
+                                    # of scope for the run.
 phases_enabled: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]   # which phases run this piece
 characters_loaded:
   - sean-anchor                     # references characters/{id}/ folders

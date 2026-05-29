@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from pipeline.agents import (
@@ -120,3 +121,97 @@ def test_empty_manifest_returns_zero_cost(tmp_path):
     assert estimate.low_usd == 0
     assert estimate.median_usd == 0
     assert estimate.high_usd == 0
+
+
+# ---------------------------------------------------------------------------
+# Phase 2 — Cy Bible authoring spend (Task 1.6)
+# ---------------------------------------------------------------------------
+
+
+def _write_plate_plan(folder: Path, plates: list[dict]) -> None:
+    folder.mkdir(parents=True, exist_ok=True)
+    (folder / "plate_generation_plan.json").write_text(
+        json.dumps({"plates": plates}), encoding="utf-8"
+    )
+
+
+def test_phase_2_cost_zero_when_no_characters(tmp_path):
+    """Maya-only runs (animation_piece, no Bibles being authored) report Phase 2 == $0."""
+    cls = NODE_REGISTRY["cost_estimator"]
+    manifest = {
+        "generation": {"routing": {}},
+        "phases": {"phase_5": {}, "phase_6": {}},
+        # No characters: block — animation piece against already-shipped Bibles.
+    }
+    estimate = cls().run(_ctx(tmp_path, manifest)).outputs["estimate"]
+    assert estimate.by_phase["phase_2"]["low_usd"] == 0.0
+    assert estimate.by_phase["phase_2"]["median_usd"] == 0.0
+    assert estimate.by_phase["phase_2"]["high_usd"] == 0.0
+
+
+def test_phase_2_cost_sums_nb_pro_per_plate(tmp_path):
+    """Manifest with two characters, 20 + 10 generate plates planned, returns the expected total."""
+    sean_dir = tmp_path / "characters" / "sean-anchor"
+    mascot_dir = tmp_path / "characters" / "claude-mascot"
+    _write_plate_plan(
+        sean_dir,
+        [{"target_path": f"p{i}.png", "source": "generate"} for i in range(20)],
+    )
+    _write_plate_plan(
+        mascot_dir,
+        [{"target_path": f"p{i}.png", "source": "generate"} for i in range(10)],
+    )
+
+    manifest = {
+        "characters": {
+            "sean-anchor": {"folder": str(sean_dir), "style_register": "pencil-test-colored"},
+            "claude-mascot": {"folder": str(mascot_dir), "style_register": "pixel-art-8bit"},
+        },
+        "phases": {"phase_5": {}, "phase_6": {}},
+    }
+    cls = NODE_REGISTRY["cost_estimator"]
+    estimate = cls().run(_ctx(tmp_path, manifest)).outputs["estimate"]
+    # 30 generate plates × $0.15 = $4.50 low.
+    assert estimate.by_phase["phase_2"]["low_usd"] == 4.50
+    # High = 3× retry budget per plate.
+    assert estimate.by_phase["phase_2"]["high_usd"] == round(30 * 0.15 * 3, 2)
+    # Median sits between low and high.
+    p2 = estimate.by_phase["phase_2"]
+    assert p2["low_usd"] < p2["median_usd"] < p2["high_usd"]
+
+
+def test_phase_2_cost_excludes_ingest_only_plates(tmp_path):
+    """A plate plan with all `source: 'ingest:...'` returns $0 for that character."""
+    char_dir = tmp_path / "characters" / "all-ingested"
+    _write_plate_plan(
+        char_dir,
+        [
+            {"target_path": "turnarounds/body-front.png", "source": "ingest:source-refs/x.png"},
+            {"target_path": "expressions/neutral.png", "source": "ingest:source-refs/y.png"},
+        ],
+    )
+    manifest = {
+        "characters": {
+            "all-ingested": {"folder": str(char_dir), "style_register": "pencil-test-colored"},
+        },
+        "phases": {},
+    }
+    cls = NODE_REGISTRY["cost_estimator"]
+    estimate = cls().run(_ctx(tmp_path, manifest)).outputs["estimate"]
+    assert estimate.by_phase["phase_2"]["low_usd"] == 0.0
+    assert estimate.by_phase["phase_2"]["high_usd"] == 0.0
+
+
+def test_phase_2_cost_missing_plate_plan_treated_as_zero(tmp_path):
+    """Bible not yet authored (no plate_generation_plan.json) → Phase 2 is $0."""
+    char_dir = tmp_path / "characters" / "not-yet-authored"
+    char_dir.mkdir(parents=True)
+    manifest = {
+        "characters": {
+            "not-yet-authored": {"folder": str(char_dir), "style_register": "watercolor"},
+        },
+        "phases": {},
+    }
+    cls = NODE_REGISTRY["cost_estimator"]
+    estimate = cls().run(_ctx(tmp_path, manifest)).outputs["estimate"]
+    assert estimate.by_phase["phase_2"]["low_usd"] == 0.0

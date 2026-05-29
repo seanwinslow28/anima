@@ -1,0 +1,250 @@
+{
+  "version": "1.2",
+  "locked": false,
+  "criteria": [
+    {
+      "id": "IR.sean.prop.stylus-right-hand-always",
+      "description": "Sean's stylus stays in his right hand in every frame. The right hand grips it near the barrel with three fingers visible \u2014 thumb, index, and middle; the left hand never holds the stylus. Visible in front, three-quarter, and profile views; the back view shows only the right arm's silhouette indicating the grip. The stylus is a slim cylindrical drawing pen, roughly one head-height long, tip pointing down-forward in the neutral hold.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "annie"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "anchor.png#region:right-hand",
+        "source-refs/turnaround-1.png#region:body-3quarter"
+      ]
+    },
+    {
+      "id": "IR.sean.hair.front-quiff-cowlick",
+      "description": "Sean's hair rises into a pronounced forward-curling quiff (cowlick) at the front hairline \u2014 a single curl that lifts up and flicks forward, and is the highest point of the head silhouette. Visible in front, three-quarter, and profile views; from a top-down or back angle it reads as a small chevron at the crown. The quiff sits at the front center of the head, not the back of the skull.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "anchor.png#region:hair",
+        "source-refs/head-turn/head-turn-1.png#region:crown",
+        "source-refs/turnaround-1.png#region:head-front"
+      ]
+    },
+    {
+      "id": "IR.sean.hair.dirty-blonde-volume",
+      "description": "Sean's hair is dirty-blonde (warm light-brown, palette hair-fill #AD9468 \u2014 not platinum, not dark brown), full and textured on top, short and tapered at the sides and back. The top volume is swept up and back from the forehead; the sides are short enough that the ear stays unobscured in profile.",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "anchor.png#region:hair",
+        "source-refs/turnaround-1.png#region:head-profile"
+      ]
+    },
+    {
+      "id": "IR.sean.face.blue-eyes",
+      "description": "Sean's eyes are blue, set roughly one eye-width apart, almond-shaped, sitting on the horizontal midline of the head. The iris reads clearly blue against the paper-base sclera in colored plates; in line-only motion plates the eye is a simple lidded almond with no iris fill.",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "anchor.png#region:eyes",
+        "source-refs/turnaround-1.png#region:head-front"
+      ]
+    },
+    {
+      "id": "IR.sean.face.short-beard-stubble",
+      "description": "Sean wears short, even stubble / a light beard along the jawline, chin, and upper lip, connecting to the sideburns. It is a uniform graphite-hatched shadow following the jaw \u2014 not a full bushy beard and not clean-shaven. Visible in front, three-quarter, and profile; rendered as fine cross-hatching in the pencil-test register, never a flat fill.",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "source-refs/turnaround-1.png#region:head-3quarter",
+        "anchor.png#region:jaw"
+      ]
+    },
+    {
+      "id": "IR.sean.proportion.head-to-body-1-to-7",
+      "description": "Sean reads as heroic-realistic adult proportion: head height fits seven times into total body height (1:7), measured crown to sole at neutral stance. This is not chibi and not stylized-tall \u2014 it is a working-illustrator's grown-adult build.",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em",
+        "annie"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "source-refs/turnaround-1.png#region:body-front",
+        "source-refs/walk-cycle/source.png"
+      ]
+    },
+    {
+      "id": "IR.sean.anatomy.shoulder-width-1-5-heads",
+      "description": "At neutral pose Sean's shoulders span roughly 1.5 head-widths; hips are narrower than the shoulders (shoulder-to-hip about 1.4:1), and hip-to-floor is approximately four head-heights. The torso tapers slightly from shoulder to waist \u2014 an average adult-male build, neither heavily muscled nor slight.",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "source-refs/turnaround-1.png#region:body-front",
+        "source-refs/turnaround-1.png#region:body-profile"
+      ]
+    },
+    {
+      "id": "IR.sean.costume.navy-tee-gray-jeans",
+      "description": "Sean's default costume is a dark navy short-sleeve crew-neck tee (palette navy-tee #243044) over cool-gray jeans (palette cool-gray-jeans #5C6471). The tee sleeves end mid-bicep; the crew collar sits at the base of the neck. No graphics or logos on the tee.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "sean",
+      "derived_from": [
+        "anchor.png#region:torso",
+        "source-refs/turnaround-1.png#region:body-front"
+      ]
+    },
+    {
+      "id": "IR.sean.costume.cuffed-jeans-gray-sneakers",
+      "description": "Sean's jeans are cuffed once at the ankle, ending above gray low-top canvas sneakers (warm-gray, palette sneaker-gray #7E807B) with white soles and laces. The cuff and sneaker are consistent across all full-body views, including the back view, where the jeans show two back pockets.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "sean",
+      "derived_from": [
+        "source-refs/turnaround-1.png#region:body-back",
+        "anchor.png#region:feet"
+      ]
+    },
+    {
+      "id": "IR.sean.palette.pencil-test-limited-vocabulary",
+      "description": "Sean's colored palette is limited and desaturated: warm cream paper (#F2E6CC) as both background and skin base, warm graphite line (#3D3530), navy tee (#243044), cool-gray jeans (#5C6471), dirty-blonde hair (#AD9468), warm-gray sneakers (#7E807B). The register carries no dedicated skin color \u2014 skin is paper-base with cross-hatched shadow. Colors are flat fills with hatched shadows, never gradient-shaded or cel-shaded.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "anchor.png#region:palette"
+      ]
+    },
+    {
+      "id": "IR.sean.style.construction-lines-cross-hatching",
+      "description": "Sean is drawn in the pencil-test-colored register: visible construction lines beneath the final contour, cross-hatching in shadow areas (under the chin, inside clothing folds, under the collar and arms), and a warm cream paper grain reading through the whole plate. The look is traditional pencil animation \u2014 not digital vector cleanup, not cel shading, not anime lineart.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "aesthetic",
+      "character_id": "sean",
+      "derived_from": [
+        "anchor.png",
+        "source-refs/turnaround-1.png"
+      ]
+    },
+    {
+      "id": "IR.sean.style.warm-graphite-varied-line-weight",
+      "description": "Sean's contour line is warm graphite (#3D3530), never pure black (#000000) and never cool gray. Line weight varies HB-through-2B \u2014 roughly 1px on interior detail up to 3px on the outer silhouette and weight-bearing contours. Uniform vector-weight linework is a register violation.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "aesthetic",
+      "character_id": "sean",
+      "derived_from": [
+        "anchor.png#region:contour"
+      ]
+    },
+    {
+      "id": "IR.sean.motion.walk-cycle-neutral-gait",
+      "description": "Sean's walk cycle is authored for a neutral forward gait at 12fps on twos, derived from the source line-art strip: standard bipedal contact / down / passing / up poses, arms swinging in opposition to the legs (offset, never twinned), the stylus held in the right fist throughout. The Bible covers the neutral gait only \u2014 turns, runs, and stops are not authored.",
+      "cites_phase": [
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "sean",
+      "derived_from": [
+        "source-refs/walk-cycle/source.png"
+      ]
+    },
+    {
+      "id": "IR.sean.motion.head-turn-nine-frame",
+      "description": "Sean's head turn is a nine-frame sequence. Frame 1 and frame 9 are anchor-grade three-quarter extremes; frame 5 is the looking-down / top-of-crown extreme. The forward quiff stays the highest silhouette point through the turn, and the ear transitions from one side to the other across the sequence. Middle frames 2-4 and 6-8 are interpretive timing in-betweens, line-art only \u2014 the rule governs timing and silhouette, not colored-register palette or hatching.",
+      "cites_phase": [
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "sean",
+      "derived_from": [
+        "source-refs/head-turn/head-turn-1.png",
+        "source-refs/head-turn/head-turn-5.png",
+        "source-refs/head-turn/head-turn-9.png"
+      ]
+    }
+  ]
+}

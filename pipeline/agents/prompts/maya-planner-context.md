@@ -95,12 +95,12 @@ A small criterion set, three entries, drawn from a Pencil Test Act 1 reference:
     "derived_from": ["production_brief.target_medium"]
   },
   {
-    "id": "AC.tone.pencil-not-digital",
-    "description": "Construction lines visible; line weight varies 1–3px; cross-hatching present in shadow areas; the piece reads as pencil-test rough, not digital cleanup.",
+    "id": "AC.tone.matches-style-register",
+    "description": "The piece manifests the brief's declared style register cleanly across every shot. The Cy-authored character Bibles in this run carry the per-register markers (pencil-test-colored expects construction lines + varied 1-3px line weight + cross-hatching; pixel-art-8bit expects integer-pixel grid + closed indexed palette; watercolor expects edge-feathering + pigment-pool variation; etc.); this AC enforces consistency at the production layer so every assembled frame reads in the same register as the Bibles loaded for it.",
     "cites_phase": [4, 5, 6, 8],
     "cites_personas": ["em", "sage", "chairman"],
     "impact_tag": "aesthetic",
-    "derived_from": ["studio_brief.tone"]
+    "derived_from": ["studio_brief.tone", "characters.*.style_register"]
   }
 ]
 ```

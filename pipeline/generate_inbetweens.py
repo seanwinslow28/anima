@@ -20,7 +20,7 @@ from pathlib import Path
 
 COMFYUI_URL = "http://127.0.0.1:8000"
 COMFYUI_DIR = Path("/Users/seanwinslow/Code-Brain/Comfy-UI")
-PIPELINE_DIR = Path("/Users/seanwinslow/Code-Brain/sw-portfolio-animation-pipeline")
+PIPELINE_DIR = Path(__file__).resolve().parents[1]
 
 # Odd Rule blend ratios for easing
 # Cumulative ratios from 1:3:5:7 displacement pattern

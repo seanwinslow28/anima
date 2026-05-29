@@ -31,6 +31,8 @@ import re
 from pathlib import Path
 from typing import Any, ClassVar
 
+import yaml
+
 from pipeline.agents import (
     AgentContext,
     AgentResult,
@@ -84,6 +86,14 @@ class PlannerNode:
         studio_brief = studio_brief_path.read_text(encoding="utf-8")
         manifest = ctx.manifest
 
+        # Read project_type from the scaffolded production-brief frontmatter
+        # if Sean populated it before invoking Maya. Defaults to animation_piece
+        # when missing or unset. Per Task 1.9: when bible_authoring, Maya scopes
+        # plan.md to Phase 0 + Phase 2 only (omits Phases 3-9 from the routing
+        # legend). The flag is also injected into the Opus prompt so the model's
+        # emitted plan respects the scope from the start.
+        project_type = _read_project_type(brief_dir / "01_production_brief.md")
+
         # Cost preview comes from CostEstimatorNode — Maya never invents prices.
         cost_node = NODE_REGISTRY["cost_estimator"]()
         cost_result = cost_node.run(ctx)
@@ -92,7 +102,9 @@ class PlannerNode:
         counts = {"opus": 0, "sonnet": 0}
 
         # Pass 1 — Opus primary.
-        opus_prompt = self._build_opus_prompt(studio_brief, manifest, cost_estimate)
+        opus_prompt = self._build_opus_prompt(
+            studio_brief, manifest, cost_estimate, project_type=project_type,
+        )
         opus_resp = asyncio.run(invoke_opus_text(prompt=opus_prompt))
         counts["opus"] += 1
         parsed = self._parse_opus(opus_resp.text)
@@ -146,6 +158,14 @@ class PlannerNode:
         if unresolved_concern:
             plan_md = self._inject_confidence_note(plan_md, unresolved_concern)
 
+        # bible_authoring scope: prepend a Phase scope section that names the
+        # in-scope phases. Maya's Opus prompt has already been told the scope,
+        # so the body of the plan should respect it; this is the structural
+        # marker downstream readers (Mo the museum writer, the chairman)
+        # pattern-match against. animation_piece runs leave plan.md unchanged.
+        if project_type == "bible_authoring":
+            plan_md = self._inject_bible_authoring_scope(plan_md)
+
         # Write artifacts atomically (temp-then-rename per the patch_stager idiom).
         brief_dir.mkdir(parents=True, exist_ok=True)
         production_brief_path = brief_dir / "01_production_brief.md"
@@ -188,11 +208,16 @@ class PlannerNode:
         studio_brief: str,
         manifest: dict,
         cost_estimate: Any,
+        *,
+        project_type: str = "animation_piece",
     ) -> str:
         return "\n\n".join([
             self._load_anima_preamble(),
             self._load_maya_addendum(),
-            self._per_invocation_brief(studio_brief, manifest, cost_estimate, pass_name="primary"),
+            self._per_invocation_brief(
+                studio_brief, manifest, cost_estimate,
+                pass_name="primary", project_type=project_type,
+            ),
         ])
 
     def _build_sonnet_prompt(
@@ -262,6 +287,7 @@ class PlannerNode:
         cost_estimate: Any,
         *,
         pass_name: str,
+        project_type: str = "animation_piece",
     ) -> str:
         # Surface only the manifest blocks Maya needs — generation.routing,
         # phases, tiering — instead of dumping the whole file.
@@ -271,6 +297,18 @@ class PlannerNode:
             "tiering": manifest.get("tiering", {}),
             "critics": manifest.get("critics", {}),
         }
+        scope_note = ""
+        if project_type == "bible_authoring":
+            scope_note = (
+                "\n\n### Project type: bible_authoring (scope override)\n\n"
+                "This run authors a Character Bible as the deliverable. "
+                "Phases 3-9 are out of scope. Your plan.md should only "
+                "describe Phase 0 (this planning pass) and Phase 2 (Cy's "
+                "three-phase Bible authoring loop). Omit Phases 3-9 from the "
+                "routing legend, the phase list, and the cost preview. "
+                "acceptance_criteria.json should carry only AC.* entries that "
+                "fire in Phase 0 or Phase 2 — no Phase 5/6/8 criteria.\n"
+            )
         return (
             f"## Pass 1 — primary planning\n\n"
             f"Read the Studio Brief, the manifest excerpt, and the cost estimate "
@@ -295,7 +333,29 @@ class PlannerNode:
             f"median: ${cost_estimate.median_usd:.2f} / "
             f"high: ${cost_estimate.high_usd:.2f}\n"
             f"by_phase: {dict(cost_estimate.by_phase)}\n"
+            f"{scope_note}"
         )
+
+    def _inject_bible_authoring_scope(self, plan_md: str) -> str:
+        """Prepend a Phase scope section to plan.md naming the in-scope phases.
+
+        Lands after the H1 title if present, otherwise at the very top. The
+        section is the structural marker downstream readers pattern-match
+        against for bible_authoring runs. The body names only Phase 0 and
+        Phase 2 — Maya's Opus prompt has already been told to scope
+        accordingly, so this is the structural confirmation, not a fight.
+        """
+        scope_block = (
+            "## Phase scope (bible_authoring)\n\n"
+            "This run authors a Character Bible. In-scope phases:\n\n"
+            "  - Phase 0 — Brief & Plan (Maya, this pass).\n"
+            "  - Phase 2 — Character Bible (Cy authors; NB Pro generates; Gemini verifies).\n\n"
+            "Phases 3-9 are out of scope for this run.\n\n"
+        )
+        title_match = re.match(r"^(# .+\n+)", plan_md)
+        if title_match:
+            return plan_md[: title_match.end()] + scope_block + plan_md[title_match.end():]
+        return scope_block + plan_md
 
     def _load_anima_preamble(self) -> str:
         if ANIMA_PREAMBLE_FILE.exists():
@@ -366,3 +426,31 @@ def _atomic_write(path: Path, content: str) -> None:
     tmp = path.with_suffix(path.suffix + ".tmp")
     tmp.write_text(content, encoding="utf-8")
     tmp.replace(path)
+
+
+_FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
+
+
+def _read_project_type(production_brief_path: Path) -> str:
+    """Parse `project_type` from 01_production_brief.md's YAML frontmatter.
+
+    Returns "animation_piece" (the default) when the file doesn't exist, the
+    frontmatter is missing, or the field is absent / empty. Returns
+    "bible_authoring" when the field explicitly carries that value. Any other
+    value falls back to animation_piece — opening the enum is a deliberate
+    schema commit, not a Maya-prompt typo.
+    """
+    if not production_brief_path.exists():
+        return "animation_piece"
+    body = production_brief_path.read_text(encoding="utf-8")
+    match = _FRONTMATTER_RE.match(body)
+    if not match:
+        return "animation_piece"
+    try:
+        frontmatter = yaml.safe_load(match.group(1)) or {}
+    except yaml.YAMLError:
+        return "animation_piece"
+    value = str(frontmatter.get("project_type") or "").strip()
+    if value == "bible_authoring":
+        return "bible_authoring"
+    return "animation_piece"

@@ -281,3 +281,71 @@ def test_planner_cites_criteria_lists_all_emitted_ids(tmp_path, brief_dir, monke
     result = cls().run(_ctx(tmp_path, brief_dir))
     assert "AC.identity.stylus-right-hand" in result.cites_criteria
     assert "AC.technical.aspect-ratio-16-9" in result.cites_criteria
+
+
+# ---- project_type routing (Task 1.9) ----
+
+
+def test_bible_authoring_plan_omits_phases_3_through_9(tmp_path, brief_dir, monkeypatch):
+    """When project_type=bible_authoring, plan.md scopes to Phase 0 + Phase 2 only."""
+    # Sean scaffolded the production brief with project_type=bible_authoring.
+    (brief_dir / "01_production_brief.md").write_text(
+        "---\n"
+        "piece_id: \"sean-anchor-bake\"\n"
+        "project_type: bible_authoring\n"
+        "phases_enabled: [0, 2]\n"
+        "characters_loaded:\n"
+        "  - sean-anchor\n"
+        "target_medium: museum-walkthrough\n"
+        "---\n\n"
+        "# Production Brief\n\nBible authoring run for sean-anchor.\n",
+        encoding="utf-8",
+    )
+    _patch_runners(monkeypatch, [_planning_envelope()], [_sonnet_clean()])
+    cls = NODE_REGISTRY["planner"]
+    cls().run(_ctx(tmp_path, brief_dir))
+    plan = (brief_dir / "plan.md").read_text(encoding="utf-8")
+    # Scope marker present.
+    assert "Phase scope (bible_authoring)" in plan
+    assert "Phase 0 — Brief & Plan" in plan
+    assert "Phase 2 — Character Bible" in plan
+    # Out-of-scope phases NOT in the scope block. The body that Maya's Opus
+    # mock emits is generic and may name Phase 5/6/8; the structural marker
+    # is what downstream readers pattern-match against.
+    scope_start = plan.index("Phase scope (bible_authoring)")
+    scope_end = plan.index("\n## ", scope_start + 1) if "\n## " in plan[scope_start + 1:] else len(plan)
+    scope_block = plan[scope_start:scope_end]
+    for excluded in ("Phase 4", "Phase 5", "Phase 6", "Phase 7", "Phase 8", "Phase 9"):
+        assert excluded not in scope_block, (
+            f"{excluded} should not appear in the bible_authoring scope block"
+        )
+
+
+def test_animation_piece_default_unchanged(tmp_path, brief_dir, monkeypatch):
+    """project_type=animation_piece (default) leaves plan.md unchanged."""
+    # No 01_production_brief.md → defaults to animation_piece.
+    _patch_runners(monkeypatch, [_planning_envelope()], [_sonnet_clean()])
+    cls = NODE_REGISTRY["planner"]
+    cls().run(_ctx(tmp_path, brief_dir))
+    plan = (brief_dir / "plan.md").read_text(encoding="utf-8")
+    # No bible_authoring scope block was prepended.
+    assert "Phase scope (bible_authoring)" not in plan
+
+
+def test_explicit_animation_piece_in_frontmatter_also_unchanged(
+    tmp_path, brief_dir, monkeypatch
+):
+    """Explicit `project_type: animation_piece` reads as the default (no scope block)."""
+    (brief_dir / "01_production_brief.md").write_text(
+        "---\n"
+        "piece_id: \"test-piece\"\n"
+        "project_type: animation_piece\n"
+        "---\n\n"
+        "# Production Brief\n",
+        encoding="utf-8",
+    )
+    _patch_runners(monkeypatch, [_planning_envelope()], [_sonnet_clean()])
+    cls = NODE_REGISTRY["planner"]
+    cls().run(_ctx(tmp_path, brief_dir))
+    plan = (brief_dir / "plan.md").read_text(encoding="utf-8")
+    assert "Phase scope (bible_authoring)" not in plan

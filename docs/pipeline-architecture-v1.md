@@ -308,7 +308,7 @@ These are deliberately not decided in commit 1. They unblock as their respective
 
 **Museum showcase format session (later).** MDX schema matching `sw-ai-pm-portfolio`'s content collection. Comparison-GIF rendering pipeline (FFmpeg recipe + frame-alignment strategy). Decision-ledger surfacing in walkthrough docs — how much of the rejected-and-retried history shows publicly vs stays in the run dir.
 
-**Public GitHub repo creation + directory rename.** `sw-portfolio-animation-pipeline/` → `anima/`. Deferred to public-repo creation time so the existing git history stays clean during the transition. Not blocking on any other work.
+**Public GitHub repo creation + directory rename.** Directory rename `sw-portfolio-animation-pipeline/` → `anima/` shipped 2026-05-29 via a single `mv` (git history preserved), and the GitHub repo was renamed `sw-portfolio-2D-animation` → `anima` in the same pass. Making the repo *public* is the remaining future step; not blocking on any other work.
 
 ---
 

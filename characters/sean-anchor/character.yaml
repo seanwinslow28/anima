@@ -1,0 +1,49 @@
+character_id: sean
+display_name: Sean Winslow
+style_register: pencil-test-colored
+palette:
+- name: cream_paper
+  hex: '#F2E6CC'
+  role: "Background paper base. Carries through every plate as the substrate; reads\
+    \ through line work and acts as the unstated skin midtone (the register has no\
+    \ dedicated skin color \u2014 paper shows through)."
+- name: warm_graphite_line
+  hex: '#3D3530'
+  role: Primary line weight (HB through 2B graphite equivalent). Used for construction
+    lines, final contour, and cross-hatching. Warm dark gray, never pure black (#000000)
+    and never cool gray.
+- name: navy_tee
+  hex: '#243044'
+  role: Default shirt fill. Flat color with cross-hatching at the under-arm and under-collar
+    shadows. Not gradient-shaded, not vector-clean.
+- name: cool_gray_jeans
+  hex: '#5C6471'
+  role: Default pants fill. Flat color with cross-hatching at fold and pocket shadows.
+    The cool tint distinguishes the jeans from the warm graphite line so the silhouette
+    reads at low resolution.
+proportions:
+  head_to_body_ratio: "1:7 \u2014 head height fits seven times into total body height,\
+    \ measured crown of head to sole of foot at neutral stance."
+  shoulder_width_in_head_units: 1.5
+  hip_to_floor_in_head_units: 4.0
+  register_intent: "Heroic-realistic working-illustrator adult proportion. Not chibi\
+    \ (Claude Mascot's territory), not stylized-tall (high-fashion register). The\
+    \ references \u2014 the cleaner turnaround and the walk-cycle source plate \u2014\
+    \ are the canonical proportion truth; the 3D mannequin refs are pose-vocabulary,\
+    \ not identity."
+identity_rules_pointer: acceptance_criteria.json
+cy_confidence_notes: "Cy hedges five axes: (1) the head-turn frame-to-angle mapping\
+  \ is inferred without direct visual ground-truth and Sean should sanity-check the\
+  \ chosen mapping before approval; (2) the back-of-skull silhouette is extrapolated\
+  \ from front + profile views; (3) the expression set is interpretive \u2014 four\
+  \ states authored from indirect references; (4) the walk-cycle motion plate is a\
+  \ single source pose, not a full cycle; (5) the pencil-test register intentionally\
+  \ carries no explicit skin tone, which is a register property and not a Bible silence.\
+  \ Full prose in cy-confidence-notes.md."
+flux_lora_seed_plates:
+- anchor.png
+- turnarounds/body-front.png
+- turnarounds/body-3quarter.png
+- turnarounds/head-front.png
+- expressions/neutral.png
+risks: risk-bible.md
