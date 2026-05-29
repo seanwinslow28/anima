@@ -159,10 +159,10 @@ Skills map to the 10-phase architecture. Most carry over from the pencil-test er
 
 ## Directory Structure
 
-The working directory is `sw-portfolio-animation-pipeline/` for now. The rename to `anima/` happens at public-repo creation time so git history stays clean during the transition. New top-level conventions (`characters/`, `museum/`, `evals/`) are marked planned — they land across commits 2-8.
+The working directory is `anima/` — renamed from `sw-portfolio-animation-pipeline/` on 2026-05-29 via a single `mv` that preserved full git history. New top-level conventions (`characters/`, `museum/`, `evals/`) are marked planned — they land across commits 2-8.
 
 ```
-sw-portfolio-animation-pipeline/        # renames to anima/ at public-repo creation
+anima/                                   # renamed from sw-portfolio-animation-pipeline/ on 2026-05-29
 ├── CLAUDE.md                            # This file — anima project manual
 ├── CHANGELOG.md                         # Decision log (append on every change)
 ├── manifest.yaml                        # Pipeline configuration (v1 + v2 blocks coexist)

@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-05-29 — rename: sw-portfolio-animation-pipeline → anima
+
+**What changed:** Executed the directory + repo rename per [`docs/2026-05-29-anima-rename-plan.md`](docs/2026-05-29-anima-rename-plan.md). The v2 change-map deferred this to "public-repo creation time so git history stays clean"; with the visual-fidelity fix shipped, the 176-test baseline green, and two Bibles locked, the window opened.
+
+- **Production path de-hardcoded.** `pipeline/generate_inbetweens.py:23` went from `Path("/Users/seanwinslow/Code-Brain/sw-portfolio-animation-pipeline")` to `Path(__file__).resolve().parents[1]`. This was the one load-bearing absolute path that would break execution on rename; the relative form fixes the MacBook *and* the Mac Mini clone (different absolute path) at once, and never breaks on a future move.
+- **Doc trustworthiness.** Updated the live references that named the old path: `CLAUDE.md` (Directory Structure intro + file-map root, now past-tense), this `CHANGELOG.md`, and `docs/pipeline-architecture-v1.md` (the deferred-rename open question, flipped to done). Dated session artifacts (`docs/2026-05-2x-*`, `docs/anima-test-runs/*`, `docs/COMPLETED/*`, the 2026-04-27 act2 plan) are left untouched by design — they record what the path *was*.
+- **GitHub repo renamed** `sw-portfolio-2D-animation` → `anima`; local remote repointed to `https://github.com/seanwinslow28/anima.git` (GitHub redirect keeps the old URL working). The local folder name and repo name already differed, so the two renames were independent.
+- **Folder renamed** `sw-portfolio-animation-pipeline/` → `anima/` via a single `mv` (inode + full git history preserved). The `.venv` (hardcodes its absolute path in shebangs/`pyvenv.cfg`) is rebuilt post-`mv` — a local-environment step, not committed, redone per machine.
+- **Out of scope, untouched:** Bible state (`characters/*`, `plate_verdicts.jsonl`, `runs/*`), the `Comfy-UI` path at `generate_inbetweens.py:22` (different folder), and the Mac Mini clone (separate session).
+
+**Why:** "anima" is the name the public repo ships under; the rename is cosmetic to the architecture and load-bearing to the story. Small job, sharp edge (a missed hardcoded path breaks silently), so it shipped as one reversible, isolated change with the test baseline green on both sides of the `mv`.
+
 ## 2026-05-29 — Session writeup: the visual-fidelity fix, end to end
 
 **What changed:** Added `docs/anima-test-runs/2026-05-29-fidelity-fix-session-writeup.md` — the full narrative of the fidelity-fix session: the five failures and how each was overcome (two Opus-4.8 silent stubs → timeout + parser fixes, the `#region` crop bug, the register inconsistency, and the similarity-gate inversion on the mascot), six learnings, what was deferred (Track B closed; production plate regeneration; DINOv2 tier; Cy retry-on-parse-failure; full mascot bake), recommended next steps, the commit trail, and an output-location map. Documentation only.
