@@ -142,14 +142,27 @@ class CharacterDesignerNode:
             studio_brief=studio_brief,
             character_dir=character_dir,
         )
-        # 900s timeout for Cy's Pass-1: the prompt is ~55KB (anima preamble
+        # 1800s timeout for Cy's Pass-1: the prompt is ~55KB (anima preamble
         # + Cy addendum + 2d-animation-principles skill inline + per-Bible
         # brief) and the envelope is ~50KB (character.yaml + 15-20 IR.* rules
         # + risk-bible + confidence-notes + plate plan). Observed wall time
-        # against real Opus on the sean-anchor authoring run: ~500s. The
-        # invoke_opus_text default of 120s would cleanly time out before
-        # Pass 1 ever completed.
-        opus_resp = asyncio.run(invoke_opus_text(prompt=opus_prompt, timeout_s=900))
+        # against real Opus 4.7 on the sean-anchor authoring run: ~500s. The
+        # 2026-05-29 Opus 4.8 bump pushed Pass-1 past the previous 900s ceiling
+        # (4.8 spends more on extended thinking for a large structured
+        # emission); a real re-bake hit the 900s wall and silently stubbed.
+        # Raised to 1800s with headroom. The invoke_opus_text default of 120s
+        # would cleanly time out before Pass 1 ever completed.
+        opus_resp = asyncio.run(invoke_opus_text(prompt=opus_prompt, timeout_s=1800))
+        # A timed-out / unavailable Opus call returns empty text (and, for the
+        # no-SDK path, stub_fallback=True). Either way Pass-1 is a stub. Surface
+        # it loudly in notes so the orchestrator fails instead of silently
+        # shipping a STUB FALLBACK Bible (the must-fix lesson: a successful exit
+        # code can lie about what happened).
+        pass1_stub = (
+            bool(getattr(opus_resp, "stub_fallback", False))
+            or getattr(opus_resp, "exit_code", 0) != 0
+            or not (opus_resp.text or "").strip()
+        )
 
         parsed = self._parse_pass1_envelope(
             opus_resp.text,
@@ -218,7 +231,8 @@ class CharacterDesignerNode:
         )
         notes = (
             f"cy@phase_2 character_id={character_yaml.get('character_id', '?')!r} "
-            f"plates={len(plate_results)} human_gate_required={human_gate_count}"
+            f"plates={len(plate_results)} human_gate_required={human_gate_count} "
+            f"pass1_stub={pass1_stub}"
         )
 
         return AgentResult(

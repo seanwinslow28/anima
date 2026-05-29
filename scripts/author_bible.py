@@ -99,6 +99,25 @@ def main() -> int:
     node = CharacterDesignerNode()
     result = node.run(ctx)
 
+    # Loud-fail on a Pass-1 stub. A timed-out / unavailable Opus call silently
+    # produces a STUB FALLBACK Bible (0 plates, placeholder rules) and the node
+    # still returns normally — exactly the "a successful exit code can lie"
+    # failure the test report warned about. Do not let a stub Bible pass as
+    # real authoring; surface it and exit non-zero.
+    if "pass1_stub=True" in (result.notes or ""):
+        print(
+            "\nERROR: Pass-1 (Opus) returned a STUB envelope — the Bible was NOT "
+            "really authored.\n"
+            "  Likely causes: the Opus call timed out, or no SDK/credentials were "
+            "available.\n"
+            "  The artifacts on disk are STUB FALLBACK placeholders. Do not approve "
+            "them.\n"
+            "  Re-run with claude-agent-sdk authenticated (or ANTHROPIC_API_KEY set) "
+            "and a sufficient Pass-1 timeout.",
+            file=sys.stderr,
+        )
+        return 1
+
     print()
     print("emitted:")
     for port, value in result.outputs.items():

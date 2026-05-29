@@ -615,6 +615,38 @@ def test_plate_verdicts_persisted_to_jsonl(base_ctx, character_dir, monkeypatch)
     assert "gemini_verdict" in rec
 
 
+def test_pass1_stub_is_flagged_in_result_notes(base_ctx, character_dir, monkeypatch):
+    """When the Opus Pass-1 call stubs (timeout / no SDK / empty text), the
+    AgentResult.notes must say so loudly, so the orchestrator can fail instead
+    of silently shipping a STUB FALLBACK Bible (the brief's must-fix lesson)."""
+    async def stub_opus(*, prompt: str, **kwargs):
+        # Mimic a timed-out / unavailable Opus call: empty text + stub flag.
+        return _FakeSDKResponse(text="", stub_fallback=True)
+
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", stub_opus)
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.run_antigravity_with_image",
+        lambda **kw: _FakeCLIResponse(text=_make_gemini_verdict("pass")),
+    )
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.invoke_nb_pro",
+        lambda **kw: NBProResponse(
+            output_path=kw["output_path"], cache_key="k", cache_hit=False,
+            stub_fallback=True, exit_code=0,
+        ),
+    )
+
+    result = CharacterDesignerNode().run(base_ctx)
+    assert "pass1_stub=True" in result.notes
+
+
+def test_pass1_real_envelope_not_flagged_as_stub(base_ctx, character_dir, monkeypatch):
+    """A real (non-stub) Pass-1 envelope must NOT be flagged as a stub."""
+    _patch_runners(monkeypatch)
+    result = CharacterDesignerNode().run(base_ctx)
+    assert "pass1_stub=False" in result.notes
+
+
 def test_ingested_plate_still_runs_gemini_verification(
     base_ctx, character_dir, monkeypatch
 ):
