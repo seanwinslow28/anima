@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-05-29 — Session writeup: the visual-fidelity fix, end to end
+
+**What changed:** Added `docs/anima-test-runs/2026-05-29-fidelity-fix-session-writeup.md` — the full narrative of the fidelity-fix session: the five failures and how each was overcome (two Opus-4.8 silent stubs → timeout + parser fixes, the `#region` crop bug, the register inconsistency, and the similarity-gate inversion on the mascot), six learnings, what was deferred (Track B closed; production plate regeneration; DINOv2 tier; Cy retry-on-parse-failure; full mascot bake), recommended next steps, the commit trail, and an output-location map. Documentation only.
+
+**Why:** The session's value is as much in the failures it surfaced as the fix it shipped; a durable writeup keeps that legible for the next session and for the museum walkthrough.
+
 ## 2026-05-29 — Commit 3b: mascot cross-register validation + a documented similarity-gate blind spot
 
 **What changed:** Validated that the fidelity mechanism generalizes to the pixel-art-8bit register (claude-mascot), and documented an empirically-discovered limitation of the PIL similarity tier.
