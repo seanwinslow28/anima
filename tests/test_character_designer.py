@@ -181,6 +181,15 @@ def _tiny_png() -> bytes:
     )
 
 
+def _real_png(path: Path, color: tuple[int, int, int] = (180, 140, 90)) -> Path:
+    """A small but fully-loadable PNG. The 1x1 placeholder _tiny_png is a
+    degenerate stream PIL can't fully decode, so the Pass-2.5 similarity gate
+    can't score it — tests that assert a similarity score need a real image."""
+    from PIL import Image
+    Image.new("RGB", (16, 16), color).save(path)
+    return path
+
+
 def _patch_runners(
     monkeypatch,
     *,
@@ -464,7 +473,7 @@ def _patch_with_nb_capture(monkeypatch, *, envelope):
 
     def capturing_nb_pro(*, output_path, cache_dir, **kwargs):
         nb_calls.append({"output_path": output_path, **kwargs})
-        output_path.write_bytes(_tiny_png())
+        _real_png(output_path, color=(170, 130, 80))
         return NBProResponse(
             output_path=output_path, cache_key="k", cache_hit=False,
             stub_fallback=False, exit_code=0,
@@ -566,6 +575,44 @@ def test_nb_pro_prompt_carries_role_tag_and_anti_caption_instruction(
     assert ("no text" in prompt or "do not" in prompt) and "caption" in prompt
     # The plate's own short intent survives.
     assert "neutral expression" in prompt
+
+
+def test_generate_plate_records_similarity_score(
+    base_ctx, character_dir, monkeypatch
+):
+    """Every generate plate carries a Pass-2.5 pixel-similarity score + method
+    in its status dict — the numeric, pixel-grounded signal the prose Pass-3
+    was blind to (post-mortem §2.3)."""
+    _real_png(character_dir / "anchor.png")  # loadable anchor for the gate
+    nb_calls = _patch_with_nb_capture(monkeypatch, envelope=_make_pass1_envelope())
+    result = CharacterDesignerNode().run(base_ctx)
+
+    plate_results = result.outputs["plate_results"]
+    status = list(plate_results.values())[0]
+    assert "similarity_score" in status
+    assert isinstance(status["similarity_score"], float)
+    assert 0.0 <= status["similarity_score"] <= 1.0
+    assert status.get("similarity_method") == "pil-perceptual"
+
+
+def test_plate_verdicts_persisted_to_jsonl(base_ctx, character_dir, monkeypatch):
+    """run() writes runs/{run_id}/plate_verdicts.jsonl — one line per plate
+    carrying the similarity score AND the Gemini verdict. The 2026-05-28 run
+    left no per-plate trail; this fixes that (post-mortem §2.3)."""
+    import json as _json
+
+    _real_png(character_dir / "anchor.png")  # loadable anchor for the gate
+    _patch_with_nb_capture(monkeypatch, envelope=_make_pass1_envelope())
+    CharacterDesignerNode().run(base_ctx)
+
+    verdicts_path = base_ctx.run_dir / "plate_verdicts.jsonl"
+    assert verdicts_path.exists(), "plate_verdicts.jsonl must be persisted"
+    lines = [l for l in verdicts_path.read_text().splitlines() if l.strip()]
+    assert len(lines) == 1, "one line per plate"
+    rec = _json.loads(lines[0])
+    assert rec["target_path"] == "turnarounds/body-front.png"
+    assert "similarity_score" in rec
+    assert "gemini_verdict" in rec
 
 
 def test_ingested_plate_still_runs_gemini_verification(

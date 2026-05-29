@@ -50,6 +50,7 @@ from pipeline.agents import (
 from pipeline.agents.cli_runners import run_antigravity_with_image
 from pipeline.agents.nb_pro_runner import NBProResponse, invoke_nb_pro
 from pipeline.agents.sdk_runners import invoke_opus_text
+from pipeline.agents.similarity_gate import compute_similarity
 from pipeline.criteria import validate_criteria
 
 PROMPTS_DIR = Path(__file__).parent / "prompts"
@@ -201,6 +202,13 @@ class CharacterDesignerNode:
                 cache_dir=nb_pro_cache_dir,
             )
             plate_results[plate["target_path"]] = status
+
+        # Persist the per-plate verdict trail. The 2026-05-28 run left no
+        # durable per-plate signal (post-mortem §2.3); this writes one JSONL
+        # line per plate carrying the Pass-2.5 similarity score next to
+        # Gemini's prose verdict, so a drift Gemini passed is visible after
+        # the fact from disk.
+        self._persist_plate_verdicts(ctx.run_dir, plate_results)
 
         # ---------- Collect cites_criteria + return ----------
         cites = [entry["id"] for entry in ir_entries]
@@ -529,6 +537,14 @@ class CharacterDesignerNode:
                 status["exit_code"] = nb_resp.exit_code
                 return status
 
+        # ----- Pass 2.5 — pixel-similarity gate -----
+        # Score the plate's identity similarity against the anchor BEFORE
+        # Gemini's prose pass, so a plate that satisfies the rule descriptions
+        # but doesn't look like the character is surfaced numerically rather
+        # than masked (post-mortem §2.3). Recorded, not hard-blocked — see
+        # similarity_gate for why the coarse PIL metric is a flag this commit.
+        self._score_plate_identity(target_path, character_dir, status)
+
         # ----- Pass 3 — Gemini verifies (and regenerates on fail, up to ceiling) -----
         for attempt in range(1, _PLATE_ATTEMPT_CEILING + 1):
             verify_prompt = self._build_pass3_prompt(
@@ -579,8 +595,51 @@ class CharacterDesignerNode:
                 status["exit_code"] = nb_resp.exit_code
                 return status
 
+            # Re-score the freshly regenerated plate against the anchor.
+            self._score_plate_identity(target_path, character_dir, status)
+
         # Shouldn't reach here — the loop returns on every branch.
         return status
+
+    def _score_plate_identity(
+        self, target_path: Path, character_dir: Path, status: dict
+    ) -> None:
+        """Compute + record the Pass-2.5 similarity of a plate vs the anchor.
+
+        Mutates `status` in place with similarity_score / similarity_method /
+        similarity_reference, and similarity_flag='below_threshold' when the
+        score is low. Never raises — a scoring failure must not fail a plate
+        (the gate is a signal, not a blocker this commit)."""
+        anchor_path = character_dir / "anchor.png"
+        if not target_path.exists() or not anchor_path.exists():
+            return
+        try:
+            sim = compute_similarity(target_path, anchor_path)
+        except Exception as exc:  # pragma: no cover - defensive
+            status["similarity_error"] = str(exc)[:200]
+            return
+        status["similarity_score"] = round(sim.score, 4)
+        status["similarity_method"] = sim.method
+        status["similarity_reference"] = "anchor.png"
+        if sim.below_threshold:
+            status["similarity_flag"] = "below_threshold"
+
+    def _persist_plate_verdicts(
+        self, run_dir: Path, plate_results: dict[str, dict]
+    ) -> None:
+        """Write runs/{run_id}/plate_verdicts.jsonl — one line per plate.
+
+        Each record is the plate's status dict plus its target_path, so the
+        similarity score, Gemini verdict, confidence, cited rules, and attempt
+        count are all reconstructable from disk after the run."""
+        run_dir = Path(run_dir)
+        run_dir.mkdir(parents=True, exist_ok=True)
+        out = run_dir / "plate_verdicts.jsonl"
+        lines = [
+            json.dumps({"target_path": target_path, **status}, sort_keys=True)
+            for target_path, status in plate_results.items()
+        ]
+        _atomic_write_text(out, "\n".join(lines) + ("\n" if lines else ""))
 
     # ----- contract enforcement -----
 
