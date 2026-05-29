@@ -532,12 +532,25 @@ class CharacterDesignerNode:
         # ----- Pass 2 — ingest or generate -----
         if source.startswith("ingest:"):
             source_rel = source[len("ingest:"):].split("#", 1)[0]
+            region_name = None
+            if "#region:" in source:
+                region_name = source.split("#region:", 1)[1].split("#", 1)[0].strip()
             source_full = (character_dir / source_rel).resolve()
             if not source_full.exists():
                 # Try project root as fallback.
                 source_full = (_PROJECT_ROOT / source_rel).resolve()
             if source_full.exists():
-                shutil.copy2(source_full, target_path)
+                # Honor a #region:NAME crop when a <sheet>.regions.json sidecar
+                # defines it (post-mortem §2.1 — the suffix used to be ignored
+                # and the whole sheet copied). Fall back to a full copy + a loud
+                # flag when the region can't be mapped, never a silent wrong crop.
+                cropped = False
+                if region_name:
+                    cropped = _crop_region(source_full, region_name, target_path)
+                if not cropped:
+                    shutil.copy2(source_full, target_path)
+                    if region_name:
+                        status["region_not_cropped"] = region_name
                 status.update({"status": "ingested", "cache_hit": True, "attempts": 0})
             else:
                 status.update({
@@ -766,6 +779,59 @@ def _extract_first_json_object(text: str) -> dict | None:
                     # Not valid — restart the search after this opening brace.
                     start = None
     return None
+
+
+def _region_box(
+    source_path: Path, region_name: str
+) -> tuple[float, float, float, float] | None:
+    """Look up a `#region:NAME` crop box from a `<sheet>.regions.json` sidecar.
+
+    The sidecar lives beside the source sheet (e.g. turnaround-1.png →
+    turnaround-1.regions.json) and maps region name → [left, top, right, bottom].
+    Values ≤ 1.0 are treated as fractions of the sheet; larger values as pixels.
+    Returns None when the sidecar or the named region is absent — the caller
+    then falls back to a full copy and flags it, rather than silently shipping
+    a wrong crop (post-mortem §2.1: the #region suffix used to be ignored and
+    the whole sheet copied as if it were the cropped region).
+    """
+    sidecar = source_path.with_name(source_path.stem + ".regions.json")
+    if not sidecar.exists():
+        return None
+    try:
+        mapping = json.loads(sidecar.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    box = mapping.get(region_name)
+    if not isinstance(box, (list, tuple)) or len(box) != 4:
+        return None
+    try:
+        return tuple(float(v) for v in box)  # type: ignore[return-value]
+    except (TypeError, ValueError):
+        return None
+
+
+def _crop_region(source_path: Path, region_name: str, target_path: Path) -> bool:
+    """Crop `source_path` to `region_name` (per the sidecar) and save to target.
+
+    Returns True if the crop executed, False if no box was found (caller copies
+    the whole sheet and flags it). Fractional boxes scale to the sheet's pixel
+    size; pixel boxes are used as-is.
+    """
+    box = _region_box(source_path, region_name)
+    if box is None:
+        return False
+    from PIL import Image
+
+    img = Image.open(source_path)
+    w, h = img.size
+    left, top, right, bottom = box
+    if max(box) <= 1.0:
+        crop_box = (round(left * w), round(top * h), round(right * w), round(bottom * h))
+    else:
+        crop_box = (round(left), round(top), round(right), round(bottom))
+    target_path.parent.mkdir(parents=True, exist_ok=True)
+    img.crop(crop_box).save(target_path)
+    return True
 
 
 def _classify_reference(ref: str, character_dir: Path) -> tuple[Path | None, str]:

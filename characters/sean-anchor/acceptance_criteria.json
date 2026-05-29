@@ -1,6 +1,6 @@
 {
   "version": "1.2",
-  "locked": true,
+  "locked": false,
   "criteria": [
     {
       "id": "IR.sean.prop.stylus-right-hand-always",
@@ -175,8 +175,8 @@
       ]
     },
     {
-      "id": "IR.sean.palette.four-step-pencil-test-vocabulary",
-      "description": "The Sean palette is locked at four named colors: cream paper #F2E6CC (background substrate and unstated skin midtone), warm graphite line #3D3530 (HB-2B line weight, construction + final contour + cross-hatching), navy tee #243044 (default shirt fill), cool gray jeans #5C6471 (default pants fill). Any color outside this four-step vocabulary is a palette violation. The line color is warm-dark-gray, not pure black; the paper is cream, not white; the jeans are cool-gray, not blue.",
+      "id": "IR.sean.palette.full-color-pencil-test-vocabulary",
+      "description": "Sean's palette is full-color but limited and desaturated, rendered in the pencil-test register (flat color fills with warm-graphite cross-hatched shadow, never gradient- or cel-shaded). Named colors: cream paper #F2E6CC (background substrate), warm graphite line #3D3530 (HB-2B construction + contour + cross-hatch, never pure black), light warm skin #F0DFCB (face and hands, a light warm tint distinct from the paper base, with cross-hatched graphite shadow for form), dirty-blonde hair #AD9468 (warm light-brown top volume, not platinum, not dark brown), navy tee #243044, cool-gray jeans #5C6471, warm-gray sneakers #7E807B (white soles/laces as paper-base), blue eyes (see IR.sean.face.blue-eyes). Full-color is canonical Sean; the earlier four-step monochrome-graphite spec was the visual-fidelity bug fixed 2026-05-29.",
       "cites_phase": [
         5,
         6,
@@ -193,8 +193,8 @@
       ]
     },
     {
-      "id": "IR.sean.palette.no-explicit-skin-tone",
-      "description": "The pencil-test-colored register carries no dedicated skin tone. Skin reads as the cream paper substrate showing through, with cross-hatching in the warm-graphite line color used for shadow areas (under jaw, side of nose, eye socket). A Phase 5 frame that introduces a peach/tan/ochre skin fill is a register violation \u2014 the absence of skin tone is the register, not a Bible silence.",
+      "id": "IR.sean.palette.warm-skin-tone",
+      "description": "Sean's skin is a light warm tone (#F0DFCB, sampled from the anchor) \u2014 distinct from the cream paper base (#F2E6CC) by a slightly warmer, pinker cast, not left as bare paper. Shadow on the skin renders as warm-graphite cross-hatching following the form (under the jaw, the brow, the nose), never a flat gray fill. This reverses the earlier 'no explicit skin tone / skin is paper-base' rule: full-color is canonical Sean (director decision, 2026-05-29).",
       "cites_phase": [
         5,
         6
@@ -343,6 +343,40 @@
         "characters/sean-anchor/source-refs/head-turn/head-turn-1.png",
         "characters/sean-anchor/source-refs/head-turn/head-turn-5.png",
         "characters/sean-anchor/source-refs/head-turn/head-turn-9.png"
+      ]
+    },
+    {
+      "id": "IR.sean.hair.dirty-blonde-color",
+      "description": "Sean's hair color is dirty-blonde \u2014 warm light-brown #AD9468, not platinum-blonde and not dark brown. Rendered as a flat color fill with warm-graphite cross-hatching for the shadowed underside and the part, consistent across all colored views. In line-only motion plates the hair is contour plus a few interior strokes with no color fill.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png#region:hair"
+      ]
+    },
+    {
+      "id": "IR.sean.face.blue-eyes",
+      "description": "Sean's irises are blue \u2014 a mid cool blue (approx #4A6D8C, adjust on review) reading clearly against the paper-base sclera in colored plates. The eyes sit on the head's horizontal midline, roughly one eye-width apart (see IR.sean.face.eye-spacing-one-eye-width). In line-only motion plates the eye is a simple lidded almond with no iris fill.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png#region:eyes"
       ]
     }
   ]

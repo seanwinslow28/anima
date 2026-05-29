@@ -30,7 +30,8 @@
         "IR.sean.proportion.head-to-body-1-to-7",
         "IR.sean.proportion.hip-to-floor-4-head-heights",
         "IR.sean.face.jaw-line-angular-not-rounded",
-        "IR.sean.costume.default-outfit-locked"
+        "IR.sean.costume.default-outfit-locked",
+        "IR.sean.face.blue-eyes"
       ]
     },
     {
@@ -45,64 +46,64 @@
     },
     {
       "target_path": "turnarounds/head-profile-left.png",
-      "source": "ingest:source-refs/head-turn/head-turn-1.png",
+      "source": "ingest:source-refs/turnaround-1.png#region:head-profile",
       "cites_identity_rules": [
         "IR.sean.face.jaw-line-angular-not-rounded",
         "IR.sean.hair.center-cowlick",
         "IR.sean.hair.silhouette-tousled-medium-short",
-        "IR.sean.style.line-weight-hb-to-2b-warm-graphite"
+        "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
       ]
     },
     {
       "target_path": "turnarounds/head-profile-right.png",
-      "source": "ingest:source-refs/head-turn/head-turn-9.png",
+      "source": "generate",
       "cites_identity_rules": [
         "IR.sean.face.jaw-line-angular-not-rounded",
         "IR.sean.hair.center-cowlick",
         "IR.sean.hair.silhouette-tousled-medium-short",
-        "IR.sean.style.line-weight-hb-to-2b-warm-graphite"
+        "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
+      ],
+      "prompt": "right-facing profile head-and-shoulders view, neutral expression",
+      "reference_images": [
+        "anchor.png"
       ]
     },
     {
       "target_path": "turnarounds/head-front.png",
-      "source": "generate",
-      "prompt": "Pencil test character head turnaround, front-facing view. Sean Winslow \u2014 heroic-realistic adult proportion (head height fits seven times into total body height; this plate is a head-only crop). Hair: tousled medium-short with a visible center cowlick at the crown roughly 2cm forward of the back of the skull, the highest point of the head silhouette. Eyes: spaced approximately one eye-width apart at the inner corners, sitting slightly above the head's vertical midline. Brow line: strong horizontal with minimal arch, drawn with heavier line weight than surrounding contour (closer to 2B than HB). Jaw line: angular at the mandibular corner, approximately 100-110 degree turn rather than a smooth curve; squared chin. Render in pencil-test-colored register: warm graphite line weight #3D3530 ranging from HB-light (~0.5px construction) to 2B-heavy (~2px final contour), warm cream paper background #F2E6CC with visible texture and grain, no explicit skin tone (paper shows through as skin midtone), cross-hatching in warm graphite for shadow areas under the jaw, beside the nose, inside the eye socket. Visible construction lines beneath the final drawing \u2014 horizontal eye-line and vertical face-midline at roughly half final-contour weight. No vector cleanup, no digital finish, no anti-aliased smooth gradients. Hand-drawn pencil aesthetic.",
-      "reference_images": [
-        "anchor.png",
-        "turnarounds/head-profile-left.png",
-        "turnarounds/head-profile-right.png"
-      ],
+      "source": "ingest:source-refs/turnaround-1.png#region:head-front",
       "cites_identity_rules": [
         "IR.sean.hair.center-cowlick",
         "IR.sean.hair.silhouette-tousled-medium-short",
         "IR.sean.face.eye-spacing-one-eye-width",
         "IR.sean.face.jaw-line-angular-not-rounded",
         "IR.sean.face.brow-line-strong-horizontal",
-        "IR.sean.palette.four-step-pencil-test-vocabulary",
-        "IR.sean.palette.no-explicit-skin-tone",
+        "IR.sean.palette.full-color-pencil-test-vocabulary",
+        "IR.sean.palette.warm-skin-tone",
         "IR.sean.style.construction-lines-visible-beneath-final",
         "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
-        "IR.sean.style.cream-paper-texture-grain"
+        "IR.sean.style.cream-paper-texture-grain",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
       ]
     },
     {
       "target_path": "turnarounds/head-3quarter.png",
-      "source": "generate",
-      "prompt": "Pencil test character head turnaround, 3-quarter view (head rotated approximately 30 degrees from front toward camera-left, far-side ear partially visible). Sean Winslow \u2014 see anchor and head-front and head-profile-left references for identity. Hair: tousled medium-short with the center cowlick visible at the crown, sitting slightly forward of the back of the skull (highest point of silhouette). Eye spacing reads as approximately one eye-width at the inner corners in 3-quarter foreshortening. Brow line strong horizontal with minimal arch, heavier line weight than surrounding contour. Jaw angular at the mandibular corner. Render in pencil-test-colored register: warm graphite line weight #3D3530 ranging HB-light through 2B-heavy, warm cream paper background #F2E6CC with visible grain, no explicit skin tone (paper substrate showing through), cross-hatching for shadow areas. Visible construction lines beneath the final drawing \u2014 the rotated eye-line and face-midline should read at roughly half final-contour weight. Hand-drawn pencil aesthetic; no vector cleanup, no digital finish.",
-      "reference_images": [
-        "anchor.png",
-        "turnarounds/head-front.png",
-        "turnarounds/head-profile-left.png"
-      ],
+      "source": "ingest:source-refs/turnaround-1.png#region:head-3quarter",
       "cites_identity_rules": [
         "IR.sean.hair.center-cowlick",
         "IR.sean.hair.silhouette-tousled-medium-short",
         "IR.sean.face.eye-spacing-one-eye-width",
         "IR.sean.face.jaw-line-angular-not-rounded",
         "IR.sean.face.brow-line-strong-horizontal",
-        "IR.sean.palette.four-step-pencil-test-vocabulary",
+        "IR.sean.palette.full-color-pencil-test-vocabulary",
         "IR.sean.style.construction-lines-visible-beneath-final",
-        "IR.sean.style.line-weight-hb-to-2b-warm-graphite"
+        "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
       ]
     },
     {
@@ -116,10 +117,11 @@
       ],
       "cites_identity_rules": [
         "IR.sean.hair.silhouette-tousled-medium-short",
-        "IR.sean.palette.four-step-pencil-test-vocabulary",
+        "IR.sean.palette.full-color-pencil-test-vocabulary",
         "IR.sean.style.construction-lines-visible-beneath-final",
         "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
-        "IR.sean.style.cream-paper-texture-grain"
+        "IR.sean.style.cream-paper-texture-grain",
+        "IR.sean.hair.dirty-blonde-color"
       ]
     },
     {
@@ -135,11 +137,13 @@
         "IR.sean.face.brow-line-strong-horizontal",
         "IR.sean.face.jaw-line-angular-not-rounded",
         "IR.sean.hair.center-cowlick",
-        "IR.sean.palette.four-step-pencil-test-vocabulary",
-        "IR.sean.palette.no-explicit-skin-tone",
+        "IR.sean.palette.full-color-pencil-test-vocabulary",
+        "IR.sean.palette.warm-skin-tone",
         "IR.sean.style.construction-lines-visible-beneath-final",
         "IR.sean.style.cross-hatching-shadow-areas",
-        "IR.sean.style.line-weight-hb-to-2b-warm-graphite"
+        "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
       ]
     },
     {
@@ -155,10 +159,11 @@
         "IR.sean.face.eye-spacing-one-eye-width",
         "IR.sean.face.brow-line-strong-horizontal",
         "IR.sean.face.jaw-line-angular-not-rounded",
-        "IR.sean.palette.four-step-pencil-test-vocabulary",
-        "IR.sean.palette.no-explicit-skin-tone",
+        "IR.sean.palette.full-color-pencil-test-vocabulary",
+        "IR.sean.palette.warm-skin-tone",
         "IR.sean.style.construction-lines-visible-beneath-final",
-        "IR.sean.style.cross-hatching-shadow-areas"
+        "IR.sean.style.cross-hatching-shadow-areas",
+        "IR.sean.face.blue-eyes"
       ]
     },
     {
@@ -174,10 +179,11 @@
         "IR.sean.face.eye-spacing-one-eye-width",
         "IR.sean.face.brow-line-strong-horizontal",
         "IR.sean.face.jaw-line-angular-not-rounded",
-        "IR.sean.palette.four-step-pencil-test-vocabulary",
-        "IR.sean.palette.no-explicit-skin-tone",
+        "IR.sean.palette.full-color-pencil-test-vocabulary",
+        "IR.sean.palette.warm-skin-tone",
         "IR.sean.style.construction-lines-visible-beneath-final",
-        "IR.sean.style.cross-hatching-shadow-areas"
+        "IR.sean.style.cross-hatching-shadow-areas",
+        "IR.sean.face.blue-eyes"
       ]
     },
     {
@@ -195,10 +201,12 @@
         "IR.sean.face.brow-line-strong-horizontal",
         "IR.sean.face.jaw-line-angular-not-rounded",
         "IR.sean.hair.center-cowlick",
-        "IR.sean.palette.four-step-pencil-test-vocabulary",
-        "IR.sean.palette.no-explicit-skin-tone",
+        "IR.sean.palette.full-color-pencil-test-vocabulary",
+        "IR.sean.palette.warm-skin-tone",
         "IR.sean.style.construction-lines-visible-beneath-final",
-        "IR.sean.style.cross-hatching-shadow-areas"
+        "IR.sean.style.cross-hatching-shadow-areas",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
       ]
     },
     {
@@ -216,7 +224,9 @@
       "cites_identity_rules": [
         "IR.sean.motion.head-turn-9-frame-sequence",
         "IR.sean.hair.silhouette-tousled-medium-short",
-        "IR.sean.face.jaw-line-angular-not-rounded"
+        "IR.sean.face.jaw-line-angular-not-rounded",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
       ]
     },
     {
@@ -246,7 +256,9 @@
       "cites_identity_rules": [
         "IR.sean.motion.head-turn-9-frame-sequence",
         "IR.sean.hair.center-cowlick",
-        "IR.sean.face.eye-spacing-one-eye-width"
+        "IR.sean.face.eye-spacing-one-eye-width",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
       ]
     },
     {
@@ -276,7 +288,9 @@
       "cites_identity_rules": [
         "IR.sean.motion.head-turn-9-frame-sequence",
         "IR.sean.hair.silhouette-tousled-medium-short",
-        "IR.sean.face.jaw-line-angular-not-rounded"
+        "IR.sean.face.jaw-line-angular-not-rounded",
+        "IR.sean.hair.dirty-blonde-color",
+        "IR.sean.face.blue-eyes"
       ]
     },
     {
@@ -289,7 +303,7 @@
       "cites_identity_rules": [
         "IR.sean.prop.stylus-right-hand-always",
         "IR.sean.prop.stylus-grip-three-fingers",
-        "IR.sean.palette.four-step-pencil-test-vocabulary",
+        "IR.sean.palette.full-color-pencil-test-vocabulary",
         "IR.sean.style.construction-lines-visible-beneath-final",
         "IR.sean.style.cross-hatching-shadow-areas",
         "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
