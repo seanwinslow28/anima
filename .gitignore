@@ -34,5 +34,8 @@ docs/research/.sessions/
 # Superpowers local config
 .superpowers/
 
+# Superpowers session scratch plans (ephemeral, not source artifacts)
+docs/superpowers/plans/
+
 # Sean's private portfolio-grade-moments ledger (not a public artifact)
 PORTFOLIO-GOLD.md
