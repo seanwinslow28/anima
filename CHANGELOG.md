@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-05-29 — Commit 3b: mascot cross-register validation + a documented similarity-gate blind spot
+
+**What changed:** Validated that the fidelity mechanism generalizes to the pixel-art-8bit register (claude-mascot), and documented an empirically-discovered limitation of the PIL similarity tier.
+
+- **Mechanism generalizes (visual gate).** Ran one mascot generate plate (`turnarounds/head-front.png`) through the exact commit-1 code path against live NB Pro. The result is recognizably the anchor's orange pixel-octopus — blocky lozenge, dot eyes, stub legs, orange palette — **not** the pre-fix generic chibi humanoid. Evidence: `docs/anima-test-runs/2026-05-29-phase1-rebake-recovery/recovered-mascot-head-front.png` vs `mascot-anchor.png`. (Minor AA on diagonals — a Pass-3 register-purity nit, not identity drift.)
+- **Similarity-gate blind spot (honest finding).** The PIL-perceptual tier **inverted** on the mascot: recovered plate 0.460 vs drifted plate 0.571 — it ranked the correct plate below the wrong one. Cause: the global color-histogram/luma metric is scale/background-sensitive, and the mascot anchor is a tiny creature on a mostly-white field while the recovered plate fills the frame. On sean-anchor (consistent full-figure framing) the ordering was correct (0.564 vs 0.468). The PIL tier is a useful severe-drift detector for consistent-framing characters but is **not reliable for tiny-subject/variable-crop registers** — the human/visual gate is the arbiter there, and the DINOv2 tier (already preferred in the ladder) is the real fix. Documented as a KNOWN BLIND SPOT in `similarity_gate.py`; do not promote the PIL tier to a hard gate for pixel-art/mascot characters.
+- **Transient Pass-1 stub, loud guard worked.** The first full mascot scratch re-bake stubbed at Pass-1 and the commit-2b/2c loud-fail guard fired (no silent ship). A raw capture of the same call parsed cleanly (452s, all five keys), so it was a transient malformed Opus 4.8 emission, not a parser gap. Follow-up logged (not done): have Cy retry Pass-1 on parse failure within the three-call budget so transient malformations auto-recover.
+- Full finding: `docs/anima-test-runs/2026-05-29-phase1-rebake-recovery/mascot-cross-register-finding.md`. 176 tests green (no code-behavior change; docstring + docs).
+
+**Why:** The cross-register check is what proves the fix is structural, not a sean-anchor fluke — and it surfaced an honest limitation of the cheap gate that future sessions need to know before trusting its number on a mascot-like character. Better to name the blind spot than to let a misleading 0.46-vs-0.57 read like the fix regressed.
+
 ## 2026-05-29 — Commit 3 (Phase 4): full-color rule port + #region crop fix + register-consistency repoint
 
 **What changed:** The Phase-4 fixes the post-mortem reserved for "after the winning model is known" (NB Pro confirmed — Track B not needed). Three things, all against the locked sean-anchor Bible, left `locked: false` for Sean's re-approval (propose, not decide). 176 tests green (172 + 4 crop tests).

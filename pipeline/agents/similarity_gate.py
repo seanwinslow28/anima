@@ -41,6 +41,20 @@ the verdict trail, but does not short-circuit Gemini — both signals get
 recorded. Hard-reject-before-Pass-3 becomes safe once the embedding tier
 (DINOv2, angle-robust) is the active method; the flag is wired so that promotion
 is a threshold/config change, not a rewrite.
+
+KNOWN BLIND SPOT (empirical, 2026-05-29): the PIL tier is dominated by global
+color histogram + luma structure, so it is also SCALE/BACKGROUND-sensitive. On
+the claude-mascot register it inverted: the visually-correct recovered plate (a
+frame-filling orange octopus) scored 0.46 vs the drifted generic-chibi plate at
+0.57, because the anchor is a tiny creature on a mostly-white field and the
+recovered plate fills the frame — the white/orange ratio swamps the identity
+signal. On sean-anchor (consistent full-figure framing on cream) the ordering
+was correct (0.564 recovered vs 0.468 drift). Takeaway: the PIL tier is a
+useful SEVERE-monochrome-drift detector for consistent-framing characters, but
+is NOT reliable for tiny-subject-on-background or variable-crop registers — the
+human/visual gate remains the arbiter there, and the DINOv2 tier (semantic,
+scale/background-robust) is the real fix. Do NOT promote the PIL tier to a hard
+gate for pixel-art/mascot characters.
 """
 
 from __future__ import annotations
