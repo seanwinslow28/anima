@@ -3,7 +3,7 @@
 Cy runs once per character. Three-phase loop with categorically different
 model assignment per phase:
 
-  Pass 1 — Opus 4.7 authors (text-only).
+  Pass 1 — Opus 4.8 authors (text-only).
            Emits the five-artifact JSON envelope: character.yaml + IR.* graph
            entries + risk-bible.md + cy-confidence-notes.md +
            plate_generation_plan.json.
@@ -78,6 +78,17 @@ _BOX_CHARACTERS = frozenset("╔═╗║╚╝┌─┐│└┘├┤┬┴┼
 # the plate to the human gate. Mirrors Maya's three-call ceiling per plan,
 # but per-plate scope since Cy may have many plates.
 _PLATE_ATTEMPT_CEILING = 3
+
+# Subdirectories under characters/{id}/ that hold Cy-generated (or
+# ingest-target) plates. A `generate` plate must NEVER reference another plate
+# in these directories — that is the reference-chaining anti-pattern that
+# compounded identity drift (visual-fidelity post-mortem §3d: head-3quarter
+# chained off the already-drifted head-front, expressions chained off neutral).
+# Legitimate references for a generate plate come from anchor.png + source-refs/
+# only. The runner is the source of truth here regardless of what Opus emits.
+_GENERATED_PLATE_DIRS = frozenset(
+    {"turnarounds", "expressions", "props", "motion_plates", "costumes"}
+)
 
 # Pass-3 Gemini timeout per plate. Same default Em uses in vision_critic.py.
 _GEMINI_TIMEOUT_S = 120
@@ -459,25 +470,23 @@ class CharacterDesignerNode:
         target_path.parent.mkdir(parents=True, exist_ok=True)
         source = str(plate.get("source", "generate"))
         cites_rules = tuple(plate.get("cites_identity_rules", []))
-        prompt_text = str(plate.get("prompt", ""))
-        # Opus is supposed to emit character-dir-relative paths per the
-        # addendum's "What good looks like" example ("anchor.png", not
-        # "characters/sean-anchor/anchor.png"). In practice the first
-        # sean-anchor authoring run emitted project-root-relative paths
-        # anyway, so resolve defensively: prefer character-dir, fall back
-        # to project root if that doesn't exist (same pattern the ingest
-        # path uses at the start of this function).
-        reference_images = []
-        for ref in plate.get("reference_images", []):
-            if not ref:
-                continue
-            ref_path = Path(ref)
-            candidate = character_dir / ref_path
-            if not candidate.exists():
-                fallback = _PROJECT_ROOT / ref_path
-                if fallback.exists():
-                    candidate = fallback
-            reference_images.append(candidate)
+        plate_intent = str(plate.get("prompt", ""))
+        # Reference resolution is now the RUNNER's call, not a faithful
+        # pass-through of whatever Opus emitted (post-mortem §3d). For a
+        # generate plate the runner unconditionally seeds anchor.png first,
+        # keeps only source-refs/ angle targets, and strips any reference to
+        # another generated plate (no chaining). For an ingest plate there are
+        # no references — the pixel is Sean's own source.
+        reference_images, has_pose_ref = _resolve_generate_references(
+            plate, character_dir
+        )
+        # Wrap the plate's short intent in the role-tag framing NB Pro responds
+        # to (Phase 0 proved a terse "match the anchor exactly" prompt recovers
+        # identity). The verbose verbal character-descriptions are gone; the
+        # runner owns the framing so a too-wordy Opus prompt can't reintroduce
+        # prompt-dominance, and the anti-caption guardrail kills the stylus.png
+        # caption failure mode (§3b).
+        prompt_text = _build_nb_pro_prompt(plate_intent, has_pose_ref=has_pose_ref)
 
         status: dict[str, Any] = {
             "status": "pending",
@@ -605,6 +614,108 @@ def _parse_json_envelope(text: str) -> dict:
         return json.loads(body)
     except json.JSONDecodeError as exc:
         raise ValueError(f"Response is not parseable JSON: {exc}") from exc
+
+
+def _classify_reference(ref: str, character_dir: Path) -> tuple[Path | None, str]:
+    """Resolve one plate reference string and classify it.
+
+    Returns (resolved_path | None, kind) where kind is one of:
+      'anchor'     — the character's anchor.png (the canonical identity ref)
+      'source_ref' — material under source-refs/ (Sean's hand-drawn input)
+      'generated'  — a plate under a _GENERATED_PLATE_DIRS subdir (NEVER a
+                     valid reference for a generate plate — chaining)
+      'external'   — resolves on disk but lives outside the character folder
+      'missing'    — could not resolve on disk
+
+    Opus has historically emitted both character-dir-relative ("anchor.png")
+    and project-root-relative ("characters/sean-anchor/anchor.png") paths, so
+    resolution tries character_dir first, then project root.
+    """
+    if not ref:
+        return None, "missing"
+    ref_path = Path(ref)
+    candidate = character_dir / ref_path
+    if not candidate.exists():
+        fallback = _PROJECT_ROOT / ref_path
+        candidate = fallback if fallback.exists() else candidate
+    if not candidate.exists():
+        return None, "missing"
+
+    resolved = candidate.resolve()
+    try:
+        rel = resolved.relative_to(character_dir.resolve())
+    except ValueError:
+        return resolved, "external"
+
+    if rel == Path("anchor.png"):
+        return resolved, "anchor"
+    if rel.parts and rel.parts[0] == "source-refs":
+        return resolved, "source_ref"
+    if rel.parts and rel.parts[0] in _GENERATED_PLATE_DIRS:
+        return resolved, "generated"
+    return resolved, "external"
+
+
+def _resolve_generate_references(
+    plate: dict, character_dir: Path
+) -> tuple[list[Path], bool]:
+    """Build the reference list a generate plate is actually fed.
+
+    The runner — not Opus — owns this. Policy (post-mortem §3d + §5 item 2):
+      1. anchor.png is ALWAYS first, injected unconditionally.
+      2. source-refs/ material Opus named (the angle/pose target) is kept.
+      3. references to other generated plates are STRIPPED (no chaining).
+
+    Returns (ordered_deduped_paths, has_pose_ref) where has_pose_ref is True
+    when at least one non-anchor reference survived (so the prompt can name it
+    as the angle/pose target).
+    """
+    refs: list[Path] = []
+    seen: set[Path] = set()
+
+    anchor_path, anchor_kind = _classify_reference("anchor.png", character_dir)
+    if anchor_kind == "anchor" and anchor_path is not None:
+        refs.append(anchor_path)
+        seen.add(anchor_path)
+
+    has_pose_ref = False
+    for raw in plate.get("reference_images", []):
+        path, kind = _classify_reference(str(raw), character_dir)
+        if kind in {"source_ref", "external"} and path is not None and path not in seen:
+            refs.append(path)
+            seen.add(path)
+            has_pose_ref = True
+        # 'anchor' already injected; 'generated' dropped (no chaining);
+        # 'missing' skipped.
+    return refs, has_pose_ref
+
+
+def _build_nb_pro_prompt(plate_intent: str, *, has_pose_ref: bool) -> str:
+    """Wrap a plate's short intent in NB Pro reference-role-tag framing.
+
+    Phase 0 of the fidelity fix proved that a terse "redraw this exact
+    character" prompt against the anchor recovers identity, where verbose
+    verbal character descriptions drove prompt-dominance drift. This builds
+    that terse framing around whatever short intent Cy authored, and forbids
+    rendering text/captions (the props/stylus.png caption failure, §3b).
+    """
+    lines = [
+        "Image 1 is the identity anchor — the canonical reference for this "
+        "character. Match the face, hair, color palette, skin tone, and "
+        "proportions in Image 1 exactly. Keep the full color of Image 1.",
+    ]
+    if has_pose_ref:
+        lines.append(
+            "Image 2 is the angle/pose target — match its viewing angle and "
+            "pose, but the identity always comes from Image 1."
+        )
+    intent = plate_intent.strip() or "a clean reference plate of this character"
+    lines.append(f"Render: {intent}.")
+    lines.append(
+        "The character must stay recognizably identical to Image 1. Do not "
+        "add any text, labels, captions, annotations, or watermarks to the image."
+    )
+    return " ".join(lines)
 
 
 def _atomic_write_text(path: Path, content: str) -> None:

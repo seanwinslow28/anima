@@ -448,6 +448,126 @@ def test_three_attempt_ceiling_surfaces_human_gate(
     assert nb_pro_call_count == 3  # initial + 2 regens before the ceiling
 
 
+def _patch_with_nb_capture(monkeypatch, *, envelope):
+    """Patch the three runners, capturing every invoke_nb_pro kwargs dict.
+
+    Returns the list that accumulates one dict per NB Pro call so a test can
+    assert on the reference_images / prompt the runner actually forwarded.
+    """
+    nb_calls: list[dict] = []
+
+    async def fake_opus(*, prompt: str, **kwargs):
+        return _FakeSDKResponse(text="```json\n" + json.dumps(envelope) + "\n```")
+
+    async def fake_gemini(*, prompt: str, image_paths: list, timeout_s: int = 120):
+        return _FakeCLIResponse(text=_make_gemini_verdict("pass"))
+
+    def capturing_nb_pro(*, output_path, cache_dir, **kwargs):
+        nb_calls.append({"output_path": output_path, **kwargs})
+        output_path.write_bytes(_tiny_png())
+        return NBProResponse(
+            output_path=output_path, cache_key="k", cache_hit=False,
+            stub_fallback=False, exit_code=0,
+        )
+
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", fake_opus)
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+    )
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.invoke_nb_pro", capturing_nb_pro
+    )
+    return nb_calls
+
+
+def test_anchor_unconditionally_injected_when_opus_omits_it(
+    base_ctx, character_dir, monkeypatch
+):
+    """A generate plate that emits NO anchor reference still gets anchor.png
+    forwarded to NB Pro as the first reference. Fixes the head-back class of
+    bug (post-mortem §3d) where Opus emitted a plate with no anchor at all."""
+    plates = [{
+        "target_path": "turnarounds/head-back.png",
+        "source": "generate",
+        "prompt": "back view of the head",
+        "reference_images": [],  # Opus emitted nothing
+        "cites_identity_rules": ["IR.test-char.hair.center-cowlick"],
+    }]
+    envelope = _make_pass1_envelope(plates=plates)
+    nb_calls = _patch_with_nb_capture(monkeypatch, envelope=envelope)
+
+    CharacterDesignerNode().run(base_ctx)
+
+    assert len(nb_calls) == 1
+    refs = [Path(p) for p in nb_calls[0]["reference_images"]]
+    assert refs, "anchor must be injected even when Opus emits no references"
+    assert refs[0] == (character_dir / "anchor.png"), \
+        "anchor.png must be the FIRST reference"
+
+
+def test_generated_plate_references_are_stripped_no_chaining(
+    base_ctx, character_dir, monkeypatch
+):
+    """A generate plate that references another generated plate (e.g.
+    turnarounds/head-front.png) must NOT forward that plate to NB Pro —
+    reference-chaining compounded drift (post-mortem §3d). Anchor + source-refs
+    only."""
+    # Drop a source-ref the plate legitimately references as an angle target.
+    (character_dir / "source-refs" / "turnaround-1.png").write_bytes(_tiny_png())
+    plates = [{
+        "target_path": "turnarounds/head-3quarter.png",
+        "source": "generate",
+        "prompt": "three-quarter head view",
+        # anchor + a real source-ref (kept) + a generated plate (must be dropped)
+        "reference_images": [
+            "anchor.png",
+            "source-refs/turnaround-1.png",
+            "turnarounds/head-front.png",
+        ],
+        "cites_identity_rules": ["IR.test-char.hair.center-cowlick"],
+    }]
+    envelope = _make_pass1_envelope(plates=plates)
+    nb_calls = _patch_with_nb_capture(monkeypatch, envelope=envelope)
+
+    CharacterDesignerNode().run(base_ctx)
+
+    refs = [Path(p) for p in nb_calls[0]["reference_images"]]
+    ref_names = {p.name for p in refs}
+    assert refs[0] == (character_dir / "anchor.png"), "anchor first"
+    assert "turnaround-1.png" in ref_names, "source-ref angle target kept"
+    assert "head-front.png" not in ref_names, \
+        "generated plate must be stripped — no chaining off generated output"
+
+
+def test_nb_pro_prompt_carries_role_tag_and_anti_caption_instruction(
+    base_ctx, character_dir, monkeypatch
+):
+    """The prompt the runner forwards to NB Pro frames the anchor as the
+    identity reference to match and forbids rendering text/captions — the
+    props/stylus.png caption bug (post-mortem §3b) came from meta-prose in the
+    prompt being rendered as a caption."""
+    plates = [{
+        "target_path": "expressions/neutral.png",
+        "source": "generate",
+        "prompt": "neutral expression, front view",
+        "reference_images": ["anchor.png"],
+        "cites_identity_rules": ["IR.test-char.hair.center-cowlick"],
+    }]
+    envelope = _make_pass1_envelope(plates=plates)
+    nb_calls = _patch_with_nb_capture(monkeypatch, envelope=envelope)
+
+    CharacterDesignerNode().run(base_ctx)
+
+    prompt = nb_calls[0]["prompt"].lower()
+    # Role-tag framing: the first reference is the identity anchor to match.
+    assert "image 1" in prompt and "anchor" in prompt
+    assert "match" in prompt
+    # Anti-caption guardrail.
+    assert ("no text" in prompt or "do not" in prompt) and "caption" in prompt
+    # The plate's own short intent survives.
+    assert "neutral expression" in prompt
+
+
 def test_ingested_plate_still_runs_gemini_verification(
     base_ctx, character_dir, monkeypatch
 ):

@@ -23,6 +23,15 @@ from dataclasses import dataclass
 from pathlib import Path
 
 OPUS_MODEL = "claude-opus-4-7"
+# Authoring tier for the text-only seats — Maya (planner) and Cy (character
+# designer). Bumped to Opus 4.8 in the visual-fidelity fix (2026-05-29): same
+# price as 4.7, better agentic judgment, ~4× less likely to let flaws pass /
+# more likely to flag uncertainty — directly useful for Cy's confidence-hedging
+# honesty and Maya's adversarial-pass quality. Kept as a SEPARATE constant from
+# OPUS_MODEL (Em's vision-escalation seat) so the bump is revertible in
+# isolation if an eval regresses. Note for honesty: 4.8 helps AUTHOR the
+# fidelity fix; it is not itself the fix (that's an image-model problem).
+OPUS_AUTHORING_MODEL = "claude-opus-4-8"
 SONNET_MODEL = "claude-sonnet-4-6"
 STUB_MODEL = "stub-fallback"
 
@@ -342,9 +351,15 @@ async def invoke_opus_text(
     prompt: str,
     timeout_s: int = 120,
 ) -> SDKResponse:
-    """Invoke Opus 4.7 with a text-only prompt. Maya's primary + resolution passes."""
+    """Invoke the Opus authoring tier (4.8) with a text-only prompt.
+
+    Maya's primary + resolution passes and Cy's Pass-1 authoring both route
+    here. Uses OPUS_AUTHORING_MODEL (4.8) rather than OPUS_MODEL (4.7, Em's
+    vision-escalation seat) so the fidelity-fix bump stays revertible in
+    isolation.
+    """
     return await _invoke_text(
-        model=OPUS_MODEL,
+        model=OPUS_AUTHORING_MODEL,
         prompt=prompt,
         timeout_s=timeout_s,
         stub_fn=_stub_opus_text,
