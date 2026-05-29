@@ -18,7 +18,7 @@ Round 3 just shipped on `ultraplan/seedance-pipeline` (commit `84ffa9d`). All 15
 
 **The only fundamentally new work** is the bytedance/seedance-2.0 integration. Everything else (NB2 cleanup, FFmpeg assembly, audit logs) reuses existing patterns adapted for video output.
 
-**Note on parallel artifact:** A near-identical execution doc lives at [docs/act2-seedance-execution-plan.md](../../Code-Brain/sw-portfolio-animation-pipeline/docs/act2-seedance-execution-plan.md) (untracked, written this session). This file is the canonical plan; the in-repo doc serves as the engineer-facing handoff. Both stay aligned.
+**Note on parallel artifact:** A near-identical execution doc lived at `docs/act2-seedance-execution-plan.md` (untracked, written this session — never committed, no longer on disk). This file is the canonical plan; the in-repo doc serves as the engineer-facing handoff. Both stay aligned.
 
 ---
 
@@ -28,11 +28,11 @@ Refinements applied on top of prior planning:
 
 1. **Anchor sizes confirmed: 700KB–1MB each** (not 700KB–6MB as initially estimated). All 15 anchors verified on disk under `runs/act2-exploration/concepts/{zone1,zone3,zone4,bridges}/`. Base64 inline is *technically* feasible (~16MB encoded < fal's 100MB limit), but `fal_client.upload_file()` is still the right call — uploads persist across retries and avoid re-uploading 1MB on every `fal_client.subscribe`/`submit` call.
 
-2. **`pipeline/audit.py` writes vision-review prompts to stdout, not disk** (its `get_vision_review_prompt()` at [pipeline/audit.py:52-82](../../Code-Brain/sw-portfolio-animation-pipeline/pipeline/audit.py#L52-L82) returns a string for piping to Claude Code). The new `seedance_audit.py` must instead **write `audit/qa_{shot}.md` files directly to disk** so the user can review them as artifacts and check off boxes. Mirror the *content* of the audit.py template, not its I/O.
+2. **`pipeline/audit.py` writes vision-review prompts to stdout, not disk** (its `get_vision_review_prompt()` at [pipeline/audit.py:52-82](../pipeline/audit.py#L52-L82) returns a string for piping to Claude Code). The new `seedance_audit.py` must instead **write `audit/qa_{shot}.md` files directly to disk** so the user can review them as artifacts and check off boxes. Mirror the *content* of the audit.py template, not its I/O.
 
-3. **`pipeline/assemble.sh` has a known JPEG-as-PNG gotcha** at [pipeline/assemble.sh:159-164](../../Code-Brain/sw-portfolio-animation-pipeline/pipeline/assemble.sh#L159-L164) — Gemini returns JPEG bytes even when the output extension is `.png`, and FFmpeg silently drops them. The cleanup loop's NB2 outputs must be re-encoded with PIL (`Image.open(...).save(..., 'PNG')`) or piped through ImageMagick before FFmpeg ingestion.
+3. **`pipeline/assemble.sh` has a known JPEG-as-PNG gotcha** at [pipeline/assemble.sh:159-164](../pipeline/assemble.sh#L159-L164) — Gemini returns JPEG bytes even when the output extension is `.png`, and FFmpeg silently drops them. The cleanup loop's NB2 outputs must be re-encoded with PIL (`Image.open(...).save(..., 'PNG')`) or piped through ImageMagick before FFmpeg ingestion.
 
-4. **`generate_image.py` accepts multiple `--reference` args** (`nargs="+"` at [generate_image.py:202-204](../../Code-Brain/sw-portfolio-animation-pipeline/.claude/skills/gemini-pencil-animation-image-gen/scripts/generate_image.py#L202-L204)) — confirms the cleanup loop's 3-reference invocation pattern works as designed.
+4. **`generate_image.py` accepts multiple `--reference` args** (`nargs="+"` at [generate_image.py:202-204](../.claude/skills/gemini-pencil-animation-image-gen/scripts/generate_image.py#L202-L204)) — confirms the cleanup loop's 3-reference invocation pattern works as designed.
 
 5. **`manifest.yaml` is strictly Act 1**, no `act2` section. Decision: do **not** retrofit `manifest.yaml`. Create a new `pipeline/seedance_shotlist.yaml` with its own schema, and add a one-line pointer to it from `manifest.yaml` if discoverability becomes an issue. Keeps Act 1 frozen.
 
@@ -79,10 +79,10 @@ Refinements applied on top of prior planning:
 
 | File | Why |
 |---|---|
-| [pipeline/generate.py](../../Code-Brain/sw-portfolio-animation-pipeline/pipeline/generate.py) | Subprocess + JSONL pattern template (lines 29–157) |
-| [pipeline/audit.py](../../Code-Brain/sw-portfolio-animation-pipeline/pipeline/audit.py) | Markdown vision-review template at lines 52–82 (re-cast to write-to-file) |
-| [pipeline/assemble.sh](../../Code-Brain/sw-portfolio-animation-pipeline/pipeline/assemble.sh) | FFmpeg patterns (lines 173–226), JPEG-as-PNG re-encode (lines 159–164) |
-| [.claude/skills/gemini-pencil-animation-image-gen/scripts/generate_image.py](../../Code-Brain/sw-portfolio-animation-pipeline/.claude/skills/gemini-pencil-animation-image-gen/scripts/generate_image.py) | NB2 CLI invoked by `seedance_cleanup.py` (multi-`--reference` confirmed) |
+| [pipeline/generate.py](../pipeline/generate.py) | Subprocess + JSONL pattern template (lines 29–157) |
+| [pipeline/audit.py](../pipeline/audit.py) | Markdown vision-review template at lines 52–82 (re-cast to write-to-file) |
+| [pipeline/assemble.sh](../pipeline/assemble.sh) | FFmpeg patterns (lines 173–226), JPEG-as-PNG re-encode (lines 159–164) |
+| [.claude/skills/gemini-pencil-animation-image-gen/scripts/generate_image.py](../.claude/skills/gemini-pencil-animation-image-gen/scripts/generate_image.py) | NB2 CLI invoked by `seedance_cleanup.py` (multi-`--reference` confirmed) |
 | `docs/act2-seedance-shot-list.md` | Source spec for `seedance_shotlist.yaml` |
 | `docs/seedance-research-findings.md` | API code template (lines 86–125) |
 
@@ -158,7 +158,7 @@ Refinements applied on top of prior planning:
   - Build per-shot MP4s by transcoding raw Seedance MP4s to a uniform codec/fps: `ffmpeg -i {seedance/T2_attempt_01.mp4} -r 24 -c:v libx264 -crf 18 -pix_fmt yuv420p shots/T2.mp4`.
   - Build the 4 hold MP4s from anchor PNGs (S1 static `-loop 1 -t 2`; T1 = stub for rough cut, just hold the empty terminal 2s, no blink yet; T3 static; FIN simple Ken Burns from the **dirty** panorama for rough cut, since Procreate hasn't run yet).
   - Concat per `assembly_order` via `ffmpeg -f concat -i shotlist.txt -c copy export/pencil-test-act2-rough.mp4`.
-  - Reuse [pipeline/assemble.sh:205-226](../../Code-Brain/sw-portfolio-animation-pipeline/pipeline/assemble.sh#L205-L226) for two-pass GIF + WebM export.
+  - Reuse [pipeline/assemble.sh:205-226](../pipeline/assemble.sh#L205-L226) for two-pass GIF + WebM export.
 - [ ] **6.2** Run: `bash pipeline/seedance_assemble.sh runs/act2-seedance-2026-04-27 --rough`. Expected: `export/pencil-test-act2-rough.mp4` (~50s). Wall-clock ~5 min.
 - [ ] **6.3** **M1 MILESTONE — HUMAN REVIEW.** Validate timing/pacing. Decide: are holds the right duration? Are any clips so broken they need re-generation, not just cleanup? Are hard cuts working visually?
 - [ ] **6.4** Commit.
