@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-05-29 — Phase 4: full-color doc consistency pass + approve the sean-anchor Bible
+
+**What changed:** Propagated the full-color decision into the Bible's sibling docs (commit 3 only updated `acceptance_criteria.json`), then locked the Bible.
+
+- **`character.yaml`** — palette went 4 → 8 colors, adding warm skin `#F0DFCB`, dirty-blonde hair `#AD9468`, warm-gray sneakers `#7E807B`, blue eyes `#4A6D8C`, and dropping the "no dedicated skin color — paper shows through" language from cream_paper. Proportions converted to the renderer's canonical keys (`head_to_body` / `shoulder_to_hip` / `notes`) so the tear sheet renders them instead of "(unset)". `flux_lora_seed_plates` dropped the retired `turnarounds/body-front.png` (→ `body-3quarter`). The inline confidence summary's axis 5 flipped from "skin tone intentionally absent" to "full color is canonical; the skin/eye hexes are sampled, eyeball them."
+- **`risk-bible.md`** — the three monochrome passages ("palette locked at four steps; skin tone intentionally absent", "locked at four colors and excludes skin tone", "any departure from the four-step palette") rewritten to the full-color limited palette. The view-source paragraph corrected to match the committed plan: bodies ingest Sean's hand-trimmed `source-refs/body-turnarounds/` crops; head-front/3quarter/profile-left are colored `#region` crops; profile-right + back are generated.
+- **`cy-confidence-notes.md`** — section 5 rewritten (full color canonical; the remaining hedge is hex *precision*, not skin *presence*). Section 1 corrected: head turnarounds source from the colored turnaround sheet, not the line-art head-turn frames.
+- **Approved.** `pipeline bible approve` flipped `acceptance_criteria.json` to `locked: true` (22 rules, v1.2). Sean confirmed the palette hexes (incl. the two estimates, skin `#F0DFCB` and eyes `#4A6D8C`). The lock is also what routes the Phase 5 bake to plates-only.
+
+**Why:** A reviewer reading `bible show` (or any downstream consumer reading the sibling docs) would have seen a 4-color monochrome palette that directly contradicted the locked full-color rules. Locking the Bible on inconsistent docs would have shipped that contradiction. 182 tests green.
+
 ## 2026-05-29 — Phase 4a: plates-only bake mode — regenerate plates without re-authoring an approved Bible
 
 **What changed:** Added the missing capability the "approve → bake" flow assumes. `CharacterDesignerNode.run` always ran Pass 1 (Opus re-authors the whole envelope — `character.yaml`, `acceptance_criteria.json` with `locked: false`, risk-bible, confidence-notes, **and `plate_generation_plan.json`**). So baking an *approved* Bible via `author_bible.py` would have overwritten the locked rules AND the hand-curated plate plan (the trimmed stylus + Sean's manual body-turnaround crops). The plan's own invariant — "approved rules (locked: true) are not touched by a bake" — had no enforcement.

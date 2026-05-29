@@ -1,6 +1,6 @@
 {
   "version": "1.2",
-  "locked": false,
+  "locked": true,
   "criteria": [
     {
       "id": "IR.sean.prop.stylus-right-hand-always",
