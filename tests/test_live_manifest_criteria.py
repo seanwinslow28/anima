@@ -23,6 +23,10 @@ def _load_live_manifest_with_absolute_bible_paths() -> dict:
     sources = manifest.get("criteria_sources") or {}
     bibles = sources.get("bibles") or []
     sources["bibles"] = [str(_PROJECT_ROOT / p) for p in bibles]
+    # NOTE: brief-path coverage activates automatically once manifest.yaml's
+    # criteria_sources.brief_file is populated (empty today). Until then, the
+    # targeted mutate_plan round-trip test in tests/test_plan_cli.py is the
+    # real coverage for Maya's criteria-write surface.
     brief = sources.get("brief_file")
     if brief:
         sources["brief_file"] = str(_PROJECT_ROOT / brief)

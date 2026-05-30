@@ -425,6 +425,17 @@ def bump_version(criteria_path: Path, *, new_version: str) -> Path:
     and symlink swap. Per v2 lock (Maya brainstorm TOP-4), audit lives in
     the calling CLI command, not in this primitive.
     """
+    # Guard: the `version` field is the SCHEMA version, gated on a
+    # 1.0/1.1/1.2 allowlist by validate_criteria. A content semver written
+    # here makes the file unloadable (the 2026-05-30 mascot break). Refuse an
+    # off-schema major.minor at the primitive so no caller can re-arm it.
+    _major_minor = ".".join(new_version.split(".")[:2])
+    if not any(_major_minor.startswith(v) for v in ("1.0", "1.1", "1.2")):
+        raise ValueError(
+            f"bump_version refuses new_version={new_version!r}: its major.minor "
+            f"{_major_minor!r} is not a known schema version (1.0/1.1/1.2). "
+            f"Record a content revision in content_version, not the schema field."
+        )
     raw = json.loads(criteria_path.read_text(encoding="utf-8"))
     raw["version"] = new_version
     versioned_path = criteria_path.parent / f"acceptance_criteria-{new_version}.json"

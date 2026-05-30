@@ -165,77 +165,106 @@ def test_mutate_requires_actor_and_reason(tmp_path, capsys):
     assert rc == 1
 
 
-def test_mutate_writes_audit_jsonl_and_bumps_version(tmp_path):
-    bd = tmp_path / "briefs" / "test"
-    bd.mkdir(parents=True)
-    versioned = bd / "acceptance_criteria-1.1.0.json"
-    versioned.write_text(json.dumps({"version": "1.1", "locked": True, "criteria": []}))
-    (bd / "acceptance_criteria.json").symlink_to("acceptance_criteria-1.1.0.json")
-    (bd / "plan.md").write_text(
-        "# Plan\n\n## Cost preview\n\nLow $5\n", encoding="utf-8",
-    )
-    run_dir = tmp_path / "runs" / "test_run"
+def _seed_brief(bd: Path) -> None:
+    """Seed a brief dir with a regular-file v1.1 criteria carrying two AC rules
+    plus a plan.md. mutate_plan now edits a rule in place (not bump_version),
+    so the criteria must hold a real rule to edit."""
+    bd.mkdir(parents=True, exist_ok=True)
+    crit = {
+        "version": "1.1",
+        "locked": True,
+        "criteria": [
+            {
+                "id": "AC.identity.sean-jaw",
+                "description": "Sean's jaw is square.",
+                "cites_phase": [5],
+                "cites_personas": ["em"],
+                "impact_tag": "identity_critical",
+            },
+            {
+                "id": "AC.timing.beat3-hold",
+                "description": "Beat 3 holds two beats.",
+                "cites_phase": [4],
+                "cites_personas": ["em"],
+                "impact_tag": "structural",
+            },
+        ],
+    }
+    (bd / "acceptance_criteria.json").write_text(json.dumps(crit, indent=2), encoding="utf-8")
+    (bd / "plan.md").write_text("# Plan\n\n## Cost preview\n\nLow $5\n", encoding="utf-8")
+
+
+def test_mutate_edits_rule_in_place_and_stays_loadable(tmp_path):
+    """The fixed contract: mutate edits the rule in place, keeps the schema
+    `version` field loadable, and records the content revision separately —
+    the 2026-05-30 sibling-bug fix mirrored from `bible mutate`."""
+    from pipeline.criteria import load_criteria
+
+    bd = tmp_path / "briefs" / "2026-05-27-test"
+    _seed_brief(bd)
+    run_dir = tmp_path / "runs" / "r1"
 
     rc = mutate_plan(
-        run_dir=str(run_dir),
-        brief_dir=str(bd),
-        force=True,
-        actor="sean",
-        reason="tighten timing tolerance",
-        target="AC.timing.beat3-hold",
-        field="tolerance",
-        value="0.15",
-        new_version="1.2.0",
+        run_dir=str(run_dir), brief_dir=str(bd),
+        force=True, actor="sean", reason="tighten jaw",
+        target="AC.identity.sean-jaw", field="description",
+        value="Sean's jaw is very square.", new_version="1.2.0",
     )
     assert rc == 0
 
-    # New versioned file exists; symlink re-pointed.
-    assert (bd / "acceptance_criteria-1.2.0.json").exists()
-    assert (bd / "acceptance_criteria.json").is_symlink()
-    new_raw = json.loads((bd / "acceptance_criteria.json").read_text(encoding="utf-8"))
-    assert new_raw["version"] == "1.2.0"
+    saved = json.loads((bd / "acceptance_criteria.json").read_text(encoding="utf-8"))
+    # (a) the field change was applied to the rule content.
+    rule = next(c for c in saved["criteria"] if c["id"] == "AC.identity.sean-jaw")
+    assert rule["description"] == "Sean's jaw is very square."
+    # (b) schema version field NOT overwritten with the content semver.
+    assert saved["version"] == "1.1"
+    # content revision recorded separately.
+    assert saved["content_version"] == "1.2.0"
+    # (c) the criteria still loads — the regression for the schema break.
+    load_criteria(bd / "acceptance_criteria.json")
 
-    # Audit log has one line with the mutation record.
-    audit_path = run_dir / "plan_audit.jsonl"
-    assert audit_path.exists()
-    lines = audit_path.read_text(encoding="utf-8").strip().split("\n")
-    assert len(lines) == 1
-    record = json.loads(lines[0])
-    assert record["actor"] == "sean"
-    assert record["reason"] == "tighten timing tolerance"
-    assert record["target"] == "AC.timing.beat3-hold"
-    assert record["field"] == "tolerance"
-    assert record["value"] == "0.15"
-    assert record["criteria_version_from"] == "1.1"
-    assert record["criteria_version_to"] == "1.2.0"
+    # Audit log + plan.md delta block.
+    audit = (run_dir / "plan_audit.jsonl").read_text(encoding="utf-8")
+    assert "tighten jaw" in audit
+    plan_md = (bd / "plan.md").read_text(encoding="utf-8")
+    assert "Plan changes since approval (1)" in plan_md
+    assert "tighten jaw" in plan_md
 
-    # plan.md got the delta block prepended.
-    plan = (bd / "plan.md").read_text(encoding="utf-8")
-    assert "Plan changes since approval (1)" in plan
-    assert "tighten timing tolerance" in plan
+
+def test_mutate_unknown_target_errors(tmp_path):
+    """An unknown --target is a hard error (rc 1), not a silent no-op."""
+    bd = tmp_path / "briefs" / "2026-05-27-test"
+    _seed_brief(bd)
+    rc = mutate_plan(
+        run_dir=str(tmp_path / "runs" / "r1"), brief_dir=str(bd),
+        force=True, actor="sean", reason="edit a missing rule",
+        target="AC.identity.nonexistent", field="description",
+        value="x", new_version="1.2.0",
+    )
+    assert rc == 1
 
 
 def test_mutate_appends_audit_lines_across_invocations(tmp_path):
     """Second mutate adds a second JSONL line and bumps the delta counter."""
-    bd = tmp_path / "briefs" / "test"
-    bd.mkdir(parents=True)
-    versioned = bd / "acceptance_criteria-1.1.0.json"
-    versioned.write_text(json.dumps({"version": "1.1", "locked": True, "criteria": []}))
-    (bd / "acceptance_criteria.json").symlink_to("acceptance_criteria-1.1.0.json")
-    (bd / "plan.md").write_text("# Plan\n\n", encoding="utf-8")
+    bd = tmp_path / "briefs" / "2026-05-27-test"
+    _seed_brief(bd)
     run_dir = tmp_path / "runs" / "test_run"
 
     mutate_plan(
         run_dir=str(run_dir), brief_dir=str(bd), force=True,
-        actor="sean", reason="first", target="AC.x.y", field="f", value="1",
-        new_version="1.2.0",
+        actor="sean", reason="first", target="AC.identity.sean-jaw",
+        field="description", value="A.", new_version="1.2.0",
     )
     mutate_plan(
         run_dir=str(run_dir), brief_dir=str(bd), force=True,
-        actor="sean", reason="second", target="AC.x.z", field="f", value="2",
-        new_version="1.3.0",
+        actor="sean", reason="second", target="AC.timing.beat3-hold",
+        field="description", value="B.", new_version="1.3.0",
     )
     lines = (run_dir / "plan_audit.jsonl").read_text(encoding="utf-8").strip().split("\n")
     assert len(lines) == 2
-    plan = (bd / "plan.md").read_text(encoding="utf-8")
-    assert "Plan changes since approval (2)" in plan
+    saved = json.loads((bd / "acceptance_criteria.json").read_text(encoding="utf-8"))
+    # Both content revisions land; schema version stays loadable throughout.
+    assert saved["version"] == "1.1"
+    assert saved["content_version"] == "1.3.0"
+    plan_md = (bd / "plan.md").read_text(encoding="utf-8")
+    assert "Plan changes since approval (2)" in plan_md
