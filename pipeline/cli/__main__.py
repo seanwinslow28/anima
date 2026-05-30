@@ -90,7 +90,11 @@ def main(argv: list[str] | None = None) -> int:
     b_mutate.add_argument("--value", required=True, type=str)
     b_mutate.add_argument("--character-dir", required=True, type=str)
     b_mutate.add_argument("--run-dir", required=True, type=str)
-    b_mutate.add_argument("--new-version", required=True, type=str)
+    b_mutate.add_argument(
+        "--new-version", required=False, default=None, type=str,
+        help="Optional content revision; recorded as content_version. Does NOT "
+             "touch the schema version field (which stays 1.2).",
+    )
 
     b_iterate = bible_sub.add_parser(
         "iterate",
@@ -150,7 +154,7 @@ def main(argv: list[str] | None = None) -> int:
                 target=args.target,
                 field=args.field,
                 value=args.value,
-                new_version=args.new_version,
+                content_version=args.new_version,
             )
         if args.bible_cmd == "iterate":
             targets = [t.strip() for t in args.target.split(",") if t.strip()]

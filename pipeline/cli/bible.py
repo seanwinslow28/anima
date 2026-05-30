@@ -41,7 +41,7 @@ from typing import Any
 
 import yaml
 
-from pipeline.criteria import bump_version
+from pipeline.criteria import validate_criteria
 
 TEMPLATES_DIR = Path(__file__).resolve().parents[2] / "templates" / "bible"
 
@@ -328,9 +328,9 @@ def _render_prose_block(heading: str, body: str) -> str:
 def approve_bible(character_dir: str) -> int:
     """Flip locked=true on the character's acceptance_criteria.json.
 
-    Idempotent. The Bible's criteria file may be a direct file or a symlink
-    (post-mutation, `bump_version` re-points the symlink at the new
-    versioned file); either way, locked=true is written through.
+    Idempotent. The Bible's criteria file is a regular file; resolve() is a
+    no-op for it but kept so a legacy symlinked file (from the retired
+    bump_version path) still has locked=true written through to its target.
     """
     cd = Path(character_dir)
     criteria_path = cd / "acceptance_criteria.json"
@@ -367,16 +367,21 @@ def mutate_bible(
     target: str,
     field: str,
     value: str,
-    new_version: str,
+    content_version: str | None = None,
 ) -> int:
     """Audited mutation of an approved Bible. Refuses without --force.
 
+    Edits the rule content in place and keeps the schema `version` field
+    untouched (the loader gates `version` on a 1.0/1.1/1.2 allowlist — a
+    content semver written there makes the Bible unloadable; that was the
+    2026-05-30 §4 break). A content revision, if supplied, is recorded in a
+    separate top-level `content_version` field that the loader ignores.
+
     On success:
-      1. Bumps the character's criteria file to new_version via
-         pipeline.criteria.bump_version (the symlink at
-         acceptance_criteria.json re-points to the new versioned file).
-      2. Writes one JSONL line to runs/{run_id}/bible_audit.jsonl with the
-         mutation record (atomic append).
+      1. Sets criteria[<id == target>][field] = value, re-validates, writes
+         the file back in place (resolved-path atomic write, no symlink).
+      2. Records content_version if provided.
+      3. Appends one JSONL line to runs/{run_id}/bible_audit.jsonl.
     """
     if not force:
         print(
@@ -402,9 +407,29 @@ def mutate_bible(
 
     resolved = criteria_path.resolve()
     current = json.loads(resolved.read_text(encoding="utf-8"))
-    old_version = str(current.get("version", "1.2"))
+    schema_version = str(current.get("version", "1.2"))
+    old_content_version = current.get("content_version")
 
-    new_versioned_path = bump_version(criteria_path, new_version=new_version)
+    matched = [c for c in current.get("criteria", []) if c.get("id") == target]
+    if not matched:
+        print(
+            f"error: no criterion with id {target!r} in {criteria_path}. "
+            f"mutate edits an existing rule's field; check the --target id.",
+            file=sys.stderr,
+        )
+        return 1
+    old_value = matched[0].get(field)
+    matched[0][field] = value
+
+    if content_version is not None:
+        current["content_version"] = content_version
+
+    # Re-validate before writing so a mutate can never persist an invalid graph.
+    validate_criteria(current)
+
+    tmp = resolved.with_suffix(resolved.suffix + ".tmp")
+    tmp.write_text(json.dumps(current, indent=2), encoding="utf-8")
+    tmp.replace(resolved)
 
     rd.mkdir(parents=True, exist_ok=True)
     audit_path = rd / "bible_audit.jsonl"
@@ -415,16 +440,22 @@ def mutate_bible(
         "character_dir": str(cd),
         "target": target,
         "field": field,
+        "old_value": old_value,
         "value": value,
-        "criteria_version_from": old_version,
-        "criteria_version_to": new_version,
-        "criteria_path": str(new_versioned_path),
+        "schema_version": schema_version,
+        "content_version_from": old_content_version,
+        "content_version_to": content_version,
+        "criteria_path": str(resolved),
     }
     with audit_path.open("a", encoding="utf-8") as f:
         f.write(json.dumps(record) + "\n")
 
     print(f"mutated: {target}.{field} = {value!r}")
-    print(f"  criteria: {old_version} -> {new_version} (new file: {new_versioned_path.name})")
+    if content_version is not None:
+        print(
+            f"  content_version: {old_content_version} -> {content_version} "
+            f"(schema stays {schema_version})"
+        )
     print(f"  audit:    appended to {audit_path}")
     return 0
 
