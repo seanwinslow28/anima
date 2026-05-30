@@ -16,6 +16,10 @@ Usage:
       --target IR.<character_id>.<category>.<handle> --field <field> --value <value> \
       --character-dir characters/{character_id}/ --run-dir runs/{run_id} \
       --new-version 1.3.0
+  python -m pipeline.cli bible add --character-dir characters/{character_id}/ \
+      --spec characters/{character_id}/additions.json \
+      --force --actor <name> --reason "<why>" \
+      --run-dir runs/{run_id} --content-version 1.1.0
   python -m pipeline.cli bible iterate --character-dir characters/{character_id}/ \
       --target turnarounds,expressions --reject neutral,surprised \
       --reason "<why>" --run-dir runs/{run_id}
@@ -94,6 +98,22 @@ def main(argv: list[str] | None = None) -> int:
         "--new-version", required=False, default=None, type=str,
         help="Optional content revision; recorded as content_version. Does NOT "
              "touch the schema version field (which stays 1.2).",
+    )
+
+    b_add = bible_sub.add_parser(
+        "add",
+        help="Audited additive path: append new plates + IR rules to a locked Bible.",
+    )
+    b_add.add_argument("--character-dir", required=True, type=str)
+    b_add.add_argument("--spec", required=True, type=str,
+                       help="JSON file with {\"plates\": [...], \"rules\": [...]}.")
+    b_add.add_argument("--force", action="store_true")
+    b_add.add_argument("--actor", default="", type=str)
+    b_add.add_argument("--reason", default="", type=str)
+    b_add.add_argument("--run-dir", required=True, type=str)
+    b_add.add_argument(
+        "--content-version", required=False, default=None, type=str,
+        help="Optional content revision recorded as content_version (NOT the schema version).",
     )
 
     b_iterate = bible_sub.add_parser(
