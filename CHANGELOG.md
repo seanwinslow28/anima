@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-05-30 — Post-mortem: the template-emitter + tool-bugfix follow-on
+
+**What changed:** Wrote [`docs/anima-test-runs/2026-05-30-cy-template-emitter-and-tool-bugfix-followon.md`](docs/anima-test-runs/2026-05-30-cy-template-emitter-and-tool-bugfix-followon.md) — the field report for this session in the voice of the 2026-05-28 end-to-end report. Covers the deliberately-opposite shape of the session (slow, mechanical, test-first, no live model, locked Bibles untouched), the five things worth recording (the safety-net test passing on first run by design; the audit-only second bug hiding behind the loud schema-version bug; the §3 reject-reason fix needing two wires not one; the module-load ordering trap hit twice and caught instantly; the Maya `plan mutate` sibling bug one grep found and we left on purpose), Sean's pre-approval correction that the pencil emit is a prompt upgrade not a no-op, the structural lessons, and how to proceed (first live bake validates the emitter; fix the Maya sibling bug as a shared-primitive decision; build the NB-Pro guard only when a consumer lands; cross-character continuity audit unchanged).
+
+**Why:** The session shipped six commits and pushed; the post-mortem is the durable record of *why* it was sequenced the way it was (net first) and what the next session should watch (the first live bake on the richer pencil prompt). Documentation only.
+
 ## 2026-05-30 — Wrap: CLAUDE.md reflects the template-emitter follow-on
 
 **What changed:** Updated [`CLAUDE.md`](CLAUDE.md) for the template-emitter follow-on. Lifted the ⚠️ KNOWN BUG caution from the `bible mutate` Key-Commands block and replaced it with the fixed contract (edits the rule in place, keeps schema `version` 1.2, `--new-version` is an optional `content_version`, unknown `--target` errors). Rewrote the Cy skills-map row: `_build_plate_prompt` + `_REGISTER_CLAUSE_LIBRARY` is the prompt-construction source of truth (the five-slot register-agnostic template); `_resolve_plate_model` / `_REGISTER_MODELS` is per-register routing (NB2 editing default, NB Pro painterly-final seam, manifest override); `invoke_image_edit` is the renamed runner entry point. Noted the live-manifest criteria tripwire and flagged the queued Maya `plan mutate` sibling bug. Docs only.
