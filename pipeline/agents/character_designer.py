@@ -713,6 +713,10 @@ class CharacterDesignerNode:
                 output_path=target_path,
                 cache_dir=cache_dir,
                 cites_identity_rules=cites_rules,
+                # A `bible iterate` reject_reason both steers the prompt
+                # (woven into prompt_text above) and busts the cache key here,
+                # so the re-roll is a fresh generation, not a cache hit (§3).
+                reject_reason=plate_reject,
             )
             status.update({
                 "status": "stub" if nb_resp.stub_fallback else "generated",
@@ -769,9 +773,19 @@ class CharacterDesignerNode:
                 status["status"] = "human_gate_required"
                 return status
 
-            # Regenerate via NB Pro with the reject reason threaded in.
+            # Regenerate with the reject reason wired into the prompt's
+            # preserve/negative slot (post-mortem §3) — not just the cache key
+            # — so the correction steers the re-roll instead of re-sampling
+            # the identical prompt.
+            regen_prompt = _build_plate_prompt(
+                plate_intent,
+                style_register=style_register,
+                has_pose_ref=has_pose_ref,
+                is_prop=is_prop,
+                reject_reason=verdict_envelope["reasoning"],
+            )
             nb_resp = invoke_nb_pro(
-                prompt=prompt_text,
+                prompt=regen_prompt,
                 reference_images=reference_images,
                 output_path=target_path,
                 cache_dir=cache_dir,

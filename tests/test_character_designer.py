@@ -1165,3 +1165,63 @@ def test_plate_emitter_prop_path_unchanged():
     direct = _build_prop_prompt(intent)
     assert via_emitter == direct
     assert "Do NOT draw any person" in via_emitter
+
+
+# ---------------------------------------------------------------------------
+# bible iterate reject-reason reaches the prompt (post-mortem §3)
+# ---------------------------------------------------------------------------
+
+
+def test_iterate_reject_reason_reaches_emitted_prompt(tmp_path, monkeypatch):
+    """A plate carrying a reject_reason (from `bible iterate`) must produce an
+    emitted prompt that CONTAINS the reason in the preserve/negative slot —
+    not merely a changed cache key (post-mortem §3). This is the test the §3
+    bug would have failed: it asserts on the PROMPT, not the cache key."""
+    from pipeline.agents import character_designer as cd_mod
+
+    captured = {}
+
+    def capturing_nb_pro(*, prompt, reference_images, output_path, cache_dir,
+                         cites_identity_rules=(), reject_reason=None,
+                         model="gemini-3.1-flash-image-preview", timeout_s=180):
+        captured["prompt"] = prompt
+        captured["reject_reason"] = reject_reason
+        _real_png(output_path, color=(170, 130, 80))
+        return cd_mod.NBProResponse(
+            output_path=output_path, cache_key="k", cache_hit=False,
+            stub_fallback=False, exit_code=0,
+        )
+
+    monkeypatch.setattr(cd_mod, "invoke_nb_pro", capturing_nb_pro)
+
+    char_dir = tmp_path / "characters" / "test"
+    char_dir.mkdir(parents=True)
+    _real_png(char_dir / "anchor.png", color=(170, 130, 80))
+    (char_dir / "expressions").mkdir()
+
+    node = cd_mod.CharacterDesignerNode()
+    plate = {
+        "target_path": "expressions/neutral.png",
+        "source": "generate",
+        "prompt": "neutral expression, front view",
+        "reference_images": ["anchor.png"],
+        "cites_identity_rules": ["IR.test.face.two-dot-eyes"],
+        "reject_reason": "eyes too large and glossy; keep small simple graphite dot eyes; no hair tuft on top",
+    }
+
+    # Stub Pass-2.5 + Pass-3 so the test exercises the initial generate path
+    # deterministically and returns after a pass verdict.
+    monkeypatch.setattr(node, "_score_plate_identity", lambda *a, **k: None)
+    monkeypatch.setattr(node, "_build_pass3_prompt", lambda **k: "verify")
+
+    async def _fake_verify(*, prompt, image_paths, timeout_s=120):
+        return _FakeCLIResponse(text=_make_gemini_verdict("pass"))
+
+    monkeypatch.setattr(cd_mod, "run_antigravity_with_image", _fake_verify)
+
+    node._run_plate(plate=plate, ir_entries=[], character_dir=char_dir,
+                    cache_dir=tmp_path / "cache", style_register="pencil-test-colored")
+
+    assert "eyes too large and glossy" in captured["prompt"]
+    assert "keep small simple graphite dot eyes" in captured["prompt"]
+    assert captured["reject_reason"] is not None  # cache key still busted
