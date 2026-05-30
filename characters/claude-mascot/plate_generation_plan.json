@@ -65,7 +65,7 @@
     {
       "target_path": "expressions/neutral.png",
       "source": "generate",
-      "prompt": "calm neutral expression, front view, eyes level and relaxed, head upright",
+      "prompt": "calm neutral expression, front view, eyes level and relaxed, head upright. Keep the eyes as two small simple graphite dots with short brow strokes exactly as in Image 1 \u2014 NOT large glossy round cartoon eyes. The box has NO hair and NO tuft on top; the top edge is clean and unbroken. The two ear/arm nubs project straight out horizontally from the sides \u2014 they do not droop or hang down.",
       "reference_images": [
         "anchor.png",
         "source-refs/turnaround-c1.png"
@@ -83,7 +83,7 @@
     {
       "target_path": "expressions/curious.png",
       "source": "generate",
-      "prompt": "curious expression, head tilted slightly, brows lifted a touch, three-quarter front view",
+      "prompt": "curious expression, head tilted slightly, brows lifted a touch, three-quarter front view. Keep the eyes as two small simple graphite dots exactly as in Image 1 \u2014 NOT large glossy round cartoon eyes. The box has NO hair and NO tuft on top; the top edge is clean and unbroken. The two ear/arm nubs project straight out horizontally from the sides, not drooping.",
       "reference_images": [
         "anchor.png"
       ],
