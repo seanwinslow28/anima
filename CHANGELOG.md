@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-05-29 — Session: post-fidelity-fix production + hardening (summary)
+
+Eight commits across nine phases, 176 → 187 tests green throughout. The arc: fix the last mechanism bug, finish the sean-anchor production bake the fidelity fix deferred, and harden the gate + runner. Phase-by-phase entries follow below; the through-line:
+
+- **Phase 1** — prop plates are isolated objects (no anchor, no identity gate, no caption); validated live in Phase 5's `props/stylus.png`.
+- **Phase 2** — sean-anchor body turnarounds use Sean's hand-trimmed crops; head crops tightened.
+- **Phase 4** — added the **plates-only bake mode** (a locked Bible is never re-authored — the capability the "approve → bake" flow assumed), propagated full-color into the sibling docs, and **approved** the sean-anchor Bible (22 rules, v1.2, locked).
+- **Phase 5** — **baked the sean-anchor production plates** against the approved Bible; recognizably-Sean full-color set (two plates re-rolled: `focused` monochrome→color, `stylus` metallic→pencil).
+- **Phase 6** — claude-mascot re-bake **held**: the crouched-octopus anchor can't support standing body turnarounds (reference gap, documented for a dedicated pass).
+- **Phase 7** — installed the **DINOv2 similarity tier** + a cross-register regression eval; kept the gate **record-only** (the data showed a blanket hard threshold would false-reject good plates).
+- **Phase 8** — **Cy Pass-1 retry-on-parse-failure** (auto-heal transient Opus 4.8 malformations within the 3-call budget).
+
+Out of scope / deferred this session: the mascot dedicated pass (Phase 6 finding), a per-view-reference hard gate (Phase 7 finding), Em's closing-the-loop case 7 (still xfailed), making the repo public.
+
 ## 2026-05-29 — Phase 8: Cy Pass-1 retry-on-parse-failure (auto-heal transient Opus 4.8 malformations)
 
 **What changed:** `_author_pass1` ([`pipeline/agents/character_designer.py`](pipeline/agents/character_designer.py)) now retries a transient malformed Opus emission within Cy's three-call Pass-1 budget instead of stubbing on the first bad output. The 2026-05-28 mascot bake hit exactly this — Opus 4.8 emitted unparseable narration/truncation, the loud guard fired correctly, but it required a human re-run.
