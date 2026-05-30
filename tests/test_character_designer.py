@@ -716,6 +716,79 @@ def test_pass1_real_envelope_not_flagged_as_stub(base_ctx, character_dir, monkey
     assert "pass1_stub=False" in result.notes
 
 
+def test_pass1_retries_on_parse_failure_then_succeeds(
+    base_ctx, character_dir, monkeypatch
+):
+    """A transient malformed Opus emission (SDK ran, output unparseable) is
+    retried within the three-call Pass-1 budget; a clean second emission yields
+    a REAL Bible, no stub. This auto-heals the Opus 4.8 narration/truncation
+    case the loud guard previously required a human re-run for."""
+    calls: list[str] = []
+    envelope = _make_pass1_envelope()
+
+    async def flaky_opus(*, prompt: str, **kwargs):
+        calls.append(prompt)
+        if len(calls) == 1:
+            # Malformed: non-empty, unparseable, SDK actually ran (not a stub).
+            return _FakeSDKResponse(text="I'm Cy. Here you go: {oops not json", stub_fallback=False)
+        return _FakeSDKResponse(text="```json\n" + json.dumps(envelope) + "\n```")
+
+    async def fake_gemini(*, prompt: str, image_paths: list, timeout_s: int = 120):
+        return _FakeCLIResponse(text=_make_gemini_verdict("pass"))
+
+    def fake_nb_pro(*, output_path, cache_dir, **kwargs):
+        output_path.write_bytes(_tiny_png())
+        return NBProResponse(
+            output_path=output_path, cache_key="k", cache_hit=False,
+            stub_fallback=False, exit_code=0,
+        )
+
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", flaky_opus)
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+    )
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_nb_pro", fake_nb_pro)
+
+    result = CharacterDesignerNode().run(base_ctx)
+
+    # Retried exactly once (2 calls), then succeeded — within the 3-call budget.
+    assert len(calls) == 2
+    assert "pass1_stub=False" in result.notes
+    # A REAL Bible was authored: the criteria carry the real IR ids, not the
+    # synthetic stub rule.
+    crit = json.loads((character_dir / "acceptance_criteria.json").read_text())
+    ids = [c["id"] for c in crit["criteria"]]
+    assert any("hair.center-cowlick" in i for i in ids)
+    assert not any("stub-rule" in i for i in ids)
+
+
+def test_pass1_no_sdk_does_not_retry(base_ctx, character_dir, monkeypatch):
+    """A missing-SDK stub (stub_fallback=True) is deterministic, not transient —
+    it must NOT burn the retry budget. One call, then the loud stub."""
+    calls: list[str] = []
+
+    async def no_sdk_opus(*, prompt: str, **kwargs):
+        calls.append(prompt)
+        return _FakeSDKResponse(text="", stub_fallback=True)
+
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", no_sdk_opus)
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.run_antigravity_with_image",
+        lambda **kw: _FakeCLIResponse(text=_make_gemini_verdict("pass")),
+    )
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.invoke_nb_pro",
+        lambda **kw: NBProResponse(
+            output_path=kw["output_path"], cache_key="k", cache_hit=False,
+            stub_fallback=True, exit_code=0,
+        ),
+    )
+
+    result = CharacterDesignerNode().run(base_ctx)
+    assert len(calls) == 1, "a missing SDK must not be retried"
+    assert "pass1_stub=True" in result.notes
+
+
 def test_ingested_plate_still_runs_gemini_verification(
     base_ctx, character_dir, monkeypatch
 ):

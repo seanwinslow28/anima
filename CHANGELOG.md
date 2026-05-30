@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-05-29 — Phase 8: Cy Pass-1 retry-on-parse-failure (auto-heal transient Opus 4.8 malformations)
+
+**What changed:** `_author_pass1` ([`pipeline/agents/character_designer.py`](pipeline/agents/character_designer.py)) now retries a transient malformed Opus emission within Cy's three-call Pass-1 budget instead of stubbing on the first bad output. The 2026-05-28 mascot bake hit exactly this — Opus 4.8 emitted unparseable narration/truncation, the loud guard fired correctly, but it required a human re-run.
+
+- **Retry only the transient case.** A retry fires when the SDK *ran* but returned empty or unparseable text (`_pass1_stub`). It does **not** fire for a missing SDK (`stub_fallback=True` — deterministic, retrying can't help; one call then the loud stub) or a contract violation (parseable JSON missing required keys — `_parse_pass1_envelope` raises `ValueError`, which propagates as a real rejection). Budget = `_PASS1_CALL_CEILING` (3).
+- **Tests** (2 added → 187 green): a first-call malformed + second-call clean emission yields a *real* Bible (no stub, criteria carry the real IR ids) in exactly 2 calls; a missing-SDK stub is *not* retried (1 call, loud stub).
+
+**Why:** The loud guard turned a silent stub-ship into a visible failure; this turns the common transient case (Opus 4.8's chattier disposition occasionally malforming a large structured emission) into an automatic recovery, so a one-off bad emission no longer costs a human re-run. The guard still fires when all three attempts fail.
+
 ## 2026-05-29 — Phase 7: DINOv2 similarity tier + regression eval; gate stays record-only (a hard gate isn't safe yet)
 
 **What changed:** Installed the embedding tier the gate's ladder was built for, added a cross-register regression eval, and — after measuring — kept the gate record-only rather than promoting it to a hard pre-Gemini reject (Sean's call on the data).

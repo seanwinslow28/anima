@@ -83,6 +83,12 @@ _BOX_CHARACTERS = frozenset("╔═╗║╚╝┌─┐│└┘├┤┬┴┼
 # but per-plate scope since Cy may have many plates.
 _PLATE_ATTEMPT_CEILING = 3
 
+# Pass-1 call ceiling. Cy gets up to three Opus calls to produce a parseable
+# envelope; a transient malformed emission (Opus 4.8 narration/truncation) is
+# retried within this budget before falling back to the loud stub. A missing
+# SDK or a contract violation is NOT retried (see _author_pass1).
+_PASS1_CALL_CEILING = 3
+
 # Subdirectories under characters/{id}/ that hold Cy-generated (or
 # ingest-target) plates. A `generate` plate must NEVER reference another plate
 # in these directories — that is the reference-chaining anti-pattern that
@@ -302,6 +308,14 @@ class CharacterDesignerNode:
     ) -> tuple[dict, list[dict], str, str, dict, bool]:
         """Pass 1 — Opus authors the five-artifact envelope.
 
+        Retries on a transient PARSE FAILURE (the SDK ran but returned empty or
+        unparseable text — the Opus 4.8 narration/truncation case) up to the
+        three-call budget, auto-healing what previously required a human re-run.
+        Does NOT retry: a missing SDK (stub_fallback — deterministic, not
+        transient) or a CONTRACT VIOLATION (parseable JSON missing required
+        keys — `_parse_pass1_envelope` raises ValueError, which propagates as a
+        real rejection).
+
         Returns (character_yaml, ir_entries, risk_bible_md, cy_confidence_notes_md,
         plate_plan, pass1_stub). The caller enforces clean markdown, validates +
         writes the criteria, and writes the artifacts."""
@@ -310,37 +324,52 @@ class CharacterDesignerNode:
             studio_brief=studio_brief,
             character_dir=character_dir,
         )
-        # 1800s timeout for Cy's Pass-1: the prompt is ~55KB (anima preamble
-        # + Cy addendum + 2d-animation-principles skill inline + per-Bible
-        # brief) and the envelope is ~50KB (character.yaml + 15-20 IR.* rules
-        # + risk-bible + confidence-notes + plate plan). Observed wall time
-        # against real Opus 4.7 on the sean-anchor authoring run: ~500s. The
-        # 2026-05-29 Opus 4.8 bump pushed Pass-1 past the previous 900s ceiling
-        # (4.8 spends more on extended thinking for a large structured
-        # emission); a real re-bake hit the 900s wall and silently stubbed.
-        # Raised to 1800s with headroom. The invoke_opus_text default of 120s
-        # would cleanly time out before Pass 1 ever completed.
-        opus_resp = asyncio.run(invoke_opus_text(prompt=opus_prompt, timeout_s=1800))
-        # A timed-out / unavailable Opus call returns empty text (and, for the
-        # no-SDK path, stub_fallback=True). Either way Pass-1 is a stub. Surface
-        # it loudly in notes so the orchestrator fails instead of silently
-        # shipping a STUB FALLBACK Bible (the must-fix lesson: a successful exit
-        # code can lie about what happened).
+
+        parsed: dict = {}
+        for attempt in range(1, _PASS1_CALL_CEILING + 1):
+            # 1800s timeout for Cy's Pass-1: the prompt is ~55KB (anima preamble
+            # + Cy addendum + 2d-animation-principles skill inline + per-Bible
+            # brief) and the envelope is ~50KB. Observed wall time against real
+            # Opus 4.7: ~500s. The 2026-05-29 Opus 4.8 bump pushed Pass-1 past
+            # the previous 900s ceiling (4.8 spends more on extended thinking);
+            # a real re-bake hit the 900s wall and silently stubbed. Raised to
+            # 1800s with headroom. The invoke_opus_text default of 120s would
+            # cleanly time out before Pass 1 ever completed.
+            opus_resp = asyncio.run(invoke_opus_text(prompt=opus_prompt, timeout_s=1800))
+
+            sdk_absent = bool(getattr(opus_resp, "stub_fallback", False))
+            resp_problem = (
+                sdk_absent
+                or getattr(opus_resp, "exit_code", 0) != 0
+                or not (opus_resp.text or "").strip()
+            )
+            # _parse_pass1_envelope returns a synthetic stub (with _pass1_stub)
+            # for empty / unparseable output, and RAISES ValueError for a
+            # parseable-but-incomplete envelope (a contract violation that must
+            # not be retried — let it propagate).
+            parsed = self._parse_pass1_envelope(
+                opus_resp.text,
+                character_dir=character_dir,
+                stub_fallback=sdk_absent,
+            )
+            pass1_stub = resp_problem or bool(parsed.get("_pass1_stub"))
+
+            if not pass1_stub:
+                # Real envelope on this attempt — done.
+                break
+            if sdk_absent or attempt == _PASS1_CALL_CEILING:
+                # A missing SDK is deterministic (retrying can't help), and on
+                # the final attempt the budget is spent — return the loud stub.
+                break
+            # Otherwise the SDK ran but produced empty/unparseable output — a
+            # transient malformation. Loop and retry within the budget.
+
         pass1_stub = (
             bool(getattr(opus_resp, "stub_fallback", False))
             or getattr(opus_resp, "exit_code", 0) != 0
             or not (opus_resp.text or "").strip()
+            or bool(parsed.get("_pass1_stub"))
         )
-
-        parsed = self._parse_pass1_envelope(
-            opus_resp.text,
-            character_dir=character_dir,
-            stub_fallback=bool(getattr(opus_resp, "stub_fallback", False)),
-        )
-        # The parser builds the synthetic stub when the Opus text is empty OR
-        # non-empty-but-unparseable. That second case is the one the response-
-        # field check above misses, so fold the parser's own verdict in.
-        pass1_stub = pass1_stub or bool(parsed.get("_pass1_stub"))
 
         return (
             parsed["character_yaml"],
