@@ -9,7 +9,7 @@ Cy's three-phase loop:
            three-attempt ceiling per plate with reject_reason threaded
            into NB Pro on regeneration.
 
-These tests mock invoke_opus_text + invoke_nb_pro + run_antigravity_with_image
+These tests mock invoke_opus_text + invoke_image_edit + run_antigravity_with_image
 so the AgentSpec contract is exercised without burning API calls.
 """
 
@@ -26,6 +26,7 @@ import pytest
 from pipeline.agents import AgentContext, AgentResult
 from pipeline.agents.character_designer import CharacterDesignerNode
 from pipeline.agents.nb_pro_runner import NBProResponse
+from pipeline.agents.similarity_gate import SIMILARITY_FLAG_THRESHOLD
 
 
 # ---------------------------------------------------------------------------
@@ -248,7 +249,7 @@ def _patch_runners(
         "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.invoke_nb_pro", fake_nb_pro
+        "pipeline.agents.character_designer.invoke_image_edit", fake_nb_pro
     )
 
 
@@ -391,7 +392,7 @@ def test_gemini_fail_triggers_regeneration_with_reject_reason(
         "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.invoke_nb_pro", tracking_nb_pro
+        "pipeline.agents.character_designer.invoke_image_edit", tracking_nb_pro
     )
 
     node = CharacterDesignerNode()
@@ -444,7 +445,7 @@ def test_three_attempt_ceiling_surfaces_human_gate(
         "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.invoke_nb_pro", counting_nb_pro
+        "pipeline.agents.character_designer.invoke_image_edit", counting_nb_pro
     )
 
     node = CharacterDesignerNode()
@@ -458,7 +459,7 @@ def test_three_attempt_ceiling_surfaces_human_gate(
 
 
 def _patch_with_nb_capture(monkeypatch, *, envelope):
-    """Patch the three runners, capturing every invoke_nb_pro kwargs dict.
+    """Patch the three runners, capturing every invoke_image_edit kwargs dict.
 
     Returns the list that accumulates one dict per NB Pro call so a test can
     assert on the reference_images / prompt the runner actually forwarded.
@@ -484,7 +485,7 @@ def _patch_with_nb_capture(monkeypatch, *, envelope):
         "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.invoke_nb_pro", capturing_nb_pro
+        "pipeline.agents.character_designer.invoke_image_edit", capturing_nb_pro
     )
     return nb_calls
 
@@ -592,7 +593,9 @@ def test_generate_plate_records_similarity_score(
     assert "similarity_score" in status
     assert isinstance(status["similarity_score"], float)
     assert 0.0 <= status["similarity_score"] <= 1.0
-    assert status.get("similarity_method") == "pil-perceptual"
+    # Whichever ladder rung ran (DINOv2 when torch is installed, else PIL) the
+    # method label must name a known tier.
+    assert status.get("similarity_method") in {"dinov2", "clip", "pil-perceptual"}
 
 
 def test_plate_verdicts_persisted_to_jsonl(base_ctx, character_dir, monkeypatch):
@@ -629,7 +632,7 @@ def test_pass1_stub_is_flagged_in_result_notes(base_ctx, character_dir, monkeypa
         lambda **kw: _FakeCLIResponse(text=_make_gemini_verdict("pass")),
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.invoke_nb_pro",
+        "pipeline.agents.character_designer.invoke_image_edit",
         lambda **kw: NBProResponse(
             output_path=kw["output_path"], cache_key="k", cache_hit=False,
             stub_fallback=True, exit_code=0,
@@ -695,7 +698,7 @@ def test_pass1_unparseable_nonempty_text_flagged_as_stub(
         lambda **kw: _FakeCLIResponse(text=_make_gemini_verdict("pass")),
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.invoke_nb_pro",
+        "pipeline.agents.character_designer.invoke_image_edit",
         lambda **kw: NBProResponse(
             output_path=kw["output_path"], cache_key="k", cache_hit=False,
             stub_fallback=True, exit_code=0,
@@ -711,6 +714,79 @@ def test_pass1_real_envelope_not_flagged_as_stub(base_ctx, character_dir, monkey
     _patch_runners(monkeypatch)
     result = CharacterDesignerNode().run(base_ctx)
     assert "pass1_stub=False" in result.notes
+
+
+def test_pass1_retries_on_parse_failure_then_succeeds(
+    base_ctx, character_dir, monkeypatch
+):
+    """A transient malformed Opus emission (SDK ran, output unparseable) is
+    retried within the three-call Pass-1 budget; a clean second emission yields
+    a REAL Bible, no stub. This auto-heals the Opus 4.8 narration/truncation
+    case the loud guard previously required a human re-run for."""
+    calls: list[str] = []
+    envelope = _make_pass1_envelope()
+
+    async def flaky_opus(*, prompt: str, **kwargs):
+        calls.append(prompt)
+        if len(calls) == 1:
+            # Malformed: non-empty, unparseable, SDK actually ran (not a stub).
+            return _FakeSDKResponse(text="I'm Cy. Here you go: {oops not json", stub_fallback=False)
+        return _FakeSDKResponse(text="```json\n" + json.dumps(envelope) + "\n```")
+
+    async def fake_gemini(*, prompt: str, image_paths: list, timeout_s: int = 120):
+        return _FakeCLIResponse(text=_make_gemini_verdict("pass"))
+
+    def fake_nb_pro(*, output_path, cache_dir, **kwargs):
+        output_path.write_bytes(_tiny_png())
+        return NBProResponse(
+            output_path=output_path, cache_key="k", cache_hit=False,
+            stub_fallback=False, exit_code=0,
+        )
+
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", flaky_opus)
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+    )
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_image_edit", fake_nb_pro)
+
+    result = CharacterDesignerNode().run(base_ctx)
+
+    # Retried exactly once (2 calls), then succeeded — within the 3-call budget.
+    assert len(calls) == 2
+    assert "pass1_stub=False" in result.notes
+    # A REAL Bible was authored: the criteria carry the real IR ids, not the
+    # synthetic stub rule.
+    crit = json.loads((character_dir / "acceptance_criteria.json").read_text())
+    ids = [c["id"] for c in crit["criteria"]]
+    assert any("hair.center-cowlick" in i for i in ids)
+    assert not any("stub-rule" in i for i in ids)
+
+
+def test_pass1_no_sdk_does_not_retry(base_ctx, character_dir, monkeypatch):
+    """A missing-SDK stub (stub_fallback=True) is deterministic, not transient —
+    it must NOT burn the retry budget. One call, then the loud stub."""
+    calls: list[str] = []
+
+    async def no_sdk_opus(*, prompt: str, **kwargs):
+        calls.append(prompt)
+        return _FakeSDKResponse(text="", stub_fallback=True)
+
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", no_sdk_opus)
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.run_antigravity_with_image",
+        lambda **kw: _FakeCLIResponse(text=_make_gemini_verdict("pass")),
+    )
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.invoke_image_edit",
+        lambda **kw: NBProResponse(
+            output_path=kw["output_path"], cache_key="k", cache_hit=False,
+            stub_fallback=True, exit_code=0,
+        ),
+    )
+
+    result = CharacterDesignerNode().run(base_ctx)
+    assert len(calls) == 1, "a missing SDK must not be retried"
+    assert "pass1_stub=True" in result.notes
 
 
 def test_ingested_plate_still_runs_gemini_verification(
@@ -751,7 +827,7 @@ def test_ingested_plate_still_runs_gemini_verification(
         "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.invoke_nb_pro", fail_if_nb_pro
+        "pipeline.agents.character_designer.invoke_image_edit", fail_if_nb_pro
     )
 
     node = CharacterDesignerNode()
@@ -767,3 +843,409 @@ def test_ingested_plate_still_runs_gemini_verification(
     # plate_results records the ingest.
     plate_results = result.outputs["plate_results"]
     assert plate_results["expressions/neutral.png"]["status"] == "ingested"
+
+
+# ---------------------------------------------------------------------------
+# Prop plates — isolated objects, not characters (the props/stylus.png bug)
+# ---------------------------------------------------------------------------
+
+
+def test_prop_plate_gets_anchor_free_reference_list(character_dir):
+    """A props/* plate must NOT get anchor.png injected. The full-body anchor
+    told NB Pro to draw the whole person beside a floating stylus (re-bake
+    defect). For the stylus (no source-refs named) the ref list is empty, and
+    the resolver signals is_prop=True."""
+    from pipeline.agents.character_designer import _resolve_generate_references
+
+    prop_plate = {
+        "target_path": "props/stylus.png",
+        "source": "generate",
+        "prompt": "an isolated stylus on cream paper",
+        "reference_images": ["anchor.png"],  # Opus named the anchor; runner must drop it for props
+        "cites_identity_rules": [],
+    }
+    refs, has_pose_ref, is_prop = _resolve_generate_references(prop_plate, character_dir)
+    assert is_prop is True
+    assert refs == [], "prop plate must be anchor-free (and have no other refs here)"
+    assert has_pose_ref is False
+
+    # Contrast: a character plate still gets the anchor injected first.
+    char_plate = {
+        "target_path": "expressions/neutral.png",
+        "source": "generate",
+        "prompt": "neutral expression",
+        "reference_images": [],
+        "cites_identity_rules": [],
+    }
+    refs2, _has_pose, is_prop2 = _resolve_generate_references(char_plate, character_dir)
+    assert is_prop2 is False
+    assert refs2 and refs2[0] == (character_dir / "anchor.png"), "character plate keeps anchor"
+
+
+def test_prop_prompt_forbids_figure_and_text():
+    """The prop prompt frames an isolated object and forbids any person/figure
+    AND any rendered text — the props/stylus.png plate rendered both a full
+    figure and the prompt's meta-prose as captions."""
+    from pipeline.agents.character_designer import _build_prop_prompt
+
+    prompt = _build_prop_prompt("a single working-illustrator's stylus at a 60-degree diagonal")
+    low = prompt.lower()
+    # No-figure clause.
+    assert "do not draw" in low
+    for forbidden in ("person", "character", "hand", "body", "figure"):
+        assert forbidden in low, f"prop prompt must forbid drawing a {forbidden}"
+    # No-text clause.
+    assert "do not render any text" in low or ("no text" in low)
+    assert "caption" in low
+    # The plate's own short intent survives.
+    assert "stylus" in low
+
+
+def test_prop_plate_not_anchor_similarity_rejected(
+    base_ctx, character_dir, monkeypatch
+):
+    """A prop plate scored against the full-character anchor will land near
+    zero — that must be recorded for the audit trail but marked record-only and
+    never flagged for reject/regeneration."""
+    # Anchor is a solid white field; the generated 'stylus' plate is solid
+    # black — forces the PIL similarity well below threshold so we prove the
+    # exemption (not just a coincidentally-high score) is what suppresses the flag.
+    _real_png(character_dir / "anchor.png", color=(255, 255, 255))
+
+    plates = [{
+        "target_path": "props/stylus.png",
+        "source": "generate",
+        "prompt": "isolated stylus on cream paper",
+        "reference_images": ["anchor.png"],
+        "cites_identity_rules": [],
+    }]
+    envelope = _make_pass1_envelope(plates=plates)
+
+    async def fake_opus(*, prompt: str, **kwargs):
+        return _FakeSDKResponse(text="```json\n" + json.dumps(envelope) + "\n```")
+
+    async def fake_gemini(*, prompt: str, image_paths: list, timeout_s: int = 120):
+        return _FakeCLIResponse(text=_make_gemini_verdict("pass"))
+
+    def black_nb_pro(*, output_path, cache_dir, **kwargs):
+        _real_png(output_path, color=(0, 0, 0))
+        return NBProResponse(
+            output_path=output_path, cache_key="k", cache_hit=False,
+            stub_fallback=False, exit_code=0,
+        )
+
+    # Force the PIL tier so the black-vs-white plate deterministically scores
+    # below threshold regardless of whether torch/DINOv2 is installed — the
+    # point of the test is the prop exemption, demonstrated against a genuinely
+    # low score.
+    from pipeline.agents import similarity_gate as _sg
+    monkeypatch.setattr(_sg, "_dinov2_similarity", lambda a, b: None)
+    monkeypatch.setattr(_sg, "_clip_similarity", lambda a, b: None)
+
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", fake_opus)
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+    )
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.invoke_image_edit", black_nb_pro
+    )
+
+    result = CharacterDesignerNode().run(base_ctx)
+    status = result.outputs["plate_results"]["props/stylus.png"]
+
+    # Score IS recorded (audit trail), and it's genuinely low...
+    assert "similarity_score" in status
+    assert status["similarity_score"] < SIMILARITY_FLAG_THRESHOLD
+    # ...but the gate is record-only and the reject flag is never set.
+    assert status.get("similarity_gate") == "record-only (prop plate — not identity-scored)"
+    assert "similarity_flag" not in status
+
+
+# ---------------------------------------------------------------------------
+# Plates-only bake — bake against an approved (locked) Bible without re-authoring
+# ---------------------------------------------------------------------------
+
+
+def _seed_bible_on_disk(character_dir: Path, *, locked: bool, plates: list[dict]):
+    """Write a minimal authored Bible to disk so the plates-only path can load
+    it instead of re-authoring via Opus Pass 1."""
+    criteria = {
+        "version": "1.2",
+        "locked": locked,
+        "criteria": [{
+            "id": "IR.test-char.hair.center-cowlick",
+            "description": "Center cowlick visible at the crown.",
+            "cites_phase": [5],
+            "cites_personas": ["em"],
+            "impact_tag": "identity_critical",
+            "character_id": "test-char",
+            "derived_from": ["characters/test-char/anchor.png#region:hair"],
+        }],
+    }
+    (character_dir / "acceptance_criteria.json").write_text(json.dumps(criteria, indent=2))
+    (character_dir / "plate_generation_plan.json").write_text(
+        json.dumps({"plates": plates}, indent=2)
+    )
+    (character_dir / "character.yaml").write_text("character_id: test-char\n")
+
+
+def test_plates_only_skips_opus_and_preserves_locked_criteria(
+    base_ctx, character_dir, monkeypatch
+):
+    """A plates-only bake must NOT call Opus Pass 1, must read the on-disk plan,
+    and must leave the locked acceptance_criteria.json untouched (the
+    director-approved rules are not re-authored by a bake)."""
+    _real_png(character_dir / "anchor.png")
+    _seed_bible_on_disk(character_dir, locked=True, plates=[{
+        "target_path": "expressions/neutral.png",
+        "source": "generate",
+        "prompt": "neutral expression",
+        "reference_images": ["anchor.png"],
+        "cites_identity_rules": ["IR.test-char.hair.center-cowlick"],
+    }])
+    criteria_before = (character_dir / "acceptance_criteria.json").read_text()
+
+    opus_calls: list[str] = []
+
+    async def tracking_opus(*, prompt: str, **kwargs):
+        opus_calls.append(prompt)
+        return _FakeSDKResponse(text="```json\n" + json.dumps(_make_pass1_envelope()) + "\n```")
+
+    async def fake_gemini(*, prompt: str, image_paths: list, timeout_s: int = 120):
+        return _FakeCLIResponse(text=_make_gemini_verdict("pass"))
+
+    def fake_nb_pro(*, output_path, cache_dir, **kwargs):
+        _real_png(output_path, color=(170, 130, 80))
+        return NBProResponse(
+            output_path=output_path, cache_key="k", cache_hit=False,
+            stub_fallback=False, exit_code=0,
+        )
+
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", tracking_opus)
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+    )
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_image_edit", fake_nb_pro)
+
+    base_ctx.inputs["plates_only"] = True
+    result = CharacterDesignerNode().run(base_ctx)
+
+    # Opus Pass 1 was NOT invoked.
+    assert opus_calls == [], "plates-only must not re-author via Opus"
+    # The locked criteria on disk is byte-for-byte unchanged.
+    assert (character_dir / "acceptance_criteria.json").read_text() == criteria_before
+    # Plates were still generated + verified from the on-disk plan.
+    assert "expressions/neutral.png" in result.outputs["plate_results"]
+    assert "pass1_stub=False" in result.notes
+
+
+def test_locked_criteria_auto_routes_to_plates_only(base_ctx, character_dir, monkeypatch):
+    """Even without an explicit plates_only flag, a locked criteria on disk must
+    auto-route to the plates-only path — a locked Bible is never re-authored."""
+    _real_png(character_dir / "anchor.png")
+    _seed_bible_on_disk(character_dir, locked=True, plates=[{
+        "target_path": "expressions/neutral.png",
+        "source": "generate",
+        "prompt": "neutral expression",
+        "reference_images": ["anchor.png"],
+        "cites_identity_rules": ["IR.test-char.hair.center-cowlick"],
+    }])
+
+    opus_calls: list[str] = []
+
+    async def tracking_opus(*, prompt: str, **kwargs):
+        opus_calls.append(prompt)
+        return _FakeSDKResponse(text="```json\n" + json.dumps(_make_pass1_envelope()) + "\n```")
+
+    async def fake_gemini(*, prompt: str, image_paths: list, timeout_s: int = 120):
+        return _FakeCLIResponse(text=_make_gemini_verdict("pass"))
+
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", tracking_opus)
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+    )
+
+    def fake_nb_pro(*, output_path, cache_dir, **kwargs):
+        _real_png(output_path, color=(170, 130, 80))
+        return NBProResponse(
+            output_path=output_path, cache_key="k", cache_hit=False,
+            stub_fallback=False, exit_code=0,
+        )
+
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_image_edit", fake_nb_pro)
+
+    # No plates_only flag passed — the locked criteria alone must trigger it.
+    CharacterDesignerNode().run(base_ctx)
+    assert opus_calls == [], "a locked Bible must auto-route to plates-only"
+
+
+def test_plates_only_without_authored_bible_raises(base_ctx, character_dir, monkeypatch):
+    """plates_only requested but no plate_generation_plan.json on disk → a clear
+    error (can't bake plates against a Bible that was never authored)."""
+    # No Bible seeded on disk.
+    monkeypatch.setattr(
+        "pipeline.agents.character_designer.invoke_opus_text",
+        lambda **kw: _FakeSDKResponse(text=""),
+    )
+    base_ctx.inputs["plates_only"] = True
+    with pytest.raises(FileNotFoundError, match="Author the Bible first"):
+        CharacterDesignerNode().run(base_ctx)
+
+
+# ---------------------------------------------------------------------------
+# Register-parameterized template emitter (Amendment A)
+# ---------------------------------------------------------------------------
+
+
+def test_plate_emitter_pencil_keeps_full_color_and_anti_text():
+    from pipeline.agents.character_designer import _build_plate_prompt
+    p = _build_plate_prompt(
+        "focused expression, brow slightly down, eyes on the work",
+        style_register="pencil-test-colored",
+        has_pose_ref=False,
+    )
+    assert "identity anchor" in p
+    assert "Match the face" in p
+    assert "full color" in p.lower()
+    # universal anti-text clause
+    assert "text" in p.lower() and "watermark" in p.lower()
+    # Cy's terse intent is carried verbatim, not re-described
+    assert "focused expression, brow slightly down, eyes on the work" in p
+
+
+def test_plate_emitter_line_art_forbids_shading():
+    from pipeline.agents.character_designer import _build_plate_prompt
+    p = _build_plate_prompt(
+        "three-quarter front view, head turned slightly left",
+        style_register="line-art-only",
+        has_pose_ref=True,
+    )
+    assert "no shading" in p.lower() or "no gradients" in p.lower()
+    assert "line art" in p.lower()
+    assert "Image 2" in p  # has_pose_ref names the angle target
+
+
+def test_plate_emitter_pixel_art_hard_edges():
+    from pipeline.agents.character_designer import _build_plate_prompt
+    p = _build_plate_prompt(
+        "mid-jab contact pose, profile",
+        style_register="pixel-art-8bit",
+        has_pose_ref=False,
+    )
+    assert "pixel" in p.lower()
+    assert "hard" in p.lower() and "edge" in p.lower()
+
+
+def test_plate_emitter_watercolor_keeps_paper_grain():
+    from pipeline.agents.character_designer import _build_plate_prompt
+    p = _build_plate_prompt(
+        "neutral expression, front view",
+        style_register="watercolor",
+        has_pose_ref=False,
+    )
+    assert "watercolor" in p.lower()
+    assert "paper grain" in p.lower() or "paper" in p.lower()
+
+
+def test_plate_emitter_unknown_register_falls_back_to_pencil():
+    from pipeline.agents.character_designer import _build_plate_prompt
+    p = _build_plate_prompt(
+        "neutral, front view", style_register="not-a-real-register", has_pose_ref=False
+    )
+    # defensive default — register is validated upstream, but a typo must not
+    # crash a bake; pencil-test-colored is the safe fallback.
+    assert "full color" in p.lower()
+
+
+def test_plate_emitter_prop_path_unchanged():
+    from pipeline.agents.character_designer import _build_plate_prompt, _build_prop_prompt
+    intent = "a single working-illustrator's stylus at a 60-degree diagonal"
+    via_emitter = _build_plate_prompt(intent, style_register="pencil-test-colored",
+                                      has_pose_ref=False, is_prop=True)
+    direct = _build_prop_prompt(intent)
+    assert via_emitter == direct
+    assert "Do NOT draw any person" in via_emitter
+
+
+# ---------------------------------------------------------------------------
+# bible iterate reject-reason reaches the prompt (post-mortem §3)
+# ---------------------------------------------------------------------------
+
+
+def test_iterate_reject_reason_reaches_emitted_prompt(tmp_path, monkeypatch):
+    """A plate carrying a reject_reason (from `bible iterate`) must produce an
+    emitted prompt that CONTAINS the reason in the preserve/negative slot —
+    not merely a changed cache key (post-mortem §3). This is the test the §3
+    bug would have failed: it asserts on the PROMPT, not the cache key."""
+    from pipeline.agents import character_designer as cd_mod
+
+    captured = {}
+
+    def capturing_nb_pro(*, prompt, reference_images, output_path, cache_dir,
+                         cites_identity_rules=(), reject_reason=None,
+                         model="gemini-3.1-flash-image-preview", timeout_s=180):
+        captured["prompt"] = prompt
+        captured["reject_reason"] = reject_reason
+        _real_png(output_path, color=(170, 130, 80))
+        return NBProResponse(
+            output_path=output_path, cache_key="k", cache_hit=False,
+            stub_fallback=False, exit_code=0,
+        )
+
+    monkeypatch.setattr(cd_mod, "invoke_image_edit", capturing_nb_pro)
+
+    char_dir = tmp_path / "characters" / "test"
+    char_dir.mkdir(parents=True)
+    _real_png(char_dir / "anchor.png", color=(170, 130, 80))
+    (char_dir / "expressions").mkdir()
+
+    node = cd_mod.CharacterDesignerNode()
+    plate = {
+        "target_path": "expressions/neutral.png",
+        "source": "generate",
+        "prompt": "neutral expression, front view",
+        "reference_images": ["anchor.png"],
+        "cites_identity_rules": ["IR.test.face.two-dot-eyes"],
+        "reject_reason": "eyes too large and glossy; keep small simple graphite dot eyes; no hair tuft on top",
+    }
+
+    # Stub Pass-2.5 + Pass-3 so the test exercises the initial generate path
+    # deterministically and returns after a pass verdict.
+    monkeypatch.setattr(node, "_score_plate_identity", lambda *a, **k: None)
+    monkeypatch.setattr(node, "_build_pass3_prompt", lambda **k: "verify")
+
+    async def _fake_verify(*, prompt, image_paths, timeout_s=120):
+        return _FakeCLIResponse(text=_make_gemini_verdict("pass"))
+
+    monkeypatch.setattr(cd_mod, "run_antigravity_with_image", _fake_verify)
+
+    node._run_plate(plate=plate, ir_entries=[], character_dir=char_dir,
+                    cache_dir=tmp_path / "cache", style_register="pencil-test-colored")
+
+    assert "eyes too large and glossy" in captured["prompt"]
+    assert "keep small simple graphite dot eyes" in captured["prompt"]
+    assert captured["reject_reason"] is not None  # cache key still busted
+
+
+# ---------------------------------------------------------------------------
+# Per-register model routing (Amendment B)
+# ---------------------------------------------------------------------------
+
+
+def test_resolve_plate_model_routes_by_register():
+    from pipeline.agents.character_designer import _resolve_plate_model
+    NB2 = "gemini-3.1-flash-image-preview"
+    PRO = "gemini-3-pro-image-preview"
+    # editing/generation defaults to NB2 for every register
+    assert _resolve_plate_model("pencil-test-colored", {}) == NB2
+    assert _resolve_plate_model("pixel-art-8bit", {}) == NB2
+    assert _resolve_plate_model("watercolor", {}) == NB2
+    # watercolor FINAL routes to Pro (the guarded painterly-final seam)
+    assert _resolve_plate_model("watercolor", {}, final=True) == PRO
+    assert _resolve_plate_model("photoreal", {}, final=True) == PRO
+    # pencil final stays NB2 (no painterly final needed)
+    assert _resolve_plate_model("pencil-test-colored", {}, final=True) == NB2
+    # manifest per-character override wins
+    assert _resolve_plate_model("pencil-test-colored", {"generation_model": PRO}) == PRO
+    # unknown register falls back to pencil defaults (NB2)
+    assert _resolve_plate_model("not-real", {}) == NB2

@@ -1,49 +1,62 @@
-# Claude Mascot — voice + style notes for Cy
+# Claude Mascot — pencil-test register notes for Cy
 
-*Cy: this is your second Bible. The first (sean-anchor) authors against the pencil-test-colored register. This one authors against pixel-art-8bit. Different register, same schema — your job is to prove the schema is style-agnostic by construction.*
+*Cy: this is a re-author. The pixel-art-8bit version is retired (archived to
+characters/_archive/). Author this one in the **pencil-test-colored** register —
+the same register as sean-anchor. Different creature, same register, same schema.*
 
 ---
 
 ## Style register
 
-`pixel-art-8bit`. The mascot is a chibi-proportioned indexed-palette pixel-art character, rendered with integer-pixel-grid alignment and no anti-aliasing between palette steps. The aesthetic is *not* modern smooth-edge pixel art with smoothed gradients — it's the older 8-bit / 16-bit register where every pixel sits on a grid square and every color is one of a small closed palette.
+`pencil-test-colored`. Warm graphite line (not vector black), flat color fills,
+cross-hatch shadow, warm cream paper, hole-punch production marks. This is the
+identical register as the sean-anchor Bible — the mascot rides on Sean's shoulder
+in Act 2 and must read in the same medium as him.
 
-The references in this folder show the mascot at three poses; read them as palette + proportion authority. If your output character.yaml carries any register other than `pixel-art-8bit`, the defang pass failed and you should stop and surface the failure.
+## The creature's form (trait-lock)
 
-## Palette
+A small, rounded-box creature — not a humanoid, not a biped:
+- **Rounded-box body** in warm **terracotta-orange** fill.
+- **Two small ear/arm nubs** on the sides (not arms; no hands).
+- **Four short stub legs**.
+- **Two dot eyes** with a faint **pencil construction cross-line** (a horizontal
+  midline + a soft vertical centerline across the front face).
+- A small mouth line at most — **no mouth-as-feature**.
+- **Soft cast shadow** on warm **cream paper (#F2E6CC)**.
+- **No arms, no hands.**
 
-Four indexed colors. Cy: extract these from `anchor.png` and record them as named entries in `character.yaml.palette`:
+Trait-lock token (reuse verbatim in plate prompts):
+`rounded-box body · warm terracotta-orange fill · cream paper #F2E6CC ·
+warm-graphite line + cross-hatch shadow · two ear/arm nubs · four stub legs ·
+two dot eyes + construction cross-line · no arms, no hands · shoulder-companion scale`
 
-  - **Primary orange** (≈ `#E89B6B`, ±10 RGB tolerance) — skin, body fill, exposed limbs. The character's dominant color across the silhouette.
-  - **Cream highlight** (≈ `#F4DDB8`) — face highlight, top-of-head shine, fingertip highlights. Used sparingly; defines the lit areas.
-  - **Warm brown shadow** (≈ `#A86B45`) — under-jaw shadow, fold lines, outer contour shadow side. The mid-tone between primary and the deep brown.
-  - **Deep brown** (≈ `#5C3A24`) — eye dots, mouth line, accent strokes, the darkest accent in the palette.
+## Proportions
 
-No gradients, no anti-aliasing between palette steps, no out-of-palette colors. The palette is the load-bearing identity signal at the sub-32px display sizes where pixel-art characters typically render.
+Roughly a **1 : 1.2 box** (slightly taller than wide, reading as a rounded cube).
+Small enough to perch on a human shoulder — shoulder-companion scale is a
+load-bearing identity cue. The four stub legs sit close together under the box;
+the two ear/arm nubs project from the left and right faces near the midline.
 
-## Proportion
+## Expression baseline
 
-Chibi-leaning. Head height ≈ two-thirds of total body height (1:1.5 or 2:3 head-to-body ratio, measured crown-to-feet). Body width at shoulders ≈ 1.2× head width. The silhouette reads as a round-topped lozenge rather than a standing figure. This proportion is the load-bearing recognizability cue at sub-32-pixel display sizes — get it wrong and the mascot stops reading as the mascot.
+Calm, curious. The two dot eyes + faint construction cross-line carry the read;
+there is no large mouth to emote with. Expression range is narrow by design.
 
-## Style invariants
+## References in this folder (authority)
 
-  - **Integer-pixel grid.** Every edge, every contour, every color boundary lands on an integer pixel coordinate. Diagonals render as stair-stepped pixel runs, not as smoothed sub-pixel gradients.
-  - **No anti-aliasing between palette entries.** A diagonal transition from primary orange to warm brown is a stair-step of those two literal colors; not a smoothed gradient of intermediate values.
-  - **Dithering pattern** (where used in shadow areas): vertical 2-pixel-spaced dots in the warm-brown shadow color over the primary orange fill. No other dither patterns are in the register's vocabulary.
+- `../anchor.png` (C-B) — the canonical **identity anchor**, a clean ¾-front hero
+  portrait. Cy reads this at every Pass-1 rule emission and it is injected first
+  on every generated plate.
+- `turnaround-c1.png` (C-1 TURNAROUND) — the **authoritative multi-angle reference**:
+  five views (FRONT / ¾ FRONT / SIDE / ¾ BACK / BACK) on one sheet, drawn on a
+  shared horizon line. This is what closes the angle-expansion gap the pixel
+  mascot lacked — new-angle plates reference THIS sheet, not just the anchor.
+- `sean-with-claude-mascot.png` (A-7) — the **relationship / scale reference** and
+  the Act 2 two-character continuity ground-truth: Sean (full-color pencil-test,
+  stylus in hand) with the mascot on his shoulder. A-7 is the canonical pairing.
 
-## What's not covered
+## What's not covered (name in risk-bible)
 
-  - **Motion plates**: none yet. The mascot has no walk cycle, no idle animation, no head turn drawn. A Phase 6 motion shot involving the mascot needs motion plate authoring first — Cy's risk-bible should name this gap explicitly.
-  - **Expressions beyond the three source references**: neutral, surprised, contemplative are the three poses the references cover. A full emotional range would need authoring before Em can cite expression-specific rules.
-  - **Costume variants**: none. The mascot is its own design; no secondary costumes (hats, tools, accessories) exist in commit 2.
-  - **Lit / unlit variants**: no. The mascot's palette is fixed; a "neon-lit" or "candle-lit" variant would be a style-register escalation to a separate Bible.
-
-## Source refs in this folder
-
-  - `anchor.png` (designated from `claude-mascot-2.png`, 2048×2048) — the canonical identity reference. Cy reads this at every Pass-1 rule emission.
-  - `claude-mascot-1.png` — alternate pose / lighting study; useful for inferring the silhouette + secondary contour rules.
-  - `claude-mascot-3.png` — alternate pose; useful for inferring proportion at different angles + the contour-rendering style.
-
----
-
-*Cy: this is the structural validation that the architecture supports arbitrary 2D styles, not just pencil-test. If your Pass-1 output for this character carries any pencil-test vocabulary (cross-hatching, graphite line weight, cream paper texture, construction lines beneath the drawing), the defang pass failed and the rules are wrong. Cite the pixel-art vocabulary explicitly: indexed palette, integer-pixel grid, dithering pattern, sub-pixel boundary, palette-step transition.*
+Motion plates (no walk/idle/head-turn drawn yet); expressions beyond calm/curious;
+costume variants. A Phase 6 motion shot involving the mascot needs motion-plate
+authoring first.

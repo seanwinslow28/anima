@@ -252,7 +252,7 @@ def test_bible_mutate_refuses_without_force(tmp_path, capsys):
         target="IR.test-char.hair.center-cowlick",
         field="description",
         value="updated",
-        new_version="1.3.0",
+        content_version="1.3.0",
     )
     assert rc == 1
     err = capsys.readouterr().err
@@ -272,7 +272,7 @@ def test_bible_mutate_requires_actor_and_reason(tmp_path, capsys):
         target="IR.test-char.hair.center-cowlick",
         field="description",
         value="x",
-        new_version="1.3.0",
+        content_version="1.3.0",
     )
     assert rc == 1
     assert "--actor" in capsys.readouterr().err
@@ -291,7 +291,7 @@ def test_bible_mutate_writes_audit_record(tmp_path):
         target="IR.test-char.hair.center-cowlick",
         field="description",
         value="Center cowlick rises 2cm forward of the crown.",
-        new_version="1.3.0",
+        content_version="1.3.0",
     )
     assert rc == 0
     audit_log = rd / "bible_audit.jsonl"
@@ -301,7 +301,12 @@ def test_bible_mutate_writes_audit_record(tmp_path):
     record = json.loads(lines[0])
     assert record["actor"] == "sean"
     assert record["target"] == "IR.test-char.hair.center-cowlick"
-    assert record["criteria_version_to"] == "1.3.0"
+    assert record["content_version_to"] == "1.3.0"
+    # The schema version field stays loadable (the §4 regression).
+    payload = json.loads((cd / "acceptance_criteria.json").read_text())
+    assert payload["version"] == "1.2"
+    rule = next(c for c in payload["criteria"] if c["id"] == "IR.test-char.hair.center-cowlick")
+    assert rule["description"] == "Center cowlick rises 2cm forward of the crown."
 
 
 # ---------------------------------------------------------------------------

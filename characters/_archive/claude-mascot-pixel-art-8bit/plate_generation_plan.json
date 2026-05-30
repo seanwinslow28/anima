@@ -1,0 +1,141 @@
+{
+  "plates": [
+    {
+      "target_path": "turnarounds/body-front.png",
+      "source": "ingest:characters/claude-mascot/anchor.png",
+      "cites_identity_rules": [
+        "IR.claude-mascot.palette.four-indexed-color-vocabulary",
+        "IR.claude-mascot.palette.primary-orange-dominant-fill",
+        "IR.claude-mascot.proportion.head-to-body-2-to-3-chibi",
+        "IR.claude-mascot.proportion.body-width-1-2x-head-width",
+        "IR.claude-mascot.proportion.silhouette-round-topped-lozenge",
+        "IR.claude-mascot.style.integer-pixel-grid-no-subpixel"
+      ]
+    },
+    {
+      "target_path": "turnarounds/body-3quarter.png",
+      "source": "generate",
+      "prompt": "A pixel-art-8bit character rendered in a three-quarter view, body rotated approximately 30\u00b0 from the front-facing reference. Closed four-step indexed palette only: primary orange #E89B6B for skin, body, and exposed limbs as the dominant fill; cream highlight #F4DDB8 only at the crown-of-head shine and fingertip highlights; warm brown shadow #A86B45 in under-jaw shadow, fold lines, and the contour shadow side; deep brown #5C3A24 for eye dots and the single mouth stroke. Every contour and color boundary lands on an integer pixel coordinate \u2014 no anti-aliasing, no gradients between palette entries, diagonals as stair-stepped pixel runs. Head-to-body ratio 2:3 (chibi); body width approximately 1.2\u00d7 head width; silhouette reads as a round-topped lozenge. Where shadow areas use dithering, the pattern is vertical 2-pixel-spaced warm-brown dots over primary orange \u2014 no other dither patterns. Pose is neutral, weight even. Match the anchor reference's palette and proportion exactly.",
+      "reference_images": [
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/source-refs/claude-mascot-1.png",
+        "characters/claude-mascot/source-refs/claude-mascot-3.png"
+      ],
+      "cites_identity_rules": [
+        "IR.claude-mascot.palette.four-indexed-color-vocabulary",
+        "IR.claude-mascot.palette.no-anti-aliasing-between-steps",
+        "IR.claude-mascot.palette.primary-orange-dominant-fill",
+        "IR.claude-mascot.proportion.head-to-body-2-to-3-chibi",
+        "IR.claude-mascot.proportion.body-width-1-2x-head-width",
+        "IR.claude-mascot.proportion.silhouette-round-topped-lozenge",
+        "IR.claude-mascot.style.integer-pixel-grid-no-subpixel",
+        "IR.claude-mascot.style.dither-vertical-2px-warm-brown",
+        "IR.claude-mascot.style.no-gradient-interpolation-between-palette"
+      ]
+    },
+    {
+      "target_path": "turnarounds/body-profile-right.png",
+      "source": "generate",
+      "prompt": "A pixel-art-8bit character in pure right-side profile, body rotated 90\u00b0 from the front-facing reference so the camera sees one full side. Closed four-step indexed palette only: primary orange #E89B6B as the dominant body/skin/limb fill; cream highlight #F4DDB8 at the crown and any visible fingertip; warm brown shadow #A86B45 along the contour's shadow side and at any fold line visible from this angle; deep brown #5C3A24 for the single visible eye dot and the visible end of the mouth stroke. Integer pixel grid, no anti-aliasing between palette entries, no gradient interpolation; diagonals as stair-stepped pixel runs. Chibi 2:3 head-to-body proportion preserved; round-topped lozenge silhouette read from the side. Where dither is used in shadow, it is vertical 2-pixel-spaced warm-brown dots over primary orange.",
+      "reference_images": [
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/source-refs/claude-mascot-1.png",
+        "characters/claude-mascot/source-refs/claude-mascot-3.png"
+      ],
+      "cites_identity_rules": [
+        "IR.claude-mascot.palette.four-indexed-color-vocabulary",
+        "IR.claude-mascot.palette.no-anti-aliasing-between-steps",
+        "IR.claude-mascot.palette.primary-orange-dominant-fill",
+        "IR.claude-mascot.proportion.head-to-body-2-to-3-chibi",
+        "IR.claude-mascot.proportion.silhouette-round-topped-lozenge",
+        "IR.claude-mascot.style.integer-pixel-grid-no-subpixel",
+        "IR.claude-mascot.style.dither-vertical-2px-warm-brown",
+        "IR.claude-mascot.style.no-gradient-interpolation-between-palette"
+      ]
+    },
+    {
+      "target_path": "turnarounds/body-back.png",
+      "source": "generate",
+      "prompt": "A pixel-art-8bit character viewed from directly behind \u2014 back of the head, back of the body, no face visible. Closed four-step indexed palette only: primary orange #E89B6B as the dominant body/skin/limb fill; cream highlight #F4DDB8 only at the crown shine (face is not visible); warm brown shadow #A86B45 along the contour's shadow side and any visible fold; deep brown #5C3A24 reserved for accent strokes only \u2014 no eyes or mouth render at this angle. Integer pixel grid, no anti-aliasing between palette entries, no gradient interpolation; diagonals as stair-stepped pixel runs. Chibi 2:3 head-to-body proportion preserved; the silhouette from behind still reads as a round-topped lozenge. Where dither is used, it is vertical 2-pixel-spaced warm-brown dots over primary orange. NOTE: this view is extrapolated; no source reference shows the back angle directly. Match the anchor's palette and proportion exactly; infer back-side contour from the lozenge silhouette rule.",
+      "reference_images": [
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/source-refs/claude-mascot-1.png",
+        "characters/claude-mascot/source-refs/claude-mascot-3.png"
+      ],
+      "cites_identity_rules": [
+        "IR.claude-mascot.palette.four-indexed-color-vocabulary",
+        "IR.claude-mascot.palette.no-anti-aliasing-between-steps",
+        "IR.claude-mascot.palette.primary-orange-dominant-fill",
+        "IR.claude-mascot.proportion.head-to-body-2-to-3-chibi",
+        "IR.claude-mascot.proportion.silhouette-round-topped-lozenge",
+        "IR.claude-mascot.style.integer-pixel-grid-no-subpixel",
+        "IR.claude-mascot.style.dither-vertical-2px-warm-brown"
+      ]
+    },
+    {
+      "target_path": "turnarounds/head-front.png",
+      "source": "generate",
+      "prompt": "A pixel-art-8bit character's head and shoulders only, viewed front-on \u2014 a head-shot crop of the canonical anchor pose at higher pixel density for finer face-feature rule citation. Closed four-step indexed palette only: primary orange #E89B6B as the dominant face/scalp fill; cream highlight #F4DDB8 at the crown-of-head shine and any face highlight (cheek or forehead high points); warm brown shadow #A86B45 in under-jaw shadow and contour shadow side; deep brown #5C3A24 for the two eye dots (symmetric, roughly one eye-width apart) and the single horizontal mouth stroke. Integer pixel grid, no anti-aliasing between palette entries, no gradient interpolation. Round head silhouette tapers into a narrow visible shoulder line at the crop's bottom edge. Neutral expression: straight mouth stroke, round eyes.",
+      "reference_images": [
+        "characters/claude-mascot/anchor.png"
+      ],
+      "cites_identity_rules": [
+        "IR.claude-mascot.palette.four-indexed-color-vocabulary",
+        "IR.claude-mascot.palette.no-anti-aliasing-between-steps",
+        "IR.claude-mascot.face.eye-deep-brown-dot-cluster",
+        "IR.claude-mascot.face.mouth-line-deep-brown-single-stroke",
+        "IR.claude-mascot.anatomy.fingertip-and-crown-cream-highlight",
+        "IR.claude-mascot.style.integer-pixel-grid-no-subpixel"
+      ]
+    },
+    {
+      "target_path": "expressions/neutral.png",
+      "source": "ingest:characters/claude-mascot/anchor.png",
+      "cites_identity_rules": [
+        "IR.claude-mascot.face.eye-deep-brown-dot-cluster",
+        "IR.claude-mascot.face.mouth-line-deep-brown-single-stroke",
+        "IR.claude-mascot.face.expression-vocabulary-three-only",
+        "IR.claude-mascot.palette.four-indexed-color-vocabulary",
+        "IR.claude-mascot.style.integer-pixel-grid-no-subpixel"
+      ]
+    },
+    {
+      "target_path": "expressions/surprised.png",
+      "source": "generate",
+      "prompt": "The Claude Mascot character at the canonical anchor pose, with a surprised expression. Closed four-step indexed palette only: primary orange #E89B6B body fill; cream highlight #F4DDB8 at crown shine and fingertips; warm brown shadow #A86B45 in under-jaw shadow and contour; deep brown #5C3A24 for face features. Surprised expression specifically renders as: eyes round and slightly larger than neutral (still deep-brown dot clusters, still symmetric, still roughly one eye-width apart); mouth opens into a small filled deep-brown shape (not an outlined or framed shape, not a circle, just a small solid deep-brown region centered below the eyes). Integer pixel grid, no anti-aliasing, no gradients between palette entries. Pose is the canonical anchor pose; only the face changes from neutral. Chibi 2:3 head-to-body proportion preserved; lozenge silhouette preserved.",
+      "reference_images": [
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/source-refs/claude-mascot-1.png",
+        "characters/claude-mascot/source-refs/claude-mascot-3.png"
+      ],
+      "cites_identity_rules": [
+        "IR.claude-mascot.face.eye-deep-brown-dot-cluster",
+        "IR.claude-mascot.face.mouth-line-deep-brown-single-stroke",
+        "IR.claude-mascot.face.expression-vocabulary-three-only",
+        "IR.claude-mascot.palette.four-indexed-color-vocabulary",
+        "IR.claude-mascot.palette.no-anti-aliasing-between-steps",
+        "IR.claude-mascot.proportion.head-to-body-2-to-3-chibi",
+        "IR.claude-mascot.style.integer-pixel-grid-no-subpixel"
+      ]
+    },
+    {
+      "target_path": "expressions/contemplative.png",
+      "source": "generate",
+      "prompt": "The Claude Mascot character at the canonical anchor pose, with a contemplative expression. Closed four-step indexed palette only: primary orange #E89B6B body fill; cream highlight #F4DDB8 at crown shine and fingertips; warm brown shadow #A86B45 in under-jaw shadow and contour; deep brown #5C3A24 for face features. Contemplative expression specifically renders as: eyes round (deep-brown dot clusters, symmetric, roughly one eye-width apart, same size as neutral); mouth as a slightly curved single horizontal stroke of deep brown \u2014 a subtle downward or sideways curve at one or both ends rather than the straight neutral stroke. The mouth remains a stroke, not a filled shape. Integer pixel grid, no anti-aliasing, no gradients between palette entries. Pose is the canonical anchor pose; only the face changes from neutral. Chibi 2:3 head-to-body proportion preserved; lozenge silhouette preserved.",
+      "reference_images": [
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/source-refs/claude-mascot-1.png",
+        "characters/claude-mascot/source-refs/claude-mascot-3.png"
+      ],
+      "cites_identity_rules": [
+        "IR.claude-mascot.face.eye-deep-brown-dot-cluster",
+        "IR.claude-mascot.face.mouth-line-deep-brown-single-stroke",
+        "IR.claude-mascot.face.expression-vocabulary-three-only",
+        "IR.claude-mascot.palette.four-indexed-color-vocabulary",
+        "IR.claude-mascot.palette.no-anti-aliasing-between-steps",
+        "IR.claude-mascot.proportion.head-to-body-2-to-3-chibi",
+        "IR.claude-mascot.style.integer-pixel-grid-no-subpixel"
+      ]
+    }
+  ]
+}

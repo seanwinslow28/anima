@@ -153,7 +153,7 @@ Skills map to the 10-phase architecture. Most carry over from the pencil-test er
 | `seedance-prompting` (portable) | 6 Motion | Locked v4 Seedance prompt template; auto-loads in any project |
 | `video-animation-production` | 6 Motion, 8 Assemble | FFmpeg frame sequence assembly, two-pass GIF optimization, WebM/MP4 export |
 | `planner` — Maya | 0 Brief & Plan | Opus 4.8 primary → Sonnet 4.6 adversarial validation → human gate. Emits two-tier brief (Studio + Production) + v1.1 graph-shaped `acceptance_criteria.json` + clean-markdown `plan.md` + `RunCostEstimate` from `CostEstimatorNode`. Three-call ceiling. `project_type: bible_authoring` scopes plan.md to Phase 0 + Phase 2 only. CLI: `python -m pipeline.cli plan init/show/approve/mutate`. Commit 3 shipped 2026-05-27 |
-| `character_designer` — Cy | 2 Character Bible | Opus 4.8 authors (Pass 1) → NB Pro generates plates (Pass 2) → Gemini 3.1 Pro verifies via `agy` (Pass 3). Three-attempt ceiling per plate. **Plate-generation contract (fidelity fix, 2026-05-29):** the runner is the source of truth for references — `anchor.png` is injected first on every `generate` plate, source-refs are kept, references to other generated plates are stripped (no chaining); plate prompts are short plate-intent wrapped in runner-owned reference-role-tag framing, never verbal character re-descriptions or pipeline-meta text. **Pass-2.5 pixel-similarity gate** (`pipeline/agents/similarity_gate.py`, DINOv2→CLIP→PIL ladder) scores each plate vs the anchor before Gemini's prose Pass-3 and persists a per-plate verdict trail to `runs/{run_id}/plate_verdicts.jsonl`. **`#region:NAME` ingest crops** read a `<sheet>.regions.json` sidecar (fractional/pixel boxes) and crop the source sheet; unmappable regions fall back to a full copy flagged `region_not_cropped` (never a silent wrong crop). Emits `character.yaml` + per-character `acceptance_criteria.json` (v1.2 graph with `IR.{character_id}.*` entries) + `risk-bible.md` + `cy-confidence-notes.md` + `plate_generation_plan.json`. CLI: `python -m pipeline.cli bible init/show/approve/mutate/iterate`. Commit 2 shipped 2026-05-28 |
+| `character_designer` — Cy | 2 Character Bible | Opus 4.8 authors (Pass 1) → NB2 (`gemini-3.1-flash-image-preview`) generates/edits plates (Pass 2) → Gemini 3.1 Pro verifies via `agy` (Pass 3). Three-attempt ceiling per plate. **Prompt construction — the register-parameterized five-slot emitter (source of truth, 2026-05-30):** `_build_plate_prompt` (in `pipeline/agents/character_designer.py`) is the single home for plate-prompt construction — the register-agnostic editing template (spec: [`docs/research/2026-05-30-nb2-editing-character-consistency-template.md`](docs/research/2026-05-30-nb2-editing-character-consistency-template.md)). It reads `_REGISTER_CLAUSE_LIBRARY` (the six closed registers) to fill `{identity_lock}` / `{preserve_and_negative}` / `{style_register}`; Cy authors only the terse `{variation}`. A reject reason (from `bible iterate` or a Pass-3 fail) threads into `{preserve_and_negative}` so it steers the re-roll, not just the cache key. `_build_prop_prompt` stays the isolated-object case. **Per-register model routing (Amendment B):** `_resolve_plate_model` / `_REGISTER_MODELS` route editing to NB2 (`gemini-3.1-flash-image-preview`) for every register — better identity hold, ~half cost, ~4× faster, dodges NB Pro's multi-reference downsampling regression — with NB Pro reserved for painterly *finals* (watercolor/photoreal/3d) as a documented seam (no consumer yet; re-verify the Pro regression before building the guard). A per-character `characters.{id}.generation_model` manifest override wins over the register default. The runner function is `invoke_image_edit` (renamed from `invoke_nb_pro`, which survives as a deprecation alias — model is a parameter). **Plate-generation contract (fidelity fix, 2026-05-29):** the runner is the source of truth for references — `anchor.png` is injected first on every `generate` plate, source-refs are kept, references to other generated plates are stripped (no chaining); plate prompts are short plate-intent wrapped in runner-owned reference-role-tag framing, never verbal character re-descriptions or pipeline-meta text. **Prop-plate exception (2026-05-29):** a plate under `props/` is an isolated object, not the character — the runner does NOT inject the anchor, uses an isolated-object prompt forbidding any figure or text, and the Pass-2.5 gate is record-only for it (never identity-scored against the full-character anchor). **Pass-2.5 similarity gate** (`pipeline/agents/similarity_gate.py`, DINOv2→CLIP→PIL ladder; DINOv2 needs `torch torchvision transformers`) scores each plate vs the anchor before Gemini's prose Pass-3 and persists a per-plate verdict trail to `runs/{run_id}/plate_verdicts.jsonl`. The gate is **record-only, not a hard reject** — DINOv2 separates recovered-from-drifted at the same view (regression eval in `evals/similarity-gate/`), but legitimate view/expression variation overlaps drift against a single front anchor, so a blanket hard threshold would false-reject good plates (a real hard gate needs per-view refs — future work). **Plates-only bake (2026-05-29):** re-running Cy against a **locked** Bible (or `author_bible.py --plates-only`) skips Pass 1 and bakes plates against the committed `plate_generation_plan.json` + locked rules — an approved Bible is never re-authored. **Pass-1 retry (2026-05-29):** a transient malformed Opus emission is retried within the 3-call budget (a missing SDK or a contract violation is not). **`#region:NAME` ingest crops** read a `<sheet>.regions.json` sidecar (fractional/pixel boxes) and crop the source sheet; unmappable regions fall back to a full copy flagged `region_not_cropped` (never a silent wrong crop). Emits `character.yaml` + per-character `acceptance_criteria.json` (v1.2 graph with `IR.{character_id}.*` entries) + `risk-bible.md` + `cy-confidence-notes.md` + `plate_generation_plan.json`. CLI: `python -m pipeline.cli bible init/show/approve/mutate/add/iterate`. Commit 2 shipped 2026-05-28; fidelity-fix + production bake 2026-05-29; **claude-mascot pencil-register pivot 2026-05-30** — re-authored as anima's second *same-register* (pencil-test-colored) character + Act 2 shoulder companion, validating Cy on a second character in the established register; pixel-art *cross-register* validation is explicitly deferred to a future 16BitFit-humanoid pass. **Tool-bug follow-on shipped 2026-05-30:** the `bible mutate` schema-version conflation is fixed (edits rule content in place, keeps schema `version` at 1.2, `--new-version` → separate `content_version`), and `bible iterate`'s reject reason now reaches the prompt. A live-manifest criteria integration test ([`tests/test_live_manifest_criteria.py`](tests/test_live_manifest_criteria.py)) guards against a Bible committed unloadable. **Maya `plan mutate` FIXED (2026-05-30):** `mutate_plan` now mirrors `bible mutate` (edits the rule in place by `id`, keeps schema `version` loadable, records `--new-version` as a separate `content_version`, errors on an unknown `--target`); `bump_version` hardened to refuse an off-schema `major.minor` (protects both callers). **`bible add` shipped (2026-05-30):** the audited additive path for a locked Bible — appends new plates + new `IR.*` rules from a `--spec` JSON, re-validates, keeps the Bible loadable + locked, records `content_version` (the trio: mutate edits, iterate re-rolls, **add extends**). **Emitter live-validated (2026-05-30):** the five-slot `_build_plate_prompt` HELD on its first live NB2 bake for `pencil-test-colored` — four mascot expressions at DINOv2 0.95–0.98 vs anchor, small graphite dot eyes + no hair + full color, no clause trim needed (the standing pencil prose is anchor-reinforcing, not prompt-dominance drift). |
 | `vision_critic` — Em | 5, 6, 8 (T2 checkpoints) | Gemini 3.1 Pro via Anti-Gravity CLI default, Opus 4.7 via Claude Agent SDK escalation. Patches stage in `manifest.lock.yaml`. Commit 8 shipped 2026-05-26 |
 | _(CLI critic)_ | 4→5, pre-Museum (T3 checkpoints) | Pending agent-fleet session — Codex + Anti-Gravity parallel |
 
@@ -213,12 +213,17 @@ anima/                                   # renamed from sw-portfolio-animation-p
 │   │   ├── turnarounds/ expressions/ motion_plates/ costumes/default/ props/  # Cy populates per Pass-1 plate plan
 │   │   └── source-refs/                 # POPULATED: notes.md, turnaround-{1,2}.png, head-turn/{1..9}.png,
 │   │                                    #   walk-cycle/{source,derived-v1,derived-v2}.png, 3d-mannequin/
-│   ├── claude-mascot/                   # Claude Mascot Bible — pixel-art-8bit register; second-character schema validation
-│   │   ├── anchor.png                   # claude-mascot-2.png (2048×2048), the canonical identity reference
-│   │   ├── character.yaml               # Scaffolded template; Cy populates in Task 1.11's real authoring run
-│   │   ├── turnarounds/ expressions/ motion_plates/ costumes/default/ props/
-│   │   └── source-refs/                 # POPULATED: notes.md (palette + proportion + grid invariants),
-│   │                                    #   claude-mascot-{1,3}.png as secondary references
+│   ├── claude-mascot/                   # Claude Mascot Bible — pencil-test-colored register (re-authored 2026-05-30);
+│   │   │                                #   same register as sean-anchor + Act 2 shoulder companion. Pixel-art Bible
+│   │   │                                #   retired to characters/_archive/ (reference-gap failure).
+│   │   ├── anchor.png                   # The C-B ¾ hero portrait — the terracotta box-creature identity reference
+│   │   ├── character.yaml               # 14 IR.claude-mascot.* rules; criteria locked (v1.2)
+│   │   ├── turnarounds/                 # 5 plates INGESTED as crops from the real C-1 turnaround sheet (zero-drift)
+│   │   ├── expressions/ motion_plates/ costumes/default/ props/  # 6 expressions (neutral, curious + alarm, delight, sleep, alert-perk via bible add)
+│   │   └── source-refs/                 # POPULATED: notes.md, turnaround-c1.png (5-view sheet) + .regions.json
+│   │                                    #   crop sidecar, sean-with-claude-mascot.png (A-7 pairing)
+│   ├── _archive/                        # Retired Bibles kept as evidence (not active). claude-mascot-pixel-art-8bit/
+│   │                                    #   = the superseded pixel mascot (reference-gap failure; see its README)
 │   └── _per-character_                  # Each Bible folder is self-contained; manifest's characters: dict
 │                                        #   registers folder + style_register. criteria_sources: lists the
 │                                        #   per-character acceptance_criteria.json paths for runtime merge.
@@ -395,12 +400,23 @@ python -m pipeline.cli bible show --character-dir characters/{character_id}/
 # Flip locked=true on the character's acceptance_criteria.json. Idempotent.
 python -m pipeline.cli bible approve --character-dir characters/{character_id}/
 
-# Audited mutation of a locked Bible. Refuses without --force. Bumps semver,
-# re-points the symlink, appends to runs/{run_id}/bible_audit.jsonl.
+# Audited mutation of a locked Bible. Refuses without --force. Appends to
+# runs/{run_id}/bible_audit.jsonl. Edits the rule whose id == --target in
+# place (sets --field = --value), re-validates the graph, and writes back at
+# the same schema `version` (1.2). `--new-version` is OPTIONAL and now records
+# a separate content_version field the loader ignores — it never touches the
+# schema-version field, so it is safe to pass (the 2026-05-30 schema-conflation
+# bug that broke the claude-mascot Bible is fixed). An unknown --target errors.
 python -m pipeline.cli bible mutate --force --actor <name> --reason "<why>" \
     --target IR.<character_id>.<category>.<handle> --field <field> --value <value> \
-    --character-dir characters/{character_id}/ --run-dir runs/{run_id} \
-    --new-version 1.3.0
+    --character-dir characters/{character_id}/ --run-dir runs/{run_id}
+
+# Audited additive path: append new plates + IR rules to a LOCKED Bible.
+# mutate edits an existing rule; iterate re-rolls existing plates; add EXTENDS.
+python -m pipeline.cli bible add --character-dir characters/{character_id}/ \
+    --spec characters/{character_id}/additions.json \
+    --force --actor <name> --reason "<why>" \
+    --run-dir runs/{run_id} --content-version 1.1.0
 
 # Re-run Cy narrowed to rejected plates; cached passing plates are preserved.
 python -m pipeline.cli bible iterate --character-dir characters/{character_id}/ \
@@ -418,7 +434,7 @@ python scripts/author_bible.py characters/sean-anchor/ \
     --run-dir runs/2026-MM-DD-cy-sean-anchor-bake/
 
 python scripts/author_bible.py characters/claude-mascot/ \
-    --studio-brief "Pixel-art mascot — see source-refs/notes.md" \
+    --studio-brief "Claude-mascot in pencil-test-colored register — see source-refs/notes.md and the C-1 turnaround" \
     --run-dir runs/2026-MM-DD-cy-claude-mascot-bake/
 ```
 

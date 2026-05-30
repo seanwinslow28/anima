@@ -1,58 +1,64 @@
 character_id: claude-mascot
 display_name: Claude Mascot
-style_register: pixel-art-8bit
+style_register: pencil-test-colored
 palette:
-- name: primary_orange
-  hex: '#E89B6B'
-  tolerance_rgb: 10
-  role: "Skin, body fill, exposed limbs \u2014 the dominant silhouette color across\
-    \ the character at every angle."
-- name: cream_highlight
-  hex: '#F4DDB8'
-  tolerance_rgb: 6
-  role: "Face highlight, crown-of-head shine, fingertip highlights \u2014 applied\
-    \ sparingly to lit areas only."
-- name: warm_brown_shadow
-  hex: '#A86B45'
-  tolerance_rgb: 6
-  role: Under-jaw shadow, fold lines, outer-contour shadow side; also the color used
-    in the dither pattern over primary orange.
-- name: deep_brown
-  hex: '#5C3A24'
-  tolerance_rgb: 4
-  role: "Eye dots, mouth line, accent strokes \u2014 the single darkest entry, reserved\
-    \ for facial features and accent detail."
+- name: terracotta_orange_body
+  hex: '#C77C52'
+  role: "body-fill-primary \u2014 the rounded box; flat muted clay-orange with cross-hatched\
+    \ warm-graphite shadow, never gradient- or cel-shaded"
+- name: cream_paper
+  hex: '#F2E6CC'
+  role: "paper-base \u2014 the shared substrate with sean-anchor; grain and warmth\
+    \ read through the line work, never a flat vector fill"
+- name: warm_graphite_line
+  hex: '#3D3530'
+  role: "line-contour \u2014 construction cross-line, final contour, and cross-hatch;\
+    \ warm dark gray, never pure black, never cool gray (carried from sean-anchor\
+    \ for register parity)"
+- name: terracotta_shadow
+  hex: '#9E5A38'
+  role: "shadow-hatch \u2014 the darker clay tone the warm-graphite cross-hatch reads\
+    \ as where it sits over the body fill on the far side plane and the underside"
+- name: cast_shadow_graphite
+  hex: '#B3A78C'
+  role: "cast-shadow \u2014 the soft, loose, hand-drawn graphite scribble directly\
+    \ beneath the box on the paper, not a rendered drop-shadow"
+- name: eye_dot_graphite
+  hex: '#2E2823'
+  role: "eye-and-brow-accent \u2014 the two dot eyes and the two short brow strokes;\
+    \ the deepest warm-graphite mark on the face"
 proportions:
-  head_to_body_ratio: '2:3'
-  head_to_body_ratio_note: Head height (crown to chin) is roughly two-thirds of total
-    body height (crown to soles). Chibi register.
-  body_to_head_width_ratio: 1.2:1
-  silhouette_descriptor: "round-topped lozenge \u2014 circular head tapers into a\
-    \ slightly narrower rectangular body base"
-  thumbnail_floor_px: 32
-  thumbnail_floor_note: Silhouette must remain readable as the mascot at 32px or smaller;
-    the round-topped lozenge shape is the load-bearing recognizability cue at sub-32px
-    sizes.
-identity_rules_pointer: characters/claude-mascot/acceptance_criteria.json
-cy_confidence_notes: characters/claude-mascot/cy-confidence-notes.md
-risks: characters/claude-mascot/risk-bible.md
-expressions_authored:
-- neutral
-- surprised
-- contemplative
-expressions_authored_note: "Closed set for commit 2. Frames requesting expressions\
-  \ outside this set are Bible silences, not violations \u2014 escalate before verdict."
-costumes_authored:
-- default
-costumes_authored_note: Single design at commit 2. No hats, tools, accessories, or
-  alternate outfits exist.
-motion_plates_authored: []
-motion_plates_authored_note: None at commit 2. Phase 6 motion shots involving the
-  mascot require motion-plate authoring as a prior step (pipeline bible iterate --target
-  motion_plates).
+  head_to_body: "N/A \u2014 the mascot is a single fused rounded-box body with no\
+    \ separate head. The box silhouette reads ~1:1.2 (width:height), a rounded cube\
+    \ slightly taller than wide."
+  shoulder_to_hip: "N/A \u2014 no shoulders or hips. Two ear/arm nubs project from\
+    \ the left and right faces at the box's mid-height; four stub legs sit close together\
+    \ beneath the footprint."
+  notes: 'Shoulder-companion scale is the load-bearing proportion cue: the box reads
+    as roughly one adult-human-head tall, small enough to perch on Sean''s shoulder
+    (canonical in A-7). Corners are generously radiused; the face sits directly on
+    the upper-front face of the box. Never a sharp-edged cube, never a sphere, never
+    a biped.'
+identity_rules_pointer: acceptance_criteria.json
+cy_confidence_notes: "Cy hedges five axes: (1) the C-1 SIDE view shows a circular\
+  \ construction swirl on the body's side face \u2014 read as the pencil-test spherical-mass\
+  \ construction mark, NOT authored as an identity feature; Sean should confirm feature\
+  \ vs. construction. (2) Palette hexes (terracotta #C77C52, shadow #9E5A38, cast-shadow\
+  \ #B3A78C) are eyeballed from C-B/A-7; warm-graphite line #3D3530 and cream paper\
+  \ #F2E6CC are carried from sean-anchor for register parity \u2014 eyeball against\
+  \ the anchor. (3) The box ratio ~1:1.2 is a visual estimate, not measured. (4) The\
+  \ shoulder-companion scale rule grounds on a single two-shot (A-7). (5) No motion\
+  \ plates exist \u2014 locomotion is unspecified; any Phase 6 mascot shot needs motion\
+  \ authoring first. Full prose in cy-confidence-notes.md."
 flux_lora_seed_plates:
 - anchor.png
 - turnarounds/body-front.png
 - turnarounds/body-3quarter.png
-- turnarounds/body-profile-right.png
-- turnarounds/head-front.png
+- turnarounds/body-side.png
+- expressions/curious.png
+risks: risk-bible.md
+source_refs_consumed:
+- source-refs/notes.md
+- source-refs/turnaround-c1.png
+- source-refs/sean-with-claude-mascot.png
+- anchor.png

@@ -48,7 +48,7 @@ from pipeline.agents import (
     register_node,
 )
 from pipeline.agents.cli_runners import run_antigravity_with_image
-from pipeline.agents.nb_pro_runner import NBProResponse, invoke_nb_pro
+from pipeline.agents.nb_pro_runner import invoke_image_edit
 from pipeline.agents.sdk_runners import invoke_opus_text
 from pipeline.agents.similarity_gate import compute_similarity
 from pipeline.criteria import validate_criteria
@@ -83,6 +83,20 @@ _BOX_CHARACTERS = frozenset("╔═╗║╚╝┌─┐│└┘├┤┬┴┼
 # but per-plate scope since Cy may have many plates.
 _PLATE_ATTEMPT_CEILING = 3
 
+# The default style register + the editing-model slug. Defined here (above the
+# class) because they are default-arg values on _run_plate, evaluated at
+# module-load time; the per-register clause library + model table + emitter
+# that also reference them live further down (they only need them at call time).
+_DEFAULT_REGISTER = "pencil-test-colored"
+_NB2_FLASH = "gemini-3.1-flash-image-preview"
+_NB_PRO = "gemini-3-pro-image-preview"
+
+# Pass-1 call ceiling. Cy gets up to three Opus calls to produce a parseable
+# envelope; a transient malformed emission (Opus 4.8 narration/truncation) is
+# retried within this budget before falling back to the loud stub. A missing
+# SDK or a contract violation is NOT retried (see _author_pass1).
+_PASS1_CALL_CEILING = 3
+
 # Subdirectories under characters/{id}/ that hold Cy-generated (or
 # ingest-target) plates. A `generate` plate must NEVER reference another plate
 # in these directories — that is the reference-chaining anti-pattern that
@@ -93,6 +107,14 @@ _PLATE_ATTEMPT_CEILING = 3
 _GENERATED_PLATE_DIRS = frozenset(
     {"turnarounds", "expressions", "props", "motion_plates", "costumes"}
 )
+
+# Subdirectories whose plates are ISOLATED OBJECTS, not the character. A prop
+# plate (the stylus, etc.) must NOT get the full-body anchor injected — doing so
+# tells NB Pro to draw the whole person beside a floating prop (the re-baked
+# props/stylus.png defect). Prop plates also skip the Pass-2.5 anchor-similarity
+# gate entirely: scored against a full-character anchor they always land near
+# zero, which would spuriously reject/regenerate a perfectly good object plate.
+_PROP_PLATE_DIRS = frozenset({"props"})
 
 # Pass-3 Gemini timeout per plate. Same default Em uses in vision_critic.py.
 _GEMINI_TIMEOUT_S = 120
@@ -139,79 +161,68 @@ class CharacterDesignerNode:
                 f"and drop source material per source-refs-checklist.md first."
             )
 
-        # ---------- Pass 1 — Opus authors ----------
-        studio_brief = str(ctx.inputs.get("studio_brief", ""))
-        opus_prompt = self._build_pass1_prompt(
-            studio_brief=studio_brief,
-            character_dir=character_dir,
-        )
-        # 1800s timeout for Cy's Pass-1: the prompt is ~55KB (anima preamble
-        # + Cy addendum + 2d-animation-principles skill inline + per-Bible
-        # brief) and the envelope is ~50KB (character.yaml + 15-20 IR.* rules
-        # + risk-bible + confidence-notes + plate plan). Observed wall time
-        # against real Opus 4.7 on the sean-anchor authoring run: ~500s. The
-        # 2026-05-29 Opus 4.8 bump pushed Pass-1 past the previous 900s ceiling
-        # (4.8 spends more on extended thinking for a large structured
-        # emission); a real re-bake hit the 900s wall and silently stubbed.
-        # Raised to 1800s with headroom. The invoke_opus_text default of 120s
-        # would cleanly time out before Pass 1 ever completed.
-        opus_resp = asyncio.run(invoke_opus_text(prompt=opus_prompt, timeout_s=1800))
-        # A timed-out / unavailable Opus call returns empty text (and, for the
-        # no-SDK path, stub_fallback=True). Either way Pass-1 is a stub. Surface
-        # it loudly in notes so the orchestrator fails instead of silently
-        # shipping a STUB FALLBACK Bible (the must-fix lesson: a successful exit
-        # code can lie about what happened).
-        pass1_stub = (
-            bool(getattr(opus_resp, "stub_fallback", False))
-            or getattr(opus_resp, "exit_code", 0) != 0
-            or not (opus_resp.text or "").strip()
-        )
-
-        parsed = self._parse_pass1_envelope(
-            opus_resp.text,
-            character_dir=character_dir,
-            stub_fallback=bool(getattr(opus_resp, "stub_fallback", False)),
-        )
-        # The parser builds the synthetic stub when the Opus text is empty OR
-        # non-empty-but-unparseable. That second case is the one the response-
-        # field check above misses, so fold the parser's own verdict in.
-        pass1_stub = pass1_stub or bool(parsed.get("_pass1_stub"))
-
-        character_yaml: dict = parsed["character_yaml"]
-        ir_entries: list[dict] = parsed["ir_entries"]
-        risk_bible_md: str = parsed["risk_bible_md"]
-        cy_confidence_notes_md: str = parsed["cy_confidence_notes_md"]
-        plate_plan: dict = parsed["plate_generation_plan"]
-
-        # Contract: prose artifacts must be clean markdown (no terminal-aesthetic).
-        self._enforce_clean_markdown(risk_bible_md, "risk-bible.md")
-        self._enforce_clean_markdown(cy_confidence_notes_md, "cy-confidence-notes.md")
-
-        # Build + validate the per-character acceptance_criteria.json.
-        criteria_json = {
-            "version": "1.2",
-            "locked": False,
-            "criteria": ir_entries,
-        }
-        validate_criteria(criteria_json)  # raises on invalid IR.* entries
-
-        # Write Pass-1 artifacts atomically.
-        character_dir.mkdir(parents=True, exist_ok=True)
+        # ---------- Pass 1 — author OR load an approved Bible ----------
+        # A locked Bible (or an explicit plates_only request) must NOT be
+        # re-authored. The director approved those rules and the committed
+        # plate_generation_plan.json carries hand-curated ingest sources and
+        # prompts (trimmed stylus, manual body-turnaround crops). Re-running
+        # Opus Pass 1 would overwrite both and flip locked back to false. So in
+        # that case we LOAD the on-disk Bible and run Passes 2+3 against it —
+        # a plates-only bake that honors the approval.
         character_yaml_path = character_dir / "character.yaml"
         criteria_path = character_dir / "acceptance_criteria.json"
         risk_bible_path = character_dir / "risk-bible.md"
         confidence_notes_path = character_dir / "cy-confidence-notes.md"
         plate_plan_path = character_dir / "plate_generation_plan.json"
 
-        _atomic_write_text(character_yaml_path, yaml.safe_dump(character_yaml, sort_keys=False))
-        _atomic_write_text(criteria_path, json.dumps(criteria_json, indent=2))
-        _atomic_write_text(risk_bible_path, risk_bible_md)
-        _atomic_write_text(confidence_notes_path, cy_confidence_notes_md)
-        _atomic_write_text(plate_plan_path, json.dumps(plate_plan, indent=2))
+        if self._resolve_plates_only(ctx, character_dir):
+            character_yaml, ir_entries, plate_plan = self._load_existing_bible(
+                character_dir
+            )
+            pass1_stub = False
+        else:
+            (
+                character_yaml,
+                ir_entries,
+                risk_bible_md,
+                cy_confidence_notes_md,
+                plate_plan,
+                pass1_stub,
+            ) = self._author_pass1(ctx, character_dir)
+
+            # Contract: prose artifacts must be clean markdown (no terminal-aesthetic).
+            self._enforce_clean_markdown(risk_bible_md, "risk-bible.md")
+            self._enforce_clean_markdown(cy_confidence_notes_md, "cy-confidence-notes.md")
+
+            # Build + validate the per-character acceptance_criteria.json.
+            criteria_json = {
+                "version": "1.2",
+                "locked": False,
+                "criteria": ir_entries,
+            }
+            validate_criteria(criteria_json)  # raises on invalid IR.* entries
+
+            # Write Pass-1 artifacts atomically.
+            character_dir.mkdir(parents=True, exist_ok=True)
+            _atomic_write_text(character_yaml_path, yaml.safe_dump(character_yaml, sort_keys=False))
+            _atomic_write_text(criteria_path, json.dumps(criteria_json, indent=2))
+            _atomic_write_text(risk_bible_path, risk_bible_md)
+            _atomic_write_text(confidence_notes_path, cy_confidence_notes_md)
+            _atomic_write_text(plate_plan_path, json.dumps(plate_plan, indent=2))
 
         # ---------- Passes 2 + 3 — per-plate generate + verify ----------
         nb_pro_cache_dir = ctx.cache_dir / "nb_pro"
         nb_pro_cache_dir.mkdir(parents=True, exist_ok=True)
+
+        style_register = str(character_yaml.get("style_register") or _DEFAULT_REGISTER)
+        # Per-register model routing (Amendment B): resolve the editing model
+        # once. A per-character manifest override (characters.{id}.generation_model)
+        # wins; otherwise the register default (NB2 for editing in every
+        # register). author_bible.py passes manifest={}, so the register default
+        # is the safety net for direct authoring runs.
+        character_id = str(character_yaml.get("character_id") or character_dir.name)
+        char_cfg = (ctx.manifest.get("characters") or {}).get(character_id, {}) or {}
+        generation_model = _resolve_plate_model(style_register, char_cfg, final=False)
 
         plate_results: dict[str, dict] = {}
         for plate in plate_plan.get("plates", []):
@@ -220,6 +231,8 @@ class CharacterDesignerNode:
                 ir_entries=ir_entries,
                 character_dir=character_dir,
                 cache_dir=nb_pro_cache_dir,
+                style_register=style_register,
+                generation_model=generation_model,
             )
             plate_results[plate["target_path"]] = status
 
@@ -254,6 +267,137 @@ class CharacterDesignerNode:
             tier=ctx.tier,
             cites_criteria=cites,
             notes=notes,
+        )
+
+    # ----- Pass 1 — author vs. load -----
+
+    def _resolve_plates_only(self, ctx: AgentContext, character_dir: Path) -> bool:
+        """Decide whether this run bakes plates against an existing Bible
+        (skipping Pass 1) or authors a fresh one.
+
+        Plates-only is triggered by EITHER an explicit ctx.inputs['plates_only']
+        OR a locked acceptance_criteria.json on disk. The locked auto-detect is
+        the safety net: an approved Bible must never be silently re-authored,
+        even if the caller forgets the flag."""
+        if ctx.inputs.get("plates_only"):
+            return True
+        criteria_path = character_dir / "acceptance_criteria.json"
+        if criteria_path.exists():
+            try:
+                payload = json.loads(criteria_path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                return False
+            if payload.get("locked"):
+                return True
+        return False
+
+    def _load_existing_bible(self, character_dir: Path) -> tuple[dict, list[dict], dict]:
+        """Load an already-authored Bible from disk for a plates-only bake.
+
+        Returns (character_yaml, ir_entries, plate_plan). Raises FileNotFoundError
+        if the Bible was never authored (no criteria / no plate plan) — a
+        plates-only bake has nothing to bake against in that case."""
+        criteria_path = character_dir / "acceptance_criteria.json"
+        plate_plan_path = character_dir / "plate_generation_plan.json"
+        if not criteria_path.exists():
+            raise FileNotFoundError(
+                f"plates-only bake requested but no acceptance_criteria.json at "
+                f"{criteria_path}. Author the Bible first (run without --plates-only)."
+            )
+        if not plate_plan_path.exists():
+            raise FileNotFoundError(
+                f"plates-only bake requested but no plate_generation_plan.json at "
+                f"{plate_plan_path}. Author the Bible first (run without --plates-only)."
+            )
+        criteria_json = json.loads(criteria_path.read_text(encoding="utf-8"))
+        ir_entries = list(criteria_json.get("criteria", []))
+        plate_plan = json.loads(plate_plan_path.read_text(encoding="utf-8"))
+        character_yaml: dict = {}
+        character_yaml_path = character_dir / "character.yaml"
+        if character_yaml_path.exists():
+            try:
+                character_yaml = yaml.safe_load(
+                    character_yaml_path.read_text(encoding="utf-8")
+                ) or {}
+            except yaml.YAMLError:
+                character_yaml = {}
+        return character_yaml, ir_entries, plate_plan
+
+    def _author_pass1(
+        self, ctx: AgentContext, character_dir: Path
+    ) -> tuple[dict, list[dict], str, str, dict, bool]:
+        """Pass 1 — Opus authors the five-artifact envelope.
+
+        Retries on a transient PARSE FAILURE (the SDK ran but returned empty or
+        unparseable text — the Opus 4.8 narration/truncation case) up to the
+        three-call budget, auto-healing what previously required a human re-run.
+        Does NOT retry: a missing SDK (stub_fallback — deterministic, not
+        transient) or a CONTRACT VIOLATION (parseable JSON missing required
+        keys — `_parse_pass1_envelope` raises ValueError, which propagates as a
+        real rejection).
+
+        Returns (character_yaml, ir_entries, risk_bible_md, cy_confidence_notes_md,
+        plate_plan, pass1_stub). The caller enforces clean markdown, validates +
+        writes the criteria, and writes the artifacts."""
+        studio_brief = str(ctx.inputs.get("studio_brief", ""))
+        opus_prompt = self._build_pass1_prompt(
+            studio_brief=studio_brief,
+            character_dir=character_dir,
+        )
+
+        parsed: dict = {}
+        for attempt in range(1, _PASS1_CALL_CEILING + 1):
+            # 1800s timeout for Cy's Pass-1: the prompt is ~55KB (anima preamble
+            # + Cy addendum + 2d-animation-principles skill inline + per-Bible
+            # brief) and the envelope is ~50KB. Observed wall time against real
+            # Opus 4.7: ~500s. The 2026-05-29 Opus 4.8 bump pushed Pass-1 past
+            # the previous 900s ceiling (4.8 spends more on extended thinking);
+            # a real re-bake hit the 900s wall and silently stubbed. Raised to
+            # 1800s with headroom. The invoke_opus_text default of 120s would
+            # cleanly time out before Pass 1 ever completed.
+            opus_resp = asyncio.run(invoke_opus_text(prompt=opus_prompt, timeout_s=1800))
+
+            sdk_absent = bool(getattr(opus_resp, "stub_fallback", False))
+            resp_problem = (
+                sdk_absent
+                or getattr(opus_resp, "exit_code", 0) != 0
+                or not (opus_resp.text or "").strip()
+            )
+            # _parse_pass1_envelope returns a synthetic stub (with _pass1_stub)
+            # for empty / unparseable output, and RAISES ValueError for a
+            # parseable-but-incomplete envelope (a contract violation that must
+            # not be retried — let it propagate).
+            parsed = self._parse_pass1_envelope(
+                opus_resp.text,
+                character_dir=character_dir,
+                stub_fallback=sdk_absent,
+            )
+            pass1_stub = resp_problem or bool(parsed.get("_pass1_stub"))
+
+            if not pass1_stub:
+                # Real envelope on this attempt — done.
+                break
+            if sdk_absent or attempt == _PASS1_CALL_CEILING:
+                # A missing SDK is deterministic (retrying can't help), and on
+                # the final attempt the budget is spent — return the loud stub.
+                break
+            # Otherwise the SDK ran but produced empty/unparseable output — a
+            # transient malformation. Loop and retry within the budget.
+
+        pass1_stub = (
+            bool(getattr(opus_resp, "stub_fallback", False))
+            or getattr(opus_resp, "exit_code", 0) != 0
+            or not (opus_resp.text or "").strip()
+            or bool(parsed.get("_pass1_stub"))
+        )
+
+        return (
+            parsed["character_yaml"],
+            parsed["ir_entries"],
+            parsed["risk_bible_md"],
+            parsed["cy_confidence_notes_md"],
+            parsed["plate_generation_plan"],
+            pass1_stub,
         )
 
     # ----- prompt builders -----
@@ -499,6 +643,8 @@ class CharacterDesignerNode:
         ir_entries: list[dict],
         character_dir: Path,
         cache_dir: Path,
+        style_register: str = _DEFAULT_REGISTER,
+        generation_model: str = _NB2_FLASH,
     ) -> dict:
         """Run Pass 2 + Pass 3 for a single plate. Returns the plate status dict."""
         target_path = character_dir / plate["target_path"]
@@ -512,7 +658,7 @@ class CharacterDesignerNode:
         # keeps only source-refs/ angle targets, and strips any reference to
         # another generated plate (no chaining). For an ingest plate there are
         # no references — the pixel is Sean's own source.
-        reference_images, has_pose_ref = _resolve_generate_references(
+        reference_images, has_pose_ref, is_prop = _resolve_generate_references(
             plate, character_dir
         )
         # Wrap the plate's short intent in the role-tag framing NB Pro responds
@@ -520,8 +666,22 @@ class CharacterDesignerNode:
         # identity). The verbose verbal character-descriptions are gone; the
         # runner owns the framing so a too-wordy Opus prompt can't reintroduce
         # prompt-dominance, and the anti-caption guardrail kills the stylus.png
-        # caption failure mode (§3b).
-        prompt_text = _build_nb_pro_prompt(plate_intent, has_pose_ref=has_pose_ref)
+        # caption failure mode (§3b). A prop plate uses the isolated-object
+        # framing instead — no anchor was fed, so a "match Image 1" prompt would
+        # be incoherent and would re-invite the floating-figure defect.
+        # A plate carrying a reject_reason (from `bible iterate` narrowing)
+        # threads its correction into the prompt's preserve/negative slot on
+        # the INITIAL generate too — not just the Pass-3 regenerate — so an
+        # iterate actually steers the re-roll (post-mortem §3), not merely the
+        # cache key.
+        plate_reject = plate.get("reject_reason")
+        prompt_text = _build_plate_prompt(
+            plate_intent,
+            style_register=style_register,
+            has_pose_ref=has_pose_ref,
+            is_prop=is_prop,
+            reject_reason=plate_reject,
+        )
 
         status: dict[str, Any] = {
             "status": "pending",
@@ -559,12 +719,17 @@ class CharacterDesignerNode:
                 })
                 return status
         else:
-            nb_resp = invoke_nb_pro(
+            nb_resp = invoke_image_edit(
                 prompt=prompt_text,
                 reference_images=reference_images,
                 output_path=target_path,
                 cache_dir=cache_dir,
                 cites_identity_rules=cites_rules,
+                model=generation_model,
+                # A `bible iterate` reject_reason both steers the prompt
+                # (woven into prompt_text above) and busts the cache key here,
+                # so the re-roll is a fresh generation, not a cache hit (§3).
+                reject_reason=plate_reject,
             )
             status.update({
                 "status": "stub" if nb_resp.stub_fallback else "generated",
@@ -583,7 +748,7 @@ class CharacterDesignerNode:
         # but doesn't look like the character is surfaced numerically rather
         # than masked (post-mortem §2.3). Recorded, not hard-blocked — see
         # similarity_gate for why the coarse PIL metric is a flag this commit.
-        self._score_plate_identity(target_path, character_dir, status)
+        self._score_plate_identity(target_path, character_dir, status, is_prop=is_prop)
 
         # ----- Pass 3 — Gemini verifies (and regenerates on fail, up to ceiling) -----
         for attempt in range(1, _PLATE_ATTEMPT_CEILING + 1):
@@ -621,13 +786,24 @@ class CharacterDesignerNode:
                 status["status"] = "human_gate_required"
                 return status
 
-            # Regenerate via NB Pro with the reject reason threaded in.
-            nb_resp = invoke_nb_pro(
-                prompt=prompt_text,
+            # Regenerate with the reject reason wired into the prompt's
+            # preserve/negative slot (post-mortem §3) — not just the cache key
+            # — so the correction steers the re-roll instead of re-sampling
+            # the identical prompt.
+            regen_prompt = _build_plate_prompt(
+                plate_intent,
+                style_register=style_register,
+                has_pose_ref=has_pose_ref,
+                is_prop=is_prop,
+                reject_reason=verdict_envelope["reasoning"],
+            )
+            nb_resp = invoke_image_edit(
+                prompt=regen_prompt,
                 reference_images=reference_images,
                 output_path=target_path,
                 cache_dir=cache_dir,
                 cites_identity_rules=cites_rules,
+                model=generation_model,
                 reject_reason=verdict_envelope["reasoning"],
             )
             if not nb_resp.ok:
@@ -636,20 +812,27 @@ class CharacterDesignerNode:
                 return status
 
             # Re-score the freshly regenerated plate against the anchor.
-            self._score_plate_identity(target_path, character_dir, status)
+            self._score_plate_identity(target_path, character_dir, status, is_prop=is_prop)
 
         # Shouldn't reach here — the loop returns on every branch.
         return status
 
     def _score_plate_identity(
-        self, target_path: Path, character_dir: Path, status: dict
+        self, target_path: Path, character_dir: Path, status: dict,
+        *, is_prop: bool = False,
     ) -> None:
         """Compute + record the Pass-2.5 similarity of a plate vs the anchor.
 
         Mutates `status` in place with similarity_score / similarity_method /
         similarity_reference, and similarity_flag='below_threshold' when the
         score is low. Never raises — a scoring failure must not fail a plate
-        (the gate is a signal, not a blocker this commit)."""
+        (the gate is a signal, not a blocker this commit).
+
+        Prop plates are an EXCEPTION: an isolated object scored against the
+        full-character anchor always lands near zero, so the score is recorded
+        for a complete audit trail but the gate is marked record-only and the
+        below-threshold reject flag is never set — a prop is never identity-
+        scored against the character anchor."""
         anchor_path = character_dir / "anchor.png"
         if not target_path.exists() or not anchor_path.exists():
             return
@@ -661,6 +844,9 @@ class CharacterDesignerNode:
         status["similarity_score"] = round(sim.score, 4)
         status["similarity_method"] = sim.method
         status["similarity_reference"] = "anchor.png"
+        if is_prop:
+            status["similarity_gate"] = "record-only (prop plate — not identity-scored)"
+            return
         if sim.below_threshold:
             status["similarity_flag"] = "below_threshold"
 
@@ -874,66 +1060,281 @@ def _classify_reference(ref: str, character_dir: Path) -> tuple[Path | None, str
     return resolved, "external"
 
 
+def _is_prop_plate(plate: dict) -> bool:
+    """True when the plate is an isolated-object (prop) plate, not the character.
+
+    Identified by target_path landing under a _PROP_PLATE_DIRS subdir
+    (props/). Prop plates skip anchor injection and the identity-similarity gate
+    — a full-body anchor is the wrong reference for an isolated object.
+    """
+    target = str(plate.get("target_path", ""))
+    head = target.split("/", 1)[0] if "/" in target else ""
+    return head in _PROP_PLATE_DIRS
+
+
 def _resolve_generate_references(
     plate: dict, character_dir: Path
-) -> tuple[list[Path], bool]:
+) -> tuple[list[Path], bool, bool]:
     """Build the reference list a generate plate is actually fed.
 
     The runner — not Opus — owns this. Policy (post-mortem §3d + §5 item 2):
-      1. anchor.png is ALWAYS first, injected unconditionally.
+      1. anchor.png is ALWAYS first, injected unconditionally — EXCEPT for prop
+         plates, where the full-body anchor is the wrong reference (it makes
+         NB Pro draw the whole figure beside a floating object).
       2. source-refs/ material Opus named (the angle/pose target) is kept.
       3. references to other generated plates are STRIPPED (no chaining).
 
-    Returns (ordered_deduped_paths, has_pose_ref) where has_pose_ref is True
-    when at least one non-anchor reference survived (so the prompt can name it
-    as the angle/pose target).
+    Returns (ordered_deduped_paths, has_pose_ref, is_prop) where has_pose_ref is
+    True when at least one non-anchor reference survived (so the prompt can name
+    it as the angle/pose target), and is_prop signals the prop-plate class so
+    the caller picks the isolated-object prompt + record-only similarity gate.
     """
+    is_prop = _is_prop_plate(plate)
     refs: list[Path] = []
     seen: set[Path] = set()
 
-    anchor_path, anchor_kind = _classify_reference("anchor.png", character_dir)
-    if anchor_kind == "anchor" and anchor_path is not None:
-        refs.append(anchor_path)
-        seen.add(anchor_path)
+    if not is_prop:
+        anchor_path, anchor_kind = _classify_reference("anchor.png", character_dir)
+        if anchor_kind == "anchor" and anchor_path is not None:
+            refs.append(anchor_path)
+            seen.add(anchor_path)
 
     has_pose_ref = False
     for raw in plate.get("reference_images", []):
         path, kind = _classify_reference(str(raw), character_dir)
+        # For a prop plate the anchor is dropped too (it's the character, not
+        # the object); only genuine source-ref/external object refs survive.
+        if kind == "anchor" and is_prop:
+            continue
         if kind in {"source_ref", "external"} and path is not None and path not in seen:
             refs.append(path)
             seen.add(path)
             has_pose_ref = True
-        # 'anchor' already injected; 'generated' dropped (no chaining);
-        # 'missing' skipped.
-    return refs, has_pose_ref
+        # 'anchor' already injected (non-prop); 'generated' dropped (no
+        # chaining); 'missing' skipped.
+    return refs, has_pose_ref, is_prop
 
 
-def _build_nb_pro_prompt(plate_intent: str, *, has_pose_ref: bool) -> str:
-    """Wrap a plate's short intent in NB Pro reference-role-tag framing.
+# The per-register clause library — the operative artifact from
+# docs/research/2026-05-30-nb2-editing-character-consistency-template.md
+# §"The per-register clause library". The template structure is
+# register-agnostic; this table is where the register-aware clauses live.
+# Adding a register is a deliberate row-add here, not an inline prose edit.
+# Each row supplies the three runner-owned, register-parameterized slots:
+#   identity_lock  — the enumerated markers to match in Image 1
+#   preserve       — what stays identical / register-specific negatives
+#   style_token    — the medium token, applied LATE
+# The universal anti-text clause is appended to every register's
+# preserve_and_negative slot (it is not register-specific).
+_UNIVERSAL_ANTI_TEXT = (
+    "Do not add any text, captions, labels, annotations, or watermarks to the image."
+)
 
-    Phase 0 of the fidelity fix proved that a terse "redraw this exact
-    character" prompt against the anchor recovers identity, where verbose
-    verbal character descriptions drove prompt-dominance drift. This builds
-    that terse framing around whatever short intent Cy authored, and forbids
-    rendering text/captions (the props/stylus.png caption failure, §3b).
+_REGISTER_CLAUSE_LIBRARY: dict[str, dict[str, str]] = {
+    "pencil-test-colored": {
+        "identity_lock": (
+            "Match the face, hair, full color palette, skin tone, and "
+            "proportions of Image 1 exactly."
+        ),
+        "preserve": (
+            "Keep the warm cream paper, the cross-hatch shadow, and the full "
+            "color of Image 1. Do not render the figure in monochrome. No "
+            "photographic shading."
+        ),
+        "style_token": (
+            "Warm pencil-test render: graphite line (not vector black), flat "
+            "color fills, cross-hatch shadow, warm cream paper, hole-punch "
+            "production marks."
+        ),
+    },
+    "pixel-art-8bit": {
+        "identity_lock": (
+            "Match the indexed palette, the round silhouette, and the "
+            "head-to-body ratio of Image 1 exactly."
+        ),
+        "preserve": "Hard pixel edges. No smooth anti-aliased gradients.",
+        "style_token": (
+            "16-bit pixel-art sprite, limited indexed palette, hard pixel "
+            "edges, clean outlines."
+        ),
+    },
+    "line-art-only": {
+        "identity_lock": (
+            "Match the contour shapes, line weight, hair silhouette, and "
+            "proportions of Image 1 exactly."
+        ),
+        "preserve": (
+            "No shading, no gradients, no soft shadow, no texture; flat color "
+            "fills only."
+        ),
+        "style_token": "Clean line art, bold uniform outlines, flat fills.",
+    },
+    "watercolor": {
+        "identity_lock": (
+            "Match the face, the pigment-pool palette, and the proportions of "
+            "Image 1 exactly."
+        ),
+        "preserve": "Keep the paper grain; let washes bleed; no hard vector edges.",
+        "style_token": "Soft watercolor wash, pigment-pool bleed, visible paper grain.",
+    },
+    "photoreal": {
+        "identity_lock": (
+            "Match the face, skin tone, hair, and proportions of Image 1 exactly."
+        ),
+        "preserve": (
+            "Keep the lighting direction and color temperature of Image 1; "
+            "clean edges, no halos."
+        ),
+        "style_token": (
+            "Photographic rendering, natural lighting, shallow depth of field."
+        ),
+    },
+    "3d-rendered": {
+        "identity_lock": (
+            "Match the face, material palette, and proportions of Image 1 exactly."
+        ),
+        "preserve": "Keep soft global illumination; no flat-shading artifacts.",
+        "style_token": (
+            "3D-rendered look, soft global illumination, subtle ambient occlusion."
+        ),
+    },
+}
+
+# Per-register model routing (Amendment B). Generation/editing is NB2 for
+# every register (cheaper, faster, more identity-stable for the across-edit
+# work that is Cy's whole job). A FINAL render routes to NB Pro only for the
+# painterly registers — and that path is a documented seam: no Pro-routed
+# character exists yet, so _run_plate never takes the final branch, and the
+# NB-Pro reference-fidelity guard the forum teams built is deferred until a
+# consumer exists (re-verify the Pro multi-reference regression first).
+_REGISTER_MODELS: dict[str, dict[str, str]] = {
+    "pencil-test-colored": {"generation": _NB2_FLASH, "final": _NB2_FLASH},
+    "pixel-art-8bit": {"generation": _NB2_FLASH, "final": _NB2_FLASH},
+    "line-art-only": {"generation": _NB2_FLASH, "final": _NB2_FLASH},
+    "watercolor": {"generation": _NB2_FLASH, "final": _NB_PRO},
+    "photoreal": {"generation": _NB2_FLASH, "final": _NB_PRO},
+    "3d-rendered": {"generation": _NB2_FLASH, "final": _NB_PRO},
+}
+
+
+def _resolve_plate_model(
+    style_register: str, char_cfg: dict | None = None, *, final: bool = False
+) -> str:
+    """Resolve the model for a plate. Manifest per-character override wins;
+    otherwise the register default from _REGISTER_MODELS. Bible plates are
+    editing operations and use the generation model (final=False)."""
+    char_cfg = char_cfg or {}
+    key = "final_model" if final else "generation_model"
+    override = char_cfg.get(key)
+    if override:
+        return str(override)
+    row = _REGISTER_MODELS.get(style_register) or _REGISTER_MODELS[_DEFAULT_REGISTER]
+    return row["final" if final else "generation"]
+
+
+def _build_plate_prompt(
+    plate_intent: str,
+    *,
+    style_register: str,
+    has_pose_ref: bool,
+    is_prop: bool = False,
+    reject_reason: str | None = None,
+) -> str:
+    """Emit the five-slot register-agnostic editing prompt.
+
+    Spec: docs/research/2026-05-30-nb2-editing-character-consistency-template.md.
+    Slots, in fixed order: [reference-role preamble] · {identity_lock} ·
+    {variation} (Cy's terse intent, the only authored slot, wrapped in the
+    ONLY CHANGE idiom) · {preserve_and_negative} · {style_register} ·
+    {output_spec}. The runner owns every slot but {variation}; the register
+    selects identity_lock / preserve / style_token from the clause library.
+
+    NOTE: this is a deliberate prompt UPGRADE over the prior pencil-leaning
+    builder, not a no-op — it adds the ONLY CHANGE idiom, the full preserve
+    clause, and a standing style token to every plate (the approved template
+    spec, worked Example 1, the prompt that would have prevented the `focused`
+    monochrome drift). The added prose is anchor-reinforcing register/preserve
+    guidance, NOT character re-description that competes with the anchor. A
+    live bake is the validation point.
+
+    A prop plate is the {output_spec}-isolated-object special case — it
+    delegates to _build_prop_prompt (no anchor was fed; a "match Image 1"
+    prompt would be incoherent).
+
+    reject_reason, when present (a Pass-3 fail or a `bible iterate` reject),
+    is threaded into {preserve_and_negative} so the correction actually
+    steers the regeneration (post-mortem §3) — not merely the cache key.
     """
-    lines = [
-        "Image 1 is the identity anchor — the canonical reference for this "
-        "character. Match the face, hair, color palette, skin tone, and "
-        "proportions in Image 1 exactly. Keep the full color of Image 1.",
-    ]
+    if is_prop:
+        return _build_prop_prompt(plate_intent, reject_reason=reject_reason)
+
+    row = (
+        _REGISTER_CLAUSE_LIBRARY.get(style_register)
+        or _REGISTER_CLAUSE_LIBRARY[_DEFAULT_REGISTER]
+    )
+
+    parts: list[str] = []
+    # 1. reference-role preamble (fixed)
+    parts.append(
+        "Image 1 is the identity anchor — the canonical reference for this character."
+    )
     if has_pose_ref:
-        lines.append(
+        parts.append(
             "Image 2 is the angle/pose target — match its viewing angle and "
             "pose, but the identity always comes from Image 1."
         )
+    # 2. identity_lock (register-parameterized)
+    parts.append(row["identity_lock"])
+    # 3. variation (Cy's terse intent, ONLY CHANGE idiom)
     intent = plate_intent.strip() or "a clean reference plate of this character"
-    lines.append(f"Render: {intent}.")
-    lines.append(
-        "The character must stay recognizably identical to Image 1. Do not "
-        "add any text, labels, captions, annotations, or watermarks to the image."
+    parts.append(
+        f"Render: {intent}. Change only what this names; keep everything else "
+        f"exactly as in Image 1."
     )
-    return " ".join(lines)
+    # 4. preserve_and_negative (register preserve + universal anti-text + correction)
+    preserve = row["preserve"] + " " + _UNIVERSAL_ANTI_TEXT
+    if reject_reason and reject_reason.strip():
+        preserve += (
+            " Correction from the previous attempt — address this and do not "
+            f"repeat it: {reject_reason.strip()}"
+        )
+    parts.append(preserve)
+    # 5. style_register (applied LATE)
+    parts.append(row["style_token"])
+    # 6. output_spec (minimal; the storyboard variant extends this later)
+    parts.append("The character must stay recognizably identical to Image 1.")
+    return " ".join(parts)
+
+
+def _build_prop_prompt(plate_intent: str, *, reject_reason: str | None = None) -> str:
+    """Frame a prop plate as an isolated object — no figure, no text.
+
+    A prop plate (the stylus, etc.) is an object reference, not the character.
+    The full-body anchor is deliberately NOT fed (see _resolve_generate_references),
+    so the prompt must not invite a figure: NB Pro otherwise draws the whole
+    person beside a floating object (the re-baked props/stylus.png defect). The
+    anti-text clause is the same guardrail the character prompt carries,
+    strengthened here because the original stylus plate rendered its meta-prose
+    as handwritten captions (post-mortem §3b).
+
+    reject_reason, when present, is appended as a correction so a `bible
+    iterate` / Pass-3 reject steers the re-roll rather than only busting the
+    cache key (post-mortem §3). When None (the common path), the output is
+    byte-identical to the prior prop prompt."""
+    correction = ""
+    if reject_reason and reject_reason.strip():
+        correction = (
+            " Correction from the previous attempt — address this and do not "
+            f"repeat it: {reject_reason.strip()}"
+        )
+    intent = plate_intent.strip() or "a single isolated prop object"
+    return (
+        "Render ONLY the isolated object described below, centered on a warm "
+        "cream paper background. Do NOT draw any person, character, hand, body, "
+        "or figure. Do NOT render any text, caption, label, handwriting, or "
+        "annotation anywhere in the image. "
+        f"Render: {intent}.{correction}"
+    )
 
 
 def _atomic_write_text(path: Path, content: str) -> None:

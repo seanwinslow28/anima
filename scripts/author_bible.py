@@ -59,6 +59,16 @@ def main() -> int:
         "--run-dir", required=True,
         help="Run output directory (e.g., runs/2026-05-28-cy-sean-anchor-bake/).",
     )
+    parser.add_argument(
+        "--plates-only", action="store_true",
+        help=(
+            "Skip Pass 1 (Opus re-authoring) and bake plates against the "
+            "committed plate_generation_plan.json + the on-disk acceptance_"
+            "criteria.json. Use this to regenerate plates for an APPROVED "
+            "(locked) Bible without overwriting its rules or plan. A locked "
+            "criteria file auto-routes to this mode even without the flag."
+        ),
+    )
     args = parser.parse_args()
 
     character_dir = Path(args.character_dir)
@@ -83,6 +93,7 @@ def main() -> int:
         inputs={
             "character_dir": str(character_dir),
             "studio_brief": args.studio_brief or _default_studio_brief(character_dir),
+            "plates_only": args.plates_only,
         },
         manifest={},
         criteria=None,
@@ -91,7 +102,11 @@ def main() -> int:
         extras={},
     )
 
-    print(f"Authoring {character_dir.name} Bible — Pass 1 (Opus) → Pass 2 (NB Pro) → Pass 3 (Gemini)")
+    if args.plates_only:
+        print(f"Baking {character_dir.name} plates — PLATES-ONLY (Pass 1 skipped; "
+              f"rules + plan loaded from disk) → Pass 2 (NB Pro) → Pass 3 (Gemini)")
+    else:
+        print(f"Authoring {character_dir.name} Bible — Pass 1 (Opus) → Pass 2 (NB Pro) → Pass 3 (Gemini)")
     print(f"  source-refs: {sum(1 for _ in source_refs.rglob('*') if _.is_file())} file(s)")
     print(f"  run dir:     {run_dir}")
     print()

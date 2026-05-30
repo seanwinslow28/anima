@@ -3,8 +3,46 @@
   "locked": true,
   "criteria": [
     {
-      "id": "IR.claude-mascot.palette.four-indexed-color-vocabulary",
-      "description": "The character renders in exactly four indexed colors, each in its declared role. Primary orange #E89B6B (\u00b110 RGB units) fills skin, body, and exposed limbs as the dominant silhouette color. Cream highlight #F4DDB8 (\u00b16 RGB) marks face highlight, crown-of-head shine, and fingertip highlights only. Warm brown shadow #A86B45 (\u00b16 RGB) appears in under-jaw shadow, fold lines, the outer contour's shadow side, and the dither pattern over primary orange. Deep brown #5C3A24 (\u00b14 RGB) is the single darkest entry, reserved for eye dots, mouth line, and accent strokes. Any pixel falling outside these four declared colors (including intermediate values produced by anti-aliasing) is a palette violation.",
+      "id": "IR.claude-mascot.proportion.rounded-box-silhouette",
+      "description": "The mascot's body is a single rounded box \u2014 a rounded cube reading slightly taller than wide, approximately 1:1.2 (width:height). All corners and edges are generously radiused, never sharp; the top edge and the vertical side edges curve. There is no separate head: the face sits directly on the upper-front face of the box. This silhouette is the load-bearing recognizability cue at shoulder-companion scale \u2014 not a sphere, not a humanoid figure, not a tall upright box. A frame that renders the mascot as a ball, a cylinder, a sharp-cornered cube, or anything with a distinct head-and-body break is a hard identity violation.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "annie"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png#region:body-silhouette",
+        "characters/claude-mascot/source-refs/turnaround-c1.png#region:front"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.proportion.shoulder-companion-scale",
+      "description": "The mascot reads at shoulder-companion scale \u2014 roughly the size of an adult human head. In the canonical two-shot with Sean (A-7), the box height is approximately equal to Sean's head height as it perches on his shoulder. Any Phase 5/6 frame that renders the mascot at hand-size (too small to read as a companion) or at torso-size or larger (reading as furniture or a second figure) relative to Sean is a scale violation. In standalone frames the box should still read as a small creature you could pick up, not a piece of architecture.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "annie"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/source-refs/sean-with-claude-mascot.png#region:mascot-on-shoulder",
+        "characters/claude-mascot/anchor.png"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+      "description": "Exactly two short, rounded, cylindrical ear/arm nubs project horizontally from the left and right faces of the box, set near the box's vertical mid-height (roughly on the construction midline). Each nub is short \u2014 about one-fifth of the box width in length \u2014 with a rounded blunt end and no articulation. They are not arms and bear no hands, fingers, joints, or detail. Both nubs read in front, three-quarter, and back views; in pure side/profile only the near nub reads. A nub rendered as an arm, a hand, a wing, a flipper, or a detailed ear is a violation.",
       "cites_phase": [
         5,
         6,
@@ -16,13 +54,14 @@
       "impact_tag": "identity_critical",
       "character_id": "claude-mascot",
       "derived_from": [
-        "characters/claude-mascot/anchor.png#region:full-figure-palette",
-        "characters/claude-mascot/source-refs/notes.md#palette"
+        "characters/claude-mascot/anchor.png#region:side-nubs",
+        "characters/claude-mascot/source-refs/turnaround-c1.png#region:front",
+        "characters/claude-mascot/source-refs/turnaround-c1.png#region:side"
       ]
     },
     {
-      "id": "IR.claude-mascot.palette.no-anti-aliasing-between-steps",
-      "description": "Transitions between any two of the four palette entries render as direct one-pixel boundary changes, not as smoothed gradients of intermediate RGB values. A diagonal edge between primary orange #E89B6B and warm brown shadow #A86B45 is a literal stair-step of those two colors; a single intermediate pixel value at the boundary is a register violation. (Distinct from the four-color vocabulary rule because a renderer could honor the four colors while still anti-aliasing between them; both rules must hold.)",
+      "id": "IR.claude-mascot.anatomy.nub-side-view-endcap",
+      "description": "In the SIDE and three-quarter views, the near ear/arm nub is seen end-on and reads as a small circular disc (an end-cap) on the body's side face \u2014 the C-1 SIDE-view 'swirl'. This circle IS the nub viewed down its axis, not a separate feature and not stray construction: it is never a navel, a port, an emblem, a button, or a logo, and it must never be 'cleaned away' as a construction artifact. Conversely, no NEW circular feature may be invented on the body's faces \u2014 the only circle that belongs there is the end-on nub in side/three-quarter framings. A side view that drops the near-nub end-cap, or that adds an unexplained disc/emblem to a face, drifts the character.",
       "cites_phase": [
         5,
         6,
@@ -34,13 +73,13 @@
       "impact_tag": "identity_critical",
       "character_id": "claude-mascot",
       "derived_from": [
-        "characters/claude-mascot/anchor.png#region:edge-detail",
-        "characters/claude-mascot/source-refs/notes.md#style-invariants"
+        "characters/claude-mascot/source-refs/turnaround-c1.png#region:side",
+        "characters/claude-mascot/anchor.png#region:side-nubs"
       ]
     },
     {
-      "id": "IR.claude-mascot.palette.primary-orange-dominant-fill",
-      "description": "Primary orange #E89B6B is the dominant silhouette color, occupying the majority (visually >50% by area) of the character's body, head, and exposed limb fills at every authored angle. If the silhouette appears dominated by warm brown, cream, or deep brown \u2014 or if primary orange reads as an accent rather than the fill \u2014 the plate has miscarried the register.",
+      "id": "IR.claude-mascot.anatomy.four-stub-legs",
+      "description": "Exactly four short stub legs sit beneath the box, set close together under the body's footprint rather than splayed wide. Each leg is a short rounded peg \u2014 about one-sixth of the box height \u2014 with no feet, toes, joints, or paw detail. In front view the front pair reads clearly with the back pair partly occluded behind; in side/profile the near front and near back legs read. A two-legged biped stance, wide-splayed legs, three or five legs, or detailed feet is a violation.",
       "cites_phase": [
         5,
         6,
@@ -52,70 +91,37 @@
       "impact_tag": "identity_critical",
       "character_id": "claude-mascot",
       "derived_from": [
-        "characters/claude-mascot/anchor.png#region:full-figure-fill",
-        "characters/claude-mascot/source-refs/notes.md#palette"
+        "characters/claude-mascot/anchor.png#region:legs",
+        "characters/claude-mascot/source-refs/turnaround-c1.png#region:front",
+        "characters/claude-mascot/source-refs/turnaround-c1.png#region:side"
       ]
     },
     {
-      "id": "IR.claude-mascot.style.integer-pixel-grid-no-subpixel",
-      "description": "Every contour, every shape edge, and every interior color boundary lands on an integer pixel coordinate at the plate's native render resolution. No sub-pixel rendering; diagonal lines appear as stair-stepped pixel runs, not as smoothed continuous slopes. Verifiable by inspection at 1:1 native scale \u2014 any feature that disappears between integer pixel positions when the plate is scaled to a power-of-two viewport is a grid violation.",
+      "id": "IR.claude-mascot.anatomy.no-arms-no-hands",
+      "description": "The mascot has no arms and no hands, ever. The two ear/arm nubs never extend into limbs, never bend, and never grasp, hold, point, or gesture with anything. The creature interacts with the world by leaning, tilting, and perching \u2014 not by reaching. Any frame that grows an arm, a hand, fingers, or a held object off the nubs is a hard identity violation. This negative-space rule is the most common drift risk: a generator asked to make the mascot 'do' something in a scene will reach for an arm, and it must not.",
       "cites_phase": [
         5,
         6,
         8
       ],
       "cites_personas": [
-        "em"
+        "em",
+        "annie"
       ],
       "impact_tag": "identity_critical",
       "character_id": "claude-mascot",
       "derived_from": [
-        "characters/claude-mascot/anchor.png#region:edge-detail",
-        "characters/claude-mascot/source-refs/notes.md#style-invariants"
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/source-refs/turnaround-c1.png"
       ]
     },
     {
-      "id": "IR.claude-mascot.style.dither-vertical-2px-warm-brown",
-      "description": "Where the plate uses dithering to render mid-tone shadow areas (warm brown shadow #A86B45 over the primary orange #E89B6B fill), the pattern is vertical 2-pixel-spaced dots \u2014 single-pixel warm-brown marks on every second row along a vertical axis. No checkerboard, no diagonal hatching, no horizontal banding, no scattered noise, no Bayer-matrix dither: those patterns are not in this register's vocabulary and their presence is a register violation.",
+      "id": "IR.claude-mascot.anatomy.no-hair",
+      "description": "The mascot has no hair, ever. The top and all faces of the rounded box are bare and unbroken \u2014 no hair, tuft, topknot, cowlick, fur, spikes, antennae, or any growth sprouts from the box, and nothing breaks the clean top edge of the silhouette. The only marks on the box surface are the face features on the upper-front face (two dot eyes, brows, construction cross-line, minimal mouth) and the cross-hatch shadow. A frame that adds a hair tuft, a sprig on top, or any hair-like growth is a hard identity violation \u2014 this is a common generator drift (it reads the box-top as a head and reaches for hair) and must be held.",
       "cites_phase": [
         5,
         6,
         8
-      ],
-      "cites_personas": [
-        "em"
-      ],
-      "impact_tag": "identity_critical",
-      "character_id": "claude-mascot",
-      "derived_from": [
-        "characters/claude-mascot/source-refs/claude-mascot-1.png#region:shadow-dither",
-        "characters/claude-mascot/source-refs/notes.md#style-invariants"
-      ]
-    },
-    {
-      "id": "IR.claude-mascot.style.no-gradient-interpolation-between-palette",
-      "description": "No gradient fills between palette entries. Color transitions are step changes \u2014 a single-pixel boundary from one palette color to the next, never a multi-pixel ramp through intermediate values. This rule complements the no-anti-aliasing rule by extending the constraint inward: even interior fills that could read as a 'gradient between palette steps' (e.g., a smooth ramp from cream highlight to primary orange across a cheek) are a register violation.",
-      "cites_phase": [
-        5,
-        6,
-        8
-      ],
-      "cites_personas": [
-        "em"
-      ],
-      "impact_tag": "identity_critical",
-      "character_id": "claude-mascot",
-      "derived_from": [
-        "characters/claude-mascot/anchor.png#region:fill-interior",
-        "characters/claude-mascot/source-refs/notes.md#style-invariants"
-      ]
-    },
-    {
-      "id": "IR.claude-mascot.proportion.head-to-body-2-to-3-chibi",
-      "description": "Head height (crown of head to chin) is approximately two-thirds of total body height measured crown-to-soles \u2014 a 2:3 head-to-body ratio, chibi register. Tolerance is \u00b110% of total body height. Deviation beyond that tolerance shifts the silhouette away from the mascot's recognizable shape; this is the load-bearing recognizability cue at sub-32-pixel display sizes.",
-      "cites_phase": [
-        5,
-        6
       ],
       "cites_personas": [
         "em"
@@ -124,12 +130,138 @@
       "character_id": "claude-mascot",
       "derived_from": [
         "characters/claude-mascot/anchor.png",
-        "characters/claude-mascot/source-refs/notes.md#proportion"
+        "characters/claude-mascot/source-refs/turnaround-c1.png"
       ]
     },
     {
-      "id": "IR.claude-mascot.proportion.body-width-1-2x-head-width",
-      "description": "Body width at the shoulders is approximately 1.2\u00d7 head width (tolerance \u00b115%). The character does not have narrow shoulders (sub-1\u00d7) or broad shoulders (above 1.4\u00d7); the body silhouette reads as slightly broader than the head when viewed from the front or three-quarter angle.",
+      "id": "IR.claude-mascot.face.two-dot-eyes-with-brows",
+      "description": "The face carries exactly two simple dot/oval eyes on the upper-front face of the box, each capped by a short curved brow stroke a small gap above it. The eyes are small ovals taller than wide, in warm graphite, sitting symmetric about the vertical construction centerline and roughly one eye-width apart at their inner edges, riding on the horizontal construction midline. The eyes plus brows carry the entire emotional read \u2014 there is no large mouth to emote with. A single eye, three or more eyes, large round cartoon eyes with big glossy highlights, or eyes lacking the brow stroke drift the character.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png#region:face",
+        "characters/claude-mascot/source-refs/turnaround-c1.png#region:front"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.face.construction-cross-line",
+      "description": "A faint pencil construction cross-line stays visible on the front face beneath the features: a horizontal midline running through the eyes and a soft vertical centerline bisecting the face. The cross-line reads at roughly half the weight of the eye and contour line and is never cleaned away \u2014 it is the pencil-test register's construction signature carried onto the creature, and it also locates the eyes and the nubs. A face rendered with no construction cross-line (a clean digital-finish look) is a register violation.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png#region:face-construction",
+        "characters/claude-mascot/source-refs/turnaround-c1.png#region:front"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.face.minimal-mouth-line",
+      "description": "At most a small, short mouth line sits low on the front face beneath and between the eyes \u2014 a single understated graphite stroke, never a feature. The mascot has no large mouth: no open-mouth shapes, no teeth, no lips, no smile or frown wide enough to carry expression. Expression lives in the eyes, the brows, and head tilt, never in the mouth. A grinning, gaping, talking, or emoting mouth is a violation. (Tagged continuity, not identity_critical, because the mouth reads inconsistently across references \u2014 see cy-confidence-notes.md.)",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png#region:mouth",
+        "characters/claude-mascot/source-refs/turnaround-c1.png#region:front"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.palette.terracotta-orange-body",
+      "description": "The body fills with a warm terracotta/clay orange (#C77C52, \u00b110 RGB) \u2014 a muted, medium-saturation clay tone. It is not red, not bright pumpkin or safety orange, and specifically not the saturated synthetic orange of the retired pixel-art mascot. The fill is flat color with cross-hatched warm-graphite shadow on the far and under planes (reading as the darker clay tone #9E5A38), never gradient- or cel-shaded. The terracotta body is the mascot's primary color-identity cue alongside the rounded-box silhouette.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png#region:body-fill",
+        "characters/claude-mascot/source-refs/sean-with-claude-mascot.png#region:mascot"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+      "description": "Contour and interior marks are warm-graphite pencil line (#3D3530, never pure black, never cool gray), drawn at varied HB-to-2B weight (~0.5-2px) so the drawing reads as hand-drawn. Shadow on the body is cross-hatching \u2014 warm graphite over the terracotta fill, reading as the darker clay tone #9E5A38 \u2014 laid on the far side plane and the underside, following the box's form. It is never a flat tonal fill, never cel-shading, never an airbrush gradient. This is the identical line and shadow treatment as the sean-anchor Bible: the mascot must read in the same pencil-test medium as Sean, since they share the frame in Act 2.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png#region:cross-hatch",
+        "characters/claude-mascot/source-refs/turnaround-c1.png#region:3quarter-back"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+      "description": "The mascot sits on the shared warm cream paper substrate (#F2E6CC) with visible grain, and casts a soft, loose graphite-scribble shadow (~#B3A78C) directly beneath the box on the paper. The cast shadow is a hand-drawn scribbled ellipse, not a rendered drop-shadow and not a hard vector shape. Production marks (hole-punch, sheet label) live on the sheet as in the rest of the register. A flat vector cream rectangle with no grain, or a rendered soft-box shadow, is a register violation. Shared with the T1 HF02 paper-texture gate, stated here for downstream consumers who do not run T1.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "aesthetic",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png#region:cast-shadow",
+        "characters/claude-mascot/source-refs/turnaround-c1.png"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.pose.shoulder-perch-canonical-pairing",
+      "description": "In two-shots with Sean, the canonical pairing (A-7) is the mascot perched on Sean's shoulder, the box leaning lightly toward his jaw and cheek, nubs and legs tucked against him. This is the Act 2 two-character continuity ground-truth for scale and placement: the mascot rides the shoulder rather than floating beside Sean or standing on the ground at his feet, unless a beat explicitly calls for it. The rule governs scale and placement continuity \u2014 not a specific frame's staging, which is Bea and Flo's call \u2014 and gives Em and Annie a citable invariant for Act 2 two-shots.",
+      "cites_phase": [
+        5,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "annie"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/source-refs/sean-with-claude-mascot.png"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.face.alarm-expression",
+      "description": "Alarm reads through the eyes and brows ONLY: the two small graphite dot eyes open wide (still small dots, never glossy cartoon eyes), brows raised high above them, mouth a small open shape. No hair or tuft appears on the box-top. Full terracotta color on cream paper.",
       "cites_phase": [
         5,
         6
@@ -137,104 +269,64 @@
       "cites_personas": [
         "em"
       ],
-      "impact_tag": "identity_critical",
+      "impact_tag": "aesthetic",
       "character_id": "claude-mascot",
       "derived_from": [
         "characters/claude-mascot/anchor.png",
-        "characters/claude-mascot/source-refs/notes.md#proportion"
+        "characters/claude-mascot/expressions/alarm.png"
       ]
     },
     {
-      "id": "IR.claude-mascot.proportion.silhouette-round-topped-lozenge",
-      "description": "The full-figure silhouette reads as a round-topped lozenge \u2014 a circular head tapering into a slightly narrower, more rectangular body base \u2014 not as a standing-figure rectangle, not as a teardrop, not as an hourglass. At thumbnail scale (\u226432px), the silhouette test passes only when this round-topped lozenge is visible without any internal feature detail. If a plate's silhouette at 32px reads as anything other than this lozenge shape, the plate fails the readability gate.",
+      "id": "IR.claude-mascot.face.delight-expression",
+      "description": "Delight reads as happy upward-arched (crescent) eyes with raised brows and a small open smile. The arched eyes are the expression's squint, not a change of eye style; no hair or tuft on the box-top; full terracotta color on cream paper, warm-graphite line and cross-hatch.",
       "cites_phase": [
         5,
-        6,
-        8
+        6
       ],
       "cites_personas": [
         "em"
       ],
-      "impact_tag": "identity_critical",
+      "impact_tag": "aesthetic",
       "character_id": "claude-mascot",
       "derived_from": [
-        "characters/claude-mascot/anchor.png#region:full-silhouette",
-        "characters/claude-mascot/source-refs/notes.md#proportion"
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/expressions/delight.png"
       ]
     },
     {
-      "id": "IR.claude-mascot.face.eye-deep-brown-dot-cluster",
-      "description": "Eyes render as small clusters of deep brown #5C3A24 pixels \u2014 typically one to four adjacent pixels per eye at native plate resolution \u2014 placed symmetrically across the horizontal centerline of the face. Eye spacing is roughly one eye-width apart (center-to-center separation \u2248 1\u00d7 the eye's own width). Eyes never use cream highlight, warm brown shadow, or any color other than deep brown; symmetry deviation beyond one pixel offset reads as identity drift.",
+      "id": "IR.claude-mascot.face.sleep-expression",
+      "description": "Sleep reads as closed eyes drawn as two small downward graphite arcs riding the construction midline, brows soft, mouth a tiny relaxed line. The closed-eye arcs are the sleep state of the two dot eyes, not a new eye style. No hair or tuft on the box-top; full terracotta color on cream paper.",
       "cites_phase": [
         5,
-        6,
-        8
+        6
       ],
       "cites_personas": [
         "em"
       ],
-      "impact_tag": "identity_critical",
+      "impact_tag": "aesthetic",
       "character_id": "claude-mascot",
       "derived_from": [
-        "characters/claude-mascot/anchor.png#region:face-eyes",
-        "characters/claude-mascot/source-refs/claude-mascot-3.png#region:face"
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/expressions/sleep.png"
       ]
     },
     {
-      "id": "IR.claude-mascot.face.mouth-line-deep-brown-single-stroke",
-      "description": "The mouth renders as a single horizontal stroke of deep brown #5C3A24 \u2014 short, centered below the eyes, no more than a few pixels long at neutral. The mouth never uses primary orange, cream highlight, or warm brown shadow; it shares the same accent color as the eyes. The surprised expression opens the mouth into a small filled deep-brown shape (not an outlined or framed shape); the contemplative expression curves the stroke slightly. No other mouth treatments exist in the authored vocabulary.",
+      "id": "IR.claude-mascot.face.alert-perk-expression",
+      "description": "Alert-perk reads as the two ear-arm nubs projecting upward and forward (perked) with focused small dot eyes and lifted brows. The nubs perk; the eyes stay small graphite dots, never enlarged glossy cartoon eyes; no hair or tuft on the box-top; full terracotta color on cream paper.",
       "cites_phase": [
         5,
-        6,
-        8
+        6
       ],
       "cites_personas": [
         "em"
       ],
-      "impact_tag": "identity_critical",
+      "impact_tag": "aesthetic",
       "character_id": "claude-mascot",
       "derived_from": [
-        "characters/claude-mascot/anchor.png#region:face-mouth",
-        "characters/claude-mascot/source-refs/claude-mascot-1.png#region:face-mouth"
-      ]
-    },
-    {
-      "id": "IR.claude-mascot.face.expression-vocabulary-three-only",
-      "description": "The Bible authors exactly three facial expressions: neutral (straight mouth stroke, round eyes), surprised (open mouth as small filled deep-brown shape, eyes round and slightly larger), and contemplative (slightly curved mouth stroke, round eyes). Any frame requesting an expression outside this three-state set is a Bible silence \u2014 no rule authored \u2014 and must be escalated to Sean for an iterate-add before Em can render a verdict on facial-expression citation.",
-      "cites_phase": [
-        5,
-        6,
-        8
-      ],
-      "cites_personas": [
-        "em"
-      ],
-      "impact_tag": "structural",
-      "character_id": "claude-mascot",
-      "derived_from": [
-        "characters/claude-mascot/expressions/neutral.png",
-        "characters/claude-mascot/expressions/surprised.png",
-        "characters/claude-mascot/expressions/contemplative.png",
-        "characters/claude-mascot/source-refs/notes.md#expression-coverage"
-      ]
-    },
-    {
-      "id": "IR.claude-mascot.anatomy.fingertip-and-crown-cream-highlight",
-      "description": "Cream highlight #F4DDB8 appears in two specific places only: at the digit tips when hands are visible (a single cream pixel or small cluster at the end of each visible finger) and at the top of the head (a small cream cluster at the crown indicating the shine highlight). Cream highlight does not appear on the body trunk, on mid-length limbs, on the chin, or under shadow areas. Cream appearing in any other region is a misapplied-highlight violation.",
-      "cites_phase": [
-        5,
-        6,
-        8
-      ],
-      "cites_personas": [
-        "em"
-      ],
-      "impact_tag": "identity_critical",
-      "character_id": "claude-mascot",
-      "derived_from": [
-        "characters/claude-mascot/anchor.png#region:hands",
-        "characters/claude-mascot/anchor.png#region:crown-highlight"
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/expressions/alert-perk.png"
       ]
     }
-  ]
+  ],
+  "content_version": "1.1.0"
 }

@@ -1,31 +1,30 @@
 {
   "plates": [
     {
-      "target_path": "turnarounds/body-front.png",
-      "source": "ingest:source-refs/turnaround-1.png#region:body-front",
+      "target_path": "turnarounds/body-3quarter.png",
+      "source": "ingest:source-refs/body-turnarounds/body-3quarter.png",
       "cites_identity_rules": [
         "IR.sean.proportion.head-to-body-1-to-7",
         "IR.sean.proportion.shoulder-width-1-5-head-widths",
-        "IR.sean.proportion.hip-to-floor-4-head-heights",
         "IR.sean.costume.default-outfit-locked",
         "IR.sean.costume.navy-tee-cool-gray-jeans",
         "IR.sean.style.construction-lines-visible-beneath-final"
       ]
     },
     {
-      "target_path": "turnarounds/body-3quarter.png",
-      "source": "ingest:source-refs/turnaround-1.png#region:body-3quarter",
+      "target_path": "turnarounds/body-profile-left.png",
+      "source": "ingest:source-refs/body-turnarounds/body-profile-left.png",
       "cites_identity_rules": [
         "IR.sean.proportion.head-to-body-1-to-7",
-        "IR.sean.prop.stylus-right-hand-always",
-        "IR.sean.prop.stylus-grip-three-fingers",
+        "IR.sean.proportion.hip-to-floor-4-head-heights",
+        "IR.sean.face.jaw-line-angular-not-rounded",
         "IR.sean.costume.default-outfit-locked",
         "IR.sean.style.construction-lines-visible-beneath-final"
       ]
     },
     {
       "target_path": "turnarounds/body-profile-right.png",
-      "source": "ingest:source-refs/turnaround-1.png#region:body-profile-right",
+      "source": "ingest:source-refs/body-turnarounds/body-profile-right.png",
       "cites_identity_rules": [
         "IR.sean.proportion.head-to-body-1-to-7",
         "IR.sean.proportion.hip-to-floor-4-head-heights",
@@ -36,7 +35,7 @@
     },
     {
       "target_path": "turnarounds/body-back.png",
-      "source": "ingest:source-refs/turnaround-1.png#region:body-back",
+      "source": "ingest:source-refs/body-turnarounds/body-back.png",
       "cites_identity_rules": [
         "IR.sean.proportion.head-to-body-1-to-7",
         "IR.sean.proportion.shoulder-width-1-5-head-widths",
@@ -149,7 +148,7 @@
     {
       "target_path": "expressions/focused.png",
       "source": "generate",
-      "prompt": "Pencil test character expression sheet, focused state. Sean Winslow \u2014 see anchor and neutral expression for baseline. Front-facing head and upper shoulders crop. Eyes narrowed slightly (upper lid descends to cover the top of the iris, lower lid raises slightly); the brow line drops a fraction and pulls inward toward the bridge of the nose \u2014 this is the working-illustrator concentration read, not anger. Mouth closed, lips slightly tightened (corners drawn in marginally, not down). The whole expression should read as 'attention narrowed onto the work,' not as a generic concerned or stern look. Eye spacing approximately one eye-width at inner corners. Brow line still reads as roughly horizontal at the outer ends but pulled in at the inner ends \u2014 closer to a flat slight-frown shape than a deep arch. Angular jaw line. Render in pencil-test-colored register: warm graphite line weight #3D3530, warm cream paper background #F2E6CC with grain, no explicit skin tone, cross-hatching for shadow areas. Visible construction lines beneath the final drawing. Hand-drawn pencil aesthetic.",
+      "prompt": "focused expression, front-facing head and upper shoulders: eyes narrowed slightly (upper lid lowered over the top of the iris), brow dropped and pulled inward toward the bridge of the nose (working-illustrator concentration, not anger), mouth closed with lips slightly tightened",
       "reference_images": [
         "anchor.png",
         "turnarounds/head-front.png",
@@ -296,10 +295,8 @@
     {
       "target_path": "props/stylus.png",
       "source": "generate",
-      "prompt": "Pencil test prop reference plate, isolated stylus on cream paper. A working-illustrator's stylus \u2014 straight cylindrical barrel approximately 14cm long, tapered conical tip at the working end, rounded blunt end at the eraser end, no pocket clip. The stylus is drawn alone at roughly 60-degree diagonal angle on the cream paper substrate, with no hand gripping it. Render in pencil-test-colored register: warm graphite line weight #3D3530 ranging from HB-light at the construction layer through 2B-heavy at the final contour, warm cream paper background #F2E6CC with visible grain, cross-hatching in warm graphite for the shadow cast by the stylus onto the paper and for the shaded side of the barrel. Visible construction line through the center axis of the barrel at roughly half final-contour weight. The plate serves as the canonical prop reference for IR.sean.prop.stylus-right-hand-always and IR.sean.prop.stylus-grip-three-fingers \u2014 downstream agents reference this plate when verifying that a Phase 5 frame's stylus matches the Bible's stylus form. Hand-drawn pencil aesthetic; no vector cleanup, no digital finish.",
-      "reference_images": [
-        "anchor.png"
-      ],
+      "prompt": "a single working-illustrator's stylus drawn in warm-graphite pencil-test line style on cream paper (hand-drawn HB-2B line weight, a visible construction line through the barrel axis, cross-hatched shadow) — NOT photorealistic, NOT metallic: straight cylindrical barrel ~14cm, tapered conical tip, rounded blunt end, no clip, lying at a ~60-degree diagonal",
+      "reference_images": [],
       "cites_identity_rules": [
         "IR.sean.prop.stylus-right-hand-always",
         "IR.sean.prop.stylus-grip-three-fingers",

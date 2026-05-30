@@ -269,15 +269,22 @@ critics:
 # Sean's Bible authoring runs in Tasks 1.10 + 1.11, sean-anchor and claude-mascot
 # are the two real Bibles authored end-to-end on commit 2's first day. Empty list
 # stays valid for back-compat (Pencil Test Act 2 runs against the anchor: block above).
+# Optional per-character model override (Amendment B, 2026-05-30). When absent,
+# the register default applies: NB2 (gemini-3.1-flash-image-preview) for editing
+# in every register; NB Pro reserved for painterly FINAL renders
+# (watercolor / photoreal / 3d-rendered), guarded — a seam with no consumer yet.
+# Read by pipeline.agents.character_designer._resolve_plate_model at plate time.
+# Override shape:  generation_model: <slug>   final_model: <slug>
 characters:
   sean-anchor:
     folder: characters/sean-anchor/
     style_register: pencil-test-colored   # First reference implementation — Pencil Test.
   claude-mascot:
-    folder: characters/claude-mascot/
-    style_register: pixel-art-8bit        # Second-character validation that the schema is
-                                          # style-agnostic across registers. Source refs in
-                                          # characters/claude-mascot/source-refs/.
+    folder: characters/claude-mascot/      # Re-authored in place 2026-05-30 (pixel Bible archived
+                                           # to characters/_archive/claude-mascot-pixel-art-8bit/).
+    style_register: pencil-test-colored    # Same register as sean-anchor — Act 2 shoulder companion.
+                                           # Source refs (C-B anchor, C-1 turnaround, A-7 pairing) in
+                                           # characters/claude-mascot/source-refs/.
 
 # Criteria sources — multi-file merge for the DAG runner.
 # Authoritative spec: Cy brainstorm TOP-1 + Task 1.8.

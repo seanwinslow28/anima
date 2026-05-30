@@ -26,7 +26,7 @@ import pytest
 
 from pipeline.agents.nb_pro_runner import (
     NBProResponse,
-    invoke_nb_pro,
+    invoke_image_edit,
 )
 
 
@@ -82,7 +82,7 @@ def test_missing_api_key_returns_stub_placeholder(
     """No GEMINI_API_KEY → stub fallback writes a placeholder PNG, no subprocess."""
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     output = tmp_path / "out.png"
-    response = invoke_nb_pro(
+    response = invoke_image_edit(
         prompt="test plate",
         reference_images=[fake_reference_image],
         output_path=output,
@@ -107,7 +107,7 @@ def test_cache_hit_skips_subprocess(
     """Second call with identical inputs hits cache; subprocess not invoked."""
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     output_1 = tmp_path / "out1.png"
-    response_1 = invoke_nb_pro(
+    response_1 = invoke_image_edit(
         prompt="same prompt",
         reference_images=[fake_reference_image],
         output_path=output_1,
@@ -117,7 +117,7 @@ def test_cache_hit_skips_subprocess(
 
     # Second call: same inputs, different output path. Should be a cache hit.
     output_2 = tmp_path / "out2.png"
-    response_2 = invoke_nb_pro(
+    response_2 = invoke_image_edit(
         prompt="same prompt",
         reference_images=[fake_reference_image],
         output_path=output_2,
@@ -134,13 +134,13 @@ def test_reject_reason_invalidates_cache(
 ):
     """Same inputs + reject_reason → different cache key → fresh generation."""
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
-    response_1 = invoke_nb_pro(
+    response_1 = invoke_image_edit(
         prompt="same prompt",
         reference_images=[fake_reference_image],
         output_path=tmp_path / "out1.png",
         cache_dir=cache_dir,
     )
-    response_2 = invoke_nb_pro(
+    response_2 = invoke_image_edit(
         prompt="same prompt",
         reference_images=[fake_reference_image],
         output_path=tmp_path / "out2.png",
@@ -156,14 +156,14 @@ def test_cites_identity_rules_change_cache_key(
 ):
     """Different cites_identity_rules tuples produce different cache keys."""
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
-    response_1 = invoke_nb_pro(
+    response_1 = invoke_image_edit(
         prompt="same",
         reference_images=[fake_reference_image],
         output_path=tmp_path / "out1.png",
         cache_dir=cache_dir,
         cites_identity_rules=("IR.test.hair.cowlick",),
     )
-    response_2 = invoke_nb_pro(
+    response_2 = invoke_image_edit(
         prompt="same",
         reference_images=[fake_reference_image],
         output_path=tmp_path / "out2.png",
@@ -183,13 +183,13 @@ def test_cache_key_stable_across_image_path_with_same_content(
     other_path = tmp_path / "copied-reference.png"
     other_path.write_bytes(fake_reference_image.read_bytes())
 
-    response_1 = invoke_nb_pro(
+    response_1 = invoke_image_edit(
         prompt="same",
         reference_images=[fake_reference_image],
         output_path=tmp_path / "out1.png",
         cache_dir=cache_dir,
     )
-    response_2 = invoke_nb_pro(
+    response_2 = invoke_image_edit(
         prompt="same",
         reference_images=[other_path],
         output_path=tmp_path / "out2.png",
@@ -203,14 +203,14 @@ def test_model_parameter_changes_cache_key(
 ):
     """Different model parameter → different cache key (so NB Pro / NB2 don't collide)."""
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
-    response_pro = invoke_nb_pro(
+    response_pro = invoke_image_edit(
         prompt="same",
         reference_images=[fake_reference_image],
         output_path=tmp_path / "out_pro.png",
         cache_dir=cache_dir,
         model="nano-banana-pro",
     )
-    response_flash = invoke_nb_pro(
+    response_flash = invoke_image_edit(
         prompt="same",
         reference_images=[fake_reference_image],
         output_path=tmp_path / "out_flash.png",
@@ -218,6 +218,36 @@ def test_model_parameter_changes_cache_key(
         model="gemini-3.1-flash-image-preview",
     )
     assert response_pro.cache_key != response_flash.cache_key
+
+
+def test_default_model_is_nb2_flash(monkeypatch, tmp_path, fake_reference_image, cache_dir):
+    """The editing/consistency default is NB2 Flash, not NB Pro (Amendment B:
+    NB2 holds identity better for editing, costs half, 4x faster, and dodges NB
+    Pro's multi-reference downsampling regression). The default must equal an
+    explicit NB2 call's cache key, and differ from an explicit NB-Pro call's."""
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    default_resp = invoke_image_edit(
+        prompt="same",
+        reference_images=[fake_reference_image],
+        output_path=tmp_path / "out_default.png",
+        cache_dir=cache_dir,
+    )
+    explicit_nb2 = invoke_image_edit(
+        prompt="same",
+        reference_images=[fake_reference_image],
+        output_path=tmp_path / "out_nb2.png",
+        cache_dir=cache_dir,
+        model="gemini-3.1-flash-image-preview",
+    )
+    explicit_pro = invoke_image_edit(
+        prompt="same",
+        reference_images=[fake_reference_image],
+        output_path=tmp_path / "out_pro.png",
+        cache_dir=cache_dir,
+        model="gemini-3-pro-image-preview",
+    )
+    assert default_resp.cache_key == explicit_nb2.cache_key
+    assert default_resp.cache_key != explicit_pro.cache_key
 
 
 # ---------------------------------------------------------------------------
@@ -230,7 +260,7 @@ def test_response_envelope_carries_required_fields(
 ):
     """NBProResponse carries the AgentSpec-compatible contract fields."""
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
-    response = invoke_nb_pro(
+    response = invoke_image_edit(
         prompt="test",
         reference_images=[fake_reference_image],
         output_path=tmp_path / "out.png",

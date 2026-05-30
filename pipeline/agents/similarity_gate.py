@@ -20,7 +20,7 @@ Identity similarity is best measured with a learned embedding. Preference order
 fallback. DINOv2/CLIP need torch + a model download — heavy deps anima does not
 require. So the ladder degrades gracefully:
 
-  1. DINOv2 cosine  — if `torch` + `transformers` import.
+  1. DINOv2 cosine  — if `torch` + `torchvision` + `transformers` import.
   2. CLIP cosine    — if `torch` + `open_clip` import.
   3. PIL-perceptual — always available (Pillow only). A color-histogram cosine
      blended with a grayscale structural correlation. Coarse, but it reliably
@@ -28,19 +28,38 @@ require. So the ladder degrades gracefully:
      rendered as monochrome graphite, or a tiny octopus rendered as a chibi
      humanoid — because those collapse the color histogram and gross structure.
 
-To upgrade the gate to DINOv2, `pip install torch transformers` — no code
-change; the ladder picks it up.
+To upgrade the gate to DINOv2, `pip install torch torchvision transformers` —
+no code change; the ladder picks it up. NOTE: torchvision is required —
+transformers 5.x's AutoImageProcessor needs it, and without it the DINOv2 rung
+raises during from_pretrained and SILENTLY falls back to PIL (the method label
+on the SimilarityResult is the tell: 'pil-perceptual' means the embedding tier
+did not engage, even if torch is installed).
 
-# Why the threshold is a flag, not a hard block (this commit)
+# Why the gate stays RECORD-ONLY — even with DINOv2 active (2026-05-29 finding)
 
-The PIL-perceptual metric is angle-sensitive: a faithful back-of-head plate
-compared against a front-facing anchor scores low for legitimate reasons. Hard-
-rejecting on it would false-reject correct non-front views. So in this commit
-the gate COMPUTES and PERSISTS the score and FLAGS below-threshold plates in
-the verdict trail, but does not short-circuit Gemini — both signals get
-recorded. Hard-reject-before-Pass-3 becomes safe once the embedding tier
-(DINOv2, angle-robust) is the active method; the flag is wired so that promotion
-is a threshold/config change, not a rewrite.
+The original plan was to promote the gate to a hard pre-Gemini reject once the
+DINOv2 (semantic, scale/background-robust) tier was installed. We installed it,
+re-scored the sean-anchor production bake, and found a blocking problem: a single
+blanket threshold against the one front anchor CANNOT separate identity drift
+from legitimate view/expression variation. Measured DINOv2-vs-anchor scores on
+plates Sean approved as recognizably himself:
+
+    good plates:  head-back 0.695 · neutral 0.722 · head-profile-left 0.729 ·
+                  surprised 0.740 · head-3quarter 0.741 ... body-profile-right 0.887
+    drifted refs: sean monochrome 0.755 · mascot chibi-humanoid 0.715
+
+The drifted references (0.715-0.755) sit INSIDE the good-plate range. A drift-
+catching threshold (>0.76) false-rejects head-back / neutral / surprised; a safe
+threshold (<0.69) catches nothing. DINOv2 separates recovered-from-drifted
+cleanly at the SAME view (that is the regression eval in evals/similarity-gate/,
+which passes on both registers), but a back-of-head plate is genuinely far from a
+front anchor in embedding space — as far as a wrong-character front view. So the
+gate COMPUTES and PERSISTS the (now DINOv2) score and FLAGS below-threshold
+plates, but does NOT short-circuit Gemini. A trustworthy hard gate needs
+PER-VIEW references (score a back-view plate against a back-view reference),
+which is future work. Prop plates are exempt entirely — an isolated object is
+never identity-scored against a full-character anchor (the runner passes
+is_prop=True; see character_designer._score_plate_identity).
 
 KNOWN BLIND SPOT (empirical, 2026-05-29): the PIL tier is dominated by global
 color histogram + luma structure, so it is also SCALE/BACKGROUND-sensitive. On
