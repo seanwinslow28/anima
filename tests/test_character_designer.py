@@ -593,7 +593,9 @@ def test_generate_plate_records_similarity_score(
     assert "similarity_score" in status
     assert isinstance(status["similarity_score"], float)
     assert 0.0 <= status["similarity_score"] <= 1.0
-    assert status.get("similarity_method") == "pil-perceptual"
+    # Whichever ladder rung ran (DINOv2 when torch is installed, else PIL) the
+    # method label must name a known tier.
+    assert status.get("similarity_method") in {"dinov2", "clip", "pil-perceptual"}
 
 
 def test_plate_verdicts_persisted_to_jsonl(base_ctx, character_dir, monkeypatch):
@@ -858,6 +860,14 @@ def test_prop_plate_not_anchor_similarity_rejected(
             output_path=output_path, cache_key="k", cache_hit=False,
             stub_fallback=False, exit_code=0,
         )
+
+    # Force the PIL tier so the black-vs-white plate deterministically scores
+    # below threshold regardless of whether torch/DINOv2 is installed — the
+    # point of the test is the prop exemption, demonstrated against a genuinely
+    # low score.
+    from pipeline.agents import similarity_gate as _sg
+    monkeypatch.setattr(_sg, "_dinov2_similarity", lambda a, b: None)
+    monkeypatch.setattr(_sg, "_clip_similarity", lambda a, b: None)
 
     monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", fake_opus)
     monkeypatch.setattr(

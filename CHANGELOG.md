@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-05-29 — Phase 7: DINOv2 similarity tier + regression eval; gate stays record-only (a hard gate isn't safe yet)
+
+**What changed:** Installed the embedding tier the gate's ladder was built for, added a cross-register regression eval, and — after measuring — kept the gate record-only rather than promoting it to a hard pre-Gemini reject (Sean's call on the data).
+
+- **DINOv2 tier active.** `pip install torch torchvision transformers` into `.venv`. The ladder in [`pipeline/agents/similarity_gate.py`](pipeline/agents/similarity_gate.py) auto-selects DINOv2 (`facebook/dinov2-small`) with no code change. **Gotcha found + documented:** transformers 5.x's `AutoImageProcessor` needs **torchvision** — without it the DINOv2 rung raises during `from_pretrained` and *silently* falls back to PIL (the `SimilarityResult.method` label is the tell). Updated the install hint accordingly.
+- **Regression eval** ([`evals/similarity-gate/`](evals/similarity-gate/) — README + 6 fixtures; executable guard in `tests/test_similarity_gate.py::test_dinov2_regression_recovered_above_drifted`, skipped without torch). DINOv2 ranks the recovered plate above the drifted plate vs the anchor on **both** registers — sean 0.838 > 0.755, mascot 0.858 > 0.715 — including the mascot register where the PIL tier *inverted*.
+- **Gate stays RECORD-ONLY — the planned hard-gate promotion is unsafe.** Re-scoring the sean-anchor production bake with DINOv2 showed the drifted references (0.715–0.755) sit *inside* the good-plate range (head-back 0.695, neutral 0.722, surprised 0.740 …). A single blanket threshold against the one front anchor can't separate identity drift from legitimate view/expression variation: a drift-catching threshold false-rejects good plates; a safe one catches nothing. DINOv2 separates recovered-from-drifted only at the *same view*. A trustworthy hard gate needs **per-view references** — future work. Documented in the gate docstring + the eval README. Prop exemption intact.
+- **Tests** now tier-deterministic: PIL-specific assertions use a `force_pil` fixture (disable the embedding rungs) so they don't depend on whether torch is installed; the method-label assertion relaxed to "names a known tier." 185 green (182 + the 2 regression params + 1 PIL-label test) with torch present; the suite also stays green without torch (regression skips, force_pil holds).
+
+**Why:** The honest result beat the planned one. Installing DINOv2 made the *scores* trustworthy and the regression eval meaningful, but the data proved a blanket hard gate would harm good plates more than it catches drift. Shipping the tier + eval + the documented "why not a hard gate" is the correct landing; the human/visual gate remains the arbiter, exactly as the engine truth says.
+
 ## 2026-05-29 — Phase 6: claude-mascot re-bake held for a dedicated pass (reference gap documented)
 
 **What changed:** Ran the full claude-mascot plates-only bake (locked Bible → no Opus call, so no transient-stub risk — the limit that capped the 2026-05-28 mascot bake to one plate). All 8 plates ran. Sean reviewed and chose to **hold** the commit; the working-tree plates were reverted (committed mascot Bible untouched) and the result documented for a dedicated pass.
