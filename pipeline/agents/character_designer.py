@@ -83,6 +83,12 @@ _BOX_CHARACTERS = frozenset("╔═╗║╚╝┌─┐│└┘├┤┬┴┼
 # but per-plate scope since Cy may have many plates.
 _PLATE_ATTEMPT_CEILING = 3
 
+# The default style register. Defined here (above the class) because it is a
+# default-arg value on _run_plate, evaluated at module-load time; the
+# per-register clause library + emitter that also reference it live further
+# down (they only need it at call time).
+_DEFAULT_REGISTER = "pencil-test-colored"
+
 # Pass-1 call ceiling. Cy gets up to three Opus calls to produce a parseable
 # envelope; a transient malformed emission (Opus 4.8 narration/truncation) is
 # retried within this budget before falling back to the loud stub. A missing
@@ -206,6 +212,8 @@ class CharacterDesignerNode:
         nb_pro_cache_dir = ctx.cache_dir / "nb_pro"
         nb_pro_cache_dir.mkdir(parents=True, exist_ok=True)
 
+        style_register = str(character_yaml.get("style_register") or _DEFAULT_REGISTER)
+
         plate_results: dict[str, dict] = {}
         for plate in plate_plan.get("plates", []):
             status = self._run_plate(
@@ -213,6 +221,7 @@ class CharacterDesignerNode:
                 ir_entries=ir_entries,
                 character_dir=character_dir,
                 cache_dir=nb_pro_cache_dir,
+                style_register=style_register,
             )
             plate_results[plate["target_path"]] = status
 
@@ -623,6 +632,7 @@ class CharacterDesignerNode:
         ir_entries: list[dict],
         character_dir: Path,
         cache_dir: Path,
+        style_register: str = _DEFAULT_REGISTER,
     ) -> dict:
         """Run Pass 2 + Pass 3 for a single plate. Returns the plate status dict."""
         target_path = character_dir / plate["target_path"]
@@ -647,10 +657,19 @@ class CharacterDesignerNode:
         # caption failure mode (§3b). A prop plate uses the isolated-object
         # framing instead — no anchor was fed, so a "match Image 1" prompt would
         # be incoherent and would re-invite the floating-figure defect.
-        if is_prop:
-            prompt_text = _build_prop_prompt(plate_intent)
-        else:
-            prompt_text = _build_nb_pro_prompt(plate_intent, has_pose_ref=has_pose_ref)
+        # A plate carrying a reject_reason (from `bible iterate` narrowing)
+        # threads its correction into the prompt's preserve/negative slot on
+        # the INITIAL generate too — not just the Pass-3 regenerate — so an
+        # iterate actually steers the re-roll (post-mortem §3), not merely the
+        # cache key.
+        plate_reject = plate.get("reject_reason")
+        prompt_text = _build_plate_prompt(
+            plate_intent,
+            style_register=style_register,
+            has_pose_ref=has_pose_ref,
+            is_prop=is_prop,
+            reject_reason=plate_reject,
+        )
 
         status: dict[str, Any] = {
             "status": "pending",
@@ -1068,35 +1087,167 @@ def _resolve_generate_references(
     return refs, has_pose_ref, is_prop
 
 
-def _build_nb_pro_prompt(plate_intent: str, *, has_pose_ref: bool) -> str:
-    """Wrap a plate's short intent in NB Pro reference-role-tag framing.
+# The per-register clause library — the operative artifact from
+# docs/research/2026-05-30-nb2-editing-character-consistency-template.md
+# §"The per-register clause library". The template structure is
+# register-agnostic; this table is where the register-aware clauses live.
+# Adding a register is a deliberate row-add here, not an inline prose edit.
+# Each row supplies the three runner-owned, register-parameterized slots:
+#   identity_lock  — the enumerated markers to match in Image 1
+#   preserve       — what stays identical / register-specific negatives
+#   style_token    — the medium token, applied LATE
+# The universal anti-text clause is appended to every register's
+# preserve_and_negative slot (it is not register-specific).
+_UNIVERSAL_ANTI_TEXT = (
+    "Do not add any text, captions, labels, annotations, or watermarks to the image."
+)
 
-    Phase 0 of the fidelity fix proved that a terse "redraw this exact
-    character" prompt against the anchor recovers identity, where verbose
-    verbal character descriptions drove prompt-dominance drift. This builds
-    that terse framing around whatever short intent Cy authored, and forbids
-    rendering text/captions (the props/stylus.png caption failure, §3b).
+_REGISTER_CLAUSE_LIBRARY: dict[str, dict[str, str]] = {
+    "pencil-test-colored": {
+        "identity_lock": (
+            "Match the face, hair, full color palette, skin tone, and "
+            "proportions of Image 1 exactly."
+        ),
+        "preserve": (
+            "Keep the warm cream paper, the cross-hatch shadow, and the full "
+            "color of Image 1. Do not render the figure in monochrome. No "
+            "photographic shading."
+        ),
+        "style_token": (
+            "Warm pencil-test render: graphite line (not vector black), flat "
+            "color fills, cross-hatch shadow, warm cream paper, hole-punch "
+            "production marks."
+        ),
+    },
+    "pixel-art-8bit": {
+        "identity_lock": (
+            "Match the indexed palette, the round silhouette, and the "
+            "head-to-body ratio of Image 1 exactly."
+        ),
+        "preserve": "Hard pixel edges. No smooth anti-aliased gradients.",
+        "style_token": (
+            "16-bit pixel-art sprite, limited indexed palette, hard pixel "
+            "edges, clean outlines."
+        ),
+    },
+    "line-art-only": {
+        "identity_lock": (
+            "Match the contour shapes, line weight, hair silhouette, and "
+            "proportions of Image 1 exactly."
+        ),
+        "preserve": (
+            "No shading, no gradients, no soft shadow, no texture; flat color "
+            "fills only."
+        ),
+        "style_token": "Clean line art, bold uniform outlines, flat fills.",
+    },
+    "watercolor": {
+        "identity_lock": (
+            "Match the face, the pigment-pool palette, and the proportions of "
+            "Image 1 exactly."
+        ),
+        "preserve": "Keep the paper grain; let washes bleed; no hard vector edges.",
+        "style_token": "Soft watercolor wash, pigment-pool bleed, visible paper grain.",
+    },
+    "photoreal": {
+        "identity_lock": (
+            "Match the face, skin tone, hair, and proportions of Image 1 exactly."
+        ),
+        "preserve": (
+            "Keep the lighting direction and color temperature of Image 1; "
+            "clean edges, no halos."
+        ),
+        "style_token": (
+            "Photographic rendering, natural lighting, shallow depth of field."
+        ),
+    },
+    "3d-rendered": {
+        "identity_lock": (
+            "Match the face, material palette, and proportions of Image 1 exactly."
+        ),
+        "preserve": "Keep soft global illumination; no flat-shading artifacts.",
+        "style_token": (
+            "3D-rendered look, soft global illumination, subtle ambient occlusion."
+        ),
+    },
+}
+
+
+def _build_plate_prompt(
+    plate_intent: str,
+    *,
+    style_register: str,
+    has_pose_ref: bool,
+    is_prop: bool = False,
+    reject_reason: str | None = None,
+) -> str:
+    """Emit the five-slot register-agnostic editing prompt.
+
+    Spec: docs/research/2026-05-30-nb2-editing-character-consistency-template.md.
+    Slots, in fixed order: [reference-role preamble] · {identity_lock} ·
+    {variation} (Cy's terse intent, the only authored slot, wrapped in the
+    ONLY CHANGE idiom) · {preserve_and_negative} · {style_register} ·
+    {output_spec}. The runner owns every slot but {variation}; the register
+    selects identity_lock / preserve / style_token from the clause library.
+
+    NOTE: this is a deliberate prompt UPGRADE over the prior pencil-leaning
+    builder, not a no-op — it adds the ONLY CHANGE idiom, the full preserve
+    clause, and a standing style token to every plate (the approved template
+    spec, worked Example 1, the prompt that would have prevented the `focused`
+    monochrome drift). The added prose is anchor-reinforcing register/preserve
+    guidance, NOT character re-description that competes with the anchor. A
+    live bake is the validation point.
+
+    A prop plate is the {output_spec}-isolated-object special case — it
+    delegates to _build_prop_prompt (no anchor was fed; a "match Image 1"
+    prompt would be incoherent).
+
+    reject_reason, when present (a Pass-3 fail or a `bible iterate` reject),
+    is threaded into {preserve_and_negative} so the correction actually
+    steers the regeneration (post-mortem §3) — not merely the cache key.
     """
-    lines = [
-        "Image 1 is the identity anchor — the canonical reference for this "
-        "character. Match the face, hair, color palette, skin tone, and "
-        "proportions in Image 1 exactly. Keep the full color of Image 1.",
-    ]
+    if is_prop:
+        return _build_prop_prompt(plate_intent, reject_reason=reject_reason)
+
+    row = (
+        _REGISTER_CLAUSE_LIBRARY.get(style_register)
+        or _REGISTER_CLAUSE_LIBRARY[_DEFAULT_REGISTER]
+    )
+
+    parts: list[str] = []
+    # 1. reference-role preamble (fixed)
+    parts.append(
+        "Image 1 is the identity anchor — the canonical reference for this character."
+    )
     if has_pose_ref:
-        lines.append(
+        parts.append(
             "Image 2 is the angle/pose target — match its viewing angle and "
             "pose, but the identity always comes from Image 1."
         )
+    # 2. identity_lock (register-parameterized)
+    parts.append(row["identity_lock"])
+    # 3. variation (Cy's terse intent, ONLY CHANGE idiom)
     intent = plate_intent.strip() or "a clean reference plate of this character"
-    lines.append(f"Render: {intent}.")
-    lines.append(
-        "The character must stay recognizably identical to Image 1. Do not "
-        "add any text, labels, captions, annotations, or watermarks to the image."
+    parts.append(
+        f"Render: {intent}. Change only what this names; keep everything else "
+        f"exactly as in Image 1."
     )
-    return " ".join(lines)
+    # 4. preserve_and_negative (register preserve + universal anti-text + correction)
+    preserve = row["preserve"] + " " + _UNIVERSAL_ANTI_TEXT
+    if reject_reason and reject_reason.strip():
+        preserve += (
+            " Correction from the previous attempt — address this and do not "
+            f"repeat it: {reject_reason.strip()}"
+        )
+    parts.append(preserve)
+    # 5. style_register (applied LATE)
+    parts.append(row["style_token"])
+    # 6. output_spec (minimal; the storyboard variant extends this later)
+    parts.append("The character must stay recognizably identical to Image 1.")
+    return " ".join(parts)
 
 
-def _build_prop_prompt(plate_intent: str) -> str:
+def _build_prop_prompt(plate_intent: str, *, reject_reason: str | None = None) -> str:
     """Frame a prop plate as an isolated object — no figure, no text.
 
     A prop plate (the stylus, etc.) is an object reference, not the character.
@@ -1105,14 +1256,25 @@ def _build_prop_prompt(plate_intent: str) -> str:
     person beside a floating object (the re-baked props/stylus.png defect). The
     anti-text clause is the same guardrail the character prompt carries,
     strengthened here because the original stylus plate rendered its meta-prose
-    as handwritten captions (post-mortem §3b)."""
+    as handwritten captions (post-mortem §3b).
+
+    reject_reason, when present, is appended as a correction so a `bible
+    iterate` / Pass-3 reject steers the re-roll rather than only busting the
+    cache key (post-mortem §3). When None (the common path), the output is
+    byte-identical to the prior prop prompt."""
+    correction = ""
+    if reject_reason and reject_reason.strip():
+        correction = (
+            " Correction from the previous attempt — address this and do not "
+            f"repeat it: {reject_reason.strip()}"
+        )
     intent = plate_intent.strip() or "a single isolated prop object"
     return (
         "Render ONLY the isolated object described below, centered on a warm "
         "cream paper background. Do NOT draw any person, character, hand, body, "
         "or figure. Do NOT render any text, caption, label, handwriting, or "
         "annotation anywhere in the image. "
-        f"Render: {intent}."
+        f"Render: {intent}.{correction}"
     )
 
 

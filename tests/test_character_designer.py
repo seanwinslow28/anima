@@ -1090,3 +1090,78 @@ def test_plates_only_without_authored_bible_raises(base_ctx, character_dir, monk
     base_ctx.inputs["plates_only"] = True
     with pytest.raises(FileNotFoundError, match="Author the Bible first"):
         CharacterDesignerNode().run(base_ctx)
+
+
+# ---------------------------------------------------------------------------
+# Register-parameterized template emitter (Amendment A)
+# ---------------------------------------------------------------------------
+
+
+def test_plate_emitter_pencil_keeps_full_color_and_anti_text():
+    from pipeline.agents.character_designer import _build_plate_prompt
+    p = _build_plate_prompt(
+        "focused expression, brow slightly down, eyes on the work",
+        style_register="pencil-test-colored",
+        has_pose_ref=False,
+    )
+    assert "identity anchor" in p
+    assert "Match the face" in p
+    assert "full color" in p.lower()
+    # universal anti-text clause
+    assert "text" in p.lower() and "watermark" in p.lower()
+    # Cy's terse intent is carried verbatim, not re-described
+    assert "focused expression, brow slightly down, eyes on the work" in p
+
+
+def test_plate_emitter_line_art_forbids_shading():
+    from pipeline.agents.character_designer import _build_plate_prompt
+    p = _build_plate_prompt(
+        "three-quarter front view, head turned slightly left",
+        style_register="line-art-only",
+        has_pose_ref=True,
+    )
+    assert "no shading" in p.lower() or "no gradients" in p.lower()
+    assert "line art" in p.lower()
+    assert "Image 2" in p  # has_pose_ref names the angle target
+
+
+def test_plate_emitter_pixel_art_hard_edges():
+    from pipeline.agents.character_designer import _build_plate_prompt
+    p = _build_plate_prompt(
+        "mid-jab contact pose, profile",
+        style_register="pixel-art-8bit",
+        has_pose_ref=False,
+    )
+    assert "pixel" in p.lower()
+    assert "hard" in p.lower() and "edge" in p.lower()
+
+
+def test_plate_emitter_watercolor_keeps_paper_grain():
+    from pipeline.agents.character_designer import _build_plate_prompt
+    p = _build_plate_prompt(
+        "neutral expression, front view",
+        style_register="watercolor",
+        has_pose_ref=False,
+    )
+    assert "watercolor" in p.lower()
+    assert "paper grain" in p.lower() or "paper" in p.lower()
+
+
+def test_plate_emitter_unknown_register_falls_back_to_pencil():
+    from pipeline.agents.character_designer import _build_plate_prompt
+    p = _build_plate_prompt(
+        "neutral, front view", style_register="not-a-real-register", has_pose_ref=False
+    )
+    # defensive default — register is validated upstream, but a typo must not
+    # crash a bake; pencil-test-colored is the safe fallback.
+    assert "full color" in p.lower()
+
+
+def test_plate_emitter_prop_path_unchanged():
+    from pipeline.agents.character_designer import _build_plate_prompt, _build_prop_prompt
+    intent = "a single working-illustrator's stylus at a 60-degree diagonal"
+    via_emitter = _build_plate_prompt(intent, style_register="pencil-test-colored",
+                                      has_pose_ref=False, is_prop=True)
+    direct = _build_prop_prompt(intent)
+    assert via_emitter == direct
+    assert "Do NOT draw any person" in via_emitter
