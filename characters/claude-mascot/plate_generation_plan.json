@@ -1,0 +1,100 @@
+{
+  "plates": [
+    {
+      "target_path": "turnarounds/body-front.png",
+      "source": "ingest:source-refs/turnaround-c1.png#region:front",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.face.construction-cross-line",
+        "IR.claude-mascot.face.minimal-mouth-line",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow"
+      ]
+    },
+    {
+      "target_path": "turnarounds/body-3quarter.png",
+      "source": "ingest:source-refs/turnaround-c1.png#region:3quarter-front",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.proportion.shoulder-companion-scale",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch"
+      ]
+    },
+    {
+      "target_path": "turnarounds/body-side.png",
+      "source": "ingest:source-refs/turnaround-c1.png#region:side",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow"
+      ]
+    },
+    {
+      "target_path": "turnarounds/body-3quarter-back.png",
+      "source": "ingest:source-refs/turnaround-c1.png#region:3quarter-back",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow"
+      ]
+    },
+    {
+      "target_path": "turnarounds/body-back.png",
+      "source": "ingest:source-refs/turnaround-c1.png#region:back",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch"
+      ]
+    },
+    {
+      "target_path": "expressions/neutral.png",
+      "source": "generate",
+      "prompt": "calm neutral expression, front view, eyes level and relaxed, head upright",
+      "reference_images": [
+        "anchor.png",
+        "source-refs/turnaround-c1.png"
+      ],
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.face.construction-cross-line",
+        "IR.claude-mascot.face.minimal-mouth-line",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow"
+      ]
+    },
+    {
+      "target_path": "expressions/curious.png",
+      "source": "generate",
+      "prompt": "curious expression, head tilted slightly, brows lifted a touch, three-quarter front view",
+      "reference_images": [
+        "anchor.png"
+      ],
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.face.construction-cross-line",
+        "IR.claude-mascot.face.minimal-mouth-line",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch"
+      ]
+    }
+  ]
+}

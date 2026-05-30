@@ -1,0 +1,15 @@
+# Cy's Confidence Notes — Claude Mascot
+
+Where I hedged during Pass 1. When one of these notes flags a hedge, escalate the call to Sean rather than trusting the rule at face value.
+
+**The side swirl is RESOLVED (Sean, 2026-05-30): it is the ear/arm nub seen end-on.** I had hedged this as possible construction. Sean confirmed the C-1 SIDE-view circular "swirl" is the near ear/arm nub viewed straight down its axis — the same little nub that reads as a horizontal cylinder in front/three-quarter views, just seen end-on in 2D, so it presents as a small circular end-cap disc on the body's side face. It is neither construction to be cleaned away nor a separate feature (navel/port/emblem). This is now captured as a dedicated enforceable rule, IR.claude-mascot.anatomy.nub-side-view-endcap, which also forbids inventing any NEW circular feature on the faces. No longer a hedge.
+
+**Palette hexes are estimates.** Terracotta-orange body #C77C52, terracotta cross-hatch shadow #9E5A38, and cast-shadow graphite #B3A78C were eyeballed from the C-B anchor and the A-7 two-shot, not sampled instrumentally. Warm-graphite line #3D3530 and cream paper #F2E6CC I carried over verbatim from the sean-anchor Bible to keep the two characters in the same register rather than sampling them independently. Eyeball all of these against the anchor during review and adjust.
+
+**The box ratio is a visual estimate.** The ~1:1.2 (width:height) rounded-cube proportion is read by eye from the C-1 front view, not measured. The box reads clearly as slightly taller than wide; the exact ratio is a judgment call, and Sean should adjust the number if it reads off.
+
+**The scale rule rests on a single drawing.** IR.claude-mascot.proportion.shoulder-companion-scale grounds on A-7 alone — the one two-shot of Sean and the mascot. The 'box height ≈ Sean's head height' read is from that single reference. If a specific Act 2 beat wants the mascot larger or smaller, that is a director's staging call, not a Bible violation.
+
+**The mouth is the softest rule.** I tagged IR.claude-mascot.face.minimal-mouth-line as continuity rather than identity_critical because the mouth is barely present and reads inconsistently across the references — the eyes and brows carry the expression. If Sean wants the mouth fully absent (no line at all) or fully locked, mutate this rule to match.
+
+**Counts and the face read are confident.** Two ear/arm nubs, four stub legs, two dot eyes with brow strokes, and the construction cross-line are confirmed across all five C-1 views plus the anchor — I am not hedging those. The no-arms-no-hands negative-space rule is the one I most want Em to hold onto: a generator asked to make the mascot 'do' something in a scene will reach for an arm, and that is the most likely drift.

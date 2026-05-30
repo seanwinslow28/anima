@@ -1,157 +1,64 @@
-# Character Bible — {character_display_name}
-#
-# This file is the load-bearing identity contract for one character. Every
-# downstream agent — Em at T2 critique, the chairman at T3 dispute, Mo at
-# museum walkthrough, Flo at Phase 5 routing — reads from here. Cy authors
-# it during Pass 1 of her three-phase loop and stages it for Sean's review.
-# Sean approves via `pipeline bible approve`; edits via `pipeline bible mutate`.
-#
-# Studio-manual voice. This reads like a character bible from a real
-# animation studio, not a config file.
-
-character_id: ""                          # lowercase-kebab. Matches the folder
-                                          # under characters/. Example: sean-anchor,
-                                          # claude-mascot. Never changes once a
-                                          # Bible has shipped.
-
-display_name: ""                          # How Sean talks about this character
-                                          # in prose. Example: "Sean", "Claude
-                                          # Mascot". Used in the bible-show
-                                          # tear sheet header and in museum
-                                          # walkthrough captions.
-
-# ---------------------------------------------------------------------------
-# Style register — the single most load-bearing field
-# ---------------------------------------------------------------------------
-#
-# Closed vocabulary. Em loads the style-register-specific rubric BEFORE the
-# character's identity rules — pixel-art-8bit drift is a categorically
-# different failure mode from pencil-test-colored drift, and Em's vocabulary
-# needs to match. Flo's Phase 5 routing reads this field to pick the right
-# generator: pencil-test-colored routes to NB Pro with the pencil-style
-# LoRA; pixel-art-8bit routes elsewhere entirely.
-#
-# Permitted values (extend deliberately, not inline):
-#   - pencil-test-colored    Sean's Act 1/2 register. Warm cream paper, varied
-#                            graphite line weight, hand-drawn construction lines,
-#                            limited desaturated palette, visible cross-hatching.
-#   - pixel-art-8bit         Claude mascot's register. Quantized palette,
-#                            dithering patterns, sub-32-color flat fills.
-#   - line-art-only          Pure black-on-white linework, no color, no fill.
-#   - watercolor             Soft wet-media bleeds, paper grain, layered washes.
-#   - photoreal              Photographic rendering, lit volumes, surface detail.
-#   - 3d-rendered            Constructed geometry, raytraced or PBR shading.
-#
-# If a new character needs a register that isn't in this list, that's a
-# deliberate brief-update commit + an architecture decision. Don't add inline.
-
-style_register: ""
-
-# ---------------------------------------------------------------------------
-# Palette — the character's color vocabulary
-# ---------------------------------------------------------------------------
-#
-# Named colors, each carrying a role in the character's design. The role is
-# what Cy and Em both cite when reasoning about palette drift; the hex is
-# what Flo conditions the NB Pro prompt on. Order entries from primary
-# (most-cited) to accent (least-cited).
-
+character_id: claude-mascot
+display_name: Claude Mascot
+style_register: pencil-test-colored
 palette:
-  - name: ""                              # Cy's human-readable name.
-                                          # Example: "warm cream paper",
-                                          # "navy shirt", "graphite line".
-    hex: ""                               # Six-character hex. Example: "#FAF5E8".
-                                          # Cy authors this from Sean's anchor;
-                                          # Sean adjusts during review.
-    role: ""                              # What this color does in the design.
-                                          # Example: "paper-base", "shirt-primary",
-                                          # "line-contour". One short phrase.
-
-# ---------------------------------------------------------------------------
-# Proportions — what makes this character recognizable as themselves
-# ---------------------------------------------------------------------------
-#
-# Specific, testable proportions. Em cites these when verdicts call out a
-# wrongly-proportioned generated frame. Cy authors from the turnaround
-# reference plates; Sean edits free-form for the things that are hard to
-# quantify ("his shoulders read narrower than the proportion would suggest
-# because of how he holds himself").
-
+- name: terracotta_orange_body
+  hex: '#C77C52'
+  role: "body-fill-primary \u2014 the rounded box; flat muted clay-orange with cross-hatched\
+    \ warm-graphite shadow, never gradient- or cel-shaded"
+- name: cream_paper
+  hex: '#F2E6CC'
+  role: "paper-base \u2014 the shared substrate with sean-anchor; grain and warmth\
+    \ read through the line work, never a flat vector fill"
+- name: warm_graphite_line
+  hex: '#3D3530'
+  role: "line-contour \u2014 construction cross-line, final contour, and cross-hatch;\
+    \ warm dark gray, never pure black, never cool gray (carried from sean-anchor\
+    \ for register parity)"
+- name: terracotta_shadow
+  hex: '#9E5A38'
+  role: "shadow-hatch \u2014 the darker clay tone the warm-graphite cross-hatch reads\
+    \ as where it sits over the body fill on the far side plane and the underside"
+- name: cast_shadow_graphite
+  hex: '#B3A78C'
+  role: "cast-shadow \u2014 the soft, loose, hand-drawn graphite scribble directly\
+    \ beneath the box on the paper, not a rendered drop-shadow"
+- name: eye_dot_graphite
+  hex: '#2E2823'
+  role: "eye-and-brow-accent \u2014 the two dot eyes and the two short brow strokes;\
+    \ the deepest warm-graphite mark on the face"
 proportions:
-  head_to_body: ""                        # Numeric ratio. Example: "1:7" for
-                                          # Sean (heroic-realistic), "1:4" for
-                                          # the Claude mascot (chibi-leaning).
-  shoulder_to_hip: ""                     # Numeric ratio. Example: "1.2:1".
-  notes: ""                               # Free prose for the qualitative
-                                          # proportions that won't fit numbers.
-
-# ---------------------------------------------------------------------------
-# Identity rules pointer — IR.{character_id}.* lives here
-# ---------------------------------------------------------------------------
-#
-# Cy emits the character's IR.* graph entries into this file. The runner
-# loads it alongside Maya's briefs/{slug}/acceptance_criteria.json per the
-# manifest's criteria_sources block. Path is relative to this character
-# folder (so the Bible is self-contained and portable).
-
-identity_rules_pointer: "./acceptance_criteria.json"
-
-# ---------------------------------------------------------------------------
-# Cy's confidence notes — where she hedged
-# ---------------------------------------------------------------------------
-#
-# Prose. Visible-confidence is the studio-manual voice (PHILOSOPHY §6)
-# applied to Cy's own self-awareness. When a confidence note flags a hedge,
-# downstream consumers should escalate the call rather than trust the rule.
-# Examples of what belongs here:
-#   - "The 3-quarter back angle was extrapolated; no source ref covered it."
-#   - "Sean's stylus is locked in his right hand in the anchor, but the
-#      head-turn source doesn't show the hand — IR.sean.prop.stylus rule
-#      is derived from the anchor only."
-#   - "The walk-cycle motion plate only covers a neutral gait; turns and
-#      runs aren't covered and would need Sean's authoring before any
-#      Phase 6 motion shot can cite IR.sean.motion.* rules confidently."
-
-cy_confidence_notes: |
-  (Cy's prose hedges land here, authored during Pass 1.)
-
-# ---------------------------------------------------------------------------
-# LoRA seed plates — informational, anticipates Image-Model-DR Experiment 1
-# ---------------------------------------------------------------------------
-#
-# When Sean trains a custom character LoRA on this Bible (a one-Sunday
-# experiment in 2026 Q3 territory), these plates are the training set.
-# Today the field is informational only — no LoRA training happens in
-# commit 2. The field makes the Bible LoRA-ready by construction: Cy picks
-# the plates with the strongest identity-anchoring during Pass 1; Sean
-# adjusts the list when he reviews. ROT4 from the brainstorm.
-
+  head_to_body: "N/A \u2014 the mascot is a single fused rounded-box body with no\
+    \ separate head. The box silhouette reads ~1:1.2 (width:height), a rounded cube\
+    \ slightly taller than wide."
+  shoulder_to_hip: "N/A \u2014 no shoulders or hips. Two ear/arm nubs project from\
+    \ the left and right faces at the box's mid-height; four stub legs sit close together\
+    \ beneath the footprint."
+  notes: 'Shoulder-companion scale is the load-bearing proportion cue: the box reads
+    as roughly one adult-human-head tall, small enough to perch on Sean''s shoulder
+    (canonical in A-7). Corners are generously radiused; the face sits directly on
+    the upper-front face of the box. Never a sharp-edged cube, never a sphere, never
+    a biped.'
+identity_rules_pointer: acceptance_criteria.json
+cy_confidence_notes: "Cy hedges five axes: (1) the C-1 SIDE view shows a circular\
+  \ construction swirl on the body's side face \u2014 read as the pencil-test spherical-mass\
+  \ construction mark, NOT authored as an identity feature; Sean should confirm feature\
+  \ vs. construction. (2) Palette hexes (terracotta #C77C52, shadow #9E5A38, cast-shadow\
+  \ #B3A78C) are eyeballed from C-B/A-7; warm-graphite line #3D3530 and cream paper\
+  \ #F2E6CC are carried from sean-anchor for register parity \u2014 eyeball against\
+  \ the anchor. (3) The box ratio ~1:1.2 is a visual estimate, not measured. (4) The\
+  \ shoulder-companion scale rule grounds on a single two-shot (A-7). (5) No motion\
+  \ plates exist \u2014 locomotion is unspecified; any Phase 6 mascot shot needs motion\
+  \ authoring first. Full prose in cy-confidence-notes.md."
 flux_lora_seed_plates:
-  - anchor.png
-  - turnarounds/body-front.png
-  - turnarounds/head-front.png
-  # Cy fills in the rest during Pass 1.
-
-# ---------------------------------------------------------------------------
-# Risks — pointer to risk-bible.md
-# ---------------------------------------------------------------------------
-#
-# The Bible's negative space. What this character can't do, what axes it
-# doesn't cover, where the references thin out. Em reads risk-bible.md when
-# arbitrating borderline verdicts — drift on a covered axis is a real
-# failure; drift on an uncovered axis is the Bible's silence speaking, not
-# the character changing.
-
-risks: "./risk-bible.md"
-
-# ---------------------------------------------------------------------------
-# Source refs consumed — what Cy read during authoring
-# ---------------------------------------------------------------------------
-#
-# Provenance. Names the source-refs/ files Cy loaded into Pass 1. Useful
-# for `git blame`-style questions ("which reference anchored this rule?")
-# and for museum walkthrough captions.
-
+- anchor.png
+- turnarounds/body-front.png
+- turnarounds/body-3quarter.png
+- turnarounds/body-side.png
+- expressions/curious.png
+risks: risk-bible.md
 source_refs_consumed:
-  - source-refs/notes.md
-  # Cy fills in the rest during Pass 1.
+- source-refs/notes.md
+- source-refs/turnaround-c1.png
+- source-refs/sean-with-claude-mascot.png
+- anchor.png
