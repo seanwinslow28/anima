@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-05-30 — Post-mortem: the production bake + gate hardening session
+
+**What changed:** Added [`docs/anima-test-runs/2026-05-29-production-bake-and-gate-hardening.md`](docs/anima-test-runs/2026-05-29-production-bake-and-gate-hardening.md) — the field report for the nine-phase production + hardening session, in the voice of the 2026-05-28 end-to-end report. Covers each phase's failure/finding (the prop over-generalization, the bake-vs-approve conflict that would have erased the approval and never ran, the `focused` prompt-dominance recurrence, the mascot reference gap, the DINOv2 promotion the data killed, the Pass-1 retry), the structural lessons (organizing lesson: *the mechanism is a proposal, not a verdict*), and how to proceed (mascot dedicated pass, trim the remaining expression prompts, per-view hard gate, identity tuning, Em case 7). Documentation only.
+
+**Why:** The session's value is as much in what it *held* and *measured-and-declined* as in what it shipped; a durable writeup keeps that legible for the next session and as museum content.
+
 ## 2026-05-29 — Session: post-fidelity-fix production + hardening (summary)
 
 Eight commits across nine phases, 176 → 187 tests green throughout. The arc: fix the last mechanism bug, finish the sean-anchor production bake the fidelity fix deferred, and harden the gate + runner. Phase-by-phase entries follow below; the through-line:
