@@ -220,6 +220,36 @@ def test_model_parameter_changes_cache_key(
     assert response_pro.cache_key != response_flash.cache_key
 
 
+def test_default_model_is_nb2_flash(monkeypatch, tmp_path, fake_reference_image, cache_dir):
+    """The editing/consistency default is NB2 Flash, not NB Pro (Amendment B:
+    NB2 holds identity better for editing, costs half, 4x faster, and dodges NB
+    Pro's multi-reference downsampling regression). The default must equal an
+    explicit NB2 call's cache key, and differ from an explicit NB-Pro call's."""
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    default_resp = invoke_nb_pro(
+        prompt="same",
+        reference_images=[fake_reference_image],
+        output_path=tmp_path / "out_default.png",
+        cache_dir=cache_dir,
+    )
+    explicit_nb2 = invoke_nb_pro(
+        prompt="same",
+        reference_images=[fake_reference_image],
+        output_path=tmp_path / "out_nb2.png",
+        cache_dir=cache_dir,
+        model="gemini-3.1-flash-image-preview",
+    )
+    explicit_pro = invoke_nb_pro(
+        prompt="same",
+        reference_images=[fake_reference_image],
+        output_path=tmp_path / "out_pro.png",
+        cache_dir=cache_dir,
+        model="gemini-3-pro-image-preview",
+    )
+    assert default_resp.cache_key == explicit_nb2.cache_key
+    assert default_resp.cache_key != explicit_pro.cache_key
+
+
 # ---------------------------------------------------------------------------
 # Response envelope shape
 # ---------------------------------------------------------------------------

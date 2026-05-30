@@ -13,14 +13,19 @@ aspect-ratio handling. We shell out to it rather than duplicate that code.
 
 # A note on model IDs
 
-The skill script defaults to `gemini-3.1-flash-image-preview` (NB2 Flash, the
-production tier for current pencil-test work). NB Pro is the hero-shot tier
-per Image-Model-DR. The exact API model slug for NB Pro isn't documented in
-SYNTHESIS.md by string; the placeholder default `nano-banana-pro` here matches
-the brainstorm and DR voice but should be verified against google-genai's
-shipping model registry at first real-call time. Cy callers can pass
-`model=<verified-slug>` to override before then — Sean's Bible-authoring runs
-will surface the right slug the first time NB Pro is actually invoked.
+The default is `gemini-3.1-flash-image-preview` (NB2 Flash) — the editing /
+consistency tier. Per the 2026-05-30 research (NB2 holds identity better across
+edits, ~1/2 cost, ~4x faster, and avoids NB Pro's documented multi-reference
+downsampling regression since the 3.1 launch — Google AI dev forum, Mar 2026),
+NB2 is the right default for the identity-preserving editing that is Cy's entire
+job. The skill script also defaults to this slug, so they agree. An NB-Pro
+painterly final (`model="gemini-3-pro-image-preview"`) is an explicit opt-in,
+not the default. The per-register manifest routing and the
+`invoke_nb_pro` -> `invoke_image_edit` rename are the follow-on refactor
+(2026-05-30 kickoff Amendments A/B); this module ships only the default flip the
+mascot bake needs. Freshness caveat: the NB-Pro regression is operational and
+may be patched — re-verify before relying on it; NB2's cost/speed/identity edge
+holds regardless.
 
 # What the cache key encodes
 
@@ -113,7 +118,7 @@ def invoke_nb_pro(
     cache_dir: Path,
     cites_identity_rules: tuple[str, ...] = (),
     reject_reason: str | None = None,
-    model: str = "gemini-3-pro-image-preview",
+    model: str = "gemini-3.1-flash-image-preview",
     timeout_s: int = 180,
 ) -> NBProResponse:
     """Generate (or fetch from cache) one NB Pro plate.
