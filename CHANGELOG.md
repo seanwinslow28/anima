@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-05-30 — Safety-net: live-manifest merged criteria must load (regression tripwire)
+
+**What changed:** Added [`tests/test_live_manifest_criteria.py`](tests/test_live_manifest_criteria.py) — a single integration test that loads the *real* `manifest.yaml` (not a fixture), merges every Bible's `IR.*` graph via `load_all_criteria`, and asserts the merged bundle parses with zero ID collisions across `IR.*` namespaces (and that both `IR.sean.*` and `IR.claude-mascot.*` are present). Passes against the current restored state — it is the guard, not a red-to-green. Suite 188 → 189.
+
+**Why:** This is the single test that would have caught the `bible mutate --new-version 1.3.0` schema break at commit time. The pivot session shipped an unloadable Bible with a green suite because every criteria test uses fixtures; nothing loaded the live manifest's on-disk Bibles. Landed first so the rest of the template-emitter follow-on has the net. If this test ever goes red, stop and fix the on-disk criteria before proceeding.
+
+## 2026-05-30 — Doc safety: defuse the `bible mutate --new-version` landmine in CLAUDE.md
+
+**What changed:** The Key Commands section of [`CLAUDE.md`](CLAUDE.md) showed the canonical `bible mutate` example ending in `--new-version 1.3.0` — the exact invocation that wrote an unloadable schema version and broke the claude-mascot Bible during the pivot (see [`docs/anima-test-runs/2026-05-30-claude-mascot-pencil-register-pivot.md`](docs/anima-test-runs/2026-05-30-claude-mascot-pencil-register-pivot.md) §4). Removed `--new-version` from the example and added a loud inline ⚠️ KNOWN BUG caution explaining the content-semver-vs-schema-version conflation and pointing at the post-mortem. Documentation only — the underlying tool bug remains for the template-emitter follow-on to fix (split content-version from schema-version).
+
+**Why:** The wrap commit added a bug *note* on the Cy skills-map row but left the broken example standing in the manual with no warning. CLAUDE.md is what every session reads first; a copy-pasteable command that corrupts a locked Bible is a landmine for the next session. Defusing the example is independent of (and more urgent than) the code fix.
+
 ## 2026-05-30 — claude-mascot pencil-register pivot
 
 **What changed:** Pivoted the claude-mascot character from `pixel-art-8bit` to `pencil-test-colored` and re-authored its Bible against real multi-view reference art, baked on NB2. Per-phase:
