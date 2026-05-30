@@ -274,10 +274,11 @@ characters:
     folder: characters/sean-anchor/
     style_register: pencil-test-colored   # First reference implementation — Pencil Test.
   claude-mascot:
-    folder: characters/claude-mascot/
-    style_register: pixel-art-8bit        # Second-character validation that the schema is
-                                          # style-agnostic across registers. Source refs in
-                                          # characters/claude-mascot/source-refs/.
+    folder: characters/claude-mascot/      # Re-authored in place 2026-05-30 (pixel Bible archived
+                                           # to characters/_archive/claude-mascot-pixel-art-8bit/).
+    style_register: pencil-test-colored    # Same register as sean-anchor — Act 2 shoulder companion.
+                                           # Source refs (C-B anchor, C-1 turnaround, A-7 pairing) in
+                                           # characters/claude-mascot/source-refs/.
 
 # Criteria sources — multi-file merge for the DAG runner.
 # Authoritative spec: Cy brainstorm TOP-1 + Task 1.8.

@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-05-30 — claude-mascot pencil-register pivot
+
+**What changed:** Pivoted the claude-mascot character from `pixel-art-8bit` to `pencil-test-colored` and re-authored its Bible against real multi-view reference art, baked on NB2. Per-phase:
+
+- **Phase 1 — retire the pixel Bible.** `git mv` the whole locked pixel-art-8bit Bible to [`characters/_archive/claude-mascot-pixel-art-8bit/`](characters/_archive/claude-mascot-pixel-art-8bit/) (history preserved) with a README recording the failure; flipped `manifest.yaml` `characters.claude-mascot.style_register` → `pencil-test-colored`. `criteria_sources` still lists the mascot criteria path; `load_all_criteria` skips the now-absent file non-fatally until Phase 3 re-creates it.
+
+**Why:** The pixel mascot failed on a *reference gap* (single flat anchor → NB Pro invented a standing biped for turnarounds; 2026-05-29 bake post-mortem §6) and Sean won't ship a pixelated mascot. The pencil-test version has a real five-view turnaround sheet that closes the gap, lives in sean-anchor's register, and is the actual Act 2 shoulder companion. The pixel Bible is kept as register-vocabulary validation evidence (the schema was clean; generation failed). Pixel cross-register validation deferred to a future 16BitFit-humanoid pass.
+
 ## 2026-05-30 — Research + plan: register-agnostic NB2 editing-prompt template
 
 **What changed:** Added two docs, no code. (1) [`docs/research/2026-05-30-nb2-editing-character-consistency-template.md`](docs/research/2026-05-30-nb2-editing-character-consistency-template.md) — current (mid-2026) research on NB2's *editing* mode (image+text identity preservation, distinct from generation), plus the headline artifact: a register-agnostic five-slot editing-prompt template (`{identity_lock}` / `{variation}` / `{preserve_and_negative}` / `{style_register}` / `{output_spec}`) with a per-register clause library, three worked examples in three registers (pencil-test, pixel-art, line-art/anime), and a storyboard variant. Builds on (does not repeat) the 2026-05-30 pixel/angle-expansion research. (2) [`docs/2026-05-30-claude-mascot-pencil-register-pivot-kickoff-amendments.md`](docs/2026-05-30-claude-mascot-pencil-register-pivot-kickoff-amendments.md) — wires the template into Cy as a plan for the next session: refactor `_build_nb_pro_prompt` into a register-parameterized template emitter (Cy still authors only `{variation}`), flip the editing-model default to **NB2** with a per-register split (NB Pro reserved for painterly/watercolor/3D finals, guarded), and recognize the template as a Phase-2/3/5 primitive (Cy plates, storyboard shot lists, Flo keyframes).
