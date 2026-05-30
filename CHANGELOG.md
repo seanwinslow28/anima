@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-05-29 — Phase 6: claude-mascot re-bake held for a dedicated pass (reference gap documented)
+
+**What changed:** Ran the full claude-mascot plates-only bake (locked Bible → no Opus call, so no transient-stub risk — the limit that capped the 2026-05-28 mascot bake to one plate). All 8 plates ran. Sean reviewed and chose to **hold** the commit; the working-tree plates were reverted (committed mascot Bible untouched) and the result documented for a dedicated pass.
+
+- **Mixed result, split by plate type.** The fixed mechanism recovers the orange pixel-octopus on **front / expression / profile** views (`contemplative` is a clean octopus with stub legs; `surprised` is the octopus but on a black background; `body-profile-right` reads as the creature). It does **not** recover the **standing body turnarounds** (`body-3quarter`, `body-back` → standing chibi-humanoids) — categorically better than the pre-fix "every plate a generic humanoid that passed," but still drifting on those two.
+- **Root cause is a reference gap, not prompt-dominance.** The anchor is a tiny *crouched* octopus with no standing pose, so NB Pro invents a standing biped for a "3/4 body" or "back" turnaround. Trimming the prompt (the sean-anchor `focused` fix) won't recover it — the information isn't in the single anchor. This is a Bible-silence problem.
+- **Documented, not committed.** Full finding + labelled evidence (anchor, the good octopus, the humanoid drifters, the contact sheet, the verdict trail) in [`docs/anima-test-runs/2026-05-29-mascot-rebake-hold/`](docs/anima-test-runs/2026-05-29-mascot-rebake-hold/). Recommendation for the dedicated pass: reconsider whether a crouched-octopus needs standing turnarounds at all, add a true standing/multi-angle reference, or train a character LoRA on the octopus form; cheap re-rolls available for `surprised` (bg) and `head-front` (lost snout).
+
+**Why:** Forcing standing turnarounds onto a minimal crouched-creature anchor produces humanoid drift the mechanism can't fix from references alone. Better to ship the sean-anchor win, document the mascot reference gap honestly, and give the octopus its own pass than to commit half-drifted plates. The committed mascot Bible (rules + plan) is unchanged. 182 tests green.
+
 ## 2026-05-29 — Phase 5: bake the sean-anchor production plates against the approved Bible
 
 **What changed:** Ran the first production plate bake against the locked full-color Bible — via the new plates-only path, so Pass 1 was skipped entirely (no Opus call, no transient-stub risk). 24 plates regenerated into `characters/sean-anchor/{turnarounds,expressions,props,motion_plates}/`.
