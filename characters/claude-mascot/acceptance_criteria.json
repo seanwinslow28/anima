@@ -258,6 +258,75 @@
       "derived_from": [
         "characters/claude-mascot/source-refs/sean-with-claude-mascot.png"
       ]
+    },
+    {
+      "id": "IR.claude-mascot.face.alarm-expression",
+      "description": "Alarm reads through the eyes and brows ONLY: the two small graphite dot eyes open wide (still small dots, never glossy cartoon eyes), brows raised high above them, mouth a small open shape. No hair or tuft appears on the box-top. Full terracotta color on cream paper.",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "aesthetic",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/expressions/alarm.png"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.face.delight-expression",
+      "description": "Delight reads as happy upward-arched (crescent) eyes with raised brows and a small open smile. The arched eyes are the expression's squint, not a change of eye style; no hair or tuft on the box-top; full terracotta color on cream paper, warm-graphite line and cross-hatch.",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "aesthetic",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/expressions/delight.png"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.face.sleep-expression",
+      "description": "Sleep reads as closed eyes drawn as two small downward graphite arcs riding the construction midline, brows soft, mouth a tiny relaxed line. The closed-eye arcs are the sleep state of the two dot eyes, not a new eye style. No hair or tuft on the box-top; full terracotta color on cream paper.",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "aesthetic",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/expressions/sleep.png"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.face.alert-perk-expression",
+      "description": "Alert-perk reads as the two ear-arm nubs projecting upward and forward (perked) with focused small dot eyes and lifted brows. The nubs perk; the eyes stay small graphite dots, never enlarged glossy cartoon eyes; no hair or tuft on the box-top; full terracotta color on cream paper.",
+      "cites_phase": [
+        5,
+        6
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "aesthetic",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/expressions/alert-perk.png"
+      ]
     }
-  ]
+  ],
+  "content_version": "1.1.0"
 }

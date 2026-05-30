@@ -95,6 +95,54 @@
         "IR.claude-mascot.palette.terracotta-orange-body",
         "IR.claude-mascot.style.warm-graphite-line-cross-hatch"
       ]
+    },
+    {
+      "target_path": "expressions/alarm.png",
+      "source": "generate",
+      "prompt": "alarm expression, eyes wide open, brows raised high, mouth small and open",
+      "cites_identity_rules": [
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.construction-cross-line",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch"
+      ]
+    },
+    {
+      "target_path": "expressions/delight.png",
+      "source": "generate",
+      "prompt": "delighted expression, eyes happy crescents, brows up, mouth in a small open smile",
+      "cites_identity_rules": [
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.construction-cross-line",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch"
+      ]
+    },
+    {
+      "target_path": "expressions/sleep.png",
+      "source": "generate",
+      "prompt": "sleeping expression, eyes closed as two small curved graphite lines, mouth a tiny relaxed line",
+      "cites_identity_rules": [
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.construction-cross-line",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch"
+      ]
+    },
+    {
+      "target_path": "expressions/alert-perk.png",
+      "source": "generate",
+      "prompt": "alert perked-up expression, ear-arm nubs projecting upward and forward, eyes focused, brows lifted",
+      "cites_identity_rules": [
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.construction-cross-line",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch"
+      ]
     }
   ]
 }
