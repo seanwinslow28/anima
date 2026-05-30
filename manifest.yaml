@@ -269,6 +269,12 @@ critics:
 # Sean's Bible authoring runs in Tasks 1.10 + 1.11, sean-anchor and claude-mascot
 # are the two real Bibles authored end-to-end on commit 2's first day. Empty list
 # stays valid for back-compat (Pencil Test Act 2 runs against the anchor: block above).
+# Optional per-character model override (Amendment B, 2026-05-30). When absent,
+# the register default applies: NB2 (gemini-3.1-flash-image-preview) for editing
+# in every register; NB Pro reserved for painterly FINAL renders
+# (watercolor / photoreal / 3d-rendered), guarded — a seam with no consumer yet.
+# Read by pipeline.agents.character_designer._resolve_plate_model at plate time.
+# Override shape:  generation_model: <slug>   final_model: <slug>
 characters:
   sean-anchor:
     folder: characters/sean-anchor/

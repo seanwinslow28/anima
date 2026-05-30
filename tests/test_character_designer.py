@@ -9,7 +9,7 @@ Cy's three-phase loop:
            three-attempt ceiling per plate with reject_reason threaded
            into NB Pro on regeneration.
 
-These tests mock invoke_opus_text + invoke_nb_pro + run_antigravity_with_image
+These tests mock invoke_opus_text + invoke_image_edit + run_antigravity_with_image
 so the AgentSpec contract is exercised without burning API calls.
 """
 
@@ -249,7 +249,7 @@ def _patch_runners(
         "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.invoke_nb_pro", fake_nb_pro
+        "pipeline.agents.character_designer.invoke_image_edit", fake_nb_pro
     )
 
 
@@ -392,7 +392,7 @@ def test_gemini_fail_triggers_regeneration_with_reject_reason(
         "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.invoke_nb_pro", tracking_nb_pro
+        "pipeline.agents.character_designer.invoke_image_edit", tracking_nb_pro
     )
 
     node = CharacterDesignerNode()
@@ -445,7 +445,7 @@ def test_three_attempt_ceiling_surfaces_human_gate(
         "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.invoke_nb_pro", counting_nb_pro
+        "pipeline.agents.character_designer.invoke_image_edit", counting_nb_pro
     )
 
     node = CharacterDesignerNode()
@@ -459,7 +459,7 @@ def test_three_attempt_ceiling_surfaces_human_gate(
 
 
 def _patch_with_nb_capture(monkeypatch, *, envelope):
-    """Patch the three runners, capturing every invoke_nb_pro kwargs dict.
+    """Patch the three runners, capturing every invoke_image_edit kwargs dict.
 
     Returns the list that accumulates one dict per NB Pro call so a test can
     assert on the reference_images / prompt the runner actually forwarded.
@@ -485,7 +485,7 @@ def _patch_with_nb_capture(monkeypatch, *, envelope):
         "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.invoke_nb_pro", capturing_nb_pro
+        "pipeline.agents.character_designer.invoke_image_edit", capturing_nb_pro
     )
     return nb_calls
 
@@ -632,7 +632,7 @@ def test_pass1_stub_is_flagged_in_result_notes(base_ctx, character_dir, monkeypa
         lambda **kw: _FakeCLIResponse(text=_make_gemini_verdict("pass")),
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.invoke_nb_pro",
+        "pipeline.agents.character_designer.invoke_image_edit",
         lambda **kw: NBProResponse(
             output_path=kw["output_path"], cache_key="k", cache_hit=False,
             stub_fallback=True, exit_code=0,
@@ -698,7 +698,7 @@ def test_pass1_unparseable_nonempty_text_flagged_as_stub(
         lambda **kw: _FakeCLIResponse(text=_make_gemini_verdict("pass")),
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.invoke_nb_pro",
+        "pipeline.agents.character_designer.invoke_image_edit",
         lambda **kw: NBProResponse(
             output_path=kw["output_path"], cache_key="k", cache_hit=False,
             stub_fallback=True, exit_code=0,
@@ -747,7 +747,7 @@ def test_pass1_retries_on_parse_failure_then_succeeds(
     monkeypatch.setattr(
         "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
     )
-    monkeypatch.setattr("pipeline.agents.character_designer.invoke_nb_pro", fake_nb_pro)
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_image_edit", fake_nb_pro)
 
     result = CharacterDesignerNode().run(base_ctx)
 
@@ -777,7 +777,7 @@ def test_pass1_no_sdk_does_not_retry(base_ctx, character_dir, monkeypatch):
         lambda **kw: _FakeCLIResponse(text=_make_gemini_verdict("pass")),
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.invoke_nb_pro",
+        "pipeline.agents.character_designer.invoke_image_edit",
         lambda **kw: NBProResponse(
             output_path=kw["output_path"], cache_key="k", cache_hit=False,
             stub_fallback=True, exit_code=0,
@@ -827,7 +827,7 @@ def test_ingested_plate_still_runs_gemini_verification(
         "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.invoke_nb_pro", fail_if_nb_pro
+        "pipeline.agents.character_designer.invoke_image_edit", fail_if_nb_pro
     )
 
     node = CharacterDesignerNode()
@@ -947,7 +947,7 @@ def test_prop_plate_not_anchor_similarity_rejected(
         "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.invoke_nb_pro", black_nb_pro
+        "pipeline.agents.character_designer.invoke_image_edit", black_nb_pro
     )
 
     result = CharacterDesignerNode().run(base_ctx)
@@ -1025,7 +1025,7 @@ def test_plates_only_skips_opus_and_preserves_locked_criteria(
     monkeypatch.setattr(
         "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
     )
-    monkeypatch.setattr("pipeline.agents.character_designer.invoke_nb_pro", fake_nb_pro)
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_image_edit", fake_nb_pro)
 
     base_ctx.inputs["plates_only"] = True
     result = CharacterDesignerNode().run(base_ctx)
@@ -1072,7 +1072,7 @@ def test_locked_criteria_auto_routes_to_plates_only(base_ctx, character_dir, mon
             stub_fallback=False, exit_code=0,
         )
 
-    monkeypatch.setattr("pipeline.agents.character_designer.invoke_nb_pro", fake_nb_pro)
+    monkeypatch.setattr("pipeline.agents.character_designer.invoke_image_edit", fake_nb_pro)
 
     # No plates_only flag passed — the locked criteria alone must trigger it.
     CharacterDesignerNode().run(base_ctx)
@@ -1187,12 +1187,12 @@ def test_iterate_reject_reason_reaches_emitted_prompt(tmp_path, monkeypatch):
         captured["prompt"] = prompt
         captured["reject_reason"] = reject_reason
         _real_png(output_path, color=(170, 130, 80))
-        return cd_mod.NBProResponse(
+        return NBProResponse(
             output_path=output_path, cache_key="k", cache_hit=False,
             stub_fallback=False, exit_code=0,
         )
 
-    monkeypatch.setattr(cd_mod, "invoke_nb_pro", capturing_nb_pro)
+    monkeypatch.setattr(cd_mod, "invoke_image_edit", capturing_nb_pro)
 
     char_dir = tmp_path / "characters" / "test"
     char_dir.mkdir(parents=True)
@@ -1225,3 +1225,27 @@ def test_iterate_reject_reason_reaches_emitted_prompt(tmp_path, monkeypatch):
     assert "eyes too large and glossy" in captured["prompt"]
     assert "keep small simple graphite dot eyes" in captured["prompt"]
     assert captured["reject_reason"] is not None  # cache key still busted
+
+
+# ---------------------------------------------------------------------------
+# Per-register model routing (Amendment B)
+# ---------------------------------------------------------------------------
+
+
+def test_resolve_plate_model_routes_by_register():
+    from pipeline.agents.character_designer import _resolve_plate_model
+    NB2 = "gemini-3.1-flash-image-preview"
+    PRO = "gemini-3-pro-image-preview"
+    # editing/generation defaults to NB2 for every register
+    assert _resolve_plate_model("pencil-test-colored", {}) == NB2
+    assert _resolve_plate_model("pixel-art-8bit", {}) == NB2
+    assert _resolve_plate_model("watercolor", {}) == NB2
+    # watercolor FINAL routes to Pro (the guarded painterly-final seam)
+    assert _resolve_plate_model("watercolor", {}, final=True) == PRO
+    assert _resolve_plate_model("photoreal", {}, final=True) == PRO
+    # pencil final stays NB2 (no painterly final needed)
+    assert _resolve_plate_model("pencil-test-colored", {}, final=True) == NB2
+    # manifest per-character override wins
+    assert _resolve_plate_model("pencil-test-colored", {"generation_model": PRO}) == PRO
+    # unknown register falls back to pencil defaults (NB2)
+    assert _resolve_plate_model("not-real", {}) == NB2

@@ -48,7 +48,7 @@ from pipeline.agents import (
     register_node,
 )
 from pipeline.agents.cli_runners import run_antigravity_with_image
-from pipeline.agents.nb_pro_runner import NBProResponse, invoke_nb_pro
+from pipeline.agents.nb_pro_runner import invoke_image_edit
 from pipeline.agents.sdk_runners import invoke_opus_text
 from pipeline.agents.similarity_gate import compute_similarity
 from pipeline.criteria import validate_criteria
@@ -83,11 +83,13 @@ _BOX_CHARACTERS = frozenset("╔═╗║╚╝┌─┐│└┘├┤┬┴┼
 # but per-plate scope since Cy may have many plates.
 _PLATE_ATTEMPT_CEILING = 3
 
-# The default style register. Defined here (above the class) because it is a
-# default-arg value on _run_plate, evaluated at module-load time; the
-# per-register clause library + emitter that also reference it live further
-# down (they only need it at call time).
+# The default style register + the editing-model slug. Defined here (above the
+# class) because they are default-arg values on _run_plate, evaluated at
+# module-load time; the per-register clause library + model table + emitter
+# that also reference them live further down (they only need them at call time).
 _DEFAULT_REGISTER = "pencil-test-colored"
+_NB2_FLASH = "gemini-3.1-flash-image-preview"
+_NB_PRO = "gemini-3-pro-image-preview"
 
 # Pass-1 call ceiling. Cy gets up to three Opus calls to produce a parseable
 # envelope; a transient malformed emission (Opus 4.8 narration/truncation) is
@@ -213,6 +215,14 @@ class CharacterDesignerNode:
         nb_pro_cache_dir.mkdir(parents=True, exist_ok=True)
 
         style_register = str(character_yaml.get("style_register") or _DEFAULT_REGISTER)
+        # Per-register model routing (Amendment B): resolve the editing model
+        # once. A per-character manifest override (characters.{id}.generation_model)
+        # wins; otherwise the register default (NB2 for editing in every
+        # register). author_bible.py passes manifest={}, so the register default
+        # is the safety net for direct authoring runs.
+        character_id = str(character_yaml.get("character_id") or character_dir.name)
+        char_cfg = (ctx.manifest.get("characters") or {}).get(character_id, {}) or {}
+        generation_model = _resolve_plate_model(style_register, char_cfg, final=False)
 
         plate_results: dict[str, dict] = {}
         for plate in plate_plan.get("plates", []):
@@ -222,6 +232,7 @@ class CharacterDesignerNode:
                 character_dir=character_dir,
                 cache_dir=nb_pro_cache_dir,
                 style_register=style_register,
+                generation_model=generation_model,
             )
             plate_results[plate["target_path"]] = status
 
@@ -633,6 +644,7 @@ class CharacterDesignerNode:
         character_dir: Path,
         cache_dir: Path,
         style_register: str = _DEFAULT_REGISTER,
+        generation_model: str = _NB2_FLASH,
     ) -> dict:
         """Run Pass 2 + Pass 3 for a single plate. Returns the plate status dict."""
         target_path = character_dir / plate["target_path"]
@@ -707,12 +719,13 @@ class CharacterDesignerNode:
                 })
                 return status
         else:
-            nb_resp = invoke_nb_pro(
+            nb_resp = invoke_image_edit(
                 prompt=prompt_text,
                 reference_images=reference_images,
                 output_path=target_path,
                 cache_dir=cache_dir,
                 cites_identity_rules=cites_rules,
+                model=generation_model,
                 # A `bible iterate` reject_reason both steers the prompt
                 # (woven into prompt_text above) and busts the cache key here,
                 # so the re-roll is a fresh generation, not a cache hit (§3).
@@ -784,12 +797,13 @@ class CharacterDesignerNode:
                 is_prop=is_prop,
                 reject_reason=verdict_envelope["reasoning"],
             )
-            nb_resp = invoke_nb_pro(
+            nb_resp = invoke_image_edit(
                 prompt=regen_prompt,
                 reference_images=reference_images,
                 output_path=target_path,
                 cache_dir=cache_dir,
                 cites_identity_rules=cites_rules,
+                model=generation_model,
                 reject_reason=verdict_envelope["reasoning"],
             )
             if not nb_resp.ok:
@@ -1185,6 +1199,37 @@ _REGISTER_CLAUSE_LIBRARY: dict[str, dict[str, str]] = {
         ),
     },
 }
+
+# Per-register model routing (Amendment B). Generation/editing is NB2 for
+# every register (cheaper, faster, more identity-stable for the across-edit
+# work that is Cy's whole job). A FINAL render routes to NB Pro only for the
+# painterly registers — and that path is a documented seam: no Pro-routed
+# character exists yet, so _run_plate never takes the final branch, and the
+# NB-Pro reference-fidelity guard the forum teams built is deferred until a
+# consumer exists (re-verify the Pro multi-reference regression first).
+_REGISTER_MODELS: dict[str, dict[str, str]] = {
+    "pencil-test-colored": {"generation": _NB2_FLASH, "final": _NB2_FLASH},
+    "pixel-art-8bit": {"generation": _NB2_FLASH, "final": _NB2_FLASH},
+    "line-art-only": {"generation": _NB2_FLASH, "final": _NB2_FLASH},
+    "watercolor": {"generation": _NB2_FLASH, "final": _NB_PRO},
+    "photoreal": {"generation": _NB2_FLASH, "final": _NB_PRO},
+    "3d-rendered": {"generation": _NB2_FLASH, "final": _NB_PRO},
+}
+
+
+def _resolve_plate_model(
+    style_register: str, char_cfg: dict | None = None, *, final: bool = False
+) -> str:
+    """Resolve the model for a plate. Manifest per-character override wins;
+    otherwise the register default from _REGISTER_MODELS. Bible plates are
+    editing operations and use the generation model (final=False)."""
+    char_cfg = char_cfg or {}
+    key = "final_model" if final else "generation_model"
+    override = char_cfg.get(key)
+    if override:
+        return str(override)
+    row = _REGISTER_MODELS.get(style_register) or _REGISTER_MODELS[_DEFAULT_REGISTER]
+    return row["final" if final else "generation"]
 
 
 def _build_plate_prompt(
