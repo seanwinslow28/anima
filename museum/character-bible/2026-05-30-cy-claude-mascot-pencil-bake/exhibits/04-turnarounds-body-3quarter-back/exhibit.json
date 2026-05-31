@@ -14,10 +14,9 @@
   "persona": "cy",
   "date": "2026-05-30",
   "prompt": null,
-  "references": [
-    "assets/anchor.png"
-  ],
+  "references": [],
   "output": "assets/body-3quarter-back.png",
+  "frames": [],
   "comparison_gif": null,
   "verdict": {
     "method": "dinov2",

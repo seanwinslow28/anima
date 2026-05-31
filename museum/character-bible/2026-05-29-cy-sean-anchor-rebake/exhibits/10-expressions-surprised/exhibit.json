@@ -1,0 +1,37 @@
+{
+  "exhibit_id": "10-expressions-surprised",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-rebake",
+  "title": "Plate — expressions/surprised.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "generated",
+    "attempts": 1,
+    "rationale": "The plate honors IR.sean.face.blue-eyes as the eyes are blue, almond-shaped, and correctly spaced. However, it is borderline on IR.sean.hair.front-quiff-cowlick; while the hair has upward volume, it lacks the distinct forward-curling quiff at the front hairline that forms the highest point of the silhouette.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/surprised.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.6538,
+    "reference": "anchor.png",
+    "model_verdict": "borderline",
+    "model_confidence": 0.65
+  },
+  "cites_criteria": [
+    "IR.sean.face.blue-eyes",
+    "IR.sean.hair.front-quiff-cowlick"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-rebake/plate_verdicts.jsonl#L10"
+  ],
+  "schema_version": "1.0"
+}

@@ -1,0 +1,37 @@
+{
+  "exhibit_id": "11-expressions-contemplative",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-rebake",
+  "title": "Plate — expressions/contemplative.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "generated",
+    "attempts": 1,
+    "rationale": "The plate largely aligns with the cited rules. IR.sean.face.blue-eyes is honored with blue, almond-shaped eyes spaced one eye-width apart on the midline. IR.sean.face.short-beard-stubble is borderline because the stubble on the jaw, chin, and upper lip utilizes a mix of line-hatching and soft gradient shading instead of pure fine cross-hatching.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/contemplative.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.6799,
+    "reference": "anchor.png",
+    "model_verdict": "borderline",
+    "model_confidence": 0.7
+  },
+  "cites_criteria": [
+    "IR.sean.face.blue-eyes",
+    "IR.sean.face.short-beard-stubble"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-rebake/plate_verdicts.jsonl#L11"
+  ],
+  "schema_version": "1.0"
+}

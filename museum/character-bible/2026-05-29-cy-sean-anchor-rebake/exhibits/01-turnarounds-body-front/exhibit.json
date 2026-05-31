@@ -1,0 +1,34 @@
+{
+  "exhibit_id": "01-turnarounds-body-front",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-rebake",
+  "title": "Plate — turnarounds/body-front.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "ingested",
+    "attempts": 1,
+    "rationale": "Gemini's response could not be parsed as JSON.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/body-front.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.473,
+    "reference": "anchor.png",
+    "model_verdict": "borderline",
+    "model_confidence": 0.0
+  },
+  "cites_criteria": [],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-rebake/plate_verdicts.jsonl#L1"
+  ],
+  "schema_version": "1.0"
+}

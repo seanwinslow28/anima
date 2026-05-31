@@ -1,0 +1,40 @@
+{
+  "exhibit_id": "15-motion_plates-head-turn-01",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-production",
+  "title": "Plate — motion_plates/head-turn-01.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "human_gate_required",
+    "attempts": 1,
+    "rationale": "The plate fails to honor the identity rules for Sean in multiple key aspects, depicting a highly simplified cartoon style rather than the specified characteristics: \n1. [IR.sean.hair.silhouette-tousled-medium-short] is violated: The hair is drawn as a single, smooth, backward-curving quiff on top of an otherwise bald skull contour. It completely lacks the medium-short, tousled silhouette with two or three irregular tufts, and does not taper to skin at the temples and nape.\n2. [IR.sean.face.jaw-line-angular-not-rounded] is violated: The jaw and chin contour is completely smooth and rounded. It lacks the defined 100-110 degree angle at the mandibular corner, and the chin is rounded/pointed rather than squared.\n3. [IR.sean.face.blue-eyes] is violated: The eyes are drawn as simple vertical pill-shaped ovals rather than a 'lidded almond' shape.\n4. [IR.sean.hair.dirty-blonde-color] is borderline: While it complies with the line-only rule by having no color fill, the contour has no interior strokes at all.\n5. [IR.sean.motion.head-turn-9-frame-sequence] is violated: Because frame 01 is an anchor-grade end-of-turn pose, it fails to establish a valid identity baseline for the start of the sequence.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/head-turn-01.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.2278,
+    "reference": "anchor.png",
+    "model_verdict": "fail",
+    "model_confidence": 1.0
+  },
+  "cites_criteria": [
+    "IR.sean.motion.head-turn-9-frame-sequence",
+    "IR.sean.hair.silhouette-tousled-medium-short",
+    "IR.sean.face.jaw-line-angular-not-rounded",
+    "IR.sean.hair.dirty-blonde-color",
+    "IR.sean.face.blue-eyes"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-production/plate_verdicts.jsonl#L15"
+  ],
+  "schema_version": "1.0"
+}

@@ -35,11 +35,13 @@ def assemble_loop_gif(
     bg=PAPER,
     duration_ms: int = 170,
     pingpong: bool = True,
+    max_w: int | None = None,
 ) -> Path | None:
     """Composite frames onto a uniform cream canvas and write a looping GIF.
 
-    Returns out_path, or None when there are no frames (skip cleanly — not every
-    exhibit has a frame sequence).
+    `max_w` downscales the canvas so the committed museum GIF stays light (the
+    full-res frames live in the character dir). Returns out_path, or None when
+    there are no frames (skip cleanly — not every exhibit has a frame sequence).
     """
     paths = [Path(p) for p in frame_paths if Path(p).exists()]
     if not paths:
@@ -50,9 +52,13 @@ def assemble_loop_gif(
 
     pad_w = int(max(im.width for im in loaded) * (1 + _PAD))
     pad_h = int(max(im.height for im in loaded) * (1 + _PAD))
+    factor = min(1.0, max_w / pad_w) if max_w else 1.0
+    pad_w, pad_h = max(1, int(pad_w * factor)), max(1, int(pad_h * factor))
 
     composited: list[Image.Image] = []
     for im in loaded:
+        if factor < 1.0:
+            im = im.resize((max(1, int(im.width * factor)), max(1, int(im.height * factor))))
         canvas = Image.new("RGBA", (pad_w, pad_h), (*bg_rgb, 255))
         offset = ((pad_w - im.width) // 2, (pad_h - im.height) // 2)
         canvas.alpha_composite(im, offset)

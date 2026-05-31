@@ -1,0 +1,41 @@
+{
+  "exhibit_id": "07-expressions-curious",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-30-cy-claude-mascot-pencil",
+  "title": "Plate — expressions/curious.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "human_gate_required",
+    "attempts": 3,
+    "rationale": "The plate at expressions/curious.png fails multiple core identity rules. First, the body silhouette (IR.claude-mascot.proportion.rounded-box-silhouette) is wider than it is tall (approx. 1.1:1) instead of reading slightly taller than wide (~1:1.2). Second, the eyes (IR.claude-mascot.face.two-dot-eyes-with-brows) are rendered as large round cartoon eyes with white scleras, pupils, and prominent glossy highlights instead of simple warm-graphite dot/oval eyes. Third, the pencil construction cross-line (IR.claude-mascot.face.construction-cross-line) is completely missing from the face, yielding a clean digital finish. Fourth, the mouth (IR.claude-mascot.face.minimal-mouth-line) is a gaping, open oval expressing emotion, violating the prohibition against open-mouth shapes. Finally, both the palette and style rules (IR.claude-mascot.palette.terracotta-orange-body and IR.claude-mascot.style.warm-graphite-line-cross-hatch) are violated by the use of smooth airbrush/gradient shading on the body rather than a flat terracotta fill with warm-graphite cross-hatched shadows.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-30",
+  "prompt": null,
+  "references": [],
+  "output": "assets/curious.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "dinov2",
+    "score": 0.9124,
+    "reference": "anchor.png",
+    "model_verdict": "fail",
+    "model_confidence": 1.0
+  },
+  "cites_criteria": [
+    "IR.claude-mascot.proportion.rounded-box-silhouette",
+    "IR.claude-mascot.face.two-dot-eyes-with-brows",
+    "IR.claude-mascot.face.construction-cross-line",
+    "IR.claude-mascot.face.minimal-mouth-line",
+    "IR.claude-mascot.palette.terracotta-orange-body",
+    "IR.claude-mascot.style.warm-graphite-line-cross-hatch"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-30-cy-claude-mascot-pencil/plate_verdicts.jsonl#L7"
+  ],
+  "schema_version": "1.0"
+}

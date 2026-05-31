@@ -1,0 +1,12 @@
+{
+  "run_slug": "act2-seedance-2026-04-27",
+  "project_slug": "pencil-test",
+  "exhibit_count": 10,
+  "kinds": {
+    "seedance_shot": 10
+  },
+  "evidence": {
+    "partial": 10
+  },
+  "source": "runs/act2-seedance-2026-04-27/"
+}

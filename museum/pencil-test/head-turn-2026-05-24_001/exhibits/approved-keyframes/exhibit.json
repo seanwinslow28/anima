@@ -1,0 +1,38 @@
+{
+  "exhibit_id": "approved-keyframes",
+  "project_slug": "pencil-test",
+  "run_slug": "head-turn-2026-05-24_001",
+  "title": "Approved keyframes (9)",
+  "kind": "frame_keyframe",
+  "decision": {
+    "outcome": "approved",
+    "attempts": null,
+    "rationale": "",
+    "rationale_source": null
+  },
+  "phase": 5,
+  "persona": "human",
+  "date": "2026-05-24",
+  "prompt": null,
+  "references": [],
+  "output": null,
+  "frames": [
+    "assets/PT_HT_F01_key.png",
+    "assets/PT_HT_F02_key.png",
+    "assets/PT_HT_F03_key.png",
+    "assets/PT_HT_F04_key.png",
+    "assets/PT_HT_F05_key.png",
+    "assets/PT_HT_F06_key.png",
+    "assets/PT_HT_F07_key.png",
+    "assets/PT_HT_F08_key.png",
+    "assets/PT_HT_F09_key.png"
+  ],
+  "comparison_gif": null,
+  "verdict": null,
+  "cites_criteria": [],
+  "evidence_completeness": "thin",
+  "source_paths": [
+    "runs/head-turn-2026-05-24_001/approved/"
+  ],
+  "schema_version": "1.0"
+}

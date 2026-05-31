@@ -1,0 +1,45 @@
+{
+  "exhibit_id": "08-turnarounds-head-3quarter",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-production",
+  "title": "Plate — turnarounds/head-3quarter.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "human_gate_required",
+    "attempts": 1,
+    "rationale": "The plate at turnarounds/head-3quarter.png fails multiple cited identity rules. Most critically, although the file is designated as the 3-quarter view, it is drawn as a profile view where only one eye reads, violating the visibility requirements of IR.sean.face.eye-spacing-one-eye-width. Furthermore, the single visible eyebrow is highly arched instead of meeting the strong horizontal requirement in IR.sean.face.brow-line-strong-horizontal. The coloring violates IR.sean.palette.full-color-pencil-test-vocabulary by using smooth gradient/airbrush shadows and highlights on the skin and hair instead of flat fills. Lastly, the plate lacks the visible construction lines (horizontal eye-line, vertical face-midline) required by IR.sean.style.construction-lines-visible-beneath-final, reading as a fully cleaned-up drawing. The plate honors IR.sean.face.jaw-line-angular-not-rounded (angular jaw and squared chin) and IR.sean.style.line-weight-hb-to-2b-warm-graphite (varying line weights in warm graphite), while IR.sean.hair.center-cowlick is borderline as the crown cowlick is faint.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/head-3quarter.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.4968,
+    "reference": "anchor.png",
+    "model_verdict": "fail",
+    "model_confidence": 0.95
+  },
+  "cites_criteria": [
+    "IR.sean.hair.center-cowlick",
+    "IR.sean.hair.silhouette-tousled-medium-short",
+    "IR.sean.face.eye-spacing-one-eye-width",
+    "IR.sean.face.jaw-line-angular-not-rounded",
+    "IR.sean.face.brow-line-strong-horizontal",
+    "IR.sean.palette.full-color-pencil-test-vocabulary",
+    "IR.sean.style.construction-lines-visible-beneath-final",
+    "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
+    "IR.sean.hair.dirty-blonde-color",
+    "IR.sean.face.blue-eyes"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-production/plate_verdicts.jsonl#L8"
+  ],
+  "schema_version": "1.0"
+}

@@ -1,0 +1,37 @@
+{
+  "exhibit_id": "17-motion_plates-head-turn-key-09",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-rebake",
+  "title": "Plate — motion_plates/head-turn/key-09.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "human_gate_required",
+    "attempts": 1,
+    "rationale": "The plate violates IR.sean.hair.front-quiff-cowlick because the character is facing right, but the front quiff curves and flicks to the left (pointing backward) instead of curving and flicking forward (to the right). Additionally, IR.sean.motion.head-turn-nine-frame is borderline: while the structural components of the head turn are honored (frame 9 is a three-quarter extreme, the ear has transitioned to the left side, and the quiff remains the highest point of the silhouette), the quiff itself does not maintain its forward-pointing behavior as required for a coherent turn sequence.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/key-09.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.2316,
+    "reference": "anchor.png",
+    "model_verdict": "fail",
+    "model_confidence": 1.0
+  },
+  "cites_criteria": [
+    "IR.sean.hair.front-quiff-cowlick",
+    "IR.sean.motion.head-turn-nine-frame"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-rebake/plate_verdicts.jsonl#L17"
+  ],
+  "schema_version": "1.0"
+}

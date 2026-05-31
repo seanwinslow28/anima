@@ -1,0 +1,36 @@
+{
+  "exhibit_id": "21-motion_plates-head-turn-07",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-production",
+  "title": "Plate — motion_plates/head-turn-07.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "ingested",
+    "attempts": 1,
+    "rationale": "The plate motion_plates/head-turn-07.png honors the identity rule IR.sean.motion.head-turn-9-frame-sequence. As an intermediate rotation frame (frame 7 in the 9-frame sequence), it correctly progresses the head rotation from the front-facing midpoint (frame 5) to the final anchor-grade right-facing pose (frame 9). The eye-lead timing is preserved: the eyes have opened and shifted to the right-side turn target in frame 7, which leads the head's final rotation target in frame 9 by 2 frames. The hair silhouette is consistent with neighboring frames 6 and 8, showing no unauthorized drift. The back-of-skull silhouette is well-integrated and falls within the minor identity drift tolerances allowed for the intermediate rotation frames 06-08.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/head-turn-07.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.2512,
+    "reference": "anchor.png",
+    "model_verdict": "pass",
+    "model_confidence": 1.0
+  },
+  "cites_criteria": [
+    "IR.sean.motion.head-turn-9-frame-sequence"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-production/plate_verdicts.jsonl#L21"
+  ],
+  "schema_version": "1.0"
+}

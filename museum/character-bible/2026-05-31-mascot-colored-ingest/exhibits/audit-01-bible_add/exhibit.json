@@ -1,0 +1,28 @@
+{
+  "exhibit_id": "audit-01-bible_add",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-31-mascot-colored-ingest",
+  "title": "Bible add — 1 plates",
+  "kind": "bible_add",
+  "decision": {
+    "outcome": "added",
+    "attempts": null,
+    "rationale": "Colored-pass ingest: register new idle-04 (risen breath peak); colored frames promoted to canonical motion_plates paths",
+    "rationale_source": "bible_audit.jsonl"
+  },
+  "phase": 2,
+  "persona": "human",
+  "date": "2026-05-31",
+  "prompt": null,
+  "references": [],
+  "output": null,
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": null,
+  "cites_criteria": [],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-31-mascot-colored-ingest/bible_audit.jsonl#L1"
+  ],
+  "schema_version": "1.0"
+}

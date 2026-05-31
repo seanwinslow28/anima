@@ -14,6 +14,7 @@ artifacts under museum/; it does not mutate a single byte of run history.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 from pipeline.museum.schema import Exhibit, Decision, Verdict, derive_project_slug
@@ -39,8 +40,9 @@ def _read_jsonl(path: Path) -> list[dict]:
 
 
 def _date_from_run_slug(run_slug: str) -> str | None:
-    head = run_slug[:10]
-    return head if head[:4].isdigit() and head.count("-") == 2 else None
+    # First YYYY-MM-DD anywhere in the slug (handles `run_2026-04-04_…` too).
+    m = re.search(r"\d{4}-\d{2}-\d{2}", run_slug)
+    return m.group(0) if m else None
 
 
 def scrape_plate_verdicts(run_dir: Path, project_slug: str, run_slug: str) -> list[Exhibit]:
@@ -63,7 +65,10 @@ def scrape_plate_verdicts(run_dir: Path, project_slug: str, run_slug: str) -> li
                 rationale_source="plate_verdicts.jsonl" if reasoning else None,
             ),
             output=f"assets/{Path(target).name}",
-            references=["assets/anchor.png"],
+            # No anchor reference: plate-vs-anchor is the boring "AI matched the
+            # reference" comparison. The anchor it was scored against is recorded
+            # in verdict.reference; the page shows the plate + its verdict.
+            references=[],
             verdict=Verdict(
                 method=r.get("similarity_method"),
                 score=r.get("similarity_score"),
@@ -105,10 +110,101 @@ def scrape_bible_audit(run_dir: Path, project_slug: str, run_slug: str) -> list[
     return exhibits
 
 
+def scrape_seedance(run_dir: Path, project_slug: str, run_slug: str) -> list[Exhibit]:
+    """Per-shot Seedance `*.meta.json` → one seedance_shot exhibit. The prompt +
+    seed + tier + timing IS the artifact (the prompt-engineering discipline); the
+    video itself is large and not copied into the museum. No critique was logged
+    on these shots, so they are honestly `partial` (generated, not gated)."""
+    sdir = Path(run_dir) / "seedance"
+    if not sdir.is_dir():
+        return []
+    date = _date_from_run_slug(run_slug)
+    exhibits: list[Exhibit] = []
+    for meta_path in sorted(sdir.glob("*.meta.json")):
+        m = json.loads(meta_path.read_text(encoding="utf-8"))
+        shot = m.get("shot_id", meta_path.stem)
+        tier = m.get("tier", "?")
+        exhibits.append(Exhibit(
+            exhibit_id=f"seedance-{shot}-{m.get('attempt', 1):02d}",
+            project_slug=project_slug, run_slug=run_slug,
+            title=f"Seedance shot {shot} ({tier})", kind="seedance_shot",
+            phase=6, persona=None, date=date,
+            decision=Decision(outcome="generated", attempts=m.get("attempt"),
+                              rationale="", rationale_source=None),
+            prompt=m.get("prompt"),
+            verdict=None,
+            cites_criteria=[],
+            evidence_completeness="partial",
+            source_paths=[f"runs/{run_slug}/seedance/{meta_path.name}"],
+        ))
+    return exhibits
+
+
+_FRAME_EXTS = (".png", ".jpg", ".jpeg", ".gif")
+
+
+def scrape_approved_keyframes(run_dir: Path, project_slug: str, run_slug: str) -> list[Exhibit]:
+    """ONE rollup exhibit per run for its approved/ keyframes — the frame strip,
+    not 30 near-identical thin pages. The approval is real evidence (a human kept
+    these), but no rationale is logged on disk, so the exhibit is honestly thin."""
+    adir = Path(run_dir) / "approved"
+    if not adir.is_dir():
+        return []
+    frames = sorted(p.name for p in adir.iterdir()
+                    if p.is_file() and p.suffix.lower() in _FRAME_EXTS)
+    if not frames:
+        return []
+    date = _date_from_run_slug(run_slug)
+    return [Exhibit(
+        exhibit_id="approved-keyframes",
+        project_slug=project_slug, run_slug=run_slug,
+        title=f"Approved keyframes ({len(frames)})", kind="frame_keyframe",
+        phase=5, persona="human", date=date,
+        decision=Decision(outcome="approved", rationale="", rationale_source=None),
+        frames=[f"assets/{n}" for n in frames],
+        evidence_completeness="thin",
+        source_paths=[f"runs/{run_slug}/approved/"],
+    )]
+
+
 def scrape_run(run_dir: Path, slug_rules: dict[str, list[str]]) -> tuple[str, list[Exhibit]]:
     run_dir = Path(run_dir)
     run_slug = run_dir.name
     slug = derive_project_slug(run_slug, slug_rules) or "_unclassified"
     exhibits = (scrape_plate_verdicts(run_dir, slug, run_slug)
-                + scrape_bible_audit(run_dir, slug, run_slug))
+                + scrape_bible_audit(run_dir, slug, run_slug)
+                + scrape_seedance(run_dir, slug, run_slug)
+                + scrape_approved_keyframes(run_dir, slug, run_slug))
     return slug, exhibits
+
+
+def walk_runs(runs_dir: Path, noise_filter: dict) -> tuple[list[Path], list[tuple[str, str]]]:
+    """Return (kept run dirs, [(name, skip_reason), …]).
+
+    The noise filter is honest and logged — every skipped entry comes back with a
+    reason so nothing is silently truncated. Skips: any file (incl. `*.log`),
+    install runs, and *aborted* dirs (no decision evidence at all: no approved/,
+    no plate_verdicts.jsonl, no bible_audit.jsonl, no seedance/)."""
+    runs_dir = Path(runs_dir)
+    skip_suffixes = tuple(noise_filter.get("skip_suffixes", []))
+    skip_contains = list(noise_filter.get("skip_name_contains", []))
+    kept: list[Path] = []
+    filtered: list[tuple[str, str]] = []
+    for entry in sorted(runs_dir.iterdir()):
+        name = entry.name
+        if name.startswith("."):
+            continue
+        if entry.is_file():
+            reason = "log file" if name.endswith(skip_suffixes) else "not a run directory"
+            filtered.append((name, reason))
+            continue
+        if any(s in name for s in skip_contains):
+            filtered.append((name, "install run"))
+            continue
+        aborted = not any((entry / n).exists() for n in
+                          ("approved", "plate_verdicts.jsonl", "bible_audit.jsonl", "seedance"))
+        if aborted:
+            filtered.append((name, "aborted — no decision evidence on disk"))
+            continue
+        kept.append(entry)
+    return kept, filtered

@@ -1,0 +1,36 @@
+{
+  "exhibit_id": "18-motion_plates-head-turn-04",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-production",
+  "title": "Plate — motion_plates/head-turn-04.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "ingested",
+    "attempts": 1,
+    "rationale": "The plate honors IR.sean.motion.head-turn-9-frame-sequence. As an intermediate rotation frame (frame 04), it correctly represents the turn progression with closed eyes (blink transition). The back-of-skull silhouette drift is minor and within the permissible limits defined by the rule for frames 02-04.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/head-turn-04.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.2494,
+    "reference": "anchor.png",
+    "model_verdict": "pass",
+    "model_confidence": 0.7
+  },
+  "cites_criteria": [
+    "IR.sean.motion.head-turn-9-frame-sequence"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-production/plate_verdicts.jsonl#L18"
+  ],
+  "schema_version": "1.0"
+}

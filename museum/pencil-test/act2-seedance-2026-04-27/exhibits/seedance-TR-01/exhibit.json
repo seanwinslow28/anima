@@ -1,0 +1,28 @@
+{
+  "exhibit_id": "seedance-TR-01",
+  "project_slug": "pencil-test",
+  "run_slug": "act2-seedance-2026-04-27",
+  "title": "Seedance shot TR (fast)",
+  "kind": "seedance_shot",
+  "decision": {
+    "outcome": "generated",
+    "attempts": 1,
+    "rationale": "",
+    "rationale_source": null
+  },
+  "phase": 6,
+  "persona": null,
+  "date": "2026-04-27",
+  "prompt": "Hand-drawn pencil animation on cream paper. The companion's terracotta\narm fully emerges from the laptop screen and the small terracotta hand\nreaches across and grabs Sean's right hand. Sean leans further forward\nand his eyes widen as he is pulled toward the screen. A few pencil\nmotion-line marks accentuate the lean. Fixed camera, locked tripod.\nEven, diffuse desk lighting with cool blue screen-light tint on Sean's\nface. Maintain pencil line quality, paper grain, consistent line weight.\nNo digital effects. Smooth 3-second action interpolation.\n",
+  "references": [],
+  "output": null,
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": null,
+  "cites_criteria": [],
+  "evidence_completeness": "partial",
+  "source_paths": [
+    "runs/act2-seedance-2026-04-27/seedance/TR_attempt_01.meta.json"
+  ],
+  "schema_version": "1.0"
+}

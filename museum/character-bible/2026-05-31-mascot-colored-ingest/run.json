@@ -1,0 +1,12 @@
+{
+  "run_slug": "2026-05-31-mascot-colored-ingest",
+  "project_slug": "character-bible",
+  "exhibit_count": 1,
+  "kinds": {
+    "bible_add": 1
+  },
+  "evidence": {
+    "rich": 1
+  },
+  "source": "runs/2026-05-31-mascot-colored-ingest/"
+}

@@ -1,0 +1,38 @@
+{
+  "exhibit_id": "05-turnarounds-head-front",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-rebake",
+  "title": "Plate — turnarounds/head-front.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "ingested",
+    "attempts": 1,
+    "rationale": "The plate honors all cited rules. IR.sean.hair.front-quiff-cowlick is satisfied by the prominent front cowlick forming the highest point of the head silhouette. IR.sean.face.blue-eyes is honored with blue, almond-shaped eyes spaced one eye-width apart. IR.sean.face.short-beard-stubble is honored via fine, uniform hatching along the jawline, chin, and upper lip.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/head-front.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.473,
+    "reference": "anchor.png",
+    "model_verdict": "pass",
+    "model_confidence": 0.8
+  },
+  "cites_criteria": [
+    "IR.sean.hair.front-quiff-cowlick",
+    "IR.sean.face.blue-eyes",
+    "IR.sean.face.short-beard-stubble"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-rebake/plate_verdicts.jsonl#L5"
+  ],
+  "schema_version": "1.0"
+}

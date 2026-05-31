@@ -1,0 +1,33 @@
+{
+  "exhibit_id": "audit-01-bible_add",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-30-cy-mascot-expression-expansion",
+  "title": "Bible add — 4 plates",
+  "kind": "bible_add",
+  "decision": {
+    "outcome": "added",
+    "attempts": null,
+    "rationale": "Act 2 expression expansion (alarm/delight/sleep/alert-perk)",
+    "rationale_source": "bible_audit.jsonl"
+  },
+  "phase": 2,
+  "persona": "human",
+  "date": "2026-05-30",
+  "prompt": null,
+  "references": [],
+  "output": null,
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": null,
+  "cites_criteria": [
+    "IR.claude-mascot.face.alarm-expression",
+    "IR.claude-mascot.face.delight-expression",
+    "IR.claude-mascot.face.sleep-expression",
+    "IR.claude-mascot.face.alert-perk-expression"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-30-cy-mascot-expression-expansion/bible_audit.jsonl#L1"
+  ],
+  "schema_version": "1.0"
+}

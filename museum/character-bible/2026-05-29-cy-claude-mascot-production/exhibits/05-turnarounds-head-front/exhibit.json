@@ -1,0 +1,34 @@
+{
+  "exhibit_id": "05-turnarounds-head-front",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-claude-mascot-production",
+  "title": "Plate — turnarounds/head-front.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "generated",
+    "attempts": 2,
+    "rationale": "Gemini's response could not be parsed as JSON.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/head-front.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.4779,
+    "reference": "anchor.png",
+    "model_verdict": "borderline",
+    "model_confidence": 0.0
+  },
+  "cites_criteria": [],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-claude-mascot-production/plate_verdicts.jsonl#L5"
+  ],
+  "schema_version": "1.0"
+}

@@ -1,0 +1,13 @@
+{
+  "run_slug": "2026-05-29-cy-sean-anchor-production",
+  "project_slug": "character-bible",
+  "exhibit_count": 24,
+  "kinds": {
+    "plate_verdict": 24
+  },
+  "evidence": {
+    "rich": 22,
+    "partial": 2
+  },
+  "source": "runs/2026-05-29-cy-sean-anchor-production/"
+}

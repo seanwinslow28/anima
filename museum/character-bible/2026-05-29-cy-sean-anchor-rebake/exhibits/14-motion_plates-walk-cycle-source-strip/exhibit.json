@@ -1,0 +1,37 @@
+{
+  "exhibit_id": "14-motion_plates-walk-cycle-source-strip",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-rebake",
+  "title": "Plate — motion_plates/walk-cycle/source-strip.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "human_gate_required",
+    "attempts": 1,
+    "rationale": "The plate honors IR.sean.motion.walk-cycle-neutral-gait with standard gait poses and stylus placement, but violates IR.sean.proportion.head-to-body-1-to-7 since the head-to-body ratio is closer to 1:4.5 instead of the required 1:7.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/source-strip.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.2257,
+    "reference": "anchor.png",
+    "model_verdict": "fail",
+    "model_confidence": 0.75
+  },
+  "cites_criteria": [
+    "IR.sean.motion.walk-cycle-neutral-gait",
+    "IR.sean.proportion.head-to-body-1-to-7"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-rebake/plate_verdicts.jsonl#L14"
+  ],
+  "schema_version": "1.0"
+}

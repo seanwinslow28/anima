@@ -1,0 +1,28 @@
+{
+  "exhibit_id": "seedance-T0-01",
+  "project_slug": "pencil-test",
+  "run_slug": "act2-seedance-2026-04-27",
+  "title": "Seedance shot T0 (fast)",
+  "kind": "seedance_shot",
+  "decision": {
+    "outcome": "generated",
+    "attempts": 1,
+    "rationale": "",
+    "rationale_source": null
+  },
+  "phase": 6,
+  "persona": null,
+  "date": "2026-04-27",
+  "prompt": "Hand-drawn pencil animation on cream paper. Camera pushes slowly forward\ninto the laptop screen on the desk. Sean's hands settle onto the keyboard\nas the camera approaches. The laptop and dark cross-hatched terminal\nwindow grow to fill the frame as the desk surroundings recede outside\nthe frame. Single slow camera push-in, no other movement. Even, diffuse\ndesk lighting. Maintain pencil line quality, graphite shading, paper\ngrain, consistent line weight. No digital effects. Smooth 4-second\npush-in interpolation.\n",
+  "references": [],
+  "output": null,
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": null,
+  "cites_criteria": [],
+  "evidence_completeness": "partial",
+  "source_paths": [
+    "runs/act2-seedance-2026-04-27/seedance/T0_attempt_01.meta.json"
+  ],
+  "schema_version": "1.0"
+}

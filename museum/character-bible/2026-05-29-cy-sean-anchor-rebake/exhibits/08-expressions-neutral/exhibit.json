@@ -1,0 +1,37 @@
+{
+  "exhibit_id": "08-expressions-neutral",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-rebake",
+  "title": "Plate — expressions/neutral.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "generated",
+    "attempts": 1,
+    "rationale": "The plate honors IR.sean.face.blue-eyes, as the eyes are almond-shaped, blue, and properly positioned. However, it shows borderline compliance with IR.sean.hair.front-quiff-cowlick because the hair style lacks the specific pronounced, forward-curling single quiff as the highest point of the silhouette.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/neutral.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.6873,
+    "reference": "anchor.png",
+    "model_verdict": "borderline",
+    "model_confidence": 0.7
+  },
+  "cites_criteria": [
+    "IR.sean.face.blue-eyes",
+    "IR.sean.hair.front-quiff-cowlick"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-rebake/plate_verdicts.jsonl#L8"
+  ],
+  "schema_version": "1.0"
+}

@@ -1,0 +1,36 @@
+{
+  "exhibit_id": "12-props-stylus",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-rebake",
+  "title": "Plate — props/stylus.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "human_gate_required",
+    "attempts": 3,
+    "rationale": "The plate clearly violates IR.sean.prop.stylus-right-hand-always. The identity rule states that 'Sean's stylus stays in his right hand in every frame' and details the grip (three fingers visible, gripped near the barrel). In the plate, Sean is not holding the stylus at all; his hands are empty, and the stylus is depicted floating separately in mid-air to his right.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/stylus.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.893,
+    "reference": "anchor.png",
+    "model_verdict": "fail",
+    "model_confidence": 1.0
+  },
+  "cites_criteria": [
+    "IR.sean.prop.stylus-right-hand-always"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-rebake/plate_verdicts.jsonl#L12"
+  ],
+  "schema_version": "1.0"
+}

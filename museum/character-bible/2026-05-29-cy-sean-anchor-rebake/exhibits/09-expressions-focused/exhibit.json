@@ -1,0 +1,37 @@
+{
+  "exhibit_id": "09-expressions-focused",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-rebake",
+  "title": "Plate — expressions/focused.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "generated",
+    "attempts": 1,
+    "rationale": "The plate honors both rules. IR.sean.face.blue-eyes is met as the eyes are almond-shaped, blue, and properly positioned. IR.sean.face.short-beard-stubble is met with fine hatching along the jaw, chin, and upper lip instead of a flat fill.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/focused.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.5837,
+    "reference": "anchor.png",
+    "model_verdict": "pass",
+    "model_confidence": 0.75
+  },
+  "cites_criteria": [
+    "IR.sean.face.blue-eyes",
+    "IR.sean.face.short-beard-stubble"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-rebake/plate_verdicts.jsonl#L9"
+  ],
+  "schema_version": "1.0"
+}

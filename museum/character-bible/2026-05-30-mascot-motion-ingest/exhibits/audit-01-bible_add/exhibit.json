@@ -1,0 +1,36 @@
+{
+  "exhibit_id": "audit-01-bible_add",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-30-mascot-motion-ingest",
+  "title": "Bible add — 22 plates",
+  "kind": "bible_add",
+  "decision": {
+    "outcome": "added",
+    "attempts": null,
+    "rationale": "ingest motion keys",
+    "rationale_source": "bible_audit.jsonl"
+  },
+  "phase": 2,
+  "persona": "human",
+  "date": "2026-05-30",
+  "prompt": null,
+  "references": [],
+  "output": null,
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": null,
+  "cites_criteria": [
+    "IR.claude-mascot.motion.idle-breath-volume",
+    "IR.claude-mascot.motion.tilt-is-whole-body",
+    "IR.claude-mascot.motion.perch-weight-and-squash",
+    "IR.claude-mascot.motion.alert-snap-eyes-stay-dots",
+    "IR.claude-mascot.motion.hop-arc-and-gravity",
+    "IR.claude-mascot.motion.sleep-ease-in",
+    "IR.claude-mascot.motion.no-arms-in-motion"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-30-mascot-motion-ingest/bible_audit.jsonl#L1"
+  ],
+  "schema_version": "1.0"
+}
