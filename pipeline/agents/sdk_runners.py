@@ -380,6 +380,35 @@ async def invoke_sonnet_text(
     )
 
 
+def _stub_museum_prose(prompt: str) -> SDKResponse:
+    """Stub for Mo (museum writer). Returns empty text + stub_fallback=True so the
+    museum_writer falls back to its local, faithful, deterministic prose — CI runs
+    credential-free and Mo never fabricates from a stubbed model."""
+    return SDKResponse(
+        model=STUB_MODEL,
+        text="",
+        duration_s=0.0,
+        exit_code=0,
+        error=None,
+        stub_fallback=True,
+    )
+
+
+async def invoke_museum_prose(
+    *,
+    prompt: str,
+    timeout_s: int = 180,
+) -> SDKResponse:
+    """Invoke Sonnet 4.6 for Mo's docent narration. Falls back to a deterministic
+    stub so the museum builds without credentials."""
+    return await _invoke_text(
+        model=SONNET_MODEL,
+        prompt=prompt,
+        timeout_s=timeout_s,
+        stub_fn=_stub_museum_prose,
+    )
+
+
 async def _invoke_text(
     *,
     model: str,

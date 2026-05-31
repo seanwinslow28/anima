@@ -34,7 +34,7 @@ sys.path.insert(0, str(REPO))
 from pipeline.museum.scraper import scrape_run, walk_runs  # noqa: E402
 from pipeline.museum.motion import scrape_motion_plates, motion_loop_pingpong  # noqa: E402
 from pipeline.museum.motion_gif import assemble_loop_gif  # noqa: E402
-from pipeline.museum.schema import Exhibit, exhibit_dir, write_exhibit  # noqa: E402
+from pipeline.museum.schema import Exhibit, exhibit_dir, write_exhibit, read_exhibit  # noqa: E402
 from pipeline.museum.render import render_static  # noqa: E402
 
 
@@ -273,6 +273,22 @@ def build_all(runs_dir: Path, museum_root: Path, manifest_path: Path) -> dict:
     return {"kept": [p.name for p in kept], "filtered": filtered, "totals": totals}
 
 
+def narrate_all(museum_root: Path) -> dict:
+    """Run Mo over every scraped exhibit, replacing the auto-generated exhibit.md
+    with her docent narration. Credential-free via Mo's faithful local fallback."""
+    from pipeline.agents.museum_writer import narrate
+    count = stub = 0
+    for json_path in sorted(Path(museum_root).rglob("exhibits/*/exhibit.json")):
+        ex = read_exhibit(json_path)
+        prose, used_stub = narrate(ex)
+        (json_path.parent / "exhibit.md").write_text(prose, encoding="utf-8")
+        count += 1
+        stub += int(used_stub)
+    mode = "all stub (no SDK)" if stub == count else f"{count - stub} via Sonnet, {stub} stub"
+    print(f"[museum] Mo narrated {count} exhibits — {mode}")
+    return {"narrated": count, "stub": stub}
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Build the standalone anima Museum.")
     ap.add_argument("--runs", default="runs/", type=Path)
@@ -283,12 +299,13 @@ def main(argv: list[str] | None = None) -> int:
                     help="run slug the motion keys were ingested under")
     ap.add_argument("--museum", default="museum/", type=Path)
     ap.add_argument("--manifest", default=REPO / "manifest.yaml", type=Path)
+    ap.add_argument("--narrate", action="store_true", help="run Mo over scraped exhibits")
     ap.add_argument("--render", action="store_true")
     ap.add_argument("--site", default="museum/_site/", type=Path)
     args = ap.parse_args(argv)
 
-    if not args.all and not args.only and not args.motion:
-        ap.error("pass --all, --only <run>, and/or --motion <character_id>")
+    if not any([args.all, args.only, args.motion, args.narrate, args.render]):
+        ap.error("pass at least one of --all / --only / --motion / --narrate / --render")
 
     museum_root = Path(args.museum)
     if args.all:
@@ -297,6 +314,8 @@ def main(argv: list[str] | None = None) -> int:
         build(Path(args.runs), args.only, museum_root, Path(args.manifest))
     if args.motion:
         build_motion(museum_root, args.motion, args.motion_run, Path(args.manifest))
+    if args.narrate:
+        narrate_all(museum_root)
 
     if args.render:
         index = render_static(museum_root, Path(args.site))
