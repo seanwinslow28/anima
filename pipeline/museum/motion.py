@@ -97,21 +97,27 @@ def scrape_motion_plates(character_dir: Path, project_slug: str, run_slug: str) 
     so stray files not part of the ingest are honestly excluded."""
     character_dir = Path(character_dir)
     character_id = character_dir.name
-    spec_path = character_dir / "motion-additions.json"
-    if not spec_path.exists():
+    # Aggregate every motion spec (the primary motion-additions.json plus any
+    # follow-on like motion-idle04-addition.json from the colored pass), so a
+    # frame added later isn't silently dropped from its motion.
+    spec_paths = sorted(character_dir.glob("motion-*.json"))
+    plates: list[dict] = []
+    for sp in spec_paths:
+        plates.extend(json.loads(sp.read_text(encoding="utf-8")).get("plates", []))
+    if not plates:
         return []
-    spec = json.loads(spec_path.read_text(encoding="utf-8"))
     date = _date_from_run_slug(run_slug)
 
-    # Group plates by motion, preserving first-appearance order.
+    # Group plates by motion, preserving first-appearance order. Frames are sorted
+    # within a motion so a later-added key lands in numeric order (idle-04 after 03).
     order: list[str] = []
     by_motion: dict[str, dict] = {}
-    for plate in spec.get("plates", []):
+    for plate in plates:
         motion = _motion_key(plate["target_path"])
         bucket = by_motion.setdefault(motion, {"sheet": None, "frames": [], "cites": []})
         if motion not in order:
             order.append(motion)
-        if bucket["sheet"] is None:
+        if bucket["sheet"] is None and "#region:" in plate.get("source", ""):
             bucket["sheet"] = _sheet_name(plate["source"])
         bucket["frames"].append(Path(plate["target_path"]).name)
         for rule in plate.get("cites_identity_rules", []):
@@ -132,8 +138,8 @@ def scrape_motion_plates(character_dir: Path, project_slug: str, run_slug: str) 
                 rationale=meta["intent"],
                 rationale_source="source-refs/motion-direction.md" if meta["intent"] else None,
             ),
-            references=[f"assets/{b['sheet']}"],
-            frames=[f"assets/{name}" for name in b["frames"]],
+            references=[f"assets/{b['sheet']}"] if b["sheet"] else [],
+            frames=[f"assets/{name}" for name in sorted(b["frames"])],
             output=f"assets/{motion}-loop.gif",
             cites_criteria=b["cites"],
             evidence_completeness="rich" if meta["intent"] else "partial",

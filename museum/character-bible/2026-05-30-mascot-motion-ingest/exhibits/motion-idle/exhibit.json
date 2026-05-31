@@ -21,7 +21,8 @@
   "frames": [
     "assets/idle-01.png",
     "assets/idle-02.png",
-    "assets/idle-03.png"
+    "assets/idle-03.png",
+    "assets/idle-04.png"
   ],
   "comparison_gif": null,
   "verdict": null,
@@ -33,7 +34,11 @@
     "IR.claude-mascot.anatomy.no-hair",
     "IR.claude-mascot.face.two-dot-eyes-with-brows",
     "IR.claude-mascot.motion.idle-breath-volume",
-    "IR.claude-mascot.motion.no-arms-in-motion"
+    "IR.claude-mascot.motion.no-arms-in-motion",
+    "IR.claude-mascot.palette.terracotta-orange-body",
+    "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+    "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+    "IR.claude-mascot.face.construction-cross-line"
   ],
   "evidence_completeness": "rich",
   "source_paths": [
