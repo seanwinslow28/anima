@@ -1,0 +1,45 @@
+{
+  "exhibit_id": "01-turnarounds-body-front",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-30-cy-claude-mascot-pencil-bake",
+  "title": "Plate — turnarounds/body-front.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "human_gate_required",
+    "attempts": 1,
+    "rationale": "The plate violates several identity rules. IR.claude-mascot.proportion.rounded-box-silhouette is violated as the body is wider than tall instead of 1:1.2 (width:height). IR.claude-mascot.anatomy.four-stub-legs is not met because only two legs are visible without the rear pair being partly occluded. IR.claude-mascot.face.two-dot-eyes-with-brows is violated due to prominent glossy highlights on the eyes. IR.claude-mascot.style.cream-paper-and-cast-shadow is violated as there is no cast shadow scribble beneath the body.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-30",
+  "prompt": null,
+  "references": [
+    "assets/anchor.png"
+  ],
+  "output": "assets/body-front.png",
+  "comparison_gif": null,
+  "verdict": {
+    "method": "dinov2",
+    "score": 0.8857,
+    "reference": "anchor.png",
+    "model_verdict": "fail",
+    "model_confidence": 0.7
+  },
+  "cites_criteria": [
+    "IR.claude-mascot.proportion.rounded-box-silhouette",
+    "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+    "IR.claude-mascot.anatomy.four-stub-legs",
+    "IR.claude-mascot.face.two-dot-eyes-with-brows",
+    "IR.claude-mascot.face.construction-cross-line",
+    "IR.claude-mascot.face.minimal-mouth-line",
+    "IR.claude-mascot.palette.terracotta-orange-body",
+    "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+    "IR.claude-mascot.style.cream-paper-and-cast-shadow"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-30-cy-claude-mascot-pencil-bake/plate_verdicts.jsonl#L1"
+  ],
+  "schema_version": "1.0"
+}

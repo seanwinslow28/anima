@@ -1,0 +1,41 @@
+{
+  "exhibit_id": "05-turnarounds-body-back",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-30-cy-claude-mascot-pencil-bake",
+  "title": "Plate — turnarounds/body-back.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "ingested",
+    "attempts": 1,
+    "rationale": "The plate generally honors the character's key design elements and pencil-sketch aesthetic, but exhibits minor deviations in proportions and leg height:\n\n1. Honored Rules:\n- IR.claude-mascot.style.warm-graphite-line-cross-hatch: The contour lines use a warm graphite color with varied weight (~0.5-2px), and the underside contains clear pencil cross-hatching over the terracotta fill.\n- IR.claude-mascot.anatomy.two-ear-arm-nubs: Exactly two unarticulated, rounded, cylindrical nubs project horizontally near the midline, reading at approximately 1/7 of the box width in length.\n- IR.claude-mascot.anatomy.no-arms-no-hands: No arms, hands, fingers, or held objects are present.\n\n2. Borderline Rules:\n- IR.claude-mascot.proportion.rounded-box-silhouette: In this back view (as well as the front view), the body box measures at a 1:1 width-to-height ratio (211px by 211px) instead of the specified 'slightly taller than wide, approximately 1:1.2 (width:height)' proportion.\n- IR.claude-mascot.anatomy.four-stub-legs: The peg legs measure ~50px tall, which is nearly 1/4 of the body box height (211px) and is longer than the rule's specified 'about one-sixth' (~16.7%). Additionally, unlike the 3/4 and side views, this view displays only two legs with no visual overlap or partial occlusion to hint at the front pair.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-30",
+  "prompt": null,
+  "references": [
+    "assets/anchor.png"
+  ],
+  "output": "assets/body-back.png",
+  "comparison_gif": null,
+  "verdict": {
+    "method": "dinov2",
+    "score": 0.8729,
+    "reference": "anchor.png",
+    "model_verdict": "borderline",
+    "model_confidence": 0.95
+  },
+  "cites_criteria": [
+    "IR.claude-mascot.proportion.rounded-box-silhouette",
+    "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+    "IR.claude-mascot.anatomy.four-stub-legs",
+    "IR.claude-mascot.anatomy.no-arms-no-hands",
+    "IR.claude-mascot.style.warm-graphite-line-cross-hatch"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-30-cy-claude-mascot-pencil-bake/plate_verdicts.jsonl#L5"
+  ],
+  "schema_version": "1.0"
+}
