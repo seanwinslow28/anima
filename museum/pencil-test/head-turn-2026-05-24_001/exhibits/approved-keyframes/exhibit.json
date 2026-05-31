@@ -30,6 +30,7 @@
   "comparison_gif": null,
   "verdict": null,
   "cites_criteria": [],
+  "meta": {},
   "evidence_completeness": "thin",
   "source_paths": [
     "runs/head-turn-2026-05-24_001/approved/"

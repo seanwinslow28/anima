@@ -15,14 +15,22 @@
   "date": "2026-04-27",
   "prompt": "Hand-drawn pencil animation on cream paper. Sean continues walking left\nto right at the same steady pace through the Animation world. The Film\nprops on the left fade out via lightening pencil pressure; the Animation\nprops (figure studies, light box, animation books) brighten then start\nto fade as the AI headlines emerge on the right. Fixed camera, locked\ntripod. Even, diffuse lighting. Maintain pencil line quality, paper\ngrain, consistent line weight. No digital effects. Smooth 4-second\nwalking interpolation.\n",
   "references": [],
-  "output": null,
+  "output": "assets/W2_attempt_01.mp4",
   "frames": [],
   "comparison_gif": null,
   "verdict": null,
   "cites_criteria": [],
+  "meta": {
+    "tier": "fast",
+    "resolution": "720p",
+    "duration_s": 4,
+    "seed": 2049001023,
+    "wall_clock_s": 125.8
+  },
   "evidence_completeness": "partial",
   "source_paths": [
-    "runs/act2-seedance-2026-04-27/seedance/W2_attempt_01.meta.json"
+    "runs/act2-seedance-2026-04-27/seedance/W2_attempt_01.meta.json",
+    "runs/act2-seedance-2026-04-27/seedance/W2_attempt_01.mp4"
   ],
   "schema_version": "1.0"
 }

@@ -15,14 +15,22 @@
   "date": "2026-04-27",
   "prompt": "Hand-drawn pencil animation on cream paper. Sean reaches forward to the\nKanban board, plucks one card from the IN PROGRESS column with his right\nhand, and brings it down to chest height. His expression shifts from\nfocused selection to a small satisfied half-smile. The companion floats\nsteadily in the same position camera-right of Sean. The Kanban board\ncolumns and sticky notes remain stationary. Fixed camera, locked tripod.\nEven, diffuse lighting. Maintain pencil line quality, hand-lettered text\non the board, paper grain, consistent line weight. No digital effects.\nSmooth 3-second action interpolation.\n",
   "references": [],
-  "output": null,
+  "output": "assets/PM_attempt_01.mp4",
   "frames": [],
   "comparison_gif": null,
   "verdict": null,
   "cites_criteria": [],
+  "meta": {
+    "tier": "fast",
+    "resolution": "720p",
+    "duration_s": 3,
+    "seed": 2104407469,
+    "wall_clock_s": 126.2
+  },
   "evidence_completeness": "partial",
   "source_paths": [
-    "runs/act2-seedance-2026-04-27/seedance/PM_attempt_01.meta.json"
+    "runs/act2-seedance-2026-04-27/seedance/PM_attempt_01.meta.json",
+    "runs/act2-seedance-2026-04-27/seedance/PM_attempt_01.mp4"
   ],
   "schema_version": "1.0"
 }

@@ -38,6 +38,7 @@
     "IR.claude-mascot.motion.no-arms-in-motion",
     "IR.claude-mascot.anatomy.nub-side-view-endcap"
   ],
+  "meta": {},
   "evidence_completeness": "rich",
   "source_paths": [
     "characters/claude-mascot/motion-additions.json",

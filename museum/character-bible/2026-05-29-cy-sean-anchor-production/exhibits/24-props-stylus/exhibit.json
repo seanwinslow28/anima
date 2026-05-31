@@ -34,6 +34,7 @@
     "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
     "IR.sean.style.cream-paper-texture-grain"
   ],
+  "meta": {},
   "evidence_completeness": "partial",
   "source_paths": [
     "runs/2026-05-29-cy-sean-anchor-production/plate_verdicts.jsonl#L24"

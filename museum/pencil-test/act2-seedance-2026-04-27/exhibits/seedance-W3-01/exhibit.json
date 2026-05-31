@@ -15,14 +15,22 @@
   "date": "2026-04-27",
   "prompt": "Hand-drawn pencil animation on cream paper. Sean continues walking left\nto right at the same steady pace, eyebrow lifting and head turning in\ngrowing curiosity. The remaining Animation props fade out; the AI news\nclippings (ChatGPT, Karpathy, Vibe Coding, Anthropic, Gemini headlines)\nsolidify with hand-lettered text. Fixed camera, locked tripod. Even,\ndiffuse lighting. Maintain pencil line quality, hand-lettered text\nquality, paper grain, consistent line weight. No digital effects.\nSmooth 4-second walking interpolation.\n",
   "references": [],
-  "output": null,
+  "output": "assets/W3_attempt_01.mp4",
   "frames": [],
   "comparison_gif": null,
   "verdict": null,
   "cites_criteria": [],
+  "meta": {
+    "tier": "fast",
+    "resolution": "720p",
+    "duration_s": 4,
+    "seed": 1537961300,
+    "wall_clock_s": 110.7
+  },
   "evidence_completeness": "partial",
   "source_paths": [
-    "runs/act2-seedance-2026-04-27/seedance/W3_attempt_01.meta.json"
+    "runs/act2-seedance-2026-04-27/seedance/W3_attempt_01.meta.json",
+    "runs/act2-seedance-2026-04-27/seedance/W3_attempt_01.mp4"
   ],
   "schema_version": "1.0"
 }

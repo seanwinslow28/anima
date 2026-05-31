@@ -21,6 +21,7 @@ from __future__ import annotations
 import argparse
 import json
 import shutil
+import subprocess
 import sys
 from collections import Counter
 from pathlib import Path
@@ -96,6 +97,24 @@ def _thumb(src: Path, dest: Path, max_w: int = 400) -> None:
             im.convert("RGB").quantize(colors=256, method=Image.MAXCOVERAGE).save(dest, optimize=True)
 
 
+def _web_video(src: Path, dest: Path, max_w: int = 480) -> bool:
+    """Transcode a Seedance mp4 to a light, muted, web-optimized loop clip via
+    ffmpeg (downscaled, faststart, no audio). Returns True on success. The full-res
+    original stays in gitignored runs/."""
+    if shutil.which("ffmpeg") is None or not src.exists():
+        return False
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    cmd = ["ffmpeg", "-y", "-loglevel", "error", "-i", str(src),
+           "-an", "-vf", f"scale='min({max_w},iw)':-2",
+           "-c:v", "libx264", "-crf", "30", "-preset", "veryfast",
+           "-movflags", "+faststart", "-pix_fmt", "yuv420p", str(dest)]
+    try:
+        subprocess.run(cmd, check=True, timeout=120)
+        return dest.exists()
+    except (subprocess.SubprocessError, OSError):
+        return False
+
+
 def _copy_assets(museum_root: Path, ex: Exhibit, runs_dir: Path) -> int:
     """Copy the images an exhibit needs into its assets/, by kind. Read-only on
     sources — we only ever copy OUT. Returns count copied."""
@@ -118,6 +137,10 @@ def _copy_assets(museum_root: Path, ex: Exhibit, runs_dir: Path) -> int:
             if src.exists():
                 _thumb(src, dest / Path(rel).name)   # downscale the heavy keyframes
                 copied += 1
+    elif ex.kind == "seedance_shot" and ex.output:
+        src = runs_dir / ex.run_slug / "seedance" / Path(ex.output).name
+        if _web_video(src, dest / Path(ex.output).name):
+            copied += 1
     return copied
 
 

@@ -30,6 +30,7 @@
     "IR.sean.proportion.hip-to-floor-4-head-heights",
     "IR.sean.motion.walk-cycle-neutral-gait-source-plate"
   ],
+  "meta": {},
   "evidence_completeness": "rich",
   "source_paths": [
     "runs/2026-05-29-cy-sean-anchor-production/plate_verdicts.jsonl#L14"

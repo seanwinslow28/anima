@@ -25,6 +25,7 @@
     "IR.claude-mascot.face.sleep-expression",
     "IR.claude-mascot.face.alert-perk-expression"
   ],
+  "meta": {},
   "evidence_completeness": "rich",
   "source_paths": [
     "runs/2026-05-30-cy-mascot-expression-expansion/bible_audit.jsonl#L1"

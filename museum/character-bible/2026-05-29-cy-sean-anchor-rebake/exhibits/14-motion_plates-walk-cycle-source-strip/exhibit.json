@@ -29,6 +29,7 @@
     "IR.sean.motion.walk-cycle-neutral-gait",
     "IR.sean.proportion.head-to-body-1-to-7"
   ],
+  "meta": {},
   "evidence_completeness": "rich",
   "source_paths": [
     "runs/2026-05-29-cy-sean-anchor-rebake/plate_verdicts.jsonl#L14"

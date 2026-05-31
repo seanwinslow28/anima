@@ -23,6 +23,7 @@
   "comparison_gif": null,
   "verdict": null,
   "cites_criteria": [],
+  "meta": {},
   "evidence_completeness": "thin",
   "source_paths": [
     "runs/run_2026-04-04_173445/approved/"

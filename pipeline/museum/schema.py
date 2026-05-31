@@ -72,6 +72,7 @@ class Exhibit:
     comparison_gif: str | None = None
     verdict: Verdict | None = None
     cites_criteria: list[str] = field(default_factory=list)   # reuse IR.*/AC.* IDs verbatim
+    meta: dict[str, Any] = field(default_factory=dict)        # kind-specific extras (e.g. seedance seed/tier)
     evidence_completeness: Completeness = "thin"
     source_paths: list[str] = field(default_factory=list)
     schema_version: str = SCHEMA_VERSION

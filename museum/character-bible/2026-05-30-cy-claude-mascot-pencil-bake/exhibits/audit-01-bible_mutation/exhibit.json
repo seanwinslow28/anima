@@ -22,6 +22,7 @@
   "cites_criteria": [
     "IR.claude-mascot.anatomy.no-hair"
   ],
+  "meta": {},
   "evidence_completeness": "rich",
   "source_paths": [
     "runs/2026-05-30-cy-claude-mascot-pencil-bake/bible_audit.jsonl#L1"

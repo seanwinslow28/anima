@@ -35,6 +35,7 @@
     "IR.claude-mascot.motion.alert-snap-eyes-stay-dots",
     "IR.claude-mascot.motion.no-arms-in-motion"
   ],
+  "meta": {},
   "evidence_completeness": "rich",
   "source_paths": [
     "characters/claude-mascot/motion-additions.json",

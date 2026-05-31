@@ -15,14 +15,22 @@
   "date": "2026-04-27",
   "prompt": "Hand-drawn pencil animation on cream paper. The floating AI news headlines\ndissolve away from the frame as the desk, laptop, second monitor, coffee\nmug, and chair materialize in their place. Sean transitions from a\nmid-stride walk to a seated working pose at the desk. A subtle 5-o'clock\nshadow stubble grows in on his face as time passes. Fixed camera, locked\ntripod. Even, diffuse desk lighting. Maintain pencil line quality, paper\ngrain, consistent line weight. No digital effects. Smooth 4-second\ntransition interpolation.\n",
   "references": [],
-  "output": null,
+  "output": "assets/S0_attempt_01.mp4",
   "frames": [],
   "comparison_gif": null,
   "verdict": null,
   "cites_criteria": [],
+  "meta": {
+    "tier": "fast",
+    "resolution": "720p",
+    "duration_s": 4,
+    "seed": 268853034,
+    "wall_clock_s": 98.1
+  },
   "evidence_completeness": "partial",
   "source_paths": [
-    "runs/act2-seedance-2026-04-27/seedance/S0_attempt_01.meta.json"
+    "runs/act2-seedance-2026-04-27/seedance/S0_attempt_01.meta.json",
+    "runs/act2-seedance-2026-04-27/seedance/S0_attempt_01.mp4"
   ],
   "schema_version": "1.0"
 }

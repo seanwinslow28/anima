@@ -40,6 +40,7 @@
     "IR.claude-mascot.style.cream-paper-and-cast-shadow",
     "IR.claude-mascot.face.construction-cross-line"
   ],
+  "meta": {},
   "evidence_completeness": "rich",
   "source_paths": [
     "characters/claude-mascot/motion-additions.json",

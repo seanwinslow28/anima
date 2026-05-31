@@ -35,7 +35,9 @@ h1 { font-size: 1.8rem; margin: 0 0 .3rem; } h2 { font-size: 1.15rem; margin: 1.
 .runs, .exhibits { list-style: none; padding: 0; }
 .runs > li { margin: 1.1rem 0; } .exhibits li { padding: .3rem 0; border-bottom: 1px dotted var(--rule); }
 .score { font-variant-numeric: tabular-nums; }
-img { max-width: 100%; border: 1px solid var(--rule); background:#fff; border-radius: 3px; }
+img, video { max-width: 100%; border: 1px solid var(--rule); background:#fff; border-radius: 3px; }
+.prompt { margin: .4rem 0 1rem; padding: .6rem .9rem; border-left: 3px solid #c9a25e;
+          background:#f4ecd7; color:#4a4434; font-size: .95rem; }
 .compare { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-start; margin: .6rem 0 1rem; }
 .compare > div { flex: 1 1 280px; } .compare .who { color: var(--muted); font-size: .8rem; font-weight: normal; }
 .strip { display: flex; gap: .5rem; flex-wrap: wrap; } .strip img { max-width: 110px; }
@@ -95,7 +97,24 @@ def _outcome_class(outcome: str) -> str:
     return outcome
 
 
+def _seedance_block(ex: Exhibit) -> str:
+    parts = []
+    if ex.output and ex.output.endswith(".mp4"):
+        parts.append(f"<video src=\"{html.escape(ex.output)}\" autoplay muted loop "
+                     "playsinline controls></video>")
+    if ex.prompt:
+        parts.append("<h2>The prompt</h2><blockquote class=\"prompt\">"
+                     f"{html.escape(ex.prompt)}</blockquote>")
+    if ex.meta:
+        items = " · ".join(f"{html.escape(str(k))}: <strong>{html.escape(str(v))}</strong>"
+                           for k, v in ex.meta.items())
+        parts.append(f"<p class=\"meta\">{items}</p>")
+    return "".join(parts)
+
+
 def _images_block(ex: Exhibit) -> str:
+    if ex.kind == "seedance_shot":
+        return _seedance_block(ex)
     if ex.kind == "motion_keys":
         left = ex.references[0] if ex.references else None
         left_html = (f"<img src=\"{html.escape(left)}\" alt=\"hand-drawn keys\">"

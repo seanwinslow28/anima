@@ -32,6 +32,7 @@
     "IR.sean.costume.navy-tee-cool-gray-jeans",
     "IR.sean.style.construction-lines-visible-beneath-final"
   ],
+  "meta": {},
   "evidence_completeness": "rich",
   "source_paths": [
     "runs/2026-05-29-cy-sean-anchor-production/plate_verdicts.jsonl#L1"

@@ -353,3 +353,52 @@ def test_bible_iterate_missing_plan_returns_error(tmp_path):
         run_dir=None,
     )
     assert rc == 1
+
+
+# ---------------------------------------------------------------------------
+# CLI dispatch (main) — guards the argv → function wiring, not just the funcs
+# ---------------------------------------------------------------------------
+
+
+def test_cli_main_dispatches_bible_add(tmp_path):
+    """Regression: `bible add` was registered as a subparser but never wired
+    into the dispatch switch in __main__.py, so `python -m pipeline.cli bible
+    add ...` fell through to the bare `return 1` and exited silently without
+    touching the Bible. This test exercises the real argv path end-to-end so
+    the silent no-op can't regress. (Bug found + fixed 2026-05-30.)"""
+    from pipeline.cli.__main__ import main
+
+    cd = tmp_path / "characters" / "dispatch-add"
+    _write_bible(
+        cd,
+        character_id="dispatchadd",
+        locked=True,
+        plate_plan=[{"target_path": "anchor.png", "source": "ingest:anchor.png"}],
+    )
+    spec = {
+        "plates": [{"target_path": "motion_plates/idle-01.png",
+                    "source": "ingest:motion_plates/sheet.png#region:idle-01",
+                    "cites_identity_rules": ["IR.dispatchadd.motion.idle-breath"]}],
+        "rules": [{"id": "IR.dispatchadd.motion.idle-breath",
+                   "description": "Idle breath, volume conserved.",
+                   "cites_phase": [4, 6], "cites_personas": ["em"],
+                   "impact_tag": "continuity", "character_id": "dispatchadd",
+                   "derived_from": [f"characters/dispatchadd/anchor.png"]}],
+    }
+    spec_path = cd / "motion-additions.json"
+    spec_path.write_text(json.dumps(spec), encoding="utf-8")
+    rd = tmp_path / "runs" / "dispatch-run"
+
+    rc = main([
+        "bible", "add",
+        "--character-dir", str(cd),
+        "--spec", str(spec_path),
+        "--force", "--actor", "sean", "--reason", "dispatch regression",
+        "--run-dir", str(rd),
+        "--content-version", "1.3.0",
+    ])
+    assert rc == 0, "bible add must dispatch through main(), not fall through to return 1"
+    payload = json.loads((cd / "acceptance_criteria.json").read_text())
+    assert any(c["id"] == "IR.dispatchadd.motion.idle-breath" for c in payload["criteria"])
+    assert payload["locked"] is True  # add never unlocks
+    assert (rd / "bible_audit.jsonl").exists()

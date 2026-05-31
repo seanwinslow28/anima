@@ -31,6 +31,7 @@
     "IR.sean.costume.default-outfit-locked",
     "IR.sean.prop.stylus-right-hand-always"
   ],
+  "meta": {},
   "evidence_completeness": "rich",
   "source_paths": [
     "runs/2026-05-29-cy-sean-anchor-production/plate_verdicts.jsonl#L4"

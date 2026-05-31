@@ -32,6 +32,7 @@
     "IR.claude-mascot.face.mouth-line-deep-brown-single-stroke",
     "IR.claude-mascot.face.expression-vocabulary-three-only"
   ],
+  "meta": {},
   "evidence_completeness": "rich",
   "source_paths": [
     "runs/2026-05-29-cy-claude-mascot-production/plate_verdicts.jsonl#L6"

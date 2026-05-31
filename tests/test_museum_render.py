@@ -45,6 +45,27 @@ def test_render_static_project_pages_and_mo_prose(tmp_path: Path):
     assert "http://" not in ex_page and "https://" not in ex_page
 
 
+def test_render_seedance_embeds_video_and_prompt(tmp_path: Path):
+    museum = tmp_path / "museum"
+    d = write_exhibit(museum, Exhibit(
+        exhibit_id="seedance-PB-01", project_slug="pencil-test",
+        run_slug="act2-seedance-2026-04-27",
+        title="Seedance shot PB (fast)", kind="seedance_shot", date="2026-04-27",
+        decision=Decision(outcome="generated", attempts=1),
+        prompt="Hand-drawn pencil animation on cream paper. Camera locked.",
+        output="assets/PB_attempt_01.mp4",
+        meta={"tier": "fast", "seed": 1936106111, "resolution": "720p"},
+        evidence_completeness="partial"))
+    (d / "exhibit.md").write_text("This shot was generated from the prompt below.\n", encoding="utf-8")
+    out = tmp_path / "_site"
+    render_static(museum, out)
+    page = next(p for p in out.rglob("*.html") if "seedance-PB-01" in str(p)).read_text(encoding="utf-8")
+    assert "<video" in page and "PB_attempt_01.mp4" in page      # the clip plays
+    assert "Hand-drawn pencil animation" in page                  # the prompt is the artifact
+    assert "1936106111" in page                                   # seed param
+    assert "http://" not in page and "https://" not in page
+
+
 def test_render_motion_comparison_layout(tmp_path: Path):
     museum = tmp_path / "museum"
     d = write_exhibit(museum, Exhibit(

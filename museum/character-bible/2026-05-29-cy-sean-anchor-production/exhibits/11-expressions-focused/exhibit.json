@@ -35,6 +35,7 @@
     "IR.sean.style.cross-hatching-shadow-areas",
     "IR.sean.face.blue-eyes"
   ],
+  "meta": {},
   "evidence_completeness": "partial",
   "source_paths": [
     "runs/2026-05-29-cy-sean-anchor-production/plate_verdicts.jsonl#L11"

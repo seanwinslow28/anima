@@ -80,6 +80,7 @@ exist today:
 | `comparison_gif` | str? | Set by Phase 4 where a manual shape-block left exists; else null. |
 | `verdict` | Verdict? | Critic / gate read (below), when present on disk. |
 | `cites_criteria` | list[str] | `IR.*` / `AC.*` IDs **verbatim** from the logs. |
+| `meta` | dict | Kind-specific extras (e.g. a `seedance_shot`'s `tier`/`resolution`/`duration_s`/`seed`/`wall_clock_s`). Empty for most kinds. |
 | `evidence_completeness` | enum | `rich` \| `partial` \| `thin` — the honesty signal. |
 | `source_paths` | list[str] | Exact on-disk provenance (e.g. `runs/…/plate_verdicts.jsonl#L6`). |
 | `schema_version` | str | `"1.0"`. |

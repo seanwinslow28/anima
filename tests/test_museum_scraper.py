@@ -98,6 +98,8 @@ def test_scrape_seedance_shot(tmp_path: Path):
     assert ex.kind == "seedance_shot"
     assert ex.persona == "human" or ex.persona is None
     assert ex.prompt.startswith("Hand-drawn pencil")          # the real prompt is the artifact
+    assert ex.output == "assets/PB_attempt_01.mp4"            # the playable clip
+    assert ex.meta.get("seed") == 1372653108 and ex.meta.get("tier") == "fast"
     assert "fast" in ex.title.lower() or ex.title.startswith("Seedance")
     assert ex.evidence_completeness in {"partial", "rich"}
     assert any("PB_attempt_01.meta.json" in p for p in ex.source_paths)

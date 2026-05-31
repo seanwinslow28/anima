@@ -71,6 +71,10 @@ def _fallback_prose(ex: Exhibit) -> str:
         if d.rationale_source:
             note += f" (from {d.rationale_source})"
         parts.append(note + ".")
+    elif ex.prompt:
+        parts.append(
+            "This shot was generated from the prompt below; no critique verdict was "
+            "logged against it, so the prompt and its parameters are the record.")
     else:
         parts.append(
             "The logs record the outcome but carry no written rationale, so this "

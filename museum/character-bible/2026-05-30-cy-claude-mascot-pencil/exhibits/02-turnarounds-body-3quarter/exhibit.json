@@ -34,6 +34,7 @@
     "IR.claude-mascot.palette.terracotta-orange-body",
     "IR.claude-mascot.style.warm-graphite-line-cross-hatch"
   ],
+  "meta": {},
   "evidence_completeness": "rich",
   "source_paths": [
     "runs/2026-05-30-cy-claude-mascot-pencil/plate_verdicts.jsonl#L2"

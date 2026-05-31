@@ -33,6 +33,7 @@
     "IR.claude-mascot.proportion.silhouette-round-topped-lozenge",
     "IR.claude-mascot.style.integer-pixel-grid-no-subpixel"
   ],
+  "meta": {},
   "evidence_completeness": "rich",
   "source_paths": [
     "runs/2026-05-29-cy-claude-mascot-production/plate_verdicts.jsonl#L1"

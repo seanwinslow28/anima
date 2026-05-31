@@ -123,19 +123,28 @@ def scrape_seedance(run_dir: Path, project_slug: str, run_slug: str) -> list[Exh
     for meta_path in sorted(sdir.glob("*.meta.json")):
         m = json.loads(meta_path.read_text(encoding="utf-8"))
         shot = m.get("shot_id", meta_path.stem)
+        attempt = m.get("attempt", 1)
         tier = m.get("tier", "?")
+        # The rendered video is the matching mp4 next to the meta (transcoded to a
+        # light web loop on copy). assets/<stem>.mp4.
+        video_stem = meta_path.name[: -len(".meta.json")]
+        params = {k: m[k] for k in
+                  ("tier", "resolution", "duration_s", "seed", "wall_clock_s") if k in m}
         exhibits.append(Exhibit(
-            exhibit_id=f"seedance-{shot}-{m.get('attempt', 1):02d}",
+            exhibit_id=f"seedance-{shot}-{attempt:02d}",
             project_slug=project_slug, run_slug=run_slug,
             title=f"Seedance shot {shot} ({tier})", kind="seedance_shot",
             phase=6, persona=None, date=date,
-            decision=Decision(outcome="generated", attempts=m.get("attempt"),
+            decision=Decision(outcome="generated", attempts=attempt,
                               rationale="", rationale_source=None),
             prompt=m.get("prompt"),
+            output=f"assets/{video_stem}.mp4",
             verdict=None,
             cites_criteria=[],
+            meta=params,
             evidence_completeness="partial",
-            source_paths=[f"runs/{run_slug}/seedance/{meta_path.name}"],
+            source_paths=[f"runs/{run_slug}/seedance/{meta_path.name}",
+                          f"runs/{run_slug}/seedance/{video_stem}.mp4"],
         ))
     return exhibits
 

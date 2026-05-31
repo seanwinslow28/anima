@@ -38,6 +38,7 @@
     "IR.claude-mascot.proportion.shoulder-companion-scale",
     "IR.claude-mascot.pose.shoulder-perch-canonical-pairing"
   ],
+  "meta": {},
   "evidence_completeness": "rich",
   "source_paths": [
     "characters/claude-mascot/motion-additions.json",

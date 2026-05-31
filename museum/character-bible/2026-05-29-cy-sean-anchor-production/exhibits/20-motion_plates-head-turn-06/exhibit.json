@@ -28,6 +28,7 @@
   "cites_criteria": [
     "IR.sean.motion.head-turn-9-frame-sequence"
   ],
+  "meta": {},
   "evidence_completeness": "rich",
   "source_paths": [
     "runs/2026-05-29-cy-sean-anchor-production/plate_verdicts.jsonl#L20"

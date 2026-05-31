@@ -29,6 +29,7 @@
     "IR.sean.face.blue-eyes",
     "IR.sean.hair.front-quiff-cowlick"
   ],
+  "meta": {},
   "evidence_completeness": "rich",
   "source_paths": [
     "runs/2026-05-29-cy-sean-anchor-rebake/plate_verdicts.jsonl#L10"

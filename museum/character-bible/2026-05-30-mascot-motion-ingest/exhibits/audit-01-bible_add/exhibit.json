@@ -28,6 +28,7 @@
     "IR.claude-mascot.motion.sleep-ease-in",
     "IR.claude-mascot.motion.no-arms-in-motion"
   ],
+  "meta": {},
   "evidence_completeness": "rich",
   "source_paths": [
     "runs/2026-05-30-mascot-motion-ingest/bible_audit.jsonl#L1"

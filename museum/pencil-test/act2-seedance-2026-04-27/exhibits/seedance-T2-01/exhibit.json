@@ -15,14 +15,22 @@
   "date": "2026-04-27",
   "prompt": "Hand-drawn pencil animation on cream paper. The terracotta-orange AI\ncompanion creature materializes inside the dark cross-hatched terminal\nwindow. Small pencil sparkle marks appear around it as it forms. The\nterminal text shifts from \"c:\\>_ what is...\" to \"c:\\>_ hello, sean...\".\nFixed camera, locked tripod. Even, diffuse lighting from the laptop\nscreen. Maintain pencil line quality, cross-hatching density, hand-\nlettered text quality, paper grain. Consistent line weight. No digital\neffects. Smooth 3-second materialization interpolation.\n",
   "references": [],
-  "output": null,
+  "output": "assets/T2_attempt_01.mp4",
   "frames": [],
   "comparison_gif": null,
   "verdict": null,
   "cites_criteria": [],
+  "meta": {
+    "tier": "fast",
+    "resolution": "720p",
+    "duration_s": 3,
+    "seed": 96653238,
+    "wall_clock_s": 117.6
+  },
   "evidence_completeness": "partial",
   "source_paths": [
-    "runs/act2-seedance-2026-04-27/seedance/T2_attempt_01.meta.json"
+    "runs/act2-seedance-2026-04-27/seedance/T2_attempt_01.meta.json",
+    "runs/act2-seedance-2026-04-27/seedance/T2_attempt_01.mp4"
   ],
   "schema_version": "1.0"
 }

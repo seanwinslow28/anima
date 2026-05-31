@@ -20,6 +20,7 @@
   "comparison_gif": null,
   "verdict": null,
   "cites_criteria": [],
+  "meta": {},
   "evidence_completeness": "rich",
   "source_paths": [
     "runs/2026-05-31-mascot-colored-ingest/bible_audit.jsonl#L1"
