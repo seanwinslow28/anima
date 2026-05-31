@@ -62,6 +62,26 @@ def test_thin_exhibit_is_honest_not_invented(tmp_path: Path):
     assert "no rationale recorded" in ex.to_markdown().lower()
 
 
+def test_motion_keys_exhibit_carries_frames(tmp_path: Path):
+    ex = Exhibit(
+        exhibit_id="motion-idle", project_slug="character-bible",
+        run_slug="2026-05-30-mascot-motion-ingest",
+        title="Motion — Idle / settle loop", kind="motion_keys",
+        persona="human", date="2026-05-31",
+        decision=Decision(outcome="ingested", rationale="A slow breath; the box sinks and rises.",
+                          rationale_source="source-refs/motion-direction.md"),
+        references=["assets/Idle-settle-loop.png"],      # the hand-drawn key sheet (manual-left)
+        output="assets/idle-loop.gif",                    # the colored result (loop)
+        frames=["assets/idle-01.png", "assets/idle-02.png", "assets/idle-03.png"],
+        cites_criteria=["IR.claude-mascot.motion.idle-breath-volume"],
+        evidence_completeness="rich")
+    path = write_exhibit(tmp_path, ex)
+    back = read_exhibit(path / "exhibit.json")
+    assert back == ex
+    assert back.kind == "motion_keys"
+    assert back.frames == ["assets/idle-01.png", "assets/idle-02.png", "assets/idle-03.png"]
+
+
 def test_derive_project_slug_config_driven():
     rules = {
         "character-bible": ["cy-", "mascot", "bible", "sean-anchor", "two-character", "emitter"],

@@ -68,14 +68,15 @@ exist today:
 | `project_slug` | str | The owning project (see derivation above). |
 | `run_slug` | str | The source run directory name. |
 | `title` | str | Human title (e.g. `Plate — expressions/neutral.png`). |
-| `kind` | enum | `plate_verdict` \| `bible_mutation` \| `bible_add` \| `seedance_shot` \| `audit_gate` \| `frame_keyframe` \| `note`. |
+| `kind` | enum | `plate_verdict` \| `bible_mutation` \| `bible_add` \| `seedance_shot` \| `audit_gate` \| `frame_keyframe` \| `motion_keys` \| `note`. |
 | `decision` | Decision | The outcome + rationale (below). |
 | `phase` | int? | Pipeline phase number (0–9), or null. |
 | `persona` | str? | Who decided: `cy` \| `em` \| `maya` \| `mo` \| `human` \| null. |
 | `date` | str? | `YYYY-MM-DD`, derived from the run slug, or null. |
 | `prompt` | str? | Prompt text **if recoverable on disk**, else null. |
 | `references` | list[str] | Reference image paths (relative to the exhibit's `assets/`). |
-| `output` | str? | The produced artifact (relative to `assets/`), if recoverable. |
+| `output` | str? | The produced artifact (relative to `assets/`), if recoverable. For a `motion_keys` exhibit this is the assembled colored loop GIF. |
+| `frames` | list[str] | Ordered image sequence for motion / shot exhibits (the colored animatic frames). Empty for single-output exhibits. |
 | `comparison_gif` | str? | Set by Phase 4 where a manual shape-block left exists; else null. |
 | `verdict` | Verdict? | Critic / gate read (below), when present on disk. |
 | `cites_criteria` | list[str] | `IR.*` / `AC.*` IDs **verbatim** from the logs. |

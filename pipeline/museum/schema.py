@@ -30,7 +30,7 @@ SCHEMA_VERSION = "1.0"
 
 ExhibitKind = Literal[
     "plate_verdict", "bible_mutation", "bible_add",
-    "seedance_shot", "audit_gate", "frame_keyframe", "note",
+    "seedance_shot", "audit_gate", "frame_keyframe", "motion_keys", "note",
 ]
 Completeness = Literal["rich", "partial", "thin"]
 
@@ -68,6 +68,7 @@ class Exhibit:
     prompt: str | None = None
     references: list[str] = field(default_factory=list)
     output: str | None = None
+    frames: list[str] = field(default_factory=list)   # ordered sequence for motion / shot exhibits
     comparison_gif: str | None = None
     verdict: Verdict | None = None
     cites_criteria: list[str] = field(default_factory=list)   # reuse IR.*/AC.* IDs verbatim
