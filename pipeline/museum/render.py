@@ -36,6 +36,12 @@ a { color: #8a5a2b; }
 img { max-width: 100%; border: 1px solid #ddd2bb; background: #fff; margin: .4rem 0; }
 .cites code { background: #efe7d2; padding: .05rem .3rem; border-radius: .2rem; }
 .thin { color: var(--muted); font-style: italic; }
+.compare { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-start; margin: .6rem 0; }
+.compare > div { flex: 1 1 280px; }
+.compare h3 { margin: 0 0 .3rem; font-size: .95rem; }
+.compare .who { color: var(--muted); font-size: .8rem; font-weight: normal; }
+.strip { display: flex; gap: .5rem; flex-wrap: wrap; }
+.strip img { max-width: 120px; }
 footer { margin-top: 3rem; color: var(--muted); font-size: .82rem; }
 """
 
@@ -55,6 +61,25 @@ def _outcome_class(outcome: str) -> str:
     return outcome if outcome in {"pass", "fail", "borderline"} else ""
 
 
+def _motion_compare(ex: Exhibit) -> str:
+    """The signature artifact: hand-drawn key sheet (the human) on the left,
+    the colored loop (the result) on the right, frame strip below."""
+    left_src = ex.references[0] if ex.references else None
+    left = (f"<img src=\"{html.escape(left_src)}\" alt=\"hand-drawn keys\">"
+            if left_src else "<p class=\"thin\">no key sheet on disk</p>")
+    right = (f"<img src=\"{html.escape(ex.output)}\" alt=\"colored loop\">"
+             if ex.output else "<p class=\"thin\">no loop assembled</p>")
+    strip = "".join(
+        f"<img src=\"{html.escape(f)}\" alt=\"frame\">" for f in ex.frames)
+    return (
+        "<div class=\"compare\">"
+        f"<div><h3>Hand-drawn keys <span class=\"who\">— Sean, by hand</span></h3>{left}</div>"
+        f"<div><h3>Colored animatic <span class=\"who\">— the loop plays</span></h3>{right}</div>"
+        "</div>"
+        + (f"<h2>Colored frames</h2><div class=\"strip\">{strip}</div>" if strip else "")
+    )
+
+
 def _exhibit_page(ex: Exhibit) -> str:
     parts = [f"<p><a href=\"../../../../index.html\">← all projects</a></p>",
              f"<h1>{html.escape(ex.title)}</h1>"]
@@ -69,10 +94,13 @@ def _exhibit_page(ex: Exhibit) -> str:
                     f"{ex.verdict.score}</span>")
     parts.append(f"<p class=\"meta\">{' · '.join(meta)}</p>")
 
-    # Images — output + references that were copied alongside this page.
-    for img in [ex.output, *ex.references]:
-        if img:
-            parts.append(f"<img src=\"{html.escape(img)}\" alt=\"{html.escape(img)}\">")
+    if ex.kind == "motion_keys":
+        parts.append(_motion_compare(ex))
+    else:
+        # Images — output + references that were copied alongside this page.
+        for img in [ex.output, *ex.references]:
+            if img:
+                parts.append(f"<img src=\"{html.escape(img)}\" alt=\"{html.escape(img)}\">")
 
     parts.append("<h2>Rationale</h2>")
     if ex.decision.rationale.strip():
