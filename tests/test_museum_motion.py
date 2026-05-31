@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from pipeline.museum.motion import scrape_motion_plates
+from pipeline.museum.motion import scrape_motion_plates, motion_loop_pingpong
 
 
 def _additions(character_dir: Path):
@@ -48,3 +48,11 @@ def test_scrape_motion_plates_one_exhibit_per_motion(tmp_path: Path):
     hop = exs[1]
     assert hop.frames == ["assets/hop-01.png"]
     assert hop.cites_criteria == ["IR.claude-mascot.motion.hop-arc-and-gravity"]
+
+
+def test_locomotion_loops_forward_settles_pingpong():
+    # Hop reads wrong as a ping-pong (hop-then-rewind); it loops forward.
+    assert motion_loop_pingpong("hop") is False
+    # Settle motions are seamless as a ping-pong.
+    assert motion_loop_pingpong("idle") is True
+    assert motion_loop_pingpong("sleep") is True

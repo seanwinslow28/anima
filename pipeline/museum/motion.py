@@ -66,6 +66,16 @@ MOTION_META: dict[str, dict[str, str]] = {
 }
 
 
+# Locomotion reads wrong as a ping-pong (hop-then-rewind); it loops forward so
+# repeated hops read as continuous travel. Settle motions ping-pong (seamless).
+_FORWARD_LOOP_MOTIONS = {"hop"}
+
+
+def motion_loop_pingpong(motion: str) -> bool:
+    """True if the motion's loop should ping-pong (forward then back)."""
+    return motion not in _FORWARD_LOOP_MOTIONS
+
+
 def _date_from_run_slug(run_slug: str) -> str | None:
     head = run_slug[:10]
     return head if head[:4].isdigit() and head.count("-") == 2 else None

@@ -29,7 +29,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 
 from pipeline.museum.scraper import scrape_run  # noqa: E402
-from pipeline.museum.motion import scrape_motion_plates  # noqa: E402
+from pipeline.museum.motion import scrape_motion_plates, motion_loop_pingpong  # noqa: E402
 from pipeline.museum.motion_gif import assemble_loop_gif  # noqa: E402
 from pipeline.museum.schema import Exhibit, exhibit_dir, write_exhibit  # noqa: E402
 from pipeline.museum.render import render_static  # noqa: E402
@@ -137,9 +137,12 @@ def build_motion(museum_root: Path, character_id: str, run_slug: str, manifest_p
             if src.exists():
                 shutil.copy2(src, dest / src.name)
                 total_assets += 1
-        # Assemble the colored loop GIF beside them.
+        # Assemble the colored loop GIF beside them — locomotion loops forward,
+        # settle motions ping-pong.
+        motion_key = ex.exhibit_id.removeprefix("motion-")
         frame_srcs = [motion_plates / Path(f).name for f in ex.frames]
-        gif = assemble_loop_gif(frame_srcs, dest / Path(ex.output).name)
+        gif = assemble_loop_gif(frame_srcs, dest / Path(ex.output).name,
+                                pingpong=motion_loop_pingpong(motion_key))
         if gif:
             total_assets += 1
         print(f"[museum] {ex.exhibit_id}: {len(ex.frames)} frames"
