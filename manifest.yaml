@@ -307,8 +307,27 @@ criteria_sources:
 # Museum auto-capture configuration.
 # Authoritative spec: docs/pipeline-architecture-v1.md §Museum (orthogonal capture layer)
 museum:
-  publishing_target: sw-ai-pm-portfolio
-  format: astro_content_collection
+  publishing_target: sw-ai-pm-portfolio        # unchanged — Astro export follow-on target
+  format: astro_content_collection             # unchanged
+  # --- Museum capture layer (additive, 2026-05-31) ---
+  # Schema source of truth: docs/museum-exhibit-schema.md
+  capture:
+    schema_version: "1.0"
+    comparison_gifs: true                       # Phase 4 — render where a manual-left exists
+  standalone:
+    enabled: true
+    render_target: museum/_site/                # Phase 5 self-contained static build
+  noise_filter:                                 # Phase 2 — what is NOT an exhibit
+    skip_suffixes: [".log"]
+    skip_name_contains: ["-torch-install", "-torchvision-install"]
+    aborted_means: "no approved/ AND no plate_verdicts.jsonl AND no bible_audit.jsonl AND no seedance/"
+  project_slugs:                                # derive_project_slug rules (first match wins)
+    character-bible:
+      title: "Character Bible — building Cy in the open"
+      match: ["cy-", "mascot", "bible", "sean-anchor", "two-character", "first-light", "emitter", "phase2-crop"]
+    pencil-test:
+      title: "Pencil Test — Sean Winslow"
+      match: ["seedance", "act1", "act2", "head-turn", "pose", "kimodo", "run_"]
 
 # Brief & Plan (Phase 0) configuration.
 # Authoritative spec: docs/pipeline-architecture-v1.md §Phase 0 — BRIEF & PLAN
