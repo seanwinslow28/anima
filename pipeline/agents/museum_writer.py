@@ -94,14 +94,37 @@ def _fallback_prose(ex: Exhibit) -> str:
     return "\n\n".join(parts) + "\n"
 
 
-def narrate(ex: Exhibit, sources: str = "") -> tuple[str, bool]:
-    """Return (markdown prose, used_stub). Real path uses Sonnet 4.6; the stub /
-    empty-text path falls back to faithful local prose."""
-    prompt = build_prompt(ex, sources)
-    resp = asyncio.run(invoke_museum_prose(prompt=prompt))
+async def narrate_async(ex: Exhibit, sources: str = "", *, force_fallback: bool = False) -> tuple[str, bool]:
+    """Async single narration — used by narrate() and the batch path. With
+    force_fallback, skip the model entirely and emit the deterministic faithful
+    prose (instant, zero-cost, identical in CI and locally)."""
+    if force_fallback:
+        return _fallback_prose(ex), True
+    resp = await invoke_museum_prose(prompt=build_prompt(ex, sources))
     if resp.stub_fallback or not (resp.text or "").strip():
         return _fallback_prose(ex), True
     return resp.text.strip() + "\n", False
+
+
+def narrate(ex: Exhibit, sources: str = "") -> tuple[str, bool]:
+    """Return (markdown prose, used_stub). Real path uses Sonnet 4.6; the stub /
+    empty-text path falls back to faithful local prose."""
+    return asyncio.run(narrate_async(ex, sources))
+
+
+async def narrate_many(
+    exhibits: list[Exhibit], *, concurrency: int = 6, force_fallback: bool = False,
+) -> list[tuple[str, bool]]:
+    """Narrate many exhibits concurrently (bounded), so a real-Sonnet pass over a
+    full backfill finishes in minutes rather than serial hours. force_fallback
+    emits the deterministic faithful prose for the whole batch (instant)."""
+    sem = asyncio.Semaphore(concurrency)
+
+    async def _one(ex: Exhibit) -> tuple[str, bool]:
+        async with sem:
+            return await narrate_async(ex, force_fallback=force_fallback)
+
+    return await asyncio.gather(*[_one(ex) for ex in exhibits])
 
 
 @register_node("museum_writer")

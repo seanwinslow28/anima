@@ -1,23 +1,7 @@
-# Plate — expressions/contemplative.png
+Cy recorded this as **generated** on 2026-05-29 — plate — expressions/contemplative.png. It took 1 attempt.
 
-- kind: plate_verdict
-- outcome: generated
-- decided by: cy
-- date: 2026-05-29
-- pil-perceptual similarity: 0.6799
-- evidence: rich
+The note on record reads: "The plate largely aligns with the cited rules. IR.sean.face.blue-eyes is honored with blue, almond-shaped eyes spaced one eye-width apart on the midline. IR.sean.face.short-beard-stubble is borderline because the stubble on the jaw, chin, and upper lip utilizes a mix of line-hatching and soft gradient shading instead of pure fine cross-hatching." (from plate_verdicts.jsonl).
 
-## Rationale
+Measured similarity to the reference: 0.6799 via pil-perceptual; the vision read was borderline.
 
-The plate largely aligns with the cited rules. IR.sean.face.blue-eyes is honored with blue, almond-shaped eyes spaced one eye-width apart on the midline. IR.sean.face.short-beard-stubble is borderline because the stubble on the jaw, chin, and upper lip utilizes a mix of line-hatching and soft gradient shading instead of pure fine cross-hatching.
-
-_(source: plate_verdicts.jsonl)_
-
-## Cites criteria
-
-- `IR.sean.face.blue-eyes`
-- `IR.sean.face.short-beard-stubble`
-
-## Provenance
-
-- `runs/2026-05-29-cy-sean-anchor-rebake/plate_verdicts.jsonl#L11`
+It cites `IR.sean.face.blue-eyes`, `IR.sean.face.short-beard-stubble`.

@@ -1,14 +1,3 @@
-# Seedance shot PB (fast)
+The pipeline recorded this as **generated** on 2026-04-27 — seedance shot pb (fast). It took 1 attempt.
 
-- kind: seedance_shot
-- outcome: generated
-- date: 2026-04-27
-- evidence: partial
-
-## Rationale
-
-No rationale recorded in this run's logs. This exhibit is intentionally thin — the evidence is sparse, and an honest gap is preferable to invented narrative.
-
-## Provenance
-
-- `runs/act2-seedance-2026-04-27/seedance/PB_attempt_01.meta.json`
+The logs record the outcome but carry no written rationale, so this exhibit stays intentionally sparse rather than dressed up with a reason the evidence does not hold.

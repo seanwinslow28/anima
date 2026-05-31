@@ -1,18 +1,5 @@
-# Plate — expressions/contemplative.png
+Cy recorded this as **generated** on 2026-05-29 — plate — expressions/contemplative.png. It took 3 attempts.
 
-- kind: plate_verdict
-- outcome: generated
-- decided by: cy
-- date: 2026-05-29
-- pil-perceptual similarity: 0.2727
-- evidence: rich
+The note on record reads: "Gemini's response could not be parsed as JSON." (from plate_verdicts.jsonl).
 
-## Rationale
-
-Gemini's response could not be parsed as JSON.
-
-_(source: plate_verdicts.jsonl)_
-
-## Provenance
-
-- `runs/2026-05-29-cy-claude-mascot-production/plate_verdicts.jsonl#L8`
+Measured similarity to the reference: 0.2727 via pil-perceptual; the vision read was borderline.

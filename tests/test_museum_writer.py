@@ -69,6 +69,17 @@ def test_museum_writer_node_run_returns_agentresult(tmp_path, monkeypatch):
     assert result.outputs["narrative_path"].endswith("exhibit.md")
 
 
+def test_narrate_many_one_result_per_exhibit(monkeypatch):
+    import asyncio
+    from pipeline.agents import sdk_runners
+    from pipeline.agents.museum_writer import narrate_many
+    monkeypatch.setattr(sdk_runners, "_sdk_available", lambda: False)
+    exhibits = [_rich(), _thin(), _rich()]
+    results = asyncio.run(narrate_many(exhibits, concurrency=2))
+    assert len(results) == 3
+    assert all(prose.strip() and stub for prose, stub in results)   # all stub in CI
+
+
 def _ctx(tmp_path: Path, ex: Exhibit):
     from pipeline.agents import AgentContext
     return AgentContext(

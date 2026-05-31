@@ -1,18 +1,5 @@
-# Plate — turnarounds/head-front.png
+Cy recorded this as **generated** on 2026-05-29 — plate — turnarounds/head-front.png. It took 2 attempts.
 
-- kind: plate_verdict
-- outcome: generated
-- decided by: cy
-- date: 2026-05-29
-- pil-perceptual similarity: 0.4779
-- evidence: rich
+The note on record reads: "Gemini's response could not be parsed as JSON." (from plate_verdicts.jsonl).
 
-## Rationale
-
-Gemini's response could not be parsed as JSON.
-
-_(source: plate_verdicts.jsonl)_
-
-## Provenance
-
-- `runs/2026-05-29-cy-claude-mascot-production/plate_verdicts.jsonl#L5`
+Measured similarity to the reference: 0.4779 via pil-perceptual; the vision read was borderline.

@@ -1,15 +1,6 @@
-# Plate — turnarounds/body-profile-right.png
+Cy recorded this as **human_gate_required** on 2026-05-29 — plate — turnarounds/body-profile-right.png. It took 1 attempt.
 
-- kind: plate_verdict
-- outcome: human_gate_required
-- decided by: cy
-- date: 2026-05-29
-- pil-perceptual similarity: 0.4519
-- evidence: rich
-
-## Rationale
-
-The plate fails to honor several key identity rules: 
+The note on record reads: "The plate fails to honor several key identity rules: 
 
 1. IR.sean.proportion.head-to-body-1-to-7 (VIOLATED): The figure's total height is 1016 pixels (skull crown at Y=55 to sole at Y=1071), while the head height is 190 pixels (skull crown to chin at Y=245). This represents a 1:5.35 proportion, meaning the head fits only about 5.3 times into the body height rather than the heroic-realistic 1:7 ratio. Even including the high-volume hair puff (Y=22), the head fits only 4.7 times.
 
@@ -19,18 +10,8 @@ The plate fails to honor several key identity rules:
 
 4. IR.sean.costume.default-outfit-locked (VIOLATED): The stylus prop is completely missing; the gray jeans are rolled up in thick cuffs rather than breaking at the ankle; and detailed Converse-style sneakers are drawn instead of feet reading as silhouette-level shapes at the cream-paper base.
 
-5. IR.sean.face.blue-eyes (HONORED): The eye iris has a mid cool blue-gray color (approx #7B848B) and sits at Y=141, which is very close to the head's horizontal midline (Y=150).
+5. IR.sean.face.blue-eyes (HONORED): The eye iris has a mid cool blue-gray color (approx #7B848B) and sits at Y=141, which is very close to the head's horizontal midline (Y=150)." (from plate_verdicts.jsonl).
 
-_(source: plate_verdicts.jsonl)_
+Measured similarity to the reference: 0.4519 via pil-perceptual; the vision read was fail.
 
-## Cites criteria
-
-- `IR.sean.proportion.head-to-body-1-to-7`
-- `IR.sean.proportion.hip-to-floor-4-head-heights`
-- `IR.sean.face.jaw-line-angular-not-rounded`
-- `IR.sean.costume.default-outfit-locked`
-- `IR.sean.face.blue-eyes`
-
-## Provenance
-
-- `runs/2026-05-29-cy-sean-anchor-production/plate_verdicts.jsonl#L3`
+It cites `IR.sean.proportion.head-to-body-1-to-7`, `IR.sean.proportion.hip-to-floor-4-head-heights`, `IR.sean.face.jaw-line-angular-not-rounded`, `IR.sean.costume.default-outfit-locked` (and 1 more).

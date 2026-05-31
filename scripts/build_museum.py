@@ -273,18 +273,28 @@ def build_all(runs_dir: Path, museum_root: Path, manifest_path: Path) -> dict:
     return {"kept": [p.name for p in kept], "filtered": filtered, "totals": totals}
 
 
-def narrate_all(museum_root: Path) -> dict:
-    """Run Mo over every scraped exhibit, replacing the auto-generated exhibit.md
-    with her docent narration. Credential-free via Mo's faithful local fallback."""
-    from pipeline.agents.museum_writer import narrate
-    count = stub = 0
-    for json_path in sorted(Path(museum_root).rglob("exhibits/*/exhibit.json")):
-        ex = read_exhibit(json_path)
-        prose, used_stub = narrate(ex)
+def narrate_all(museum_root: Path, concurrency: int = 6, force_fallback: bool = False) -> dict:
+    """Run Mo over every scraped exhibit (bounded-concurrent), replacing the
+    auto-generated exhibit.md with her docent narration. force_fallback emits the
+    deterministic faithful prose for all exhibits (instant, zero-cost); without
+    it, a real Sonnet pass runs when the SDK is available."""
+    import asyncio
+    from pipeline.agents.museum_writer import narrate_many
+    paths = sorted(Path(museum_root).rglob("exhibits/*/exhibit.json"))
+    exhibits = [read_exhibit(p) for p in paths]
+    results = asyncio.run(narrate_many(exhibits, concurrency=concurrency,
+                                       force_fallback=force_fallback))
+    stub = 0
+    for json_path, (prose, used_stub) in zip(paths, results):
         (json_path.parent / "exhibit.md").write_text(prose, encoding="utf-8")
-        count += 1
         stub += int(used_stub)
-    mode = "all stub (no SDK)" if stub == count else f"{count - stub} via Sonnet, {stub} stub"
+    count = len(paths)
+    if force_fallback:
+        mode = "deterministic fallback (--no-sonnet)"
+    elif stub == count:
+        mode = "all fallback (no SDK)"
+    else:
+        mode = f"{count - stub} via Sonnet, {stub} fallback"
     print(f"[museum] Mo narrated {count} exhibits — {mode}")
     return {"narrated": count, "stub": stub}
 
@@ -300,6 +310,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--museum", default="museum/", type=Path)
     ap.add_argument("--manifest", default=REPO / "manifest.yaml", type=Path)
     ap.add_argument("--narrate", action="store_true", help="run Mo over scraped exhibits")
+    ap.add_argument("--no-sonnet", action="store_true",
+                    help="force Mo's deterministic fallback prose (no model calls)")
     ap.add_argument("--render", action="store_true")
     ap.add_argument("--site", default="museum/_site/", type=Path)
     args = ap.parse_args(argv)
@@ -315,7 +327,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.motion:
         build_motion(museum_root, args.motion, args.motion_run, Path(args.manifest))
     if args.narrate:
-        narrate_all(museum_root)
+        narrate_all(museum_root, force_fallback=args.no_sonnet)
 
     if args.render:
         index = render_static(museum_root, Path(args.site))

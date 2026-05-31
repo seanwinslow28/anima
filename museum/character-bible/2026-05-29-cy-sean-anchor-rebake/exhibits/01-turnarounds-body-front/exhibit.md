@@ -1,18 +1,5 @@
-# Plate — turnarounds/body-front.png
+Cy recorded this as **ingested** on 2026-05-29 — plate — turnarounds/body-front.png. It took 1 attempt.
 
-- kind: plate_verdict
-- outcome: ingested
-- decided by: cy
-- date: 2026-05-29
-- pil-perceptual similarity: 0.473
-- evidence: rich
+The note on record reads: "Gemini's response could not be parsed as JSON." (from plate_verdicts.jsonl).
 
-## Rationale
-
-Gemini's response could not be parsed as JSON.
-
-_(source: plate_verdicts.jsonl)_
-
-## Provenance
-
-- `runs/2026-05-29-cy-sean-anchor-rebake/plate_verdicts.jsonl#L1`
+Measured similarity to the reference: 0.473 via pil-perceptual; the vision read was borderline.
