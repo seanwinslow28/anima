@@ -1,0 +1,45 @@
+{
+  "exhibit_id": "motion-sleep",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-30-mascot-motion-ingest",
+  "title": "Motion — Sleep-settle",
+  "kind": "motion_keys",
+  "decision": {
+    "outcome": "ingested",
+    "attempts": null,
+    "rationale": "The slowest motion in the set — everything decelerates into rest. Awake, droop, then fully settled with the body at its lowest and the eyes closed as two small downward graphite arcs riding the construction midline.",
+    "rationale_source": "source-refs/motion-direction.md"
+  },
+  "phase": 4,
+  "persona": "human",
+  "date": "2026-05-30",
+  "prompt": null,
+  "references": [
+    "assets/Sleep-settle-1.png"
+  ],
+  "output": "assets/sleep-loop.gif",
+  "frames": [
+    "assets/sleep-01.png",
+    "assets/sleep-02.png",
+    "assets/sleep-03.png"
+  ],
+  "comparison_gif": null,
+  "verdict": null,
+  "cites_criteria": [
+    "IR.claude-mascot.proportion.rounded-box-silhouette",
+    "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+    "IR.claude-mascot.anatomy.four-stub-legs",
+    "IR.claude-mascot.anatomy.no-arms-no-hands",
+    "IR.claude-mascot.anatomy.no-hair",
+    "IR.claude-mascot.face.two-dot-eyes-with-brows",
+    "IR.claude-mascot.motion.sleep-ease-in",
+    "IR.claude-mascot.motion.no-arms-in-motion"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "characters/claude-mascot/motion-additions.json",
+    "characters/claude-mascot/motion_plates/Sleep-settle-1.png",
+    "runs/2026-05-30-mascot-motion-ingest/bible_audit.jsonl"
+  ],
+  "schema_version": "1.0"
+}

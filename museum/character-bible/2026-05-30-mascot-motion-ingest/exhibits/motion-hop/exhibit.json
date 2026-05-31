@@ -1,0 +1,48 @@
+{
+  "exhibit_id": "motion-hop",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-30-mascot-motion-ingest",
+  "title": "Motion — Hop (locomotion)",
+  "kind": "motion_keys",
+  "decision": {
+    "outcome": "ingested",
+    "attempts": null,
+    "rationale": "The walk-cycle analogue for a four-stub-legged box — Sean chose the hop over a scuttle as the richer motion. Anticipation crouch, takeoff, a high apex that carries the hang, landing squash, recover. The apex is the load-bearing key.",
+    "rationale_source": "source-refs/motion-direction.md"
+  },
+  "phase": 4,
+  "persona": "human",
+  "date": "2026-05-30",
+  "prompt": null,
+  "references": [
+    "assets/Hop-side-profile.png"
+  ],
+  "output": "assets/hop-loop.gif",
+  "frames": [
+    "assets/hop-01.png",
+    "assets/hop-02.png",
+    "assets/hop-03.png",
+    "assets/hop-04.png",
+    "assets/hop-05.png"
+  ],
+  "comparison_gif": null,
+  "verdict": null,
+  "cites_criteria": [
+    "IR.claude-mascot.proportion.rounded-box-silhouette",
+    "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+    "IR.claude-mascot.anatomy.four-stub-legs",
+    "IR.claude-mascot.anatomy.no-arms-no-hands",
+    "IR.claude-mascot.anatomy.no-hair",
+    "IR.claude-mascot.face.two-dot-eyes-with-brows",
+    "IR.claude-mascot.motion.hop-arc-and-gravity",
+    "IR.claude-mascot.motion.no-arms-in-motion",
+    "IR.claude-mascot.anatomy.nub-side-view-endcap"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "characters/claude-mascot/motion-additions.json",
+    "characters/claude-mascot/motion_plates/Hop-side-profile.png",
+    "runs/2026-05-30-mascot-motion-ingest/bible_audit.jsonl"
+  ],
+  "schema_version": "1.0"
+}

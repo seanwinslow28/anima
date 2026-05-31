@@ -1,0 +1,46 @@
+{
+  "exhibit_id": "motion-look",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-30-mascot-motion-ingest",
+  "title": "Motion — Head/body-tilt look (curiosity)",
+  "kind": "motion_keys",
+  "decision": {
+    "outcome": "ingested",
+    "attempts": null,
+    "rationale": "Its signature reaction. The eyes dart to the target first, then the whole creature cants toward it — a whole-body lean, not a head turn, because no neck exists. The eye-lead breakdown is what makes the look read as thought.",
+    "rationale_source": "source-refs/motion-direction.md"
+  },
+  "phase": 4,
+  "persona": "human",
+  "date": "2026-05-30",
+  "prompt": null,
+  "references": [
+    "assets/Head-body-tilt.png"
+  ],
+  "output": "assets/look-loop.gif",
+  "frames": [
+    "assets/look-01.png",
+    "assets/look-02.png",
+    "assets/look-03.png",
+    "assets/look-04.png"
+  ],
+  "comparison_gif": null,
+  "verdict": null,
+  "cites_criteria": [
+    "IR.claude-mascot.proportion.rounded-box-silhouette",
+    "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+    "IR.claude-mascot.anatomy.four-stub-legs",
+    "IR.claude-mascot.anatomy.no-arms-no-hands",
+    "IR.claude-mascot.anatomy.no-hair",
+    "IR.claude-mascot.face.two-dot-eyes-with-brows",
+    "IR.claude-mascot.motion.tilt-is-whole-body",
+    "IR.claude-mascot.motion.no-arms-in-motion"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "characters/claude-mascot/motion-additions.json",
+    "characters/claude-mascot/motion_plates/Head-body-tilt.png",
+    "runs/2026-05-30-mascot-motion-ingest/bible_audit.jsonl"
+  ],
+  "schema_version": "1.0"
+}

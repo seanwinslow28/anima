@@ -1,0 +1,30 @@
+# Motion — Idle / settle loop
+
+- kind: motion_keys
+- outcome: ingested
+- decided by: human
+- date: 2026-05-30
+- evidence: rich
+
+## Rationale
+
+The most-used clip: ambient life on Sean's shoulder. A slow breath — the box sinks and softens, then rises and lengthens, then sinks again, in a loop. The baseline is stillness; the creature earns its charm by not over-moving.
+
+_(source: source-refs/motion-direction.md)_
+
+## Cites criteria
+
+- `IR.claude-mascot.proportion.rounded-box-silhouette`
+- `IR.claude-mascot.anatomy.two-ear-arm-nubs`
+- `IR.claude-mascot.anatomy.four-stub-legs`
+- `IR.claude-mascot.anatomy.no-arms-no-hands`
+- `IR.claude-mascot.anatomy.no-hair`
+- `IR.claude-mascot.face.two-dot-eyes-with-brows`
+- `IR.claude-mascot.motion.idle-breath-volume`
+- `IR.claude-mascot.motion.no-arms-in-motion`
+
+## Provenance
+
+- `characters/claude-mascot/motion-additions.json`
+- `characters/claude-mascot/motion_plates/Idle-settle-loop.png`
+- `runs/2026-05-30-mascot-motion-ingest/bible_audit.jsonl`

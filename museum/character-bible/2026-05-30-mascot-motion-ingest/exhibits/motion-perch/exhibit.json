@@ -1,0 +1,48 @@
+{
+  "exhibit_id": "motion-perch",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-30-mascot-motion-ingest",
+  "title": "Motion — Perch-settle",
+  "kind": "motion_keys",
+  "decision": {
+    "outcome": "ingested",
+    "attempts": null,
+    "rationale": "The establishing motion: arriving onto Sean's shoulder — the A-7 pairing in motion. Principle-heavy, four keys: contact/reach, impact-squash, a small overshoot bob, then settle. The squash must not be left to the interpolator to invent.",
+    "rationale_source": "source-refs/motion-direction.md"
+  },
+  "phase": 4,
+  "persona": "human",
+  "date": "2026-05-30",
+  "prompt": null,
+  "references": [
+    "assets/Perch-settle.png"
+  ],
+  "output": "assets/perch-loop.gif",
+  "frames": [
+    "assets/perch-01.png",
+    "assets/perch-02.png",
+    "assets/perch-03.png",
+    "assets/perch-04.png"
+  ],
+  "comparison_gif": null,
+  "verdict": null,
+  "cites_criteria": [
+    "IR.claude-mascot.proportion.rounded-box-silhouette",
+    "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+    "IR.claude-mascot.anatomy.four-stub-legs",
+    "IR.claude-mascot.anatomy.no-arms-no-hands",
+    "IR.claude-mascot.anatomy.no-hair",
+    "IR.claude-mascot.face.two-dot-eyes-with-brows",
+    "IR.claude-mascot.motion.perch-weight-and-squash",
+    "IR.claude-mascot.motion.no-arms-in-motion",
+    "IR.claude-mascot.proportion.shoulder-companion-scale",
+    "IR.claude-mascot.pose.shoulder-perch-canonical-pairing"
+  ],
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "characters/claude-mascot/motion-additions.json",
+    "characters/claude-mascot/motion_plates/Perch-settle.png",
+    "runs/2026-05-30-mascot-motion-ingest/bible_audit.jsonl"
+  ],
+  "schema_version": "1.0"
+}
