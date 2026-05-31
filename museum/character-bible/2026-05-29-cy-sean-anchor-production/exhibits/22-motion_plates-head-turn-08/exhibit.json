@@ -1,0 +1,37 @@
+{
+  "exhibit_id": "22-motion_plates-head-turn-08",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-production",
+  "title": "Plate — motion_plates/head-turn-08.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "ingested",
+    "attempts": 1,
+    "rationale": "The plate at motion_plates/head-turn-08.png honors the identity rule IR.sean.motion.head-turn-9-frame-sequence. As the eighth frame of the nine-frame sequence, it represents an intermediate rotation where the head is turned at approximately 75% towards the right target. It successfully demonstrates the required eye-lead timing: the eyes are open and their gaze has fully shifted to the right, anticipation-style, 1 frame before the head reaches the final anchor-grade profile-right pose in frame 09. The hair silhouette is consistent, maintaining the tousled structure with the center cowlick, and any back-of-skull silhouette variations fall within the minor intermediate drift permitted by the rule.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/head-turn-08.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.2494,
+    "reference": "anchor.png",
+    "model_verdict": "pass",
+    "model_confidence": 0.95
+  },
+  "cites_criteria": [
+    "IR.sean.motion.head-turn-9-frame-sequence"
+  ],
+  "meta": {},
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-production/plate_verdicts.jsonl#L22"
+  ],
+  "schema_version": "1.0"
+}

@@ -1,0 +1,35 @@
+{
+  "exhibit_id": "08-expressions-contemplative",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-claude-mascot-production",
+  "title": "Plate — expressions/contemplative.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "generated",
+    "attempts": 3,
+    "rationale": "Gemini's response could not be parsed as JSON.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/contemplative.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.2727,
+    "reference": "anchor.png",
+    "model_verdict": "borderline",
+    "model_confidence": 0.0
+  },
+  "cites_criteria": [],
+  "meta": {},
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-claude-mascot-production/plate_verdicts.jsonl#L8"
+  ],
+  "schema_version": "1.0"
+}

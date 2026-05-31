@@ -1,0 +1,51 @@
+{
+  "exhibit_id": "motion-idle",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-30-mascot-motion-ingest",
+  "title": "Motion — Idle / settle loop",
+  "kind": "motion_keys",
+  "decision": {
+    "outcome": "ingested",
+    "attempts": null,
+    "rationale": "The most-used clip: ambient life on Sean's shoulder. A slow breath — the box sinks and softens, then rises and lengthens, then sinks again, in a loop. The baseline is stillness; the creature earns its charm by not over-moving.",
+    "rationale_source": "source-refs/motion-direction.md"
+  },
+  "phase": 4,
+  "persona": "human",
+  "date": "2026-05-30",
+  "prompt": null,
+  "references": [
+    "assets/Idle-settle-loop.png"
+  ],
+  "output": "assets/idle-loop.gif",
+  "frames": [
+    "assets/idle-01.png",
+    "assets/idle-02.png",
+    "assets/idle-03.png",
+    "assets/idle-04.png"
+  ],
+  "comparison_gif": null,
+  "verdict": null,
+  "cites_criteria": [
+    "IR.claude-mascot.proportion.rounded-box-silhouette",
+    "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+    "IR.claude-mascot.anatomy.four-stub-legs",
+    "IR.claude-mascot.anatomy.no-arms-no-hands",
+    "IR.claude-mascot.anatomy.no-hair",
+    "IR.claude-mascot.face.two-dot-eyes-with-brows",
+    "IR.claude-mascot.motion.idle-breath-volume",
+    "IR.claude-mascot.motion.no-arms-in-motion",
+    "IR.claude-mascot.palette.terracotta-orange-body",
+    "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+    "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+    "IR.claude-mascot.face.construction-cross-line"
+  ],
+  "meta": {},
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "characters/claude-mascot/motion-additions.json",
+    "characters/claude-mascot/motion_plates/Idle-settle-loop.png",
+    "runs/2026-05-30-mascot-motion-ingest/bible_audit.jsonl"
+  ],
+  "schema_version": "1.0"
+}

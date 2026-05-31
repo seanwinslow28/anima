@@ -1,0 +1,43 @@
+{
+  "exhibit_id": "24-props-stylus",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-production",
+  "title": "Plate — props/stylus.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "generated",
+    "attempts": 1,
+    "rationale": "",
+    "rationale_source": null
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/stylus.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.2677,
+    "reference": "anchor.png",
+    "model_verdict": "borderline",
+    "model_confidence": 1.0
+  },
+  "cites_criteria": [
+    "IR.sean.prop.stylus-right-hand-always",
+    "IR.sean.prop.stylus-grip-three-fingers",
+    "IR.sean.palette.full-color-pencil-test-vocabulary",
+    "IR.sean.style.construction-lines-visible-beneath-final",
+    "IR.sean.style.cross-hatching-shadow-areas",
+    "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
+    "IR.sean.style.cream-paper-texture-grain"
+  ],
+  "meta": {},
+  "evidence_completeness": "partial",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-production/plate_verdicts.jsonl#L24"
+  ],
+  "schema_version": "1.0"
+}

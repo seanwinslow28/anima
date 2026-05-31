@@ -1,0 +1,42 @@
+{
+  "exhibit_id": "09-turnarounds-head-back",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-production",
+  "title": "Plate — turnarounds/head-back.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "generated",
+    "attempts": 3,
+    "rationale": "The plate fully honors all cited identity rules: 1) IR.sean.hair.silhouette-tousled-medium-short is met as the hair has a tousled silhouette with irregular tufts, is medium-short, and tapers to the skin at the nape and temples. 2) IR.sean.palette.full-color-pencil-test-vocabulary is honored through the use of the cream paper background, warm graphite lines, light warm skin on the neck/ears, and dirty-blonde hair, all with flat fills and cross-hatched shading without gradients or cel-shading. 3) IR.sean.style.construction-lines-visible-beneath-final is met because the vertical midline and horizontal guide lines are clearly visible beneath the final contours at a lighter weight. 4) IR.sean.style.line-weight-hb-to-2b-warm-graphite is honored, showing clear variation between the thin construction/cross-hatching lines (~0.5px) and thicker final contours (~1.5-2px) in a warm graphite color. 5) IR.sean.style.cream-paper-texture-grain is visible across the entire frame, displaying a clear paper grain rather than a flat vector color. 6) IR.sean.hair.dirty-blonde-color is honored with the dirty-blonde flat fill (#AD9468) and warm-graphite cross-hatched shadowing at the nape.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/head-back.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.2567,
+    "reference": "anchor.png",
+    "model_verdict": "pass",
+    "model_confidence": 1.0
+  },
+  "cites_criteria": [
+    "IR.sean.hair.silhouette-tousled-medium-short",
+    "IR.sean.palette.full-color-pencil-test-vocabulary",
+    "IR.sean.style.construction-lines-visible-beneath-final",
+    "IR.sean.style.line-weight-hb-to-2b-warm-graphite",
+    "IR.sean.style.cream-paper-texture-grain",
+    "IR.sean.hair.dirty-blonde-color"
+  ],
+  "meta": {},
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-production/plate_verdicts.jsonl#L9"
+  ],
+  "schema_version": "1.0"
+}

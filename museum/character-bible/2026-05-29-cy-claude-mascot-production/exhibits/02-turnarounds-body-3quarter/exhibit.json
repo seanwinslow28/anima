@@ -1,0 +1,45 @@
+{
+  "exhibit_id": "02-turnarounds-body-3quarter",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-claude-mascot-production",
+  "title": "Plate — turnarounds/body-3quarter.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "human_gate_required",
+    "attempts": 3,
+    "rationale": "The plate fails multiple critical color, style, and outline rules due to being saved as a JPEG (with a .png extension) and containing 12,238 unique colors instead of 4. Specifically: \n1. IR.claude-mascot.palette.four-indexed-color-vocabulary is violated: 36.74% of the silhouette pixels are violating. The dark outline uses colors around #432614 instead of the target deep brown #5C3A24 (only 32 pixels match the deep brown range). Additionally, cream highlight is present down to y=923 (feet/toes), violating the constraint that it only appear on the face, crown, and fingertips.\n2. IR.claude-mascot.palette.no-anti-aliasing-between-steps and IR.claude-mascot.style.no-gradient-interpolation-between-palette are violated: transitions between colors are multi-pixel gradients rather than sharp 1-pixel steps.\n3. IR.claude-mascot.style.integer-pixel-grid-no-subpixel is violated due to sub-pixel smoothing and compression artifacts.\n4. IR.claude-mascot.style.dither-vertical-2px-warm-brown is violated: there is no vertical dither pattern (0 isolated shadow pixels found); shadows are solid fills with anti-aliased boundaries.\n5. IR.claude-mascot.proportion.silhouette-round-topped-lozenge is borderline/fail: at 32px scale, the silhouette displays an hourglass contour (neck indentation of 18px between a 20px head and 22px body) and separated legs instead of a tapering lozenge.\n6. IR.claude-mascot.palette.primary-orange-dominant-fill, IR.claude-mascot.proportion.head-to-body-2-to-3-chibi (deviation is 4.62% of total height, within ±10% tolerance), and IR.claude-mascot.proportion.body-width-1-2x-head-width (ratio is 1.159, within ±15% tolerance of 1.2) are honored.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/body-3quarter.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.2738,
+    "reference": "anchor.png",
+    "model_verdict": "fail",
+    "model_confidence": 1.0
+  },
+  "cites_criteria": [
+    "IR.claude-mascot.palette.four-indexed-color-vocabulary",
+    "IR.claude-mascot.palette.no-anti-aliasing-between-steps",
+    "IR.claude-mascot.palette.primary-orange-dominant-fill",
+    "IR.claude-mascot.proportion.head-to-body-2-to-3-chibi",
+    "IR.claude-mascot.proportion.body-width-1-2x-head-width",
+    "IR.claude-mascot.proportion.silhouette-round-topped-lozenge",
+    "IR.claude-mascot.style.integer-pixel-grid-no-subpixel",
+    "IR.claude-mascot.style.dither-vertical-2px-warm-brown",
+    "IR.claude-mascot.style.no-gradient-interpolation-between-palette"
+  ],
+  "meta": {},
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-claude-mascot-production/plate_verdicts.jsonl#L2"
+  ],
+  "schema_version": "1.0"
+}

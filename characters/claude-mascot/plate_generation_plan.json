@@ -143,6 +143,433 @@
         "IR.claude-mascot.palette.terracotta-orange-body",
         "IR.claude-mascot.style.warm-graphite-line-cross-hatch"
       ]
+    },
+    {
+      "target_path": "motion_plates/idle-01.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/idle-01.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.idle-breath-volume",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/idle-02.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/idle-02.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.idle-breath-volume",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/idle-03.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/idle-03.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.idle-breath-volume",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/look-01.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/look-01.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.tilt-is-whole-body",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/look-02.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/look-02.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.tilt-is-whole-body",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/look-03.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/look-03.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.tilt-is-whole-body",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/look-04.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/look-04.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.tilt-is-whole-body",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/perch-01.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/perch-01.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.perch-weight-and-squash",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.proportion.shoulder-companion-scale",
+        "IR.claude-mascot.pose.shoulder-perch-canonical-pairing",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/perch-02.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/perch-02.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.perch-weight-and-squash",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.proportion.shoulder-companion-scale",
+        "IR.claude-mascot.pose.shoulder-perch-canonical-pairing",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/perch-03.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/perch-03.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.perch-weight-and-squash",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.proportion.shoulder-companion-scale",
+        "IR.claude-mascot.pose.shoulder-perch-canonical-pairing",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/perch-04.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/perch-04.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.perch-weight-and-squash",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.proportion.shoulder-companion-scale",
+        "IR.claude-mascot.pose.shoulder-perch-canonical-pairing",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/alert-01.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/alert-01.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.alert-snap-eyes-stay-dots",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/alert-02.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/alert-02.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.alert-snap-eyes-stay-dots",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/alert-03.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/alert-03.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.alert-snap-eyes-stay-dots",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/hop-01.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/hop-01.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.hop-arc-and-gravity",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.anatomy.nub-side-view-endcap",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/hop-02.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/hop-02.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.hop-arc-and-gravity",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.anatomy.nub-side-view-endcap",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/hop-03.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/hop-03.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.hop-arc-and-gravity",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.anatomy.nub-side-view-endcap",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/hop-04.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/hop-04.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.hop-arc-and-gravity",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.anatomy.nub-side-view-endcap",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/hop-05.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/hop-05.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.hop-arc-and-gravity",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.anatomy.nub-side-view-endcap",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/sleep-01.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/sleep-01.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.sleep-ease-in",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/sleep-02.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/sleep-02.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.sleep-ease-in",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/sleep-03.png",
+      "source": "hand-colored:Sean 2026-05-31 (line-rough animatic at source-refs/motion-line-roughs/sleep-03.png)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.sleep-ease-in",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    },
+    {
+      "target_path": "motion_plates/idle-04.png",
+      "source": "hand-colored:Sean 2026-05-31 (4th idle key \u2014 risen breath peak; added during the colored pass)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.idle-breath-volume",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
     }
   ]
 }

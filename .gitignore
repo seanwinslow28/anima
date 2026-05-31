@@ -1,6 +1,11 @@
 # Per-run output (large generated images)
 runs/
 
+# Museum static render output — regenerable from the committed exhibit tree
+# via `python scripts/build_museum.py --render`. The source-of-truth exhibits
+# + assets under museum/{project_slug}/ ARE committed; only the build is not.
+museum/_site/
+
 # Environment secrets
 .env
 .env.*

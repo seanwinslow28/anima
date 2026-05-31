@@ -1,0 +1,44 @@
+{
+  "exhibit_id": "11-expressions-focused",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-production",
+  "title": "Plate — expressions/focused.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "generated",
+    "attempts": 1,
+    "rationale": "",
+    "rationale_source": null
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/focused.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.8062,
+    "reference": "anchor.png",
+    "model_verdict": "borderline",
+    "model_confidence": 1.0
+  },
+  "cites_criteria": [
+    "IR.sean.face.eye-spacing-one-eye-width",
+    "IR.sean.face.brow-line-strong-horizontal",
+    "IR.sean.face.jaw-line-angular-not-rounded",
+    "IR.sean.palette.full-color-pencil-test-vocabulary",
+    "IR.sean.palette.warm-skin-tone",
+    "IR.sean.style.construction-lines-visible-beneath-final",
+    "IR.sean.style.cross-hatching-shadow-areas",
+    "IR.sean.face.blue-eyes"
+  ],
+  "meta": {},
+  "evidence_completeness": "partial",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-production/plate_verdicts.jsonl#L11"
+  ],
+  "schema_version": "1.0"
+}

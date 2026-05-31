@@ -1,0 +1,38 @@
+{
+  "exhibit_id": "04-turnarounds-body-back",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-rebake",
+  "title": "Plate — turnarounds/body-back.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "ingested",
+    "attempts": 1,
+    "rationale": "The plate honors all cited rules. IR.sean.costume.cuffed-jeans-gray-sneakers is satisfied by the single cuff, two back pockets, and gray low-top sneakers. IR.sean.hair.dirty-blonde-volume is satisfied by the textured dirty-blonde hair, swept-back volume, and unobscured ears.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/body-back.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.473,
+    "reference": "anchor.png",
+    "model_verdict": "pass",
+    "model_confidence": 0.8
+  },
+  "cites_criteria": [
+    "IR.sean.costume.cuffed-jeans-gray-sneakers",
+    "IR.sean.hair.dirty-blonde-volume"
+  ],
+  "meta": {},
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-rebake/plate_verdicts.jsonl#L4"
+  ],
+  "schema_version": "1.0"
+}

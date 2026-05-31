@@ -1,0 +1,7 @@
+Cy recorded this as **ingested** on 2026-05-29 — plate — turnarounds/head-profile-left.png. It took 1 attempt.
+
+The note on record reads: "The head-profile-left plate fully honors all six cited identity rules. The jaw-line (IR.sean.face.jaw-line-angular-not-rounded) shows a clear, defined angle of ~105 degrees at the back corner, and the chin is squared rather than pointed. The crown features a distinct upward-pointing center cowlick (IR.sean.hair.center-cowlick) that sits forward of the back of the skull. The hair silhouette (IR.sean.hair.silhouette-tousled-medium-short) is medium-short and tousled, with irregular tufts and a taper down to the temple and nape. The line work (IR.sean.style.line-weight-hb-to-2b-warm-graphite) displays hand-drawn variation in thickness (thin construction lines to heavier contour lines) in a warm graphite color. The hair color (IR.sean.hair.dirty-blonde-color) is the specified warm dirty-blonde color fill with warm-graphite hatching for shadow. The eye (IR.sean.face.blue-eyes) features a mid-cool blue iris reading clearly against the white sclera." (from plate_verdicts.jsonl).
+
+Measured similarity to the reference: 0.5811 via pil-perceptual; the vision read was pass.
+
+It cites `IR.sean.face.jaw-line-angular-not-rounded`, `IR.sean.hair.center-cowlick`, `IR.sean.hair.silhouette-tousled-medium-short`, `IR.sean.style.line-weight-hb-to-2b-warm-graphite` (and 2 more).

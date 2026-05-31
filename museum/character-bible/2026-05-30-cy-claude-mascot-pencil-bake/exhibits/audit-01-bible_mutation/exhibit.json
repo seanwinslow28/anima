@@ -1,0 +1,31 @@
+{
+  "exhibit_id": "audit-01-bible_mutation",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-30-cy-claude-mascot-pencil-bake",
+  "title": "Bible mutation — IR.claude-mascot.anatomy.no-hair",
+  "kind": "bible_mutation",
+  "decision": {
+    "outcome": "mutated",
+    "attempts": null,
+    "rationale": "Add no-hair identity invariant: NB2 invented a hair tuft on the neutral expression plate; the box is bare-topped. Captured as IR.claude-mascot.anatomy.no-hair so Em can cite it.",
+    "rationale_source": "bible_audit.jsonl"
+  },
+  "phase": 2,
+  "persona": "human",
+  "date": "2026-05-30",
+  "prompt": null,
+  "references": [],
+  "output": null,
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": null,
+  "cites_criteria": [
+    "IR.claude-mascot.anatomy.no-hair"
+  ],
+  "meta": {},
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-30-cy-claude-mascot-pencil-bake/bible_audit.jsonl#L1"
+  ],
+  "schema_version": "1.0"
+}

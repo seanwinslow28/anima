@@ -1,0 +1,39 @@
+{
+  "exhibit_id": "02-turnarounds-body-3quarter",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-rebake",
+  "title": "Plate — turnarounds/body-3quarter.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "human_gate_required",
+    "attempts": 1,
+    "rationale": "IR.sean.prop.stylus-right-hand-always is violated as the stylus is entirely missing from all views. IR.sean.proportion.head-to-body-1-to-7 is violated because the head-to-body proportion is ~1:6.2 instead of the specified 1:7. IR.sean.costume.navy-tee-gray-jeans is borderline due to palette deviations, with sampled colors measuring #3D4956 instead of #243044 and #838686 instead of #5C6471.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/body-3quarter.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.473,
+    "reference": "anchor.png",
+    "model_verdict": "fail",
+    "model_confidence": 0.8
+  },
+  "cites_criteria": [
+    "IR.sean.prop.stylus-right-hand-always",
+    "IR.sean.proportion.head-to-body-1-to-7",
+    "IR.sean.costume.navy-tee-gray-jeans"
+  ],
+  "meta": {},
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-rebake/plate_verdicts.jsonl#L2"
+  ],
+  "schema_version": "1.0"
+}

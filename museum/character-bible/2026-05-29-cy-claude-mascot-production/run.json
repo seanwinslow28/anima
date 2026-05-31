@@ -1,0 +1,12 @@
+{
+  "run_slug": "2026-05-29-cy-claude-mascot-production",
+  "project_slug": "character-bible",
+  "exhibit_count": 8,
+  "kinds": {
+    "plate_verdict": 8
+  },
+  "evidence": {
+    "rich": 8
+  },
+  "source": "runs/2026-05-29-cy-claude-mascot-production/"
+}

@@ -1,0 +1,7 @@
+Cy recorded this as **human_gate_required** on 2026-05-29 — plate — turnarounds/head-front.png. It took 1 attempt.
+
+The note on record reads: "The plate violates several core rules regarding construction style, shading register, eyebrow shape, and eye spacing. Specifically: 1. IR.sean.style.construction-lines-visible-beneath-final is violated because there are no construction lines (such as the vertical face-midline or horizontal eye-line) visible beneath the drawing. 2. IR.sean.palette.full-color-pencil-test-vocabulary, IR.sean.palette.warm-skin-tone, and IR.sean.hair.dirty-blonde-color are violated because the plate utilizes soft digital airbrushed gradients and highlights on the face, nose, cheeks, and hair, directly contradicting the rule stating shadows must be rendered as warm-graphite cross-hatching and 'never gradient- or cel-shaded'. 3. IR.sean.face.eye-spacing-one-eye-width is violated because the distance between the eyes is significantly narrower (approx. 60-70%) than the horizontal width of a single eye. 4. IR.sean.face.brow-line-strong-horizontal is violated because the brows are distinctly arched rather than sitting on a strong horizontal axis with minimal arch." (from plate_verdicts.jsonl).
+
+Measured similarity to the reference: 0.5817 via pil-perceptual; the vision read was fail.
+
+It cites `IR.sean.hair.center-cowlick`, `IR.sean.hair.silhouette-tousled-medium-short`, `IR.sean.face.eye-spacing-one-eye-width`, `IR.sean.face.jaw-line-angular-not-rounded` (and 8 more).

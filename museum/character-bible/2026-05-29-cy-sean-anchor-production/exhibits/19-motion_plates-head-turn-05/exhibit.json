@@ -1,0 +1,41 @@
+{
+  "exhibit_id": "19-motion_plates-head-turn-05",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-29-cy-sean-anchor-production",
+  "title": "Plate — motion_plates/head-turn-05.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "human_gate_required",
+    "attempts": 1,
+    "rationale": "The plate fails to honor IR.sean.hair.center-cowlick because the hair silhouette is drawn as a smooth dome (flattened cap) with no visible upward tuft at the crown, which the rule explicitly forbids ('The cowlick reads as a small upward tuft, not a flattened cap or a smooth dome'). Additionally, IR.sean.motion.head-turn-9-frame-sequence is borderline: while this image is indeed frame 05 of the sequence, the rule describes it as the 'front-facing midpoint (cy-confidence flagged)', whereas the plate depicts a top-down/bird's-eye view looking directly down. IR.sean.face.eye-spacing-one-eye-width is borderline because the vertical positioning of the eyes is below the midline due to the extreme downward tilt, though the eye-width horizontal spacing itself is preserved. The line-only rules IR.sean.hair.dirty-blonde-color and IR.sean.face.blue-eyes are fully honored as the plate uses contour lines only with no color or iris fill.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-29",
+  "prompt": null,
+  "references": [],
+  "output": "assets/head-turn-05.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "pil-perceptual",
+    "score": 0.2437,
+    "reference": "anchor.png",
+    "model_verdict": "fail",
+    "model_confidence": 0.95
+  },
+  "cites_criteria": [
+    "IR.sean.motion.head-turn-9-frame-sequence",
+    "IR.sean.hair.center-cowlick",
+    "IR.sean.face.eye-spacing-one-eye-width",
+    "IR.sean.hair.dirty-blonde-color",
+    "IR.sean.face.blue-eyes"
+  ],
+  "meta": {},
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-29-cy-sean-anchor-production/plate_verdicts.jsonl#L19"
+  ],
+  "schema_version": "1.0"
+}

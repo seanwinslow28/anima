@@ -326,7 +326,144 @@
         "characters/claude-mascot/anchor.png",
         "characters/claude-mascot/expressions/alert-perk.png"
       ]
+    },
+    {
+      "id": "IR.claude-mascot.motion.idle-breath-volume",
+      "description": "The idle/settle loop is a moving hold: the rounded box breathes by sinking and softening, then rising and lengthening, on an eased (never linear) curve. Volume is conserved \u2014 as the box lowers it widens slightly, as it rises it narrows (scale_x \u00d7 scale_y \u2248 1) \u2014 and identity holds unchanged across the loop. The legs stay gathered close and the nubs stay neutral through the breath; one nub may lag the other by a frame for life. A linear/floaty breath, a volume-breaking squash, or any identity shift across the loop is a motion violation.",
+      "cites_phase": [
+        4,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/motion_plates/idle-01.png",
+        "characters/claude-mascot/motion_plates/idle-03.png"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.motion.tilt-is-whole-body",
+      "description": "The curiosity look is a WHOLE-BODY cant, not a head turn \u2014 the creature has no neck, so the entire box leans ~15\u00b0 and the construction cross-line cants with the box; the box-top never reads as a head tilting on a body. The two dot eyes lead the cant (eye-lead: the eyes reach the target before the body leans). The two nubs are offset, not twinned \u2014 the near nub rises with the cant while the far nub holds or drops. A head-on-neck tilt, twinned nubs, or eyes that follow rather than lead the body is a motion violation.",
+      "cites_phase": [
+        4,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/motion_plates/look-01.png",
+        "characters/claude-mascot/motion_plates/look-03.png"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.motion.perch-weight-and-squash",
+      "description": "The perch-settle reads weight through squash and the cast shadow: the box stretches on contact, compresses on impact while the cast shadow tightens and darkens, overshoots, then settles \u2014 leaning lightly toward Sean's jaw at shoulder-companion scale (the canonical pairing). The four legs splay only transiently at impact and regather close by the settle; they never hold a wide, splayed, or spidery stance at rest. A weightless landing, a permanently wide stance, or a settle that floats free of the shoulder is a motion violation.",
+      "cites_phase": [
+        4,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "annie"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/motion_plates/perch-01.png",
+        "characters/claude-mascot/motion_plates/perch-02.png",
+        "characters/claude-mascot/motion_plates/perch-04.png"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.motion.alert-snap-eyes-stay-dots",
+      "description": "Alert-perk is a fast snap into a long hold: a quick anticipation dip, then the box snaps upright and tall with the two ear/arm nubs perking up-and-forward and the dot eyes widening \u2014 but the eyes stay small graphite dots, never enlarging into glossy cartoon eyes, and the nubs perk SHORT and forward, never extending or flaring into raised arms. A slow alert, glossy/enlarged eyes, or nubs that read as arms is a motion violation.",
+      "cites_phase": [
+        4,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/motion_plates/alert-01.png",
+        "characters/claude-mascot/motion_plates/alert-03.png"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.motion.hop-arc-and-gravity",
+      "description": "The hop follows a clean parabolic arc with Odd-Rule gravity spacing (wide low, tightening toward the apex) and a Fourth-Down hang at the top. The box squashes on the crouch and the landing and stretches on takeoff, volume conserved; the four stub legs trail in the air and regather close on landing, never becoming springy or jointed limbs. In the side/profile keys the near ear/arm nub reads as a small end-cap disc on the side face \u2014 never a large circle, navel, or emblem. Linear/even airborne spacing, springy legs, or an oversized side disc is a motion violation.",
+      "cites_phase": [
+        4,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/motion_plates/hop-01.png",
+        "characters/claude-mascot/motion_plates/hop-03.png",
+        "characters/claude-mascot/motion_plates/hop-04.png"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.motion.sleep-ease-in",
+      "description": "Sleep-settle is the slowest motion \u2014 a long ease-in with no snap: the box slumps lower and softer as the eyes lower toward the construction midline and the nubs droop, settling into sleep with the eyes closed as two small downward graphite arcs riding the midline (the closed state of the dot eyes, not a new eye style). A fast/snappy sleep, or closed eyes drawn as a new shape (X's, lashes), is a motion violation.",
+      "cites_phase": [
+        4,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "continuity",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/motion_plates/sleep-01.png",
+        "characters/claude-mascot/motion_plates/sleep-03.png"
+      ]
+    },
+    {
+      "id": "IR.claude-mascot.motion.no-arms-in-motion",
+      "description": "Across every frame of every motion the no-arms rule holds (reinforces IR.claude-mascot.anatomy.no-arms-no-hands for motion specifically): the two ear/arm nubs may lag, trail, droop, or perk for follow-through and acting, but they NEVER extend into arms, bend, reach, grasp, point, or balance like limbs, and no hand or held object ever grows off them. Any frame in any cycle that grows an arm or hand off the nubs is a hard identity violation.",
+      "cites_phase": [
+        4,
+        6,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "annie"
+      ],
+      "impact_tag": "identity_critical",
+      "character_id": "claude-mascot",
+      "derived_from": [
+        "characters/claude-mascot/anchor.png",
+        "characters/claude-mascot/motion_plates/alert-03.png",
+        "characters/claude-mascot/motion_plates/perch-01.png"
+      ]
     }
   ],
-  "content_version": "1.1.0"
+  "content_version": "1.2.1"
 }

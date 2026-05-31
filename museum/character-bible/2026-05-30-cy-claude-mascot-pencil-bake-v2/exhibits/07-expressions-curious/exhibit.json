@@ -1,0 +1,42 @@
+{
+  "exhibit_id": "07-expressions-curious",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-30-cy-claude-mascot-pencil-bake-v2",
+  "title": "Plate — expressions/curious.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "generated",
+    "attempts": 1,
+    "rationale": "The plate is visually consistent with the character's design style but contains direct contradictions to the text of two cited identity rules. First, under IR.claude-mascot.proportion.rounded-box-silhouette, the rule specifies that the body is slightly taller than wide (~1:1.2 width:height), whereas in this plate, the box reads as wider than tall (approx 1.4:1 width:height ratio in perspective). Second, under IR.claude-mascot.face.two-dot-eyes-with-brows, the rule specifies that the eyes are 'roughly one eye-width apart at their inner edges', but the plate depicts them much wider apart (approx 8-10 eye-widths apart). The other rules are fully honored: the construction cross-line (IR.claude-mascot.face.construction-cross-line) is faint and correctly placed; the mouth is absent (IR.claude-mascot.face.minimal-mouth-line), which satisfies the 'at most a small, short mouth line' criteria; the terracotta palette (IR.claude-mascot.palette.terracotta-orange-body) is respected with flat fill and correct shadow tones; and the hand-drawn warm graphite line and cross-hatched shading style (IR.claude-mascot.style.warm-graphite-line-cross-hatch) are correctly implemented.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-30",
+  "prompt": null,
+  "references": [],
+  "output": "assets/curious.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "dinov2",
+    "score": 0.9897,
+    "reference": "anchor.png",
+    "model_verdict": "borderline",
+    "model_confidence": 0.95
+  },
+  "cites_criteria": [
+    "IR.claude-mascot.proportion.rounded-box-silhouette",
+    "IR.claude-mascot.face.two-dot-eyes-with-brows",
+    "IR.claude-mascot.face.construction-cross-line",
+    "IR.claude-mascot.face.minimal-mouth-line",
+    "IR.claude-mascot.palette.terracotta-orange-body",
+    "IR.claude-mascot.style.warm-graphite-line-cross-hatch"
+  ],
+  "meta": {},
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-30-cy-claude-mascot-pencil-bake-v2/plate_verdicts.jsonl#L7"
+  ],
+  "schema_version": "1.0"
+}

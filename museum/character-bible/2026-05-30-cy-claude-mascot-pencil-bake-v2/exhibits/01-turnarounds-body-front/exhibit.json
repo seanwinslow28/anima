@@ -1,0 +1,45 @@
+{
+  "exhibit_id": "01-turnarounds-body-front",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-30-cy-claude-mascot-pencil-bake-v2",
+  "title": "Plate — turnarounds/body-front.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "human_gate_required",
+    "attempts": 1,
+    "rationale": "The plate violates several identity rules. Specifically: \n1. **IR.claude-mascot.proportion.rounded-box-silhouette** is violated: The mascot's body is wider than it is tall (approx 1.2:1 width:height), whereas the rule specifies it should read slightly taller than wide, approximately 1:1.2 (width:height).\n2. **IR.claude-mascot.anatomy.four-stub-legs** is violated: Only two legs are drawn; there is no second pair of legs partly occluded behind them as required by the rule ('In front view the front pair reads clearly with the back pair partly occluded behind').\n3. **IR.claude-mascot.style.cream-paper-and-cast-shadow** is violated: There is no soft, loose graphite-scribble cast shadow directly beneath the box on the paper.\n4. **IR.claude-mascot.face.two-dot-eyes-with-brows** is borderline: The eyes have distinct glossy highlights, which the rule warns can drift the character ('large round cartoon eyes with big glossy highlights... drift the character').\n\nThe following rules are honored:\n- **IR.claude-mascot.anatomy.two-ear-arm-nubs**: Two short, unarticulated nubs project horizontally near the construction midline.\n- **IR.claude-mascot.face.construction-cross-line**: The faint pencil construction cross-lines are visible under the eyes and bisecting the face.\n- **IR.claude-mascot.face.minimal-mouth-line**: The face has no mouth line, which satisfies the 'at most a small, short mouth line' constraint.\n- **IR.claude-mascot.palette.terracotta-orange-body**: The body color matches the warm terracotta orange fill with cross-hatched shading on the underside.\n- **IR.claude-mascot.style.warm-graphite-line-cross-hatch**: The drawing features warm-graphite line art and pencil cross-hatching.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-30",
+  "prompt": null,
+  "references": [],
+  "output": "assets/body-front.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "dinov2",
+    "score": 0.8857,
+    "reference": "anchor.png",
+    "model_verdict": "fail",
+    "model_confidence": 0.95
+  },
+  "cites_criteria": [
+    "IR.claude-mascot.proportion.rounded-box-silhouette",
+    "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+    "IR.claude-mascot.anatomy.four-stub-legs",
+    "IR.claude-mascot.face.two-dot-eyes-with-brows",
+    "IR.claude-mascot.face.construction-cross-line",
+    "IR.claude-mascot.face.minimal-mouth-line",
+    "IR.claude-mascot.palette.terracotta-orange-body",
+    "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+    "IR.claude-mascot.style.cream-paper-and-cast-shadow"
+  ],
+  "meta": {},
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-30-cy-claude-mascot-pencil-bake-v2/plate_verdicts.jsonl#L1"
+  ],
+  "schema_version": "1.0"
+}

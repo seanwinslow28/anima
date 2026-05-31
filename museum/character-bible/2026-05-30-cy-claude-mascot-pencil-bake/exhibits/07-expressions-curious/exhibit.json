@@ -1,0 +1,42 @@
+{
+  "exhibit_id": "07-expressions-curious",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-30-cy-claude-mascot-pencil-bake",
+  "title": "Plate — expressions/curious.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "human_gate_required",
+    "attempts": 3,
+    "rationale": "The plate violates two key identity rules. First, under IR.claude-mascot.proportion.rounded-box-silhouette, the mascot's body is wider than tall (approximately 1.2:1 width:height) instead of the required taller-than-wide proportion (approximately 1:1.2 width:height). Second, under IR.claude-mascot.face.two-dot-eyes-with-brows, the eyes are not simple dots/ovals, but rather large cartoon eyes with prominent glossy white highlights, which is explicitly cited as a violation. The other rules are honored: the construction cross-line is visible (IR.claude-mascot.face.construction-cross-line), there is no mouth (IR.claude-mascot.face.minimal-mouth-line), the palette is a warm terracotta orange (IR.claude-mascot.palette.terracotta-orange-body), and the drawing uses hand-drawn warm graphite lines with cross-hatched shadows (IR.claude-mascot.style.warm-graphite-line-cross-hatch).",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-30",
+  "prompt": null,
+  "references": [],
+  "output": "assets/curious.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "dinov2",
+    "score": 0.9705,
+    "reference": "anchor.png",
+    "model_verdict": "fail",
+    "model_confidence": 1.0
+  },
+  "cites_criteria": [
+    "IR.claude-mascot.proportion.rounded-box-silhouette",
+    "IR.claude-mascot.face.two-dot-eyes-with-brows",
+    "IR.claude-mascot.face.construction-cross-line",
+    "IR.claude-mascot.face.minimal-mouth-line",
+    "IR.claude-mascot.palette.terracotta-orange-body",
+    "IR.claude-mascot.style.warm-graphite-line-cross-hatch"
+  ],
+  "meta": {},
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-30-cy-claude-mascot-pencil-bake/plate_verdicts.jsonl#L7"
+  ],
+  "schema_version": "1.0"
+}

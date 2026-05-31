@@ -1,0 +1,13 @@
+{
+  "run_slug": "2026-05-30-cy-mascot-expression-expansion",
+  "project_slug": "character-bible",
+  "exhibit_count": 5,
+  "kinds": {
+    "plate_verdict": 4,
+    "bible_add": 1
+  },
+  "evidence": {
+    "rich": 5
+  },
+  "source": "runs/2026-05-30-cy-mascot-expression-expansion/"
+}

@@ -1,0 +1,44 @@
+{
+  "project_slug": "character-bible",
+  "title": "Character Bible \u2014 building Cy in the open",
+  "run_count": 9,
+  "exhibit_count": 84,
+  "runs": [
+    [
+      "2026-05-29-cy-claude-mascot-production",
+      8
+    ],
+    [
+      "2026-05-29-cy-sean-anchor-production",
+      24
+    ],
+    [
+      "2026-05-29-cy-sean-anchor-rebake",
+      17
+    ],
+    [
+      "2026-05-30-cy-claude-mascot-pencil",
+      7
+    ],
+    [
+      "2026-05-30-cy-claude-mascot-pencil-bake",
+      8
+    ],
+    [
+      "2026-05-30-cy-claude-mascot-pencil-bake-v2",
+      7
+    ],
+    [
+      "2026-05-30-cy-mascot-expression-expansion",
+      5
+    ],
+    [
+      "2026-05-30-mascot-motion-ingest",
+      1
+    ],
+    [
+      "2026-05-31-mascot-colored-ingest",
+      1
+    ]
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "exhibit_id": "approved-keyframes",
+  "project_slug": "pencil-test",
+  "run_slug": "run_2026-04-04_173445",
+  "title": "Approved keyframes (2)",
+  "kind": "frame_keyframe",
+  "decision": {
+    "outcome": "approved",
+    "attempts": null,
+    "rationale": "",
+    "rationale_source": null
+  },
+  "phase": 5,
+  "persona": "human",
+  "date": "2026-04-04",
+  "prompt": null,
+  "references": [],
+  "output": null,
+  "frames": [
+    "assets/PT_A1_F01_key.png",
+    "assets/PT_A1_F40_key.png"
+  ],
+  "comparison_gif": null,
+  "verdict": null,
+  "cites_criteria": [],
+  "meta": {},
+  "evidence_completeness": "thin",
+  "source_paths": [
+    "runs/run_2026-04-04_173445/approved/"
+  ],
+  "schema_version": "1.0"
+}

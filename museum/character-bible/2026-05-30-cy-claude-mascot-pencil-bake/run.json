@@ -1,0 +1,13 @@
+{
+  "run_slug": "2026-05-30-cy-claude-mascot-pencil-bake",
+  "project_slug": "character-bible",
+  "exhibit_count": 8,
+  "kinds": {
+    "plate_verdict": 7,
+    "bible_mutation": 1
+  },
+  "evidence": {
+    "rich": 8
+  },
+  "source": "runs/2026-05-30-cy-claude-mascot-pencil-bake/"
+}

@@ -1,0 +1,22 @@
+{
+  "plates": [
+    {
+      "target_path": "motion_plates/idle-04.png",
+      "source": "hand-colored:Sean 2026-05-31 (4th idle key \u2014 risen breath peak; added during the colored pass)",
+      "cites_identity_rules": [
+        "IR.claude-mascot.proportion.rounded-box-silhouette",
+        "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+        "IR.claude-mascot.anatomy.four-stub-legs",
+        "IR.claude-mascot.anatomy.no-arms-no-hands",
+        "IR.claude-mascot.anatomy.no-hair",
+        "IR.claude-mascot.face.two-dot-eyes-with-brows",
+        "IR.claude-mascot.motion.idle-breath-volume",
+        "IR.claude-mascot.motion.no-arms-in-motion",
+        "IR.claude-mascot.palette.terracotta-orange-body",
+        "IR.claude-mascot.style.warm-graphite-line-cross-hatch",
+        "IR.claude-mascot.style.cream-paper-and-cast-shadow",
+        "IR.claude-mascot.face.construction-cross-line"
+      ]
+    }
+  ]
+}

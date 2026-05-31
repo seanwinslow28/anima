@@ -1,0 +1,41 @@
+{
+  "exhibit_id": "05-turnarounds-body-back",
+  "project_slug": "character-bible",
+  "run_slug": "2026-05-30-cy-claude-mascot-pencil",
+  "title": "Plate — turnarounds/body-back.png",
+  "kind": "plate_verdict",
+  "decision": {
+    "outcome": "human_gate_required",
+    "attempts": 1,
+    "rationale": "The plate violates two of the cited identity rules: 1. IR.claude-mascot.proportion.rounded-box-silhouette is violated because the body box is wider than it is tall (approx. 1.2:1 width:height ratio, ~200px wide by ~170px tall), which is the inverse of the requirement to be slightly taller than wide (approx. 1:1.2 width:height). 2. IR.claude-mascot.anatomy.four-stub-legs is violated because the front view shows only two legs without the back pair being partly occluded behind, and the side view shows three legs instead of only the two near legs (near front and near back) reading as required by the occlusion description. The remaining rules (IR.claude-mascot.anatomy.two-ear-arm-nubs, IR.claude-mascot.anatomy.no-arms-no-hands, and IR.claude-mascot.style.warm-graphite-line-cross-hatch) are honored.",
+    "rationale_source": "plate_verdicts.jsonl"
+  },
+  "phase": 2,
+  "persona": "cy",
+  "date": "2026-05-30",
+  "prompt": null,
+  "references": [],
+  "output": "assets/body-back.png",
+  "frames": [],
+  "comparison_gif": null,
+  "verdict": {
+    "method": "dinov2",
+    "score": 0.911,
+    "reference": "anchor.png",
+    "model_verdict": "fail",
+    "model_confidence": 0.95
+  },
+  "cites_criteria": [
+    "IR.claude-mascot.proportion.rounded-box-silhouette",
+    "IR.claude-mascot.anatomy.two-ear-arm-nubs",
+    "IR.claude-mascot.anatomy.four-stub-legs",
+    "IR.claude-mascot.anatomy.no-arms-no-hands",
+    "IR.claude-mascot.style.warm-graphite-line-cross-hatch"
+  ],
+  "meta": {},
+  "evidence_completeness": "rich",
+  "source_paths": [
+    "runs/2026-05-30-cy-claude-mascot-pencil/plate_verdicts.jsonl#L5"
+  ],
+  "schema_version": "1.0"
+}

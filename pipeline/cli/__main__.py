@@ -176,6 +176,16 @@ def main(argv: list[str] | None = None) -> int:
                 value=args.value,
                 content_version=args.new_version,
             )
+        if args.bible_cmd == "add":
+            return bible.add_to_bible(
+                run_dir=args.run_dir,
+                character_dir=args.character_dir,
+                force=args.force,
+                actor=args.actor,
+                reason=args.reason,
+                spec_path=args.spec,
+                content_version=args.content_version,
+            )
         if args.bible_cmd == "iterate":
             targets = [t.strip() for t in args.target.split(",") if t.strip()]
             rejected = [r.strip() for r in args.reject.split(",") if r.strip()]
