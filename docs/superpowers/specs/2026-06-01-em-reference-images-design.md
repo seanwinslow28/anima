@@ -15,7 +15,7 @@ Em, anima's T2 vision critic, **judges every frame against text only.** `VisionC
 
 The 2026-06-01 scored baseline quantified the cost: on the **performs** segment (clean + identity/style, n=23) Em scored **recall 1.00, false-pass 0.00, precision 0.62** — she caught every real defect and let through zero, but raised **8 false alarms on clean frames** (failing `clean_F13` and `clean_F31`, which Sean confirmed are unmistakably the correct Sean). With no reference to confirm "this *is* correctly Sean → pass," she has no licence to pass; she flags on whatever text-rule she can measure off the pixels. The precision gap is **reference-blindness, not over-strictness.**
 
-The fix is one shape: **give Em the Bible — its reference plates *and* its `IR.*`/`AC.*` criteria — as inputs.** The pre→post precision lift (recall should hold ~1.00, the 8 false alarms should resolve) is the portfolio artifact: the moment Em stopped grading blind.
+The fix is one shape: **give Em the Bible — its reference plates *and* its `IR.*`/`AC.*` criteria — as inputs.** The pre→post precision lift is the portfolio artifact: the moment Em stopped grading blind. But the same mechanism that lifts precision — granting Em *licence to pass* — is the mechanism that could regress `false_pass_rate` from its baseline 0.00, so recall-holding is the **vigilantly-watched guard, not an assumption** (§9): the headline is "precision rose *and* no false pass appeared," never precision alone.
 
 A second, adjacent finding from the same baseline's bake-off folds into this workstream (same runner surface): **the agy rate-cap wrapper bug** — a quota-exhausted empty response is reported `ok=True` and silently degrades every frame to `borderline` instead of erroring.
 
@@ -23,7 +23,7 @@ A second, adjacent finding from the same baseline's bake-off folds into this wor
 
 ## 2. Goal & scope
 
-**Goal.** Make Em reference-grounded: attach a capped Bible reference bundle + surface the character's IR/AC criteria, measure the precision lift against the locked baseline, and fix the two adjacent plumbing bugs the baseline surfaced — in one focused, TDD'd arc.
+**Goal.** Make Em reference-grounded: attach a capped Bible reference bundle + surface the character's IR/AC criteria, measure the precision lift **without regressing `false_pass_rate`/recall** against the locked baseline, and fix the two adjacent plumbing bugs the baseline surfaced — in one focused, TDD'd arc.
 
 **In scope:**
 1. A `select_references()` seam that returns a fixed, Bible-driven, capped reference bundle (approach **B**), with a signature ready for view-aware selection later (approach A) without an eval re-wire.
@@ -108,7 +108,7 @@ Prepend an explicit ordering block:
 
 > *"Image 1 is the frame under review. Images 2..N are identity/style reference plates from this character's Bible — the canonical truth for who the character is. Compare the subject against them. Do not flag a difference that the references confirm is correct; a feature that matches the references is correct even if it differs from a generic expectation."*
 
-This is the licence-to-pass Em lacks today — the §3.4 "reference-guided judging" defense made structural.
+This is the licence-to-pass Em lacks today — the §3.4 "reference-guided judging" defense made structural. **It is also a sycophancy surface** (the one confirmed 58% bias number): "do not flag a difference the references confirm is correct" is correct, but phrased too strong it over-suppresses flagging and waves real drift through. The wording stays **deliberately conservative**, and its empirical guard is the `false_pass_rate` (§9) — the prompt grants licence-to-pass; the matrix is what proves the licence wasn't abused.
 
 ### 5.3 Surface the criteria (`_build_prompt` + read `ctx.criteria`)
 Em reads `ctx.criteria` (the `CriteriaBundle`, currently never read) and surfaces, as a terse labeled list:
@@ -118,6 +118,8 @@ query_by_character(character_id) ∩ query_by_phase(phase)
 ```
 
 where `phase` derives from the checkpoint (`phase_5_generate`→5, `phase_6_motion`→6, `phase_8_assemble`→8). The block reads: *"Here are the IR/AC rules for this character at this phase; cite by ID the ones you observe drift on."* — the Databricks Grading-Notes pattern (handbook §3.4). When `ctx.criteria is None` (pencil-test legacy runs), the block is omitted gracefully and Em behaves as today (no regression).
+
+**Designed behavior on an empty intersection.** `query_by_character ∩ query_by_phase` can legitimately be empty — e.g. a character whose IR rules aren't tagged at `phase_6`. That yields an empty criteria block at that checkpoint, which is *correct* (no rules to cite), not a bug; Em falls back to her standing context as today. This is verified by TDD (a phase with no matching rules surfaces no block and does not crash), so the empty case is designed, not a surprise. (Sean's Bible *does* carry `motion`-category rules tagged at phase 6, so the phase-6 intersection is non-empty where it matters today.)
 
 This is the criteria half of "give Em the Bible," and it is what flips case-7 green.
 
@@ -170,11 +172,13 @@ With Component B loading criteria, Em then cites an `IR.sean.*` rule against the
 
 ## 9. The re-baseline discipline (the headline, kept honest)
 
-After the code lands, re-run the live scorer and the bake-off. Three disciplines from the handbook, stated so they don't drift:
+After the code lands, re-run the live scorer and the bake-off. The disciplines, stated so they don't drift — **the false-pass guard first, because the intervention's mechanism is the risk's mechanism:**
 
-1. **Labels stay locked.** When precision rises, the cases are **not** re-labeled to flatter Em (Goodhart / handbook §2). "Re-ratification" means Sean re-confirms the locked `af7950d` labels still stand — the baseline *number* moves, the labels don't, unless a genuine validity error surfaces (and that is a separate, surfaced edit, never a quiet one). **A human gate:** any label that would flip is presented to Sean and re-ratified *before* lock.
-2. **Report the pre/post delta with `stderr()`.** The performs segment is ~23 cases; a precision move from 0.62 needs its standard error to separate a real lift from noise. `scoring.py` already has `stderr()`; apply it to the delta and do not over-claim a lift inside the noise band.
-3. **Re-run the bake-off + pin/record model snapshots.** All three models were equally reference-blind and Gemini's column was quota-invalid, so the T2 model decision can only be licensed after references land + the rate-cap fix. Re-run `evals/bakeoffs/2026-05-31-t2-vision-critic-gemini-vs-sonnet-vs-opus/bakeoff.py`, record the exact model snapshots (the silent-regression catcher, §4), write the Decision section. (If Gemini quota is still throttled, the now-fixed `RateCapExhausted` makes that an honest errored column rather than a fabricated borderline one; a fully-valid three-way may then be a same-day re-run after quota reset.)
+1. **The false-pass guard is the primary watch, not precision.** Giving Em references grants "licence to pass" — that is exactly what resolves the 8 clean-frame false alarms *and* exactly what can make her wave a real defect through. The bake-off already demonstrated this: Opus, the voice that licensed the most passes, produced the workstream's only false pass (`stylus-hand-f13-cc01`, a real CC01 defect). The reference-blind baseline's `false_pass_rate = 0.00` / `recall = 1.00` is the number **most at risk of regressing**, and it is the *costly* error (handbook §4). So the headline is not "precision rose" — it is **"precision rose AND `false_pass_rate` stayed 0.00 / recall held."** A precision lift that costs *any* false pass on the performs segment is a **worse Em, not a better one**, and blocks the change. Report precision, recall, *and* false-pass deltas, each with `stderr`.
+2. **Report every delta with `stderr()`.** The performs segment is ~23 cases; a move from precision 0.62 (or any recall slip) needs its standard error to separate signal from noise. `scoring.py` already has `stderr()`; apply it to each delta and do not over-claim a lift inside the noise band.
+3. **`cites-correct` is the second headline lift — the clean proof the criteria-half worked.** Surfacing `IR.*`/`AC.*` rules should move `cites-correct` (baseline 0.43 performs / 0.33 overall) at least as cleanly as references move precision. It is arguably the *cleaner* portfolio data point: references resolve false alarms (a precision story that the false-pass guard complicates), but `cites-correct` rising is unambiguous evidence the Bible's rules became first-class context Em grounds in. Report its pre/post delta with `stderr` alongside precision.
+4. **Labels stay locked.** When precision rises, the cases are **not** re-labeled to flatter Em (Goodhart / handbook §2). "Re-ratification" means Sean re-confirms the locked `af7950d` labels still stand — the baseline *number* moves, the labels don't, unless a genuine validity error surfaces (and that is a separate, surfaced edit, never a quiet one). **A human gate:** any label that would flip is presented to Sean and re-ratified *before* lock.
+5. **Re-run the bake-off + pin/record model snapshots.** All three models were equally reference-blind and Gemini's column was quota-invalid, so the T2 model decision can only be licensed after references land + the rate-cap fix. Re-run `evals/bakeoffs/2026-05-31-t2-vision-critic-gemini-vs-sonnet-vs-opus/bakeoff.py`, record the exact model snapshots (the silent-regression catcher, §4), write the Decision section — judging the candidates on the **false-pass-first** lens (cf. the prior round, where Sonnet ≥ Opus precisely because Opus's extra "sharpness" came from a false pass). (If Gemini quota is still throttled, the now-fixed `RateCapExhausted` makes that an honest errored column rather than a fabricated borderline one; a fully-valid three-way may then be a same-day re-run after quota reset.)
 
 **Run mechanics:** the live `score.py` is ~25–80s/case, ~24 min total — **run in the background**; mind the consumer-tier agy/Gemini quota. `--stub` forces the credential-free path for plumbing checks.
 
@@ -222,7 +226,7 @@ Explicit, not silent gaps:
 - agy `RateCapExhausted` fix ships with the empty-vs-malformed distinction; unit-tested.
 - case-7 flips xfail→green (validity + ID alignment).
 - Eval re-wired for structural parity (`character_id` + shared `select_references`); CI harness green, motion cases red.
-- Live re-baseline run (background) → new `last-run.md` + dated trace, showing the precision lift with `stderr` on the delta; **labels re-ratified by Sean before lock**.
+- Live re-baseline run (background) → new `last-run.md` + dated trace, showing the precision lift **with `false_pass_rate` held at 0.00 / recall held** and `cites-correct` risen, each delta carrying `stderr`; **labels re-ratified by Sean before lock**. (A precision lift that costs any false pass blocks the change — §9.)
 - Bake-off re-run with pinned snapshots → updated `results.md` decision.
 - Docs: CHANGELOG, CLAUDE.md Em row, dated field report, the three follow-ons logged.
 - `tests/` (242) + `evals/vision_critic/runner.py` green.
@@ -231,6 +235,7 @@ Explicit, not silent gaps:
 
 ## 14. Risks
 
+- **References grant licence-to-pass; the danger is recall slips / a false pass appears** (cf. Opus in the bake-off — its lone false pass `stylus-hand-f13-cc01` came from the same licence-to-pass this change hands Em). This is the *costly* error and the metric most at risk of regressing from `false_pass_rate = 0.00`. **Mitigation + named escalation:** the false-pass guard is the §9 primary watch; and **if the re-baseline shows *any* false pass on the performs segment, that promotes follow-on #3 (the DINOv2 deterministic identity backstop) from deferred to *next*** — it is the deterministic guard against exactly the drift a now-licensed Em might wave through. The risk is coupled to its mitigation, not left hanging.
 - **Precision lift lands inside the `stderr` noise band** (~23 cases). Mitigation: report the band honestly; a small-but-clear lift still validates the direction, and the discipline is to not over-claim. A null result is itself the evidence-backed trigger for approach A.
 - **agy quota still throttled at re-baseline time.** Now surfaces as an honest errored column (the fix), not a fabricated borderline. The Gemini bake-off column may need a post-quota-reset re-run — acceptable; the Sonnet/Opus columns are valid meanwhile.
 - **`character_id → folder` resolver edge cases** (a future multi-Bible frame). v1 default-to-single-Bible is honest for the pencil test; multi-character shots are an A-adjacent concern, flagged not built.
