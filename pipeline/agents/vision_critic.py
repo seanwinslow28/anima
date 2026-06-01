@@ -194,6 +194,32 @@ class VisionCriticNode:
             f"proposed_patches / cites_criteria. Nothing else."
         )
 
+        # Phase 6 motion: the attached image is a contact sheet sampling a
+        # clip, not a single still. Be explicit about the limit of looking —
+        # a contact sheet shows content across time (identity, style,
+        # continuity) but NOT motion-proper. Telling Em this is what stops a
+        # shuffled-frame guess from laundering itself into a motion verdict.
+        # (docs/research/2026-05-31-ai-evals-best-practices-...md §3.5)
+        if checkpoint == "phase_6_motion":
+            sections.append(
+                "## Contact-sheet honesty (Phase 6 motion review)\n\n"
+                "The attached image is a CONTACT SHEET sampling this motion "
+                "clip: panels read left-to-right, top-to-bottom as time "
+                "(t0, t1, ... earliest to latest). You are NOT seeing the "
+                "clip play.\n\n"
+                "You CAN assess, across the strip: identity continuity (does "
+                "Sean stay Sean t0->tN), style/register hold (line weight, "
+                "paper grain, palette), stylus-hand continuity, outfit "
+                "consistency, gross pose progression against the beat.\n\n"
+                "You CANNOT assess from static frames: motion smoothness, "
+                "jitter/skating, temporal flicker, or texture-crawl/boiling. "
+                "Do NOT issue a verdict on those — you cannot see them in a "
+                "contact sheet. If the beat's success depends on motion-proper "
+                "quality, say so explicitly in your reasoning and defer it to "
+                "a human look or a deterministic metric. Judge only what the "
+                "strip can show; name the limit rather than guessing past it."
+            )
+
         return "\n\n".join(sections)
 
     def _parse(self, text: str, *, default_verdict: str) -> dict[str, Any]:
