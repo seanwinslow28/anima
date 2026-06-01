@@ -19,6 +19,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import yaml
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from pipeline.agents import AgentContext
 from pipeline.agents.vision_critic import VisionCriticNode
@@ -163,9 +166,38 @@ def main() -> None:
     else:
         model_label = "production: gemini-3.1-pro@agy + opus-4.7-escalation"
 
-    scores = [_score_one(c, manifest) for c in CASES]
+    # Per-case resilience: a scoring harness must not let ONE bad case abort a
+    # ~24-min live run. Em's cites_criteria invariant legitimately raises a
+    # ValueError when a model returns a blocking verdict with no citation (e.g.
+    # a JSON parse-failure → defensive borderline + empty cites); a single such
+    # case used to kill the whole baseline. We catch per case, record errors
+    # HONESTLY (excluded from the matrix, listed explicitly — never fabricated
+    # into a verdict), and print incremental progress so the failure point is
+    # always visible.
+    scores: list[CaseScore] = []
+    errored: list[tuple[str, str]] = []
+    for i, c in enumerate(CASES, 1):
+        try:
+            cs = _score_one(c, manifest)
+            scores.append(cs)
+            print(f"[{i}/{len(CASES)}] {c['name']}: {cs.predicted_verdict} "
+                  f"(conf={cs.confidence:.2f}, {cs.wall_s:.0f}s)", flush=True)
+        except Exception as exc:  # noqa: BLE001 — record, don't abort
+            errored.append((c["name"], f"{type(exc).__name__}: {exc}"))
+            print(f"[{i}/{len(CASES)}] {c['name']}: ERRORED — {type(exc).__name__}: {exc}",
+                  flush=True)
+
     report = segment_report(scores)
     md = render_last_run_md(report, model_label=model_label, n_total=len(scores))
+    if errored:
+        lines = ["", "## Errored cases (excluded from the matrix — NOT scored)", ""]
+        lines += [f"- `{name}` — {err}" for name, err in errored]
+        lines += ["",
+                  f"_{len(errored)} of {len(CASES)} cases errored. A blocking "
+                  "verdict with empty cites (Em's invariant) or a runner error "
+                  "lands here rather than aborting the run. These are honest "
+                  "gaps, not passes._", ""]
+        md = md + "\n" + "\n".join(lines)
 
     (HERE / "last-run.md").write_text(md, encoding="utf-8")
     trace = HERE / "traces" / f"baseline-{datetime.now(timezone.utc):%Y-%m-%d}-scored.md"
@@ -173,6 +205,8 @@ def main() -> None:
     trace.write_text(md, encoding="utf-8")
     print(md)
     print(f"\nWrote {HERE/'last-run.md'} and {trace}")
+    if errored:
+        print(f"\n⚠ {len(errored)}/{len(CASES)} cases errored (see report).")
 
 
 if __name__ == "__main__":
