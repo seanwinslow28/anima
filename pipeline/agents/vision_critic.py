@@ -89,22 +89,47 @@ class VisionCriticNode:
 
         prompt = self._build_prompt(ctx, t2_cfg)
 
-        gemini = asyncio.run(run_antigravity_with_image(
-            prompt=prompt,
-            image_paths=[image_path],
-            timeout_s=timeout_s,
-        ))
-        parsed = self._parse(gemini.text, default_verdict="borderline")
-        escalated = False
+        is_video = image_path.suffix.lower() in {".mp4", ".webm", ".mov", ".gif"}
+        temp_contact_sheet_path = None
+        model_image_path = image_path
 
-        if forced_escalation or parsed["confidence"] < threshold:
-            opus = asyncio.run(invoke_opus_vision(
+        if is_video:
+            from pipeline.contact_sheet import build_contact_sheet
+            temp_dir = ctx.run_dir / "temp_contact_sheets"
+            temp_dir.mkdir(parents=True, exist_ok=True)
+            frame_id = ctx.inputs.get("frame_id", "clip")
+            temp_contact_sheet_path = temp_dir / f"contact_sheet_{frame_id}.png"
+            build_contact_sheet(
+                source=image_path,
+                out_path=temp_contact_sheet_path,
+                n=6,
+                cols=3,
+            )
+            model_image_path = temp_contact_sheet_path
+
+        try:
+            gemini = asyncio.run(run_antigravity_with_image(
                 prompt=prompt,
-                image_paths=[image_path],
+                image_paths=[model_image_path],
                 timeout_s=timeout_s,
             ))
-            parsed = self._parse(opus.text, default_verdict="borderline")
-            escalated = True
+            parsed = self._parse(gemini.text, default_verdict="borderline")
+            escalated = False
+
+            if forced_escalation or parsed["confidence"] < threshold:
+                opus = asyncio.run(invoke_opus_vision(
+                    prompt=prompt,
+                    image_paths=[model_image_path],
+                    timeout_s=timeout_s,
+                ))
+                parsed = self._parse(opus.text, default_verdict="borderline")
+                escalated = True
+        finally:
+            if temp_contact_sheet_path and temp_contact_sheet_path.exists():
+                try:
+                    temp_contact_sheet_path.unlink()
+                except Exception:
+                    pass
 
         verdict = parsed["verdict"]
         cites = list(parsed.get("cites_criteria", []) or [])
