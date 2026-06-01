@@ -8,11 +8,11 @@ created: 2026-05-31
 cases_ref: evals/vision_critic/cases.yaml
 variants:
   - id: gemini
-    label: "gemini-3.1-pro@agy"
+    label: "gemini-3.1-pro-via-anti-gravity"
     runner: antigravity         # run_antigravity_with_image
   - id: sonnet
-    label: "claude-sonnet-4-6@sdk"
+    label: "claude-sonnet-4-6-via-sdk"
     runner: sonnet_vision       # invoke_sonnet_vision
   - id: opus
-    label: "claude-opus-4-7@sdk"
+    label: "claude-opus-4-7-via-sdk"
     runner: opus_vision         # invoke_opus_vision

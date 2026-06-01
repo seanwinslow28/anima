@@ -2,8 +2,8 @@
 """T2 vision-critic three-way bake-off — Gemini vs Sonnet vs Opus.
 
 Mirrors pipeline/seedance_bakeoff.py's variant shape. Only default_model
-varies; prompt + standing context + cases held constant; no escalation.
-Reuses Em's _build_prompt + _parse via evals.vision_critic.bakeoff_lib.
+varies; prompt + standing context + cases held constant. Reuses Em's
+_build_prompt + _parse via evals.vision_critic.bakeoff_lib.
 
 Usage (deliberate, costed ~$5, subscription-absorbed):
     .venv/bin/python evals/bakeoffs/2026-05-31-t2-vision-critic-gemini-vs-sonnet-vs-opus/bakeoff.py
@@ -16,6 +16,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import yaml
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from evals.vision_critic.bakeoff_lib import score_config
 from evals.vision_critic.scoring import segment_report
@@ -52,6 +55,7 @@ def main() -> None:
     ]
     (HERE / "traces").mkdir(exist_ok=True)
     for v in chosen:
+        print(f"Running bake-off for variant: {v['label']}...")
         scores = score_config(variant=v, cases=cases, fixtures=FIXTURES, manifest=manifest)
         report = segment_report(scores)
         md = render_last_run_md(report, model_label=v["label"], n_total=len(scores))
