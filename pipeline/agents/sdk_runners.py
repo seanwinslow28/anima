@@ -76,24 +76,15 @@ def _sdk_available() -> bool:
         return False
 
 
-def _stub_response(prompt: str, image_paths: list[Path]) -> SDKResponse:
-    """Deterministic structured stub for the escalation path.
-
-    Returns a borderline verdict at confidence 0.78 — high enough to be
-    distinguishable from the Gemini stub (0.65) so the vision_critic.py
-    routing tests can confirm which branch fired. Cites AC01 so the
-    cites_criteria invariant is satisfied.
-    """
+def _stub_vision_response(model: str, prompt: str, image_paths: list[Path]) -> SDKResponse:
+    """Deterministic structured stub for any vision model (escalation/bake-off)."""
     payload = {
         "verdict": "borderline",
         "confidence": 0.78,
         "reasoning": (
-            "STUB FALLBACK — claude-agent-sdk + anthropic SDK both "
-            "unavailable. Returning a borderline verdict at confidence "
-            "0.78 from the escalation path so the routing logic and "
-            "downstream contract tests exercise both branches. Install "
-            "claude-agent-sdk (preferred — uses Claude Code subscription "
-            "auth) or set ANTHROPIC_API_KEY to get real Opus 4.7 critique."
+            f"STUB FALLBACK — no SDK available for {model}. Borderline @0.78 so "
+            "routing + contract tests exercise the path. Install claude-agent-sdk "
+            "or set ANTHROPIC_API_KEY for real vision critique."
         ),
         "proposed_patches": [],
         "cites_criteria": ["AC01"],
@@ -108,29 +99,27 @@ def _stub_response(prompt: str, image_paths: list[Path]) -> SDKResponse:
     )
 
 
-async def invoke_opus_vision(
+async def _invoke_vision(
     *,
+    model: str,
     prompt: str,
     image_paths: list[Path],
     timeout_s: int = 120,
 ) -> SDKResponse:
-    """Invoke Opus 4.7 with a prompt + one-or-more images.
-
-    Returns SDKResponse with the structured-JSON text payload. Falls back to
-    a deterministic stub when no SDK is available.
-    """
+    """Shared vision call path (model is a parameter). Mirrors the prior
+    invoke_opus_vision body; the only change is `model` is no longer hardcoded."""
     if not _sdk_available():
-        return _stub_response(prompt, image_paths)
+        return _stub_vision_response(model, prompt, image_paths)
 
     start = time.monotonic()
     try:
         return await asyncio.wait_for(
-            _invoke_real(prompt=prompt, image_paths=image_paths),
+            _invoke_real_vision(model=model, prompt=prompt, image_paths=image_paths),
             timeout=timeout_s,
         )
     except asyncio.TimeoutError:
         return SDKResponse(
-            model=OPUS_MODEL,
+            model=model,
             text="",
             duration_s=time.monotonic() - start,
             exit_code=124,
@@ -138,7 +127,7 @@ async def invoke_opus_vision(
         )
     except Exception as exc:
         return SDKResponse(
-            model=OPUS_MODEL,
+            model=model,
             text="",
             duration_s=time.monotonic() - start,
             exit_code=1,
@@ -146,14 +135,48 @@ async def invoke_opus_vision(
         )
 
 
-async def _invoke_real(*, prompt: str, image_paths: list[Path]) -> SDKResponse:
-    """Real Opus 4.7 vision call. Tries claude-agent-sdk first, then anthropic.
+async def invoke_opus_vision(
+    *,
+    prompt: str,
+    image_paths: list[Path],
+    timeout_s: int = 120,
+) -> SDKResponse:
+    """Opus 4.7 vision (Em's escalation seat). Unchanged behavior; now delegates."""
+    return await _invoke_vision(
+        model=OPUS_MODEL,
+        prompt=prompt,
+        image_paths=image_paths,
+        timeout_s=timeout_s,
+    )
+
+
+async def invoke_sonnet_vision(
+    *,
+    prompt: str,
+    image_paths: list[Path],
+    timeout_s: int = 120,
+) -> SDKResponse:
+    """Sonnet 4.6 vision — the bake-off's middle voice. Added 2026-05-31."""
+    return await _invoke_vision(
+        model=SONNET_MODEL,
+        prompt=prompt,
+        image_paths=image_paths,
+        timeout_s=timeout_s,
+    )
+
+
+async def _invoke_real_vision(
+    *,
+    model: str,
+    prompt: str,
+    image_paths: list[Path],
+) -> SDKResponse:
+    """Real vision call. Tries claude-agent-sdk first, then anthropic.
 
     Vision via claude-agent-sdk uses the async-iterable form of `query` so
     image content blocks ride alongside the text in the user message. The
     anthropic SDK path builds the equivalent `messages.create` payload.
-    Both return JSON conforming to vision_critic.py's parser expectations
-    (the model's system prompt instructs the JSON schema).
+    Both return JSON conforming to vision_critic.py's parser expectations.
     """
     start = time.monotonic()
     image_blocks = [_to_image_block(p) for p in image_paths]
@@ -165,11 +188,11 @@ async def _invoke_real(*, prompt: str, image_paths: list[Path]) -> SDKResponse:
         try:
             text = await _call_csdk(
                 claude_agent_sdk,
-                model=OPUS_MODEL,
+                model=model,
                 content_blocks=content_blocks,
             )
             return SDKResponse(
-                model=OPUS_MODEL,
+                model=model,
                 text=text,
                 duration_s=time.monotonic() - start,
                 exit_code=0,
@@ -185,7 +208,7 @@ async def _invoke_real(*, prompt: str, image_paths: list[Path]) -> SDKResponse:
     import anthropic  # type: ignore[import-not-found]
     client = anthropic.AsyncAnthropic()
     resp = await client.messages.create(
-        model=OPUS_MODEL,
+        model=model,
         max_tokens=2048,
         messages=[{"role": "user", "content": content_blocks}],
     )
@@ -193,7 +216,7 @@ async def _invoke_real(*, prompt: str, image_paths: list[Path]) -> SDKResponse:
         block.text for block in resp.content if getattr(block, "type", "") == "text"
     )
     return SDKResponse(
-        model=OPUS_MODEL,
+        model=model,
         text=text,
         duration_s=time.monotonic() - start,
         exit_code=0,
