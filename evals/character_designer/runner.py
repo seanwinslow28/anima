@@ -365,7 +365,7 @@ def _patch_cy_runners(
     opus_payloads: list[str],
     gemini_payloads: list[str],
 ) -> None:
-    """Patch invoke_opus_text + invoke_nb_pro + run_antigravity_with_image with
+    """Patch invoke_opus_text + invoke_image_edit + run_antigravity_with_image with
     queued responses. Mirrors the planner-suite's _patch_runners shape."""
     opus_q = list(opus_payloads)
     gemini_q = list(gemini_payloads)
@@ -398,5 +398,5 @@ def _patch_cy_runners(
         "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini,
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.invoke_nb_pro", fake_nb_pro,
+        "pipeline.agents.character_designer.invoke_image_edit", fake_nb_pro,
     )
