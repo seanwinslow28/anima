@@ -12,8 +12,14 @@ Usage (deliberate, costed ~$5, subscription-absorbed):
 from __future__ import annotations
 
 import argparse
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
+
+# Run-as-script bootstrap: this file lives in a dated, non-package dir, so when
+# invoked directly (`python evals/bakeoffs/.../bakeoff.py`) the repo root isn't
+# on sys.path and `import evals` fails. Put the repo root (parents[3]) first.
+sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 
 import yaml
 from dotenv import load_dotenv
