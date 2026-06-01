@@ -26,6 +26,15 @@
 #
 # Ships-red discipline: do NOT tune a case until Em passes it. Editing a label
 # is legitimate ONLY if the label was wrong (a validity fix), never to flatter Em.
+#
+# RATIFIED by Sean 2026-06-01 after the live baseline + frame review. Labels kept
+# UNCHANGED. The 8 "clean" frames Em flagged (F13/F31/head-turn-02/06 → fail;
+# F06/head-profile-left/neutral/contemplative → borderline) are CORRECTLY labeled
+# pass — Sean confirmed F13/F31 are unmistakably the right Sean. Em's flags are
+# REFERENCE-BLINDNESS (she gets no anchor image, only text), not bad frames. So
+# the performs-segment precision (0.62) is the honest reference-blind baseline,
+# and giving Em reference images is the locked #1 next fix
+# (docs/anima-test-runs/2026-06-01-em-reference-blindness-FINDING.md).
 
 cases:
 
