@@ -78,7 +78,7 @@ The critic earns its keep when it proposes fixes, not when it flags problems. Th
 | **T2** | Vision critic — Claude or Gemini reviews output against beat description + style guide. **Proposes prompt diffs**, not pass/fail. | Per major node output (Generate, Motion, Assemble) | ~$0.01–0.05 per call, 5–15s |
 | **T3** | Multi-CLI variance — Codex CLI + Anti-Gravity CLI run in parallel. The vault-critic pattern, $0 incremental on subscriptions. | Phase transitions only | $0 incremental, ~120s per CLI |
 
-Placement of the five named checkpoints is locked here in commit 1. Implementation of T2 + T3 belongs to the agent-fleet session. Phase 7 Audit's role has changed: it is no longer *where critique happens*; it is where critique findings are *consolidated and routed* to the retry ladder.
+The five named checkpoints are placement-locked. T2 (Em) has shipped **and is now scored against a labeled baseline** (`evals/vision_critic/`, with a known reference-blindness gap — the locked #1 next fix); the T3 council is still pending. Phase 7 Audit no longer *hosts* critique — it *consolidates and routes* critic findings to the retry ladder.
 
 ## Draft → Pro Escalation
 
@@ -104,7 +104,7 @@ characters/{character_id}/
 
 The manifest references characters by ID; the generator auto-loads the relevant Bible sheets per shot. Bible authoring is itself a use case anima supports — the same pipeline that consumes a Bible can also produce one, with its own Project-Type template (authoring-first).
 
-The migration from `images/2D-Character-Sketch-Sean-v1.png` → `characters/sean-anchor/anchor.png` shipped in commit 2.0 (2026-05-28). The legacy path is now a back-compat symlink resolving to the new location; it stays in place through commit 7 (Animatic ingestion lands and Act 2 work is structurally complete), then retires. Pencil-test scripts that haven't been updated to the new path keep working unchanged during the back-compat window.
+The migration from `images/2D-Character-Sketch-Sean-v1.png` → `characters/sean-anchor/anchor.png` shipped 2026-05-28. The legacy path is now a back-compat symlink to the new location, keeping unported pencil-test scripts working unchanged; it retires once Animatic ingestion lands and Act 2 is structurally complete.
 
 ## Source of Truth Documents
 
@@ -114,11 +114,11 @@ The migration from `images/2D-Character-Sketch-Sean-v1.png` → `characters/sean
 | **Production Checklist** | [`docs/production-checklist.md`](docs/production-checklist.md) | Current status of the in-flight pencil-test work — phases, frames, assets |
 | Pipeline v2 Brainstorm | [`docs/2026-05-24-pipeline-v2-brainstorm.md`](docs/2026-05-24-pipeline-v2-brainstorm.md) | Historical artifact — the 15-idea PM/Designer/Engineer brainstorm that produced the v2 lock. Read for *why*, not *what* |
 | Pipeline v2 Change Map | [`docs/2026-05-24-pipeline-v2-change-map.md`](docs/2026-05-24-pipeline-v2-change-map.md) | Historical artifact — 9-commit sequence, file-by-file delta, DAG library rationale, evals workstream scope |
-| **Maya Planner Brainstorm** | [`docs/2026-05-26-maya-planner-brainstorm.md`](docs/2026-05-26-maya-planner-brainstorm.md) | Phase 0 design decisions — Top 5 locked (two-tier brief, graph criteria, cost-estimator AgentSpec, audited mutation contract, adversarial Sonnet pass), deferred items with promotion triggers, file map. Drives commits 3 + 3b |
-| **Anti-Gravity CLI Findings** | [`docs/research/2026-05-26-anti-gravity-cli-findings.md`](docs/research/2026-05-26-anti-gravity-cli-findings.md) | The Antigravity CLI migration — binary `gemini` → `agy`, new flag shape, `@path` image attachment, 2026-06-18 sunset. Drives commit 8.1 (Em's CLI wrapper patch) |
+| **Maya Planner Brainstorm** | [`docs/2026-05-26-maya-planner-brainstorm.md`](docs/2026-05-26-maya-planner-brainstorm.md) | Phase 0 design decisions — Top 5 locked (two-tier brief, graph criteria, cost-estimator AgentSpec, audited mutation contract, adversarial Sonnet pass), deferred items with promotion triggers, file map |
+| **Anti-Gravity CLI Findings** | [`docs/research/2026-05-26-anti-gravity-cli-findings.md`](docs/research/2026-05-26-anti-gravity-cli-findings.md) | The Antigravity CLI migration — binary `gemini` → `agy`, new flag shape, `@path` image attachment, 2026-06-18 sunset |
 | **Prompt Style-Neutrality Doctrine** | [`docs/prompt-style-neutrality-doctrine.md`](docs/prompt-style-neutrality-doctrine.md) | One-page doctrine on keeping anima's prompts style-agnostic across the six closed-vocabulary style registers. Enforced at CI time by [`tests/test_prompt_style_neutrality.py`](tests/test_prompt_style_neutrality.py). Read before adding a new register or editing a standing-context preamble |
-| **Museum Exhibit Schema** | [`docs/museum-exhibit-schema.md`](docs/museum-exhibit-schema.md) | **The load-bearing data model for the Museum capture layer (shipped 2026-05-31).** Exhibit/Decision/Verdict fields, the `museum/{project_slug}/{run_slug}/` tree, `derive_project_slug`, and the structural honesty contract (thin exhibits are truthful, never invented). Read before touching `pipeline/museum/` or `museum/` |
-| **AI Evals Best Practice + Fleet Eval Strategy** | [`docs/research/2026-05-31-ai-evals-best-practices-and-anima-eval-strategy.md`](docs/research/2026-05-31-ai-evals-best-practices-and-anima-eval-strategy.md) | **The eval handbook for the fleet — read before building or scoring ANY agent's eval suite.** Verified 2026 best practice (error-analysis-first, binary cases, ships-red, sample size, class balance), the LLM-as-judge calibration procedure + the corrected judge-bias ledger (three brainstorm §2.5 numbers were verified and fixed — this doc's ledger wins over §2.5), the vision/motion-judge findings (incl. the load-bearing "MLLMs pass shuffled frames" → contact sheets see identity/style across a clip but NOT motion-proper), metrics-per-agent-type, borrow-vs-build tooling (hand-rolled stays; DeepEval the one candidate dependency), and the **per-agent-type eval-strategy matrix** for Maya / Cy / Em / Mo / Flo / Sam / Bea / T3 / orchestrator + the run-over-run "100% solid" health signals. Methodological basis for the critic-spine hardening kickoff and every agent baseline that follows. |
+| **Museum Exhibit Schema** | [`docs/museum-exhibit-schema.md`](docs/museum-exhibit-schema.md) | **The load-bearing data model for the Museum capture layer.** Exhibit/Decision/Verdict fields, the `museum/{project_slug}/{run_slug}/` tree, `derive_project_slug`, and the structural honesty contract (thin exhibits are truthful, never invented). Read before touching `pipeline/museum/` or `museum/` |
+| **AI Evals Best Practice + Fleet Eval Strategy** | [`docs/research/2026-05-31-ai-evals-best-practices-and-anima-eval-strategy.md`](docs/research/2026-05-31-ai-evals-best-practices-and-anima-eval-strategy.md) | **The eval handbook for the fleet — read before building or scoring ANY agent's eval suite.** Verified 2026 best practice (error-analysis-first, binary cases, ships-red, class balance), the LLM-as-judge calibration procedure + corrected judge-bias ledger (overrides brainstorm §2.5), the vision/motion-judge findings (contact sheets see identity/style across a clip but NOT motion-proper), borrow-vs-build tooling, and the **per-agent-type eval-strategy matrix** (Maya / Cy / Em / Mo / Flo / Sam / Bea / T3 / orchestrator). Methodological basis for the critic-spine kickoff and every agent baseline. |
 | Manifest | [`manifest.yaml`](manifest.yaml) | Pipeline configuration — current state has both the pencil-test reference blocks and the new optional v2 schema blocks |
 | Changelog | [`CHANGELOG.md`](CHANGELOG.md) | Decision history — what changed, why, and lessons learned |
 | **Seedance Prompt Template (v4)** | [`prompts/seedance-template-v4.md`](prompts/seedance-template-v4.md) | Canonical Seedance 2.0 prompt template. Fast tier is the production default. Also packaged as the portable `seedance-prompting` skill at `~/.claude/skills/seedance-prompting/SKILL.md` |
@@ -132,7 +132,7 @@ The pencil-test work is anima's first reference implementation, not the whole pr
 |----------|------|---------------------------|
 | Storyboard | [`docs/pencil-test-storyboard.md`](docs/pencil-test-storyboard.md) | Complete storyboard — 7 beats, 2 acts, frame counts |
 | Keyframe Prompts (Act 1, archived) | [`docs/COMPLETED/act1-keyframe-prompts.md`](docs/COMPLETED/act1-keyframe-prompts.md) | 6 Gemini prompts that produced the Act 1 key poses (shipped — kept for re-runs) |
-| A-2 Anchor | [`characters/sean-anchor/anchor.png`](characters/sean-anchor/anchor.png) | Identity reference for the Sean character. Migrated 2026-05-28 in commit 2.0; legacy path [`images/2D-Character-Sketch-Sean-v1.png`](images/2D-Character-Sketch-Sean-v1.png) is a back-compat symlink through commit 7 |
+| A-2 Anchor | [`characters/sean-anchor/anchor.png`](characters/sean-anchor/anchor.png) | Identity reference for the Sean character. Migrated 2026-05-28; legacy path [`images/2D-Character-Sketch-Sean-v1.png`](images/2D-Character-Sketch-Sean-v1.png) is a back-compat symlink until Animatic lands |
 | Act 2 Seedance Shot List | [`docs/act2-seedance-shot-list.md`](docs/act2-seedance-shot-list.md) | Current source of truth for Act 2 — 10 clips + 4 holds, anchor frame paths, draft prompts, fallback strategies |
 | Act 2 Seedance Execution Plan | [`docs/2026-04-27-act2-seedance-execution-plan.md`](docs/2026-04-27-act2-seedance-execution-plan.md) | Approved 12-task implementation plan for the Seedance generation phase |
 | Round 2 Beat Decisions | [`runs/act2-exploration/concepts/round2-decisions.md`](runs/act2-exploration/concepts/round2-decisions.md) | Locked Act 2 11-beat sheet |
@@ -154,15 +154,15 @@ Skills map to the 10-phase architecture. Most carry over from the pencil-test er
 | `comfyui-workflows` | 5 Generate (in-betweens) | OpenPose ControlNet in-between generation, IPAdapter identity lock |
 | `seedance-prompting` (portable) | 6 Motion | Locked v4 Seedance prompt template; auto-loads in any project |
 | `video-animation-production` | 6 Motion, 8 Assemble | FFmpeg frame sequence assembly, two-pass GIF optimization, WebM/MP4 export |
-| `planner` — Maya | 0 Brief & Plan | Opus 4.8 primary → Sonnet 4.6 adversarial validation → human gate. Emits two-tier brief (Studio + Production) + v1.1 graph-shaped `acceptance_criteria.json` + clean-markdown `plan.md` + `RunCostEstimate` from `CostEstimatorNode`. Three-call ceiling. `project_type: bible_authoring` scopes plan.md to Phase 0 + Phase 2 only. CLI: `python -m pipeline.cli plan init/show/approve/mutate`. Commit 3 shipped 2026-05-27 |
-| `character_designer` — Cy | 2 Character Bible | Opus 4.8 authors (Pass 1) → NB2 (`gemini-3.1-flash-image-preview`) generates/edits plates (Pass 2) → Gemini 3.1 Pro verifies via `agy` (Pass 3). Three-attempt ceiling per plate. **Prompt construction — the register-parameterized five-slot emitter (source of truth, 2026-05-30):** `_build_plate_prompt` (in `pipeline/agents/character_designer.py`) is the single home for plate-prompt construction — the register-agnostic editing template (spec: [`docs/research/2026-05-30-nb2-editing-character-consistency-template.md`](docs/research/2026-05-30-nb2-editing-character-consistency-template.md)). It reads `_REGISTER_CLAUSE_LIBRARY` (the six closed registers) to fill `{identity_lock}` / `{preserve_and_negative}` / `{style_register}`; Cy authors only the terse `{variation}`. A reject reason (from `bible iterate` or a Pass-3 fail) threads into `{preserve_and_negative}` so it steers the re-roll, not just the cache key. `_build_prop_prompt` stays the isolated-object case. **Per-register model routing (Amendment B):** `_resolve_plate_model` / `_REGISTER_MODELS` route editing to NB2 (`gemini-3.1-flash-image-preview`) for every register — better identity hold, ~half cost, ~4× faster, dodges NB Pro's multi-reference downsampling regression — with NB Pro reserved for painterly *finals* (watercolor/photoreal/3d) as a documented seam (no consumer yet; re-verify the Pro regression before building the guard). A per-character `characters.{id}.generation_model` manifest override wins over the register default. The runner function is `invoke_image_edit` (renamed from `invoke_nb_pro`, which survives as a deprecation alias — model is a parameter). **Plate-generation contract (fidelity fix, 2026-05-29):** the runner is the source of truth for references — `anchor.png` is injected first on every `generate` plate, source-refs are kept, references to other generated plates are stripped (no chaining); plate prompts are short plate-intent wrapped in runner-owned reference-role-tag framing, never verbal character re-descriptions or pipeline-meta text. **Prop-plate exception (2026-05-29):** a plate under `props/` is an isolated object, not the character — the runner does NOT inject the anchor, uses an isolated-object prompt forbidding any figure or text, and the Pass-2.5 gate is record-only for it (never identity-scored against the full-character anchor). **Pass-2.5 similarity gate** (`pipeline/agents/similarity_gate.py`, DINOv2→CLIP→PIL ladder; DINOv2 needs `torch torchvision transformers`) scores each plate vs the anchor before Gemini's prose Pass-3 and persists a per-plate verdict trail to `runs/{run_id}/plate_verdicts.jsonl`. The gate is **record-only, not a hard reject** — DINOv2 separates recovered-from-drifted at the same view (regression eval in `evals/similarity-gate/`), but legitimate view/expression variation overlaps drift against a single front anchor, so a blanket hard threshold would false-reject good plates (a real hard gate needs per-view refs — future work). **Plates-only bake (2026-05-29):** re-running Cy against a **locked** Bible (or `author_bible.py --plates-only`) skips Pass 1 and bakes plates against the committed `plate_generation_plan.json` + locked rules — an approved Bible is never re-authored. **Pass-1 retry (2026-05-29):** a transient malformed Opus emission is retried within the 3-call budget (a missing SDK or a contract violation is not). **`#region:NAME` ingest crops** read a `<sheet>.regions.json` sidecar (fractional/pixel boxes) and crop the source sheet; unmappable regions fall back to a full copy flagged `region_not_cropped` (never a silent wrong crop). Emits `character.yaml` + per-character `acceptance_criteria.json` (v1.2 graph with `IR.{character_id}.*` entries) + `risk-bible.md` + `cy-confidence-notes.md` + `plate_generation_plan.json`. CLI: `python -m pipeline.cli bible init/show/approve/mutate/add/iterate`. Commit 2 shipped 2026-05-28; fidelity-fix + production bake 2026-05-29; **claude-mascot pencil-register pivot 2026-05-30** — re-authored as anima's second *same-register* (pencil-test-colored) character + Act 2 shoulder companion, validating Cy on a second character in the established register; pixel-art *cross-register* validation is explicitly deferred to a future 16BitFit-humanoid pass. **Tool-bug follow-on shipped 2026-05-30:** the `bible mutate` schema-version conflation is fixed (edits rule content in place, keeps schema `version` at 1.2, `--new-version` → separate `content_version`), and `bible iterate`'s reject reason now reaches the prompt. A live-manifest criteria integration test ([`tests/test_live_manifest_criteria.py`](tests/test_live_manifest_criteria.py)) guards against a Bible committed unloadable. **Maya `plan mutate` FIXED (2026-05-30):** `mutate_plan` now mirrors `bible mutate` (edits the rule in place by `id`, keeps schema `version` loadable, records `--new-version` as a separate `content_version`, errors on an unknown `--target`); `bump_version` hardened to refuse an off-schema `major.minor` (protects both callers). **`bible add` shipped (2026-05-30):** the audited additive path for a locked Bible — appends new plates + new `IR.*` rules from a `--spec` JSON, re-validates, keeps the Bible loadable + locked, records `content_version` (the trio: mutate edits, iterate re-rolls, **add extends**). **CLI dispatch wired (2026-05-30):** `add` was a registered subparser with no branch in `__main__.py`'s dispatch switch — `bible add` exited 1 silently and never called the (correct) function; fixed + guarded by `test_cli_main_dispatches_bible_add` (the first CLI test to invoke `main([...])` rather than the function directly). **claude-mascot motion plates ingested (2026-05-30):** Sean's six hand-drawn motion sheets → 22 per-pose line-rough plates (`motion_plates/{idle,look,perch,alert,hop,sleep}-NN.png`) + 7 `IR.claude-mascot.motion.*` rules via `bible add`; Bible now 25 rules / 33 plates, `content_version 1.2.0`. Plates were animatic-tier line roughs (cited form/motion rules only). **Colored pass ingested 2026-05-30→31:** Sean hand-colored the keys; they replaced the line roughs at the canonical `motion_plates/*.png` paths and now carry the full pencil-test register (their entries cite the palette/style rules), the line roughs moved to `source-refs/motion-line-roughs/` as the animatic record, idle gained a 4th key (`idle-04`) via `bible add` → **25 rules / 34 plates, content_version 1.2.1**. Two poses are known-rough (hop side-disc oversized, alert-03 nubs arm-like — cy-confidence-notes.md). Motion-direction brief + NB2 exploration prompts live in `characters/claude-mascot/source-refs/`. **Emitter live-validated (2026-05-30):** the five-slot `_build_plate_prompt` HELD on its first live NB2 bake for `pencil-test-colored` — four mascot expressions at DINOv2 0.95–0.98 vs anchor, small graphite dot eyes + no hair + full color, no clause trim needed (the standing pencil prose is anchor-reinforcing, not prompt-dominance drift). |
-| `vision_critic` — Em | 5, 6, 8 (T2 checkpoints) | Gemini 3.1 Pro via Anti-Gravity CLI default, Opus 4.7 via Claude Agent SDK escalation. Patches stage in `manifest.lock.yaml`. Commit 8 shipped 2026-05-26 |
-| `museum_writer` — Mo | Museum (orthogonal) | **SHIPPED 2026-05-31.** Sonnet 4.6 docent ([`pipeline/agents/museum_writer.py`](pipeline/agents/museum_writer.py)). Narrates an already-structured exhibit into studio-manual prose; **never invents a fact the exhibit doesn't carry** (a thin exhibit is narrated as honestly sparse). Real path via `invoke_museum_prose` (sdk_runners); a faithful **deterministic local fallback** runs credential-free (CI-green) and is what the committed museum carries — real Sonnet prose is a one-command upgrade (`python scripts/build_museum.py --narrate`). `narrate_many` batches concurrently; `--no-sonnet` forces the fallback. The exhibit **schema is load-bearing; Mo is the prose layer over it** |
+| `planner` — Maya | 0 Brief & Plan | Opus 4.8 primary → Sonnet 4.6 adversarial validation → human gate. Emits two-tier brief (Studio + Production) + v1.1 graph-shaped `acceptance_criteria.json` + clean-markdown `plan.md` + `RunCostEstimate` from `CostEstimatorNode`. Three-call ceiling. `project_type: bible_authoring` scopes plan.md to Phase 0 + Phase 2 only. CLI: `python -m pipeline.cli plan init/show/approve/mutate`. |
+| `character_designer` — Cy | 2 Character Bible | Three passes, three-attempt ceiling per plate: Opus 4.8 authors → NB2 (`gemini-3.1-flash-image-preview`) generates/edits → Gemini 3.1 Pro verifies via `agy`. **Prompt construction (source of truth):** `_build_plate_prompt` in `pipeline/agents/character_designer.py` is the single home for plate prompts — the register-parameterized five-slot emitter (spec: [`docs/research/2026-05-30-nb2-editing-character-consistency-template.md`](docs/research/2026-05-30-nb2-editing-character-consistency-template.md)). It reads `_REGISTER_CLAUSE_LIBRARY` (six closed registers) to fill `{identity_lock}` / `{preserve_and_negative}` / `{style_register}`; Cy authors only the terse `{variation}`, and a reject reason threads into `{preserve_and_negative}` to steer the re-roll. `_build_prop_prompt` is the isolated-object case. **Model routing:** `_resolve_plate_model` / `_REGISTER_MODELS` route editing to NB2 for every register (better identity hold, ~½ cost, ~4× faster, dodges NB Pro's multi-reference downsampling regression); NB Pro is reserved for painterly *finals* (no consumer yet — re-verify the regression first). A `characters.{id}.generation_model` manifest override wins. Runner: `invoke_image_edit` (alias `invoke_nb_pro`). **Plate contract:** the runner owns references — `anchor.png` injected first on every `generate` plate, source-refs kept, no plate-to-plate chaining; prompts are short plate-intent, never verbal re-descriptions or pipeline-meta. **Prop exception:** plates under `props/` are isolated objects — no anchor, no figure/text, Pass-2.5 record-only. **Pass-2.5 similarity gate** (`pipeline/agents/similarity_gate.py`, DINOv2→CLIP→PIL ladder; persists `runs/{run_id}/plate_verdicts.jsonl`) is **record-only, not a hard reject** — a single front anchor can't separate legitimate view/expression variation from drift; a real gate needs per-view refs (future work). **Plates-only bake:** re-running against a *locked* Bible bakes plates only — an approved Bible is never re-authored. **`#region:NAME` ingest crops** read a `<sheet>.regions.json` sidecar; an unmappable region falls back to a full copy flagged `region_not_cropped`. Emits `character.yaml` + per-character `acceptance_criteria.json` (v1.2 graph, `IR.{character_id}.*`) + `risk-bible.md` + `cy-confidence-notes.md` + `plate_generation_plan.json`. CLI: `python -m pipeline.cli bible init/show/approve/mutate/add/iterate` — **mutate** edits / **iterate** re-rolls / **add** extends. (Dated authoring + bug-fix log in CHANGELOG.md.) |
+| `vision_critic` — Em | 5, 6, 8 (T2 checkpoints) | Gemini 3.1 Pro via Anti-Gravity CLI default, Opus 4.7 via Claude Agent SDK escalation. Patches stage in `manifest.lock.yaml`. **Scored eval suite + motion-sight path shipped** ([`evals/vision_critic/`](evals/vision_critic/): segmented confusion matrix — precision/recall/**false-pass** on the defect class; `phase_6_motion` contact-sheet honesty clause via [`pipeline/contact_sheet.py`](pipeline/contact_sheet.py) lets a still-image judge see identity/style across a clip but **not** motion-proper). A dated three-way bake-off (Gemini/Sonnet/Opus) put an evidence-backed read under the T2 seat. **Known reference-blindness gap** — Em judges against text only, no anchor/Bible plate attached; the locked #1 next fix ([FINDING](docs/anima-test-runs/2026-06-01-em-reference-blindness-FINDING.md)). |
+| `museum_writer` — Mo | Museum (orthogonal) | Sonnet 4.6 docent ([`pipeline/agents/museum_writer.py`](pipeline/agents/museum_writer.py)). Narrates an already-structured exhibit into studio-manual prose; **never invents a fact the exhibit doesn't carry** (a thin exhibit reads as honestly sparse). Real path: `invoke_museum_prose` (sdk_runners); a faithful **deterministic local fallback** runs credential-free (CI-green) and is what the committed museum carries — real Sonnet prose is a one-command upgrade (`python scripts/build_museum.py --narrate`; `--no-sonnet` forces the fallback). The exhibit **schema is load-bearing; Mo is the prose layer over it.** |
 | _(CLI critic)_ | 4→5, pre-Museum (T3 checkpoints) | Pending agent-fleet session — Codex + Anti-Gravity parallel. The Museum's **pre-publish T3 gate** is a declared seam — a human takes the look for now |
 
 ## Directory Structure
 
-The working directory is `anima/` — renamed from `sw-portfolio-animation-pipeline/` on 2026-05-29 via a single `mv` that preserved full git history. New top-level conventions (`characters/`, `museum/`, `evals/`) are marked planned — they land across commits 2-8.
+The working directory is `anima/` — renamed from `sw-portfolio-animation-pipeline/` on 2026-05-29 via a single `mv` that preserved full git history. The top-level `characters/`, `museum/`, and `evals/` conventions have since landed.
 
 ```
 anima/                                   # renamed from sw-portfolio-animation-pipeline/ on 2026-05-29
@@ -186,7 +186,7 @@ anima/                                   # renamed from sw-portfolio-animation-p
 │   ├── COMPLETED/                       # Shipped Act 1 prompts
 │   └── OLD/                             # Superseded session prompts
 ├── images/                              # Reference assets (Pencil Test era)
-│   └── 2D-Character-Sketch-Sean-v1.png  # Back-compat symlink → characters/sean-anchor/anchor.png (retires commit 7)
+│   └── 2D-Character-Sketch-Sean-v1.png  # Back-compat symlink → characters/sean-anchor/anchor.png (retires when Animatic lands)
 ├── pipeline/                            # Pipeline scripts
 │   ├── generate.py                      # Generation orchestrator with frame chaining (USE_DAG_RUNNER=1 routes to dag.py)
 │   ├── audit.py                         # T1 rule gate runner (USE_DAG_RUNNER=1 routes to dag.py)
@@ -194,31 +194,29 @@ anima/                                   # renamed from sw-portfolio-animation-p
 │   ├── assemble.sh                      # FFmpeg assembly
 │   ├── seedance_*.py                    # Seedance 2.0 generation, extract, audit, cleanup
 │   ├── agents/                          # AgentSpec Protocol + critic agents
-│   │   ├── __init__.py                  # AgentSpec, AgentResult, Patch, register_node (commit 4)
-│   │   ├── vision_critic.py             # Em — T2 vision critic (commit 8)
-│   │   ├── cli_runners.py               # Anti-Gravity CLI wrapper + stub fallback (commit 8)
-│   │   ├── sdk_runners.py               # Claude Agent SDK / anthropic SDK wrapper + stub (commit 8)
-│   │   ├── patch_stager.py              # post_run hook → runs/{run_id}/manifest.lock.yaml (commit 8)
-│   │   └── prompts/                     # Persona standing-context preambles (commit 8)
+│   │   ├── __init__.py                  # AgentSpec, AgentResult, Patch, register_node
+│   │   ├── vision_critic.py             # Em — T2 vision critic
+│   │   ├── cli_runners.py               # Anti-Gravity CLI wrapper + stub fallback
+│   │   ├── sdk_runners.py               # Claude Agent SDK / anthropic SDK wrapper + stub
+│   │   ├── patch_stager.py              # post_run hook → runs/{run_id}/manifest.lock.yaml
+│   │   └── prompts/                     # Persona standing-context preambles
 │   ├── cli/                             # `python -m pipeline.cli` subcommands
-│   │   ├── patches.py                   # `patches list` — survey staged proposed_patches (commit 8)
-│   │   ├── plan.py                      # Maya plan init/show/approve/mutate (commit 3)
-│   │   └── bible.py                     # Cy bible init/show/approve/mutate/iterate (commit 2)
-│   ├── criteria.py                      # acceptance_criteria.json v1.2 schema (AC.* + IR.* graph) + lock enforcement (commit 4 + commit 2)
-│   ├── dag.py                           # Hand-rolled DAG runner (commit 4)
-│   ├── agents/character_designer.py    # Cy's three-phase AgentSpec (commit 2)
-│   ├── agents/nb_pro_runner.py         # NB Pro plate-generation wrapper, content-addressed cache (commit 2)
-│   └── nodes/                           # AgentSpec wrappers around legacy scripts (commit 4)
-├── characters/                          # Character Bible folders (Bible primitive — commit 2.0 + commit 2 scaffolded sean-anchor + claude-mascot)
+│   │   ├── patches.py                   # `patches list` — survey staged proposed_patches
+│   │   ├── plan.py                      # Maya plan init/show/approve/mutate
+│   │   └── bible.py                     # Cy bible init/show/approve/mutate/iterate
+│   ├── criteria.py                      # acceptance_criteria.json v1.2 schema (AC.* + IR.* graph) + lock enforcement
+│   ├── dag.py                           # Hand-rolled DAG runner
+│   ├── agents/character_designer.py    # Cy's three-phase AgentSpec
+│   ├── agents/nb_pro_runner.py         # NB Pro plate-generation wrapper, content-addressed cache
+│   └── nodes/                           # AgentSpec wrappers around legacy scripts
+├── characters/                          # Character Bible folders (Bible primitive); holds sean-anchor + claude-mascot
 │   ├── sean-anchor/                     # Sean's Bible — pencil-test-colored register; first reference implementation
 │   │   ├── anchor.png                   # The migrated A-2 reference (legacy path is a symlink → here)
-│   │   ├── character.yaml               # Scaffolded template; Cy populates in Task 1.10's real authoring run
+│   │   ├── character.yaml               # Authored + approved Bible (v1.2)
 │   │   ├── turnarounds/ expressions/ motion_plates/ costumes/default/ props/  # Cy populates per Pass-1 plate plan
 │   │   └── source-refs/                 # POPULATED: notes.md, turnaround-{1,2}.png, head-turn/{1..9}.png,
 │   │                                    #   walk-cycle/{source,derived-v1,derived-v2}.png, 3d-mannequin/
-│   ├── claude-mascot/                   # Claude Mascot Bible — pencil-test-colored register (re-authored 2026-05-30);
-│   │   │                                #   same register as sean-anchor + Act 2 shoulder companion. Pixel-art Bible
-│   │   │                                #   retired to characters/_archive/ (reference-gap failure).
+│   ├── claude-mascot/                   # Claude Mascot Bible — pencil-test-colored register; Act 2 shoulder companion
 │   │   ├── anchor.png                   # The C-B ¾ hero portrait — the terracotta box-creature identity reference
 │   │   ├── character.yaml               # 25 IR.claude-mascot.* rules (incl. 7 motion); criteria locked (v1.2, content_version 1.2.1)
 │   │   ├── turnarounds/                 # 5 plates INGESTED as crops from the real C-1 turnaround sheet (zero-drift)
@@ -230,12 +228,15 @@ anima/                                   # renamed from sw-portfolio-animation-p
 │   └── _per-character_                  # Each Bible folder is self-contained; manifest's characters: dict
 │                                        #   registers folder + style_register. criteria_sources: lists the
 │                                        #   per-character acceptance_criteria.json paths for runtime merge.
-├── museum/                              # SHIPPED 2026-05-31 — committed exhibit tree (schema source of truth: docs/museum-exhibit-schema.md)
+├── museum/                              # Committed exhibit tree (schema SoT: docs/museum-exhibit-schema.md)
 │   ├── {project_slug}/                  #   character-bible/ (84) + pencil-test/ (13). project.json + project.md
 │   │   └── {run_slug}/exhibits/{id}/    #   exhibit.json (structured) + exhibit.md (Mo's prose) + assets/ (thumbnails)
 │   └── _site/                           #   GITIGNORED static render (regenerate: build_museum.py --render). Full-res originals stay in runs/
 ├── evals/                               # Agent eval suites + dated bake-offs
-│   └── vision-critic/                   # Em eval suite (commit 8 baseline trace, 8b adds cases.yaml + runner.py)
+│   ├── planner/ character_designer/     # cases.yaml + fixtures + pytest runner.py per agent
+│   ├── similarity-gate/                 # fixtures for the in-suite DINOv2 regression
+│   ├── vision_critic/                   # Em — scored suite: scoring.py + cases.yaml (29) + conftest + runner.py (CI-green) + score.py (live) + bakeoff_lib.py + fixtures/ + traces/
+│   └── bakeoffs/                        # dated model shoot-outs (2026-05-31-t2-vision-critic-gemini-vs-sonnet-vs-opus)
 └── runs/                                # Per-run output (gitignored)
     └── {run_id}/
         ├── manifest.lock.yaml           # Frozen config snapshot
@@ -243,7 +244,7 @@ anima/                                   # renamed from sw-portfolio-animation-p
         ├── approved/                    # Approved keyframes
         ├── rejected/                    # Rejected frames with failure codes
         ├── audit/                       # Audit logs
-        ├── animatic/                    # PLANNED (commit 7) — shape-block timing artifact
+        ├── animatic/                    # PLANNED — shape-block timing artifact
         └── export/                      # Final outputs
 ```
 
@@ -272,7 +273,7 @@ Future anima projects use their own project prefixes (`{PROJECT}_{ActID}_{FrameN
 
 **Existing (untouched, backward-compatible):**
 
-- `project:` — name, version, description (only `name` updated to `"anima"` in commit 1; description retained)
+- `project:` — name, version, description (only `name` updated to `"anima"`; description retained)
 - `anchor:` — single-character reference (deprecated by `characters:`; still authoritative for Act 2 in flight)
 - `style:` — pencil-test aesthetic constraints
 - `generation:` — Gemini NB2 model config
@@ -280,14 +281,14 @@ Future anima projects use their own project prefixes (`{PROJECT}_{ActID}_{FrameN
 - `audit:` — Hard fails (HF01-HF05) + soft fails (SF01-SF05) + retry ladder
 - `export:` — GIF / WebM / MP4 specs
 
-**New (additive, schema-only in commit 1; wiring lands across commits 2-7):**
+**New (additive v2 blocks — schema declared first, wiring landed since):**
 
 - `phases:` — 10-phase architecture node enablement. See [`docs/pipeline-architecture-v1.md`](docs/pipeline-architecture-v1.md)
 - `tiering:` — draft → pro escalation defaults per phase
 - `critics:` — T1/T2/T3 checkpoint placement
-- `characters:` — Character Bible registry (commit 2)
-- `museum:` — capture config + `project_slugs` derivation rules + noise-filter + standalone render target + publishing target (grown 2026-05-31; schema source of truth: [`docs/museum-exhibit-schema.md`](docs/museum-exhibit-schema.md))
-- `brief:` — Phase 0 brief file convention (commit 3)
+- `characters:` — Character Bible registry
+- `museum:` — capture config + `project_slugs` derivation rules + noise-filter + standalone render target + publishing target (schema source of truth: [`docs/museum-exhibit-schema.md`](docs/museum-exhibit-schema.md))
+- `brief:` — Phase 0 brief file convention
 
 ## QA Gates
 
@@ -357,7 +358,7 @@ python3 pipeline/audit.py --run-dir runs/{run_id} --frame F06 --attempt 1
 bash pipeline/assemble.sh runs/{run_id}
 ```
 
-### DAG-orchestrated run (commit 4+, opt-in)
+### DAG-orchestrated run (opt-in)
 
 The hand-rolled DAG runner orchestrates pipeline phases as typed nodes with
 content-addressed caching. The legacy linear path stays usable; opt in by
@@ -376,9 +377,9 @@ nodes. The runner declines to mutate a locked criteria file without
 `--force-criteria-mutation` plus an actor + reason; the override is
 audited to `runs/{run_id}/criteria_audit.jsonl`.
 
-### Surveying staged patches (commit 8+)
+### Surveying staged patches
 
-Em (and from commit 9, the T3 stack) emit `proposed_patches:` that stage into
+Em (and, once built, the T3 stack) emit `proposed_patches:` that stage into
 `runs/{run_id}/manifest.lock.yaml` via the DAG runner's `post_run` hook.
 Stage-first per v2 lock; never auto-apply. Survey them with:
 
@@ -388,9 +389,9 @@ python -m pipeline.cli patches list --run-dir runs/{run_id}
 
 Output groups patches by persona (`em-vision-critic`, future `codie` / `annie`
 / `sage`) with target / path / operation / value / rationale / cites_criteria
-/ node_id. Read-only — interactive accept/reject is commit 8b or commit 10.
+/ node_id. Read-only — interactive accept/reject is not built yet.
 
-### Building the Museum (commit 6+, shipped 2026-05-31)
+### Building the Museum
 
 The Museum capture layer turns `runs/` evidence into a self-contained static site
 inside `anima/`. The orchestrator ([`scripts/build_museum.py`](scripts/build_museum.py))
@@ -421,7 +422,7 @@ tree (exhibit.json + Mo's exhibit.md + thumbnail assets) is committed. **Named
 follow-ons (NOT built):** the Astro export into `sw-ai-pm-portfolio` (standalone-first
 deferral) and the T3 pre-publish critic gate (a human takes the look for now).
 
-### Character Bible authoring (commit 2+)
+### Character Bible authoring
 
 Cy's CLI surface mirrors Maya's plan CLI structurally. Five subcommands:
 
@@ -491,6 +492,24 @@ ffmpeg -i pencil-test-act1.mp4 -c:v libvpx-vp9 -crf 30 -b:v 0 pencil-test-act1.w
 # GIF (hero loop, two-pass palette, <5MB)
 ffmpeg -i pencil-test-act1.mp4 -vf "fps=15,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" pencil-test-act1.gif
 ```
+
+## Testing
+
+Tests are pytest, run **per-directory** from the repo root (there is no `pytest.ini`/`pyproject.toml`; a bare `pytest` collects `site-packages` and is noisy). All tests are credential-free — agent runners fall back to stubs, so the suite is green in CI without API keys.
+
+```bash
+# Contract suite — the core 242 tests (agents, CLI, criteria, DAG, museum, scrapers, eval regressions, motion-sight)
+python -m pytest tests/
+
+# Seedance v2 select/cleanup — MUST run separately. A combined `tests/ pipeline/tests/`
+# run errors on a duplicate `tests` package basename (both dirs ship an __init__.py).
+python -m pytest pipeline/tests/
+
+# One file
+python -m pytest tests/test_criteria.py -q
+```
+
+`evals/{agent}/` carries each agent's eval cases (`cases.yaml`), fixtures, and a README; `planner/` and `character_designer/` also ship a pytest `runner.py` parameterized over the cases. Run those explicitly — they're named `runner.py`, so default discovery skips them: `python -m pytest evals/planner/runner.py` (intentionally-red cases are marked `xfail`, so a green run can still report `xfailed`). The `similarity-gate` regression instead runs *inside* the contract suite, reading `evals/similarity-gate/fixtures/` (`tests/test_similarity_gate.py::test_dinov2_regression_recovered_above_drifted`). `evals/vision_critic/` is now a **full scored suite** with two modes: CI-green mocked `python -m pytest evals/vision_critic/runner.py` (proves the scoring plumbing; the 6 motion-proper-red cases `xfail`), and the deliberate, costed **live** baseline `python -m evals.vision_critic.score` (invokes Em real → writes `last-run.md` + a dated trace; `--stub` forces the credential-free path, à la Mo's `--no-sonnet`). The dated three-way model bake-off runs via `python evals/bakeoffs/2026-05-31-t2-vision-critic-gemini-vs-sonnet-vs-opus/bakeoff.py` (live; `--variants gemini` to scope).
 
 ## Generation Chains
 

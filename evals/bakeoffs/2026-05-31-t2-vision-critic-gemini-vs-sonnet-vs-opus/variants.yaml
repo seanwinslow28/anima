@@ -1,0 +1,18 @@
+# T2 vision-critic three-way bake-off — variant matrix.
+# Spec: docs/superpowers/plans/2026-05-31-em-critic-spine-hardening.md (Phase 2)
+# Only `default_model` varies. Prompt, standing context, and the shared case
+# set (evals/vision_critic/cases.yaml) are held constant. No escalation — each
+# base model is scored alone (we're choosing the DEFAULT, not testing the hatch).
+version: 1
+created: 2026-05-31
+cases_ref: evals/vision_critic/cases.yaml
+variants:
+  - id: gemini
+    label: "gemini-3.1-pro-via-anti-gravity"
+    runner: antigravity         # run_antigravity_with_image
+  - id: sonnet
+    label: "claude-sonnet-4-6-via-sdk"
+    runner: sonnet_vision       # invoke_sonnet_vision
+  - id: opus
+    label: "claude-opus-4-7-via-sdk"
+    runner: opus_vision         # invoke_opus_vision

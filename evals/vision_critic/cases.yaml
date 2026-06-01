@@ -1,0 +1,454 @@
+# Em — vision-critic eval case set (labeled, segmented).
+#
+# DRAFT LABELS for Sean's ratification at STOP GATE 1. Every case points at a
+# real, committed, viewable fixture (Act 1 approved/rejected frames, real Cy
+# Bible plates with their production verdicts, Act 2 motion contact sheets).
+# No invented frames. The labels are drafted from ground-truth metadata:
+#   - Act 1 approved -> pass ; Act 1 rejected (FAIL code) -> fail
+#   - Cy plate_verdicts.jsonl gemini_verdict + cites_identity_rule -> verdict + expected_cites
+#   - Act 2 contact sheets -> motion_proper, intentionally red (see below)
+# Sean is the single labeler (solo scale; no Cohen's k yet — see failure-modes.md D2).
+#
+# Segmentation (Sean's locked decision):
+#   case_class: clean | identity_style   -> the "performs" segment (Em SHOULD catch)
+#   case_class: motion_proper            -> reported APART, ships intentionally RED
+#     (a contact sheet structurally can't see motion-proper; eval-strategy doc §3.5).
+#
+# Per-case schema:
+#   name, description, checkpoint (phase_5_generate | phase_6_motion | phase_8_assemble),
+#   input (path under fixtures/), beat_description, impact_tags (list),
+#   case_class (identity_style | clean | motion_proper),
+#   expected_verdict (pass | borderline | fail),
+#   expected_cites (criteria IDs a correct critic should cite; [] for clean),
+#   defect_label (open-coded mode, or "clean"),
+#   is_intentionally_red (bool),
+#   sean_note (one-line rationale for the label — the externalized rubric)
+#
+# Ships-red discipline: do NOT tune a case until Em passes it. Editing a label
+# is legitimate ONLY if the label was wrong (a validity fix), never to flatter Em.
+#
+# RATIFIED by Sean 2026-06-01 after the live baseline + frame review. Labels kept
+# UNCHANGED. The 8 "clean" frames Em flagged (F13/F31/head-turn-02/06 → fail;
+# F06/head-profile-left/neutral/contemplative → borderline) are CORRECTLY labeled
+# pass — Sean confirmed F13/F31 are unmistakably the right Sean. Em's flags are
+# REFERENCE-BLINDNESS (she gets no anchor image, only text), not bad frames. So
+# the performs-segment precision (0.62) is the honest reference-blind baseline,
+# and giving Em reference images is the locked #1 next fix
+# (docs/anima-test-runs/2026-06-01-em-reference-blindness-FINDING.md).
+
+cases:
+
+  # ============================================================
+  # CLEAN (case_class: clean, expected_verdict: pass) — 10 cases
+  # ============================================================
+  - name: clean-act1-f06-idle
+    description: "Act 1 F06 approved keyframe — Sean idle at the desk, pencil-test-colored register."
+    checkpoint: phase_5_generate
+    input: frames/clean_F06.png
+    beat_description: "Sean stands at his animation desk, idle, stylus in right hand. Pencil-test register on cream paper."
+    impact_tags: [hero]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Shipped Act 1 hero frame. Em should pass it clean — no drift."
+
+  - name: clean-act1-f13-gesture
+    description: "Act 1 F13 approved keyframe — mid-gesture."
+    checkpoint: phase_5_generate
+    input: frames/clean_F13.png
+    beat_description: "Sean mid-gesture, stylus in right hand, leaning into the drawing. Pencil-test register."
+    impact_tags: [hero]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Shipped Act 1 frame. Clean pass expected."
+
+  - name: clean-act1-f31-land
+    description: "Act 1 F31 approved keyframe — the sprite lands."
+    checkpoint: phase_5_generate
+    input: frames/clean_F31.png
+    beat_description: "Sean reacts as the sprite lands on the page. Pencil-test register, stylus right hand."
+    impact_tags: [hero]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Shipped Act 1 frame. Clean pass expected."
+
+  - name: clean-head-profile-left
+    description: "sean-anchor head profile-left turnaround — production pass @1.0 (all 6 IR rules honored)."
+    checkpoint: phase_5_generate
+    input: frames/clean_head_profile_left.png
+    beat_description: "Sean head, left profile. Dirty-blonde cowlick, angular jaw, blue eye, stubble, cream paper, visible line work."
+    impact_tags: [identity_critical]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Real Cy pass @1.0 — jaw angle, cowlick, line weight all honored. Em should pass."
+
+  - name: clean-head-back
+    description: "sean-anchor head-back turnaround — production pass."
+    checkpoint: phase_5_generate
+    input: frames/clean_head_back.png
+    beat_description: "Sean head, back view. Tousled dirty-blonde silhouette, center cowlick, pencil-test line work."
+    impact_tags: [identity_critical]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Real Cy pass. Back-of-head view, identity holds."
+
+  - name: clean-expr-neutral
+    description: "sean-anchor neutral expression — production pass."
+    checkpoint: phase_5_generate
+    input: frames/clean_neutral.png
+    beat_description: "Sean neutral expression, front. Pencil-test register, blue eyes, warm skin tone."
+    impact_tags: [aesthetic]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Real Cy pass. Baseline expression."
+
+  - name: clean-expr-surprised
+    description: "sean-anchor surprised expression — production pass."
+    checkpoint: phase_5_generate
+    input: frames/clean_surprised.png
+    beat_description: "Sean surprised expression, raised brows, widened eyes. Pencil-test register."
+    impact_tags: [aesthetic]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Real Cy pass. Expression arc point."
+
+  - name: clean-expr-contemplative
+    description: "sean-anchor contemplative expression — production pass."
+    checkpoint: phase_5_generate
+    input: frames/clean_contemplative.png
+    beat_description: "Sean contemplative, slight downward gaze. Pencil-test register, blue eyes."
+    impact_tags: [aesthetic]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Real Cy pass. Expression arc point."
+
+  - name: clean-head-turn-02
+    description: "sean-anchor head-turn frame 02 — production pass."
+    checkpoint: phase_5_generate
+    input: frames/clean_head_turn_02.png
+    beat_description: "Sean head-turn sequence frame 2/9, eyes leading the turn. Pencil-test register."
+    impact_tags: [aesthetic]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Real Cy pass. Identity holds in this turn frame."
+
+  - name: clean-head-turn-06
+    description: "sean-anchor head-turn frame 06 — production pass."
+    checkpoint: phase_5_generate
+    input: frames/clean_head_turn_06.png
+    beat_description: "Sean head-turn sequence frame 6/9. Pencil-test register, jaw angle and hair hold."
+    impact_tags: [aesthetic]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Real Cy pass. Identity holds in this turn frame."
+
+  # ===================================================================
+  # IDENTITY/STYLE DEFECTS (case_class: identity_style) — 13 cases
+  #   the contact sheet / a still CAN surface these; Em SHOULD catch them
+  # ===================================================================
+  - name: proportion-drift-body-3quarter
+    description: "body 3/4 turnaround: head reads ~1:5-6 not 1:7; stylus missing; no construction lines. VERIFIED by eye."
+    checkpoint: phase_5_generate
+    input: frames/defect_body_3quarter.png
+    beat_description: "Sean full-body 3/4 turnaround. Heroic-realistic 1:7 proportion, stylus in right hand, construction lines visible beneath final."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.proportion.head-to-body-1-to-7
+      - IR.sean.proportion.shoulder-width-1-5-head-widths
+      - IR.sean.style.construction-lines-visible-beneath-final
+    defect_label: proportion-drift+missing-prop+construction-line-loss
+    is_intentionally_red: false
+    sean_note: "Real Cy fail @1.0 sim 0.51; I verified by eye — head too large, no stylus, clean render (no construction lines). Em should catch proportion + missing stylus."
+
+  - name: proportion-jaw-body-profile-left
+    description: "body profile-left: head ~1:5 not 1:7; jaw-line drift; construction lines absent."
+    checkpoint: phase_5_generate
+    input: frames/defect_body_profile_left.png
+    beat_description: "Sean full-body left profile. 1:7 proportion, angular jaw, construction lines visible."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.proportion.head-to-body-1-to-7
+      - IR.sean.face.jaw-line-angular-not-rounded
+      - IR.sean.style.construction-lines-visible-beneath-final
+    defect_label: proportion-drift+jaw-drift+construction-line-loss
+    is_intentionally_red: false
+    sean_note: "Real Cy fail @0.98: 'head fits only ~5 times'. 3 of 5 rules violated."
+
+  - name: proportion-eyes-body-profile-right
+    description: "body profile-right: head-to-body ~1:5.3; jaw-line drift; eye-color drift."
+    checkpoint: phase_5_generate
+    input: frames/defect_body_profile_right.png
+    beat_description: "Sean full-body right profile. 1:7 proportion, angular jaw, blue eyes."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.proportion.head-to-body-1-to-7
+      - IR.sean.face.jaw-line-angular-not-rounded
+      - IR.sean.face.blue-eyes
+    defect_label: proportion-drift+jaw-drift+eye-color-drift
+    is_intentionally_red: false
+    sean_note: "Real Cy fail @1.0: measured head 190px in 1016px figure (~1:5.3)."
+
+  - name: proportion-costume-body-back
+    description: "body-back: head-to-body off; shoulder width off; stylus missing."
+    checkpoint: phase_5_generate
+    input: frames/defect_body_back.png
+    beat_description: "Sean full-body back view. 1:7 proportion, shoulders 1.5 head-widths, stylus in right hand."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.proportion.head-to-body-1-to-7
+      - IR.sean.proportion.shoulder-width-1-5-head-widths
+      - IR.sean.prop.stylus-right-hand-always
+    defect_label: proportion-drift+missing-prop
+    is_intentionally_red: false
+    sean_note: "Real Cy fail @1.0: head 220px fits only ~4.6x in figure; stylus absent."
+
+  - name: sprite-scale-f31-bad
+    description: "Act 1 F31 REJECTED — sprite landed at the wrong scale (too large relative to Sean)."
+    checkpoint: phase_5_generate
+    input: frames/defect_F31_scale.png
+    beat_description: "The sprite lands on the page; sprite scale must stay small relative to Sean's hand. Pencil-test register."
+    impact_tags: [hero]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites: [CC05]
+    defect_label: scale-position-drift
+    is_intentionally_red: false
+    sean_note: "Real Act 1 reject (sprite scale wrong). CC05 scale/position. Em should flag the scale mismatch."
+
+  - name: stylus-hand-f13-cc01
+    description: "Act 1 F13 attempt 02 REJECTED — stylus drifted out of the RIGHT hand (CC01)."
+    checkpoint: phase_5_generate
+    input: frames/defect_F13_stylus_hand.png
+    beat_description: "Sean mid-gesture; the stylus MUST stay in his right hand throughout. Pencil-test register."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites: [CC01]
+    defect_label: stylus-hand-continuity
+    is_intentionally_red: false
+    sean_note: "Real Act 1 reject coded CC01 (stylus-hand). Em should catch the wrong-hand stylus."
+
+  - name: proportion-walk-cycle-source
+    description: "walk-cycle source plate: head-to-body ~1:4-4.5 (chibi), not the 1:7 heroic figure."
+    checkpoint: phase_5_generate
+    input: frames/defect_walk_cycle_source.png
+    beat_description: "Sean neutral-gait walk-cycle source plate. Heroic-realistic 1:7 proportion, hip at 4 head-heights."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.proportion.head-to-body-1-to-7
+      - IR.sean.proportion.hip-to-floor-4-head-heights
+    defect_label: proportion-drift-chibi
+    is_intentionally_red: false
+    sean_note: "Real Cy fail @1.0: '~1:4 to 1:4.5 stylized/chibi-like instead of 1:7'."
+
+  - name: identity-head-turn-01
+    description: "head-turn frame 01: simplified cartoon style — hair silhouette + jaw drift."
+    checkpoint: phase_5_generate
+    input: frames/defect_head_turn_01.png
+    beat_description: "Sean head-turn frame 1/9. Tousled medium-short hair, angular jaw, dirty-blonde, blue eyes."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.hair.silhouette-tousled-medium-short
+      - IR.sean.face.jaw-line-angular-not-rounded
+    defect_label: style-simplification+hair-drift+jaw-drift
+    is_intentionally_red: false
+    sean_note: "Real Cy fail @1.0: 'highly simplified cartoon rather than specified characteristics'."
+
+  - name: jaw-drift-head-turn-09
+    description: "head-turn frame 09: jaw fully rounded (continuous curve), violating the angular-jaw rule."
+    checkpoint: phase_5_generate
+    input: frames/defect_head_turn_09.png
+    beat_description: "Sean head-turn frame 9/9, settle. Angular jaw with a defined back corner, not a smooth curve."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.face.jaw-line-angular-not-rounded
+    defect_label: jaw-drift
+    is_intentionally_red: false
+    sean_note: "Real Cy fail @0.95: 'jawline fully rounded, continuous curve ear-to-chin'."
+
+  - name: borderline-hair-head-profile-right
+    description: "head profile-right: honors most rules, deviates on hair silhouette — a borderline."
+    checkpoint: phase_5_generate
+    input: frames/borderline_head_profile_right.png
+    beat_description: "Sean head, right profile. Cowlick, tousled medium-short silhouette, angular jaw, blue eye."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: borderline
+    expected_cites:
+      - IR.sean.hair.silhouette-tousled-medium-short
+    defect_label: hair-silhouette-borderline
+    is_intentionally_red: false
+    sean_note: "Real Cy borderline @0.95: 'honors several rules, key deviations on two others' (hair)."
+
+  - name: borderline-expr-focused
+    description: "focused expression: borderline — eye-spacing / brow deviation."
+    checkpoint: phase_5_generate
+    input: frames/borderline_focused.png
+    beat_description: "Sean focused, strong horizontal brow, eye-spacing one eye-width. Pencil-test register, cross-hatch shadows."
+    impact_tags: [aesthetic]
+    case_class: identity_style
+    expected_verdict: borderline
+    expected_cites:
+      - IR.sean.face.eye-spacing-one-eye-width
+      - IR.sean.face.brow-line-strong-horizontal
+    defect_label: expression-feature-borderline
+    is_intentionally_red: false
+    sean_note: "Real Cy borderline @1.0. Subtle facial-feature deviation under a held expression."
+
+  - name: borderline-motion-head-turn-03
+    description: "head-turn frame 03: honors eye-lead timing, minor expected identity drift on back-of-skull — borderline."
+    checkpoint: phase_5_generate
+    input: frames/borderline_head_turn_03.png
+    beat_description: "Sean head-turn frame 3/9, eyes lead the rotation. Identity holds through the turn."
+    impact_tags: [aesthetic]
+    case_class: identity_style
+    expected_verdict: borderline
+    expected_cites:
+      - IR.sean.motion.head-turn-9-frame-sequence
+    defect_label: turn-identity-borderline
+    is_intentionally_red: false
+    sean_note: "Real Cy borderline @0.7: eye-lead honored, minor back-of-skull drift. A genuine borderline."
+
+  - name: borderline-stylus-prop
+    description: "isolated stylus prop plate: borderline — grip/style read against the prop rules."
+    checkpoint: phase_5_generate
+    input: frames/borderline_stylus_prop.png
+    beat_description: "Sean's stylus prop, isolated. Three-finger grip reference, warm-graphite line weight, cream paper grain."
+    impact_tags: [aesthetic]
+    case_class: identity_style
+    expected_verdict: borderline
+    expected_cites:
+      - IR.sean.prop.stylus-grip-three-fingers
+    defect_label: prop-borderline
+    is_intentionally_red: false
+    sean_note: "Real Cy borderline @1.0 (isolated prop; grip ambiguous without a hand). DRAFT — ratify."
+
+  # ===================================================================
+  # MOTION-PROPER (case_class: motion_proper) — 6 cases, INTENTIONALLY RED
+  #   the contact sheet structurally CANNOT surface these (§3.5).
+  #   Em is EXPECTED TO MISS them; the miss is the artifact. These pre-stock
+  #   the deferred E_warp/VBench validation set. No real motion-proper
+  #   criterion ID exists yet — expected_cites name the human-seam handle.
+  #   sean_note flags whether identity-drift-across-the-strip is ALSO visible
+  #   (which would reclassify the case to identity_style — Sean's call at gate).
+  # ===================================================================
+  - name: motion-w1-arc
+    description: "W1 walk clip contact sheet. Motion-proper hypothesis: walk-arc smoothness across the gait."
+    checkpoint: phase_6_motion
+    input: contact_sheets/motion_W1.png
+    beat_description: "Sean walks left to right at a steady pace; the gait arc should be smooth, feet planting cleanly. Watch motion quality."
+    impact_tags: [hero]
+    case_class: motion_proper
+    expected_verdict: fail
+    expected_cites: [motion.walk-arc-smoothness]
+    defect_label: motion-arc
+    is_intentionally_red: true
+    sean_note: "Contact sheet can't show gait-arc smoothness (§3.5). Em expected to MISS. RATIFY: does W1 actually have arc trouble, and is identity stable across the strip?"
+
+  - name: motion-w2-jitter
+    description: "W2 walk variant contact sheet. Motion-proper hypothesis: jitter / foot-skating."
+    checkpoint: phase_6_motion
+    input: contact_sheets/motion_W2.png
+    beat_description: "Sean walks; feet must plant, not slide. Watch for sub-frame jitter or skating."
+    impact_tags: [hero]
+    case_class: motion_proper
+    expected_verdict: fail
+    expected_cites: [motion.no-foot-skating]
+    defect_label: jitter-skating
+    is_intentionally_red: true
+    sean_note: "Contact sheet can't show jitter/skating (§3.5). Em expected to MISS. RATIFY: real skating in W2?"
+
+  - name: motion-s0-flicker
+    description: "S0 sit-transition contact sheet. Motion-proper hypothesis: temporal flicker in the transition."
+    checkpoint: phase_6_motion
+    input: contact_sheets/motion_S0.png
+    beat_description: "Sean transitions to sitting; line/value should stay stable frame-to-frame. Watch for strobing/flicker."
+    impact_tags: [standard]
+    case_class: motion_proper
+    expected_verdict: fail
+    expected_cites: [motion.no-temporal-flicker]
+    defect_label: temporal-flicker
+    is_intentionally_red: true
+    sean_note: "Contact sheet can't show flicker — sampled panels miss the strobe (§3.5). Em expected to MISS. RATIFY."
+
+  - name: motion-tr-texture-crawl
+    description: "TR pull-toward-screen contact sheet. Motion-proper hypothesis: texture-crawl/boil as artifact."
+    checkpoint: phase_6_motion
+    input: contact_sheets/motion_TR.png
+    beat_description: "Sean reaches toward the laptop/screen; the line should boil as intended pencil life, not crawl as artifact. Watch line stability."
+    impact_tags: [hero]
+    case_class: motion_proper
+    expected_verdict: fail
+    expected_cites: [motion.texture-crawl-vs-intended-boil]
+    defect_label: texture-crawl
+    is_intentionally_red: true
+    sean_note: "Boil-vs-crawl is a human-look call (§3.5 + failure-modes D1). NOTE: I see possible identity drift across the TR strip — if real, RECLASSIFY to identity_style (Em could then legitimately catch it)."
+
+  - name: motion-t2-arc
+    description: "T2 clip contact sheet. Motion-proper hypothesis: gesture-arc smoothness."
+    checkpoint: phase_6_motion
+    input: contact_sheets/motion_T2.png
+    beat_description: "Sean gestures; the arc should ease smoothly. Watch motion quality across the strip."
+    impact_tags: [standard]
+    case_class: motion_proper
+    expected_verdict: fail
+    expected_cites: [motion.gesture-arc-smoothness]
+    defect_label: motion-arc
+    is_intentionally_red: true
+    sean_note: "Contact sheet can't show gesture-arc smoothness (§3.5). Em expected to MISS. RATIFY."
+
+  - name: motion-rev-jitter
+    description: "REV clip contact sheet. Motion-proper hypothesis: reveal-motion jitter."
+    checkpoint: phase_6_motion
+    input: contact_sheets/motion_REV.png
+    beat_description: "The reveal motion plays; movement should be smooth, no jitter. Watch motion quality."
+    impact_tags: [standard]
+    case_class: motion_proper
+    expected_verdict: fail
+    expected_cites: [motion.no-jitter]
+    defect_label: jitter-skating
+    is_intentionally_red: true
+    sean_note: "Contact sheet can't show reveal-motion jitter (§3.5). Em expected to MISS. RATIFY."
