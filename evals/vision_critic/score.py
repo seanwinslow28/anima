@@ -75,6 +75,7 @@ def _force_stub_runners() -> None:
         return types.SimpleNamespace(text=stub_text)
 
     _vc.run_antigravity_with_image = _stub
+    _vc.run_gemini_api_with_image = _stub
     _vc.invoke_opus_vision = _stub
 
 
@@ -300,8 +301,9 @@ def main() -> None:
     selected, excluded = _select_cases(args.segment, args.motion_smoke)
     if args.limit:
         selected = selected[:args.limit]  # cheap smoke-validation; partial, not a baseline
+    transport = manifest.get("critics", {}).get("t2", {}).get("transport", "agy")
     model_label = ("STUB (no scored claim)" if args.stub
-                   else "production: gemini-3.1-pro@agy + opus-4.7-escalation")
+                   else f"production: gemini-3.1-pro@{transport} + opus-4.7-escalation")
 
     scores: list[CaseScore] = []
     errored: list[tuple[str, str]] = []

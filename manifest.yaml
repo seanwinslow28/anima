@@ -253,6 +253,12 @@ critics:
     escalation_model: "claude-opus-4-7-via-sdk"
     escalation_threshold: 0.7
     escalation_tags: [hero, identity_critical]
+    # Gemini delivery transport for Em. agy = Antigravity CLI (subscription, but
+    # personal-tier quota 429-blocks repeated runs); gemini_api = direct Gemini
+    # API via GEMINI_API_KEY (separate vendor billing; unblocks the live
+    # re-baseline). Model held constant either way — see pipeline/agents/
+    # gemini_api_runner.GEMINI_VISION_MODEL. Adopted 2026-06-02.
+    transport: gemini_api
     default_context_files:
       - PHILOSOPHY.md
       - CLAUDE.md
