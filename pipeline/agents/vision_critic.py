@@ -30,6 +30,7 @@ from pipeline.agents import (
     register_node,
 )
 from pipeline.agents.cli_runners import run_antigravity_with_image
+from pipeline.agents.reference_selection import select_references, ReferenceSelectionError
 from pipeline.agents.sdk_runners import invoke_opus_vision
 
 PROMPTS_DIR = Path(__file__).parent / "prompts"
@@ -41,6 +42,16 @@ EM_ADDENDUM_FILE = PROMPTS_DIR / "em-vision-critic-context.md"
 _DEFAULT_ESCALATION_THRESHOLD = 0.7
 _DEFAULT_ESCALATION_TAGS = ("hero", "identity_critical")
 _DEFAULT_TIMEOUT_S = 120
+
+# Repo-root-relative characters dir (robust to cwd; works in a worktree too).
+_CHARACTERS_ROOT = Path(__file__).resolve().parents[2] / "characters"
+
+# checkpoint -> pipeline phase number, for criteria phase-filtering (Task 4).
+_CHECKPOINT_PHASE = {
+    "phase_5_generate": 5,
+    "phase_6_motion": 6,
+    "phase_8_assemble": 8,
+}
 
 # Strip ```json ... ``` wrappers that LLMs sometimes add around structured output.
 _CODE_FENCE_RE = re.compile(r"^```(?:json)?\s*\n(.*?)\n```\s*$", re.DOTALL)
@@ -87,7 +98,8 @@ class VisionCriticNode:
         impact_tags = set(ctx.inputs.get("impact_tags", []) or [])
         forced_escalation = bool(impact_tags & escalation_tags)
 
-        prompt = self._build_prompt(ctx, t2_cfg)
+        references = self._resolve_references(ctx)
+        prompt = self._build_prompt(ctx, t2_cfg, n_references=len(references))
 
         is_video = image_path.suffix.lower() in {".mp4", ".webm", ".mov", ".gif"}
         temp_contact_sheet_path = None
@@ -107,10 +119,12 @@ class VisionCriticNode:
             )
             model_image_path = temp_contact_sheet_path
 
+        image_paths = [model_image_path, *references]
+
         try:
             gemini = asyncio.run(run_antigravity_with_image(
                 prompt=prompt,
-                image_paths=[model_image_path],
+                image_paths=image_paths,
                 timeout_s=timeout_s,
             ))
             parsed = self._parse(gemini.text, default_verdict="borderline")
@@ -119,7 +133,7 @@ class VisionCriticNode:
             if forced_escalation or parsed["confidence"] < threshold:
                 opus = asyncio.run(invoke_opus_vision(
                     prompt=prompt,
-                    image_paths=[model_image_path],
+                    image_paths=image_paths,
                     timeout_s=timeout_s,
                 ))
                 parsed = self._parse(opus.text, default_verdict="borderline")
@@ -168,7 +182,28 @@ class VisionCriticNode:
     def _t2_config(self, ctx: AgentContext) -> dict[str, Any]:
         return ctx.manifest.get("critics", {}).get("t2", {}) or {}
 
-    def _build_prompt(self, ctx: AgentContext, t2_cfg: dict) -> str:
+    def _characters_root(self, ctx: AgentContext) -> Path:
+        override = ctx.manifest.get("characters_root")
+        return Path(override) if override else _CHARACTERS_ROOT
+
+    def _resolve_references(self, ctx: AgentContext) -> list[Path]:
+        """The Bible reference bundle for this frame. Empty when no character_id is
+        declared (graceful — today's reference-blind behavior, no wrong-character
+        references)."""
+        character_id = ctx.inputs.get("character_id")
+        if not character_id:
+            return []
+        try:
+            return select_references(
+                str(character_id),
+                str(ctx.inputs.get("checkpoint", "")),
+                str(ctx.inputs.get("beat_description", "")),
+                characters_root=self._characters_root(ctx),
+            )
+        except ReferenceSelectionError:
+            return []
+
+    def _build_prompt(self, ctx: AgentContext, t2_cfg: dict, n_references: int = 0) -> str:
         """Concatenate the shared anima preamble + Em's addendum + any
         manifest-declared default_context_files + the per-checkpoint
         frame brief into a single prompt string.
@@ -218,6 +253,24 @@ class VisionCriticNode:
             f"role addendum — verdict / confidence / reasoning / "
             f"proposed_patches / cites_criteria. Nothing else."
         )
+
+        # Reference plates: tell Em which image is the subject vs the references.
+        # This is the licence-to-pass she lacks reference-blind — and a sycophancy
+        # surface, so the wording stays deliberately conservative; the false_pass
+        # guard in the re-baseline is its empirical check (spec §5.2, §9).
+        if n_references > 0:
+            sections.append(
+                "## Reference plates (identity/style ground truth)\n\n"
+                "Image 1 is the FRAME UNDER REVIEW. Every image after it is an "
+                "identity/style REFERENCE PLATE from this character's Bible — the "
+                "canonical truth for who the character is (anchor + turnaround "
+                "views). Compare the subject (image 1) against them. A feature that "
+                "MATCHES the references is correct even if it differs from a generic "
+                "expectation — do NOT flag a difference the references confirm is "
+                "correct. A feature that DRIFTS from the references is exactly the "
+                "identity/style defect you exist to catch. Judge the subject against "
+                "its own Bible, not against a generic ideal."
+            )
 
         # Phase 6 motion: the attached image is a contact sheet sampling a
         # clip, not a single still. Be explicit about the limit of looking —
