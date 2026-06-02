@@ -249,6 +249,11 @@ critics:
   # wall budgets mirror the vault_critic precedent so the contract surface stays
   # consistent across critic agents.
   t2:
+    # NOTE (2026-06-02 forensics): this label is ASPIRATIONAL and cosmetic — no code
+    # reads it. agy passed no -m flag, so its Em calls ran the Antigravity backend
+    # default = "Gemini 3.5 Flash (Medium)", NOT Pro (272/272 Em-sized calls, incl.
+    # the 0.62 baseline). The live model is pinned in gemini_api_runner.GEMINI_VISION_MODEL
+    # (gemini-3.5-flash) via the transport below. Left as-is to preserve history.
     default_model: "gemini-3.1-pro-via-anti-gravity"
     escalation_model: "claude-opus-4-7-via-sdk"
     escalation_threshold: 0.7
