@@ -29,6 +29,9 @@ venv/
 
 # Antigravity CLI local config (per-machine OAuth tokens etc.)
 .antigravitycli/
+# Antigravity CLI per-machine project-ID cache (agy writes cache/projects.json
+# mapping the repo path -> a local project UUID; machine-local, not a source artifact)
+cache/
 
 # Deep-research session state (per-run metadata, not source artifacts)
 docs/research/.sessions/
