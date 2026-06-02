@@ -30,6 +30,7 @@ from pipeline.agents import (
     register_node,
 )
 from pipeline.agents.cli_runners import run_antigravity_with_image
+from pipeline.agents.gemini_api_runner import run_gemini_api_with_image
 from pipeline.agents.reference_selection import select_references, ReferenceSelectionError
 from pipeline.agents.sdk_runners import invoke_opus_vision
 
@@ -120,9 +121,10 @@ class VisionCriticNode:
             model_image_path = temp_contact_sheet_path
 
         image_paths = [model_image_path, *references]
+        transport_fn = self._vision_transport(t2_cfg)
 
         try:
-            gemini = asyncio.run(run_antigravity_with_image(
+            gemini = asyncio.run(transport_fn(
                 prompt=prompt,
                 image_paths=image_paths,
                 timeout_s=timeout_s,
@@ -181,6 +183,20 @@ class VisionCriticNode:
 
     def _t2_config(self, ctx: AgentContext) -> dict[str, Any]:
         return ctx.manifest.get("critics", {}).get("t2", {}) or {}
+
+    def _vision_transport(self, t2_cfg: dict):
+        """Return the configured T2 Gemini transport coroutine. Defaults to agy
+        (today's behavior); critics.t2.transport: gemini_api routes to the
+        Gemini-API transport. Resolved via module globals so score.py --stub
+        monkeypatching of either name still works."""
+        transport = str(t2_cfg.get("transport", "agy")).strip().lower()
+        if transport == "gemini_api":
+            return run_gemini_api_with_image
+        if transport == "agy":
+            return run_antigravity_with_image
+        raise ValueError(
+            f"unknown critics.t2.transport: {transport!r} (expected 'agy' | 'gemini_api')"
+        )
 
     def _characters_root(self, ctx: AgentContext) -> Path:
         override = ctx.manifest.get("characters_root")

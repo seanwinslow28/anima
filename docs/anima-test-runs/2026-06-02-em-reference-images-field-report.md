@@ -92,6 +92,42 @@ Plus the deferred **live re-baseline + three-way bake-off** themselves (this rep
 - ✅ case-7 flipped xfail → green (validity + ID alignment + honest mock).
 - ✅ Eval re-wired for structural parity; CI harness green, motion cases red.
 - ✅ Harness hardened (subprocess isolation + `--limit`; orchestrator-detach recipe).
-- ⏸ **Live re-baseline — DEFERRED** to a clean-terminal run (recipe above). Proven live at n=1.
-- ⏸ **Bake-off re-run — DEFERRED** to its own quota window (same harness dependency).
+- ✅ **Live re-baseline — MEASURED 2026-06-02** via a transport pivot (agy → Gemini API; agy's personal-tier quota was 429-walling). **Result: the references change is BLOCKED by the false-pass gate** — see the postscript "Re-baseline measured" below.
+- ⏸ **Bake-off re-run — NOT RUN.** Gated on the re-baseline reading clean; it didn't. (Separately, Task-4 forensics show the 2026-05-31 "Gemini" column was Flash, not Pro — a mislabel to correct when it does run.)
 - ✅ Docs: this field report + CHANGELOG + CLAUDE.md Em row.
+
+---
+
+## Postscript — 2026-06-02 (later): re-baseline MEASURED via a transport pivot — and the references change is BLOCKED
+
+The twice-deferred live re-baseline finally ran. The blocker was never the code — it was agy's personal-tier Gemini quota 429-walling every repeated run. So we **pivoted the transport**: a new `pipeline/agents/gemini_api_runner.py` calls Gemini directly via `google-genai` + `GEMINI_API_KEY` (a separate vendor billing line from agy's Google personal OAuth), config-selected by `critics.t2.transport: agy | gemini_api`. The references, criteria, and Opus-SDK escalation are untouched — the transport only delivers images+prompt. **It worked**: real verdicts, references attached, **no quota wall**, plain foreground run (the API path has no Go/Node child to crash at teardown, so the orchestrator-detach gymnastics this report agonized over are no longer needed).
+
+### Forensics correction — the baseline never ran on Gemini 3.1 Pro
+The validity gate (does the API request the *same* model agy used?) surfaced something bigger. agy passes **no `-m` flag** (`cli_runners` never set one), so its print-mode calls log `model=""` and the **Antigravity backend default ran**. Across **272/272 Em-sized agy calls** — spanning the **2026-06-01 0.62 baseline** *and* the 2026-06-02 attempts — the propagated backend model was **"Gemini 3.5 Flash (Medium)"**, never Pro. No `settings.json` pin. So:
+- The 0.62 reference-blind baseline ran on **gemini-3.5-flash**, not the `gemini-3.1-pro` the manifest/docs/CLAUDE.md label. The label was aspirational.
+- To hold the model **constant** (one variable: transport agy→API), the API transport pins **`gemini-3.5-flash`** (`gemini_api_runner.GEMINI_VISION_MODEL`). Sean confirmed.
+- Knock-on: the 2026-05-31 three-way bake-off's "Gemini" column was Flash too — a mislabel to fix when it re-runs.
+
+### The measured result (performs segment, n=23; gemini-3.5-flash@gemini_api + Opus escalation)
+
+| Metric | Reference-blind baseline (2026-06-01) | References (2026-06-02) | Read |
+|---|---|---|---|
+| **false_pass_rate** | **0.00** | **0.15** | ❌ gate failed |
+| **recall** | 1.00 | 0.85 (±0.10) | ❌ dropped |
+| precision | 0.62 | 0.73 | lift, but **disqualified** |
+| cites-correct | — | 0.80 | n/a |
+
+Two false passes on performs — both real defects Em let through: `stylus-hand-f13-cc01` (the known costly CC01 wrong-hand defect) and `proportion-eyes-body-profile-right`. **Per §9, a precision lift bought with *any* false pass on performs is a worse Em — the change is BLOCKED, and follow-on #3 (DINOv2 deterministic identity backstop) is promoted from deferred to *next*.**
+
+### Why — diagnosis (false passes investigated, plus a prompt-ablation)
+1. **Verdict variance (Opus stochasticity).** `stylus-hand-f13-cc01` is `identity_critical` → Opus produces the verdict, and Opus is non-deterministic on a genuinely hard spatial call (left/right hand from a ¾ view): it scored `pass` in the baseline run but **`fail` (correct) on a plain re-run**. So ~1/23 of the 0.15 is sampling noise — a single 24-case run is a noisy estimate of false_pass_rate.
+2. **Confabulation / forgiveness (the real signal).** `proportion-eyes-body-profile-right` passed in **both** runs. The fixture is a flat-digital cartoon (off-register from the A-2 anchor) with a subtle proportion/jaw/eye drift in profile — yet Opus's reasoning claims *"warm-graphite contour… visible construction marks… cream paper substrate with visible grain."* Those features **aren't in the fixture**: Opus is reciting the reference bundle's register onto the subject and confabulating a match. Given a reference "story," the MLLM narrates it.
+3. **Prompt-ablation** (forgiveness sentence *"a feature that MATCHES the references is correct…"* stripped): `proportion-eyes` flipped pass→fail — **but for the wrong rule** (it flagged the absent stylus it had previously forgiven, while *still* reading the labeled proportion/eye defect as holding and *still* confabulating grain). So the matching-wording **is** a forgiveness lever, but removing it is **not a fix** — the underlying confabulation and the unseen fine-grained defect persist. This is the case for a deterministic backstop the prompt can't fix.
+
+### Decision + open items
+- **§9 block stands.** Promote **DINOv2 (follow-on #3)** to next — a deterministic identity/proportion signal can't confabulate grain.
+- **Implicated levers recorded** (future, not this session): soften the *"matches references = correct"* wording; **view-aware reference selection** (approach A) so profile shots get profile refs.
+- **Open decision for Sean (not acted on here):** references-attach is the *shipped* default (merged in PR #13) and is now **eval-blocked**. Whether to revert it, gate it behind a flag, or leave it pending the DINOv2 work is a scoping call — flagged, not decided. The **transport pivot itself is kept** (`transport: gemini_api`): it's orthogonal to the references finding and it's what made the measurement possible.
+- **The portfolio artifact** is not "0.62 → a better number." It's the honest one: the intuitively-good change (give Em the Bible) **regressed the safety metric**, the eval caught it, and the diagnosis is legible. Empirical, not vibes.
+
+_Artifacts: `evals/vision_critic/last-run.md` + `traces/baseline-2026-06-02-scored.md` (the measured matrix). Build commits on `eval/em-rebaseline`: transport (`59b095c`), selector (`27f3358`), scorer/manifest (`0cb37eb`), pin correction (`d7d136a`)._
