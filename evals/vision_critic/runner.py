@@ -122,6 +122,11 @@ _CASES = yaml.safe_load(
 )["cases"]
 _FIXTURES = Path(__file__).parent / "fixtures"
 
+from evals.vision_critic.conftest import eval_manifest, merged_criteria
+
+_EVAL_MANIFEST = eval_manifest()
+_MERGED_CRITERIA = merged_criteria(_EVAL_MANIFEST)
+
 
 def _patch_em_runners(monkeypatch, verdict_json: str):
     """Stub both Em runners with a fixed verdict so the harness is credential-free."""
@@ -144,9 +149,10 @@ def _ctx_for_case(case: dict) -> AgentContext:
             "frame_id": case["name"],
             "impact_tags": case.get("impact_tags", []),
             "checkpoint": case["checkpoint"],
+            "character_id": case.get("character_id", "sean"),
         },
-        manifest={"critics": {"t2": {}}},
-        criteria=None,
+        manifest=_EVAL_MANIFEST,
+        criteria=_MERGED_CRITERIA,
         tier="draft",
         cache_dir=Path("/tmp/em-eval/.cache"),
     )

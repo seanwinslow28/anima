@@ -25,8 +25,10 @@ load_dotenv()
 
 from pipeline.agents import AgentContext
 from pipeline.agents.vision_critic import VisionCriticNode
+from pipeline.agents.reference_selection import select_references
 from pipeline.contact_sheet import build_contact_sheet  # noqa: F401 (cases pre-build sheets)
 from evals.vision_critic.scoring import CaseScore, segment_report
+from evals.vision_critic.conftest import merged_criteria
 
 HERE = Path(__file__).parent
 FIXTURES = HERE / "fixtures"
@@ -41,6 +43,7 @@ def _manifest() -> dict:
     return {
         "critics": full.get("critics", {}),
         "criteria_sources": full.get("criteria_sources", {}),
+        "characters_root": str(root / "characters"),
     }
 
 
@@ -71,7 +74,7 @@ def _force_stub_runners() -> None:
     _vc.invoke_opus_vision = _stub
 
 
-def _ctx(case: dict, manifest: dict) -> AgentContext:
+def _ctx(case: dict, manifest: dict, criteria) -> AgentContext:
     return AgentContext(
         run_dir=Path("/tmp/em-baseline"),
         inputs={
@@ -80,19 +83,24 @@ def _ctx(case: dict, manifest: dict) -> AgentContext:
             "frame_id": case["name"],
             "impact_tags": case.get("impact_tags", []),
             "checkpoint": case["checkpoint"],
+            "character_id": case.get("character_id", "sean"),
         },
         manifest=manifest,
-        criteria=None,
+        criteria=criteria,
         tier="draft",
         cache_dir=Path("/tmp/em-baseline/.cache"),
     )
 
 
-def _score_one(case: dict, manifest: dict) -> CaseScore:
+def _score_one(case: dict, manifest: dict, criteria) -> CaseScore:
     """Run production Em (Gemini default + Opus escalation) against one case."""
     start = datetime.now(timezone.utc)
-    result = VisionCriticNode().run(_ctx(case, manifest))
+    result = VisionCriticNode().run(_ctx(case, manifest, criteria))
     wall = (datetime.now(timezone.utc) - start).total_seconds()
+    refs = select_references(
+        case.get("character_id", "sean"), case["checkpoint"], case["beat_description"],
+        characters_root=Path(manifest["characters_root"]),
+    )
     return CaseScore(
         name=case["name"],
         case_class=case["case_class"],
@@ -102,6 +110,8 @@ def _score_one(case: dict, manifest: dict) -> CaseScore:
         actual_cites=result.cites_criteria,
         confidence=result.outputs["confidence"],
         wall_s=wall,
+        # `refs` (resolved reference plate names) is logged per-case for trace
+        # transparency — see the print() in main()'s loop below.
     )
 
 
@@ -157,6 +167,9 @@ def main() -> None:
     args = ap.parse_args()
 
     manifest = _manifest()
+    # Built once and reused by both the live and --stub branches, so the stub
+    # still exercises the criteria-surfacing path end-to-end (parity).
+    criteria = merged_criteria(manifest)
     if args.stub:
         # Mirror Mo's --no-sonnet: force the credential-free path so the matrix
         # is the stub's degenerate one. Label it so no one mistakes it for a
@@ -178,10 +191,13 @@ def main() -> None:
     errored: list[tuple[str, str]] = []
     for i, c in enumerate(CASES, 1):
         try:
-            cs = _score_one(c, manifest)
+            cs = _score_one(c, manifest, criteria)
             scores.append(cs)
+            refs = select_references(c.get("character_id", "sean"), c["checkpoint"],
+                                     c["beat_description"], characters_root=Path(manifest["characters_root"]))
             print(f"[{i}/{len(CASES)}] {c['name']}: {cs.predicted_verdict} "
-                  f"(conf={cs.confidence:.2f}, {cs.wall_s:.0f}s)", flush=True)
+                  f"(conf={cs.confidence:.2f}, {cs.wall_s:.0f}s) refs=[{', '.join(p.name for p in refs) or 'none'}]",
+                  flush=True)
         except Exception as exc:  # noqa: BLE001 — record, don't abort
             errored.append((c["name"], f"{type(exc).__name__}: {exc}"))
             print(f"[{i}/{len(CASES)}] {c['name']}: ERRORED — {type(exc).__name__}: {exc}",
