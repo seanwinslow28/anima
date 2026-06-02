@@ -208,6 +208,14 @@ def _run_case_subprocess(case: dict, stub: bool) -> CaseScore:
     proc = subprocess.run(
         cmd, capture_output=True, text=True, timeout=_PER_CASE_TIMEOUT_S,
         cwd=str(HERE.parents[1]),  # repo root: find_dotenv + relative bible paths resolve
+        # Do NOT pass start_new_session here. Detaching the WORKER into a new session
+        # breaks Claude Code auth for the Opus-SDK `claude` child (verified 2026-06-02:
+        # detached workers returned unparseable output → borderline + empty cites →
+        # Em's cites_criteria invariant raised → every case errored). The worker must
+        # keep the normal session so the model CLIs authenticate. Isolation against the
+        # exit-144 teardown signal is handled by detaching the ORCHESTRATOR at launch
+        # (its own session), which the smoke confirmed survives multiple teardowns —
+        # NOT by detaching the workers.
     )
     for line in proc.stdout.splitlines():
         if line.startswith(_CASESCORE_SENTINEL):
@@ -234,6 +242,11 @@ def main() -> None:
                     help="With --segment performs, include the first N motion_proper "
                          "cases (a phase-6 reference-attach smoke check). The rest are "
                          "excluded and logged.")
+    ap.add_argument("--limit", type=int, default=0,
+                    help="Run only the first N selected cases (0 = all). For a cheap "
+                         "live smoke-validation of the harness (does the orchestrator "
+                         "survive multiple worker teardowns?) before a full costed run. "
+                         "A --limit run is partial — its last-run.md is not a baseline.")
     args = ap.parse_args()
 
     manifest = _manifest()
@@ -259,6 +272,8 @@ def main() -> None:
 
     # ---- orchestrator mode: select cases, run each in an isolated subprocess ----
     selected, excluded = _select_cases(args.segment, args.motion_smoke)
+    if args.limit:
+        selected = selected[:args.limit]  # cheap smoke-validation; partial, not a baseline
     model_label = ("STUB (no scored claim)" if args.stub
                    else "production: gemini-3.1-pro@agy + opus-4.7-escalation")
 
