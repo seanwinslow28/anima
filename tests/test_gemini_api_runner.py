@@ -39,7 +39,8 @@ def test_stub_fallback_when_key_absent(monkeypatch):
 
 def test_empty_response_raises_ratecap(monkeypatch):
     _force_real(monkeypatch)
-    monkeypatch.setattr(gar, "_generate", lambda prompt, image_paths: "   \n")
+    # _generate returns (text, served_model) — A2 read-back contract.
+    monkeypatch.setattr(gar, "_generate", lambda prompt, image_paths: ("   \n", GEMINI_VISION_MODEL))
     with pytest.raises(RateCapExhausted):
         asyncio.run(run_gemini_api_with_image(prompt="p", image_paths=[]))
 
@@ -70,7 +71,7 @@ def test_valid_text_passthrough(monkeypatch):
     _force_real(monkeypatch)
     monkeypatch.setattr(
         gar, "_generate",
-        lambda prompt, image_paths: '{"verdict":"pass","confidence":0.9}',
+        lambda prompt, image_paths: ('{"verdict":"pass","confidence":0.9}', GEMINI_VISION_MODEL),
     )
     resp = asyncio.run(run_gemini_api_with_image(prompt="p", image_paths=[]))
     assert resp.ok and "pass" in resp.text and resp.model == GEMINI_VISION_MODEL
@@ -95,9 +96,12 @@ def test_generate_pins_model_and_orders_subject_first(monkeypatch, tmp_path):
 
     img = tmp_path / "subject.png"
     img.write_bytes(b"\x89PNG\r\n\x1a\n")
-    text = gar._generate("the prompt", [img])
+    text, served = gar._generate("the prompt", [img])
 
     assert captured["model"] == GEMINI_VISION_MODEL
     assert captured["n_contents"] == 2          # prompt + 1 image
     assert captured["first_is_text"] is True    # prompt first, then images (matches Opus path)
     assert "pass" in text
+    # The fake response carries no model_version, so _generate falls back to the
+    # requested constant — an explicit pin, never a silent backend-default (A2).
+    assert served == GEMINI_VISION_MODEL

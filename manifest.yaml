@@ -241,23 +241,38 @@ critics:
     pre_museum_publish: T3
 
   # T2 — Em (vision critic). Locked per docs/2026-05-26-agent-fleet-brainstorm-v2.md §6.
-  # Gemini 3.1 Pro via Anti-Gravity CLI is the default; Opus 4.7 via Claude Agent SDK
-  # is the escalation hatch on confidence < escalation_threshold OR impact_tag in
-  # escalation_tags. Both paths are subscription-absorbed on Sean's plan.
+  # gemini-3.5-flash via the Gemini API (transport: gemini_api) is the default; Opus 4.7
+  # via Claude Agent SDK is the escalation hatch on confidence < escalation_threshold OR
+  # impact_tag in escalation_tags. (The old "Gemini 3.1 Pro via Anti-Gravity CLI" label
+  # was aspirational — agy ran the backend-default Flash; 2026-06-02 forensics.) Claude
+  # is subscription-absorbed; Gemini is the bounded GEMINI_API_KEY (fleet-ops billing).
   #
   # auto_apply: false is the v2 lock — patches stage, Sean reviews. Per-call and
   # wall budgets mirror the vault_critic precedent so the contract surface stays
   # consistent across critic agents.
   t2:
-    # NOTE (2026-06-02 forensics): this label is ASPIRATIONAL and cosmetic — no code
-    # reads it. agy passed no -m flag, so its Em calls ran the Antigravity backend
-    # default = "Gemini 3.5 Flash (Medium)", NOT Pro (272/272 Em-sized calls, incl.
-    # the 0.62 baseline). The live model is pinned in gemini_api_runner.GEMINI_VISION_MODEL
-    # (gemini-3.5-flash) via the transport below. Left as-is to preserve history.
-    default_model: "gemini-3.1-pro-via-anti-gravity"
+    # CORRECTED 2026-06-02 (A3) from the aspirational "gemini-3.1-pro-via-anti-gravity"
+    # label. Forensics: agy passed no -m flag, so its Em calls ran the Antigravity
+    # backend default = "Gemini 3.5 Flash (Medium)", NOT Pro (272/272 Em-sized calls,
+    # incl. the 0.62 baseline). This field is cosmetic — no code reads it; the live
+    # model is pinned in gemini_api_runner.GEMINI_VISION_MODEL (gemini-3.5-flash) via
+    # the transport below — but a shipped label must be honest. If Em ever moves to
+    # gemini-3.1-pro, that is a deliberate model-upgrade experiment, pinned by ID and
+    # re-baselined; see docs/2026-06-02-em-provenance-and-hardening-kickoff.md.
+    default_model: "gemini-3.5-flash"
     escalation_model: "claude-opus-4-7-via-sdk"
     escalation_threshold: 0.7
     escalation_tags: [hero, identity_critical]
+    # Reference-grounding (A1, 2026-06-02). When false (default), Em runs
+    # reference-blind: no Bible reference bundle, no IR/AC criteria block on the
+    # subject prompt — the safe recall-1.00 / false_pass-0.00 profile. The PR #13
+    # grounding path (attach the anchor + turnarounds + cite the rules) measured as
+    # a REGRESSION in the 2026-06-02 re-baseline (false_pass 0.00->0.15, recall
+    # 1.00->0.85) and is gated off pending a deterministic identity backstop (DINOv2)
+    # + a clean re-baseline that clears the false-pass gate. Set true to restore the
+    # bundle once that lands. Read by pipeline.agents.vision_critic._attach_references.
+    # See docs/2026-06-02-em-provenance-and-hardening-kickoff.md §A1.
+    attach_references: false
     # Gemini delivery transport for Em. agy = Antigravity CLI (subscription, but
     # personal-tier quota 429-blocks repeated runs); gemini_api = direct Gemini
     # API via GEMINI_API_KEY (separate vendor billing; unblocks the live
