@@ -9,6 +9,8 @@ museum/_site/
 # Environment secrets
 .env
 .env.*
+# ...but the secret-free template IS committed (auth-policy doc; see CHANGELOG 2026-06-02)
+!.env.example
 
 # Python
 __pycache__/

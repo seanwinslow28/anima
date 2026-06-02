@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 import types
@@ -247,7 +248,32 @@ def main() -> None:
                          "live smoke-validation of the harness (does the orchestrator "
                          "survive multiple worker teardowns?) before a full costed run. "
                          "A --limit run is partial — its last-run.md is not a baseline.")
+    ap.add_argument("--allow-api-key", action="store_true",
+                    help="Escape hatch: permit a live run while ANTHROPIC_API_KEY is set "
+                         "in the environment. NOT recommended — Em's SDK escalation bills "
+                         "the Anthropic API instead of your Claude subscription when the "
+                         "key is present (Claude Code uses it in non-interactive mode). "
+                         "Leave unset so a leaked key fails fast. Ignored with --stub.")
     args = ap.parse_args()
+
+    # Env-hygiene guard (operational incident #1, 2026-06-02). A present
+    # ANTHROPIC_API_KEY silently routes Em's Opus/Sonnet escalation to API
+    # billing (precedence: in non-interactive mode the `claude` CLI always uses
+    # the key when set, ahead of subscription OAuth). A costed run must never
+    # start in that state by accident. --stub never touches a model, so it's
+    # exempt; --allow-api-key is the explicit override.
+    if os.environ.get("ANTHROPIC_API_KEY") and not args.stub and not args.allow_api_key:
+        print(
+            "REFUSING TO RUN: ANTHROPIC_API_KEY is set in the environment.\n"
+            "A live Em run would bill the Anthropic API, not your Claude subscription.\n"
+            "Fix: `unset ANTHROPIC_API_KEY` (and remove it from your shell rc), confirm\n"
+            "subscription auth with `claude /status`, then re-run. For headless\n"
+            "subscription billing use `claude setup-token` → CLAUDE_CODE_OAUTH_TOKEN.\n"
+            "Override (not recommended): --allow-api-key.  See\n"
+            "docs/anima-test-runs/2026-06-02-operational-incidents-remediation-plan.md",
+            file=sys.stderr,
+        )
+        raise SystemExit(3)
 
     manifest = _manifest()
 
