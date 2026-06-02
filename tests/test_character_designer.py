@@ -5,11 +5,12 @@ Cy's three-phase loop:
            cy-confidence-notes.md + plate_generation_plan.json (text-only).
   Pass 2 — NB Pro generates plates per the plan (per-plate cache; ingest
            or generate per plate.source value).
-  Pass 3 — Gemini 3.1 Pro verifies every plate against cited IR.* rules;
-           three-attempt ceiling per plate with reject_reason threaded
-           into NB Pro on regeneration.
+  Pass 3 — Gemini (gemini-3.5-flash via the Gemini API transport) verifies every
+           plate against cited IR.* rules; three-attempt ceiling per plate with
+           reject_reason threaded into NB Pro on regeneration. (Was agy; routed to
+           run_gemini_api_with_image 2026-06-02 — A2 model-provenance fix.)
 
-These tests mock invoke_opus_text + invoke_image_edit + run_antigravity_with_image
+These tests mock invoke_opus_text + invoke_image_edit + run_gemini_api_with_image
 so the AgentSpec contract is exercised without burning API calls.
 """
 
@@ -246,7 +247,7 @@ def _patch_runners(
         "pipeline.agents.character_designer.invoke_opus_text", fake_opus
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+        "pipeline.agents.character_designer.run_gemini_api_with_image", fake_gemini
     )
     monkeypatch.setattr(
         "pipeline.agents.character_designer.invoke_image_edit", fake_nb_pro
@@ -389,7 +390,7 @@ def test_gemini_fail_triggers_regeneration_with_reject_reason(
 
     monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", fake_opus)
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+        "pipeline.agents.character_designer.run_gemini_api_with_image", fake_gemini
     )
     monkeypatch.setattr(
         "pipeline.agents.character_designer.invoke_image_edit", tracking_nb_pro
@@ -442,7 +443,7 @@ def test_three_attempt_ceiling_surfaces_human_gate(
 
     monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", fake_opus)
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+        "pipeline.agents.character_designer.run_gemini_api_with_image", fake_gemini
     )
     monkeypatch.setattr(
         "pipeline.agents.character_designer.invoke_image_edit", counting_nb_pro
@@ -482,7 +483,7 @@ def _patch_with_nb_capture(monkeypatch, *, envelope):
 
     monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", fake_opus)
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+        "pipeline.agents.character_designer.run_gemini_api_with_image", fake_gemini
     )
     monkeypatch.setattr(
         "pipeline.agents.character_designer.invoke_image_edit", capturing_nb_pro
@@ -628,7 +629,7 @@ def test_pass1_stub_is_flagged_in_result_notes(base_ctx, character_dir, monkeypa
 
     monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", stub_opus)
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.run_antigravity_with_image",
+        "pipeline.agents.character_designer.run_gemini_api_with_image",
         lambda **kw: _FakeCLIResponse(text=_make_gemini_verdict("pass")),
     )
     monkeypatch.setattr(
@@ -694,7 +695,7 @@ def test_pass1_unparseable_nonempty_text_flagged_as_stub(
 
     monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", prose_opus)
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.run_antigravity_with_image",
+        "pipeline.agents.character_designer.run_gemini_api_with_image",
         lambda **kw: _FakeCLIResponse(text=_make_gemini_verdict("pass")),
     )
     monkeypatch.setattr(
@@ -745,7 +746,7 @@ def test_pass1_retries_on_parse_failure_then_succeeds(
 
     monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", flaky_opus)
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+        "pipeline.agents.character_designer.run_gemini_api_with_image", fake_gemini
     )
     monkeypatch.setattr("pipeline.agents.character_designer.invoke_image_edit", fake_nb_pro)
 
@@ -773,7 +774,7 @@ def test_pass1_no_sdk_does_not_retry(base_ctx, character_dir, monkeypatch):
 
     monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", no_sdk_opus)
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.run_antigravity_with_image",
+        "pipeline.agents.character_designer.run_gemini_api_with_image",
         lambda **kw: _FakeCLIResponse(text=_make_gemini_verdict("pass")),
     )
     monkeypatch.setattr(
@@ -824,7 +825,7 @@ def test_ingested_plate_still_runs_gemini_verification(
 
     monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", fake_opus)
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+        "pipeline.agents.character_designer.run_gemini_api_with_image", fake_gemini
     )
     monkeypatch.setattr(
         "pipeline.agents.character_designer.invoke_image_edit", fail_if_nb_pro
@@ -944,7 +945,7 @@ def test_prop_plate_not_anchor_similarity_rejected(
 
     monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", fake_opus)
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+        "pipeline.agents.character_designer.run_gemini_api_with_image", fake_gemini
     )
     monkeypatch.setattr(
         "pipeline.agents.character_designer.invoke_image_edit", black_nb_pro
@@ -1023,7 +1024,7 @@ def test_plates_only_skips_opus_and_preserves_locked_criteria(
 
     monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", tracking_opus)
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+        "pipeline.agents.character_designer.run_gemini_api_with_image", fake_gemini
     )
     monkeypatch.setattr("pipeline.agents.character_designer.invoke_image_edit", fake_nb_pro)
 
@@ -1062,7 +1063,7 @@ def test_locked_criteria_auto_routes_to_plates_only(base_ctx, character_dir, mon
 
     monkeypatch.setattr("pipeline.agents.character_designer.invoke_opus_text", tracking_opus)
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini
+        "pipeline.agents.character_designer.run_gemini_api_with_image", fake_gemini
     )
 
     def fake_nb_pro(*, output_path, cache_dir, **kwargs):
@@ -1217,7 +1218,7 @@ def test_iterate_reject_reason_reaches_emitted_prompt(tmp_path, monkeypatch):
     async def _fake_verify(*, prompt, image_paths, timeout_s=120):
         return _FakeCLIResponse(text=_make_gemini_verdict("pass"))
 
-    monkeypatch.setattr(cd_mod, "run_antigravity_with_image", _fake_verify)
+    monkeypatch.setattr(cd_mod, "run_gemini_api_with_image", _fake_verify)
 
     node._run_plate(plate=plate, ir_entries=[], character_dir=char_dir,
                     cache_dir=tmp_path / "cache", style_register="pencil-test-colored")

@@ -13,10 +13,13 @@ model assignment per phase:
            per plate.source value. Reject-aware regeneration via the
            reject_reason parameter when Pass 3 flags a plate.
 
-  Pass 3 — Gemini 3.1 Pro verifies every plate against cited IR.* rules
-           (vision, via the same agy CLI wrapper Em uses). Three-attempt
-           ceiling per plate; ceiling-hit surfaces 'human_gate_required'
-           in plate_results without failing the whole run.
+  Pass 3 — gemini-3.5-flash (via the Gemini API transport) verifies every
+           plate against cited IR.* rules (vision). Three-attempt ceiling per
+           plate; ceiling-hit surfaces 'human_gate_required' in plate_results
+           without failing the whole run. Was agy (backend-default Flash,
+           mislabeled "3.1 Pro"); routed to run_gemini_api_with_image
+           2026-06-02 — A2 model-provenance fix; the API pins the model by ID
+           and reads the served model back from resp.model_version.
 
 The AgentSpec shape mirrors Maya verbatim — three-phase orchestration,
 JSON envelope contract, atomic writes via temp-then-rename, clean-markdown
@@ -47,7 +50,7 @@ from pipeline.agents import (
     CostEstimate,
     register_node,
 )
-from pipeline.agents.cli_runners import run_antigravity_with_image
+from pipeline.agents.gemini_api_runner import run_gemini_api_with_image
 from pipeline.agents.nb_pro_runner import invoke_image_edit
 from pipeline.agents.sdk_runners import invoke_opus_text
 from pipeline.agents.similarity_gate import compute_similarity
@@ -479,7 +482,7 @@ class CharacterDesignerNode:
         )
 
         return (
-            f"You are Cy's Pass 3 verifier — Gemini 3.1 Pro reading a Bible plate "
+            f"You are Cy's Pass 3 verifier reading a Bible plate "
             f"to check whether it honors the identity rules Cy cited for it. "
             f"Attempt {attempt} of {_PLATE_ATTEMPT_CEILING}.\n\n"
             f"### Plate\n\n"
@@ -757,7 +760,14 @@ class CharacterDesignerNode:
                 ir_entries=ir_entries,
                 attempt=attempt,
             )
-            gemini_resp = asyncio.run(run_antigravity_with_image(
+            # Pass-3 verification runs via the Gemini API transport (A2, 2026-06-02).
+            # Was run_antigravity_with_image, but `agy -p` passed no -m, so the
+            # Antigravity backend silently served gemini-3.5-flash while the label
+            # claimed Pro — both of Cy's locked Bibles were Flash-verified, not Pro.
+            # The API transport pins gemini-3.5-flash by ID (the model that actually
+            # ran), reads the served model back from resp.model_version, and logs it;
+            # billing moves to the bounded GEMINI_API_KEY (fleet-ops aligned).
+            gemini_resp = asyncio.run(run_gemini_api_with_image(
                 prompt=verify_prompt,
                 image_paths=[target_path],
                 timeout_s=_GEMINI_TIMEOUT_S,

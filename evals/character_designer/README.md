@@ -12,7 +12,7 @@ Cy the Character Designer runs once per character in a three-phase loop:
 
   Pass 2 — Nano Banana Pro generates plates per Cy's plan (image; per-plate cache; ingest from source-refs or generate via NB Pro per plate.source).
 
-  Pass 3 — Gemini 3.1 Pro verifies every plate against the IR.* rules it cites (vision, via the same `agy` wrapper Em uses). Three-attempt ceiling per plate; ceiling-hit surfaces `human_gate_required` in plate_results.
+  Pass 3 — gemini-3.5-flash (via the Gemini API transport, `run_gemini_api_with_image`) verifies every plate against the IR.* rules it cites (vision). Three-attempt ceiling per plate; ceiling-hit surfaces `human_gate_required` in plate_results. (Was agy, whose backend-default Flash was mislabeled "3.1 Pro"; routed to the API transport 2026-06-02 — A2 model-provenance fix.)
 
 The eval suite verifies seven things:
 

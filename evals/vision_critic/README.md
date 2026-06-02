@@ -23,9 +23,10 @@ the harness, and intentionally-red cases carry their `xfail` marker.
 .venv/bin/pytest evals/vision_critic/runner.py -v
 ```
 
-**2. Deliberate, costed, LIVE — `score.py`.** Invokes Em *for real* (Gemini
-3.1 Pro via `agy` as the default voice + Opus 4.7 via the Claude Agent SDK on
-escalation, exactly as she ships) across the labeled set and writes the real
+**2. Deliberate, costed, LIVE — `score.py`.** Invokes Em *for real* (gemini-3.5-flash
+via the Gemini API as the default voice + Opus 4.7 via the Claude Agent SDK on
+escalation, exactly as she ships — the old "Gemini 3.1 Pro via agy" label was
+aspirational; agy ran the backend-default Flash, 2026-06-02 forensics) across the labeled set and writes the real
 **segmented confusion matrix** to `last-run.md` + a dated trace. Mirrors Mo's
 opt-in: `--stub` forces the credential-free path so the script is exercisable
 in CI without making a scored claim.

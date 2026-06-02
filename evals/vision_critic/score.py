@@ -14,10 +14,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import subprocess
 import sys
 import types
+from collections import Counter
 from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -37,6 +39,143 @@ from evals.vision_critic.conftest import merged_criteria
 HERE = Path(__file__).parent
 FIXTURES = HERE / "fixtures"
 CASES = yaml.safe_load((HERE / "cases.yaml").read_text(encoding="utf-8"))["cases"]
+
+
+# --------------------------------------------------------------------------- #
+# Replication (A5, 2026-06-02). --runs N replicates each case; the per-case
+# MAJORITY verdict is the point estimate, and a per-segment false_pass BAND plus
+# a persisted per-run verdict table surface the run-to-run variance the single
+# point estimate hides (the Opus-variance the re-baseline diagnosed). Pure +
+# testable (tests/test_score_replication.py); no model calls.
+# --------------------------------------------------------------------------- #
+
+_VERDICT_CONSERVATISM = {"fail": 0, "borderline": 1, "pass": 2}
+
+
+def majority_verdict(verdicts: list[str]) -> str:
+    """Most common verdict across N runs. Deterministic tie-break: the MORE
+    conservative verdict wins (fail > borderline > pass) — a tie must never
+    launder a flagged defect into a pass. Empty -> 'borderline' (defensive)."""
+    if not verdicts:
+        return "borderline"
+    counts = Counter(verdicts)
+    top = max(counts.values())
+    tied = [v for v, c in counts.items() if c == top]
+    if len(tied) == 1:
+        return tied[0]
+    return min(tied, key=lambda v: _VERDICT_CONSERVATISM.get(v, 1))
+
+
+def consensus_scores(runs: list[list[CaseScore]]) -> list[CaseScore]:
+    """Collapse N passes into one consensus CaseScore per case: majority verdict
+    for the point estimate, mean confidence/wall, and cites taken from a run whose
+    verdict matched the majority (so the cites align with the chosen verdict).
+    Cases keep first-seen order."""
+    by_name: dict[str, list[CaseScore]] = {}
+    order: list[str] = []
+    for pass_scores in runs:
+        for s in pass_scores:
+            if s.name not in by_name:
+                by_name[s.name] = []
+                order.append(s.name)
+            by_name[s.name].append(s)
+    out: list[CaseScore] = []
+    for name in order:
+        group = by_name[name]
+        maj = majority_verdict([s.predicted_verdict for s in group])
+        rep = next((s for s in group if s.predicted_verdict == maj), group[0])
+        out.append(CaseScore(
+            name=name,
+            case_class=rep.case_class,
+            expected_verdict=rep.expected_verdict,
+            predicted_verdict=maj,
+            expected_cites=rep.expected_cites,
+            actual_cites=rep.actual_cites,
+            confidence=sum(s.confidence for s in group) / len(group),
+            wall_s=sum(s.wall_s for s in group) / len(group),
+        ))
+    return out
+
+
+def false_pass_band(runs: list[list[CaseScore]]) -> dict:
+    """Per segment, the false_pass_rate across the N passes: min/max/mean + the
+    stderr of the mean. Surfaces the variance the point estimate hides — the
+    headline safety number is exactly the one that flips run-to-run."""
+    segments = ("performs", "motion_proper", "overall")
+    band: dict[str, dict] = {}
+    for seg in segments:
+        vals = [segment_report(p)[seg]["false_pass_rate"] for p in runs]
+        n = len(vals)
+        mean = sum(vals) / n if n else 0.0
+        if n > 1:
+            var = sum((v - mean) ** 2 for v in vals) / (n - 1)
+            se = math.sqrt(var) / math.sqrt(n)
+        else:
+            se = 0.0
+        band[seg] = {
+            "per_run": vals,
+            "min": min(vals) if vals else 0.0,
+            "max": max(vals) if vals else 0.0,
+            "mean": mean,
+            "stderr": se,
+        }
+    return band
+
+
+def render_per_run_table(runs: list[list[CaseScore]]) -> str:
+    """A markdown table: one row per case, one column per run, cell = verdict.
+    A case whose verdicts disagree across runs is marked FLIP — the whole point
+    of replication is that these never get averaged away silently."""
+    by_name: dict[str, dict[int, str]] = {}
+    order: list[str] = []
+    for i, pass_scores in enumerate(runs):
+        for s in pass_scores:
+            if s.name not in by_name:
+                by_name[s.name] = {}
+                order.append(s.name)
+            by_name[s.name][i] = s.predicted_verdict
+    n = len(runs)
+    header = "| case | " + " | ".join(f"run{i+1}" for i in range(n)) + " | flip? |"
+    sep = "|" + "---|" * (n + 2)
+    rows = [header, sep]
+    for name in order:
+        cells = [by_name[name].get(i, "—") for i in range(n)]
+        present = [c for c in cells if c != "—"]
+        flip = "**FLIP**" if len(set(present)) > 1 else ""
+        rows.append(f"| `{name}` | " + " | ".join(cells) + f" | {flip} |")
+    return "\n".join(rows)
+
+
+def render_replication_md(runs: list[list[CaseScore]]) -> str:
+    """The replication section appended to last-run.md when --runs > 1."""
+    n = len(runs)
+    band = false_pass_band(runs)
+    def line(seg: str) -> str:
+        b = band[seg]
+        return (f"- **{seg}**: false_pass mean={b['mean']:.2f} "
+                f"(band {b['min']:.2f}–{b['max']:.2f}, ±{b['stderr']:.2f} stderr); "
+                f"per-run {[round(v, 2) for v in b['per_run']]}")
+    lines = [
+        "", f"## Replication ({n} runs)", "",
+        "Point estimate above uses the per-case MAJORITY verdict across the "
+        f"{n} runs. The false_pass BAND below is the run-to-run spread the single "
+        "estimate hides:", "",
+        line("performs"), line("motion_proper"), line("overall"), "",
+        "### Per-run verdicts (flips are not averaged away)", "",
+        render_per_run_table(runs), "",
+    ]
+    return "\n".join(lines)
+
+
+def _refs_label(case: dict, manifest: dict, attach_refs: bool) -> str:
+    """Trace label for the reference bundle (A1 honesty). 'blind' when
+    attach_references is off (production default) — the trace must never list refs
+    Em did not actually see."""
+    if not attach_refs:
+        return "blind (attach_references off)"
+    refs = select_references(case.get("character_id", "sean"), case["checkpoint"],
+                             case["beat_description"], characters_root=Path(manifest["characters_root"]))
+    return ", ".join(p.name for p in refs) or "none"
 
 
 def _manifest() -> dict:
@@ -249,6 +388,12 @@ def main() -> None:
                          "live smoke-validation of the harness (does the orchestrator "
                          "survive multiple worker teardowns?) before a full costed run. "
                          "A --limit run is partial — its last-run.md is not a baseline.")
+    ap.add_argument("--runs", type=int, default=1,
+                    help="Replicate the whole selected set N times (A5). Default 1 (cheap "
+                         "smoke). The real baseline runs --runs 5: the point estimate uses "
+                         "the per-case MAJORITY verdict, and last-run.md reports a per-segment "
+                         "false_pass BAND (min/max ± stderr across runs) plus a per-run verdict "
+                         "table so a flip is visible, not silently averaged away.")
     ap.add_argument("--allow-api-key", action="store_true",
                     help="Escape hatch: permit a live run while ANTHROPIC_API_KEY is set "
                          "in the environment. NOT recommended — Em's SDK escalation bills "
@@ -277,6 +422,10 @@ def main() -> None:
         raise SystemExit(3)
 
     manifest = _manifest()
+    # Trace-honesty (A1): only claim references in the log when Em actually attaches
+    # them. attach_references defaults off (reference-blind is production), so the
+    # trace must not list refs Em never saw.
+    attach_refs = bool(manifest.get("critics", {}).get("t2", {}).get("attach_references", False))
 
     # ---- worker mode: run one case in this process, emit JSON, exit ----
     if args.only:
@@ -288,10 +437,8 @@ def main() -> None:
             print(f"unknown case: {args.only}", file=sys.stderr)
             raise SystemExit(2)
         cs = _score_one(case, manifest, criteria)
-        refs = select_references(case.get("character_id", "sean"), case["checkpoint"],
-                                 case["beat_description"], characters_root=Path(manifest["characters_root"]))
         print(f"{args.only}: {cs.predicted_verdict} (conf={cs.confidence:.2f}, "
-              f"{cs.wall_s:.0f}s) refs=[{', '.join(p.name for p in refs) or 'none'}]",
+              f"{cs.wall_s:.0f}s) refs=[{_refs_label(case, manifest, attach_refs)}]",
               file=sys.stderr, flush=True)
         # Flush the verdict BEFORE returning, so a teardown crash can't lose it.
         print(_CASESCORE_SENTINEL + json.dumps(asdict(cs)), flush=True)
@@ -310,27 +457,35 @@ def main() -> None:
     model_label = ("STUB (no scored claim)" if args.stub
                    else f"production: {gemini_model}@{transport} + opus-4.7-escalation")
 
-    scores: list[CaseScore] = []
+    n_runs = max(1, args.runs)
+    runs: list[list[CaseScore]] = []
     errored: list[tuple[str, str]] = []
-    for i, c in enumerate(selected, 1):
-        try:
-            cs = _run_case_subprocess(c, args.stub)
-            scores.append(cs)
-            refs = select_references(c.get("character_id", "sean"), c["checkpoint"],
-                                     c["beat_description"], characters_root=Path(manifest["characters_root"]))
-            print(f"[{i}/{len(selected)}] {c['name']}: {cs.predicted_verdict} "
-                  f"(conf={cs.confidence:.2f}, {cs.wall_s:.0f}s) "
-                  f"refs=[{', '.join(p.name for p in refs) or 'none'}]", flush=True)
-        except subprocess.TimeoutExpired:
-            errored.append((c["name"], f"timeout after {_PER_CASE_TIMEOUT_S}s"))
-            print(f"[{i}/{len(selected)}] {c['name']}: ERRORED — timeout", flush=True)
-        except Exception as exc:  # noqa: BLE001 — record, don't abort
-            errored.append((c["name"], f"{type(exc).__name__}: {exc}"))
-            print(f"[{i}/{len(selected)}] {c['name']}: ERRORED — {type(exc).__name__}: {exc}",
-                  flush=True)
+    for run_idx in range(n_runs):
+        pass_scores: list[CaseScore] = []
+        run_tag = f"run {run_idx + 1}/{n_runs} | " if n_runs > 1 else ""
+        for i, c in enumerate(selected, 1):
+            try:
+                cs = _run_case_subprocess(c, args.stub)
+                pass_scores.append(cs)
+                print(f"[{run_tag}{i}/{len(selected)}] {c['name']}: {cs.predicted_verdict} "
+                      f"(conf={cs.confidence:.2f}, {cs.wall_s:.0f}s) "
+                      f"refs=[{_refs_label(c, manifest, attach_refs)}]", flush=True)
+            except subprocess.TimeoutExpired:
+                errored.append((c["name"], f"{run_tag}timeout after {_PER_CASE_TIMEOUT_S}s"))
+                print(f"[{run_tag}{i}/{len(selected)}] {c['name']}: ERRORED — timeout", flush=True)
+            except Exception as exc:  # noqa: BLE001 — record, don't abort
+                errored.append((c["name"], f"{run_tag}{type(exc).__name__}: {exc}"))
+                print(f"[{run_tag}{i}/{len(selected)}] {c['name']}: ERRORED — "
+                      f"{type(exc).__name__}: {exc}", flush=True)
+        runs.append(pass_scores)
 
-    report = segment_report(scores)
-    md = render_last_run_md(report, model_label=model_label, n_total=len(scores))
+    # Point estimate = per-case MAJORITY verdict across the runs (A5). For n_runs=1
+    # this is identical to the single pass, so the cheap smoke is unchanged.
+    consensus = consensus_scores(runs)
+    report = segment_report(consensus)
+    md = render_last_run_md(report, model_label=model_label, n_total=len(consensus))
+    if n_runs > 1:
+        md = md + "\n" + render_replication_md(runs)
     # Honest segmentation: record cases intentionally NOT live-scored (never silent).
     if excluded:
         lines = ["", "## Intentionally NOT live-scored (segment scoping)", ""]
@@ -346,10 +501,11 @@ def main() -> None:
         lines = ["", "## Errored cases (excluded from the matrix — NOT scored)", ""]
         lines += [f"- `{name}` — {err}" for name, err in errored]
         lines += ["",
-                  f"_{len(errored)} of {len(selected)} selected cases errored. With "
-                  "subprocess-per-case isolation, a crash/hang/quota-out (or Em's "
-                  "empty-cites invariant) in one case lands here as an honest gap rather "
-                  "than aborting the run. Not passes._", ""]
+                  f"_{len(errored)} of {len(selected) * n_runs} case-runs errored "
+                  f"({len(selected)} cases × {n_runs} run(s)). With subprocess-per-case "
+                  "isolation, a crash/hang/quota-out (or Em's empty-cites invariant) in "
+                  "one case-run lands here as an honest gap rather than aborting the run. "
+                  "Not passes._", ""]
         md = md + "\n" + "\n".join(lines)
 
     (HERE / "last-run.md").write_text(md, encoding="utf-8")
@@ -359,7 +515,7 @@ def main() -> None:
     print(md)
     print(f"\nWrote {HERE/'last-run.md'} and {trace}")
     if errored:
-        print(f"\n⚠ {len(errored)}/{len(selected)} cases errored (see report).")
+        print(f"\n⚠ {len(errored)}/{len(selected) * n_runs} case-runs errored (see report).")
 
 
 if __name__ == "__main__":

@@ -1,6 +1,10 @@
 # tests/test_vision_critic_references.py
 """Em attaches Bible reference plates (subject = image 1) and tells the model which
-is which. character_id absent → no references (graceful, no regression)."""
+is which. character_id absent → no references (graceful, no regression).
+
+Reference-attach is flag-gated OFF by default (A1, 2026-06-02); these tests opt in
+with critics.t2.attach_references: true to exercise the attach path. The default-blind
+behavior is covered in test_vision_critic_references_flag.py."""
 from __future__ import annotations
 
 import json
@@ -31,7 +35,7 @@ def _ctx(tmp_path, *, character_id="sean", checkpoint="phase_5_generate", image=
             "image_path": str(img), "beat_description": "b", "frame_id": "F",
             "impact_tags": [], "checkpoint": checkpoint, "character_id": character_id,
         },
-        manifest={"critics": {"t2": {}}, "characters_root": str(chars)},
+        manifest={"critics": {"t2": {"attach_references": True}}, "characters_root": str(chars)},
         criteria=None, tier="draft", cache_dir=tmp_path / ".cache",
     )
 

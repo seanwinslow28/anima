@@ -1,7 +1,9 @@
 """Async subprocess wrapper for Antigravity CLI with image input + stub fallback.
 
 Mirrors code-brain/agents-sdk/lib/cli_runners.py structurally. v2 brainstorm §6
-locked Gemini 3.1 Pro via Antigravity CLI as Em's default model. When the
+NAMED "Gemini 3.1 Pro via Antigravity CLI" as Em's default — but the 2026-06-02
+forensics found agy passed no -m flag, so the Antigravity backend silently served
+gemini-3.5-flash (the label was aspirational; see the A2 note below). When the
 binary is not on PATH (typical for fresh machines, CI, or first-hour
 verification), the stub fallback returns a deterministic structured response so
 tests stay green and the routing logic in vision_critic.py is verifiable
@@ -18,18 +20,34 @@ new `agy` binary per docs/research/2026-05-26-anti-gravity-cli-findings.md:
 - Flag shape: `--prompt PROMPT --json --image PATH` → `-p PROMPT --output-format json`
 - Image attachment: `--image PATH` flag → `@path` inline references in prompt text
 The sunset for the consumer-tier Gemini CLI is 2026-06-18; the migration is
-mechanical and Gemini 3.1 Pro stays accessible by name.
+mechanical.
+
+A2 (2026-06-02) — model provenance. A real agy call now REQUIRES an explicit
+`model=` (passed as `-m`), recorded on CLIResponse.model and logged; a real call
+without a model RAISES (no silent backend-default ever again — that is the bug
+this guards: `agy -p` with no -m ran the backend-default Flash on 272/272 Em-sized
+calls while every label claimed Pro). agy print-mode stdout does not echo the
+served model, so the recorded value is the REQUESTED pin, not a stdout
+confirmation — which is why both Em (default) and Cy's Pass-3 now run on the
+Gemini API transport (gemini_api_runner.run_gemini_api_with_image), where
+resp.model_version confirms what actually served. `-m gemini-3.1-pro` is only a
+real pin IF the installed agy supports the flag (the findings doc is contradictory
+on v1.0.2; unverified) — the 0.62 baseline ran on the backend-default Flash.
 """
 
 from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import shutil
 import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
+
+_LOG = logging.getLogger("anima.cli_runners")
+
 
 class RateCapExhausted(Exception):
     """agy returned a quota-exhausted / empty response (not a verdict).
@@ -90,6 +108,11 @@ class CLIResponse:
     rate_capped: bool
     error: str | None
     stub_fallback: bool = False
+    # The model explicitly pinned for this call (A2 provenance). None on the stub
+    # path (not a costed call). A real call without a pin is refused, so a non-stub
+    # CLIResponse always carries the model the call requested via `-m` — never the
+    # silent Antigravity backend-default that mislabeled 272 calls (2026-06-02).
+    model: str | None = None
 
     @property
     def ok(self) -> bool:
@@ -112,8 +135,8 @@ def _stub_response(prompt: str, image_paths: list[Path]) -> CLIResponse:
             "borderline verdict at confidence 0.65 so the escalation hatch "
             "and downstream contract tests exercise the full path. Install "
             "the Antigravity CLI (curl -fsSL https://antigravity.google/cli/install.sh | bash) "
-            "and authenticate to get real Gemini 3.1 Pro critique against "
-            "the pencil-test aesthetic."
+            "and authenticate (and pass an explicit model=, per A2) to get real "
+            "Gemini critique against the pencil-test aesthetic."
         ),
         "proposed_patches": [],
         "cites_criteria": ["AC01"],
@@ -135,6 +158,7 @@ async def run_antigravity_with_image(
     prompt: str,
     image_paths: list[Path],
     timeout_s: int = 120,
+    model: str | None = None,
 ) -> CLIResponse:
     """Invoke Antigravity CLI with a prompt + one-or-more images.
 
@@ -147,9 +171,31 @@ async def run_antigravity_with_image(
     carried forward into Antigravity CLI per the migration findings doc),
     not a separate `--image` flag. The wrapper formats image paths into the
     prompt body and lets the agent's file-reading capability resolve them.
+
+    `model` (A2, 2026-06-02): a REAL agy call requires an explicit model pin — it
+    is passed as `-m <model>` and recorded on the response. A real call WITHOUT a
+    model is refused (ValueError), because the bug this guards against is exactly
+    `agy -p` with no -m silently running the Antigravity backend-default while every
+    label claimed something else (272/272 Em-sized calls; the two Cy Bibles too).
+    Note: agy print-mode stdout does not echo the served model, so the recorded
+    model is the REQUESTED pin, not a stdout-confirmation — the limitation that
+    motivated routing Cy's costed verification through the Gemini API transport
+    (run_gemini_api_with_image), where resp.model_version confirms what served. The
+    stub path needs no model (it is not a costed call). See the provenance kickoff §A2.
     """
     if shutil.which(ANTI_GRAVITY_BIN) is None:
         return _stub_response(prompt, image_paths)
+
+    # No silent backend-default ever again (A2). A real, costed agy call must pin a
+    # model by ID; refuse otherwise rather than let the backend choose unobserved.
+    if not model:
+        raise ValueError(
+            "run_antigravity_with_image: a real agy call requires an explicit "
+            "model= (pin by ID — no silent Antigravity backend-default; see the "
+            "2026-06-02 provenance forensics). Pass model=, or use the Gemini API "
+            "transport (run_gemini_api_with_image), which confirms the served model "
+            "from resp.model_version."
+        )
 
     start = time.monotonic()
     # agy v1.0.2 reads image / file references when the workspace contains
@@ -183,10 +229,14 @@ async def run_antigravity_with_image(
     cmd: list[str] = [
         ANTI_GRAVITY_BIN,
         "--dangerously-skip-permissions",
+        "-m",
+        model,
         *add_dirs,
         "-p",
         full_prompt,
     ]
+    # Provenance log (A2): record the model we pinned for this costed agy call.
+    _LOG.info("agy vision call: requested model=%s via -m", model)
 
     try:
         proc = await asyncio.create_subprocess_exec(
@@ -224,6 +274,7 @@ async def run_antigravity_with_image(
             exit_code=exit_code,
             rate_capped=False,
             error=err_text if proc.returncode else None,
+            model=model,
         )
     except asyncio.TimeoutError:
         return CLIResponse(
@@ -234,6 +285,7 @@ async def run_antigravity_with_image(
             exit_code=124,
             rate_capped=False,
             error=f"timeout after {timeout_s}s",
+            model=model,
         )
     except FileNotFoundError:
         # Race: which() returned a path but the binary disappeared. Fall

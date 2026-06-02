@@ -34,6 +34,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import os
 import time
 from dataclasses import dataclass
@@ -42,6 +43,8 @@ from pathlib import Path
 # Reuse the agy wrapper's exception so vision_critic's propagation is unchanged
 # regardless of which transport produced the gap.
 from pipeline.agents.cli_runners import RateCapExhausted
+
+_LOG = logging.getLogger("anima.gemini_api_runner")
 
 # The pinned model. SINGLE SOURCE of the model pin — held CONSTANT vs the
 # reference-blind baseline so the re-baseline isolates the references lift, not a
@@ -143,10 +146,16 @@ def _stub_response(prompt: str, image_paths: list[Path]) -> GeminiAPIResponse:
     )
 
 
-def _generate(prompt: str, image_paths: list[Path]) -> str:
+def _generate(prompt: str, image_paths: list[Path]) -> tuple[str, str]:
     """The blocking google-genai call. Monkeypatched in tests. Prompt FIRST then
     images in their given order (subject = image 1), matching the Opus SDK path
-    (sdk_runners._invoke_real_vision builds [text, *image_blocks])."""
+    (sdk_runners._invoke_real_vision builds [text, *image_blocks]).
+
+    Returns (text, served_model). The served model is read BACK from the response
+    (resp.model_version) rather than echoing the pinned constant — A2's verify-it-
+    fired contract (2026-06-02 provenance forensics). Falls back to the requested
+    constant only if the SDK omits model_version (we still pinned it in the request,
+    so that is an explicit pin, not a silent backend-default)."""
     from google import genai
     from google.genai import types
 
@@ -161,7 +170,8 @@ def _generate(prompt: str, image_paths: list[Path]) -> str:
             )
         )
     resp = client.models.generate_content(model=GEMINI_VISION_MODEL, contents=contents)
-    return resp.text or ""
+    served = getattr(resp, "model_version", None) or GEMINI_VISION_MODEL
+    return (resp.text or "", served)
 
 
 async def run_gemini_api_with_image(
@@ -177,8 +187,9 @@ async def run_gemini_api_with_image(
         return _stub_response(prompt, image_paths)
 
     start = time.monotonic()
+    served_model = GEMINI_VISION_MODEL  # requested pin; overwritten by the read-back below
     try:
-        text = await asyncio.wait_for(
+        text, served_model = await asyncio.wait_for(
             asyncio.to_thread(_generate, prompt, image_paths),
             timeout=timeout_s,
         )
@@ -209,7 +220,14 @@ async def run_gemini_api_with_image(
             "treating as a quota/refusal gap, not a verdict (parallels agy's "
             "empty-stdout-exit-0 signal)."
         )
+    # Provenance log (A2): record the model the API actually SERVED, read back from
+    # the response — not just the pinned constant. The line lands in the run logs so
+    # a future re-baseline never has to re-derive the model from forensics.
+    _LOG.info(
+        "gemini-api vision call: served model=%s (requested=%s)",
+        served_model, GEMINI_VISION_MODEL,
+    )
     return GeminiAPIResponse(
-        model=GEMINI_VISION_MODEL, text=text,
+        model=served_model, text=text,
         duration_s=time.monotonic() - start, exit_code=0, error=None,
     )

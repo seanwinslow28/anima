@@ -378,7 +378,11 @@ def _run_closing_the_loop_case(
             "character_id": "sean",
         },
         manifest={
-            "critics": {"t2": {}},
+            # This case exercises Em's criteria-grounding (surface the Bible's IR
+            # rules into the prompt so she can cite them). That path is flag-gated
+            # OFF by default since A1 (2026-06-02) — reference-blind is production —
+            # so the case must opt in explicitly to test the capability it asserts.
+            "critics": {"t2": {"attach_references": True}},
             "criteria_sources": {"bibles": [str(criteria_path)]},
         },
         criteria=merged_bundle,
@@ -408,8 +412,9 @@ def _patch_cy_runners(
     opus_payloads: list[str],
     gemini_payloads: list[str],
 ) -> None:
-    """Patch invoke_opus_text + invoke_image_edit + run_antigravity_with_image with
-    queued responses. Mirrors the planner-suite's _patch_runners shape."""
+    """Patch invoke_opus_text + invoke_image_edit + run_gemini_api_with_image with
+    queued responses. Mirrors the planner-suite's _patch_runners shape. (Cy's Pass-3
+    verifier moved agy -> Gemini API transport 2026-06-02; A2 model-provenance fix.)"""
     opus_q = list(opus_payloads)
     gemini_q = list(gemini_payloads)
 
@@ -438,7 +443,7 @@ def _patch_cy_runners(
         "pipeline.agents.character_designer.invoke_opus_text", fake_opus,
     )
     monkeypatch.setattr(
-        "pipeline.agents.character_designer.run_antigravity_with_image", fake_gemini,
+        "pipeline.agents.character_designer.run_gemini_api_with_image", fake_gemini,
     )
     monkeypatch.setattr(
         "pipeline.agents.character_designer.invoke_image_edit", fake_nb_pro,

@@ -1,6 +1,11 @@
 # tests/test_vision_critic_criteria.py
 """Em surfaces the character's IR.*/AC.* rules from ctx.criteria so she can cite
-them. Graceful when the bundle is None (legacy) or the phase intersection is empty."""
+them. Graceful when the bundle is None (legacy) or the phase intersection is empty.
+
+The criteria block is flag-gated OFF by default (A1, 2026-06-02); these tests pass
+critics.t2.attach_references: true as the t2_cfg so each isolates its intended
+condition (bundle-None / character-absent / empty-intersection) rather than passing
+because the flag is off. Default-blind is covered in test_vision_critic_references_flag.py."""
 from __future__ import annotations
 
 import json
@@ -42,24 +47,24 @@ def _ctx(criteria, *, checkpoint="phase_5_generate", character_id="sean"):
 
 
 def test_surfaces_phase5_ir_rules(tmp_path):
-    prompt = VisionCriticNode()._build_prompt(_ctx(_bundle(tmp_path, [5, 6])), {})
+    prompt = VisionCriticNode()._build_prompt(_ctx(_bundle(tmp_path, [5, 6])), {"attach_references": True})
     assert "Character Bible rules" in prompt
     assert "IR.sean.face.jaw-line-angular-not-rounded" in prompt
     assert "IR.sean.prop.stylus-right-hand-always" in prompt
 
 
 def test_no_block_when_bundle_none():
-    prompt = VisionCriticNode()._build_prompt(_ctx(None), {})
+    prompt = VisionCriticNode()._build_prompt(_ctx(None), {"attach_references": True})
     assert "Character Bible rules" not in prompt
 
 
 def test_no_block_when_character_id_absent(tmp_path):
     ctx = _ctx(_bundle(tmp_path, [5, 6]))
     ctx.inputs["character_id"] = None
-    assert "Character Bible rules" not in VisionCriticNode()._build_prompt(ctx, {})
+    assert "Character Bible rules" not in VisionCriticNode()._build_prompt(ctx, {"attach_references": True})
 
 
 def test_empty_intersection_no_block(tmp_path):
     # Rules cite only phase 6; checkpoint phase_8_assemble → empty intersection → no block.
     ctx = _ctx(_bundle(tmp_path, [6]), checkpoint="phase_8_assemble")
-    assert "Character Bible rules" not in VisionCriticNode()._build_prompt(ctx, {})
+    assert "Character Bible rules" not in VisionCriticNode()._build_prompt(ctx, {"attach_references": True})

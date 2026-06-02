@@ -1,11 +1,13 @@
 """Em — anima's T2 vision critic.
 
 Single SDK agent at three checkpoints: per-frame Generate (Phase 5),
-post-Motion (Phase 6 → 7), post-Assemble (Phase 8 → 9). Gemini 3.1 Pro via
-Anti-Gravity CLI is the default voice; Opus 4.7 via Claude Agent SDK is the
-escalation hatch when Gemini's confidence drops below
+post-Motion (Phase 6 → 7), post-Assemble (Phase 8 → 9). gemini-3.5-flash via
+the Gemini API (critics.t2.transport: gemini_api) is the default voice; Opus 4.7
+via Claude Agent SDK is the escalation hatch when Gemini's confidence drops below
 critics.t2.escalation_threshold OR a shot carries an impact_tag matching
-critics.t2.escalation_tags.
+critics.t2.escalation_tags. (The agy transport remains config-selectable but ran
+the Antigravity backend-default Flash, NOT the "3.1 Pro" old labels claimed —
+2026-06-02 provenance forensics; the API transport pins the model by ID.)
 
 Per v2 brainstorm §2.5 + §6 + §10 the patches stage and never auto-apply;
 the patch_stager.py post_run hook writes them into manifest.lock.yaml. Per
@@ -99,7 +101,13 @@ class VisionCriticNode:
         impact_tags = set(ctx.inputs.get("impact_tags", []) or [])
         forced_escalation = bool(impact_tags & escalation_tags)
 
-        references = self._resolve_references(ctx)
+        # References-attach is flag-gated, OFF by default (A1, 2026-06-02). Em runs
+        # reference-blind — the safe recall-1.00 / false_pass-0.00 profile — until a
+        # deterministic identity backstop (DINOv2) lands and a clean re-baseline clears
+        # the false-pass gate. The PR #13 grounding path stays in code, dormant, behind
+        # critics.t2.attach_references. See the provenance-and-hardening kickoff §A1.
+        attach_refs = self._attach_references(t2_cfg)
+        references = self._resolve_references(ctx) if attach_refs else []
         prompt = self._build_prompt(ctx, t2_cfg, n_references=len(references))
 
         is_video = image_path.suffix.lower() in {".mp4", ".webm", ".mov", ".gif"}
@@ -183,6 +191,17 @@ class VisionCriticNode:
 
     def _t2_config(self, ctx: AgentContext) -> dict[str, Any]:
         return ctx.manifest.get("critics", {}).get("t2", {}) or {}
+
+    def _attach_references(self, t2_cfg: dict) -> bool:
+        """Whether to attach the Bible reference bundle + IR/AC criteria block.
+
+        Default False (A1, 2026-06-02): Em runs reference-blind. The PR #13
+        reference-grounding path regressed in the 2026-06-02 re-baseline
+        (false_pass 0.00->0.15, recall 1.00->0.85) and is gated off pending a
+        deterministic identity backstop (DINOv2) + a clean re-baseline that
+        clears the false-pass gate. Single source of truth for the flag — both
+        run() (reference bundle) and _build_prompt() (criteria block) read it."""
+        return bool(t2_cfg.get("attach_references", False))
 
     def _vision_transport(self, t2_cfg: dict):
         """Return the configured T2 Gemini transport coroutine. Defaults to agy
@@ -322,10 +341,13 @@ class VisionCriticNode:
             )
 
         # Bible criteria (IR.*/AC.*) for this character at this checkpoint's phase —
-        # the criteria half of "give Em the Bible" (spec §5.3). What flips case-7 green.
-        criteria_block = self._criteria_block(ctx)
-        if criteria_block:
-            sections.append(criteria_block)
+        # the criteria half of "give Em the Bible" (spec §5.3). Flag-gated with the
+        # reference bundle (A1): reference-blind by default, attached only when
+        # critics.t2.attach_references is true.
+        if self._attach_references(t2_cfg):
+            criteria_block = self._criteria_block(ctx)
+            if criteria_block:
+                sections.append(criteria_block)
 
         # Phase 6 motion: the attached image is a contact sheet sampling a
         # clip, not a single still. Be explicit about the limit of looking —
