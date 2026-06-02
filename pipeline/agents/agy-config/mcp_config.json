@@ -1,0 +1,4 @@
+{
+  "_comment": "Empty MCP config for anima's headless `agy` vision-critic calls (operational incident #2, 2026-06-02). Em's critique path needs ZERO MCP servers; loading Sean's shared ~/.gemini/config/mcp_config.json servers (Pencil, notebooklm, ...) per call adds cold-start latency + child-process contention. Point anima's agy invocation at this dir so only anima's calls are MCP-free, leaving the interactive agy/IDE servers untouched. Wiring is pending verification of agy's config-dir override flag/env (see README.md in this folder).",
+  "mcpServers": {}
+}
