@@ -8,11 +8,12 @@ the live re-baseline when agy's personal-tier Gemini quota is 429-exhausted
 google-genai with GEMINI_API_KEY (a SEPARATE vendor billing line from agy's
 Google personal OAuth), so it does not share agy's exhausted consumer quota.
 
-Transport-only swap: the MODEL is held constant (GEMINI_VISION_MODEL pins the
-same gemini-3.1-pro snapshot agy used — validated against the API's models.list
-in the re-baseline runbook Task 4). References, criteria, and the Opus-SDK
-escalation are built upstream in vision_critic; this module only delivers the
-images + prompt and returns raw text in the shape Em's _parse already consumes.
+Transport-only swap: the MODEL is held constant (GEMINI_VISION_MODEL pins
+gemini-3.5-flash — the model agy actually ran for the 0.62 baseline, per the
+Task 4 log forensics; see the constant's comment). References, criteria, and the
+Opus-SDK escalation are built upstream in vision_critic; this module only
+delivers the images + prompt and returns raw text in the shape Em's _parse
+already consumes.
 
 # The honesty contract (mirrors cli_runners)
 An empty response or an explicit quota signal RAISES RateCapExhausted — Em must
@@ -42,11 +43,18 @@ from pathlib import Path
 # regardless of which transport produced the gap.
 from pipeline.agents.cli_runners import RateCapExhausted
 
-# The pinned snapshot. SINGLE SOURCE of the model pin — the validity gate
-# (runbook Task 4) confirms the Gemini API exposes this exact name and that it
-# matches the model agy produced the 0.62 baseline with. If the API exposes only
-# a differently-named snapshot, STOP and tell Sean before any costed run.
-GEMINI_VISION_MODEL = "gemini-3.1-pro"
+# The pinned model. SINGLE SOURCE of the model pin — held CONSTANT vs the
+# reference-blind baseline so the re-baseline isolates the references lift, not a
+# model change. Validity gate (runbook Task 4, verified 2026-06-02): agy passes
+# no -m flag, so its print-mode calls log model="" and the Antigravity backend
+# picks the model. Across 272/272 Em-sized agy calls — spanning the 2026-06-01
+# 0.62 baseline AND the 2026-06-02 attempts — the propagated backend model was
+# "Gemini 3.5 Flash (Medium)", never Pro. So the 0.62 baseline ran on Flash; the
+# manifest's "gemini-3.1-pro-via-anti-gravity" label was aspirational. Sean
+# confirmed (2026-06-02) the pin holds the model constant at gemini-3.5-flash;
+# Pro is a separate model-upgrade experiment. The bare API name is
+# "gemini-3.5-flash" (models.list exposes it exactly).
+GEMINI_VISION_MODEL = "gemini-3.5-flash"
 
 # Substrings that mean the upstream quota is exhausted (raise, don't degrade).
 _QUOTA_SIGNALS = ("429", "resource_exhausted", "quota", "rate limit", "rate-limited")

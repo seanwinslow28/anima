@@ -302,8 +302,13 @@ def main() -> None:
     if args.limit:
         selected = selected[:args.limit]  # cheap smoke-validation; partial, not a baseline
     transport = manifest.get("critics", {}).get("t2", {}).get("transport", "agy")
+    # Honest label: agy never ran 3.1 Pro — its backend default was gemini-3.5-flash
+    # (Task 4 log forensics, 2026-06-02). The gemini_api transport pins that same
+    # model (gemini_api_runner.GEMINI_VISION_MODEL), holding it constant vs the 0.62.
+    from pipeline.agents.gemini_api_runner import GEMINI_VISION_MODEL
+    gemini_model = GEMINI_VISION_MODEL if transport == "gemini_api" else "gemini-3.5-flash"
     model_label = ("STUB (no scored claim)" if args.stub
-                   else f"production: gemini-3.1-pro@{transport} + opus-4.7-escalation")
+                   else f"production: {gemini_model}@{transport} + opus-4.7-escalation")
 
     scores: list[CaseScore] = []
     errored: list[tuple[str, str]] = []
