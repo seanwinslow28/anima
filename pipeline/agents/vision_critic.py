@@ -203,6 +203,39 @@ class VisionCriticNode:
         except ReferenceSelectionError:
             return []
 
+    def _criteria_block(self, ctx: AgentContext) -> str | None:
+        """Surface query_by_character ∩ query_by_phase from the merged CriteriaBundle
+        as a terse 'cite these by ID' block. None when no bundle / no character_id /
+        empty intersection (all designed — Em falls back to standing context)."""
+        bundle = ctx.criteria
+        character_id = ctx.inputs.get("character_id")
+        if bundle is None or not character_id:
+            return None
+        char_rules = bundle.query_by_character(str(character_id))
+        if not char_rules:
+            return None
+        phase = _CHECKPOINT_PHASE.get(str(ctx.inputs.get("checkpoint", "")))
+        if phase is not None:
+            phase_ids = {c.id for c in bundle.query_by_phase(phase)}
+            rules = [c for c in char_rules if c.id in phase_ids]
+        else:
+            rules = char_rules
+        if not rules:
+            return None
+        lines = [
+            "## Character Bible rules (cite these by ID)",
+            "",
+            "These are the locked identity/style rules for this character at this "
+            "checkpoint. When you flag drift, CITE the rule IDs you observe drift on "
+            "in `cites_criteria` (e.g. \"IR.sean.face.jaw-line-angular-not-rounded\"). "
+            "Cite only what you actually see drift on; a rule the references confirm "
+            "is honored is not a citation.",
+            "",
+        ]
+        for c in rules:
+            lines.append(f"- `{c.id}` ({c.impact_tag}): {c.description}")
+        return "\n".join(lines)
+
     def _build_prompt(self, ctx: AgentContext, t2_cfg: dict, n_references: int = 0) -> str:
         """Concatenate the shared anima preamble + Em's addendum + any
         manifest-declared default_context_files + the per-checkpoint
@@ -271,6 +304,12 @@ class VisionCriticNode:
                 "identity/style defect you exist to catch. Judge the subject against "
                 "its own Bible, not against a generic ideal."
             )
+
+        # Bible criteria (IR.*/AC.*) for this character at this checkpoint's phase —
+        # the criteria half of "give Em the Bible" (spec §5.3). What flips case-7 green.
+        criteria_block = self._criteria_block(ctx)
+        if criteria_block:
+            sections.append(criteria_block)
 
         # Phase 6 motion: the attached image is a contact sheet sampling a
         # clip, not a single still. Be explicit about the limit of looking —
