@@ -70,3 +70,24 @@ class _FakeSDKResponse:
     @property
     def ok(self) -> bool:
         return self.exit_code == 0 and self.error is None
+
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+
+
+def eval_manifest() -> dict:
+    """The real critics.t2 + criteria_sources + characters_root, so Em runs in the
+    eval exactly as she ships (the parity guarantee — same select_references + same
+    merged bundle as production)."""
+    full = yaml.safe_load((REPO_ROOT / "manifest.yaml").read_text(encoding="utf-8"))
+    return {
+        "critics": full.get("critics", {}),
+        "criteria_sources": full.get("criteria_sources", {}),
+        "characters_root": str(REPO_ROOT / "characters"),
+    }
+
+
+def merged_criteria(manifest: dict):
+    """Load + merge the Bibles' IR.* graphs into one CriteriaBundle."""
+    from pipeline.criteria import load_all_criteria
+    return load_all_criteria(manifest)

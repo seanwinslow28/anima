@@ -31,13 +31,42 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
+class RateCapExhausted(Exception):
+    """agy returned a quota-exhausted / empty response (not a verdict).
+
+    Distinct from a JSON-parse failure (the documented defensive-borderline mode):
+    this means the upstream quota is exhausted and Em received NO usable answer.
+    Callers must surface it as an errored gap or escalate — never silently
+    borderline. See docs/anima-test-runs/2026-06-01-em-critic-spine-hardening-
+    postmortem.md (the bake-off finding)."""
+
+
 ANTI_GRAVITY_BIN = "agy"
 
-# Signatures the wrapper recognizes as rate-capped responses. Per the
-# vault_critic precedent, treat rate-capped responses as failures even when
-# exit_code == 0 — the CLI sometimes returns success with empty body when
-# the upstream quota is exhausted.
-_RATE_CAP_SIGNALS = ("rate limit", "quota", "429", "rate-limited")
+# Signatures that mean the upstream quota is exhausted. agy writes these to its
+# LOG FILE (and sometimes stderr); they are NOT in stdout. Treated as a RAISE,
+# distinct from a non-empty-but-malformed response (defensive-borderline).
+_QUOTA_SIGNALS = ("429", "resource_exhausted", "quota", "rate limit", "rate-limited")
+
+# Best-effort candidate paths for agy's recent log (filled from Task 1 Step 3;
+# empty tuple is fine — signal (a) empty-stdout still catches the observed bug).
+_AGY_LOG_CANDIDATES: tuple[str, ...] = ()
+
+
+def _read_agy_log() -> str:
+    """Best-effort read of agy's recent log tail, where it writes 429 /
+    RESOURCE_EXHAUSTED that don't appear on stderr. Returns '' if no log can be
+    located/read — in which case the empty-stdout signal still catches the
+    observed quota failure. Monkeypatched in tests."""
+    from pathlib import Path as _Path
+    for candidate in _AGY_LOG_CANDIDATES:
+        try:
+            p = _Path(candidate).expanduser()
+            if p.exists():
+                return p.read_text(encoding="utf-8", errors="replace")[-4000:]
+        except OSError:
+            continue
+    return ""
 
 
 @dataclass(frozen=True)
@@ -171,14 +200,29 @@ async def run_antigravity_with_image(
         )
         text = stdout.decode("utf-8", errors="replace")
         err_text = stderr.decode("utf-8", errors="replace")
-        rate_capped = any(sig in err_text.lower() for sig in _RATE_CAP_SIGNALS)
+        exit_code = proc.returncode or 0
+        # Rate-cap / quota detection (spec §6). Two RAISE signals, kept distinct
+        # from a parse failure:
+        #   (a) empty/whitespace stdout on exit-0  — the observed failure; primary.
+        #   (b) an explicit quota signal in stderr OR agy's log  — corroborating.
+        # A NON-EMPTY but unparseable response is NOT a rate cap: it returns
+        # normally and vision_critic._parse handles it as defensive-borderline.
+        combined = (err_text + "\n" + _read_agy_log()).lower()
+        quota_signal = any(sig in combined for sig in _QUOTA_SIGNALS)
+        if exit_code == 0 and (not text.strip() or quota_signal):
+            raise RateCapExhausted(
+                f"agy returned a quota-exhausted/empty response "
+                f"(empty_stdout={not text.strip()}, quota_signal={quota_signal}). "
+                "Treating as missing data, not a verdict — Em must error/escalate, "
+                "never silently borderline."
+            )
         return CLIResponse(
             cli="antigravity",
             text=text,
             tokens=None,
             duration_s=time.monotonic() - start,
-            exit_code=proc.returncode or 0,
-            rate_capped=rate_capped,
+            exit_code=exit_code,
+            rate_capped=False,
             error=err_text if proc.returncode else None,
         )
     except asyncio.TimeoutError:

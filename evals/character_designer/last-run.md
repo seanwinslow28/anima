@@ -3,6 +3,7 @@
 **Run date:** 2026-05-28
 **Suite:** `evals/character_designer/runner.py`
 **Result:** 5 passed, 1 xfailed, 1 xpassed
+**Update (2026-06-01, em-reference-images workstream):** now **6 passed, 1 xpassed** — `closing-the-loop-em-cites-cy-rules` flipped xfail→green once Em's prompt surfaced the merged CriteriaBundle's `IR.sean.*` rules.
 
 ## Per-case results
 
@@ -14,7 +15,7 @@
 | `three-attempt-ceiling-hits-human-gate` | pass | The ceiling-hit path. Three consecutive Gemini fails on the same plate → plate status=human_gate_required; the Bible doesn't fail because of one stubborn plate. |
 | `schema-validates-across-style-registers` | pass | The merged-CriteriaBundle case. Both Bibles load; `query_by_character` filters cleanly; no ID collisions. |
 | `under-specified-source-refs-flags-risk-bible` | **xpassed** | Marked intentionally red, but the suite's mock conftest emits a satisfying Bible structure. Real Opus may produce different risk-bible specificity — track for the first real authoring run. |
-| `closing-the-loop-em-cites-cy-rules` | **xfailed** | The structural novelty over the planner eval suite. Em runs for real against the deliberately-broken Phase 5 frame; asserts at least one `IR.sean-anchor.*` citation. Red because Em's prompt doesn't yet load the merged CriteriaBundle's IR.* entries — the diff that flips this green is the museum content. |
+| `closing-the-loop-em-cites-cy-rules` | **pass** (2026-06-01; was xfailed) | The structural novelty over the planner eval suite. Em runs for real against the deliberately-broken Phase 5 frame; asserts at least one `IR.sean.*` citation. Flipped green once Em's prompt surfaced the merged CriteriaBundle's `IR.sean.*` entries (`vision_critic._criteria_block`) — the diff IS the museum content (the moment Bible authoring became contract-grounded). |
 
 ## What this baseline locks in
 

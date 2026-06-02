@@ -14,7 +14,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
+import sys
 import types
+from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -25,8 +28,10 @@ load_dotenv()
 
 from pipeline.agents import AgentContext
 from pipeline.agents.vision_critic import VisionCriticNode
+from pipeline.agents.reference_selection import select_references
 from pipeline.contact_sheet import build_contact_sheet  # noqa: F401 (cases pre-build sheets)
 from evals.vision_critic.scoring import CaseScore, segment_report
+from evals.vision_critic.conftest import merged_criteria
 
 HERE = Path(__file__).parent
 FIXTURES = HERE / "fixtures"
@@ -41,6 +46,7 @@ def _manifest() -> dict:
     return {
         "critics": full.get("critics", {}),
         "criteria_sources": full.get("criteria_sources", {}),
+        "characters_root": str(root / "characters"),
     }
 
 
@@ -71,7 +77,7 @@ def _force_stub_runners() -> None:
     _vc.invoke_opus_vision = _stub
 
 
-def _ctx(case: dict, manifest: dict) -> AgentContext:
+def _ctx(case: dict, manifest: dict, criteria) -> AgentContext:
     return AgentContext(
         run_dir=Path("/tmp/em-baseline"),
         inputs={
@@ -80,19 +86,24 @@ def _ctx(case: dict, manifest: dict) -> AgentContext:
             "frame_id": case["name"],
             "impact_tags": case.get("impact_tags", []),
             "checkpoint": case["checkpoint"],
+            "character_id": case.get("character_id", "sean"),
         },
         manifest=manifest,
-        criteria=None,
+        criteria=criteria,
         tier="draft",
         cache_dir=Path("/tmp/em-baseline/.cache"),
     )
 
 
-def _score_one(case: dict, manifest: dict) -> CaseScore:
+def _score_one(case: dict, manifest: dict, criteria) -> CaseScore:
     """Run production Em (Gemini default + Opus escalation) against one case."""
     start = datetime.now(timezone.utc)
-    result = VisionCriticNode().run(_ctx(case, manifest))
+    result = VisionCriticNode().run(_ctx(case, manifest, criteria))
     wall = (datetime.now(timezone.utc) - start).total_seconds()
+    refs = select_references(
+        case.get("character_id", "sean"), case["checkpoint"], case["beat_description"],
+        characters_root=Path(manifest["characters_root"]),
+    )
     return CaseScore(
         name=case["name"],
         case_class=case["case_class"],
@@ -102,6 +113,8 @@ def _score_one(case: dict, manifest: dict) -> CaseScore:
         actual_cites=result.cites_criteria,
         confidence=result.outputs["confidence"],
         wall_s=wall,
+        # `refs` (resolved reference plate names) is logged per-case for trace
+        # transparency — see the print() in main()'s loop below.
     )
 
 
@@ -148,55 +161,162 @@ def render_last_run_md(report: dict, *, model_label: str, n_total: int) -> str:
     return "\n".join(head + body)
 
 
+# ---------------------------------------------------------------------------
+# Subprocess-per-case isolation (Sean's call, 2026-06-01). The live run spawns
+# one short-lived Python process per case so each case's asyncio + subprocess
+# lifecycle (agy + Opus-SDK children) is fully isolated. Observed failure: a
+# slow agy/Opus child's ThreadedChildWatcher thread races the closing event
+# loop at INTERPRETER SHUTDOWN ("Loop ... is closed", exit 144, no traceback) —
+# AFTER the verdict is computed. Because the worker flushes its CaseScore JSON
+# to stdout BEFORE exit, the orchestrator captures the verdict regardless of a
+# teardown crash or non-zero exit; only a case that dies BEFORE emitting JSON
+# becomes an honest errored gap. The process-boundary version of score.py's
+# existing per-case resilience; de-risks Task 8 (the bake-off) too.
+# ---------------------------------------------------------------------------
+_CASESCORE_SENTINEL = "CASESCORE_JSON:"
+_PER_CASE_TIMEOUT_S = 600  # ~3x the observed 199s escalating-case latency
+
+
+def _select_cases(segment: str, motion_smoke: int) -> tuple[list[dict], list[dict]]:
+    """Return (selected, excluded). segment='all' runs every case; 'performs' runs
+    the 23 clean+identity_style cases plus the first `motion_smoke` motion cases.
+    The headline metrics (precision / false-pass / cites-correct) all live in the
+    performs segment; a still-image contact sheet structurally can't score
+    motion-proper (eval-strategy §3.5), so the remaining motion cases are excluded
+    and LOGGED — honest segmentation, never silent truncation. One motion case is
+    kept live to smoke-test reference-attach on the phase-6 contact-sheet path
+    (spec §5.1)."""
+    performs = [c for c in CASES if c["case_class"] in ("clean", "identity_style")]
+    motion = [c for c in CASES if c["case_class"] == "motion_proper"]
+    if segment == "all":
+        return list(CASES), []
+    return performs + motion[:motion_smoke], motion[motion_smoke:]
+
+
+def _run_case_subprocess(case: dict, stub: bool) -> CaseScore:
+    """Run ONE case in a fresh Python process and parse its emitted CaseScore.
+
+    The worker re-loads manifest + criteria + the worktree .env (GEMINI/FAL only,
+    no ANTHROPIC — the SDK keeps Claude Code auth), so parity with a direct run
+    holds. We look for the CaseScore sentinel in stdout FIRST and only raise if it
+    is absent — a worker that computed its verdict then crashed at teardown still
+    flushed the JSON, so its verdict is captured; a worker that died before
+    emitting one becomes an honest errored gap."""
+    cmd = [sys.executable, "-m", "evals.vision_critic.score", "--only", case["name"]]
+    if stub:
+        cmd.append("--stub")
+    proc = subprocess.run(
+        cmd, capture_output=True, text=True, timeout=_PER_CASE_TIMEOUT_S,
+        cwd=str(HERE.parents[1]),  # repo root: find_dotenv + relative bible paths resolve
+        # Do NOT pass start_new_session here. Detaching the WORKER into a new session
+        # breaks Claude Code auth for the Opus-SDK `claude` child (verified 2026-06-02:
+        # detached workers returned unparseable output → borderline + empty cites →
+        # Em's cites_criteria invariant raised → every case errored). The worker must
+        # keep the normal session so the model CLIs authenticate. Isolation against the
+        # exit-144 teardown signal is handled by detaching the ORCHESTRATOR at launch
+        # (its own session), which the smoke confirmed survives multiple teardowns —
+        # NOT by detaching the workers.
+    )
+    for line in proc.stdout.splitlines():
+        if line.startswith(_CASESCORE_SENTINEL):
+            return CaseScore(**json.loads(line[len(_CASESCORE_SENTINEL):]))
+    raise RuntimeError(
+        f"worker emitted no CaseScore (exit={proc.returncode}); "
+        f"stderr tail: {proc.stderr.strip()[-300:] or '(empty)'}"
+    )
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(prog="em-score")
     ap.add_argument("--stub", action="store_true",
                     help="Force credential-free runners (no scored claim).")
     ap.add_argument("--model", choices=["production"], default="production",
                     help="production = Gemini default + Opus escalation (as shipped).")
+    ap.add_argument("--only", metavar="CASE_NAME",
+                    help="Run exactly ONE case in THIS process and emit its CaseScore "
+                         "as JSON (the per-case isolation worker; also usable manually).")
+    ap.add_argument("--segment", choices=["all", "performs"], default="all",
+                    help="all = every case; performs = the 23 clean+identity_style "
+                         "cases (+ --motion-smoke motion cases).")
+    ap.add_argument("--motion-smoke", type=int, default=0,
+                    help="With --segment performs, include the first N motion_proper "
+                         "cases (a phase-6 reference-attach smoke check). The rest are "
+                         "excluded and logged.")
+    ap.add_argument("--limit", type=int, default=0,
+                    help="Run only the first N selected cases (0 = all). For a cheap "
+                         "live smoke-validation of the harness (does the orchestrator "
+                         "survive multiple worker teardowns?) before a full costed run. "
+                         "A --limit run is partial — its last-run.md is not a baseline.")
     args = ap.parse_args()
 
     manifest = _manifest()
-    if args.stub:
-        # Mirror Mo's --no-sonnet: force the credential-free path so the matrix
-        # is the stub's degenerate one. Label it so no one mistakes it for a
-        # baseline.
-        _force_stub_runners()
-        model_label = "STUB (no scored claim)"
-    else:
-        model_label = "production: gemini-3.1-pro@agy + opus-4.7-escalation"
 
-    # Per-case resilience: a scoring harness must not let ONE bad case abort a
-    # ~24-min live run. Em's cites_criteria invariant legitimately raises a
-    # ValueError when a model returns a blocking verdict with no citation (e.g.
-    # a JSON parse-failure → defensive borderline + empty cites); a single such
-    # case used to kill the whole baseline. We catch per case, record errors
-    # HONESTLY (excluded from the matrix, listed explicitly — never fabricated
-    # into a verdict), and print incremental progress so the failure point is
-    # always visible.
+    # ---- worker mode: run one case in this process, emit JSON, exit ----
+    if args.only:
+        criteria = merged_criteria(manifest)
+        if args.stub:
+            _force_stub_runners()
+        case = next((c for c in CASES if c["name"] == args.only), None)
+        if case is None:
+            print(f"unknown case: {args.only}", file=sys.stderr)
+            raise SystemExit(2)
+        cs = _score_one(case, manifest, criteria)
+        refs = select_references(case.get("character_id", "sean"), case["checkpoint"],
+                                 case["beat_description"], characters_root=Path(manifest["characters_root"]))
+        print(f"{args.only}: {cs.predicted_verdict} (conf={cs.confidence:.2f}, "
+              f"{cs.wall_s:.0f}s) refs=[{', '.join(p.name for p in refs) or 'none'}]",
+              file=sys.stderr, flush=True)
+        # Flush the verdict BEFORE returning, so a teardown crash can't lose it.
+        print(_CASESCORE_SENTINEL + json.dumps(asdict(cs)), flush=True)
+        return
+
+    # ---- orchestrator mode: select cases, run each in an isolated subprocess ----
+    selected, excluded = _select_cases(args.segment, args.motion_smoke)
+    if args.limit:
+        selected = selected[:args.limit]  # cheap smoke-validation; partial, not a baseline
+    model_label = ("STUB (no scored claim)" if args.stub
+                   else "production: gemini-3.1-pro@agy + opus-4.7-escalation")
+
     scores: list[CaseScore] = []
     errored: list[tuple[str, str]] = []
-    for i, c in enumerate(CASES, 1):
+    for i, c in enumerate(selected, 1):
         try:
-            cs = _score_one(c, manifest)
+            cs = _run_case_subprocess(c, args.stub)
             scores.append(cs)
-            print(f"[{i}/{len(CASES)}] {c['name']}: {cs.predicted_verdict} "
-                  f"(conf={cs.confidence:.2f}, {cs.wall_s:.0f}s)", flush=True)
+            refs = select_references(c.get("character_id", "sean"), c["checkpoint"],
+                                     c["beat_description"], characters_root=Path(manifest["characters_root"]))
+            print(f"[{i}/{len(selected)}] {c['name']}: {cs.predicted_verdict} "
+                  f"(conf={cs.confidence:.2f}, {cs.wall_s:.0f}s) "
+                  f"refs=[{', '.join(p.name for p in refs) or 'none'}]", flush=True)
+        except subprocess.TimeoutExpired:
+            errored.append((c["name"], f"timeout after {_PER_CASE_TIMEOUT_S}s"))
+            print(f"[{i}/{len(selected)}] {c['name']}: ERRORED — timeout", flush=True)
         except Exception as exc:  # noqa: BLE001 — record, don't abort
             errored.append((c["name"], f"{type(exc).__name__}: {exc}"))
-            print(f"[{i}/{len(CASES)}] {c['name']}: ERRORED — {type(exc).__name__}: {exc}",
+            print(f"[{i}/{len(selected)}] {c['name']}: ERRORED — {type(exc).__name__}: {exc}",
                   flush=True)
 
     report = segment_report(scores)
     md = render_last_run_md(report, model_label=model_label, n_total=len(scores))
+    # Honest segmentation: record cases intentionally NOT live-scored (never silent).
+    if excluded:
+        lines = ["", "## Intentionally NOT live-scored (segment scoping)", ""]
+        lines += [f"- `{c['name']}` ({c['case_class']})" for c in excluded]
+        lines += ["",
+                  f"_{len(excluded)} motion_proper case(s) excluded from this live run. A "
+                  "still-image contact sheet structurally cannot score motion-proper "
+                  "(eval-strategy §3.5); these are the deferred E_warp/VBench validation "
+                  "set, not a live-Em measurement. One motion case WAS run live as a "
+                  "phase-6 reference-attach smoke check. This is scoping, not truncation._", ""]
+        md = md + "\n" + "\n".join(lines)
     if errored:
         lines = ["", "## Errored cases (excluded from the matrix — NOT scored)", ""]
         lines += [f"- `{name}` — {err}" for name, err in errored]
         lines += ["",
-                  f"_{len(errored)} of {len(CASES)} cases errored. A blocking "
-                  "verdict with empty cites (Em's invariant) or a runner error "
-                  "lands here rather than aborting the run. These are honest "
-                  "gaps, not passes._", ""]
+                  f"_{len(errored)} of {len(selected)} selected cases errored. With "
+                  "subprocess-per-case isolation, a crash/hang/quota-out (or Em's "
+                  "empty-cites invariant) in one case lands here as an honest gap rather "
+                  "than aborting the run. Not passes._", ""]
         md = md + "\n" + "\n".join(lines)
 
     (HERE / "last-run.md").write_text(md, encoding="utf-8")
@@ -206,7 +326,7 @@ def main() -> None:
     print(md)
     print(f"\nWrote {HERE/'last-run.md'} and {trace}")
     if errored:
-        print(f"\n⚠ {len(errored)}/{len(CASES)} cases errored (see report).")
+        print(f"\n⚠ {len(errored)}/{len(selected)} cases errored (see report).")
 
 
 if __name__ == "__main__":

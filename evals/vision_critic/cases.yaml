@@ -16,6 +16,7 @@
 #
 # Per-case schema:
 #   name, description, checkpoint (phase_5_generate | phase_6_motion | phase_8_assemble),
+#   character_id: which character the frame contains (drives select_references + criteria; default sean)
 #   input (path under fixtures/), beat_description, impact_tags (list),
 #   case_class (identity_style | clean | motion_proper),
 #   expected_verdict (pass | borderline | fail),
@@ -42,6 +43,7 @@ cases:
   # CLEAN (case_class: clean, expected_verdict: pass) — 10 cases
   # ============================================================
   - name: clean-act1-f06-idle
+    character_id: sean
     description: "Act 1 F06 approved keyframe — Sean idle at the desk, pencil-test-colored register."
     checkpoint: phase_5_generate
     input: frames/clean_F06.png
@@ -55,6 +57,7 @@ cases:
     sean_note: "Shipped Act 1 hero frame. Em should pass it clean — no drift."
 
   - name: clean-act1-f13-gesture
+    character_id: sean
     description: "Act 1 F13 approved keyframe — mid-gesture."
     checkpoint: phase_5_generate
     input: frames/clean_F13.png
@@ -68,6 +71,7 @@ cases:
     sean_note: "Shipped Act 1 frame. Clean pass expected."
 
   - name: clean-act1-f31-land
+    character_id: sean
     description: "Act 1 F31 approved keyframe — the sprite lands."
     checkpoint: phase_5_generate
     input: frames/clean_F31.png
@@ -81,6 +85,7 @@ cases:
     sean_note: "Shipped Act 1 frame. Clean pass expected."
 
   - name: clean-head-profile-left
+    character_id: sean
     description: "sean-anchor head profile-left turnaround — production pass @1.0 (all 6 IR rules honored)."
     checkpoint: phase_5_generate
     input: frames/clean_head_profile_left.png
@@ -94,6 +99,7 @@ cases:
     sean_note: "Real Cy pass @1.0 — jaw angle, cowlick, line weight all honored. Em should pass."
 
   - name: clean-head-back
+    character_id: sean
     description: "sean-anchor head-back turnaround — production pass."
     checkpoint: phase_5_generate
     input: frames/clean_head_back.png
@@ -107,6 +113,7 @@ cases:
     sean_note: "Real Cy pass. Back-of-head view, identity holds."
 
   - name: clean-expr-neutral
+    character_id: sean
     description: "sean-anchor neutral expression — production pass."
     checkpoint: phase_5_generate
     input: frames/clean_neutral.png
@@ -120,6 +127,7 @@ cases:
     sean_note: "Real Cy pass. Baseline expression."
 
   - name: clean-expr-surprised
+    character_id: sean
     description: "sean-anchor surprised expression — production pass."
     checkpoint: phase_5_generate
     input: frames/clean_surprised.png
@@ -133,6 +141,7 @@ cases:
     sean_note: "Real Cy pass. Expression arc point."
 
   - name: clean-expr-contemplative
+    character_id: sean
     description: "sean-anchor contemplative expression — production pass."
     checkpoint: phase_5_generate
     input: frames/clean_contemplative.png
@@ -146,6 +155,7 @@ cases:
     sean_note: "Real Cy pass. Expression arc point."
 
   - name: clean-head-turn-02
+    character_id: sean
     description: "sean-anchor head-turn frame 02 — production pass."
     checkpoint: phase_5_generate
     input: frames/clean_head_turn_02.png
@@ -159,6 +169,7 @@ cases:
     sean_note: "Real Cy pass. Identity holds in this turn frame."
 
   - name: clean-head-turn-06
+    character_id: sean
     description: "sean-anchor head-turn frame 06 — production pass."
     checkpoint: phase_5_generate
     input: frames/clean_head_turn_06.png
@@ -176,6 +187,7 @@ cases:
   #   the contact sheet / a still CAN surface these; Em SHOULD catch them
   # ===================================================================
   - name: proportion-drift-body-3quarter
+    character_id: sean
     description: "body 3/4 turnaround: head reads ~1:5-6 not 1:7; stylus missing; no construction lines. VERIFIED by eye."
     checkpoint: phase_5_generate
     input: frames/defect_body_3quarter.png
@@ -192,6 +204,7 @@ cases:
     sean_note: "Real Cy fail @1.0 sim 0.51; I verified by eye — head too large, no stylus, clean render (no construction lines). Em should catch proportion + missing stylus."
 
   - name: proportion-jaw-body-profile-left
+    character_id: sean
     description: "body profile-left: head ~1:5 not 1:7; jaw-line drift; construction lines absent."
     checkpoint: phase_5_generate
     input: frames/defect_body_profile_left.png
@@ -208,6 +221,7 @@ cases:
     sean_note: "Real Cy fail @0.98: 'head fits only ~5 times'. 3 of 5 rules violated."
 
   - name: proportion-eyes-body-profile-right
+    character_id: sean
     description: "body profile-right: head-to-body ~1:5.3; jaw-line drift; eye-color drift."
     checkpoint: phase_5_generate
     input: frames/defect_body_profile_right.png
@@ -224,6 +238,7 @@ cases:
     sean_note: "Real Cy fail @1.0: measured head 190px in 1016px figure (~1:5.3)."
 
   - name: proportion-costume-body-back
+    character_id: sean
     description: "body-back: head-to-body off; shoulder width off; stylus missing."
     checkpoint: phase_5_generate
     input: frames/defect_body_back.png
@@ -240,6 +255,7 @@ cases:
     sean_note: "Real Cy fail @1.0: head 220px fits only ~4.6x in figure; stylus absent."
 
   - name: sprite-scale-f31-bad
+    character_id: sean
     description: "Act 1 F31 REJECTED — sprite landed at the wrong scale (too large relative to Sean)."
     checkpoint: phase_5_generate
     input: frames/defect_F31_scale.png
@@ -253,6 +269,7 @@ cases:
     sean_note: "Real Act 1 reject (sprite scale wrong). CC05 scale/position. Em should flag the scale mismatch."
 
   - name: stylus-hand-f13-cc01
+    character_id: sean
     description: "Act 1 F13 attempt 02 REJECTED — stylus drifted out of the RIGHT hand (CC01)."
     checkpoint: phase_5_generate
     input: frames/defect_F13_stylus_hand.png
@@ -266,6 +283,7 @@ cases:
     sean_note: "Real Act 1 reject coded CC01 (stylus-hand). Em should catch the wrong-hand stylus."
 
   - name: proportion-walk-cycle-source
+    character_id: sean
     description: "walk-cycle source plate: head-to-body ~1:4-4.5 (chibi), not the 1:7 heroic figure."
     checkpoint: phase_5_generate
     input: frames/defect_walk_cycle_source.png
@@ -281,6 +299,7 @@ cases:
     sean_note: "Real Cy fail @1.0: '~1:4 to 1:4.5 stylized/chibi-like instead of 1:7'."
 
   - name: identity-head-turn-01
+    character_id: sean
     description: "head-turn frame 01: simplified cartoon style — hair silhouette + jaw drift."
     checkpoint: phase_5_generate
     input: frames/defect_head_turn_01.png
@@ -296,6 +315,7 @@ cases:
     sean_note: "Real Cy fail @1.0: 'highly simplified cartoon rather than specified characteristics'."
 
   - name: jaw-drift-head-turn-09
+    character_id: sean
     description: "head-turn frame 09: jaw fully rounded (continuous curve), violating the angular-jaw rule."
     checkpoint: phase_5_generate
     input: frames/defect_head_turn_09.png
@@ -310,6 +330,7 @@ cases:
     sean_note: "Real Cy fail @0.95: 'jawline fully rounded, continuous curve ear-to-chin'."
 
   - name: borderline-hair-head-profile-right
+    character_id: sean
     description: "head profile-right: honors most rules, deviates on hair silhouette — a borderline."
     checkpoint: phase_5_generate
     input: frames/borderline_head_profile_right.png
@@ -324,6 +345,7 @@ cases:
     sean_note: "Real Cy borderline @0.95: 'honors several rules, key deviations on two others' (hair)."
 
   - name: borderline-expr-focused
+    character_id: sean
     description: "focused expression: borderline — eye-spacing / brow deviation."
     checkpoint: phase_5_generate
     input: frames/borderline_focused.png
@@ -339,6 +361,7 @@ cases:
     sean_note: "Real Cy borderline @1.0. Subtle facial-feature deviation under a held expression."
 
   - name: borderline-motion-head-turn-03
+    character_id: sean
     description: "head-turn frame 03: honors eye-lead timing, minor expected identity drift on back-of-skull — borderline."
     checkpoint: phase_5_generate
     input: frames/borderline_head_turn_03.png
@@ -353,6 +376,7 @@ cases:
     sean_note: "Real Cy borderline @0.7: eye-lead honored, minor back-of-skull drift. A genuine borderline."
 
   - name: borderline-stylus-prop
+    character_id: sean
     description: "isolated stylus prop plate: borderline — grip/style read against the prop rules."
     checkpoint: phase_5_generate
     input: frames/borderline_stylus_prop.png
@@ -376,6 +400,7 @@ cases:
   #   (which would reclassify the case to identity_style — Sean's call at gate).
   # ===================================================================
   - name: motion-w1-arc
+    character_id: sean
     description: "W1 walk clip contact sheet. Motion-proper hypothesis: walk-arc smoothness across the gait."
     checkpoint: phase_6_motion
     input: contact_sheets/motion_W1.png
@@ -389,6 +414,7 @@ cases:
     sean_note: "Contact sheet can't show gait-arc smoothness (§3.5). Em expected to MISS. RATIFY: does W1 actually have arc trouble, and is identity stable across the strip?"
 
   - name: motion-w2-jitter
+    character_id: sean
     description: "W2 walk variant contact sheet. Motion-proper hypothesis: jitter / foot-skating."
     checkpoint: phase_6_motion
     input: contact_sheets/motion_W2.png
@@ -402,6 +428,7 @@ cases:
     sean_note: "Contact sheet can't show jitter/skating (§3.5). Em expected to MISS. RATIFY: real skating in W2?"
 
   - name: motion-s0-flicker
+    character_id: sean
     description: "S0 sit-transition contact sheet. Motion-proper hypothesis: temporal flicker in the transition."
     checkpoint: phase_6_motion
     input: contact_sheets/motion_S0.png
@@ -415,6 +442,7 @@ cases:
     sean_note: "Contact sheet can't show flicker — sampled panels miss the strobe (§3.5). Em expected to MISS. RATIFY."
 
   - name: motion-tr-texture-crawl
+    character_id: sean
     description: "TR pull-toward-screen contact sheet. Motion-proper hypothesis: texture-crawl/boil as artifact."
     checkpoint: phase_6_motion
     input: contact_sheets/motion_TR.png
@@ -428,6 +456,7 @@ cases:
     sean_note: "Boil-vs-crawl is a human-look call (§3.5 + failure-modes D1). NOTE: I see possible identity drift across the TR strip — if real, RECLASSIFY to identity_style (Em could then legitimately catch it)."
 
   - name: motion-t2-arc
+    character_id: sean
     description: "T2 clip contact sheet. Motion-proper hypothesis: gesture-arc smoothness."
     checkpoint: phase_6_motion
     input: contact_sheets/motion_T2.png
@@ -441,6 +470,7 @@ cases:
     sean_note: "Contact sheet can't show gesture-arc smoothness (§3.5). Em expected to MISS. RATIFY."
 
   - name: motion-rev-jitter
+    character_id: sean
     description: "REV clip contact sheet. Motion-proper hypothesis: reveal-motion jitter."
     checkpoint: phase_6_motion
     input: contact_sheets/motion_REV.png
