@@ -233,18 +233,18 @@ def _run_schema_cross_register_case(tmp_path: Path) -> None:
         "locked": False,
         "criteria": [
             {
-                "id": "IR.sean-anchor.hair.center-cowlick",
+                "id": "IR.sean.hair.center-cowlick",
                 "description": "Center cowlick at crown.",
                 "cites_phase": [5], "cites_personas": ["em"],
                 "impact_tag": "identity_critical",
-                "character_id": "sean-anchor",
+                "character_id": "sean",
             },
             {
-                "id": "IR.sean-anchor.prop.stylus-right-hand",
+                "id": "IR.sean.prop.stylus-right-hand",
                 "description": "Stylus in right hand.",
                 "cites_phase": [5], "cites_personas": ["em"],
                 "impact_tag": "identity_critical",
-                "character_id": "sean-anchor",
+                "character_id": "sean",
             },
         ],
     }), encoding="utf-8")
@@ -269,12 +269,12 @@ def _run_schema_cross_register_case(tmp_path: Path) -> None:
         }
     }
     bundle = load_all_criteria(manifest)
-    sean_rules = bundle.query_by_character("sean-anchor")
+    sean_rules = bundle.query_by_character("sean")
     mascot_rules = bundle.query_by_character("claude-mascot")
     assert len(sean_rules) == 2
     assert len(mascot_rules) == 1
     # No collisions; both registers fit the same schema.
-    assert all(r.id.startswith("IR.sean-anchor.") for r in sean_rules)
+    assert all(r.id.startswith("IR.sean.") for r in sean_rules)
     assert all(r.id.startswith("IR.claude-mascot.") for r in mascot_rules)
 
 
@@ -284,13 +284,17 @@ def _run_closing_the_loop_case(
     fixtures_dir: Path,
     monkeypatch,
 ) -> None:
-    """Author the sean-anchor Bible via mocked Cy, then invoke Em for real
+    """Author the sean Bible via mocked Cy, then invoke Em for real
     against the deliberately-broken Phase 5 frame with the merged
-    CriteriaBundle loaded. Em must cite at least one IR.sean-anchor.* rule.
+    CriteriaBundle loaded. Em must cite at least one IR.sean.* rule.
 
-    Ships red on first land because Em's prompt doesn't yet load Cy's
-    rules into context. The diff that flips this to green (when Em's
-    prompt is tightened) is the museum content.
+    GREEN as of the em-reference-images workstream (2026-06-01): Em's prompt
+    now surfaces the merged CriteriaBundle's IR.sean.* rules
+    (vision_critic._criteria_block), so the reference+criteria-loaded critic
+    cites a Bible rule against the broken frame. The xfail→green diff is the
+    museum content (the moment Bible authoring became contract-grounded). Both
+    the Gemini default and Opus escalation paths are mocked to read the same
+    prompt, since identity_critical force-escalates to Opus.
     """
     from pipeline.agents.vision_critic import VisionCriticNode
 
@@ -320,38 +324,77 @@ def _run_closing_the_loop_case(
         }
     }
     merged_bundle = load_all_criteria(manifest)
+    import json as _json
+    import re as _re
+
     broken_frame = fixtures_dir / "deliberately-broken-phase-5-frame.png"
     assert broken_frame.exists(), "deliberately-broken-phase-5-frame.png fixture missing"
+
+    # Simulate a real reference+criteria-loaded critic: cite the first IR.sean.* rule
+    # that Em's prompt actually SURFACED. If the criteria half of the fix is present,
+    # the prompt carries the rule and the mock cites it (green). If it is absent, no
+    # IR id is in the prompt, cites is empty on a `fail` verdict, and Em's
+    # cites_criteria invariant RAISES — keeping the case honestly red. The mock can
+    # only cite what was genuinely put in front of Em; it cannot fabricate grounding.
+    def _fake_gemini_cites_surfaced_ir(*, prompt, image_paths, timeout_s=120):
+        m = _re.search(r"IR\.sean\.[A-Za-z0-9.\-]+", prompt)
+        cited = [m.group(0)] if m else []
+        return _FakeCLIResponse(text=_json.dumps({
+            "verdict": "fail", "confidence": 0.9,
+            "reasoning": "Broken frame: proportion + stylus drift vs the Bible references.",
+            "proposed_patches": [], "cites_criteria": cited,
+        }))
+
+    async def _fake_gemini(*, prompt, image_paths, timeout_s=120):
+        return _fake_gemini_cites_surfaced_ir(prompt=prompt, image_paths=image_paths)
+
+    monkeypatch.setattr(
+        "pipeline.agents.vision_critic.run_antigravity_with_image", _fake_gemini,
+    )
+
+    # impact_tags carries identity_critical → Em force-escalates to the Opus path,
+    # so the FINAL verdict comes from invoke_opus_vision, not the Gemini default.
+    # Mock it too with the SAME prompt-reading behavior (both paths build from the
+    # one prompt) so the escalated verdict also cites the surfaced IR rule. Without
+    # this the unmocked Opus path returns a defensive borderline with empty cites and
+    # Em's cites_criteria invariant raises — the case would never go green on the
+    # Gemini mock alone. (Plan gap: Task 5 patched only the Gemini path; the escalation
+    # routing means the Opus path is what actually produces this case's verdict.)
+    async def _fake_opus(*, prompt, image_paths, timeout_s=120):
+        return _fake_gemini_cites_surfaced_ir(prompt=prompt, image_paths=image_paths)
+
+    monkeypatch.setattr(
+        "pipeline.agents.vision_critic.invoke_opus_vision", _fake_opus,
+    )
 
     em_ctx = AgentContext(
         run_dir=tmp_path / "runs" / case["name"],
         inputs={
-            "candidate_path": str(broken_frame),
+            "image_path": str(broken_frame),
             "beat_description": "Sean glances down at the stylus; pencil-test register.",
-            "manifest_style_block": {"aesthetic": "pencil-test-colored"},
-            "frame_num": 6,
+            "frame_id": "F06",
             "impact_tags": ["identity_critical"],
+            "checkpoint": "phase_5_generate",
+            "character_id": "sean",
         },
-        manifest=manifest,
+        manifest={
+            "critics": {"t2": {}},
+            "criteria_sources": {"bibles": [str(criteria_path)]},
+        },
         criteria=merged_bundle,
         tier="draft",
         cache_dir=tmp_path / "runs" / case["name"] / ".cache",
         extras={},
     )
 
-    # Em runs for real against the stub-fallback CLI wrapper — no API call needed
-    # since both paths are stub-shielded when env isn't set up. We assert against
-    # AgentResult.cites_criteria, which Em populates from its verdict envelope.
     em_result = VisionCriticNode().run(em_ctx)
-    ir_citations = [
-        c for c in em_result.cites_criteria if c.startswith("IR.sean-anchor.")
-    ]
+    ir_citations = [c for c in em_result.cites_criteria if c.startswith("IR.sean.")]
     assert len(ir_citations) >= 1, (
-        f"{case['name']}: Em did not cite any IR.sean-anchor.* rule. "
-        f"All citations: {em_result.cites_criteria}. "
-        f"This case is intentionally red — Em's prompt doesn't yet load "
-        f"the merged CriteriaBundle's IR.* entries; the diff that flips this "
-        f"to green is the museum content."
+        f"{case['name']}: Em did not cite any IR.sean.* rule. "
+        f"All citations: {em_result.cites_criteria}. The criteria half of the "
+        f"reference-images fix should surface the Bible's IR rules into Em's prompt "
+        f"so she can ground a verdict; the diff that flips this green is the museum "
+        f"content (the moment Bible authoring became contract-grounded)."
     )
 
 

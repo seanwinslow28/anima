@@ -26,7 +26,7 @@ The eval suite verifies seven things:
 
 5. **Under-specified source-refs surfaces risk-bible gaps.** Cy authors against a bare-anchor fixture; the risk-bible names the gaps explicitly. (Marked intentionally red — the mock conftest passes; tracking for real-Opus calibration.)
 
-6. **The closing-the-loop test.** The structural novelty over the planner eval suite. Em runs for real against the deliberately-broken Phase 5 frame with the merged CriteriaBundle loaded; the case asserts Em's `cites_criteria` list contains at least one `IR.sean-anchor.*` entry. Ships intentionally red because Em's prompt doesn't yet load Cy's rules. The diff that flips this green is the museum content documenting *the moment Bible authoring became contract-grounded*.
+6. **The closing-the-loop test.** The structural novelty over the planner eval suite. Em runs for real against the deliberately-broken Phase 5 frame with the merged CriteriaBundle loaded; the case asserts Em's `cites_criteria` list contains at least one `IR.sean.*` entry. **Green as of the em-reference-images workstream (2026-06-01)** — Em's prompt now surfaces the merged CriteriaBundle's `IR.sean.*` rules (`vision_critic._criteria_block`), so the reference+criteria-loaded critic cites a Bible rule against the broken frame. The xfail→green diff is the museum content documenting *the moment Bible authoring became contract-grounded*.
 
 7. **The clean-markdown invariant.** Cy's prose artifacts (`risk-bible.md`, `cy-confidence-notes.md`) carry zero box-drawing characters. The Bible CLI renders boxes; Cy emits clean prose. Enforced at `CharacterDesignerNode.run()` via `_enforce_clean_markdown()` — re-verified per-case via the schema check.
 

@@ -173,11 +173,11 @@ cases:
   - name: closing-the-loop-em-cites-cy-rules
     description: "Em cites at least one IR.sean.* rule when verdicting the deliberately-broken Phase 5 frame. xfail on commit 2b's first day — the diff to green is the museum content."
     fixture_dir: well-specified-source-refs
-    character_id: sean-anchor
+    character_id: sean
     mocked_responses:
       opus:
         - kind: pass1_envelope
-          character_id: sean-anchor
+          character_id: sean
           style_register: pencil-test-colored
           ir_count: 5
           ir_categories: [hair, prop, proportion]
@@ -188,8 +188,9 @@ cases:
       min_ir_categories: 3
       style_register: pencil-test-colored
       plate_human_gate_count: 0
-      is_intentionally_red: true
-      # Red because: Em's prompt doesn't yet load Cy's IR.* rules into context.
-      # The xfail-to-green diff when Em's prompt is tightened to load the merged
-      # CriteriaBundle's IR.* entries is the structural fix synthesis §5 demands
-      # operationalized at the T2-critic-cites-Bible-rules layer.
+      is_intentionally_red: false
+      # GREEN as of the em-reference-images workstream (2026-06-01): Em's prompt now
+      # surfaces the merged CriteriaBundle's IR.sean.* rules (vision_critic._criteria_block),
+      # so the reference+criteria-loaded critic cites a Bible rule against the broken
+      # frame. The xfail→green diff IS the museum content — the moment Bible authoring
+      # became contract-grounded at the T2-critic-cites-Bible-rules layer.
