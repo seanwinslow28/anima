@@ -86,6 +86,36 @@ def test_prompt_has_ordering_block_when_references(monkeypatch, tmp_path):
     assert "reference plate" in low
 
 
+def test_profile_beat_attaches_view_matched_ref_first(monkeypatch, tmp_path):
+    """B1a: a profile beat makes Em attach the profile-matched plate ahead of the
+    other turnarounds (view-aware selection flows through _resolve_references)."""
+    root = tmp_path / "characters"
+    folder = root / "sean-anchor"
+    (folder / "turnarounds").mkdir(parents=True)
+    (folder / "character.yaml").write_text("character_id: sean\n", encoding="utf-8")
+    (folder / "anchor.png").write_bytes(b"x")
+    for n in ["head-front", "head-profile-left", "head-profile-right", "body-3quarter"]:
+        (folder / "turnarounds" / f"{n}.png").write_bytes(b"x")
+    img = tmp_path / "subject.png"
+    img.write_bytes(b"x")
+    captured = _patch_capture(monkeypatch)
+    ctx = AgentContext(
+        run_dir=tmp_path,
+        inputs={"image_path": str(img), "beat_description": "Sean full-body right profile",
+                "frame_id": "F", "impact_tags": [], "checkpoint": "phase_5_generate",
+                "character_id": "sean"},
+        manifest={"critics": {"t2": {"attach_references": True}}, "characters_root": str(root)},
+        criteria=None, tier="draft", cache_dir=tmp_path / ".cache",
+    )
+    VisionCriticNode().run(ctx)
+    paths = captured["paths"]
+    # bundle order is [subject, anchor, turnaround1, ...]; the view-matched plate
+    # leads the TURNAROUNDS, i.e. paths[2] (paths[1] is always the anchor).
+    assert Path(paths[0]).name == "subject.png"             # subject is image 1
+    assert Path(paths[1]).name == "anchor.png"              # anchor still second
+    assert "profile-right" in Path(paths[2]).stem.lower()   # view-matched plate leads the refs
+
+
 def test_build_prompt_no_ordering_block_when_zero_refs():
     node = VisionCriticNode()
     ctx = AgentContext(
