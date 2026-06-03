@@ -44,6 +44,43 @@ _TURNAROUND_PREFERENCE: tuple[str, ...] = (
     "front", "profile", "side", "3quarter", "body", "head",
 )
 
+# B1a — view inference (approach A, eval path). Maps a beat's view TOKEN (which is
+# a substring of the turnaround stems: head-profile-right, body-back, body-3quarter,
+# ...) to the beat PHRASES that imply it. Phrase-based on purpose: a bare "side" /
+# "back" / "front" would false-match common words ("background", "beside"), so each
+# token is keyed by specific phrases. Most-specific first (profile-right before a
+# generic profile). The token is returned so `view in stem` matches the plate.
+_VIEW_KEYWORDS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("profile-right", ("profile-right", "right profile", "right-profile")),
+    ("profile-left", ("profile-left", "left profile", "left-profile")),
+    ("3quarter", ("3/4", "3-quarter", "three-quarter", "3quarter", "three quarter")),
+    ("back", ("back view", "from behind", "rear view", "from the back", "back-view")),
+    ("side", ("side view", "from the side", "side-view")),
+    ("front", ("front view", "front-facing", "facing forward", "facing front",
+               "head-on", "full-front", "from the front")),
+)
+
+
+def _infer_view(beat: str) -> str | None:
+    """Infer the subject's view token from the beat text, or None when no view
+    phrase is present (then selection falls back to the approach-B diversity order)."""
+    b = (beat or "").lower()
+    for token, phrases in _VIEW_KEYWORDS:
+        if any(ph in b for ph in phrases):
+            return token
+    return None
+
+
+def _view_aware_preference(view: str | None) -> tuple[str, ...]:
+    """Reorder the diversity preference so patterns matching `view` lead, preserving
+    the original order within and after the matching group. None → unchanged (so a
+    viewless beat reproduces approach-B exactly)."""
+    if view is None:
+        return _TURNAROUND_PREFERENCE
+    matching = tuple(p for p in _TURNAROUND_PREFERENCE if view in p)
+    rest = tuple(p for p in _TURNAROUND_PREFERENCE if p not in matching)
+    return matching + rest
+
 
 def _resolve_folder(character_id: str, characters_root: Path) -> Path | None:
     """Map a character_id (e.g. 'sean') to its Bible folder (e.g. 'sean-anchor/')
@@ -68,14 +105,16 @@ def _resolve_folder(character_id: str, characters_root: Path) -> Path | None:
     return None
 
 
-def _select_turnarounds(folder: Path, cap: int) -> list[Path]:
+def _select_turnarounds(
+    folder: Path, cap: int, preference: tuple[str, ...] = _TURNAROUND_PREFERENCE
+) -> list[Path]:
     turn_dir = folder / "turnarounds"
     if not turn_dir.is_dir():
         return []
     available = sorted(turn_dir.glob("*.png"))
     picked: list[Path] = []
     used: set[Path] = set()
-    for pattern in _TURNAROUND_PREFERENCE:
+    for pattern in preference:
         if len(picked) >= cap:
             break
         # Prefer an EXACT stem match before a substring match. A specific pattern
@@ -103,9 +142,11 @@ def select_references(
     cap: int = 3,
 ) -> list[Path]:
     """Return the reference bundle (anchor + up to `cap` turnarounds) for one Em
-    invocation. v1 ignores checkpoint/beat (approach B). The returned list NEVER
-    includes the frame under review — the caller prepends the subject. Missing
-    plates are dropped with a log note."""
+    invocation. View-aware (approach A, B1a): when `beat` carries an inferable view,
+    the matching turnaround leads the turnarounds; a viewless beat reproduces the
+    approach-B diversity order. `checkpoint` stays a reserved seam (prod view-inference
+    is a separate follow-on). The returned list NEVER includes the frame under review —
+    the caller prepends the subject. Missing plates are dropped with a log note."""
     if not character_id:
         return []
     folder = _resolve_folder(character_id, Path(characters_root))
@@ -119,7 +160,33 @@ def select_references(
         bundle.append(anchor)
     else:
         log.info("select_references: anchor.png missing for %s; dropping", folder)
-    for t in _select_turnarounds(folder, cap):
+    preference = _view_aware_preference(_infer_view(beat))
+    for t in _select_turnarounds(folder, cap, preference):
         if t.exists():
             bundle.append(t)
     return bundle
+
+
+def best_view_reference(
+    character_id: str,
+    beat: str,
+    *,
+    characters_root: Path,
+) -> Path | None:
+    """The single best view-matched turnaround for `beat` — the view-fair reference
+    the DINOv2 backstop (B1b/B1c) compares the subject against. None when the beat
+    carries no inferable view OR no turnaround matches that view (the caller then has
+    no view-fair reference and should skip the deterministic check rather than compare
+    across views). Among matches, sorted order puts `body-*` before `head-*`, so a
+    full-figure proportion subject gets a body reference — exactly what proportion
+    similarity needs."""
+    view = _infer_view(beat)
+    if not character_id or view is None:
+        return None
+    folder = _resolve_folder(character_id, Path(characters_root))
+    if folder is None:
+        return None
+    turn_dir = folder / "turnarounds"
+    available = sorted(turn_dir.glob("*.png")) if turn_dir.is_dir() else []
+    matches = [p for p in available if view in p.stem.lower() and p.exists()]
+    return matches[0] if matches else None

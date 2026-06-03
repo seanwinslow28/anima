@@ -71,3 +71,65 @@ def test_real_sean_bible_target_bundle():
     assert [p.name for p in refs] == [
         "anchor.png", "head-front.png", "head-profile-left.png", "body-3quarter.png",
     ]
+
+
+# ---------------------------------------------------------------------------
+# B1a — view-aware selection (approach A, eval path). When the beat carries an
+# inferable view ("right profile", "3/4 turnaround", "back view"), the matching
+# turnaround leads the bundle so a profile subject gets a profile reference; a
+# beat with no view word preserves the approach-B diversity order exactly. The
+# subject's view is read from beat metadata (cheap + exact in the eval); prod
+# view-inference is a separate, harder follow-on (a view classifier / manifest
+# hint), deliberately out of scope here.
+# ---------------------------------------------------------------------------
+
+
+def test_profile_right_beat_ranks_profile_match_first(tmp_path):
+    _make_char(tmp_path, "sean", [
+        "head-front", "head-3quarter", "head-profile-left", "head-profile-right",
+        "head-back", "body-3quarter", "body-back", "body-profile-left", "body-profile-right",
+    ])
+    refs = select_references("sean", "phase_5_generate", "Sean full-body right profile",
+                             characters_root=tmp_path, cap=3)
+    assert refs[0].name == "anchor.png"                 # anchor still leads
+    assert "profile-right" in refs[1].stem.lower()      # view-matched plate leads the turnarounds
+
+
+def test_3quarter_beat_ranks_3quarter_match_first(tmp_path):
+    _make_char(tmp_path, "sean", [
+        "head-front", "head-profile-left", "body-3quarter", "body-back",
+    ])
+    refs = select_references("sean", "phase_5_generate", "Sean 3/4 turnaround",
+                             characters_root=tmp_path, cap=3)
+    assert "3quarter" in refs[1].stem.lower()
+
+
+def test_no_view_in_beat_preserves_diversity_order(tmp_path):
+    _make_char(tmp_path, "sean", [
+        "head-front", "head-3quarter", "head-profile-left", "head-profile-right",
+        "head-back", "body-3quarter", "body-back", "body-profile-left", "body-profile-right",
+    ])
+    refs = select_references("sean", "phase_5_generate", "idle at the desk, fixed camera",
+                             characters_root=tmp_path, cap=3)
+    assert [p.name for p in refs] == [
+        "anchor.png", "head-front.png", "head-profile-left.png", "body-3quarter.png",
+    ]
+
+
+def test_best_view_reference_returns_view_match(tmp_path):
+    from pipeline.agents.reference_selection import best_view_reference
+    _make_char(tmp_path, "sean", ["head-front", "head-profile-right", "body-profile-right"])
+    ref = best_view_reference("sean", "Sean right profile", characters_root=tmp_path)
+    assert ref is not None and "profile-right" in ref.stem.lower()
+
+
+def test_best_view_reference_none_when_no_view(tmp_path):
+    from pipeline.agents.reference_selection import best_view_reference
+    _make_char(tmp_path, "sean", ["head-front", "body-3quarter"])
+    assert best_view_reference("sean", "idle, fixed camera", characters_root=tmp_path) is None
+
+
+def test_best_view_reference_none_when_no_matching_turnaround(tmp_path):
+    from pipeline.agents.reference_selection import best_view_reference
+    _make_char(tmp_path, "sean", ["head-front"])  # no profile plate to match
+    assert best_view_reference("sean", "Sean right profile", characters_root=tmp_path) is None
