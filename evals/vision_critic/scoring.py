@@ -29,6 +29,10 @@ class CaseScore:
     actual_cites: list[str] = field(default_factory=list)
     confidence: float = 0.0
     wall_s: float = 0.0
+    reasoning: str = ""   # Em's verdict prose (G6.2 instrumentation). Carried for
+                          # the per-case diagnostic trace; never scored. Default ""
+                          # keeps positional constructors + the asdict<->CaseScore(**)
+                          # subprocess round-trip (score.py) back-compatible.
 
     @property
     def expected_defect(self) -> bool:

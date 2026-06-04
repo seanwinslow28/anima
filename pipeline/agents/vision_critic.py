@@ -36,6 +36,26 @@ from pipeline.agents.gemini_api_runner import run_gemini_api_with_image
 from pipeline.agents.reference_selection import select_references, ReferenceSelectionError
 from pipeline.agents.sdk_runners import invoke_opus_vision
 
+
+class EmptyCitesInvariant(ValueError):
+    """Em flagged a defect (fail/borderline) with no citation — v2 brainstorm
+    §2.3 Pattern B. This stays a HARD raise in production: the critic spine still
+    rejects an ungrounded block. It subclasses ValueError so every existing
+    `except ValueError` / `pytest.raises(ValueError, match="cites_criteria")`
+    catch site is unaffected. It additionally CARRIES the parsed payload (verdict,
+    reasoning, cites) so a diagnostic harness that opts into catching this exact
+    subclass can record what Em saw without weakening the gate (G6.2)."""
+
+    def __init__(self, message: str, *, verdict: str, reasoning: str,
+                 cites: list[str], frame_id, checkpoint):
+        super().__init__(message)
+        self.verdict = verdict
+        self.reasoning = reasoning
+        self.cites = cites
+        self.frame_id = frame_id
+        self.checkpoint = checkpoint
+
+
 PROMPTS_DIR = Path(__file__).parent / "prompts"
 PERSONA_NAME = "em-vision-critic"
 
@@ -162,11 +182,16 @@ class VisionCriticNode:
         # drift. A blocking verdict without a citation is rejected at the
         # contract layer; Em cannot block without grounding the verdict.
         if verdict in {"fail", "borderline"} and not cites:
-            raise ValueError(
+            raise EmptyCitesInvariant(
                 f"Em emitted verdict={verdict!r} with empty cites_criteria; "
                 f"this violates v2 brainstorm §2.3 Pattern B. "
                 f"frame_id={ctx.inputs.get('frame_id')!r}, "
-                f"checkpoint={ctx.inputs.get('checkpoint')!r}."
+                f"checkpoint={ctx.inputs.get('checkpoint')!r}.",
+                verdict=verdict,
+                reasoning=str(parsed.get("reasoning", "")),
+                cites=cites,
+                frame_id=ctx.inputs.get("frame_id"),
+                checkpoint=ctx.inputs.get("checkpoint"),
             )
 
         patches = self._build_patches(parsed, ctx)
