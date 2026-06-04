@@ -30,10 +30,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from pipeline.agents import AgentContext
-from pipeline.agents.vision_critic import VisionCriticNode
+from pipeline.agents.vision_critic import VisionCriticNode, EmptyCitesInvariant
 from pipeline.agents.reference_selection import select_references
 from pipeline.contact_sheet import build_contact_sheet  # noqa: F401 (cases pre-build sheets)
-from evals.vision_critic.scoring import CaseScore, segment_report
+from evals.vision_critic.scoring import CaseScore, segment_report, cites_correctness
 from evals.vision_critic.conftest import merged_criteria
 
 HERE = Path(__file__).parent
@@ -93,6 +93,7 @@ def consensus_scores(runs: list[list[CaseScore]]) -> list[CaseScore]:
             actual_cites=rep.actual_cites,
             confidence=sum(s.confidence for s in group) / len(group),
             wall_s=sum(s.wall_s for s in group) / len(group),
+            reasoning=rep.reasoning,  # prose from the run whose verdict won (aligns with cites)
         ))
     return out
 
@@ -144,6 +145,35 @@ def render_per_run_table(runs: list[list[CaseScore]]) -> str:
         flip = "**FLIP**" if len(set(present)) > 1 else ""
         rows.append(f"| `{name}` | " + " | ".join(cells) + f" | {flip} |")
     return "\n".join(rows)
+
+
+def render_per_case_detail(scores: list[CaseScore]) -> str:
+    """G6.2 diagnostic: per-case expected/actual cites + cites_correct + reasoning.
+
+    Pure; no model calls. The verdict-by-verdict table lets the cite-classification
+    work (Q1 style / Q3 geometry) read by case, and the reasoning is rendered in
+    its OWN block per case (never inside a table cell — long prose with pipes or
+    newlines would otherwise shred the markdown table). `cites_correct` reuses the
+    scorer the headline metric uses, so the table and the matrix can never disagree.
+    """
+    lines = ["", "## Per-case cite + reasoning detail (G6.2 diagnostic)", "",
+             "| case | class | expected | predicted | expected_cites | actual_cites | cites_correct | conf |",
+             "|---|---|---|---|---|---|---|---|"]
+    for s in scores:
+        cc = cites_correctness(predicted=s.predicted_verdict,
+                               expected_cites=s.expected_cites,
+                               actual_cites=s.actual_cites)
+        cc_str = "n/a" if cc is None else ("yes" if cc else "**NO**")
+        exp = ", ".join(s.expected_cites) or "—"
+        act = ", ".join(s.actual_cites) or "—"
+        lines.append(f"| `{s.name}` | {s.case_class} | {s.expected_verdict} | "
+                     f"{s.predicted_verdict} | {exp} | {act} | {cc_str} | {s.confidence:.2f} |")
+    lines += ["", "### Reasoning (per case)", ""]
+    for s in scores:
+        prose = " ".join(s.reasoning.split()).strip() or "(no reasoning captured)"
+        lines.append(f"- **`{s.name}`** ({s.predicted_verdict}, conf {s.confidence:.2f}): {prose}")
+    lines.append("")
+    return "\n".join(lines)
 
 
 def render_replication_md(runs: list[list[CaseScore]]) -> str:
@@ -254,6 +284,7 @@ def _score_one(case: dict, manifest: dict, criteria) -> CaseScore:
         actual_cites=result.cites_criteria,
         confidence=result.outputs["confidence"],
         wall_s=wall,
+        reasoning=result.outputs.get("reasoning", ""),  # G6.2: persist Em's prose
         # `refs` (resolved reference plate names) is logged per-case for trace
         # transparency — see the print() in main()'s loop below.
     )
@@ -400,6 +431,11 @@ def main() -> None:
                          "the Anthropic API instead of your Claude subscription when the "
                          "key is present (Claude Code uses it in non-interactive mode). "
                          "Leave unset so a leaked key fails fast. Ignored with --stub.")
+    ap.add_argument("--trace-name", metavar="LABEL", default=None,
+                    help="Override the dated trace filename stem. When set, write ONLY "
+                         "traces/{LABEL}.md and DO NOT touch last-run.md or the default "
+                         "baseline-{date}-scored.md. Use for a diagnostic run that must "
+                         "not clobber or move the ratified baseline trace.")
     args = ap.parse_args()
 
     # Env-hygiene guard (operational incident #1, 2026-06-02). A present
@@ -436,7 +472,25 @@ def main() -> None:
         if case is None:
             print(f"unknown case: {args.only}", file=sys.stderr)
             raise SystemExit(2)
-        cs = _score_one(case, manifest, criteria)
+        try:
+            cs = _score_one(case, manifest, criteria)
+        except EmptyCitesInvariant as inv:
+            # DIAGNOSTIC capture only (G6.2). In production this still raised upstream
+            # — the critic spine rejects the ungrounded block. Here we record what Em
+            # saw so the geometry empty-cites cases (proportion/view/anatomy) contribute
+            # their reasoning instead of dying as a blind errored gap. confidence=0.0 is
+            # a SENTINEL (not parsed at trip time) — exclude it from confidence means.
+            cs = CaseScore(
+                name=case["name"],
+                case_class=case["case_class"],
+                expected_verdict=case["expected_verdict"],
+                predicted_verdict=inv.verdict,
+                expected_cites=case.get("expected_cites", []),
+                actual_cites=list(inv.cites),  # empty by definition — recorded explicitly
+                confidence=0.0,
+                wall_s=0.0,
+                reasoning=f"[INVARIANT_TRIPPED empty-cites] {inv.reasoning}",
+            )
         print(f"{args.only}: {cs.predicted_verdict} (conf={cs.confidence:.2f}, "
               f"{cs.wall_s:.0f}s) refs=[{_refs_label(case, manifest, attach_refs)}]",
               file=sys.stderr, flush=True)
@@ -486,6 +540,9 @@ def main() -> None:
     md = render_last_run_md(report, model_label=model_label, n_total=len(consensus))
     if n_runs > 1:
         md = md + "\n" + render_replication_md(runs)
+    # G6.2: per-case cites + reasoning. Pure render over `consensus`; additive (no
+    # metric/verdict/model effect), so it is always on — every future trace carries it.
+    md = md + "\n" + render_per_case_detail(consensus)
     # Honest segmentation: record cases intentionally NOT live-scored (never silent).
     if excluded:
         lines = ["", "## Intentionally NOT live-scored (segment scoping)", ""]
@@ -508,12 +565,22 @@ def main() -> None:
                   "Not passes._", ""]
         md = md + "\n" + "\n".join(lines)
 
-    (HERE / "last-run.md").write_text(md, encoding="utf-8")
-    trace = HERE / "traces" / f"baseline-{datetime.now(timezone.utc):%Y-%m-%d}-scored.md"
-    trace.parent.mkdir(parents=True, exist_ok=True)
-    trace.write_text(md, encoding="utf-8")
-    print(md)
-    print(f"\nWrote {HERE/'last-run.md'} and {trace}")
+    if args.trace_name:
+        # Diagnostic run: write ONLY the labelled trace; leave last-run.md and the
+        # default dated baseline trace byte-identical (so a same-day diagnostic can
+        # never clobber the ratified baseline — G6.2 F1).
+        trace = HERE / "traces" / f"{args.trace_name}.md"
+        trace.parent.mkdir(parents=True, exist_ok=True)
+        trace.write_text(md, encoding="utf-8")
+        print(md)
+        print(f"\nWrote {trace} (last-run.md + baseline trace untouched — --trace-name set)")
+    else:
+        (HERE / "last-run.md").write_text(md, encoding="utf-8")
+        trace = HERE / "traces" / f"baseline-{datetime.now(timezone.utc):%Y-%m-%d}-scored.md"
+        trace.parent.mkdir(parents=True, exist_ok=True)
+        trace.write_text(md, encoding="utf-8")
+        print(md)
+        print(f"\nWrote {HERE/'last-run.md'} and {trace}")
     if errored:
         print(f"\n⚠ {len(errored)}/{len(selected) * n_runs} case-runs errored (see report).")
 
