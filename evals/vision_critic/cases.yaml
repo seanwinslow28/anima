@@ -1,403 +1,822 @@
-# Em — vision-critic eval case set (labeled, segmented).
+# Em — vision-critic eval case set (v2: the ratified class-isolated corpus).
 #
-# DRAFT LABELS for Sean's ratification at STOP GATE 1. Every case points at a
-# real, committed, viewable fixture (Act 1 approved/rejected frames, real Cy
-# Bible plates with their production verdicts, Act 2 motion contact sheets).
-# No invented frames. The labels are drafted from ground-truth metadata:
-#   - Act 1 approved -> pass ; Act 1 rejected (FAIL code) -> fail
-#   - Cy plate_verdicts.jsonl gemini_verdict + cites_identity_rule -> verdict + expected_cites
-#   - Act 2 contact sheets -> motion_proper, intentionally red (see below)
-# Sean is the single labeler (solo scale; no Cohen's k yet — see failure-modes.md D2).
+# REBUILT 2026-06-03 (eval-foundation reset, docs/2026-06-03-eval-foundation-reset-plan.md).
+# The old 29-case set was retired wholesale: 19/23 fixtures were SHA-identical copies of
+# Bible/source plates, the Bible's body turnarounds had drifted to ~1:4-1:5.3 heads, five
+# fail cases carried compound labels, and per-class n was ~1. Its baseline figures
+# (precision 0.62 / recall 1.00 / false_pass 0.15) are VOID. Do not compare against them.
 #
-# Segmentation (Sean's locked decision):
-#   case_class: clean | identity_style   -> the "performs" segment (Em SHOULD catch)
-#   case_class: motion_proper            -> reported APART, ships intentionally RED
-#     (a contact sheet structurally can't see motion-proper; eval-strategy doc §3.5).
+# Corpus provenance: every frames/ fixture was authored by Sean in Google Flow (NB2,
+# free tier) against prompts/eval-corpus/sean-anchor-fixture-corpus.md (v2, minimal
+# grammar), with the two gold-standard turnaround sheets as references
+# (characters/sean-anchor/source-refs/sean-character-{full-body,head}-turnaround.png).
+# Sean viewed and RATIFIED every image + label on 2026-06-03 (pre-screened by Claude,
+# ruled by Sean — ratify/re-roll/relabel per flag). Uniform JPEG 1376x768 (format call
+# ratified 2026-06-03; uniformity over format).
 #
-# Per-case schema:
-#   name, description, checkpoint (phase_5_generate | phase_6_motion | phase_8_assemble),
-#   character_id: which character the frame contains (drives select_references + criteria; default sean)
-#   input (path under fixtures/), beat_description, impact_tags (list),
-#   case_class (identity_style | clean | motion_proper),
-#   expected_verdict (pass | borderline | fail),
-#   expected_cites (criteria IDs a correct critic should cite; [] for clean),
-#   defect_label (open-coded mode, or "clean"),
-#   is_intentionally_red (bool),
-#   sean_note (one-line rationale for the label — the externalized rubric)
+# Fixture independence is ENFORCED: tests/test_fixture_contamination.py fails CI if any
+# fixture shares a SHA-256 or inode with anything under characters/ or images/. Fixtures
+# are never the references.
 #
-# Ships-red discipline: do NOT tune a case until Em passes it. Editing a label
-# is legitimate ONLY if the label was wrong (a validity fix), never to flatter Em.
+# Six ratified failure classes (defect_label carries EXACTLY ONE, or "clean"):
+#   proportion | view-correctness | anatomy-count   (geometry -> Bible-lock owns the gate)
+#   palette | construction-lines | shading-register (style    -> Em / T2 owns the gate)
+# Em is MEASURED on all six here; layer ownership says who acts on them in production.
+# Deferred (promotion trigger = clean corpus re-baselined): hair/jaw/eye identity modes.
 #
-# RATIFIED by Sean 2026-06-01 after the live baseline + frame review. Labels kept
-# UNCHANGED. The 8 "clean" frames Em flagged (F13/F31/head-turn-02/06 → fail;
-# F06/head-profile-left/neutral/contemplative → borderline) are CORRECTLY labeled
-# pass — Sean confirmed F13/F31 are unmistakably the right Sean. Em's flags are
-# REFERENCE-BLINDNESS (she gets no anchor image, only text), not bad frames. So
-# the performs-segment precision (0.62) is the honest reference-blind baseline,
-# and giving Em reference images is the locked #1 next fix
-# (docs/anima-test-runs/2026-06-01-em-reference-blindness-FINDING.md).
+# Conventions:
+#   - FACING CONVENTION (locked 2026-06-03): "left profile" = subject faces screen-left.
+#     The walk set (C03, P-D3, PA-D5, SH-D4) and C06 were relabeled right/left profile
+#     accordingly — image divergence from the original prompt text, label follows image.
+#   - VIEW-CORRECTNESS TRICK: V-* images are CLEAN drawings of the WRONG view. The
+#     corruption lives in the case's DECLARED view (beat_description), not the pixels.
+#     Em must compare declared-vs-drawn, not judge draftsmanship.
+#   - PAIRED DESIGN: every defect names its clean pair (pair:). Defect = pair's beat
+#     with exactly one axis corrupted.
+#   - Borderlines (P-B2, V-B1, CL-B1, SH-B1) -> expected_verdict: borderline.
+#
+# PENDING RE-ROLLS (ratified out, not yet replaced; staged at
+# images/sean-character-dataset/_pending-reroll/):
+#   P-B1  — spec'd ~6.5-head borderline came back ~4.5-5 heads (defect strength).
+#   PA-D4 — rendered caption text names its own defect (label leak).
+# Re-add their cases when Sean re-rolls them in Flow.
+#
+# Per-case schema: name, corpus_id, pair, description, checkpoint, character_id,
+#   input, beat_description, impact_tags, case_class (clean | identity_style |
+#   motion_proper), expected_verdict (pass | borderline | fail), expected_cites
+#   (IR.sean.* where a handle exists; seam handles view.declared-view-matches-drawn-view
+#   and anatomy.count-correct where none exists yet), defect_label,
+#   is_intentionally_red, sean_note.
+#
+# Ships-red discipline: do NOT tune a case until Em passes it. A label edit is
+# legitimate ONLY as a validity fix, never to flatter Em.
 
 cases:
 
   # ============================================================
-  # CLEAN (case_class: clean, expected_verdict: pass) — 10 cases
+  # SHARED CLEAN POOL (case_class: clean) — 16 cases
   # ============================================================
-  - name: clean-act1-f06-idle
+  - name: clean-c01-idle-front
+    corpus_id: C01
+    pair: null
     character_id: sean
-    description: "Act 1 F06 approved keyframe — Sean idle at the desk, pencil-test-colored register."
+    description: "Corpus C01 — standing idle beside the drawing desk, front view, full body."
     checkpoint: phase_5_generate
-    input: frames/clean_F06.png
-    beat_description: "Sean stands at his animation desk, idle, stylus in right hand. Pencil-test register on cream paper."
-    impact_tags: [hero]
-    case_class: clean
-    expected_verdict: pass
-    expected_cites: []
-    defect_label: clean
-    is_intentionally_red: false
-    sean_note: "Shipped Act 1 hero frame. Em should pass it clean — no drift."
-
-  - name: clean-act1-f13-gesture
-    character_id: sean
-    description: "Act 1 F13 approved keyframe — mid-gesture."
-    checkpoint: phase_5_generate
-    input: frames/clean_F13.png
-    beat_description: "Sean mid-gesture, stylus in right hand, leaning into the drawing. Pencil-test register."
-    impact_tags: [hero]
-    case_class: clean
-    expected_verdict: pass
-    expected_cites: []
-    defect_label: clean
-    is_intentionally_red: false
-    sean_note: "Shipped Act 1 frame. Clean pass expected."
-
-  - name: clean-act1-f31-land
-    character_id: sean
-    description: "Act 1 F31 approved keyframe — the sprite lands."
-    checkpoint: phase_5_generate
-    input: frames/clean_F31.png
-    beat_description: "Sean reacts as the sprite lands on the page. Pencil-test register, stylus right hand."
-    impact_tags: [hero]
-    case_class: clean
-    expected_verdict: pass
-    expected_cites: []
-    defect_label: clean
-    is_intentionally_red: false
-    sean_note: "Shipped Act 1 frame. Clean pass expected."
-
-  - name: clean-head-profile-left
-    character_id: sean
-    description: "sean-anchor head profile-left turnaround — production pass @1.0 (all 6 IR rules honored)."
-    checkpoint: phase_5_generate
-    input: frames/clean_head_profile_left.png
-    beat_description: "Sean head, left profile. Dirty-blonde cowlick, angular jaw, blue eye, stubble, cream paper, visible line work."
+    input: frames/C01.jpeg
+    beat_description: "Sean stands idle beside his drawing desk, front view, full body visible, character centered. Pencil-test register: soft graphite line, light hand-painted color wash, cross-hatch shadow, construction lines beneath the final line, warm cream paper."
     impact_tags: [identity_critical]
     case_class: clean
     expected_verdict: pass
     expected_cites: []
     defect_label: clean
     is_intentionally_red: false
-    sean_note: "Real Cy pass @1.0 — jaw angle, cowlick, line weight all honored. Em should pass."
+    sean_note: "Ratified 2026-06-03. Anchor pose of the corpus — five defect cases pair against it."
 
-  - name: clean-head-back
+  - name: clean-c02-explaining-3quarter
+    corpus_id: C02
+    pair: null
     character_id: sean
-    description: "sean-anchor head-back turnaround — production pass."
+    description: "Corpus C02 — explaining with one hand raised mid-gesture, three-quarter view, full body."
     checkpoint: phase_5_generate
-    input: frames/clean_head_back.png
-    beat_description: "Sean head, back view. Tousled dirty-blonde silhouette, center cowlick, pencil-test line work."
+    input: frames/C02.jpeg
+    beat_description: "Sean stands explaining something with one hand raised mid-gesture, three-quarter view, full body visible. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
     impact_tags: [identity_critical]
     case_class: clean
     expected_verdict: pass
     expected_cites: []
     defect_label: clean
     is_intentionally_red: false
-    sean_note: "Real Cy pass. Back-of-head view, identity holds."
+    sean_note: "Ratified 2026-06-03."
 
-  - name: clean-expr-neutral
+  - name: clean-c03-walk-profile-right
+    corpus_id: C03
+    pair: null
     character_id: sean
-    description: "sean-anchor neutral expression — production pass."
+    description: "Corpus C03 — walking mid-stride, right profile, full body."
     checkpoint: phase_5_generate
-    input: frames/clean_neutral.png
-    beat_description: "Sean neutral expression, front. Pencil-test register, blue eyes, warm skin tone."
+    input: frames/C03.jpeg
+    beat_description: "Sean walks mid-stride, right profile (facing screen-right), full body visible. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Declared view RELABELED left->right profile under the facing convention (image faces right; prompt text said left)."
+
+  - name: clean-c04-reach-3quarter-back
+    corpus_id: C04
+    pair: null
+    character_id: sean
+    description: "Corpus C04 — reaching up for a pencil on a shelf, three-quarter back angle, full body."
+    checkpoint: phase_5_generate
+    input: frames/C04.jpeg
+    beat_description: "Sean reaches up for a pencil on a shelf, seen from a three-quarter back angle, full body visible. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
     impact_tags: [aesthetic]
     case_class: clean
     expected_verdict: pass
     expected_cites: []
     defect_label: clean
     is_intentionally_red: false
-    sean_note: "Real Cy pass. Baseline expression."
+    sean_note: "Ratified 2026-06-03."
 
-  - name: clean-expr-surprised
+  - name: clean-c05-relaxed-back
+    corpus_id: C05
+    pair: null
     character_id: sean
-    description: "sean-anchor surprised expression — production pass."
+    description: "Corpus C05 — standing relaxed, weight on one leg, back view, full body."
     checkpoint: phase_5_generate
-    input: frames/clean_surprised.png
-    beat_description: "Sean surprised expression, raised brows, widened eyes. Pencil-test register."
+    input: frames/C05.jpeg
+    beat_description: "Sean stands relaxed with his weight on one leg, seen from behind, full body visible. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
     impact_tags: [aesthetic]
     case_class: clean
     expected_verdict: pass
     expected_cites: []
     defect_label: clean
     is_intentionally_red: false
-    sean_note: "Real Cy pass. Expression arc point."
+    sean_note: "Ratified 2026-06-03."
 
-  - name: clean-expr-contemplative
+  - name: clean-c06-leaning-profile-left
+    corpus_id: C06
+    pair: null
     character_id: sean
-    description: "sean-anchor contemplative expression — production pass."
+    description: "Corpus C06 — leaning against the drawing desk, arms loosely crossed, left profile, full body."
     checkpoint: phase_5_generate
-    input: frames/clean_contemplative.png
-    beat_description: "Sean contemplative, slight downward gaze. Pencil-test register, blue eyes."
+    input: frames/C06.jpeg
+    beat_description: "Sean leans against his drawing desk with arms loosely crossed, left profile (facing screen-left), full body visible. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
     impact_tags: [aesthetic]
     case_class: clean
     expected_verdict: pass
     expected_cites: []
     defect_label: clean
     is_intentionally_red: false
-    sean_note: "Real Cy pass. Expression arc point."
+    sean_note: "Ratified 2026-06-03. Declared view RELABELED right->left profile under the facing convention (image faces left; prompt text said right)."
 
-  - name: clean-head-turn-02
+  - name: clean-c07-portrait-front-neutral
+    corpus_id: C07
+    pair: null
     character_id: sean
-    description: "sean-anchor head-turn frame 02 — production pass."
+    description: "Corpus C07 — head-and-shoulders portrait, front view, neutral relaxed expression."
     checkpoint: phase_5_generate
-    input: frames/clean_head_turn_02.png
-    beat_description: "Sean head-turn sequence frame 2/9, eyes leading the turn. Pencil-test register."
+    input: frames/C07.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, front view, neutral relaxed expression. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, construction lines beneath the final, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Anchor portrait — four defect cases pair against it."
+
+  - name: clean-c08-portrait-3quarter-smile
+    corpus_id: C08
+    pair: null
+    character_id: sean
+    description: "Corpus C08 — head-and-shoulders portrait, three-quarter view, warm half-smile."
+    checkpoint: phase_5_generate
+    input: frames/C08.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, three-quarter view, warm half-smile. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Anchor portrait — five defect cases pair against it."
+
+  - name: clean-c09-portrait-profile-left
+    corpus_id: C09
+    pair: null
+    character_id: sean
+    description: "Corpus C09 — head-and-shoulders portrait, left profile, contemplative."
+    checkpoint: phase_5_generate
+    input: frames/C09.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, left profile (facing screen-left), contemplative, looking off into the distance. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Sets the facing convention with C10."
+
+  - name: clean-c10-portrait-profile-right
+    corpus_id: C10
+    pair: null
+    character_id: sean
+    description: "Corpus C10 — head-and-shoulders portrait, right profile, mildly surprised."
+    checkpoint: phase_5_generate
+    input: frames/C10.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, right profile (facing screen-right), mildly surprised with eyebrows raised. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03."
+
+  - name: clean-c11-portrait-3quarter-speech
+    corpus_id: C11
+    pair: null
+    character_id: sean
+    description: "Corpus C11 — head-and-shoulders portrait, three-quarter view, mid-speech, mouth open."
+    checkpoint: phase_5_generate
+    input: frames/C11.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, three-quarter view, mid-speech with mouth open. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
     impact_tags: [aesthetic]
     case_class: clean
     expected_verdict: pass
     expected_cites: []
     defect_label: clean
     is_intentionally_red: false
-    sean_note: "Real Cy pass. Identity holds in this turn frame."
+    sean_note: "Ratified 2026-06-03."
 
-  - name: clean-head-turn-06
+  - name: clean-c12-portrait-front-focused
+    corpus_id: C12
+    pair: null
     character_id: sean
-    description: "sean-anchor head-turn frame 06 — production pass."
+    description: "Corpus C12 — head-and-shoulders portrait, front view, focused concentration."
     checkpoint: phase_5_generate
-    input: frames/clean_head_turn_06.png
-    beat_description: "Sean head-turn sequence frame 6/9. Pencil-test register, jaw angle and hair hold."
+    input: frames/C12.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, front view, focused concentration with brow slightly furrowed. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
     impact_tags: [aesthetic]
     case_class: clean
     expected_verdict: pass
     expected_cites: []
     defect_label: clean
     is_intentionally_red: false
-    sean_note: "Real Cy pass. Identity holds in this turn frame."
+    sean_note: "Ratified 2026-06-03."
 
-  # ===================================================================
-  # IDENTITY/STYLE DEFECTS (case_class: identity_style) — 13 cases
-  #   the contact sheet / a still CAN surface these; Em SHOULD catch them
-  # ===================================================================
-  - name: proportion-drift-body-3quarter
+  - name: clean-c13-computer-desk
+    corpus_id: C13
+    pair: null
     character_id: sean
-    description: "body 3/4 turnaround: head reads ~1:5-6 not 1:7; stylus missing; no construction lines. VERIFIED by eye."
+    description: "Corpus C13 — sitting at a computer desk (Sean's proven test prompt, output kept as fixture)."
     checkpoint: phase_5_generate
-    input: frames/defect_body_3quarter.png
-    beat_description: "Sean full-body 3/4 turnaround. Heroic-realistic 1:7 proportion, stylus in right hand, construction lines visible beneath final."
+    input: frames/C13.jpeg
+    beat_description: "Sean sits at a computer desk, working. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. The seans-simple-prompt output that won the v1-vs-v2 prompt test."
+
+  - name: clean-c14-drawing-desk-waistup
+    corpus_id: C14
+    pair: null
+    character_id: sean
+    description: "Corpus C14 — standing at a tilted drawing desk, pencil in right hand, three-quarter view, waist-up."
+    checkpoint: phase_5_generate
+    input: frames/C14.jpeg
+    beat_description: "Sean stands at a tilted drawing desk, drawing with a pencil in his right hand, three-quarter view, framed from the waist up. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03."
+
+  - name: clean-c15-glance-up-smile
+    corpus_id: C15
+    pair: null
+    character_id: sean
+    description: "Corpus C15 — glancing up from his work and smiling, three-quarter view, waist-up."
+    checkpoint: phase_5_generate
+    input: frames/C15.jpeg
+    beat_description: "Sean glances up from his work and smiles, three-quarter view, framed from the waist up. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [aesthetic]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03."
+
+  - name: clean-c16-stool-sketching
+    corpus_id: C16
+    pair: null
+    character_id: sean
+    description: "Corpus C16 — sitting on a stool sketching on a pad in his lap, three-quarter view, full body."
+    checkpoint: phase_5_generate
+    input: frames/C16.jpeg
+    beat_description: "Sean sits on a stool sketching on a pad in his lap, three-quarter view, full body visible. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [aesthetic]
+    case_class: clean
+    expected_verdict: pass
+    expected_cites: []
+    defect_label: clean
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03."
+
+  # ============================================================
+  # PROPORTION (Bible-lock owns the gate) — 3 defects + 1 borderline
+  # P-B1 pending re-roll (came back defect-strength, not ~6.5-head borderline).
+  # ============================================================
+  - name: proportion-pd1-chibi-idle
+    corpus_id: P-D1
+    pair: C01
+    character_id: sean
+    description: "Corpus P-D1 — C01's idle front beat at chibi proportion (~3.5-4 heads tall, oversized head)."
+    checkpoint: phase_5_generate
+    input: frames/P-D1.jpeg
+    beat_description: "Sean stands idle, front view, full body visible. Heroic-realistic 1:7 head-to-body proportion. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
     impact_tags: [identity_critical]
     case_class: identity_style
     expected_verdict: fail
     expected_cites:
       - IR.sean.proportion.head-to-body-1-to-7
-      - IR.sean.proportion.shoulder-width-1-5-head-widths
+    defect_label: proportion
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Proven in the corpus prompt test. Single axis: proportion only — palette/view/style all hold."
+
+  - name: proportion-pd2-chibi-idle-2
+    corpus_id: P-D2
+    pair: C01
+    character_id: sean
+    description: "Corpus P-D2 — front idle at chibi proportion (~3.5 heads), second take."
+    checkpoint: phase_5_generate
+    input: frames/P-D2.jpeg
+    beat_description: "Sean stands idle, front view, full body visible. Heroic-realistic 1:7 head-to-body proportion. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.proportion.head-to-body-1-to-7
+    defect_label: proportion
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03 with pair REPAIRED C02->C01: the spec'd 5-head stocky 3/4 take came back as a front idle near P-D1's strength. Kept; the strength gradient lost its middle step."
+
+  - name: proportion-pd3-elongated-walk
+    corpus_id: P-D3
+    pair: C03
+    character_id: sean
+    description: "Corpus P-D3 — C03's walk beat stretched to ~8.5 heads tall (over-elongated)."
+    checkpoint: phase_5_generate
+    input: frames/P-D3.jpeg
+    beat_description: "Sean walks mid-stride, right profile (facing screen-right), full body visible. Heroic-realistic 1:7 head-to-body proportion. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.proportion.head-to-body-1-to-7
+    defect_label: proportion
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Over-target direction (stretched, not chibi). Declared view follows the C03 relabel (right profile)."
+
+  - name: proportion-pb2-borderline-over
+    corpus_id: P-B2
+    pair: C01
+    character_id: sean
+    description: "Corpus P-B2 — front idle at ~7.5 heads (just over the 1:7 target) — deliberate borderline."
+    checkpoint: phase_5_generate
+    input: frames/P-B2.jpeg
+    beat_description: "Sean stands idle, front view, full body visible. Heroic-realistic 1:7 head-to-body proportion. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: borderline
+    expected_cites:
+      - IR.sean.proportion.head-to-body-1-to-7
+    defect_label: proportion
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Slightly over-tall and thin — the just-over band. Generated (spec said hand-draw; authoring deviation ratified)."
+
+  # ============================================================
+  # VIEW-CORRECTNESS (Bible-lock owns the gate) — 4 defects + 1 borderline
+  # The image is a CLEAN drawing of the WRONG view; the corruption is in the
+  # declared view below, not the pixels. Em must compare declared vs drawn.
+  # ============================================================
+  - name: view-vd1-declared-3quarter-drawn-profile
+    corpus_id: V-D1
+    pair: C02
+    character_id: sean
+    description: "Corpus V-D1 — declared three-quarter explaining beat; drawn as a left profile."
+    checkpoint: phase_5_generate
+    input: frames/V-D1.jpeg
+    beat_description: "Sean stands explaining something with one hand raised mid-gesture, three-quarter view, full body visible. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - view.declared-view-matches-drawn-view
+    defect_label: view-correctness
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Drawn image is a clean left profile (faces screen-left); the case declares three-quarter. No IR handle for view yet — seam handle."
+
+  - name: view-vd2-declared-front-drawn-3quarter
+    corpus_id: V-D2
+    pair: C07
+    character_id: sean
+    description: "Corpus V-D2 — declared front portrait; drawn as a three-quarter."
+    checkpoint: phase_5_generate
+    input: frames/V-D2.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, front view, neutral expression. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - view.declared-view-matches-drawn-view
+    defect_label: view-correctness
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Drawn three-quarter; declared front."
+
+  - name: view-vd3-declared-left-drawn-right
+    corpus_id: V-D3
+    pair: C09
+    character_id: sean
+    description: "Corpus V-D3 — declared left-profile contemplative portrait; drawn as a right profile."
+    checkpoint: phase_5_generate
+    input: frames/V-D3.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, left profile (facing screen-left), contemplative. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - view.declared-view-matches-drawn-view
+    defect_label: view-correctness
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. The facing-convention stress case: drawn faces screen-right, declared left profile. Hangs entirely on the locked convention."
+
+  - name: view-vd4-declared-back-drawn-3quarter-back
+    corpus_id: V-D4
+    pair: C05
+    character_id: sean
+    description: "Corpus V-D4 — declared full back view; drawn as a three-quarter back."
+    checkpoint: phase_5_generate
+    input: frames/V-D4.jpeg
+    beat_description: "Sean stands relaxed, seen from directly behind (full back view), full body visible. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - view.declared-view-matches-drawn-view
+    defect_label: view-correctness
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Drawn three-quarter-back with face visible in profile; declared straight back."
+
+  - name: view-vb1-borderline-60deg
+    corpus_id: V-B1
+    pair: C08
+    character_id: sean
+    description: "Corpus V-B1 — declared three-quarter portrait; drawn at ~60 degrees, between three-quarter and profile."
+    checkpoint: phase_5_generate
+    input: frames/V-B1.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, three-quarter view. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: borderline
+    expected_cites:
+      - view.declared-view-matches-drawn-view
+    defect_label: view-correctness
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Deliberately ambiguous angle — between three-quarter and profile."
+
+  # ============================================================
+  # ANATOMY-COUNT (Bible-lock owns the gate) — 4 defects
+  # Human interpretation: hand/digit/limb count correctness (Sean confirmed
+  # by authoring these). No IR handle yet — seam handle anatomy.count-correct.
+  # ============================================================
+  - name: anatomy-ad1-six-fingers
+    corpus_id: A-D1
+    pair: C13
+    character_id: sean
+    description: "Corpus A-D1 — C13's computer-desk beat, but the keyboard hand has six fingers."
+    checkpoint: phase_5_generate
+    input: frames/A-D1.jpeg
+    beat_description: "Sean sits at a computer desk, working, hands on keyboard and mouse. Correct anatomy throughout. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - anatomy.count-correct
+    defect_label: anatomy-count
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Six digits on the keyboard hand (verified at zoom). Background differs from C13 (window/shelf vs drawers) — beat-level pairing holds."
+
+  - name: anatomy-ad2-fused-hand
+    corpus_id: A-D2
+    pair: C02
+    character_id: sean
+    description: "Corpus A-D2 — C02's explaining beat, but the raised hand is fused and malformed, fingers indistinct."
+    checkpoint: phase_5_generate
+    input: frames/A-D2.jpeg
+    beat_description: "Sean stands explaining something with one hand raised, three-quarter view, full body visible. Correct hand anatomy. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - anatomy.count-correct
+    defect_label: anatomy-count
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Mitten-fused raised hand, unmissable."
+
+  - name: anatomy-ad3-third-arm
+    corpus_id: A-D3
+    pair: C01
+    character_id: sean
+    description: "Corpus A-D3 — C01's idle front beat, but with an extra arm at one shoulder (three arms)."
+    checkpoint: phase_5_generate
+    input: frames/A-D3.jpeg
+    beat_description: "Sean stands idle, front view, full body visible. Correct limb count. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - anatomy.count-correct
+    defect_label: anatomy-count
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Doubled right arm clearly rendered."
+
+  - name: anatomy-ad4-missing-leg
+    corpus_id: A-D4
+    pair: C16
+    character_id: sean
+    description: "Corpus A-D4 — C16's stool-sketching beat, but only one leg is visible where two should be."
+    checkpoint: phase_5_generate
+    input: frames/A-D4.jpeg
+    beat_description: "Sean sits on a stool sketching on a pad in his lap, three-quarter view, full body visible, both legs visible. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - anatomy.count-correct
+    defect_label: anatomy-count
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03 as-is. Known ambiguity: a charitable read could call the missing leg pose occlusion — that ambiguity is part of the case."
+
+  # ============================================================
+  # PALETTE (Em / T2 owns the gate) — 5 defects
+  # PA-D4 pending re-roll (rendered caption text leaked its own label).
+  # ============================================================
+  - name: palette-pad1-monochrome
+    corpus_id: PA-D1
+    pair: C07
+    character_id: sean
+    description: "Corpus PA-D1 — C07's front portrait rendered entirely in graphite monochrome, no color wash."
+    checkpoint: phase_5_generate
+    input: frames/PA-D1.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, front view, neutral expression. Full-color pencil-test register: soft graphite line, light hand-painted color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.palette.full-color-pencil-test-vocabulary
+    defect_label: palette
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Whole-image palette violation: monochrome where full color is locked."
+
+  - name: palette-pad2-red-shirt
+    corpus_id: PA-D2
+    pair: C13
+    character_id: sean
+    description: "Corpus PA-D2 — C13's computer-desk beat, but the t-shirt is red instead of navy blue."
+    checkpoint: phase_5_generate
+    input: frames/PA-D2.jpeg
+    beat_description: "Sean sits at a computer desk, working. Navy-blue crew-neck t-shirt, cool-gray jeans. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.costume.navy-tee-cool-gray-jeans
+    defect_label: palette
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Proven in the corpus prompt test. Single garment color swap."
+
+  - name: palette-pad3-brown-hair
+    corpus_id: PA-D3
+    pair: C08
+    character_id: sean
+    description: "Corpus PA-D3 — C08's three-quarter smile portrait, but the hair is dark brown instead of sandy blonde."
+    checkpoint: phase_5_generate
+    input: frames/PA-D3.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, three-quarter view, warm half-smile. Dirty-blonde tousled hair. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.hair.dirty-blonde-color
+    defect_label: palette
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Hair color violation, silhouette intact."
+
+  - name: palette-pad5-brown-jeans-white-sneakers
+    corpus_id: PA-D5
+    pair: C03
+    character_id: sean
+    description: "Corpus PA-D5 — C03's walk beat, but jeans are brown and sneakers are white."
+    checkpoint: phase_5_generate
+    input: frames/PA-D5.jpeg
+    beat_description: "Sean walks mid-stride, right profile (facing screen-right), full body visible. Navy tee, cool-gray jeans, gray low-top sneakers. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.costume.navy-tee-cool-gray-jeans
+    defect_label: palette
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Two-garment color swap. Declared view follows the C03 relabel (right profile)."
+
+  - name: palette-pad6-brown-hair-beard
+    corpus_id: PA-D6
+    pair: C08
+    character_id: sean
+    description: "Corpus PA-D6 (Sean's keeper-extra, ex PA-D3-1) — three-quarter portrait with dark-brown hair; beard came in fuller than stubble."
+    checkpoint: phase_5_generate
+    input: frames/PA-D6.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, three-quarter view, warm half-smile. Dirty-blonde tousled hair, light stubble. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.hair.dirty-blonde-color
+    defect_label: palette
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03 as palette with a known impurity: beard fullness drifted alongside hair color (hair+beard color travel together; fullness is the stowaway). Label stays single-axis."
+
+  # ============================================================
+  # CONSTRUCTION-LINES (Em / T2 owns the gate) — 4 defects + 1 borderline
+  # ============================================================
+  - name: construction-cld1-clean-final-portrait
+    corpus_id: CL-D1
+    pair: C07
+    character_id: sean
+    description: "Corpus CL-D1 — C07's front portrait drawn as a fully cleaned-up final, no construction lines or under-drawing."
+    checkpoint: phase_5_generate
+    input: frames/CL-D1.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, front view, neutral expression. Pencil-test register with light construction lines visible beneath the final line, soft graphite, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [aesthetic]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
       - IR.sean.style.construction-lines-visible-beneath-final
-    defect_label: proportion-drift+missing-prop+construction-line-loss
+    defect_label: construction-lines
     is_intentionally_red: false
-    sean_note: "Real Cy fail @1.0 sim 0.51; I verified by eye — head too large, no stylus, clean render (no construction lines). Em should catch proportion + missing stylus."
+    sean_note: "Ratified 2026-06-03 (filename SWAPPED with CL-D2 to restore spec'd pairing). Line also reads inkier than pencil — noted, within tolerance."
 
-  - name: proportion-jaw-body-profile-left
+  - name: construction-cld2-vector-cel-idle
+    corpus_id: CL-D2
+    pair: C01
     character_id: sean
-    description: "body profile-left: head ~1:5 not 1:7; jaw-line drift; construction lines absent."
+    description: "Corpus CL-D2 — C01's idle-room beat as a fully cleaned-up final; render drifted to vector-cel."
     checkpoint: phase_5_generate
-    input: frames/defect_body_profile_left.png
-    beat_description: "Sean full-body left profile. 1:7 proportion, angular jaw, construction lines visible."
-    impact_tags: [identity_critical]
+    input: frames/CL-D2.jpeg
+    beat_description: "Sean stands idle beside his drawing desk, front view, full body visible. Pencil-test register with light construction lines visible beneath the final line, soft graphite, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [aesthetic]
     case_class: identity_style
     expected_verdict: fail
     expected_cites:
-      - IR.sean.proportion.head-to-body-1-to-7
-      - IR.sean.face.jaw-line-angular-not-rounded
       - IR.sean.style.construction-lines-visible-beneath-final
-    defect_label: proportion-drift+jaw-drift+construction-line-loss
+    defect_label: construction-lines
     is_intentionally_red: false
-    sean_note: "Real Cy fail @0.98: 'head fits only ~5 times'. 3 of 5 rules violated."
+    sean_note: "Ratified 2026-06-03 as a deliberately-OBVIOUS case (filename swapped with CL-D1): the clean-final ask dragged the whole render to vector-cel — flat color, white wall, no paper grain. Label stays construction-lines; the stack is documented here, not in the label."
 
-  - name: proportion-eyes-body-profile-right
+  - name: construction-cld3-clean-final-3quarter
+    corpus_id: CL-D3
+    pair: C08
     character_id: sean
-    description: "body profile-right: head-to-body ~1:5.3; jaw-line drift; eye-color drift."
+    description: "Corpus CL-D3 — C08's three-quarter smile portrait as a fully cleaned-up final, no under-drawing."
     checkpoint: phase_5_generate
-    input: frames/defect_body_profile_right.png
-    beat_description: "Sean full-body right profile. 1:7 proportion, angular jaw, blue eyes."
-    impact_tags: [identity_critical]
+    input: frames/CL-D3.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, three-quarter view, warm half-smile. Pencil-test register with light construction lines visible beneath the final line, soft graphite, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [aesthetic]
     case_class: identity_style
     expected_verdict: fail
     expected_cites:
-      - IR.sean.proportion.head-to-body-1-to-7
-      - IR.sean.face.jaw-line-angular-not-rounded
-      - IR.sean.face.blue-eyes
-    defect_label: proportion-drift+jaw-drift+eye-color-drift
+      - IR.sean.style.construction-lines-visible-beneath-final
+    defect_label: construction-lines
     is_intentionally_red: false
-    sean_note: "Real Cy fail @1.0: measured head 190px in 1016px figure (~1:5.3)."
+    sean_note: "Ratified 2026-06-03. Cleaned-up final; line slightly inkier than pencil (noted, within tolerance)."
 
-  - name: proportion-costume-body-back
+  - name: construction-cld4-clean-final-drawing-desk
+    corpus_id: CL-D4
+    pair: C14
     character_id: sean
-    description: "body-back: head-to-body off; shoulder width off; stylus missing."
+    description: "Corpus CL-D4 — C14's drawing-desk beat as a fully cleaned-up final, no under-drawing."
     checkpoint: phase_5_generate
-    input: frames/defect_body_back.png
-    beat_description: "Sean full-body back view. 1:7 proportion, shoulders 1.5 head-widths, stylus in right hand."
-    impact_tags: [identity_critical]
+    input: frames/CL-D4.jpeg
+    beat_description: "Sean stands at a tilted drawing desk, drawing with a pencil in his right hand, three-quarter view, framed from the waist up. Pencil-test register with light construction lines visible beneath the final line, soft graphite, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [aesthetic]
     case_class: identity_style
     expected_verdict: fail
     expected_cites:
-      - IR.sean.proportion.head-to-body-1-to-7
-      - IR.sean.proportion.shoulder-width-1-5-head-widths
-      - IR.sean.prop.stylus-right-hand-always
-    defect_label: proportion-drift+missing-prop
+      - IR.sean.style.construction-lines-visible-beneath-final
+    defect_label: construction-lines
     is_intentionally_red: false
-    sean_note: "Real Cy fail @1.0: head 220px fits only ~4.6x in figure; stylus absent."
+    sean_note: "Ratified 2026-06-03. Background more rendered than the pair (noted, within tolerance); under-drawing absent."
 
-  - name: sprite-scale-f31-bad
+  - name: construction-clb1-faintest-trace
+    corpus_id: CL-B1
+    pair: C07
     character_id: sean
-    description: "Act 1 F31 REJECTED — sprite landed at the wrong scale (too large relative to Sean)."
+    description: "Corpus CL-B1 — front portrait with construction lines almost fully erased; only the faintest trace remains."
     checkpoint: phase_5_generate
-    input: frames/defect_F31_scale.png
-    beat_description: "The sprite lands on the page; sprite scale must stay small relative to Sean's hand. Pencil-test register."
-    impact_tags: [hero]
-    case_class: identity_style
-    expected_verdict: fail
-    expected_cites: [CC05]
-    defect_label: scale-position-drift
-    is_intentionally_red: false
-    sean_note: "Real Act 1 reject (sprite scale wrong). CC05 scale/position. Em should flag the scale mismatch."
-
-  - name: stylus-hand-f13-cc01
-    character_id: sean
-    description: "Act 1 F13 attempt 02 REJECTED — stylus drifted out of the RIGHT hand (CC01)."
-    checkpoint: phase_5_generate
-    input: frames/defect_F13_stylus_hand.png
-    beat_description: "Sean mid-gesture; the stylus MUST stay in his right hand throughout. Pencil-test register."
-    impact_tags: [identity_critical]
-    case_class: identity_style
-    expected_verdict: fail
-    expected_cites: [CC01]
-    defect_label: stylus-hand-continuity
-    is_intentionally_red: false
-    sean_note: "Real Act 1 reject coded CC01 (stylus-hand). Em should catch the wrong-hand stylus."
-
-  - name: proportion-walk-cycle-source
-    character_id: sean
-    description: "walk-cycle source plate: head-to-body ~1:4-4.5 (chibi), not the 1:7 heroic figure."
-    checkpoint: phase_5_generate
-    input: frames/defect_walk_cycle_source.png
-    beat_description: "Sean neutral-gait walk-cycle source plate. Heroic-realistic 1:7 proportion, hip at 4 head-heights."
-    impact_tags: [identity_critical]
-    case_class: identity_style
-    expected_verdict: fail
-    expected_cites:
-      - IR.sean.proportion.head-to-body-1-to-7
-      - IR.sean.proportion.hip-to-floor-4-head-heights
-    defect_label: proportion-drift-chibi
-    is_intentionally_red: false
-    sean_note: "Real Cy fail @1.0: '~1:4 to 1:4.5 stylized/chibi-like instead of 1:7'."
-
-  - name: identity-head-turn-01
-    character_id: sean
-    description: "head-turn frame 01: simplified cartoon style — hair silhouette + jaw drift."
-    checkpoint: phase_5_generate
-    input: frames/defect_head_turn_01.png
-    beat_description: "Sean head-turn frame 1/9. Tousled medium-short hair, angular jaw, dirty-blonde, blue eyes."
-    impact_tags: [identity_critical]
-    case_class: identity_style
-    expected_verdict: fail
-    expected_cites:
-      - IR.sean.hair.silhouette-tousled-medium-short
-      - IR.sean.face.jaw-line-angular-not-rounded
-    defect_label: style-simplification+hair-drift+jaw-drift
-    is_intentionally_red: false
-    sean_note: "Real Cy fail @1.0: 'highly simplified cartoon rather than specified characteristics'."
-
-  - name: jaw-drift-head-turn-09
-    character_id: sean
-    description: "head-turn frame 09: jaw fully rounded (continuous curve), violating the angular-jaw rule."
-    checkpoint: phase_5_generate
-    input: frames/defect_head_turn_09.png
-    beat_description: "Sean head-turn frame 9/9, settle. Angular jaw with a defined back corner, not a smooth curve."
-    impact_tags: [identity_critical]
-    case_class: identity_style
-    expected_verdict: fail
-    expected_cites:
-      - IR.sean.face.jaw-line-angular-not-rounded
-    defect_label: jaw-drift
-    is_intentionally_red: false
-    sean_note: "Real Cy fail @0.95: 'jawline fully rounded, continuous curve ear-to-chin'."
-
-  - name: borderline-hair-head-profile-right
-    character_id: sean
-    description: "head profile-right: honors most rules, deviates on hair silhouette — a borderline."
-    checkpoint: phase_5_generate
-    input: frames/borderline_head_profile_right.png
-    beat_description: "Sean head, right profile. Cowlick, tousled medium-short silhouette, angular jaw, blue eye."
-    impact_tags: [identity_critical]
-    case_class: identity_style
-    expected_verdict: borderline
-    expected_cites:
-      - IR.sean.hair.silhouette-tousled-medium-short
-    defect_label: hair-silhouette-borderline
-    is_intentionally_red: false
-    sean_note: "Real Cy borderline @0.95: 'honors several rules, key deviations on two others' (hair)."
-
-  - name: borderline-expr-focused
-    character_id: sean
-    description: "focused expression: borderline — eye-spacing / brow deviation."
-    checkpoint: phase_5_generate
-    input: frames/borderline_focused.png
-    beat_description: "Sean focused, strong horizontal brow, eye-spacing one eye-width. Pencil-test register, cross-hatch shadows."
+    input: frames/CL-B1.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, front view, neutral expression. Pencil-test register with light construction lines visible beneath the final line, soft graphite, light color wash, cross-hatch shadow, warm cream paper."
     impact_tags: [aesthetic]
     case_class: identity_style
     expected_verdict: borderline
     expected_cites:
-      - IR.sean.face.eye-spacing-one-eye-width
-      - IR.sean.face.brow-line-strong-horizontal
-    defect_label: expression-feature-borderline
+      - IR.sean.style.construction-lines-visible-beneath-final
+    defect_label: construction-lines
     is_intentionally_red: false
-    sean_note: "Real Cy borderline @1.0. Subtle facial-feature deviation under a held expression."
+    sean_note: "Ratified 2026-06-03 as-is. Reads 'overall faded' as much as 'trace construction' — deliberately ambiguous; that ambiguity is the case. Generated (spec said hand-draw; deviation ratified)."
 
-  - name: borderline-motion-head-turn-03
+  # ============================================================
+  # SHADING-REGISTER (Em / T2 owns the gate) — 4 defects + 1 borderline
+  # ============================================================
+  - name: shading-shd1-photographic
+    corpus_id: SH-D1
+    pair: C07
     character_id: sean
-    description: "head-turn frame 03: honors eye-lead timing, minor expected identity drift on back-of-skull — borderline."
+    description: "Corpus SH-D1 — C07's front portrait with smooth photographic shading; render went near-photoreal."
     checkpoint: phase_5_generate
-    input: frames/borderline_head_turn_03.png
-    beat_description: "Sean head-turn frame 3/9, eyes lead the rotation. Identity holds through the turn."
+    input: frames/SH-D1.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, front view, neutral expression. Pencil-test register: soft graphite line, light color wash, cross-hatch pencil shading, warm cream paper."
+    impact_tags: [aesthetic]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.style.cross-hatching-shadow-areas
+    defect_label: shading-register
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03 as the EXTREME anchor of the class: came back near-photoreal, pencil line gone entirely (stronger than the spec'd shading-only swap). Unmissable by design."
+
+  - name: shading-shd2-anime-cel
+    corpus_id: SH-D2
+    pair: C08
+    character_id: sean
+    description: "Corpus SH-D2 — C08's three-quarter smile portrait shaded with hard anime cel bands."
+    checkpoint: phase_5_generate
+    input: frames/SH-D2.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, three-quarter view, warm half-smile. Pencil-test register: soft graphite line, light color wash, cross-hatch pencil shading, warm cream paper."
+    impact_tags: [aesthetic]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.style.cross-hatching-shadow-areas
+    defect_label: shading-register
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Hard cel banding where cross-hatch belongs; line followed into anime register (inherent to cel-shading; documented, label single-axis)."
+
+  - name: shading-shd3-flat-no-shading
+    corpus_id: SH-D3
+    pair: C01
+    character_id: sean
+    description: "Corpus SH-D3 — C01's idle-room beat completely flat, no shading at all."
+    checkpoint: phase_5_generate
+    input: frames/SH-D3.jpeg
+    beat_description: "Sean stands idle beside his drawing desk, front view, full body visible. Pencil-test register: soft graphite line, light color wash, cross-hatch pencil shading, warm cream paper."
+    impact_tags: [aesthetic]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.style.cross-hatching-shadow-areas
+    defect_label: shading-register
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Absence direction of the class: zero shading."
+
+  - name: shading-shd4-airbrush-gloss
+    corpus_id: SH-D4
+    pair: C03
+    character_id: sean
+    description: "Corpus SH-D4 — C03's walk beat shaded with glossy digital airbrush gradients."
+    checkpoint: phase_5_generate
+    input: frames/SH-D4.jpeg
+    beat_description: "Sean walks mid-stride, right profile (facing screen-right), full body visible. Pencil-test register: soft graphite line, light color wash, cross-hatch pencil shading, warm cream paper."
+    impact_tags: [aesthetic]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.style.cross-hatching-shadow-areas
+    defect_label: shading-register
+    is_intentionally_red: false
+    sean_note: "Ratified 2026-06-03. Glossy airbrush gradients. Declared view follows the C03 relabel (right profile)."
+
+  - name: shading-shb1-too-smooth
+    corpus_id: SH-B1
+    pair: C08
+    character_id: sean
+    description: "Corpus SH-B1 — three-quarter portrait shaded slightly too smoothly; pencil tooth mostly gone but not fully rendered."
+    checkpoint: phase_5_generate
+    input: frames/SH-B1.jpeg
+    beat_description: "Sean in a head-and-shoulders portrait, three-quarter view, warm half-smile. Pencil-test register: soft graphite line, light color wash, cross-hatch pencil shading, warm cream paper."
     impact_tags: [aesthetic]
     case_class: identity_style
     expected_verdict: borderline
     expected_cites:
-      - IR.sean.motion.head-turn-9-frame-sequence
-    defect_label: turn-identity-borderline
+      - IR.sean.style.cross-hatching-shadow-areas
+    defect_label: shading-register
     is_intentionally_red: false
-    sean_note: "Real Cy borderline @0.7: eye-lead honored, minor back-of-skull drift. A genuine borderline."
-
-  - name: borderline-stylus-prop
-    character_id: sean
-    description: "isolated stylus prop plate: borderline — grip/style read against the prop rules."
-    checkpoint: phase_5_generate
-    input: frames/borderline_stylus_prop.png
-    beat_description: "Sean's stylus prop, isolated. Three-finger grip reference, warm-graphite line weight, cream paper grain."
-    impact_tags: [aesthetic]
-    case_class: identity_style
-    expected_verdict: borderline
-    expected_cites:
-      - IR.sean.prop.stylus-grip-three-fingers
-    defect_label: prop-borderline
-    is_intentionally_red: false
-    sean_note: "Real Cy borderline @1.0 (isolated prop; grip ambiguous without a hand). DRAFT — ratify."
+    sean_note: "Ratified 2026-06-03. Deliberately ambiguous smoothness. Generated (spec said hand-draw; deviation ratified)."
 
   # ===================================================================
   # MOTION-PROPER (case_class: motion_proper) — 6 cases, INTENTIONALLY RED
-  #   the contact sheet structurally CANNOT surface these (§3.5).
-  #   Em is EXPECTED TO MISS them; the miss is the artifact. These pre-stock
-  #   the deferred E_warp/VBench validation set. No real motion-proper
-  #   criterion ID exists yet — expected_cites name the human-seam handle.
-  #   sean_note flags whether identity-drift-across-the-strip is ALSO visible
-  #   (which would reclassify the case to identity_style — Sean's call at gate).
+  # CARRIED FORWARD UNCHANGED from the v1 set (separate, defensible ships-red
+  # design — a still contact sheet structurally can't see motion-proper; not
+  # part of the 2026-06-03 corpus reset). See eval-strategy doc §3.5.
   # ===================================================================
   - name: motion-w1-arc
     character_id: sean

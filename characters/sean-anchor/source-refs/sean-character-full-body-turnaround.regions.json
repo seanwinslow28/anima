@@ -1,0 +1,33 @@
+{
+  "_comment": "Crop boxes for the #region ingest, fractions [left,top,right,bottom] of the 1376x768 sheet. Authored 2026-06-03 (eval-foundation reset, A4 region ingest): the five body views replace the drifted ~1:4-1:5.3 plates; proportion human-verified at 1:7 by Sean (SF03 gate pending, re-verify retroactively once built). Facing convention: left profile = faces left.",
+  "body-front": [
+    0.0407,
+    0.0911,
+    0.2115,
+    0.9505
+  ],
+  "body-3quarter": [
+    0.2435,
+    0.0911,
+    0.4033,
+    0.9505
+  ],
+  "body-profile-left": [
+    0.455,
+    0.0911,
+    0.556,
+    0.9505
+  ],
+  "body-profile-right": [
+    0.6316,
+    0.0911,
+    0.7333,
+    0.9505
+  ],
+  "body-back": [
+    0.7791,
+    0.0911,
+    0.9499,
+    0.9505
+  ]
+}
