@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-06-04 — Fix: runner.py mock cost-leak (gemini_api transport), caught in G5 pre-flight
+
+**What & why.** `evals/vision_critic/runner.py`'s `_patch_em_runners` stubbed only `run_antigravity_with_image` (the legacy `agy` transport) and Opus — never `run_gemini_api_with_image`. After the 2026-06-02 agy→gemini_api transport pivot, `eval_manifest` routes Em through the gemini_api runner, which resolves `GEMINI_API_KEY` straight from `.env`. So the "credential-free mocked plumbing" suite fired **real, costed Gemini calls** on any machine with a key present — staying "green in CI" only because CI has no key (the runner self-stubs when the key is absent). Surfaced during the G5 re-baseline pre-flight: the suite hung ~13 min on an ESTABLISHED TCP to a Google IP with near-zero CPU. **Fix:** also patch `pipeline.agents.vision_critic.run_gemini_api_with_image`. Pre-flight now completes in 0.09s, free (51 passed, 6 xpassed). **Side effect to revisit:** the 6 `motion_proper` cases shift xfail→xpass — the echo-stub now applies to them, so the xfail markers are vestigial in this plumbing-only suite (the real ships-red check is `score.py`'s live run). Flagged as a follow-up, not changed mid-baseline.
+
 ## 2026-06-03 — Eval-foundation reset part 2: corpus ratified, Bible re-locked at 1:7, eval set rebuilt, contamination guard shipped, G5 staged
 
 **What & why.** The integration session the part-1 kickoff staged. The 46-image dataset was QC'd and **Sean ratified every image + label** (Claude pre-screened all 46 against the corpus spec; Sean ruled on every flag). The gold-standard turnarounds landed in the repo, the locked Bible's drifted body plates were replaced with zero-drift 1:7 region crops, `evals/vision_critic/` was rebuilt from the ratified corpus, the CI contamination guard shipped green, and the costed Em re-baseline is staged as a Claude Code handoff — **no model spend this session**.

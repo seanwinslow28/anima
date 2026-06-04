@@ -129,7 +129,15 @@ _MERGED_CRITERIA = merged_criteria(_EVAL_MANIFEST)
 
 
 def _patch_em_runners(monkeypatch, verdict_json: str):
-    """Stub both Em runners with a fixed verdict so the harness is credential-free."""
+    """Stub EVERY Em transport with a fixed verdict so the harness is credential-free.
+
+    Em selects its Gemini transport from critics.t2.transport: `agy`
+    (run_antigravity_with_image) or `gemini_api` (run_gemini_api_with_image).
+    Both must be patched — the gemini_api runner resolves GEMINI_API_KEY straight
+    from .env, so leaving it un-stubbed makes "mocked" runner.py fire REAL costed
+    calls on any machine with a key (the 2026-06-04 G5 pre-flight cost-leak: the
+    mock predated the 2026-06-02 agy→gemini_api pivot and never covered the new
+    transport)."""
     async def fake_gemini(*, prompt, image_paths, timeout_s=120):
         return _FakeCLIResponse(text=verdict_json)
 
@@ -137,6 +145,7 @@ def _patch_em_runners(monkeypatch, verdict_json: str):
         return _FakeSDKResponse(text=verdict_json)
 
     monkeypatch.setattr("pipeline.agents.vision_critic.run_antigravity_with_image", fake_gemini)
+    monkeypatch.setattr("pipeline.agents.vision_critic.run_gemini_api_with_image", fake_gemini)
     monkeypatch.setattr("pipeline.agents.vision_critic.invoke_opus_vision", fake_opus)
 
 
