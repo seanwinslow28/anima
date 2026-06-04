@@ -61,6 +61,19 @@
 
 - **Foundation-first sequence with gates:** clean Bible (A4 re-bake → 1:7, re-locked through SF03) → class-isolated independent fixtures (~40–60 imgs, ~5–10/class) → Sean-ratified labels → CI contamination guard (fails on any fixture↔Bible SHA/inode match) → re-establish Em baseline on the trustworthy set (replaces the 0.62/1.00/0.15 figures) → only then resume costed gate work (SF03 build, references, DINOv2). No costed work resumes until the foundation is trustworthy. Hand to Claude Code after Sean review.
 
+## 2026-06-03 — Workstream B1b DINOv2 spike: NO-GO → pivot to a generation-time SF03 proportion gate (design)
+
+**What & why.** Ran the costed-as-compute (\$0 API) DINOv2 separation spike (`evals/vision_critic/dinov2_separation.py`, PR #20) and it returned **NO-GO** for DINOv2 as a view-matched identity/proportion backstop, for two independent reasons: (1) **the references are contaminated** — every performs fixture with an inferable view is byte-identical to its Bible turnaround plate, including the proportion *defects* (`sean-anchor/turnarounds/body-profile-right.png` IS the plate the eval labels `proportion-eyes-body-profile-right`, a Cy fail @1.0). The record-only Pass-2.5 gate let the proportion-drifted body plates bake into the locked Bible, so there is no clean 1:7 per-view reference to compare against. (2) **Embedding similarity is the wrong signal** — proportion defects score 0.82–0.89 vs the anchor (still recognizably Sean); DINOv2 cosine captures identity/style, not head-to-body geometry.
+
+A follow-on dependency-free silhouette landmark spike (PIL+numpy, inline) also returned **NO-GO**: chin detection across multi-view stylized line art is fragile (detection noise ≈ the 4.6-vs-5.5-head signal; back/¾ views confound the neck-narrowing).
+
+**Decisions (Sean, 2026-06-03):**
+- DINOv2-as-proportion-backstop is dead; `attach_references` stays **off** (no deterministic partner emerged). B1c/B2/B3 superseded.
+- **Pivot to a generation-time, reference-free SF03 proportion gate** — constrain proportion against a known armature at generation, verify the render against it (the animatic analog), instead of reverse-engineering it from finished art. **Design-only this round** (changes Cy's generation contract); **scoped to Cy Pass-3 / Bible-lock**, where proportion drift originates and volume is tiny — NOT per-frame T2/Em. Design: [`docs/2026-06-03-sf03-proportion-gate-design.md`](docs/2026-06-03-sf03-proportion-gate-design.md).
+- **Bible-integrity escalation** filed on the A4 ticket: `sean-anchor`'s body turnarounds are proportion-off (not just Flash-verified) and need a 1:7 re-bake; the Em eval fixtures derived from them are SHA-contaminated and must be re-derived + labels re-ratified once the Bible is clean.
+
+**Also landed this session:** B1a view-aware reference selection (PR #19, below) and the recovery of Workstream A onto `main` (PR #18 had merged but a stale local checkout hid it — synced, no re-land needed).
+
 ## 2026-06-02 — Workstream B1a: view-aware reference selection (approach A, eval path)
 
 **What & why.** The DINOv2 identity/proportion backstop (Workstream B) needs **per-view references** to be meaningful — a single front anchor can't separate legitimate view variation from drift, which is exactly why the Pass-2.5 similarity gate is record-only. This lands the prerequisite: `pipeline/agents/reference_selection.py` now reads the subject's view from the beat and ranks the matching turnaround first, so a profile subject gets a profile reference. Uncosted, deterministic, dormant behind `critics.t2.attach_references` (still default-off) — it changes *which* references attach when references are on, nothing else.
