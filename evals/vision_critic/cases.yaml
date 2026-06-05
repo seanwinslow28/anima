@@ -35,11 +35,10 @@
 #     with exactly one axis corrupted.
 #   - Borderlines (P-B2, V-B1, CL-B1, SH-B1) -> expected_verdict: borderline.
 #
-# PENDING RE-ROLLS (ratified out, not yet replaced; staged at
-# images/sean-character-dataset/_pending-reroll/):
-#   P-B1  — spec'd ~6.5-head borderline came back ~4.5-5 heads (defect strength).
-#   PA-D4 — rendered caption text names its own defect (label leak).
-# Re-add their cases when Sean re-rolls them in Flow.
+# RE-ROLLS LANDED 2026-06-04: P-B1 and PA-D4 were re-rolled by Sean in Flow and
+# ratified (P-B1 now a true ~6.5-head borderline; PA-D4 text-free). The corpus is
+# COMPLETE at 46 fixtures / 52 total cases (16 clean + 30 single-axis + 6 motion).
+# Their addition does not move the G5 baseline (two added cases, not a re-baseline).
 #
 # Per-case schema: name, corpus_id, pair, description, checkpoint, character_id,
 #   input, beat_description, impact_tags, case_class (clean | identity_style |
@@ -313,8 +312,7 @@ cases:
     sean_note: "Ratified 2026-06-03."
 
   # ============================================================
-  # PROPORTION (Bible-lock owns the gate) — 3 defects + 1 borderline
-  # P-B1 pending re-roll (came back defect-strength, not ~6.5-head borderline).
+  # PROPORTION (Bible-lock owns the gate) — 3 defects + 2 borderlines
   # ============================================================
   - name: proportion-pd1-chibi-idle
     corpus_id: P-D1
@@ -383,6 +381,23 @@ cases:
     defect_label: proportion
     is_intentionally_red: false
     sean_note: "Ratified 2026-06-03. Slightly over-tall and thin — the just-over band. Generated (spec said hand-draw; authoring deviation ratified)."
+
+  - name: proportion-pb1-borderline-under
+    corpus_id: P-B1
+    pair: C01
+    character_id: sean
+    description: "Corpus P-B1 (re-roll, ratified 2026-06-04) — idle beside the drawing desk at ~6.5 heads (just under the 1:7 target) — deliberate borderline."
+    checkpoint: phase_5_generate
+    input: frames/P-B1.jpeg
+    beat_description: "Sean stands idle beside his drawing desk, front view, full body visible. Heroic-realistic 1:7 head-to-body proportion. Pencil-test register: soft graphite line, light color wash, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: borderline
+    expected_cites:
+      - IR.sean.proportion.head-to-body-1-to-7
+    defect_label: proportion
+    is_intentionally_red: false
+    sean_note: "Re-rolled + ratified 2026-06-04 (first take came back ~4.5-5 heads, defect strength, quarantined). This take reads just-under — the hesitation band below target, completing the under/over borderline pair with P-B2."
 
   # ============================================================
   # VIEW-CORRECTNESS (Bible-lock owns the gate) — 4 defects + 1 borderline
@@ -548,8 +563,7 @@ cases:
     sean_note: "Ratified 2026-06-03 as-is. Known ambiguity: a charitable read could call the missing leg pose occlusion — that ambiguity is part of the case."
 
   # ============================================================
-  # PALETTE (Em / T2 owns the gate) — 5 defects
-  # PA-D4 pending re-roll (rendered caption text leaked its own label).
+  # PALETTE (Em / T2 owns the gate) — 6 defects
   # ============================================================
   - name: palette-pad1-monochrome
     corpus_id: PA-D1
@@ -601,6 +615,23 @@ cases:
     defect_label: palette
     is_intentionally_red: false
     sean_note: "Ratified 2026-06-03. Hair color violation, silhouette intact."
+
+  - name: palette-pad4-oversaturated
+    corpus_id: PA-D4
+    pair: C01
+    character_id: sean
+    description: "Corpus PA-D4 (re-roll, ratified 2026-06-04) — C01's idle-desk beat rendered in an oversaturated high-chroma palette."
+    checkpoint: phase_5_generate
+    input: frames/PA-D4.jpeg
+    beat_description: "Sean stands idle beside his drawing desk, front view, full body visible. Muted full-color pencil-test palette: navy tee, cool-gray jeans, dirty-blonde hair, light hand-painted color wash. Soft graphite line, cross-hatch shadow, warm cream paper."
+    impact_tags: [identity_critical]
+    case_class: identity_style
+    expected_verdict: fail
+    expected_cites:
+      - IR.sean.palette.full-color-pencil-test-vocabulary
+    defect_label: palette
+    is_intentionally_red: false
+    sean_note: "Re-rolled + ratified 2026-06-04 (first take rendered a caption that named its own defect — label leak, quarantined). Whole-scene chroma violation: vivid royal tee, blue-denim jeans (hue shift rides along), golden hair, saturated desk. Zero rendered text."
 
   - name: palette-pad5-brown-jeans-white-sneakers
     corpus_id: PA-D5
