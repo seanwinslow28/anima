@@ -365,18 +365,23 @@ def _select_cases(segment: str, motion_smoke: int) -> tuple[list[dict], list[dic
     return performs + motion[:motion_smoke], motion[motion_smoke:]
 
 
-def _run_case_subprocess(case: dict, stub: bool) -> CaseScore:
+def _run_case_subprocess(case: dict, stub: bool, attach_references: bool = False) -> CaseScore:
     """Run ONE case in a fresh Python process and parse its emitted CaseScore.
 
     The worker re-loads manifest + criteria + the worktree .env (GEMINI/FAL only,
     no ANTHROPIC — the SDK keeps Claude Code auth), so parity with a direct run
-    holds. We look for the CaseScore sentinel in stdout FIRST and only raise if it
+    holds. The worker re-reads manifest.yaml from disk, so --attach-references must
+    ride the command line for the worker to actually attach the bundle — otherwise
+    the orchestrator's refs= label would claim references the blind worker never
+    saw. We look for the CaseScore sentinel in stdout FIRST and only raise if it
     is absent — a worker that computed its verdict then crashed at teardown still
     flushed the JSON, so its verdict is captured; a worker that died before
     emitting one becomes an honest errored gap."""
     cmd = [sys.executable, "-m", "evals.vision_critic.score", "--only", case["name"]]
     if stub:
         cmd.append("--stub")
+    if attach_references:
+        cmd.append("--attach-references")
     proc = subprocess.run(
         cmd, capture_output=True, text=True, timeout=_PER_CASE_TIMEOUT_S,
         cwd=str(HERE.parents[1]),  # repo root: find_dotenv + relative bible paths resolve
@@ -436,6 +441,14 @@ def main() -> None:
                          "traces/{LABEL}.md and DO NOT touch last-run.md or the default "
                          "baseline-{date}-scored.md. Use for a diagnostic run that must "
                          "not clobber or move the ratified baseline trace.")
+    ap.add_argument("--attach-references", action="store_true",
+                    help="Run-scoped override: attach the Bible reference bundle "
+                         "(critics.t2.attach_references=true) for THIS run only, WITHOUT "
+                         "editing manifest.yaml. Wins over the manifest read and is "
+                         "propagated to every per-case worker, so the orchestrator's refs= "
+                         "trace label can never claim references a blind worker didn't "
+                         "actually attach. Default off = reference-blind (the production "
+                         "default). For the diagnostic references re-test only.")
     args = ap.parse_args()
 
     # Env-hygiene guard (operational incident #1, 2026-06-02). A present
@@ -458,6 +471,16 @@ def main() -> None:
         raise SystemExit(3)
 
     manifest = _manifest()
+    # Run-scoped references override (--attach-references). Mutating the in-memory
+    # manifest here — before the attach_refs read below and before the worker/
+    # orchestrator split — is the SINGLE enable point: it flows to the worker's
+    # VisionCriticNode (the actual attach, via _ctx(manifest)) AND to _refs_label
+    # (the honest trace label). The repo manifest.yaml is never touched; the repo
+    # default stays attach_references: false. The worker is a fresh process that
+    # re-reads manifest.yaml, so the flag is also forwarded on its command line
+    # (_run_case_subprocess) — never enabled by a committed manifest change.
+    if args.attach_references:
+        manifest.setdefault("critics", {}).setdefault("t2", {})["attach_references"] = True
     # Trace-honesty (A1): only claim references in the log when Em actually attaches
     # them. attach_references defaults off (reference-blind is production), so the
     # trace must not list refs Em never saw.
@@ -519,7 +542,7 @@ def main() -> None:
         run_tag = f"run {run_idx + 1}/{n_runs} | " if n_runs > 1 else ""
         for i, c in enumerate(selected, 1):
             try:
-                cs = _run_case_subprocess(c, args.stub)
+                cs = _run_case_subprocess(c, args.stub, args.attach_references)
                 pass_scores.append(cs)
                 print(f"[{run_tag}{i}/{len(selected)}] {c['name']}: {cs.predicted_verdict} "
                       f"(conf={cs.confidence:.2f}, {cs.wall_s:.0f}s) "
