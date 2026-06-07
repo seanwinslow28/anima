@@ -33,7 +33,7 @@ from pipeline.agents import AgentContext
 from pipeline.agents.vision_critic import VisionCriticNode, EmptyCitesInvariant
 from pipeline.agents.reference_selection import select_references
 from pipeline.contact_sheet import build_contact_sheet  # noqa: F401 (cases pre-build sheets)
-from evals.vision_critic.scoring import CaseScore, segment_report, cites_correctness
+from evals.vision_critic.scoring import CaseScore, segment_report
 from evals.vision_critic.conftest import merged_criteria
 
 HERE = Path(__file__).parent
@@ -160,10 +160,16 @@ def render_per_case_detail(scores: list[CaseScore]) -> str:
              "| case | class | expected | predicted | expected_cites | actual_cites | cites_correct | conf |",
              "|---|---|---|---|---|---|---|---|"]
     for s in scores:
-        cc = cites_correctness(predicted=s.predicted_verdict,
-                               expected_cites=s.expected_cites,
-                               actual_cites=s.actual_cites)
-        cc_str = "n/a" if cc is None else ("yes" if cc else "**NO**")
+        # G6.1 tiered citation credit (None=n/a, 1.0=yes/full, 0.5=~partial, 0.0=NO).
+        cc = s.citation_credit
+        if cc is None:
+            cc_str = "n/a"
+        elif cc == 1.0:
+            cc_str = "yes"
+        elif cc > 0.0:
+            cc_str = "~part"
+        else:
+            cc_str = "**NO**"
         exp = ", ".join(s.expected_cites) or "—"
         act = ", ".join(s.actual_cites) or "—"
         lines.append(f"| `{s.name}` | {s.case_class} | {s.expected_verdict} | "
@@ -290,6 +296,20 @@ def _score_one(case: dict, manifest: dict, criteria) -> CaseScore:
     )
 
 
+def _cites_line(b: dict) -> str:
+    """The citation axis (G6.1), reported apart from the verdict axis above:
+    the graded cites-correct mean plus the full / partial / none breakdown so a
+    right-verdict-wrong-cite case is legible. `cites_correct` is graded (full=1.0,
+    partial=0.5); n is the flagged-case denominator (pass verdicts are N/A)."""
+    if b.get("cites_correct") is None:
+        return "- cites-correct (citation axis): n/a (no flagged cases)"
+    return (
+        f"- **cites-correct (citation axis)={b['cites_correct']:.2f}** "
+        f"over n={b['cites_scored_n']} flagged "
+        f"(full={b['cites_full']} · partial={b['cites_partial']} · none={b['cites_none']})"
+    )
+
+
 def render_last_run_md(report: dict, *, model_label: str, n_total: int) -> str:
     """Render the segmented confusion matrix as studio-manual markdown."""
     def block(title: str, b: dict) -> str:
@@ -304,9 +324,7 @@ def render_last_run_md(report: dict, *, model_label: str, n_total: int) -> str:
             f"(false passes: {', '.join(b['false_passes']) or 'none'})",
             f"- 3-way exact agreement={b['exact_agreement']:.2f}",
             f"- borderline->fail slippages: {', '.join(b['borderline_slippages']) or 'none'}",
-            f"- cites-correct: "
-            f"{b['cites_correct']:.2f}" if b['cites_correct'] is not None else
-            f"- cites-correct: n/a",
+            _cites_line(b),
             f"- mean wall: {b['mean_wall_s']:.1f}s",
             "",
         ]

@@ -53,6 +53,17 @@ def test_surfaces_phase5_ir_rules(tmp_path):
     assert "IR.sean.prop.stylus-right-hand-always" in prompt
 
 
+def test_block_forbids_reason_code_substitution(tmp_path):
+    """G6.1: the block must make the exact IR handles salient and explicitly tell
+    Em NOT to substitute a generic HF/SF reason-code — the cite-grounding fix for
+    construction/shading reason-code substitution (2026-06-04 mini-run, Q1)."""
+    prompt = VisionCriticNode()._build_prompt(_ctx(_bundle(tmp_path, [5, 6])), {"attach_references": True})
+    # Names the QA reason-code families it is forbidding.
+    assert "HF01-HF05" in prompt and "SF01-SF05" in prompt
+    # Instructs copy-the-handle, not substitute.
+    assert "do not substitute" in prompt.lower()
+
+
 def test_no_block_when_bundle_none():
     prompt = VisionCriticNode()._build_prompt(_ctx(None), {"attach_references": True})
     assert "Character Bible rules" not in prompt

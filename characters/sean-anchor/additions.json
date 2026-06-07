@@ -1,0 +1,112 @@
+{
+  "rules": [
+    {
+      "id": "IR.sean.view.declared-view-matches-drawn",
+      "description": "The view the frame DECLARES (in its beat description / shot intent) must match the view actually DRAWN. Convention is screen-relative, described from the viewer's perspective, never the character's anatomical left/right: 'front' = the character faces the camera; 'profile-left' = the character's body faces screen-left so the camera sees the LEFT side of the head; 'profile-right' = faces screen-right; 'three-quarter' = the body is rotated ~45 degrees off front with the far cheek partly turned away; 'back' = the camera is behind the character. A frame that declares one view but draws another — e.g. declares three-quarter and draws full profile, or declares profile-left and draws the character facing screen-right — is a view-correctness violation. This rule is the screen-left vs character's-left facing seam: read the screen direction, not the anatomy.",
+      "cites_phase": [5, 6],
+      "cites_personas": ["em"],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/source-refs/sean-character-full-body-turnaround.png",
+        "characters/sean-anchor/turnarounds/body-profile-left.png"
+      ]
+    },
+    {
+      "id": "IR.sean.view.three-quarter-both-eyes-visible",
+      "description": "In a three-quarter view, BOTH eyes read — the near eye in full and the far eye foreshortened but present, set behind the bridge of the nose. The far brow and the far edge of the far eye stay visible; the nose breaks the far-cheek silhouette slightly. A 'three-quarter' frame that hides the far eye entirely has drifted toward profile (see IR.sean.view.profile-far-eye-occluded) and is a view-rendering error.",
+      "cites_phase": [5, 6],
+      "cites_personas": ["em"],
+      "impact_tag": "structural",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/turnarounds/head-3quarter.png",
+        "characters/sean-anchor/turnarounds/body-3quarter.png"
+      ]
+    },
+    {
+      "id": "IR.sean.view.profile-far-eye-occluded",
+      "description": "In a full profile view, the FAR eye is occluded — only the near eye reads, the far eye and far brow are hidden behind the bridge of the nose, and the nose, lips, and chin form a clean side silhouette. A 'profile' frame that still shows the far eye (both eyes visible) has not rotated to true profile and is a view-rendering error. Pair this with the declared-view check (IR.sean.view.declared-view-matches-drawn) when a beat declares profile.",
+      "cites_phase": [5, 6],
+      "cites_personas": ["em"],
+      "impact_tag": "structural",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/turnarounds/head-profile-left.png",
+        "characters/sean-anchor/turnarounds/body-profile-left.png"
+      ]
+    },
+    {
+      "id": "IR.sean.view.front-symmetry",
+      "description": "In a true front view, the face and body read symmetrically about the vertical midline: both eyes equal in size and both fully visible, both ears (when not hair-occluded) balanced, shoulders square to the camera, and the nose midline centered. A frame declared 'front' that shows an asymmetric, rotated face (one eye foreshortened, the nose off the midline, one shoulder forward) has drifted toward three-quarter and is a view-rendering error.",
+      "cites_phase": [5, 6],
+      "cites_personas": ["em"],
+      "impact_tag": "structural",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/turnarounds/head-front.png",
+        "characters/sean-anchor/turnarounds/body-front.png"
+      ]
+    },
+    {
+      "id": "IR.sean.view.back-no-face",
+      "description": "In a back view, NO facial features read — the camera is behind the character, so the back of the skull, the nape, the hair crown-to-nape flow, and the shoulder/back silhouette are what show; eyes, nose, and mouth are not visible. A frame declared 'back' that still reveals facial features has not rotated to true back-view and is a view-rendering error.",
+      "cites_phase": [5, 6],
+      "cites_personas": ["em"],
+      "impact_tag": "structural",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/turnarounds/head-back.png",
+        "characters/sean-anchor/turnarounds/body-back.png"
+      ]
+    },
+    {
+      "id": "IR.sean.anatomy.finger-count-five-per-hand",
+      "description": "Each hand has exactly five fingers — four fingers plus one thumb. A hand drawn with six or more digits, or four or fewer, is an anatomy-count violation (a hard reject), independent of pose or grip. The stylus grip (IR.sean.prop.stylus-grip-three-fingers) describes which fingers read at the barrel; this rule is the underlying count and holds in every frame where a hand is depicted at readable scale.",
+      "cites_phase": [5, 6],
+      "cites_personas": ["em"],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/anchor.png#region:right-hand",
+        "characters/sean-anchor/turnarounds/body-front.png"
+      ]
+    },
+    {
+      "id": "IR.sean.anatomy.hand-count-two",
+      "description": "Sean has exactly two hands — one terminating each arm. A frame that shows a third hand, fuses two hands into one mass, or merges the fingers of a hand into an undifferentiated blob (no separable digits) is an anatomy-count violation (a hard reject). This is the count-and-separation check distinct from the per-hand finger count.",
+      "cites_phase": [5, 6],
+      "cites_personas": ["em"],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/turnarounds/body-front.png",
+        "characters/sean-anchor/source-refs/sean-character-full-body-turnaround.png"
+      ]
+    },
+    {
+      "id": "IR.sean.anatomy.limb-count-four",
+      "description": "Sean has exactly four limbs — two arms and two legs, each attached at the correct girdle (arms at the shoulders, legs at the hips). A frame that grows a third arm, a spare limb from the torso, or an arm where a leg belongs is an anatomy-count violation (a hard reject), independent of pose.",
+      "cites_phase": [5, 6],
+      "cites_personas": ["em"],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/source-refs/sean-character-full-body-turnaround.png",
+        "characters/sean-anchor/turnarounds/body-front.png"
+      ]
+    },
+    {
+      "id": "IR.sean.anatomy.leg-count-two",
+      "description": "Sean has exactly two legs, each terminating in one foot. A frame that drops a leg (a single-legged figure where two should read), grows a third leg, or merges the legs into one undifferentiated mass is an anatomy-count violation (a hard reject). This is the lower-body count distinct from the four-limb total.",
+      "cites_phase": [5, 6],
+      "cites_personas": ["em"],
+      "impact_tag": "identity_critical",
+      "character_id": "sean",
+      "derived_from": [
+        "characters/sean-anchor/source-refs/sean-character-full-body-turnaround.png",
+        "characters/sean-anchor/turnarounds/body-front.png"
+      ]
+    }
+  ]
+}

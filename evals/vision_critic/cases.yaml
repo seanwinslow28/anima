@@ -403,6 +403,10 @@ cases:
   # VIEW-CORRECTNESS (Bible-lock owns the gate) — 4 defects + 1 borderline
   # The image is a CLEAN drawing of the WRONG view; the corruption is in the
   # declared view below, not the pixels. Em must compare declared vs drawn.
+  # Cites aligned to the authored IR.sean.view.declared-view-matches-drawn handle
+  # (G6.1, 2026-06-07). The other 4 per-view rules (three-quarter/profile/front/
+  # back) are vocabulary-grounding with NO eval gate yet — coverage gap logged in
+  # CHANGELOG; add view fixtures in the next corpus expansion.
   # ============================================================
   - name: view-vd1-declared-3quarter-drawn-profile
     corpus_id: V-D1
@@ -416,10 +420,10 @@ cases:
     case_class: identity_style
     expected_verdict: fail
     expected_cites:
-      - view.declared-view-matches-drawn-view
+      - IR.sean.view.declared-view-matches-drawn
     defect_label: view-correctness
     is_intentionally_red: false
-    sean_note: "Ratified 2026-06-03. Drawn image is a clean left profile (faces screen-left); the case declares three-quarter. No IR handle for view yet — seam handle."
+    sean_note: "Ratified 2026-06-03. Drawn image is a clean left profile (faces screen-left); the case declares three-quarter. Cite aligned to the authored IR.sean.view.declared-view-matches-drawn handle (G6.1, 2026-06-07)."
 
   - name: view-vd2-declared-front-drawn-3quarter
     corpus_id: V-D2
@@ -433,7 +437,7 @@ cases:
     case_class: identity_style
     expected_verdict: fail
     expected_cites:
-      - view.declared-view-matches-drawn-view
+      - IR.sean.view.declared-view-matches-drawn
     defect_label: view-correctness
     is_intentionally_red: false
     sean_note: "Ratified 2026-06-03. Drawn three-quarter; declared front."
@@ -450,7 +454,7 @@ cases:
     case_class: identity_style
     expected_verdict: fail
     expected_cites:
-      - view.declared-view-matches-drawn-view
+      - IR.sean.view.declared-view-matches-drawn
     defect_label: view-correctness
     is_intentionally_red: false
     sean_note: "Ratified 2026-06-03. The facing-convention stress case: drawn faces screen-right, declared left profile. Hangs entirely on the locked convention."
@@ -467,7 +471,7 @@ cases:
     case_class: identity_style
     expected_verdict: fail
     expected_cites:
-      - view.declared-view-matches-drawn-view
+      - IR.sean.view.declared-view-matches-drawn
     defect_label: view-correctness
     is_intentionally_red: false
     sean_note: "Ratified 2026-06-03. Drawn three-quarter-back with face visible in profile; declared straight back."
@@ -484,7 +488,7 @@ cases:
     case_class: identity_style
     expected_verdict: borderline
     expected_cites:
-      - view.declared-view-matches-drawn-view
+      - IR.sean.view.declared-view-matches-drawn
     defect_label: view-correctness
     is_intentionally_red: false
     sean_note: "Ratified 2026-06-03. Deliberately ambiguous angle — between three-quarter and profile."
@@ -492,7 +496,9 @@ cases:
   # ============================================================
   # ANATOMY-COUNT (Bible-lock owns the gate) — 4 defects
   # Human interpretation: hand/digit/limb count correctness (Sean confirmed
-  # by authoring these). No IR handle yet — seam handle anatomy.count-correct.
+  # by authoring these). Cites aligned 1:1 to the authored IR.sean.anatomy.*
+  # handles (G6.1, 2026-06-07): six-fingers->finger-count-five-per-hand,
+  # fused-hand->hand-count-two, third-arm->limb-count-four, missing-leg->leg-count-two.
   # ============================================================
   - name: anatomy-ad1-six-fingers
     corpus_id: A-D1
@@ -506,10 +512,10 @@ cases:
     case_class: identity_style
     expected_verdict: fail
     expected_cites:
-      - anatomy.count-correct
+      - IR.sean.anatomy.finger-count-five-per-hand
     defect_label: anatomy-count
     is_intentionally_red: false
-    sean_note: "Ratified 2026-06-03. Six digits on the keyboard hand (verified at zoom). Background differs from C13 (window/shelf vs drawers) — beat-level pairing holds."
+    sean_note: "Ratified 2026-06-03. Six digits on the keyboard hand (verified at zoom). Background differs from C13 (window/shelf vs drawers) — beat-level pairing holds. Cite aligned to the authored handle (G6.1, 2026-06-07)."
 
   - name: anatomy-ad2-fused-hand
     corpus_id: A-D2
@@ -523,10 +529,10 @@ cases:
     case_class: identity_style
     expected_verdict: fail
     expected_cites:
-      - anatomy.count-correct
+      - IR.sean.anatomy.hand-count-two
     defect_label: anatomy-count
     is_intentionally_red: false
-    sean_note: "Ratified 2026-06-03. Mitten-fused raised hand, unmissable."
+    sean_note: "Ratified 2026-06-03. Mitten-fused raised hand, unmissable. Cite aligned to the authored handle (G6.1, 2026-06-07): the fused/indistinct-digit mass is the hand-separation check."
 
   - name: anatomy-ad3-third-arm
     corpus_id: A-D3
@@ -540,10 +546,10 @@ cases:
     case_class: identity_style
     expected_verdict: fail
     expected_cites:
-      - anatomy.count-correct
+      - IR.sean.anatomy.limb-count-four
     defect_label: anatomy-count
     is_intentionally_red: false
-    sean_note: "Ratified 2026-06-03. Doubled right arm clearly rendered."
+    sean_note: "Ratified 2026-06-03. Doubled right arm clearly rendered. Cite aligned to the authored handle (G6.1, 2026-06-07): a third arm is the four-limb-total violation."
 
   - name: anatomy-ad4-missing-leg
     corpus_id: A-D4
@@ -557,10 +563,10 @@ cases:
     case_class: identity_style
     expected_verdict: fail
     expected_cites:
-      - anatomy.count-correct
+      - IR.sean.anatomy.leg-count-two
     defect_label: anatomy-count
     is_intentionally_red: false
-    sean_note: "Ratified 2026-06-03 as-is. Known ambiguity: a charitable read could call the missing leg pose occlusion — that ambiguity is part of the case."
+    sean_note: "Ratified 2026-06-03 as-is. Known ambiguity: a charitable read could call the missing leg pose occlusion — that ambiguity is part of the case. Cite aligned to the authored handle (G6.1, 2026-06-07)."
 
   # ============================================================
   # PALETTE (Em / T2 owns the gate) — 6 defects

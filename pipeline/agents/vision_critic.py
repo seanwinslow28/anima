@@ -283,17 +283,26 @@ class VisionCriticNode:
         if not rules:
             return None
         lines = [
-            "## Character Bible rules (cite these by ID)",
+            "## Character Bible rules — CITE THESE EXACT IDs",
             "",
-            "These are the locked identity/style rules for this character at this "
-            "checkpoint. When you flag drift, CITE the rule IDs you observe drift on "
-            "in `cites_criteria` (e.g. \"IR.sean.face.jaw-line-angular-not-rounded\"). "
-            "Cite only what you actually see drift on; a rule the references confirm "
-            "is honored is not a citation.",
+            "These are the locked identity/style/geometry rules for this character "
+            "at this checkpoint. When you flag drift, put the EXACT rule ID(s) you "
+            "observe drift on into `cites_criteria` — copy the handle verbatim from "
+            "the list below (e.g. \"IR.sean.style.construction-lines-visible-beneath-final\"). "
+            "Do NOT substitute a generic QA reason-code (HF01-HF05 / SF01-SF05) and "
+            "do NOT invent a handle that is not in this list: if a rule below covers "
+            "what you see, its ID is the citation. Cite only what you actually see "
+            "drift on; a rule the references confirm is honored is not a citation. "
+            "Every rule below is citeable — construction-lines and shading register "
+            "under `IR.sean.style.*`, proportion/view/anatomy geometry under their "
+            "own handles — so a flagged defect should always name a real ID here, "
+            "never a bare HF/SF code.",
             "",
         ]
         for c in rules:
-            lines.append(f"- `{c.id}` ({c.impact_tag}): {c.description}")
+            # Lead with the bare handle for salience against the HF/SF vocabulary
+            # Em otherwise reaches for (G6.1 citation grounding).
+            lines.append(f"- `{c.id}`  —  ({c.impact_tag}) {c.description}")
         return "\n".join(lines)
 
     def _build_prompt(self, ctx: AgentContext, t2_cfg: dict, n_references: int = 0) -> str:
