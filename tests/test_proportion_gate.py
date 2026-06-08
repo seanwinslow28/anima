@@ -534,3 +534,91 @@ def test_claude_mascot_opts_out_of_sf03():
     hardcoded 1:7)."""
     spec = load_proportion_spec(_REPO / "characters" / "claude-mascot" / "character.yaml")
     assert spec.status == "opt_out"
+
+
+# ---------------------------------------------------------------------------
+# Phase C — Approach-A hardening (the ¾ probe finding) + the feeder primitives
+# ---------------------------------------------------------------------------
+
+
+def test_armature_uses_known_divisions_not_detected_line_count(tmp_path):
+    """The ¾ probe finding: NB2 redrew the ladder with 9 lines (8 bands) instead
+    of 8 while the figure stayed seated crown-to-feet. The measure must anchor on
+    the bold first/last lines + the KNOWN division count (7), not the detected
+    line count — so it reads ~7 (pass), not the 8.3 detected-count artifact."""
+    img = _cream(tmp_path / "q.png", w=768, h=1024)
+    nine = [58, 171, 284, 397, 510, 623, 736, 848, 960]  # NB2's 9-line redraw
+    for y in nine:
+        _hline(img, y)
+    _vbar(img, crown_y=54, feet_y=989)  # figure spans crown..feet
+    p = tmp_path / "q.png"
+    img.save(p)
+    spec = _declared()  # target 7.0 → known divisions 7 (no explicit field needed)
+    v = measure_proportion(p, spec, armature_path=p)
+    assert v.verdict == "pass", v
+    assert 6.7 <= v.heads_tall <= 7.5, v.heads_tall
+    # the line-count drift is surfaced for transparency, not silently dropped
+    assert "9" in v.detail and "8" in v.detail  # detected 9 vs expected 8 lines
+
+
+def test_armature_explicit_divisions_override(tmp_path):
+    """A character may declare armature_divisions explicitly (defaults to
+    round(target))."""
+    yaml_path = _write_char_yaml(
+        tmp_path / "c",
+        {
+            "head_to_body_target": 7.0,
+            "tolerance_heads": [6.5, 7.5],
+            "armature_divisions": 7,
+        },
+    )
+    spec = load_proportion_spec(yaml_path)
+    assert spec.armature_divisions == 7
+
+
+def test_build_armature_underlay_produces_detectable_ladder(tmp_path):
+    """The canonical deterministic armature: divisions+1 full-width lines on cream,
+    crown + feet bolded, readable by detect_armature_lines."""
+    from pipeline.agents.proportion_gate import build_armature_underlay
+
+    p = build_armature_underlay(tmp_path / "arm.png", divisions=7, size=(768, 1024))
+    assert p.exists()
+    lines = detect_armature_lines(p)
+    assert len(lines) == 8, f"7 divisions → 8 lines, got {len(lines)}: {lines}"
+
+
+def test_emit_gridded_model_sheet_writes_to_armature_dir(tmp_path, monkeypatch):
+    """The Approach-A feeder primitive: generate a gridded model-sheet from a
+    clean body plate (armature underlay + the plate as references) and write it
+    where _find_armature looks — turnarounds/armature/<name>.png. Generation is
+    monkeypatched so this stays credential-free."""
+    from pipeline.agents import proportion_gate as pg
+
+    cd = _char_with_bodies(
+        tmp_path / "sean",
+        {"head_to_body_target": 7.0, "tolerance_heads": [6.5, 7.5]},
+        body_names=("body-front",),
+    )
+    plate = cd / "turnarounds" / "body-front.png"
+
+    captured = {}
+
+    def fake_invoke(*, prompt, reference_images, output_path, cache_dir, **kw):
+        captured["refs"] = list(reference_images)
+        captured["out"] = output_path
+        # Stand in for NB2: write a valid gridded sheet to the output path.
+        pg.build_armature_underlay(output_path, divisions=7, size=(768, 1024))
+        from types import SimpleNamespace
+        return SimpleNamespace(ok=True, stub_fallback=False, exit_code=0,
+                               output_path=output_path, cache_key="k", cache_hit=False)
+
+    monkeypatch.setattr(pg, "invoke_image_edit", fake_invoke)
+
+    out = pg.emit_gridded_model_sheet(plate, cd, cache_dir=tmp_path / ".cache")
+    assert out == cd / "turnarounds" / "armature" / "body-front.png"
+    assert out.exists()
+    # The armature underlay is one of the references handed to the generator.
+    assert any("armature" in str(r) or "underlay" in str(r) for r in captured["refs"])
+    # And the gate now finds it (Approach-A path is live).
+    from pipeline.agents.proportion_gate import _find_armature
+    assert _find_armature(plate) == out

@@ -43,6 +43,16 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
+# Module-level so emit_gridded_model_sheet is monkeypatchable in tests and the
+# measurement core (which never calls it) stays import-light. Guarded so a
+# missing runner never breaks the spec/measurement path. nb_pro_runner is
+# import-light (no heavy deps at module top) and does not import this module,
+# so there is no cycle.
+try:  # pragma: no cover - import wiring
+    from pipeline.agents.nb_pro_runner import invoke_image_edit
+except Exception:  # pragma: no cover
+    invoke_image_edit = None
+
 
 # ---------------------------------------------------------------------------
 # Spec
@@ -69,6 +79,10 @@ class ProportionSpec:
     target: float | None = None
     tolerance: tuple[float, float] | None = None
     landmarks: dict | None = None
+    # Approach-A armature: how many head-bands the ladder divides into. Defaults
+    # to round(target) when absent. Used as the KNOWN division count so a measure
+    # never trusts the line count NB2 redrew (the ¾ probe finding).
+    armature_divisions: int | None = None
 
 
 def load_proportion_spec(character_yaml_path) -> ProportionSpec:
@@ -109,8 +123,15 @@ def load_proportion_spec(character_yaml_path) -> ProportionSpec:
     if not isinstance(landmarks, dict):
         landmarks = None
 
+    divisions = proportions.get("armature_divisions")
+    try:
+        divisions = int(divisions) if divisions is not None else None
+    except (TypeError, ValueError):
+        divisions = None
+
     return ProportionSpec(
-        status="declared", target=target_f, tolerance=tol_t, landmarks=landmarks
+        status="declared", target=target_f, tolerance=tol_t,
+        landmarks=landmarks, armature_divisions=divisions,
     )
 
 
@@ -140,6 +161,7 @@ def is_body_turnaround(rel_path) -> bool:
 # and JPEG ringing out of the mask while admitting faint construction lines and
 # all colored fills.
 _CREAM_RGB = (242, 230, 204)
+_GRAPHITE_RGB = (61, 53, 48)  # #3D3530 — warm graphite line / armature ink
 _INK_DISTANCE = 60.0
 
 # A row is figure-bearing when its ink count is at least 1% of the width (de-noise
@@ -276,13 +298,28 @@ def measure_proportion(plate_path, spec: ProportionSpec, *, armature_path=None) 
                     "error", None, target, tol, None, "armature",
                     "no figure ink found on the gridded model-sheet",
                 )
-            spacing = (lines[-1] - lines[0]) / (len(lines) - 1)
+            # Anchor on the bold first/last lines (crown + feet) and the KNOWN
+            # division count — NOT the detected line count. NB2 reliably keeps the
+            # bold crown/feet lines but sometimes redraws the INTERIOR with a wrong
+            # count (the ¾ probe: 9 lines, not 8); dividing by detected count then
+            # rescales the ruler and corrupts heads_tall. Known divisions = the
+            # explicit spec field or round(target).
+            divisions = spec.armature_divisions or round(target)
+            spacing = (lines[-1] - lines[0]) / divisions
             heads = (ext.feet_y - ext.crown_y) / spacing
             align = max(abs(ext.crown_y - lines[0]), abs(ext.feet_y - lines[-1])) / spacing
             verdict = "pass" if tol[0] <= heads <= tol[1] else "fail"
+            detail = f"{heads:.2f} heads tall vs target {target} {list(tol)}"
+            expected_lines = divisions + 1
+            if len(lines) != expected_lines:
+                # surfaced, not silently dropped — a human sees the grid drift
+                detail += (
+                    f" [grid line-count drift: detected {len(lines)} lines, "
+                    f"expected {expected_lines}; measured via bold crown/feet anchors]"
+                )
             return ProportionVerdict(
                 verdict, round(heads, 3), target, tol, round(align, 3), "armature",
-                f"{heads:.2f} heads tall vs target {target} {list(tol)}",
+                detail,
             )
 
         if spec.landmarks:
@@ -453,3 +490,76 @@ def plate_status_fields(target_path, character_dir, status: dict, *, armature_pa
     status["sf03_tolerance"] = list(v.tolerance) if v.tolerance else None
     status["sf03_division_alignment"] = v.division_alignment
     status["sf03_method"] = v.method
+
+
+# ---------------------------------------------------------------------------
+# Approach-A feeder — the deterministic armature + the gridded-model-sheet emit
+# ---------------------------------------------------------------------------
+
+
+def build_armature_underlay(
+    path, *, divisions: int = 7, size: tuple[int, int] = (768, 1024), margin: int = 64
+):
+    """Write the canonical heads-tall armature underlay: a cream canvas with
+    `divisions + 1` full-width graphite lines (crown=0 .. feet=divisions), crown
+    and feet bolded so NB2's redraw keeps the load-bearing anchors. This is the
+    one canonical armature the probe used, Cy's feeder generates against, and the
+    gate measures — promoted here so all three share it. Deterministic, $0."""
+    from PIL import Image, ImageDraw
+
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    w, h = size
+    top, bot = margin, h - margin
+    img = Image.new("RGB", (w, h), _CREAM_RGB)
+    d = ImageDraw.Draw(img)
+    for i in range(divisions + 1):
+        y = top + round(i * (bot - top) / divisions)
+        thick = 4 if i in (0, divisions) else 2  # bold crown + feet anchors
+        d.rectangle([0, y - thick // 2, w - 1, y + thick // 2], fill=_GRAPHITE_RGB)
+    img.save(path)
+    return path
+
+
+_GRIDDED_SHEET_PROMPT = (
+    "The FIRST image is a proportion armature: {lines} evenly spaced horizontal "
+    "lines dividing the canvas into {divisions} equal head-height bands (the "
+    "heroic 1:{divisions} ladder), with the top and bottom lines bolded. The "
+    "SECOND image is a finished pencil-test character turnaround. Redraw that same "
+    "character — identical identity, pose, view, outfit, and pencil-test style — "
+    "seated strictly to the armature: crown of the head exactly ON the top line, "
+    "soles of the feet exactly ON the bottom line, head (crown to chin) filling "
+    "the single top band. Keep ALL {lines} horizontal guide lines clearly visible "
+    "through and behind the figure. Cream paper, warm-graphite line. Add no text."
+)
+
+
+def emit_gridded_model_sheet(clean_plate, character_dir, *, cache_dir, divisions: int | None = None):
+    """Approach-A feeder: generate the gridded model-sheet (the verification
+    artifact) from a clean body turnaround, and write it where _find_armature
+    looks — `turnarounds/armature/<plate-name>.png`. The clean Bible plate is
+    untouched; the gridded sheet is a SEPARATE artifact (two-artifacts design).
+
+    Generation goes through the module-level invoke_image_edit (NB2 Flash);
+    tests monkeypatch it. Returns the gridded-sheet path (which may be a stub
+    placeholder if no API key — the gate then reads it as error/indeterminate,
+    never a faked pass)."""
+    clean_plate = Path(clean_plate)
+    character_dir = Path(character_dir)
+    spec = load_proportion_spec(character_dir / "character.yaml")
+    n = divisions or spec.armature_divisions or (round(spec.target) if spec.target else 7)
+
+    armature_dir = clean_plate.parent / "armature"
+    armature_dir.mkdir(parents=True, exist_ok=True)
+    underlay = build_armature_underlay(armature_dir / "_underlay.png", divisions=n)
+    out = armature_dir / clean_plate.name
+
+    if invoke_image_edit is None:  # pragma: no cover - runner unavailable
+        return out
+    invoke_image_edit(
+        prompt=_GRIDDED_SHEET_PROMPT.format(divisions=n, lines=n + 1),
+        reference_images=[underlay, clean_plate],
+        output_path=out,
+        cache_dir=Path(cache_dir),
+    )
+    return out
