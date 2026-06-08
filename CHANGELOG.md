@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-06-08 — Commit two reference docs (provenance; no behavior change)
+
+Checked in two docs that were sitting untracked. **G6.1b handoff spec** ([`docs/2026-06-07-em-g6.1b-criteria-text-decoupling-handoff.md`](docs/2026-06-07-em-g6.1b-criteria-text-decoupling-handoff.md)) — the brief that drove the now-merged criteria-text decoupling (PR #29). **Reve Edit-API reference** ([`docs/Edit-API-String.md`](docs/Edit-API-String.md)) — the first-party endpoint schema (Edit `{edit_instruction, reference_image}`, bearer auth, version-param tiers) that the live bake-off used to correct `reve_runner.py` (PR #30). Docs only; no code/manifest/criteria/baseline touched. No secrets (API-key references are variable names + doc placeholders).
+
 ## 2026-06-08 — G6.1/G6.1b RATIFIED: production lever flipped ON + CLAUDE.md updated (Sean's ratification)
 
 **What & why.** Sean ratified the criteria-attached N=5 result (below). This entry lands the production decision and the doc updates that were held for ratification.
