@@ -24,8 +24,9 @@ cases_ref: evals/bakeoffs/2026-06-07-reve-vs-nb2-editing/cases.yaml
 # against this row before migrating (eval-strategy §4 drift-monitoring; this is
 # anima's single biggest silent-regression exposure).
 snapshots:
-  nb2: "gemini-3.1-flash-image-preview (Gemini Image API; pin the served model_version read-back)"
-  reve: "Reve API (beta) — api.reve.com Edit/Remix; record the model/build header the API returns, the console is versionless"
+  # Pinned from the 2026-06-08 live run (UTC date the harness stamped).
+  nb2: "gemini-3.1-flash-image-preview — REQUESTED/PINNED constant (invoke_image_edit does not surface the served model_version, so this is an explicit pin, not a read-back). Observed: returns 1024x1024 (square; invoke_image_edit passes no aspect_ratio)."
+  reve: "api.reve.com — server-reported `version`: standard reve-edit@20250915 / reve-remix@20250915 (30 credits); fast reve-edit-fast@20251030 / reve-remix-fast@20251030 (5 credits). Edit={edit_instruction, reference_image}; Remix={prompt, reference_images}; tier via `version`; response = top-level base64 `image`. Outputs 16:9 (honors aspect_ratio); no visible watermark, no C2PA/XMP markers detected."
 
 variants:
   - id: nb2
