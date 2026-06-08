@@ -13,6 +13,8 @@ Run with: .venv/bin/pytest evals/vision_critic/runner.py -v
 """
 from __future__ import annotations
 
+from dataclasses import asdict
+
 from evals.vision_critic.scoring import (
     CaseScore,
     confusion_matrix,
@@ -268,6 +270,9 @@ def test_harness_scores_every_case(case, monkeypatch, request):
         actual_cites=result.cites_criteria,
         confidence=result.outputs["confidence"],
         wall_s=0.0,
+        # G6.9 Gate 0: the CI path captures diffs too, so the mocked harness
+        # exercises the same plain-dict capture the live scorer uses.
+        proposed_patches=[asdict(p) for p in result.proposed_patches],
     )
     assert score.predicted_verdict in {"pass", "borderline", "fail"}
     # For non-red cases the stub echoes expected → exact match (harness sanity).

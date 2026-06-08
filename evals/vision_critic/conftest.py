@@ -34,14 +34,31 @@ def make_vision_verdict(
     confidence: float = 0.9,
     reasoning: str = "fixture reasoning",
     cites: list[str] | None = None,
+    proposed_patches: list[dict] | None = None,
 ) -> str:
-    """Build an Em verdict envelope JSON string (matches em-vision-critic-context.md)."""
+    """Build an Em verdict envelope JSON string (matches em-vision-critic-context.md).
+
+    A FLAGGED verdict (fail/borderline) stages one representative prompt diff so the
+    harness exercises diff CAPTURE (G6.9 Gate 0) — Em's constructive output, not just
+    her verdict. A clean pass stages nothing. Pass `proposed_patches` explicitly to
+    override (e.g. [] to suppress, or a richer patch list)."""
+    flagged = verdict in {"fail", "borderline"}
+    resolved_cites = cites or (["AC01"] if flagged else [])
+    if proposed_patches is None:
+        proposed_patches = ([{
+            "target": "manifest.lock.yaml",
+            "path": "generation.prompt_clause",
+            "operation": "set",
+            "value": "restore the corrupted axis to match the reference",
+            "rationale": "stub corrective diff (fixture)",
+            "cites_criteria": resolved_cites,
+        }] if flagged else [])
     return json.dumps({
         "verdict": verdict,
         "confidence": confidence,
         "reasoning": reasoning,
-        "proposed_patches": [],
-        "cites_criteria": cites or (["AC01"] if verdict in {"fail", "borderline"} else []),
+        "proposed_patches": proposed_patches,
+        "cites_criteria": resolved_cites,
     })
 
 
