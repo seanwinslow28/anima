@@ -8,10 +8,10 @@
 
 ## TL;DR
 
-- **The decisive question is answered: Reve does NOT share NB-Pro's multi-reference downsampling regression.** On the `t2-remix-3quarter` probe (identity from the anchor, angle from the full-body turnaround), both Reve variants **beat** NB2 (standard +0.041, fast +0.038 DINOv2 vs the same 3⁄4 anchor) — no washed-out / generic face, confirmed by eye. This is the #1 open question the desk-research evaluation flagged, now settled empirically.
-- **reve-standard is a viable keyframe / Cy-Bible adopt candidate (pilot, not wholesale-migrate):** it matches or beats NB2 on all three identity cases, at ~40% lower cost and in true 16:9.
-- **reve-fast adopts for in-betweens:** it holds the real F06→F10 in-between (+0.006 vs NB2) with no collapse on the decisive case, at ~10× lower cost ($0.007 vs $0.067) and ~2× faster.
-- **The margins are small and N=1.** The verdict rests on direction (no collapse; Reve ≥ NB2 on identity), not magnitude. Firm up with pairwise-Em + a replicated pass before trusting Reve with hero keyframes.
+- **Final verdict (Sean's eyeball, 2026-06-08): Reve FAILS for editing the Sean character — not adopted at any tier.** The DINOv2 metric scored Reve ≥ NB2 on identity (which by the harness rule would have meant pilot-keyframes + adopt-in-betweens), **but on face-crop inspection the Reve outputs are morphed and skewed** — body/pose/palette/register hold, the *face* distorts (asymmetric/melted eyes, skewed features). For an identity-locked character that is disqualifying. **NB2 stays the editing engine for Sean.**
+- **Why the metric missed it:** DINOv2-vs-full-figure-anchor can't see facial-identity morph — the face is a small fraction of the whole-figure embedding and the overall composition matched. Textbook §3.5 ("DINOv2 over-rewards composition; not a sole good-frame gate"). The human eye is the arbiter (Engine Truth), and it overrode the score.
+- **The decisive composition finding still holds:** Reve does NOT share NB-Pro's multi-reference *downsampling* regression (no washed-out/generic faces, no collapse; `t2-remix-3quarter` +0.041). But Reve substitutes a *different* identity failure — morph/skew — that is just as disqualifying for editing Sean.
+- **Future direction (not now):** test Reve for *new-character creation* + *backgrounds* in other art styles — use cases with no existing identity to preserve, where its strong pose control, native 16:9, speed, and cost could pay off.
 
 ---
 
@@ -49,13 +49,19 @@ Subject-Collapse Rate (below 0.5): **0/5 for every variant** — no catastrophic
 
 ---
 
-## Per-use-case verdict (applying the README decision rule, not a new one)
+## Per-use-case verdict — the metric rule vs the eyeball override
 
-**1 — Multi-reference downsampling (the decisive case): Reve is clean.** No `⚠ worse` on `t2-remix-3quarter` for either variant — both beat NB2. By eye, none of the three outputs shows a soft/generic/downsampled face. Reve is **not** disqualified for multi-reference keyframes; it is the strongest result on the hardest single-identity multi-ref case.
+The harness rule (DINOv2 Δ) and Sean's eye **disagree**, and the eye wins. Both readings are recorded below honestly.
 
-**2 — Keyframe / Cy Bible → reve-standard, as a pilot.** reve-standard matches/beats NB2 on `t1-focused` (+0.003), `t2-remix-3quarter` (+0.041), and `t2-remix-3ref-pairing` (+0.002) — clears the rule's keyframe bar — at ~40% lower cost ($0.040 vs $0.067) and in true 16:9. **reve-fast is the wrong tier here**: it dips to −0.024 on the hardest 3-ref pairing (within tolerance, *not* a collapse, but below NB2).
+**What the DINOv2 rule said (for the record):** no `⚠ worse` on the decisive `t2-remix-3quarter` (both Reve variants beat NB2 +0.041/+0.038 → no downsampling collapse); reve-standard matches/beats NB2 on all three identity cases (→ would have been a keyframe pilot); reve-fast holds the in-between +0.006 (→ would have been adopt-for-in-betweens). On the metric alone, Reve passes.
 
-**3 — In-between → reve-fast, adopt.** Holds `t3-inbetween-f06-f10` (+0.006) and the decisive case shows no collapse — both rule conditions met. ~10× cheaper, ~2× faster. The cleanest call in the set.
+**What the eye saw (the override, decisive):** on face-crop inspection the Reve outputs **morph and skew the face** — asymmetric/melted eyes, distorted features — while pose/body/palette/register hold. DINOv2-vs-full-figure-anchor couldn't see it (face = small fraction of the embedding; composition matched). For an identity-locked character that morph is disqualifying.
+
+**Verdict per use case:**
+1. **Multi-ref keyframe / Cy Bible → FAIL.** Composition holds, *face does not*. Do not adopt.
+2. **In-between → FAIL / not added to the lineup.** Same morph; cost/speed wins are moot when the face isn't Sean. NB2 stays the in-between editing engine.
+3. **The downsampling question is still answered:** Reve does *not* share NB-Pro's washout/downsampling regression — but it substitutes its own identity failure (morph), so the net is still "not for editing Sean."
+4. **Future (not now):** new-character creation + backgrounds in other art styles (no identity to preserve).
 
 ---
 
@@ -71,19 +77,20 @@ Subject-Collapse Rate (below 0.5): **0/5 for every variant** — no catastrophic
 
 ## Honesty caveats (these bound the verdict)
 
-- **Small margins, N=1.** Δ spans +0.002…+0.041 with one generation per cell. Sub-0.04 deltas are ties within noise; the conclusions lean on direction, not magnitude. A replicated (N≥3) pass + the documented **pairwise-Em** harness ("is A or B closer to the anchor?", position-swapped) is the right next step before a hero-keyframe migration.
-- **DINOv2 over-rewards copying (§3.5).** NB2 reinterprets more — re-posed *walking* figures, a more polished/finished line, 1024² square (`invoke_image_edit` passes no `aspect_ratio`); both Reve variants stay closer to the reference composition + the looser pencil-test register + 16:9. Part of Reve's DINOv2 edge is "stayed closer to the reference" — *desirable* for identity-hold-under-edit, but not "Reve is the better illustrator."
+- **DINOv2-vs-full-figure-anchor cannot see facial morph — CONFIRMED this run.** This is the load-bearing methodological finding: the metric scored Reve ≥ NB2 while the face was visibly distorted. The face is a small fraction of a whole-figure embedding, and Reve matched the *composition*, so the cosine stayed high. §3.5 ("DINOv2 over-rewards copying; not a sole good-frame gate") held exactly. **Identity edits must be gated on the human eye, a face-region metric, or pairwise-Em — never whole-figure DINOv2 alone.** Zoom to the face.
+- **Small margins, N=1.** Δ spanned +0.002…+0.041 with one generation per cell — ties within noise even before the eyeball override. Direction over magnitude, and even the direction was metric-blind to the real failure.
 - **Em is N=1 here, not the G5 N=5 baseline.** The `--score-em` block runs production `VisionCriticNode` once per cell in absolute, reference-blind mode — a corroborator only. Its reve-fast `borderline`s are a mild caution, not a verdict.
 - **The Reve schema was wrong as shipped and corrected this session.** It is now API-verified for standard + fast; the one residual gap (the fast `version` strings) was closed from the Edit API doc Sean provided + an empirically-confirmed remix-fast string. See the postmortem.
 
 ---
 
-## Decision (proposed to Sean — not self-executing)
+## Decision (Sean, ratified 2026-06-08)
 
-1. **Pilot reve-standard for multi-reference keyframes / Cy Bible plates** behind the existing model-routing override (`characters.{id}.generation_model`), not a blanket swap. It clears the identity bar and is cheaper + native-16:9.
-2. **Adopt reve-fast for in-betweens** (Phase 5 in-between generation / the retry ladder), where ~10× cost and ~2× speed compound and a mild wobble is tolerable.
-3. **Keep NB2 the incumbent default** until a replicated + pairwise-Em pass confirms the small-margin keyframe call.
-4. **Ratify the schema correction + the fast version strings** (now in `reve_runner.py`) and the proposed updates to the research doc + CLAUDE.md (surfaced separately, not edited inline).
+1. **Reve FAILS for editing the Sean character — not adopted at any tier.** The face morph/skew is disqualifying for an identity-locked character; NB2 remains the editing engine for Sean (keyframes, Cy Bible plates, and in-betweens).
+2. **reve-fast is NOT added to the in-between lineup.**
+3. **Keep the schema correction + verified fast version strings** in `reve_runner.py` (they're correct and worth keeping for any future Reve use).
+4. **Future test (down the line, not now):** Reve for *new-character creation* + *backgrounds* in different art styles — use cases with no existing identity to preserve.
+5. **Research doc updated** to record that the tests ran and the FAIL verdict; CLAUDE.md left unchanged (nothing adopted → no pipeline change; the CHANGELOG + research doc are the decision record).
 
 ---
 

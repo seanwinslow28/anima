@@ -2,6 +2,8 @@
 
 *2026-06-07 (run stamped 2026-06-08 UTC). The operational companion to the [field report](2026-06-07-reve-vs-nb2-editing-field-report.md). What went right, what went wrong, and what the next costed run should do differently. The *result* is in the field report; this is about *how the run was conducted*.*
 
+> **Final verdict (Sean, eyeball): Reve FAILS for editing the Sean character — face morph/skew.** The run was conducted cleanly and answered the question; the answer is "no" for Sean editing. The most important methodological lesson — that the headline metric scored Reve as a *pass* while the face was visibly broken — is in §"The metric said pass; the eye said fail" below.
+
 ---
 
 ## The one-line lesson
@@ -31,13 +33,29 @@ The scaffold's mirror-inferred schema (`prompt` / `image`|`images` / `fast: bool
 - **Fix:** the generate loop should surface a non-ok `ReveResponse` (print a `[HTTP 400]` tag, count failures, and refuse to proceed to scoring if any non-stub cell is missing). Filed as a harness improvement; not fixed this run to avoid changing the harness mid-spend beyond the verified schema correction + the non-scoring debug hook.
 
 ### 3. The fast tier was console-gated and cost a second stop
-`version` accepts *any* string without parse-time validation, there's no models/versions endpoint (all 404), and no separate fast endpoint exists — so the fast version strings were undiscoverable by probing and required Sean's console doc ([`docs/Edit-API-String.md`](../Edit-API-String.md), which lists `reve-edit-fast@20251030`). The remix-fast string isn't in that (Edit-only) doc; it was confirmed empirically (`reve-remix-fast@20251030` → 200, 5 credits). The runner now refuses fast with an unknown version rather than silently running standard.
+`version` accepts *any* string without parse-time validation, there's no models/versions endpoint (all 404), and no separate fast endpoint exists — so the fast version strings were undiscoverable by probing and required Sean's console doc (the Reve Edit API console page he provided, which lists `reve-edit-fast@20251030`). The remix-fast string isn't in that (Edit-only) doc; it was confirmed empirically (`reve-remix-fast@20251030` → 200, 5 credits). The runner now refuses fast with an unknown version rather than silently running standard.
 - **Lesson:** for a versioned model API, capture the *full* version enum (all endpoints) up front. The Edit doc covered Edit; Remix needed a separate confirmation.
 
 ### 4. Spend ran ~35% over the plan estimate — all schema-driven
 Plan estimate for the full generate was ~$0.57. Actual total ≈ **$0.77**. The overage is entirely the wrong schema's tax: standard discovery probes (~$0.12) + an NB2 re-generation ($0.067, caused by clearing `.cache` between the stub-sanity and corrected smoke) + fast-tier verification ($0.013). No runaway, no surprise billing — just the cost of learning the schema live. Still trivial in absolute terms.
 
 ---
+
+## The metric said pass; the eye said fail (the biggest lesson)
+
+The headline metric, DINOv2-vs-per-view-anchor, scored Reve **≥ NB2 on identity** — decisive `t2-remix-3quarter` +0.041, in-between +0.006, no Subject-Collapse. By the harness rule that is a pass (pilot keyframes + adopt in-betweens). **Sean's eyeball on the face crops overturned it: the Reve faces are morphed and skewed** (asymmetric/melted eyes, distorted features) even though body, pose, palette, and pencil-test register hold.
+
+This is not a contradiction — it's the metric working as documented and being **insufficient**:
+- DINOv2-vs-**full-figure**-anchor embeds the whole figure; the face is a small fraction of that embedding. A morphed face on a correct body + composition still scores high.
+- Reve matched the reference *composition* closely (it reinterprets less than NB2), and DINOv2 rewards that closeness (§3.5: "DINOv2 over-rewards copying"). So Reve scored *higher* while being *worse* on the one thing that matters for an identity-locked character.
+- I reviewed the full-figure outputs by eye during the run and they looked fine; **the morph was only obvious at face-crop zoom.** I should have zoomed to the face before reporting a score-based verdict.
+
+**Process fixes for any future identity-edit eval:**
+1. **Gate identity on the face, not the figure.** Crop to the face (or run a face-region DINOv2 / a face-embedding metric / pairwise-Em) — whole-figure cosine cannot adjudicate facial identity.
+2. **Always zoom to the identity-critical region by eye before writing a verdict.** A contact-sheet / full-figure look masks exactly this failure (the same lesson as the motion-sight contact-sheet honesty clause).
+3. **Treat the human eye as the gate, the metric as the screen.** The metric narrows what to look at; it does not decide. Engine Truth: "recognizably itself" is the human's call.
+
+The pairwise-Em refinement I flagged as "the right next step" would likely have caught this (a side-by-side "which face is more Sean?" is far more sensitive than absolute whole-figure cosine) — worth building before any future identity-edit bake-off.
 
 ## Spend ledger (actual)
 
@@ -62,6 +80,7 @@ Plan estimate for the full generate was ~$0.57. Actual total ≈ **$0.77**. The 
 
 ## Lessons for the next costed run
 
+0. **Gate identity edits on the face, by eye — never whole-figure DINOv2 alone.** The single most important takeaway (see §"The metric said pass; the eye said fail"): the metric passed Reve while the face was broken. Crop to the identity-critical region, look at it, and prefer pairwise-Em / a face-region metric for the call.
 1. **End every "verify the schema" gate with one real call.** Visual confirmation of an inferred payload is not verification when the source is an auth-gated SPA. A structured-error API will teach you the schema for free.
 2. **Make the harness fail loud on API errors.** A bake-off that silently records a missing cell as a non-stub success is worse than one that crashes — fix `bakeoff.py` to surface non-ok `ReveResponse`es before the next run.
 3. **Capture the full version/model enum up front** for versioned APIs — across *all* endpoints, not just the one whose doc you have.

@@ -45,9 +45,10 @@ _REVE_VERSION = {
     # None => omit `version` => API default (= standard, reve-*@20250915, 30 credits).
     "standard": {"edit": None, "remix": None},
     # Fast version strings — VERIFIED live 2026-06-08, both bill 5 credits (~$0.007):
-    #   edit-fast 7.3s, remix-fast 8.4s (vs ~16-24s standard). From the Reve Edit API doc
-    #   (docs/Edit-API-String.md: valid versions latest-fast/latest/reve-edit-fast@20251030/
-    #   reve-edit@20250915) + an empirically-confirmed analogous remix-fast string.
+    #   edit-fast 7.3s, remix-fast 8.4s (vs ~16-24s standard). edit-fast is from the Reve
+    #   Edit API console doc (Sean-provided; valid versions: latest-fast / latest /
+    #   reve-edit-fast@20251030 / reve-edit@20250915); the analogous remix-fast string was
+    #   empirically confirmed (200, credits_used=5, server echoed reve-remix-fast@20251030).
     "fast": {"edit": "reve-edit-fast@20251030", "remix": "reve-remix-fast@20251030"},
 }
 _REQUEST_TIMEOUT_S = 120

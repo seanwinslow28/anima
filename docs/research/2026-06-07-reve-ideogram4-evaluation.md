@@ -6,6 +6,19 @@
 
 ---
 
+> ## ⏩ UPDATE (2026-06-08) — the §5 test protocol RAN; verdict: REVE FAILS for editing the Sean character
+>
+> The hands-on bake-off was built and **executed live** ([`evals/bakeoffs/2026-06-07-reve-vs-nb2-editing/`](../../evals/bakeoffs/2026-06-07-reve-vs-nb2-editing/), [results](../../evals/bakeoffs/2026-06-07-reve-vs-nb2-editing/results.md), [field report](../anima-test-runs/2026-06-07-reve-vs-nb2-editing-field-report.md), [postmortem](../anima-test-runs/2026-06-07-reve-vs-nb2-bakeoff-postmortem.md)). Costed ~$0.77, isolated worktree, subscription Em. This supersedes the "supplement / pilot" verdict below for the **editing-Sean** use case.
+>
+> - **Verdict (Sean's eyeball): FAIL for editing the Sean character — not adopted at any tier; NB2 stays the editing engine.** Body/pose/palette/pencil-test register hold, but the **face morphs and skews** (asymmetric/melted eyes, distorted features). Disqualifying for an identity-locked character.
+> - **The downsampling open-question (#1) is answered:** Reve does **not** share NB-Pro's washout/downsampling regression (no generic faces, no collapse; DINOv2 actually scored Reve ≥ NB2 on identity). But it substitutes a *different* identity failure — morph/skew — so the net is still "not for editing Sean."
+> - **Methodological catch:** DINOv2-vs-full-figure-anchor scored Reve as a *pass* while the face was broken (face = small fraction of the whole-figure embedding). The human eye overrode the metric. Future identity-edit evals must gate on the face by eye / pairwise-Em, not whole-figure DINOv2.
+> - **Schema correction:** the inferred Reve API schema in §A/§B was **wrong** and was corrected against the live API — Edit `{edit_instruction, reference_image}`, Remix `{prompt, reference_images}`, **tier via a `version` param** (standard `reve-edit@20250915`/`reve-remix@20250915` 30cr; fast `reve-edit-fast@20251030`/`reve-remix-fast@20251030` 5cr), response = top-level base64 `image`. Cost figures in §B (~$0.007 fast / ~$0.04 standard) **confirmed** (5cr/30cr).
+> - **Watermark open-question (#2) answered:** no visible watermark, and no C2PA/JUMBF/XMP metadata in the returned PNGs (clean *and* unsigned).
+> - **Future direction (not now):** test Reve for **new-character creation** + **backgrounds in other art styles** — use cases with no existing identity to preserve, where its strong pose control, native 16:9, speed, and ~10× cost edge could pay off.
+
+---
+
 ## ⚠️ Authenticity & safety callout — Ideogram 4
 
 > **Verdict: authentic, safe to read, but its *license* and *shape* make it the wrong tool — not a fraud, a mismatch.**
