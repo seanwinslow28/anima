@@ -155,3 +155,43 @@ def test_estimate_cost_is_reported_and_discounts_view():
     # view cases skip the NB2 generation cost (re-critique only)
     est_noview = estimate_cost(sample=12, rerolls=3, arms=("em", "golden"), view_count=0)
     assert est_noview["dollars"] > est["dollars"]
+
+
+# --------------------------------------------------------------------------- #
+# Subprocess-per-case isolation (the exit-144 teardown guard for the live loop)
+# --------------------------------------------------------------------------- #
+def test_run_case_subprocess_stub_roundtrips_a_caseefficacy():
+    """The live loop runs each case in a FRESH process so Em's async Opus children
+    can't trigger the exit-144 interpreter-teardown race in the orchestrator. A
+    --stub worker must round-trip a CaseEfficacy byte-identical to the in-process
+    run — proving the sentinel handshake (worker emits, parent parses) end-to-end,
+    credential-free."""
+    from dataclasses import asdict
+    from evals.vision_critic.patch_efficacy import _run_case_subprocess, _stub_em_value
+
+    c = _case("palette")
+    # In-process reference — exactly what main()'s stub path builds for one case.
+    ref = run_case(c, arms=("em", "golden", "null"), rerolls=1, corpus=_CORPUS,
+                   manifest={}, criteria=None,
+                   regenerate_fn=FakeRegen(stub=True),
+                   recritique_fn=FakeCritique(verdict="pass", cites=[], stub_fallback=True),
+                   em_value=_stub_em_value(c))
+
+    got = _run_case_subprocess(c, arm_set="both+null", rerolls=1, stub=True)
+
+    assert isinstance(got, CaseEfficacy)
+    assert got.name == c["name"]
+    assert set(got.arms) == {"em", "golden", "null"}
+    # Deep structural parity: the worker's run is deterministic, so its serialized
+    # CaseEfficacy must match the in-process one field-for-field after the round-trip.
+    assert asdict(got) == asdict(ref)
+
+
+def test_run_case_subprocess_raises_when_worker_emits_no_sentinel():
+    """An unknown case never emits the sentinel → the parser raises an honest error
+    (with the worker's exit code), rather than silently returning a half-built result."""
+    from evals.vision_critic.patch_efficacy import _run_case_subprocess
+
+    with pytest.raises(RuntimeError, match="no CaseEfficacy"):
+        _run_case_subprocess({"name": "does-not-exist-zzz"},
+                             arm_set="golden", rerolls=1, stub=True)
