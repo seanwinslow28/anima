@@ -1,0 +1,9 @@
+# Generated bake-off outputs + cache are large and reproducible — the committed
+# decision artifact is results.md (curated by hand after the live run). The raw
+# per-variant traces + the generate manifest are regenerated on every run, so
+# they stay out of git until the operator force-adds the dated live versions.
+generated/
+.cache/
+__pycache__/
+traces/
+generate-manifest.json

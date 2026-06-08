@@ -1,0 +1,61 @@
+# Reve vs NB2 — image-editing bake-off, variant matrix.
+# Spec: docs/research/2026-06-07-reve-ideogram4-evaluation.md §5 (test protocol)
+# Method: docs/research/2026-05-31-ai-evals-best-practices-and-anima-eval-strategy.md
+#         §6 (generator row) + §3.5 (DINOv2-vs-per-view-anchor is the visual
+#         groundedness metric; MLLM judge trustworthy mainly PAIRWISE).
+#
+# This is a GENERATOR bake-off, not a judge bake-off: each variant EDITS the same
+# cases (cases.yaml) and the OUTPUTS are scored — DINOv2-vs-per-view-anchor
+# (deterministic SF02, the headline) + optional Em verdict (SF01/SF02, --score-em).
+# The decision driver is the Reve-vs-NB2 DELTA on the SAME case + SAME per-view
+# anchor, NOT an absolute threshold (eval-strategy §3.5: no universal DINO threshold).
+#
+# Only the ENGINE + TIER varies. The case set, the references fed, and the per-view
+# anchor scored against are held constant across variants.
+#
+# Cost-per-image is the published rate (evaluation report §B). It rides in the
+# trace so a re-run after a price change is visible. NB2 at the 1024px tier is the
+# incumbent baseline every Reve column is read against.
+version: 1
+created: 2026-06-07
+cases_ref: evals/bakeoffs/2026-06-07-reve-vs-nb2-editing/cases.yaml
+
+# Model/endpoint snapshots — PIN THESE. A future provider bump is re-baselined
+# against this row before migrating (eval-strategy §4 drift-monitoring; this is
+# anima's single biggest silent-regression exposure).
+snapshots:
+  nb2: "gemini-3.1-flash-image-preview (Gemini Image API; pin the served model_version read-back)"
+  reve: "Reve API (beta) — api.reve.com Edit/Remix; record the model/build header the API returns, the console is versionless"
+
+variants:
+  - id: nb2
+    label: "NB2 incumbent — gemini-3.1-flash-image-preview"
+    engine: nb2                  # pipeline.agents.nb_pro_runner.invoke_image_edit
+    tier: standard
+    cost_per_image_usd: 0.067    # 1024px tier; 2K ≈ 0.101 (report §B)
+    baseline: true               # the column every Reve variant is read against
+    notes: >
+      The incumbent. Handles both single-ref edits and multi-ref plates through
+      the same invoke_image_edit(reference_images=[...]). This is the control —
+      a Reve variant only earns adoption by MATCHING OR BEATING this column's
+      DINOv2-vs-per-view-anchor on the identity cases.
+
+  - id: reve-standard
+    label: "Reve standard — Edit/Remix"
+    engine: reve                 # reve_runner.invoke_reve (edit if 1 ref, remix if >=2)
+    tier: standard
+    cost_per_image_usd: 0.040    # Edit 30cr / Remix 30cr (report §B; Sean's console screenshots)
+    notes: >
+      Standard tier. ~40% cheaper than NB2 at 1024px. Edit endpoint for 1-ref
+      cases, Remix endpoint for multi-ref cases (the runner routes on ref count).
+
+  - id: reve-fast
+    label: "Reve Fast — Edit Fast/Remix Fast"
+    engine: reve
+    tier: fast
+    cost_per_image_usd: 0.007    # Edit Fast 5cr / Remix Fast 5cr (report §B)
+    notes: >
+      The headline cost case — ~10x cheaper than NB2. The strongest fit for
+      in-between generation IF it holds identity. The whole bake-off exists to
+      learn whether the Fast tier's identity hold clears SF02; a mild wobble is
+      tolerable on an in-between, fatal on a keyframe.
