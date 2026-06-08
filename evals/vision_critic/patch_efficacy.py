@@ -30,8 +30,9 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import subprocess
 import sys
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 import yaml
@@ -456,6 +457,104 @@ _ARM_SETS = {
 }
 
 
+# --------------------------------------------------------------------------- #
+# Subprocess-per-case isolation (the live loop's exit-144 teardown guard)
+# --------------------------------------------------------------------------- #
+# The live re-critique spawns Em's async Opus children; running every case in one
+# process risks the exit-144 interpreter-teardown race (documented in score.py). Each
+# case runs in a FRESH worker (--only) that emits its CaseEfficacy as a stdout sentinel;
+# the parent parses it. A worker that computed its result then crashed at teardown still
+# flushed the JSON (result captured); one that died before emitting becomes an honest
+# errored gap. Mirrors score.py's _run_case_subprocess.
+_EFFICACY_SENTINEL = "EFFICACY_JSON:"
+_PER_CASE_TIMEOUT_S = 900  # 3 arms × N re-rolls of regen + re-critique; generous ceiling
+
+
+def _efficacy_from_dict(d: dict) -> CaseEfficacy:
+    """Rebuild the nested CaseEfficacy from a worker's asdict() payload, so the parent
+    gets real ArmResult/RerollOutcome objects (the clear_rate/band properties downstream
+    aggregation relies on), not plain dicts."""
+    arms = {
+        name: ArmResult(
+            arm=a["arm"], clause=a["clause"],
+            rerolls=[RerollOutcome(**r) for r in a["rerolls"]],
+            skipped_no_proposal=a["skipped_no_proposal"])
+        for name, a in d["arms"].items()
+    }
+    return CaseEfficacy(name=d["name"], corpus_id=d["corpus_id"],
+                        defect_label=d["defect_label"], pair=d["pair"],
+                        em_proposed=d["em_proposed"], arms=arms)
+
+
+def _run_case_subprocess(case: dict, *, arm_set: str, rerolls: int, stub: bool) -> CaseEfficacy:
+    """Run ONE case's arm loop in a fresh Python process and parse its CaseEfficacy.
+
+    The worker (--only) re-loads cases + manifest + criteria + the worktree .env itself,
+    so only the case name / arm set / re-roll count crosses the boundary. We do NOT pass
+    start_new_session: detaching the WORKER breaks Claude Code auth for the Opus-SDK child
+    (verified 2026-06-02); the orchestrator is the side isolated from the exit-144 teardown
+    signal. The sentinel is read from stdout FIRST — a worker that flushed its result then
+    crashed at teardown is still captured; one that died before emitting becomes an honest
+    errored gap (RuntimeError)."""
+    cmd = [sys.executable, "-m", "evals.vision_critic.patch_efficacy",
+           "--only", case["name"], "--arm", arm_set, "--rerolls", str(rerolls)]
+    if stub:
+        cmd.append("--stub")
+    proc = subprocess.run(
+        cmd, capture_output=True, text=True, timeout=_PER_CASE_TIMEOUT_S,
+        cwd=str(HERE.parents[1]),  # repo root: find_dotenv + relative paths resolve
+    )
+    for line in proc.stdout.splitlines():
+        if line.startswith(_EFFICACY_SENTINEL):
+            return _efficacy_from_dict(json.loads(line[len(_EFFICACY_SENTINEL):]))
+    raise RuntimeError(
+        f"worker emitted no CaseEfficacy for {case.get('name')!r} "
+        f"(exit={proc.returncode}); stderr tail: {proc.stderr.strip()[-300:] or '(empty)'}")
+
+
+def _build_runners(*, stub: bool):
+    """(regenerate_fn, recritique_fn, manifest, criteria) for one run. Stub returns the
+    credential-free fakes; live wires the real (spending) runners. Shared by main()'s
+    in-process stub loop and the per-case worker."""
+    if stub:
+        return (FakeRegen(stub=True),
+                FakeCritique(verdict="pass", cites=[], stub_fallback=True),
+                {}, None)
+    manifest = _manifest()
+    criteria = _merged_criteria(manifest)
+    run_dir = Path("/tmp/gate3-run"); run_dir.mkdir(parents=True, exist_ok=True)
+    return (_real_regenerate(run_dir=run_dir, manifest=manifest),
+            _real_recritique(manifest=manifest, criteria=criteria),
+            manifest, criteria)
+
+
+def _em_kwargs(case: dict, *, arms, stub: bool, manifest, criteria) -> dict:
+    """The em arm needs Em's ACTUAL proposed clause — captured live by running Em on the
+    defect fixture (one call/case). Stub reuses the golden stand-in. Empty otherwise."""
+    if "em" not in arms:
+        return {}
+    return {"em_value": _stub_em_value(case) if stub
+            else _capture_em_value(case, manifest=manifest, criteria=criteria)}
+
+
+def _run_worker(args) -> None:
+    """Worker mode (--only <case>): run ONE case in this fresh process and emit its
+    CaseEfficacy as a stdout sentinel, flushed before return so a teardown crash can't
+    lose it. Spawned by the parent's _run_case_subprocess so the orchestrator stays
+    isolated from the exit-144 teardown race."""
+    case = next((c for c in _load_defects() if c["name"] == args.only), None)
+    if case is None:
+        print(f"--only: unknown identity_style case {args.only!r}", file=sys.stderr)
+        raise SystemExit(2)
+    arms = _ARM_SETS[args.arm]
+    regen, crit, manifest, criteria = _build_runners(stub=args.stub)
+    em_kw = _em_kwargs(case, arms=arms, stub=args.stub, manifest=manifest, criteria=criteria)
+    eff = run_case(case, arms=arms, rerolls=args.rerolls, corpus=parse_corpus(_CORPUS_MD),
+                   manifest=manifest, criteria=criteria,
+                   regenerate_fn=regen, recritique_fn=crit, **em_kw)
+    print(_EFFICACY_SENTINEL + json.dumps(asdict(eff)), flush=True)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(prog="em-patch-efficacy")
     ap.add_argument("--arm", choices=list(_ARM_SETS), default="both+null",
@@ -469,7 +568,15 @@ def main() -> None:
                          "spend, no scored claim. Proves the harness is wired.")
     ap.add_argument("--check-only", action="store_true",
                     help="$0 §0 pre-flight only (assert wiring), then EXIT before any loop.")
+    ap.add_argument("--only", default=None,
+                    help="Worker mode: run ONE case (by name) in this process and emit its "
+                         "CaseEfficacy as a stdout sentinel. The parent spawns one worker per "
+                         "case for exit-144 teardown isolation — not for direct use.")
     args = ap.parse_args()
+
+    if args.only:
+        _run_worker(args)
+        return
 
     labels = args.labels.split(",") if args.labels else None
     sample = select_sample(_load_defects(), sample=args.sample, labels=labels)
@@ -492,31 +599,24 @@ def main() -> None:
     if args.check_only:
         return
 
-    if args.stub:
-        regen = FakeRegen(stub=True)
-        crit = FakeCritique(verdict="pass", cites=[], stub_fallback=True)
-        manifest, criteria = {}, None
-    else:
-        # Live path is reachable only after preflight passes (ratified goldens, key
-        # present, ANTHROPIC unset). Deferred this push — see module COSTED-RUN NOTE.
-        manifest = _manifest()
-        criteria = _merged_criteria(manifest)
-        run_dir = Path("/tmp/gate3-run"); run_dir.mkdir(parents=True, exist_ok=True)
-        regen = _real_regenerate(run_dir=run_dir, manifest=manifest)
-        crit = _real_recritique(manifest=manifest, criteria=criteria)
-
-    corpus = parse_corpus(_CORPUS_MD)
     effs = []
-    for c in sample:
-        em_kw = {}
-        if "em" in arms:
-            # The em arm needs Em's ACTUAL proposed clause — captured live by running
-            # Em on the defect fixture (one call/case). Stub reuses the golden stand-in.
-            em_kw = {"em_value": _stub_em_value(c) if args.stub
-                     else _capture_em_value(c, manifest=manifest, criteria=criteria)}
-        effs.append(run_case(c, arms=arms, rerolls=args.rerolls, corpus=corpus,
-                             manifest=manifest, criteria=criteria,
-                             regenerate_fn=regen, recritique_fn=crit, **em_kw))
+    if args.stub:
+        # Stub fakes spawn no async children — run in-process (fast, CI-safe).
+        regen, crit, manifest, criteria = _build_runners(stub=True)
+        corpus = parse_corpus(_CORPUS_MD)
+        for c in sample:
+            em_kw = _em_kwargs(c, arms=arms, stub=True, manifest=manifest, criteria=criteria)
+            effs.append(run_case(c, arms=arms, rerolls=args.rerolls, corpus=corpus,
+                                 manifest=manifest, criteria=criteria,
+                                 regenerate_fn=regen, recritique_fn=crit, **em_kw))
+    else:
+        # LIVE: each case in a FRESH worker (exit-144 teardown guard). The worker
+        # re-loads manifest/criteria + captures Em itself; only name/arm/rerolls cross.
+        # Reachable only after preflight passes (ratified goldens, key present,
+        # ANTHROPIC unset).
+        for c in sample:
+            effs.append(_run_case_subprocess(c, arm_set=args.arm,
+                                             rerolls=args.rerolls, stub=False))
     agg = aggregate_efficacy(effs)
     lift = normalized_lift(agg)  # {} unless all three arms (em+golden+null) ran
     label = "STUB (no efficacy claim)" if args.stub else "LIVE"
