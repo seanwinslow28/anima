@@ -28,6 +28,7 @@ palette:
   role: "eye-and-brow-accent \u2014 the two dot eyes and the two short brow strokes;\
     \ the deepest warm-graphite mark on the face"
 proportions:
+  sf03: opt_out
   head_to_body: "N/A \u2014 the mascot is a single fused rounded-box body with no\
     \ separate head. The box silhouette reads ~1:1.2 (width:height), a rounded cube\
     \ slightly taller than wide."

@@ -53,6 +53,7 @@ from pipeline.agents import (
 from pipeline.agents.gemini_api_runner import run_gemini_api_with_image
 from pipeline.agents.nb_pro_runner import invoke_image_edit
 from pipeline.agents.sdk_runners import invoke_opus_text
+from pipeline.agents.proportion_gate import plate_status_fields as _sf03_plate_status
 from pipeline.agents.similarity_gate import compute_similarity
 from pipeline.criteria import validate_criteria
 
@@ -753,6 +754,13 @@ class CharacterDesignerNode:
         # similarity_gate for why the coarse PIL metric is a flag this commit.
         self._score_plate_identity(target_path, character_dir, status, is_prop=is_prop)
 
+        # ----- SF03 — proportion gate (G6.4) -----
+        # On body turnarounds only, measure heads-tall against the character's
+        # declared proportion spec and record sf03_* into the verdict. Unlike the
+        # record-only similarity score, this is a HARD gate at Bible-lock
+        # (enforced in pipeline/cli/bible.py); here we only measure + persist.
+        _sf03_plate_status(target_path, character_dir, status)
+
         # ----- Pass 3 — Gemini verifies (and regenerates on fail, up to ceiling) -----
         for attempt in range(1, _PLATE_ATTEMPT_CEILING + 1):
             verify_prompt = self._build_pass3_prompt(
@@ -823,6 +831,8 @@ class CharacterDesignerNode:
 
             # Re-score the freshly regenerated plate against the anchor.
             self._score_plate_identity(target_path, character_dir, status, is_prop=is_prop)
+            # Re-measure proportion on the re-rolled plate too.
+            _sf03_plate_status(target_path, character_dir, status)
 
         # Shouldn't reach here — the loop returns on every branch.
         return status

@@ -85,6 +85,12 @@ def main(argv: list[str] | None = None) -> int:
     b_approve = bible_sub.add_parser("approve", help="Lock the character's criteria file.")
     b_approve.add_argument("--character-dir", required=True, type=str)
 
+    b_check_prop = bible_sub.add_parser(
+        "check-proportion",
+        help="Read-only SF03 proportion check over the body turnarounds (G6.4).",
+    )
+    b_check_prop.add_argument("--character-dir", required=True, type=str)
+
     b_mutate = bible_sub.add_parser("mutate", help="Audited mutation of an approved Bible.")
     b_mutate.add_argument("--force", action="store_true")
     b_mutate.add_argument("--actor", default="", type=str)
@@ -164,6 +170,8 @@ def main(argv: list[str] | None = None) -> int:
             return bible.show_bible(args.character_dir)
         if args.bible_cmd == "approve":
             return bible.approve_bible(args.character_dir)
+        if args.bible_cmd == "check-proportion":
+            return bible.check_proportion_bible(args.character_dir)
         if args.bible_cmd == "mutate":
             return bible.mutate_bible(
                 run_dir=args.run_dir,

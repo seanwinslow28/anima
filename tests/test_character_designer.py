@@ -619,6 +619,30 @@ def test_plate_verdicts_persisted_to_jsonl(base_ctx, character_dir, monkeypatch)
     assert "gemini_verdict" in rec
 
 
+def test_body_turnaround_plate_carries_sf03_verdict(base_ctx, character_dir, monkeypatch):
+    """Wiring guard (SF03 / G6.4): the proportion gate runs on body turnarounds
+    inside _run_plate, so every `turnarounds/body-*.png` plate's persisted verdict
+    carries the sf03_* fields (mirrors the Pass-2.5 similarity-score wiring). The
+    fixture Bible declares prose-only proportions, so the gate is hard but the
+    verdict is indeterminate — the honest pre-feeder state."""
+    import json as _json
+
+    _real_png(character_dir / "anchor.png")
+    _patch_with_nb_capture(monkeypatch, envelope=_make_pass1_envelope())
+    CharacterDesignerNode().run(base_ctx)
+
+    rec = _json.loads(
+        next(
+            l for l in (base_ctx.run_dir / "plate_verdicts.jsonl").read_text().splitlines()
+            if l.strip()
+        )
+    )
+    assert rec["target_path"] == "turnarounds/body-front.png"
+    assert rec["sf03_gate"] == "hard"
+    assert rec["sf03_method"] in {"none", "extent_only", "armature", "landmarks"}
+    assert rec["sf03_verdict"] in {"pass", "fail", "indeterminate", "error"}
+
+
 def test_pass1_stub_is_flagged_in_result_notes(base_ctx, character_dir, monkeypatch):
     """When the Opus Pass-1 call stubs (timeout / no SDK / empty text), the
     AgentResult.notes must say so loudly, so the orchestrator can fail instead

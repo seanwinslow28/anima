@@ -347,6 +347,33 @@ def approve_bible(character_dir: str) -> int:
     if raw.get("locked"):
         print(f"already locked: {criteria_path} (no-op)")
         return 0
+
+    # SF03 proportion gate (G6.4) — a HARD gate at lock, unlike the record-only
+    # similarity gate. Recompute on the COMMITTED body turnarounds (not the
+    # ephemeral runs/{run_id}/plate_verdicts.jsonl, which may predate a manual
+    # plate edit): the committed pixels are the exact thing being locked. A body
+    # turnaround out of the declared heads-tall tolerance — or an undeclared spec
+    # with body plates present — blocks the lock. This is the deterministic SF03
+    # the pipeline declared but never enforced (the 1:4-1:5.3 drift that sailed
+    # into a locked Bible undetected). An already-locked Bible returns above, so
+    # the gate guards NEW locks only and can't retro-block an existing one.
+    from pipeline.agents.proportion_gate import gate_body_turnarounds
+
+    gate = gate_body_turnarounds(cd)
+    if gate.blocked:
+        print(f"error: {gate.reason}", file=sys.stderr)
+        for rel, verdict in gate.verdicts.items():
+            print(
+                f"  {rel}: {verdict.verdict} [{verdict.method}] — {verdict.detail}",
+                file=sys.stderr,
+            )
+        print(
+            "  refusing to lock — re-bake the out-of-tolerance plate(s), declare a "
+            "proportion spec, or set proportions.sf03: opt_out",
+            file=sys.stderr,
+        )
+        return 1
+
     raw["locked"] = True
     tmp = target.with_suffix(target.suffix + ".tmp")
     tmp.write_text(json.dumps(raw, indent=2), encoding="utf-8")
@@ -354,6 +381,44 @@ def approve_bible(character_dir: str) -> int:
     print(f"approved: locked=true on {target}")
     if criteria_path != target:
         print(f"  symlink: {criteria_path} -> {target.name}")
+    return 0
+
+
+# ---------------------------------------------------------------------------
+# `bible check-proportion` — read-only retroactive SF03 verifier (G6.4)
+# ---------------------------------------------------------------------------
+
+
+def check_proportion_bible(character_dir: str) -> int:
+    """Run the SF03 proportion gate against a character's body turnarounds and
+    print the per-plate verdicts. READ-ONLY — never touches `locked`. rc 1 when
+    the gate would block, rc 0 otherwise.
+
+    This is the retroactive verifier: it re-checks an already-locked Bible (the
+    A4 loop close for sean-anchor's 1:7 re-lock, where a human gate stood in for
+    SF03). A failure here is a FINDING to surface, not something to auto-fix."""
+    from pipeline.agents.proportion_gate import gate_body_turnarounds
+
+    cd = Path(character_dir)
+    if not (cd / "character.yaml").exists():
+        print(f"error: character.yaml not found at {cd}", file=sys.stderr)
+        return 1
+
+    gate = gate_body_turnarounds(cd)
+    if not gate.verdicts:
+        print(f"no body turnarounds to check in {cd / 'turnarounds'}/")
+        return 0
+
+    for rel, verdict in gate.verdicts.items():
+        print(
+            f"{rel}: {verdict.verdict} [{verdict.method}] "
+            f"heads_tall={verdict.heads_tall} — {verdict.detail}"
+        )
+
+    if gate.blocked:
+        print(f"BLOCKED: {gate.reason}", file=sys.stderr)
+        return 1
+    print("OK — all body turnarounds within proportion tolerance (or opted out)")
     return 0
 
 
