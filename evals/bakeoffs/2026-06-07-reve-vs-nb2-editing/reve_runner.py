@@ -87,6 +87,43 @@ _TIER_COST = {  # published per-image USD (report §B; Sean's console screenshot
 }
 
 
+def _reve_debug_log(log_path: str, endpoint: str, tier: str, resp) -> None:
+    """Opt-in, NON-SCORING observability for §5 Test 4 + snapshot pinning.
+
+    Active only when REVE_DEBUG_LOG names a file. Records status / latency /
+    rate-limit + model/build headers, and the response body's non-image scalar
+    fields (image bytes elided), one JSON line per call. Wrapped so a logging
+    failure can NEVER break a costed generation — it does not touch the request,
+    the parse, or the returned ReveResponse.
+    """
+    import json
+    try:
+        hdr_tokens = ("rate", "limit", "remaining", "reset", "retry",
+                      "model", "build", "version", "request-id", "content-type")
+        headers = {k: v for k, v in resp.headers.items()
+                   if any(t in k.lower() for t in hdr_tokens)}
+        body_scalars = None
+        if resp.status_code == 200 and "json" in resp.headers.get("content-type", "").lower():
+            try:
+                data = resp.json()
+                item = (data.get("data") or [{}])[0] if isinstance(data, dict) else {}
+                body_scalars = {
+                    "top_keys": sorted(data.keys()) if isinstance(data, dict) else None,
+                    "item_keys": sorted(item.keys()) if isinstance(item, dict) else None,
+                    "item_nonimage": {k: v for k, v in (item.items() if isinstance(item, dict) else [])
+                                      if k not in ("b64_json", "url") and not isinstance(v, (list, dict))},
+                }
+            except Exception:  # noqa: BLE001
+                body_scalars = {"parse": "non-json-or-error"}
+        rec = {"endpoint": endpoint, "tier": tier, "status": resp.status_code,
+               "elapsed_s": round(resp.elapsed.total_seconds(), 3),
+               "headers": headers, "body": body_scalars}
+        with open(log_path, "a", encoding="utf-8") as f:
+            f.write(json.dumps(rec) + "\n")
+    except Exception:  # noqa: BLE001 — observability must never break the costed path
+        pass
+
+
 def invoke_reve(
     *,
     prompt: str,
@@ -146,6 +183,8 @@ def invoke_reve(
         "Content-Type": "application/json",
     }
     resp = requests.post(f"{_REVE_BASE}{path}", json=payload, headers=headers, timeout=timeout_s)
+    if os.environ.get("REVE_DEBUG_LOG"):
+        _reve_debug_log(os.environ["REVE_DEBUG_LOG"], endpoint, tier, resp)
     if resp.status_code != 200:
         return ReveResponse(output_path, key, False, False, endpoint, cost,
                             exit_code=resp.status_code)
