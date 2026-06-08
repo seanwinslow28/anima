@@ -56,12 +56,15 @@ def test_cli_attach_criteria_text_engages_block(monkeypatch, capsys, _isolated_s
     assert "anchor.png" not in err, f"criteria-text must attach ZERO images:\n{err}"
 
 
-def test_cli_default_runs_blind(monkeypatch, capsys, _isolated_stub_runners):
-    """Without the flag, the default stays reference-blind (the production default) —
-    neither images nor the criteria block attached."""
+def test_cli_default_reflects_shipped_criteria_text(monkeypatch, capsys, _isolated_stub_runners):
+    """The shipped manifest carries attach_criteria_text: true (RATIFIED 2026-06-08), so
+    the no-flag default already engages criteria-text with images off — the production
+    state. (Pre-G6.1b this asserted a bare 'blind' default; that is no longer shipped.
+    The unit-level both-flags-off blind control lives in test_vision_critic_criteria.py.)"""
     _run_worker(monkeypatch)
     err = capsys.readouterr().err
-    assert "refs=[blind (attach_references off)]" in err, err
+    assert "refs=[criteria-text (images off)]" in err, err
+    assert "anchor.png" not in err, f"criteria-text must attach ZERO images:\n{err}"
 
 
 def test_subprocess_cmd_propagates_attach_criteria_text(monkeypatch):
