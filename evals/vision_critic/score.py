@@ -94,6 +94,7 @@ def consensus_scores(runs: list[list[CaseScore]]) -> list[CaseScore]:
             confidence=sum(s.confidence for s in group) / len(group),
             wall_s=sum(s.wall_s for s in group) / len(group),
             reasoning=rep.reasoning,  # prose from the run whose verdict won (aligns with cites)
+            proposed_patches=rep.proposed_patches,  # diffs from the winning run (G6.9, aligns with cites)
         ))
     return out
 
@@ -178,6 +179,23 @@ def render_per_case_detail(scores: list[CaseScore]) -> str:
     for s in scores:
         prose = " ".join(s.reasoning.split()).strip() or "(no reasoning captured)"
         lines.append(f"- **`{s.name}`** ({s.predicted_verdict}, conf {s.confidence:.2f}): {prose}")
+    # G6.9 Gate 0: Em's CONSTRUCTIVE output, rendered as its OWN block (never inside
+    # a table cell — patch values are free prose). A defect case with no captured diff
+    # is itself signal (Em flagged but proposed no fix), so it is surfaced explicitly.
+    lines += ["", "### Proposed diffs (per case) — G6.9 Gate 0 capture", ""]
+    any_diff = False
+    for s in scores:
+        if not s.proposed_patches:
+            continue
+        any_diff = True
+        lines.append(f"- **`{s.name}`** ({s.predicted_verdict}):")
+        for d in s.proposed_patches:
+            cites = ", ".join(d.get("cites_criteria") or []) or "(none)"
+            val = " ".join(str(d.get("value", "")).split()).strip() or "(empty)"
+            lines.append(f"    - `{d.get('path')}` [{d.get('operation')}] → {val}  "
+                         f"· cites: {cites}")
+    if not any_diff:
+        lines.append("- (no diffs captured this run)")
     lines.append("")
     return "\n".join(lines)
 
@@ -249,7 +267,16 @@ def _force_stub_runners() -> None:
         "verdict": "borderline",
         "confidence": 0.78,
         "reasoning": "STUB (--stub forced credential-free path; no scored claim).",
-        "proposed_patches": [],
+        # G6.9 Gate 0: a flagged stub verdict stages a representative diff so the
+        # --dump-patches pre-flight and the stub harness exercise CAPTURE, not [].
+        "proposed_patches": [{
+            "target": "manifest.lock.yaml",
+            "path": "generation.prompt_clause",
+            "operation": "set",
+            "value": "STUB corrective clause (no scored claim)",
+            "rationale": "STUB diff (credential-free path)",
+            "cites_criteria": ["AC01"],
+        }],
         "cites_criteria": ["AC01"],
     })
 
@@ -298,6 +325,10 @@ def _score_one(case: dict, manifest: dict, criteria) -> CaseScore:
         confidence=result.outputs["confidence"],
         wall_s=wall,
         reasoning=result.outputs.get("reasoning", ""),  # G6.2: persist Em's prose
+        # G6.9 Gate 0: capture Em's CONSTRUCTIVE output (the prompt diffs). Frozen
+        # Patch -> plain dict so the asdict<->CaseScore(**) subprocess round-trip
+        # survives. This is the site that silently dropped diffs before G6.9.
+        proposed_patches=[asdict(p) for p in result.proposed_patches],
         # `refs` (resolved reference plate names) is logged per-case for trace
         # transparency — see the print() in main()'s loop below.
     )
@@ -490,6 +521,13 @@ def main() -> None:
                          "run() would, honoring --attach-criteria-text / --attach-references), "
                          "print it to stdout, and EXIT before any model call. $0 pre-flight "
                          "gate — proves the criteria block reaches Em without spending.")
+    ap.add_argument("--dump-patches", action="store_true",
+                    help="With --only (+ --stub): run the critic, print the CAPTURED "
+                         "proposed_patches, assert non-empty for a flagged case, and EXIT. "
+                         "$0 pre-flight gate (G6.9 §0) — proves Gate 0's diff capture is "
+                         "wired before any costed diff-eval run, the way --dump-prompt "
+                         "proves the criteria block reaches Em. Under --stub no model is "
+                         "called; exits non-zero if a defect case captured no diffs.")
     args = ap.parse_args()
 
     # Env-hygiene guard (operational incident #1, 2026-06-02). A present
@@ -553,6 +591,22 @@ def main() -> None:
             t2_cfg = node._t2_config(ctx)
             refs = node._resolve_references(ctx) if node._attach_references(t2_cfg) else []
             print(node._build_prompt(ctx, t2_cfg, n_references=len(refs)))
+            return
+        if args.dump_patches:
+            # $0 pre-flight gate (G6.9 §0): run the (stubbed) critic, print the
+            # CAPTURED proposed_patches, and assert non-empty for a flagged case,
+            # then EXIT. With --stub no model is called, so this proves Gate 0's
+            # capture is wired before any costed diff-eval run. The 2026-06-07
+            # "measured nothing because a flag was silently off" failure mode dies here.
+            cs = _score_one(case, manifest, criteria)
+            print(json.dumps(cs.proposed_patches, indent=2))
+            flagged = case["expected_verdict"] in {"fail", "borderline"}
+            if flagged and not cs.proposed_patches:
+                print(f"PREFLIGHT FAIL: defect case {case['name']} captured NO diffs — "
+                      "Gate 0 wiring is dropping proposed_patches.", file=sys.stderr)
+                raise SystemExit(4)
+            print(f"PREFLIGHT OK: captured {len(cs.proposed_patches)} diff(s) for "
+                  f"{case['name']} ({'flagged' if flagged else 'clean'}).", file=sys.stderr)
             return
         try:
             cs = _score_one(case, manifest, criteria)

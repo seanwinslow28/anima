@@ -104,6 +104,13 @@ class CaseScore:
                           # the per-case diagnostic trace; never scored. Default ""
                           # keeps positional constructors + the asdict<->CaseScore(**)
                           # subprocess round-trip (score.py) back-compatible.
+    proposed_patches: list[dict] = field(default_factory=list)
+    # Em's CONSTRUCTIVE output (G6.9 Gate 0): the prompt diffs she stages, captured
+    # for the diff-eval axis (Gate 2/3). Plain dicts (never the frozen Patch), so the
+    # asdict<->CaseScore(**) subprocess round-trip survives. The verdict + citation
+    # scorers above never read this; default [] keeps the round-trip + positional
+    # construction safe. Each dict mirrors patch_stager: target / path / operation /
+    # value / rationale / proposed_by / cites_criteria.
 
     @property
     def expected_defect(self) -> bool:
@@ -214,6 +221,31 @@ def cites_correctness(*, predicted: str, expected_cites: list[str],
     if codes & {c.strip().upper() for c in actual_cites}:
         return _PARTIAL_CREDIT
     return 0.0
+
+
+def diff_cite_precision_recall(*, predicted_cites: list[str],
+                               expected_cites: list[str]) -> dict:
+    """Cite grounding for a PROMPT DIFF — precision AND recall (G6.9, locked #4).
+
+    DISTINCT from the verdict's recall-only `cites_correctness`: a diff that cites
+    the 1 right rule beats one that cites 5 incl. 2 irrelevant, so precision matters.
+    Both citation sets are leaf-normalized (namespace/format-insensitive, leaf-exact)
+    via the same `normalize_cite` the verdict scorer uses, so a diff and a verdict
+    citing the same handle can never disagree on whether it matched.
+
+    Returns {precision, recall, tp, predicted_n, expected_n}:
+      - precision = |pred ∩ exp| / |pred|, or 0.0 when the diff cites nothing
+        (an ungrounded diff grounds nothing — never vacuously 1.0).
+      - recall    = |pred ∩ exp| / |exp|, or None when no criterion is expected
+        (N/A — caller excludes it from the recall mean).
+    """
+    pred = {normalize_cite(c) for c in predicted_cites if c and c.strip()}
+    exp = {normalize_cite(c) for c in expected_cites if c and c.strip()}
+    tp = len(pred & exp)
+    precision = (tp / len(pred)) if pred else 0.0
+    recall = (tp / len(exp)) if exp else None
+    return {"precision": precision, "recall": recall, "tp": tp,
+            "predicted_n": len(pred), "expected_n": len(exp)}
 
 
 def stderr(*, p: float, n: int) -> float:
