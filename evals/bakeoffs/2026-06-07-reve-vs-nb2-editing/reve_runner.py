@@ -42,8 +42,13 @@ _REVE_REMIX_PATH = "/v1/image/remix"   # VERIFIED: {prompt, reference_images (li
 # the reve-fast variant runs — the runner REFUSES fast with an unknown version rather than
 # silently running standard (which would misreport fast results).
 _REVE_VERSION = {
+    # None => omit `version` => API default (= standard, reve-*@20250915, 30 credits).
     "standard": {"edit": None, "remix": None},
-    "fast": {"edit": None, "remix": None},   # TODO(sean): fill fast version strings from console
+    # Fast version strings — VERIFIED live 2026-06-08, both bill 5 credits (~$0.007):
+    #   edit-fast 7.3s, remix-fast 8.4s (vs ~16-24s standard). From the Reve Edit API doc
+    #   (docs/Edit-API-String.md: valid versions latest-fast/latest/reve-edit-fast@20251030/
+    #   reve-edit@20250915) + an empirically-confirmed analogous remix-fast string.
+    "fast": {"edit": "reve-edit-fast@20251030", "remix": "reve-remix-fast@20251030"},
 }
 _REQUEST_TIMEOUT_S = 120
 
