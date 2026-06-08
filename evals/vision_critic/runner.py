@@ -19,6 +19,7 @@ from evals.vision_critic.scoring import (
     precision_recall,
     segment_report,
     cites_correctness,
+    normalize_cite,
     stderr,
 )
 
@@ -78,21 +79,94 @@ def test_segment_report_splits_classes():
     assert rep["performs"]["cm"]["tn"] == 1
 
 
-def test_cites_correctness_requires_one_expected_hit():
-    # flagged + cites a correct criterion → correct.
+def test_cites_correctness_full_partial_none():
+    # flagged + leaf-exact IR handle → FULL credit (1.0).
     assert cites_correctness(
-        predicted="fail", expected_cites=["IR.sean.proportion.x", "SF02"],
-        actual_cites=["SF02"],
-    ) is True
-    # flagged but cites nothing relevant → incorrect.
+        predicted="fail", expected_cites=["IR.sean.proportion.head-to-body-1-to-7"],
+        actual_cites=["IR.sean.proportion.head-to-body-1-to-7"], expected_verdict="fail",
+    ) == 1.0
+    # flagged but cites an unrelated handle → NONE (0.0).
     assert cites_correctness(
-        predicted="fail", expected_cites=["IR.sean.proportion.x"],
-        actual_cites=["AC99"],
-    ) is False
+        predicted="fail", expected_cites=["IR.sean.proportion.head-to-body-1-to-7"],
+        actual_cites=["IR.sean.style.cream-paper-texture-grain"], expected_verdict="fail",
+    ) == 0.0
     # pass verdict → citation correctness is N/A (None).
     assert cites_correctness(
-        predicted="pass", expected_cites=[], actual_cites=[],
+        predicted="pass", expected_cites=[], actual_cites=[], expected_verdict="pass",
     ) is None
+
+
+def test_cites_correctness_namespace_format_recovery():
+    """The proportion near-miss the matcher recovers: namespace (sean-anchor->sean)
+    + number format (1-7 <-> 1-to-7) drift, leaf otherwise identical. FULL credit."""
+    assert cites_correctness(
+        predicted="fail", expected_cites=["IR.sean.proportion.head-to-body-1-to-7"],
+        actual_cites=["IR.sean-anchor.proportion.head-to-body-1-7"], expected_verdict="fail",
+    ) == 1.0
+
+
+def test_cites_correctness_wrong_leaf_still_fails():
+    """Leaf normalization is namespace/format-insensitive but leaf-EXACT — a wrong
+    or incomplete leaf never matches (it measures 'right criterion', not a loosener)."""
+    # Different proportion leaf (shoulder-width vs head-to-body) → not full.
+    assert cites_correctness(
+        predicted="fail", expected_cites=["IR.sean.proportion.head-to-body-1-to-7"],
+        actual_cites=["IR.sean.proportion.shoulder-width-1-5-head-widths"], expected_verdict="fail",
+    ) == 0.0
+    # Truncated leaf (missing the ratio) → not full (a less-specific concept).
+    assert cites_correctness(
+        predicted="fail", expected_cites=["IR.sean.proportion.head-to-body-1-to-7"],
+        actual_cites=["IR.sean-anchor.proportion.head-to-body"], expected_verdict="fail",
+    ) == 0.0
+
+
+def test_cites_correctness_partial_reason_code():
+    """Em reflexively pairs the right manifest QA code on a geometry defect; credit
+    it as PARTIAL grounding (0.5), not zero. proportion->SF03, view->HF03."""
+    assert cites_correctness(
+        predicted="fail", expected_cites=["IR.sean.proportion.head-to-body-1-to-7"],
+        actual_cites=["SF03"], expected_verdict="fail",
+    ) == 0.5
+    assert cites_correctness(
+        predicted="fail", expected_cites=["IR.sean.view.declared-view-matches-drawn"],
+        actual_cites=["HF03"], expected_verdict="fail",
+    ) == 0.5
+    # A reason-code for the WRONG class earns nothing.
+    assert cites_correctness(
+        predicted="fail", expected_cites=["IR.sean.proportion.head-to-body-1-to-7"],
+        actual_cites=["HF03"], expected_verdict="fail",
+    ) == 0.0
+    # anatomy/style have NO partial reason-code (must cite the real handle now).
+    assert cites_correctness(
+        predicted="fail", expected_cites=["IR.sean.anatomy.finger-count-five-per-hand"],
+        actual_cites=["HF04"], expected_verdict="fail",
+    ) == 0.0
+
+
+def test_cites_correctness_clean_false_positive_scores_none():
+    """G6.1 clean-c06 quirk fix: a clean fixture (expected pass) that Em wrongly
+    FLAGS grounds nothing — score none (0.0), not credit. Previously a non-empty
+    cite on an FP returned True."""
+    assert cites_correctness(
+        predicted="fail", expected_cites=[], actual_cites=["IR.sean.prop.stylus-right-hand-always"],
+        expected_verdict="pass",
+    ) == 0.0
+    # Contrast: a real defect with no declared expected cite, flagged with a cite,
+    # still satisfies the invariant → full.
+    assert cites_correctness(
+        predicted="fail", expected_cites=[], actual_cites=["IR.sean.style.cream-paper-texture-grain"],
+        expected_verdict="fail",
+    ) == 1.0
+
+
+def test_normalize_cite_collapses_namespace_and_format():
+    # IR.sean / IR.sean-anchor / bare category-led all collapse to category.leaf.
+    assert normalize_cite("IR.sean.proportion.head-to-body-1-to-7") == "proportion.head-to-body-1-7"
+    assert normalize_cite("IR.sean-anchor.proportion.head-to-body-1-7") == "proportion.head-to-body-1-7"
+    # Leaf preserved exactly (no over-collapse).
+    assert normalize_cite("IR.sean.view.front-symmetry") == "view.front-symmetry"
+    assert normalize_cite("IR.sean.view.declared-view-matches-drawn") != \
+        normalize_cite("view.declared-view-matches-drawn-view")  # trailing -view differs
 
 
 def test_stderr_of_proportion():

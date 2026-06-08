@@ -54,9 +54,16 @@ VALID_IMPACT_TAGS = frozenset({
 # (identity, proportion, tone). Em loads style register before identity rules
 # and routes its citation rubric against this vocab when judging Phase 5 + 6
 # frames against the Bible.
+# `view` added 2026-06-07 (G6.1 citation grounding): view-correctness is a
+# first-class geometry class in the layer-ownership map (CLAUDE.md), owned by
+# the Bible-lock in production. Em was already inventing `IR.sean.view.*` /
+# `view.*` handles in her citations with no rule to ground against (the
+# 2026-06-04 instrumented mini-run, Q3); authoring real `IR.sean.view.*` rules
+# requires `view` in this closed vocab. A deliberate vocabulary expansion, not
+# an inline tweak — paired with the eval rules in characters/sean-anchor/.
 VALID_IR_CATEGORIES = frozenset({
     "anatomy", "hair", "face", "proportion", "palette",
-    "costume", "prop", "pose", "motion", "style",
+    "costume", "prop", "pose", "motion", "style", "view",
 })
 
 # Mnemonic ID pattern: AC.{category}.{handle}. Category is one of the closed

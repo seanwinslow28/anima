@@ -33,7 +33,7 @@ from pipeline.agents import AgentContext
 from pipeline.agents.vision_critic import VisionCriticNode, EmptyCitesInvariant
 from pipeline.agents.reference_selection import select_references
 from pipeline.contact_sheet import build_contact_sheet  # noqa: F401 (cases pre-build sheets)
-from evals.vision_critic.scoring import CaseScore, segment_report, cites_correctness
+from evals.vision_critic.scoring import CaseScore, segment_report
 from evals.vision_critic.conftest import merged_criteria
 
 HERE = Path(__file__).parent
@@ -160,10 +160,16 @@ def render_per_case_detail(scores: list[CaseScore]) -> str:
              "| case | class | expected | predicted | expected_cites | actual_cites | cites_correct | conf |",
              "|---|---|---|---|---|---|---|---|"]
     for s in scores:
-        cc = cites_correctness(predicted=s.predicted_verdict,
-                               expected_cites=s.expected_cites,
-                               actual_cites=s.actual_cites)
-        cc_str = "n/a" if cc is None else ("yes" if cc else "**NO**")
+        # G6.1 tiered citation credit (None=n/a, 1.0=yes/full, 0.5=~partial, 0.0=NO).
+        cc = s.citation_credit
+        if cc is None:
+            cc_str = "n/a"
+        elif cc == 1.0:
+            cc_str = "yes"
+        elif cc > 0.0:
+            cc_str = "~part"
+        else:
+            cc_str = "**NO**"
         exp = ", ".join(s.expected_cites) or "—"
         act = ", ".join(s.actual_cites) or "—"
         lines.append(f"| `{s.name}` | {s.case_class} | {s.expected_verdict} | "
@@ -197,15 +203,22 @@ def render_replication_md(runs: list[list[CaseScore]]) -> str:
     return "\n".join(lines)
 
 
-def _refs_label(case: dict, manifest: dict, attach_refs: bool) -> str:
-    """Trace label for the reference bundle (A1 honesty). 'blind' when
-    attach_references is off (production default) — the trace must never list refs
-    Em did not actually see."""
-    if not attach_refs:
-        return "blind (attach_references off)"
-    refs = select_references(case.get("character_id", "sean"), case["checkpoint"],
-                             case["beat_description"], characters_root=Path(manifest["characters_root"]))
-    return ", ".join(p.name for p in refs) or "none"
+def _refs_label(case: dict, manifest: dict, attach_refs: bool,
+                attach_criteria_text: bool = False) -> str:
+    """Trace label for the attachment state (A1/G6.1b honesty) — three states, the
+    trace must never claim more than Em actually saw:
+      - attach_refs ON           -> the actual reference-plate filenames (images + criteria)
+      - refs OFF, criteria-text ON -> 'criteria-text (images off)'
+      - both OFF                  -> 'blind (attach_references off)' (production default)
+    Criteria-text mode must NEVER print 'blind' — that was the prior run's invisible
+    miss (the criteria block was inert and the trace still read blind)."""
+    if attach_refs:
+        refs = select_references(case.get("character_id", "sean"), case["checkpoint"],
+                                 case["beat_description"], characters_root=Path(manifest["characters_root"]))
+        return ", ".join(p.name for p in refs) or "none"
+    if attach_criteria_text:
+        return "criteria-text (images off)"
+    return "blind (attach_references off)"
 
 
 def _manifest() -> dict:
@@ -290,6 +303,20 @@ def _score_one(case: dict, manifest: dict, criteria) -> CaseScore:
     )
 
 
+def _cites_line(b: dict) -> str:
+    """The citation axis (G6.1), reported apart from the verdict axis above:
+    the graded cites-correct mean plus the full / partial / none breakdown so a
+    right-verdict-wrong-cite case is legible. `cites_correct` is graded (full=1.0,
+    partial=0.5); n is the flagged-case denominator (pass verdicts are N/A)."""
+    if b.get("cites_correct") is None:
+        return "- cites-correct (citation axis): n/a (no flagged cases)"
+    return (
+        f"- **cites-correct (citation axis)={b['cites_correct']:.2f}** "
+        f"over n={b['cites_scored_n']} flagged "
+        f"(full={b['cites_full']} · partial={b['cites_partial']} · none={b['cites_none']})"
+    )
+
+
 def render_last_run_md(report: dict, *, model_label: str, n_total: int) -> str:
     """Render the segmented confusion matrix as studio-manual markdown."""
     def block(title: str, b: dict) -> str:
@@ -304,9 +331,7 @@ def render_last_run_md(report: dict, *, model_label: str, n_total: int) -> str:
             f"(false passes: {', '.join(b['false_passes']) or 'none'})",
             f"- 3-way exact agreement={b['exact_agreement']:.2f}",
             f"- borderline->fail slippages: {', '.join(b['borderline_slippages']) or 'none'}",
-            f"- cites-correct: "
-            f"{b['cites_correct']:.2f}" if b['cites_correct'] is not None else
-            f"- cites-correct: n/a",
+            _cites_line(b),
             f"- mean wall: {b['mean_wall_s']:.1f}s",
             "",
         ]
@@ -365,7 +390,8 @@ def _select_cases(segment: str, motion_smoke: int) -> tuple[list[dict], list[dic
     return performs + motion[:motion_smoke], motion[motion_smoke:]
 
 
-def _run_case_subprocess(case: dict, stub: bool, attach_references: bool = False) -> CaseScore:
+def _run_case_subprocess(case: dict, stub: bool, attach_references: bool = False,
+                         attach_criteria_text: bool = False) -> CaseScore:
     """Run ONE case in a fresh Python process and parse its emitted CaseScore.
 
     The worker re-loads manifest + criteria + the worktree .env (GEMINI/FAL only,
@@ -382,6 +408,8 @@ def _run_case_subprocess(case: dict, stub: bool, attach_references: bool = False
         cmd.append("--stub")
     if attach_references:
         cmd.append("--attach-references")
+    if attach_criteria_text:
+        cmd.append("--attach-criteria-text")
     proc = subprocess.run(
         cmd, capture_output=True, text=True, timeout=_PER_CASE_TIMEOUT_S,
         cwd=str(HERE.parents[1]),  # repo root: find_dotenv + relative bible paths resolve
@@ -449,6 +477,19 @@ def main() -> None:
                          "trace label can never claim references a blind worker didn't "
                          "actually attach. Default off = reference-blind (the production "
                          "default). For the diagnostic references re-test only.")
+    ap.add_argument("--attach-criteria-text", action="store_true",
+                    help="Run-scoped override: attach the IR/AC criteria block (the text "
+                         "handles Em cites) WITHOUT reference images, for THIS run only "
+                         "(critics.t2.attach_criteria_text=true). Independent of "
+                         "--attach-references — decoupled in G6.1b after the 2026-06-07 "
+                         "re-baseline proved the criteria block was inert reference-blind. "
+                         "Propagated to every per-case worker so the trace can't claim a "
+                         "criteria block a blind worker never saw. Repo default stays off.")
+    ap.add_argument("--dump-prompt", action="store_true",
+                    help="With --only: build the prompt for that one case (exactly as "
+                         "run() would, honoring --attach-criteria-text / --attach-references), "
+                         "print it to stdout, and EXIT before any model call. $0 pre-flight "
+                         "gate — proves the criteria block reaches Em without spending.")
     args = ap.parse_args()
 
     # Env-hygiene guard (operational incident #1, 2026-06-02). A present
@@ -481,10 +522,16 @@ def main() -> None:
     # (_run_case_subprocess) — never enabled by a committed manifest change.
     if args.attach_references:
         manifest.setdefault("critics", {}).setdefault("t2", {})["attach_references"] = True
-    # Trace-honesty (A1): only claim references in the log when Em actually attaches
-    # them. attach_references defaults off (reference-blind is production), so the
-    # trace must not list refs Em never saw.
+    # Run-scoped criteria-text override (--attach-criteria-text, G6.1b). Same single
+    # enable point as --attach-references and equally forwarded to the worker cmd —
+    # but it attaches ONLY the criteria block (text handles), zero reference images.
+    if args.attach_criteria_text:
+        manifest.setdefault("critics", {}).setdefault("t2", {})["attach_criteria_text"] = True
+    # Trace-honesty (A1/G6.1b): only claim in the log what Em actually attaches.
+    # attach_references defaults off (reference-blind is production); attach_criteria_text
+    # defaults off. The trace must not list refs/criteria Em never saw.
     attach_refs = bool(manifest.get("critics", {}).get("t2", {}).get("attach_references", False))
+    attach_criteria_text = bool(manifest.get("critics", {}).get("t2", {}).get("attach_criteria_text", False))
 
     # ---- worker mode: run one case in this process, emit JSON, exit ----
     if args.only:
@@ -495,6 +542,18 @@ def main() -> None:
         if case is None:
             print(f"unknown case: {args.only}", file=sys.stderr)
             raise SystemExit(2)
+        if args.dump_prompt:
+            # $0 pre-flight gate (G6.1b §0): build the prompt EXACTLY as run() would
+            # (mirrors run() lines 129-131 — references gate on attach_references
+            # alone) and exit before any model call. In criteria-text mode the
+            # reference images stay off, so n_references == 0 and no "Reference
+            # plates" section appears — the decoupling guarantee, observable in the dump.
+            node = VisionCriticNode()
+            ctx = _ctx(case, manifest, criteria)
+            t2_cfg = node._t2_config(ctx)
+            refs = node._resolve_references(ctx) if node._attach_references(t2_cfg) else []
+            print(node._build_prompt(ctx, t2_cfg, n_references=len(refs)))
+            return
         try:
             cs = _score_one(case, manifest, criteria)
         except EmptyCitesInvariant as inv:
@@ -515,7 +574,7 @@ def main() -> None:
                 reasoning=f"[INVARIANT_TRIPPED empty-cites] {inv.reasoning}",
             )
         print(f"{args.only}: {cs.predicted_verdict} (conf={cs.confidence:.2f}, "
-              f"{cs.wall_s:.0f}s) refs=[{_refs_label(case, manifest, attach_refs)}]",
+              f"{cs.wall_s:.0f}s) refs=[{_refs_label(case, manifest, attach_refs, attach_criteria_text)}]",
               file=sys.stderr, flush=True)
         # Flush the verdict BEFORE returning, so a teardown crash can't lose it.
         print(_CASESCORE_SENTINEL + json.dumps(asdict(cs)), flush=True)
@@ -531,8 +590,14 @@ def main() -> None:
     # model (gemini_api_runner.GEMINI_VISION_MODEL), holding it constant vs the 0.62.
     from pipeline.agents.gemini_api_runner import GEMINI_VISION_MODEL
     gemini_model = GEMINI_VISION_MODEL if transport == "gemini_api" else "gemini-3.5-flash"
+    # Attach-mode label rides into the trace header (G6.1b trace honesty) — the
+    # persistent .md must record which lever was on, never read "blind" when
+    # criteria-text was attached.
+    attach_mode = ("references (images+criteria)" if attach_refs
+                   else "criteria-text (images off)" if attach_criteria_text
+                   else "reference-blind")
     model_label = ("STUB (no scored claim)" if args.stub
-                   else f"production: {gemini_model}@{transport} + opus-4.7-escalation")
+                   else f"production: {gemini_model}@{transport} + opus-4.7-escalation [{attach_mode}]")
 
     n_runs = max(1, args.runs)
     runs: list[list[CaseScore]] = []
@@ -542,11 +607,12 @@ def main() -> None:
         run_tag = f"run {run_idx + 1}/{n_runs} | " if n_runs > 1 else ""
         for i, c in enumerate(selected, 1):
             try:
-                cs = _run_case_subprocess(c, args.stub, args.attach_references)
+                cs = _run_case_subprocess(c, args.stub, args.attach_references,
+                                          args.attach_criteria_text)
                 pass_scores.append(cs)
                 print(f"[{run_tag}{i}/{len(selected)}] {c['name']}: {cs.predicted_verdict} "
                       f"(conf={cs.confidence:.2f}, {cs.wall_s:.0f}s) "
-                      f"refs=[{_refs_label(c, manifest, attach_refs)}]", flush=True)
+                      f"refs=[{_refs_label(c, manifest, attach_refs, attach_criteria_text)}]", flush=True)
             except subprocess.TimeoutExpired:
                 errored.append((c["name"], f"{run_tag}timeout after {_PER_CASE_TIMEOUT_S}s"))
                 print(f"[{run_tag}{i}/{len(selected)}] {c['name']}: ERRORED — timeout", flush=True)

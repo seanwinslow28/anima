@@ -228,6 +228,20 @@ class VisionCriticNode:
         run() (reference bundle) and _build_prompt() (criteria block) read it."""
         return bool(t2_cfg.get("attach_references", False))
 
+    def _attach_criteria_text(self, t2_cfg: dict) -> bool:
+        """Whether to attach the IR/AC criteria block (the text handles Em cites),
+        INDEPENDENT of reference images. Default False.
+
+        Decoupled from attach_references (G6.1b, 2026-06-07): the 2026-06-07
+        re-baseline proved the criteria block was inert reference-blind because it
+        shared the attach_references gate, so the authored G6.1 handles never
+        reached Em. This flag surfaces the criteria text to ground Em's citations
+        WITHOUT attaching reference images — sidestepping the 2026-06-04
+        reference-image precision regression. _build_prompt() attaches the block on
+        (this OR attach_references); run()'s image bundle stays gated on
+        attach_references alone, so this flag attaches zero images."""
+        return bool(t2_cfg.get("attach_criteria_text", False))
+
     def _vision_transport(self, t2_cfg: dict):
         """Return the configured T2 Gemini transport coroutine. Defaults to agy
         (today's behavior); critics.t2.transport: gemini_api routes to the
@@ -283,17 +297,26 @@ class VisionCriticNode:
         if not rules:
             return None
         lines = [
-            "## Character Bible rules (cite these by ID)",
+            "## Character Bible rules — CITE THESE EXACT IDs",
             "",
-            "These are the locked identity/style rules for this character at this "
-            "checkpoint. When you flag drift, CITE the rule IDs you observe drift on "
-            "in `cites_criteria` (e.g. \"IR.sean.face.jaw-line-angular-not-rounded\"). "
-            "Cite only what you actually see drift on; a rule the references confirm "
-            "is honored is not a citation.",
+            "These are the locked identity/style/geometry rules for this character "
+            "at this checkpoint. When you flag drift, put the EXACT rule ID(s) you "
+            "observe drift on into `cites_criteria` — copy the handle verbatim from "
+            "the list below (e.g. \"IR.sean.style.construction-lines-visible-beneath-final\"). "
+            "Do NOT substitute a generic QA reason-code (HF01-HF05 / SF01-SF05) and "
+            "do NOT invent a handle that is not in this list: if a rule below covers "
+            "what you see, its ID is the citation. Cite only what you actually see "
+            "drift on; a rule the frame honors is not a citation. "
+            "Every rule below is citeable — construction-lines and shading register "
+            "under `IR.sean.style.*`, proportion/view/anatomy geometry under their "
+            "own handles — so a flagged defect should always name a real ID here, "
+            "never a bare HF/SF code.",
             "",
         ]
         for c in rules:
-            lines.append(f"- `{c.id}` ({c.impact_tag}): {c.description}")
+            # Lead with the bare handle for salience against the HF/SF vocabulary
+            # Em otherwise reaches for (G6.1 citation grounding).
+            lines.append(f"- `{c.id}`  —  ({c.impact_tag}) {c.description}")
         return "\n".join(lines)
 
     def _build_prompt(self, ctx: AgentContext, t2_cfg: dict, n_references: int = 0) -> str:
@@ -366,10 +389,11 @@ class VisionCriticNode:
             )
 
         # Bible criteria (IR.*/AC.*) for this character at this checkpoint's phase —
-        # the criteria half of "give Em the Bible" (spec §5.3). Flag-gated with the
-        # reference bundle (A1): reference-blind by default, attached only when
-        # critics.t2.attach_references is true.
-        if self._attach_references(t2_cfg):
+        # the criteria half of "give Em the Bible" (spec §5.3). Attached when EITHER
+        # flag is set (G6.1b decoupling): attach_criteria_text surfaces the text
+        # handles WITHOUT reference images; attach_references (the legacy path)
+        # attaches both. Reference-blind by default — neither flag set ⇒ no block.
+        if self._attach_criteria_text(t2_cfg) or self._attach_references(t2_cfg):
             criteria_block = self._criteria_block(ctx)
             if criteria_block:
                 sections.append(criteria_block)
