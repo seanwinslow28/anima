@@ -316,7 +316,7 @@ cases:
   # ============================================================
   - name: proportion-pd1-chibi-idle
     golden_diff: "drawn at natural adult proportions, about seven heads tall"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: P-D1
     pair: C01
     character_id: sean
@@ -335,7 +335,7 @@ cases:
 
   - name: proportion-pd2-chibi-idle-2
     golden_diff: "drawn at natural adult proportions, about seven heads tall"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: P-D2
     pair: C01
     character_id: sean
@@ -354,7 +354,7 @@ cases:
 
   - name: proportion-pd3-elongated-walk
     golden_diff: "drawn at natural adult proportions, about seven heads tall"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: P-D3
     pair: C03
     character_id: sean
@@ -373,7 +373,7 @@ cases:
 
   - name: proportion-pb2-borderline-over
     golden_diff: "drawn at the canonical 1-to-7 head-to-body proportion"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: P-B2
     pair: C01
     character_id: sean
@@ -392,7 +392,7 @@ cases:
 
   - name: proportion-pb1-borderline-under
     golden_diff: "drawn at the canonical 1-to-7 head-to-body proportion"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: P-B1
     pair: C01
     character_id: sean
@@ -420,7 +420,7 @@ cases:
   # ============================================================
   - name: view-vd1-declared-3quarter-drawn-profile
     golden_diff: "left profile, full body visible"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: V-D1
     pair: C02
     character_id: sean
@@ -439,7 +439,7 @@ cases:
 
   - name: view-vd2-declared-front-drawn-3quarter
     golden_diff: "three-quarter view"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: V-D2
     pair: C07
     character_id: sean
@@ -458,7 +458,7 @@ cases:
 
   - name: view-vd3-declared-left-drawn-right
     golden_diff: "right profile"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: V-D3
     pair: C09
     character_id: sean
@@ -477,7 +477,7 @@ cases:
 
   - name: view-vd4-declared-back-drawn-3quarter-back
     golden_diff: "three-quarter back angle, full body visible"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: V-D4
     pair: C05
     character_id: sean
@@ -496,7 +496,7 @@ cases:
 
   - name: view-vb1-borderline-60deg
     golden_diff: "turned about sixty degrees from camera, between a three-quarter view and a profile"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: V-B1
     pair: C08
     character_id: sean
@@ -522,7 +522,7 @@ cases:
   # ============================================================
   - name: anatomy-ad1-six-fingers
     golden_diff: "with five fingers on each hand"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: A-D1
     pair: C13
     character_id: sean
@@ -541,7 +541,7 @@ cases:
 
   - name: anatomy-ad2-fused-hand
     golden_diff: "with a correctly formed hand showing five distinct fingers"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: A-D2
     pair: C02
     character_id: sean
@@ -560,7 +560,7 @@ cases:
 
   - name: anatomy-ad3-third-arm
     golden_diff: "with the correct two arms"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: A-D3
     pair: C01
     character_id: sean
@@ -579,7 +579,7 @@ cases:
 
   - name: anatomy-ad4-missing-leg
     golden_diff: "with both legs visible"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: A-D4
     pair: C16
     character_id: sean
@@ -601,7 +601,7 @@ cases:
   # ============================================================
   - name: palette-pad1-monochrome
     golden_diff: "rendered in the full reference color palette with light hand-painted color wash"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: PA-D1
     pair: C07
     character_id: sean
@@ -620,7 +620,7 @@ cases:
 
   - name: palette-pad2-red-shirt
     golden_diff: "wearing a navy-blue crew-neck t-shirt"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: PA-D2
     pair: C13
     character_id: sean
@@ -638,8 +638,8 @@ cases:
     sean_note: "Ratified 2026-06-03. Proven in the corpus prompt test. Single garment color swap."
 
   - name: palette-pad3-brown-hair
-    golden_diff: "with sandy-blonde hair"
-    golden_diff_ratified: false
+    golden_diff: "with dirty-blonde hair"
+    golden_diff_ratified: true
     corpus_id: PA-D3
     pair: C08
     character_id: sean
@@ -658,7 +658,7 @@ cases:
 
   - name: palette-pad4-oversaturated
     golden_diff: "rendered in the muted reference color palette at natural saturation"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: PA-D4
     pair: C01
     character_id: sean
@@ -677,7 +677,7 @@ cases:
 
   - name: palette-pad5-brown-jeans-white-sneakers
     golden_diff: "wearing cool-gray jeans, with sneakers in their reference color"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: PA-D5
     pair: C03
     character_id: sean
@@ -696,7 +696,7 @@ cases:
 
   - name: palette-pad6-brown-hair-beard
     golden_diff: "with dirty-blonde tousled hair and light stubble"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: PA-D6
     pair: C08
     character_id: sean
@@ -718,7 +718,7 @@ cases:
   # ============================================================
   - name: construction-cld1-clean-final-portrait
     golden_diff: "with light construction lines visible beneath the final pencil line"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: CL-D1
     pair: C07
     character_id: sean
@@ -737,7 +737,7 @@ cases:
 
   - name: construction-cld2-vector-cel-idle
     golden_diff: "with light construction lines visible beneath the final pencil line"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: CL-D2
     pair: C01
     character_id: sean
@@ -756,7 +756,7 @@ cases:
 
   - name: construction-cld3-clean-final-3quarter
     golden_diff: "with light construction lines visible beneath the final pencil line"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: CL-D3
     pair: C08
     character_id: sean
@@ -775,7 +775,7 @@ cases:
 
   - name: construction-cld4-clean-final-drawing-desk
     golden_diff: "with light construction lines visible beneath the final pencil line"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: CL-D4
     pair: C14
     character_id: sean
@@ -794,7 +794,7 @@ cases:
 
   - name: construction-clb1-faintest-trace
     golden_diff: "with light construction lines clearly visible beneath the final pencil line"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: CL-B1
     pair: C07
     character_id: sean
@@ -816,7 +816,7 @@ cases:
   # ============================================================
   - name: shading-shd1-photographic
     golden_diff: "shaded with cross-hatch pencil shading"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: SH-D1
     pair: C07
     character_id: sean
@@ -835,7 +835,7 @@ cases:
 
   - name: shading-shd2-anime-cel
     golden_diff: "shaded with cross-hatch pencil shading"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: SH-D2
     pair: C08
     character_id: sean
@@ -854,7 +854,7 @@ cases:
 
   - name: shading-shd3-flat-no-shading
     golden_diff: "shaded with cross-hatch pencil shading"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: SH-D3
     pair: C01
     character_id: sean
@@ -873,7 +873,7 @@ cases:
 
   - name: shading-shd4-airbrush-gloss
     golden_diff: "shaded with cross-hatch pencil shading"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: SH-D4
     pair: C03
     character_id: sean
@@ -892,7 +892,7 @@ cases:
 
   - name: shading-shb1-too-smooth
     golden_diff: "shaded with visible cross-hatch pencil tooth"
-    golden_diff_ratified: false
+    golden_diff_ratified: true
     corpus_id: SH-B1
     pair: C08
     character_id: sean
