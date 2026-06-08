@@ -58,4 +58,38 @@
 
 ## Decision
 
-**Probe PASSES → recommend Approach A** (armature-constrained generation + automated grid-alignment), with the measurement anchored on the bold crown/feet lines + known division count and a line-count sanity guard (the ¾ finding). Awaiting Sean's A-vs-B call before wiring the feeder.
+**Probe PASSES → recommend Approach A** (armature-constrained generation + automated grid-alignment), with the measurement anchored on the bold crown/feet lines + known division count and a line-count sanity guard (the ¾ finding).
+
+**Sean chose Approach A (2026-06-08 checkpoint).**
+
+---
+
+## Build (Approach A) — what shipped
+
+- **Measurement hardened** (`measure_proportion` armature branch): anchors on the bold first/last lines + the **known division count** (`spec.armature_divisions` or `round(target)`), not the detected line count. The ¾ 9-line case now re-derives to ~7.25 → **pass**; grid line-count drift is surfaced in the verdict detail, never silently dropped.
+- **`build_armature_underlay()`** — the canonical deterministic 1:N ladder (cream + N+1 lines, bold crown/feet), promoted from the probe so probe / future authoring / gate share one armature.
+- **`emit_gridded_model_sheet()`** — the constrained-generation feeder primitive: writes the gridded model-sheet to `turnarounds/armature/<name>.png` where `_find_armature` looks.
+- **`ProportionSpec.armature_divisions`** (optional; defaults `round(target)`).
+- Tests +4; **full contract suite 358 green, 0 regressions.**
+
+## Key finding — Approach A is PREVENTION, not retroactive AUDIT
+
+The probe drew a **full-body 7-heads figure from a head-only anchor + armature** — i.e. **NB2 fits the figure TO the grid**, inventing body proportions to fill it. Consequence: re-gridding an existing clean plate lets NB2 **restretch** it to 7 and **hide** any drift. So Approach A's value is *constrain-at-generation* (plates born 1:7; the gate confirms NB2 obeyed) — it **cannot retroactively audit** a plate that wasn't generated against an armature. This sharpens (and is fully consistent with) the design's constrain-first thesis.
+
+Two consequences:
+1. **Sound Approach A = generate body turnarounds against the armature from the start.** A naive "regrid the finished clean plate" auto-step would be unsound (hides drift), so it is **not** wired into Cy's hot loop. With **no current consumer** (sean locked, mascot opt-out), the Cy auto-wiring is a documented follow-on for the first heads-tall character authored; the primitives + this probe are the reference implementation.
+2. The retroactive verification below reads `indeterminate` by design — not a defect verdict, but "cannot certify a pre-constrained plate."
+
+## Retroactive verification (the A4 loop close)
+
+Ran the built gate against the **already-locked** `characters/sean-anchor/turnarounds/body-*.png` (the 1:7 re-lock from `b7323e3`, where a human gate stood in for SF03). Persisted: [`2026-06-08-sf03-retroactive-sean-anchor.json`](2026-06-08-sf03-retroactive-sean-anchor.json).
+
+| plate | verdict | method |
+|-------|---------|--------|
+| body-front / back / profile-left / profile-right / 3quarter | **indeterminate** | extent_only |
+
+**Finding (surfaced, not fixed):** the gate **blocks** — it cannot SF03-certify the existing re-lock, because those plates predate constrained generation and (per the finding above) can't be retro-audited. This is **not** evidence the plates are off-proportion — the human gate judged them 1:7; the automated gate simply can't *confirm* it retroactively. **To certify deterministically, re-bake the five body turnarounds through the Approach-A feeder** (constrained generation, born 1:7) and re-lock — that re-bake is its own decided work (handoff §out-of-scope), surfaced here for Sean's call, not done silently.
+
+## Net
+
+SF03 is now an automated, hard, per-character, spec-driven gate at Bible-lock (the deterministic gate the pipeline declared but never enforced), with a probe-validated Approach-A generation path. The honest residual: existing pre-constrained Bibles read `indeterminate` until re-baked constrained — the gate is correct to refuse to certify what it cannot measure.
