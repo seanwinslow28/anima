@@ -1,0 +1,182 @@
+# Reve vs NB2 — image-editing bake-off case set.
+#
+# These are the test-protocol cases from docs/research/2026-06-07-reve-ideogram4-evaluation.md §5,
+# made executable. This is a GENERATOR bake-off: each case is an EDIT instruction +
+# references; every variant (nb2 / reve-standard / reve-fast) produces an output;
+# the outputs are scored against the per-view anchor (DINOv2, deterministic SF02) and
+# optionally by Em (--score-em, SF01/SF02 verdict + cites).
+#
+# DESIGN (eval-strategy §3.5, §6 generator row):
+#   - The decision metric is the Reve-vs-NB2 DELTA on the SAME case + SAME per_view_anchor,
+#     NOT an absolute DINOv2 threshold (there is no universal one; identity hold is relative
+#     to a per-view baseline on the same setup).
+#   - per_view_anchor is the SAME-VIEW reference the output is scored against — the documented
+#     fix for "a back-of-head plate is genuinely far from a front anchor in embedding space"
+#     (pipeline/agents/similarity_gate.py). NEVER score a 3/4 output against the front anchor.
+#   - Difficulty gradient is the balance axis: near-no-op (easy) -> single-ref -> multi-ref ->
+#     3-ref -> in-between (hardest). A generator that holds identity must hold it across the
+#     gradient, and the multi-ref cases are where NB-Pro's downsampling regression showed up.
+#
+# SHIPS-RED discipline carries over: do NOT relax a case so a variant passes. A case edit is
+# legitimate ONLY as a validity fix (wrong per_view_anchor, broken reference path).
+#
+# Per-case schema:
+#   name, test, edit_type (edit | remix), references (repo paths; 1 -> Edit, >=2 -> Remix),
+#   per_view_anchor (repo path; the SAME-VIEW DINOv2 target) | per_view_anchors (list; in-betweens
+#     score against ALL and take the MIN — the Subject-Collapse floor),
+#   prompt (the edit instruction), aspect_ratio, register, probe (the failure mode stressed),
+#   difficulty, is_intentionally_red, sean_note.
+#   Em fields (used only with --score-em, mirrors evals/vision_critic schema):
+#     beat_description, checkpoint, character_id, case_class, expected_verdict, expected_cites.
+
+cases:
+
+  # ============================================================
+  # TEST 1 — single-reference expression edit (SF02 + SF01 floor)
+  # ============================================================
+  - name: t1-edit-neutral-control
+    test: t1
+    edit_type: edit
+    references:
+      - characters/sean-anchor/anchor.png
+    per_view_anchor: characters/sean-anchor/expressions/neutral.png
+    prompt: >
+      Same person as the reference. Keep the face, hair, full color palette, and
+      proportions exactly. Neutral expression, looking forward. Warm pencil-test
+      render: graphite line, flat color fills, cross-hatch shadow, cream paper.
+      16:9. No text, captions, or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "near-no-op control — output should be nearly identical to the anchor; DINOv2 should be HIGH for every variant. The easy floor: a variant that drifts HERE is disqualified outright."
+    difficulty: easy
+    is_intentionally_red: false
+    sean_note: "Class-balance anchor. If Reve can't hold identity on a near-no-op, nothing downstream matters."
+    beat_description: "Sean, neutral expression, front view, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
+
+  - name: t1-edit-focused
+    test: t1
+    edit_type: edit
+    references:
+      - characters/sean-anchor/anchor.png
+    per_view_anchor: characters/sean-anchor/expressions/focused.png
+    prompt: >
+      Same person as the reference. Change ONLY the expression to focused — brow
+      slightly down, eyes on the work, mouth set. Keep the face, hair, full color
+      palette, and proportions exactly. Warm pencil-test render: graphite line,
+      flat color fills, cross-hatch shadow, cream paper. 16:9. No text or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "the `focused`-plate monochrome trap from the production bake — watch for the identity slide / loss of color when the expression changes."
+    difficulty: moderate
+    is_intentionally_red: false
+    sean_note: "expressions/focused.png is the ratified gold for what `focused` should look like — score against it, not the neutral anchor."
+    beat_description: "Sean, focused expression (brow down, eyes on work), front view, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
+
+  # ============================================================
+  # TEST 2 — multi-reference angle edit (the NB-Pro DOWNSAMPLING PROBE — decisive)
+  # ============================================================
+  - name: t2-remix-3quarter
+    test: t2
+    edit_type: remix
+    references:
+      - characters/sean-anchor/anchor.png                                   # identity (image 1)
+      - characters/sean-anchor/source-refs/sean-character-full-body-turnaround.png  # angle target (image 2)
+    per_view_anchor: characters/sean-anchor/turnarounds/body-3quarter.png
+    prompt: >
+      Identity from image 1, viewing angle from image 2. Render Sean at a
+      three-quarter front view, head turned slightly left. Match the face, hair,
+      full color palette, and proportions of image 1 EXACTLY. Warm pencil-test
+      render: graphite line, flat color fills, cross-hatch shadow, cream paper.
+      16:9. No text or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "THE decisive case. Does Reve downsample the references and wash out fine identity detail (the regression that demoted NB Pro)? A soft, generic, 'could-be-anyone' 3/4 face = Reve shares the regression -> disqualified for multi-ref keyframes."
+    difficulty: hard
+    is_intentionally_red: false
+    sean_note: "Score the 3/4 OUTPUT against the 3/4 anchor (body-3quarter.png), never the front anchor — same-view DINOv2 is the only honest read here."
+    beat_description: "Sean, three-quarter front view, head turned slightly left, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
+
+  - name: t2-remix-3ref-pairing
+    test: t2
+    edit_type: remix
+    references:
+      - characters/sean-anchor/anchor.png                              # Sean identity (image 1)
+      - characters/claude-mascot/anchor.png                            # mascot identity (image 2)
+      - characters/claude-mascot/source-refs/sean-with-claude-mascot.png  # A-7 pairing (image 3)
+    per_view_anchor: characters/sean-anchor/anchor.png
+    prompt: >
+      Image 1 is Sean's identity anchor; image 2 is the mascot's identity anchor;
+      image 3 is the canonical pairing for scale and placement. Render Sean glancing
+      up at the mascot on his shoulder, half-smiling. Match Sean's face, hair, palette,
+      and proportions from image 1 and the mascot's box-body form and terracotta palette
+      from image 2 exactly. Warm pencil-test render, cream paper. 16:9. No text or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "3-reference attribute-bleed probe — does the mascot's terracotta leak onto Sean, or Sean's palette onto the mascot? Stresses the 3-ref ceiling (Reve first-party = up to 6; NB2 via invoke_image_edit takes the full list)."
+    difficulty: hardest
+    is_intentionally_red: false
+    sean_note: "per_view_anchor is Sean's front anchor — we're scoring whether SEAN stays Sean in a two-character scene. A second pass scoring the mascot vs its anchor is worth adding once this lands."
+    beat_description: "Sean glancing up at the Claude mascot perched on his shoulder, half-smiling, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
+
+  # ============================================================
+  # TEST 3 — in-between consistency (the BEST-FIT case for Reve Fast)
+  # ============================================================
+  - name: t3-inbetween-f06-f10
+    test: t3
+    edit_type: remix
+    references:
+      - evals/bakeoffs/2026-06-07-reve-vs-nb2-editing/fixtures/PT_A1_F06_key.png   # endpoint A (approved Act-1 keyframe)
+      - evals/bakeoffs/2026-06-07-reve-vs-nb2-editing/fixtures/PT_A1_F10_key.png   # endpoint B (approved Act-1 keyframe)
+    per_view_anchors:                                                              # score against BOTH; take the MIN (collapse floor)
+      - evals/bakeoffs/2026-06-07-reve-vs-nb2-editing/fixtures/PT_A1_F06_key.png
+      - evals/bakeoffs/2026-06-07-reve-vs-nb2-editing/fixtures/PT_A1_F10_key.png
+    prompt: >
+      Generate the in-between pose midway between image 1 and image 2: Sean
+      mid-motion between the two approved keyframes — raising his right hand from a
+      relaxed position toward a gesture — with identity, costume, and the stylus in
+      his right hand held constant. Match face, hair, palette, and proportions of
+      both references exactly. Warm pencil-test render, cream paper. 16:9. No text
+      or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "the in-between use case — consistency + speed between two approved anchors. Reve Fast is built for this and is ~10x cheaper; a mild wobble is tolerable here in a way it is NOT on a keyframe."
+    difficulty: hard
+    is_intentionally_red: false
+    sean_note: >
+      VALIDITY EDIT (2026-06-07, pre-scoring, per the scaffold's own sean_note): the
+      stand-in turnaround-crop endpoints (body-front / body-3quarter) were swapped for
+      two GENUINE adjacent approved Act-1 keyframes — PT_A1_F06 (idle, hands relaxed,
+      stylus in right hand) -> PT_A1_F10 (right hand raised mid-gesture), Chain 1. This
+      is now a real pipeline in-between, not a turnaround tween, so it stresses
+      pose/expression motion rather than a pure view rotation. The two frames are
+      committed here under fixtures/ (SHA-identical copies of
+      runs/run_2026-04-04_174805/approved/) because runs/ is gitignored and absent from
+      the bake-off worktree — committed fixtures keep the case self-contained and
+      reproducible. Scoring against both endpoints + MIN is the Subject-Collapse floor
+      (eval-strategy §3.5).
+    beat_description: "Sean mid-motion between two approved keyframes (relaxed idle toward a raised-hand gesture), full body, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
