@@ -141,32 +141,40 @@ cases:
   # ============================================================
   # TEST 3 — in-between consistency (the BEST-FIT case for Reve Fast)
   # ============================================================
-  - name: t3-inbetween-front-3quarter
+  - name: t3-inbetween-f06-f10
     test: t3
     edit_type: remix
     references:
-      - characters/sean-anchor/turnarounds/body-front.png       # endpoint A (approved)
-      - characters/sean-anchor/turnarounds/body-3quarter.png    # endpoint B (approved)
-    per_view_anchors:                                           # score against BOTH; take the MIN (collapse floor)
-      - characters/sean-anchor/turnarounds/body-front.png
-      - characters/sean-anchor/turnarounds/body-3quarter.png
+      - evals/bakeoffs/2026-06-07-reve-vs-nb2-editing/fixtures/PT_A1_F06_key.png   # endpoint A (approved Act-1 keyframe)
+      - evals/bakeoffs/2026-06-07-reve-vs-nb2-editing/fixtures/PT_A1_F10_key.png   # endpoint B (approved Act-1 keyframe)
+    per_view_anchors:                                                              # score against BOTH; take the MIN (collapse floor)
+      - evals/bakeoffs/2026-06-07-reve-vs-nb2-editing/fixtures/PT_A1_F06_key.png
+      - evals/bakeoffs/2026-06-07-reve-vs-nb2-editing/fixtures/PT_A1_F10_key.png
     prompt: >
-      Generate the in-between pose midway between image 1 (front) and image 2
-      (three-quarter): Sean turning from front toward three-quarter, identity and
-      costume held constant. Match face, hair, palette, and proportions of both
-      references exactly. Warm pencil-test render, cream paper. 16:9. No text or watermarks.
+      Generate the in-between pose midway between image 1 and image 2: Sean
+      mid-motion between the two approved keyframes — raising his right hand from a
+      relaxed position toward a gesture — with identity, costume, and the stylus in
+      his right hand held constant. Match face, hair, palette, and proportions of
+      both references exactly. Warm pencil-test render, cream paper. 16:9. No text
+      or watermarks.
     aspect_ratio: "16:9"
     register: pencil-test-colored
     probe: "the in-between use case — consistency + speed between two approved anchors. Reve Fast is built for this and is ~10x cheaper; a mild wobble is tolerable here in a way it is NOT on a keyframe."
     difficulty: hard
     is_intentionally_red: false
     sean_note: >
-      SCAFFOLD STAND-IN: this uses two committed turnaround crops as endpoints. For
-      the real run, swap in two GENUINE adjacent approved Act-1/Act-2 anchors from
-      runs/<id>/approved/ (e.g. PT_A1_F06 -> PT_A1_F10) so the in-between is a real
-      pipeline frame, not a turnaround tween. Scoring against both endpoints + MIN is
-      the Subject-Collapse floor (eval-strategy §3.5).
-    beat_description: "Sean mid-turn between front and three-quarter views, pencil-test register."
+      VALIDITY EDIT (2026-06-07, pre-scoring, per the scaffold's own sean_note): the
+      stand-in turnaround-crop endpoints (body-front / body-3quarter) were swapped for
+      two GENUINE adjacent approved Act-1 keyframes — PT_A1_F06 (idle, hands relaxed,
+      stylus in right hand) -> PT_A1_F10 (right hand raised mid-gesture), Chain 1. This
+      is now a real pipeline in-between, not a turnaround tween, so it stresses
+      pose/expression motion rather than a pure view rotation. The two frames are
+      committed here under fixtures/ (SHA-identical copies of
+      runs/run_2026-04-04_174805/approved/) because runs/ is gitignored and absent from
+      the bake-off worktree — committed fixtures keep the case self-contained and
+      reproducible. Scoring against both endpoints + MIN is the Subject-Collapse floor
+      (eval-strategy §3.5).
+    beat_description: "Sean mid-motion between two approved keyframes (relaxed idle toward a raised-hand gesture), full body, pencil-test register."
     checkpoint: phase_5_generate
     character_id: sean
     case_class: identity_style
