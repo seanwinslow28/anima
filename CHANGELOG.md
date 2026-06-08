@@ -1,6 +1,15 @@
 # Changelog
 
-## 2026-06-08 — G6.9 diff-eval: $0 infrastructure built (the second axis of Em's ruler) — costed runs DEFERRED
+## 2026-06-08 — G6.9 Gate 1: golden corpus RATIFIED (Sean) — unblocks the costed Gate 3 baseline
+
+**What & why.** Follow-on to the merged G6.9 $0 infra (#32, below). Sean ratified the 30 draft `golden_diff` clauses per the [2026-06-08 follow-on plan](docs/2026-06-08-g6.9-prompt-diff-eval-handoff.md); all flip `golden_diff_ratified: true`, which lifts `patch_efficacy.py`'s exit-4 refusal so the costed Gate 3 baseline becomes reachable (still gated on `GEMINI_API_KEY` present + `ANTHROPIC_API_KEY` unset + a separate spend go-ahead). The five judgment calls were settled first:
+
+- **(B, objective) `palette-pad3` golden `sandy-blonde` → `dirty-blonde`** — aligns the clause with its own `beat_description` and the cited rule `IR.sean.hair.dirty-blonde-color` (the corpus had inconsistent hair terms).
+- **(A, accepted) the 5 view-correctness goldens are declared-view corrections (label-side).** `patch_efficacy` gives view a no-regeneration branch (correct the declared view, re-critique the same fixture). Consequence consciously accepted: for the view class Gate 3 measures "did Em propose the right declared-view label," not "did applying Em's fix produce a correct image" — a weaker but defensible efficacy form (a view-corrected frame can't be deterministically regenerated).
+- **(C, kept) `palette-pad5` ("sneakers in their reference color") + `palette-pad6` ("light stubble")** kept as realistic fixes; they add specifics not pinned in the cited IR rule, so they won't score on diff cite-precision — noted, not a blocker.
+- **Test decoupled from corpus state** — `test_preflight_refuses_unratified_when_live` now synthesizes the unratified condition (the live corpus is ratified), so the §0 refusal stays guarded independently of the goldens' flag. Full `tests/` **396 passed**; verdict baseline `g6.1b-criteria-attached-2026-06-08.md` byte-identical (`md5 2af75906…`). cases.yaml only (+ the one test); no manifest/CLAUDE.md/baseline touched.
+
+
 
 **What & why.** After G5/G6.1b the eval suite measures Em's *verdicts* (0.97/1.00/0.00) and *citations* (0.97) but **nothing** about her *constructive* output — the `proposed_patches` (prompt diffs) she stages. The Critic Stack contract is "T2 **proposes prompt diffs**, not pass/fail"; "flags correctly" and "proposes a fix that helps" can diverge arbitrarily. G6.9 builds the second scoring axis. Executes [`docs/2026-06-08-g6.9-prompt-diff-eval-handoff.md`](docs/2026-06-08-g6.9-prompt-diff-eval-handoff.md). Sean-scoped this push to **all $0 infrastructure, stub-tested green, no costed run** (goldens drafted-for-ratification; the costed Gate 2 calibration + Gate 3 baseline are a deferred follow-on behind ratification + a spend go-ahead). **The ratified verdict baseline is purely additive-protected:** `evals/vision_critic/traces/g6.1b-criteria-attached-2026-06-08.md` stays byte-identical (`md5 2af75906502f1caf8857e18828ceb2e4`, verified before+after).
 

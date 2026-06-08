@@ -133,7 +133,11 @@ def test_preflight_stub_passes(monkeypatch):
 
 def test_preflight_refuses_unratified_when_live(monkeypatch):
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    # Force one case unratified — decoupled from the corpus's live ratification
+    # state (the goldens were ratified 2026-06-08, so we synthesize the unratified
+    # condition rather than relying on it).
     sample = select_sample(_DEFECTS, sample=6)
+    sample = [dict(sample[0], golden_diff_ratified=False)] + sample[1:]
     with pytest.raises(PreflightError, match="ratif"):
         preflight(sample, corpus=_CORPUS, live=True)
 
