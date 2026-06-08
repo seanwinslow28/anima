@@ -89,11 +89,16 @@ def test_ir_id_with_two_segments_rejected():
 # ---------------------------------------------------------------------------
 
 
-def test_ir_category_closed_vocab_includes_ten_categories():
-    """The closed IR category vocabulary is exactly these ten categories."""
+def test_ir_category_closed_vocab_includes_eleven_categories():
+    """The closed IR category vocabulary is exactly these eleven categories.
+
+    `view` added 2026-06-07 (G6.1): view-correctness is a first-class geometry
+    class in the layer-ownership map; Em authors real IR.sean.view.* rules
+    against it. A deliberate expansion of the closed vocab, not an inline tweak.
+    """
     assert VALID_IR_CATEGORIES == frozenset({
         "anatomy", "hair", "face", "proportion", "palette",
-        "costume", "prop", "pose", "motion", "style",
+        "costume", "prop", "pose", "motion", "style", "view",
     })
 
 

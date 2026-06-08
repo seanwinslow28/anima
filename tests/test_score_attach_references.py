@@ -51,11 +51,15 @@ def test_cli_attach_references_engages_bundle(monkeypatch, capsys, _isolated_stu
     assert "anchor.png" in err, f"expected anchor.png in the bundle:\n{err}"
 
 
-def test_cli_default_runs_reference_blind(monkeypatch, capsys, _isolated_stub_runners):
-    """Without the flag, the default stays reference-blind (the production default)."""
+def test_cli_default_attaches_no_reference_images(monkeypatch, capsys, _isolated_stub_runners):
+    """Without --attach-references, zero reference IMAGES attach. Since G6.1b the shipped
+    manifest carries attach_criteria_text: true (RATIFIED 2026-06-08), so the no-flag
+    default reads 'criteria-text (images off)' — never a reference bundle. The point this
+    guards is unchanged: --attach-references is the only switch that attaches images."""
     _run_worker(monkeypatch)
     err = capsys.readouterr().err
-    assert "refs=[blind (attach_references off)]" in err, err
+    assert "refs=[criteria-text (images off)]" in err, err
+    assert "anchor.png" not in err, f"no reference images without --attach-references:\n{err}"
 
 
 def test_subprocess_cmd_propagates_attach_references(monkeypatch):

@@ -273,6 +273,16 @@ critics:
     # bundle once that lands. Read by pipeline.agents.vision_critic._attach_references.
     # See docs/2026-06-02-em-provenance-and-hardening-kickoff.md §A1.
     attach_references: false
+    # Criteria-text grounding (G6.1b, RATIFIED 2026-06-08). Attaches the IR/AC
+    # criteria block (the text handles Em cites) to the subject prompt WITHOUT any
+    # reference images — decoupled from attach_references. The 2026-06-08 N=5
+    # criteria-attached run measured this ON as the safe, high-citation profile:
+    # performs precision 0.97 / recall 1.00 / false_pass 0.00, cites-correct 0.97
+    # (up from 0.03 blind) — Outcome A. This is the production default now (sean
+    # corpus-validated; mascot spot-checked, its 25-rule Bible surfaces correctly).
+    # Read by pipeline.agents.vision_critic._attach_criteria_text. Field report:
+    # docs/anima-test-runs/2026-06-08-em-g6.1b-criteria-attached-run.md.
+    attach_criteria_text: true
     # Gemini delivery transport for Em. agy = Antigravity CLI (subscription, but
     # personal-tier quota 429-blocks repeated runs); gemini_api = direct Gemini
     # API via GEMINI_API_KEY (separate vendor billing; unblocks the live

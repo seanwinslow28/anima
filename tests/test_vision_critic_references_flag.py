@@ -92,15 +92,20 @@ def test_attach_references_false_explicit_runs_reference_blind(monkeypatch, tmp_
     assert "reference plate" not in captured["prompt"].lower()
 
 
-def test_shipped_manifest_runs_em_reference_blind():
-    """The shipped manifest.yaml keeps Em reference-blind (attach_references absent or
-    false) until a DINOv2 backstop + a clean re-baseline clear the false-pass gate.
-    Guards against an accidental flip-on of the regressing grounding path."""
+def test_shipped_manifest_ratified_em_config():
+    """The shipped manifest.yaml carries the ratified G6.1b production config:
+      - attach_references FALSE — reference IMAGES stay off (the regressing PR #13
+        grounding path; gated until a DINOv2 backstop + clean re-baseline clear the
+        false-pass gate). Guards against an accidental flip-on of the image path.
+      - attach_criteria_text TRUE — criteria-text grounding is ON (RATIFIED 2026-06-08;
+        the 0.97/1.00/0.00 + cites-0.97 Outcome-A profile). Guards against a regression
+        that silently turns Em's citation grounding back off."""
     import yaml
     repo_root = Path(__file__).resolve().parents[1]
     manifest = yaml.safe_load((repo_root / "manifest.yaml").read_text(encoding="utf-8"))
     t2 = manifest.get("critics", {}).get("t2", {})
     assert t2.get("attach_references", False) is False
+    assert t2.get("attach_criteria_text", False) is True
 
 
 def test_attach_references_true_restores_bundle(monkeypatch, tmp_path):
