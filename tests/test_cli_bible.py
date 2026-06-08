@@ -12,8 +12,21 @@ import json
 from pathlib import Path
 
 import pytest
+from PIL import Image
 
 from pipeline.cli import bible
+
+_CREAM = (242, 230, 204)
+
+
+def _add_body_plate(character_dir: Path, name: str = "body-front") -> Path:
+    """Drop a minimal cream body turnaround into the Bible so the SF03 gate has
+    something to measure. Pixels are irrelevant in landmarks/opt-out modes."""
+    ta = character_dir / "turnarounds"
+    ta.mkdir(parents=True, exist_ok=True)
+    p = ta / f"{name}.png"
+    Image.new("RGB", (200, 400), _CREAM).save(p)
+    return p
 
 
 # ---------------------------------------------------------------------------
@@ -232,6 +245,158 @@ def test_bible_approve_idempotent(tmp_path):
     _write_bible(cd, locked=True)
     rc = bible.approve_bible(str(cd))
     assert rc == 0  # already-locked is a no-op success
+
+
+# ----- approve: SF03 proportion gate (G6.4) is a HARD gate at lock -----
+
+
+def test_bible_approve_blocks_out_of_tolerance_body(tmp_path, capsys):
+    """A body turnaround measuring 5 heads against a [6.5, 7.5] target BLOCKS the
+    lock (rc 1) and leaves locked=false — the deterministic SF03 the pipeline
+    declared but never enforced."""
+    cd = tmp_path / "characters" / "drifted"
+    _write_bible(
+        cd,
+        proportions={
+            "head_to_body": "1:7",
+            "head_to_body_target": 7.0,
+            "tolerance_heads": [6.5, 7.5],
+            "landmarks": {"crown_frac": 0.10, "chin_frac": 0.28, "feet_frac": 1.0},  # 5.0 heads
+        },
+    )
+    _add_body_plate(cd)
+    rc = bible.approve_bible(str(cd))
+    assert rc == 1
+    assert json.loads((cd / "acceptance_criteria.json").read_text())["locked"] is False
+    assert "SF03" in capsys.readouterr().err
+
+
+def test_bible_approve_blocks_undeclared_with_body_plates(tmp_path, capsys):
+    """Prose-only proportions + body plates present = the silent-pass hole → BLOCK."""
+    cd = tmp_path / "characters" / "prose-only"
+    _write_bible(cd, proportions={"head_to_body": "1:7 — prose only", "notes": ""})
+    _add_body_plate(cd)
+    rc = bible.approve_bible(str(cd))
+    assert rc == 1
+    assert "undeclared" in capsys.readouterr().err.lower()
+
+
+def test_bible_approve_passes_opt_out_character(tmp_path):
+    """A box-creature that opts out of SF03 locks cleanly even with body plates."""
+    cd = tmp_path / "characters" / "mascot"
+    _write_bible(cd, proportions={"head_to_body": "N/A", "sf03": "opt_out"})
+    _add_body_plate(cd)
+    rc = bible.approve_bible(str(cd))
+    assert rc == 0
+    assert json.loads((cd / "acceptance_criteria.json").read_text())["locked"] is True
+
+
+def test_bible_approve_passes_in_tolerance_body(tmp_path):
+    """A body turnaround inside tolerance (stored landmarks ~7 heads) locks."""
+    cd = tmp_path / "characters" / "clean"
+    _write_bible(
+        cd,
+        proportions={
+            "head_to_body": "1:7",
+            "head_to_body_target": 7.0,
+            "tolerance_heads": [6.5, 7.5],
+            "landmarks": {"crown_frac": 0.05, "chin_frac": 0.175, "feet_frac": 0.93},  # ~7.04
+        },
+    )
+    _add_body_plate(cd)
+    rc = bible.approve_bible(str(cd))
+    assert rc == 0
+    assert json.loads((cd / "acceptance_criteria.json").read_text())["locked"] is True
+
+
+def test_bible_approve_already_locked_skips_gate(tmp_path):
+    """An already-locked Bible re-approves as a no-op WITHOUT re-running the gate —
+    so a previously-locked character (e.g. sean-anchor) can't be retro-blocked by
+    a newly-built gate. The gate guards NEW locks, not existing ones."""
+    cd = tmp_path / "characters" / "already"
+    _write_bible(
+        cd,
+        locked=True,
+        proportions={
+            "head_to_body": "1:7",
+            "head_to_body_target": 7.0,
+            "tolerance_heads": [6.5, 7.5],
+            "landmarks": {"crown_frac": 0.10, "chin_frac": 0.28, "feet_frac": 1.0},  # would fail
+        },
+    )
+    _add_body_plate(cd)
+    rc = bible.approve_bible(str(cd))
+    assert rc == 0  # no-op success; the out-of-tolerance plate is NOT re-gated
+
+
+# ----- check-proportion: read-only retroactive SF03 verifier (G6.4) -----
+
+
+def test_check_proportion_blocks_out_of_tolerance(tmp_path, capsys):
+    cd = tmp_path / "characters" / "drifted"
+    _write_bible(
+        cd,
+        proportions={
+            "head_to_body_target": 7.0,
+            "tolerance_heads": [6.5, 7.5],
+            "landmarks": {"crown_frac": 0.10, "chin_frac": 0.28, "feet_frac": 1.0},  # 5 heads
+        },
+    )
+    _add_body_plate(cd)
+    rc = bible.check_proportion_bible(str(cd))
+    assert rc == 1
+    out = capsys.readouterr()
+    assert "body-front" in out.out
+
+
+def test_check_proportion_passes_in_tolerance(tmp_path):
+    cd = tmp_path / "characters" / "clean"
+    _write_bible(
+        cd,
+        proportions={
+            "head_to_body_target": 7.0,
+            "tolerance_heads": [6.5, 7.5],
+            "landmarks": {"crown_frac": 0.05, "chin_frac": 0.175, "feet_frac": 0.93},
+        },
+    )
+    _add_body_plate(cd)
+    assert bible.check_proportion_bible(str(cd)) == 0
+
+
+def test_check_proportion_is_read_only(tmp_path):
+    """check-proportion never touches locked — it is a finding tool, not a gate."""
+    cd = tmp_path / "characters" / "untouched"
+    _write_bible(
+        cd,
+        locked=False,
+        proportions={
+            "head_to_body_target": 7.0,
+            "tolerance_heads": [6.5, 7.5],
+            "landmarks": {"crown_frac": 0.05, "chin_frac": 0.175, "feet_frac": 0.93},
+        },
+    )
+    _add_body_plate(cd)
+    bible.check_proportion_bible(str(cd))
+    assert json.loads((cd / "acceptance_criteria.json").read_text())["locked"] is False
+
+
+def test_cli_main_dispatches_check_proportion(tmp_path):
+    """Regression guard (cf. the `bible add` dispatch test): the argv path must
+    reach check_proportion_bible, not fall through to the bare `return 1`."""
+    from pipeline.cli.__main__ import main
+
+    cd = tmp_path / "characters" / "dispatch-check"
+    _write_bible(
+        cd,
+        proportions={
+            "head_to_body_target": 7.0,
+            "tolerance_heads": [6.5, 7.5],
+            "landmarks": {"crown_frac": 0.05, "chin_frac": 0.175, "feet_frac": 0.93},
+        },
+    )
+    _add_body_plate(cd)
+    rc = main(["bible", "check-proportion", "--character-dir", str(cd)])
+    assert rc == 0, "check-proportion must dispatch through main()"
 
 
 # ---------------------------------------------------------------------------

@@ -28,6 +28,8 @@ palette:
   role: Irises. A mid cool blue reading clearly against the paper-base sclera in colored plates. Adjust on review. In line-only motion plates the eye is a lidded almond with no iris fill.
 proportions:
   head_to_body: "1:7 — head height fits seven times into total body height, crown of head to sole of foot at neutral stance."
+  head_to_body_target: 7.0
+  tolerance_heads: [6.5, 7.5]
   shoulder_to_hip: "Shoulders ~1.5 head-widths; hip line ~4 head-heights off the floor (lower body structurally longer than upper)."
   notes: "Heroic-realistic working-illustrator adult proportion. Not chibi (Claude Mascot's territory), not stylized-tall (high-fashion register). The cleaner turnaround and the walk-cycle source plate are the canonical proportion truth; the 3D mannequin refs are pose-vocabulary, not identity."
 identity_rules_pointer: acceptance_criteria.json

@@ -1,0 +1,51 @@
+{
+  "character": "sean-anchor",
+  "as_of": "2026-06-08",
+  "spec": {
+    "status": "declared",
+    "target": 7.0,
+    "tolerance": [
+      6.5,
+      7.5
+    ]
+  },
+  "blocked": true,
+  "reason": "SF03 proportion gate blocks the lock \u2014 turnarounds/body-3quarter.png [indeterminate: figure extent read, but head height needs a gridded armature or stored landmarks (the chin read is unreliable on its own)]; turnarounds/body-back.png [indeterminate: figure extent read, but head height needs a gridded armature or stored landmarks (the chin read is unreliable on its own)]; turnarounds/body-front.png [indeterminate: figure extent read, but head height needs a gridded armature or stored landmarks (the chin read is unreliable on its own)]; turnarounds/body-profile-left.png [indeterminate: figure extent read, but head height needs a gridded armature or stored landmarks (the chin read is unreliable on its own)]; turnarounds/body-profile-right.png [indeterminate: figure extent read, but head height needs a gridded armature or stored landmarks (the chin read is unreliable on its own)]",
+  "verdicts": {
+    "turnarounds/body-3quarter.png": {
+      "verdict": "indeterminate",
+      "method": "extent_only",
+      "heads_tall": null,
+      "division_alignment": null,
+      "detail": "figure extent read, but head height needs a gridded armature or stored landmarks (the chin read is unreliable on its own)"
+    },
+    "turnarounds/body-back.png": {
+      "verdict": "indeterminate",
+      "method": "extent_only",
+      "heads_tall": null,
+      "division_alignment": null,
+      "detail": "figure extent read, but head height needs a gridded armature or stored landmarks (the chin read is unreliable on its own)"
+    },
+    "turnarounds/body-front.png": {
+      "verdict": "indeterminate",
+      "method": "extent_only",
+      "heads_tall": null,
+      "division_alignment": null,
+      "detail": "figure extent read, but head height needs a gridded armature or stored landmarks (the chin read is unreliable on its own)"
+    },
+    "turnarounds/body-profile-left.png": {
+      "verdict": "indeterminate",
+      "method": "extent_only",
+      "heads_tall": null,
+      "division_alignment": null,
+      "detail": "figure extent read, but head height needs a gridded armature or stored landmarks (the chin read is unreliable on its own)"
+    },
+    "turnarounds/body-profile-right.png": {
+      "verdict": "indeterminate",
+      "method": "extent_only",
+      "heads_tall": null,
+      "division_alignment": null,
+      "detail": "figure extent read, but head height needs a gridded armature or stored landmarks (the chin read is unreliable on its own)"
+    }
+  }
+}
