@@ -49,6 +49,16 @@ _CORPUS_MD = HERE.parents[1] / "prompts/eval-corpus/sean-anchor-fixture-corpus.m
 _C_NB2 = 0.02
 _C_EM = 0.05
 
+# The NULL/PLACEBO arm's clause (Sean's locked attribution decision, 2026-06-08): a
+# fixed, defect-orthogonal phrase spliced through the SAME clean-pair mechanism as the
+# real arms. It measures the FLOOR — how often the clean-pair base regenerates a clean,
+# identity-holding frame REGARDLESS of any corrective content. Normalized lift
+# (em − null)/(golden − null) cancels that floor; per class, null ≈ golden means the
+# instrument has no discriminative power there (a measured finding, not a guess). The
+# phrase touches none of the six axes (proportion/view/anatomy/palette/construction/
+# shading) so it cannot itself fix or break a defect.
+_NULL_CLAUSE = "with a calm, evenly-lit, neutral background"
+
 
 class PreflightError(Exception):
     """A §0 pre-flight assertion failed — raised before any spend."""
@@ -231,7 +241,12 @@ def run_case(case: dict, *, arms, rerolls: int, corpus: dict, manifest, criteria
     em_clause = None if em_value is _UNSET else em_value
     out: dict[str, ArmResult] = {}
     for arm in arms:
-        clause = case.get("golden_diff") if arm == "golden" else em_clause
+        if arm == "golden":
+            clause = case.get("golden_diff")
+        elif arm == "null":
+            clause = _NULL_CLAUSE       # the placebo floor (Sean's attribution lock)
+        else:  # em
+            clause = em_clause
         if arm == "em" and not (clause and str(clause).strip()):
             out["em"] = ArmResult(arm="em", clause=None, rerolls=[], skipped_no_proposal=True)
             continue
@@ -295,14 +310,21 @@ def preflight(sample: list[dict], *, corpus: dict, live: bool, manifest=None) ->
 
 def estimate_cost(*, sample: int, rerolls: int, arms, view_count: int = 0) -> dict:
     """Dollar estimate recorded BEFORE a costed run (fleet-ops). View cases skip the
-    NB2 generation (re-critique only)."""
+    NB2 generation (re-critique only). The EM arm adds one Em-capture call per case
+    (run Em on the defect fixture to GET the diff), once — not per re-roll."""
     n_arms = len(arms)
     regen_cases = max(0, sample - view_count)
-    per_arm = regen_cases * rerolls * (_C_NB2 + _C_EM) + view_count * rerolls * _C_EM
+    # NB2: every regen-class case × re-roll × arm. View cases never regenerate.
+    nb2_calls = n_arms * regen_cases * rerolls
+    # Em re-critiques: every case × re-roll × arm (view re-critiques too). Plus the
+    # em arm's one-shot capture of Em's proposed diff per case.
+    em_calls = n_arms * sample * rerolls + (sample if "em" in arms else 0)
+    dollars = nb2_calls * _C_NB2 + em_calls * _C_EM
     return {
-        "dollars": round(n_arms * per_arm, 2),
-        "nb2_calls": n_arms * regen_cases * rerolls,
-        "em_calls": n_arms * sample * rerolls,
+        "dollars": round(dollars, 2),
+        "nb2_calls": nb2_calls,
+        "em_calls": em_calls,
+        "em_capture_calls": sample if "em" in arms else 0,
         "assumptions": {"nb2_per_image": _C_NB2, "em_per_call": _C_EM},
     }
 
@@ -330,6 +352,45 @@ def aggregate_efficacy(efficacies: list[CaseEfficacy]) -> dict:
                          "by_label": {lbl: block([e for e in efficacies if e.defect_label == lbl], arm)
                                       for lbl in labels}}
                    for arm in arms},
+    }
+
+
+def normalized_lift(agg: dict) -> dict:
+    """Sean's locked attribution (2026-06-08). The clean-pair mechanism has a per-class
+    FLOOR — a placebo clause can clear a class whose base isn't really defective. The
+    null arm measures that floor; lift = (em − null)/(golden − null) cancels it.
+
+    Needs all three arms (em, golden, null) in the aggregate, else returns {} (N/A).
+    Per class + overall: raw em/golden/null rates + lift + a discriminative flag.
+      - golden ≈ null (denom ≈ 0) → lift None, discriminative False (NO power here —
+        a measured finding: the instrument can't tell em from placebo on this class).
+      - else lift: 1.0 = em matches golden's lift over the floor; 0.0 = em no better
+        than placebo; <0 = em worse than placebo.
+    NB: the em rate is over cases where Em PROPOSED (fix-rate-given-proposed); golden/
+    null are over all cases. Read alongside proposal_rate, not in place of it.
+    """
+    by_arm = agg.get("by_arm", {})
+    if not {"em", "golden", "null"} <= set(by_arm):
+        return {}
+    eps = 1e-9
+
+    def _lift(em_r, gold_r, null_r):
+        denom = gold_r - null_r
+        if abs(denom) < eps:
+            return {"em": em_r, "golden": gold_r, "null": null_r,
+                    "lift": None, "discriminative": False}
+        return {"em": em_r, "golden": gold_r, "null": null_r,
+                "lift": round((em_r - null_r) / denom, 3), "discriminative": True}
+
+    def _rate(arm, lbl=None):
+        b = by_arm[arm]["overall"] if lbl is None else by_arm[arm]["by_label"][lbl]
+        return b["fix_rate_mean"]
+
+    labels = sorted(by_arm["golden"]["by_label"])
+    return {
+        "overall": _lift(_rate("em"), _rate("golden"), _rate("null")),
+        "by_label": {lbl: _lift(_rate("em", lbl), _rate("golden", lbl), _rate("null", lbl))
+                     for lbl in labels},
     }
 
 
@@ -387,9 +448,19 @@ def _load_defects() -> list[dict]:
     return [c for c in cases if c["case_class"] == "identity_style"]
 
 
+_ARM_SETS = {
+    "em": ("em",), "golden": ("golden",), "null": ("null",),
+    "both": ("em", "golden"),
+    "both+null": ("em", "golden", "null"),   # the first costed baseline (Sean's lock)
+    "all": ("em", "golden", "null"),
+}
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(prog="em-patch-efficacy")
-    ap.add_argument("--arm", choices=["em", "golden", "both"], default="both")
+    ap.add_argument("--arm", choices=list(_ARM_SETS), default="both+null",
+                    help="Arm set. 'both+null' (default) = em + golden control + null "
+                         "placebo floor → normalized lift (em−null)/(golden−null).")
     ap.add_argument("--sample", type=int, default=12)
     ap.add_argument("--rerolls", type=int, default=3)
     ap.add_argument("--labels", default=None, help="comma list of defect labels to scope")
@@ -402,7 +473,7 @@ def main() -> None:
 
     labels = args.labels.split(",") if args.labels else None
     sample = select_sample(_load_defects(), sample=args.sample, labels=labels)
-    arms = ("em", "golden") if args.arm == "both" else (args.arm,)
+    arms = _ARM_SETS[args.arm]
     view_count = sum(1 for c in sample if c["defect_label"] == "view-correctness")
     est = estimate_cost(sample=len(sample), rerolls=args.rerolls, arms=arms, view_count=view_count)
 
@@ -437,13 +508,20 @@ def main() -> None:
     corpus = parse_corpus(_CORPUS_MD)
     effs = []
     for c in sample:
-        em_kw = {} if "em" not in arms else {"em_value": _stub_em_value(c) if args.stub else _live_em_value(c)}
+        em_kw = {}
+        if "em" in arms:
+            # The em arm needs Em's ACTUAL proposed clause — captured live by running
+            # Em on the defect fixture (one call/case). Stub reuses the golden stand-in.
+            em_kw = {"em_value": _stub_em_value(c) if args.stub
+                     else _capture_em_value(c, manifest=manifest, criteria=criteria)}
         effs.append(run_case(c, arms=arms, rerolls=args.rerolls, corpus=corpus,
                              manifest=manifest, criteria=criteria,
                              regenerate_fn=regen, recritique_fn=crit, **em_kw))
     agg = aggregate_efficacy(effs)
+    lift = normalized_lift(agg)  # {} unless all three arms (em+golden+null) ran
     label = "STUB (no efficacy claim)" if args.stub else "LIVE"
-    print(json.dumps({"label": label, "estimate": est, "aggregate": agg}, indent=2))
+    print(json.dumps({"label": label, "estimate": est, "aggregate": agg,
+                      "normalized_lift": lift}, indent=2))
 
 
 def _manifest() -> dict:
@@ -465,11 +543,30 @@ def _stub_em_value(case: dict) -> str:
     return case.get("golden_diff", "")
 
 
-def _live_em_value(case: dict):
-    """The live em arm needs Em's actual proposed_patches[].value — captured via a
-    score.py patch-capture run (Gate 0). Wiring that source is part of the deferred
-    costed phase; until then the live em arm is unpopulated."""
-    return None
+def _capture_em_value(case: dict, *, manifest: dict, criteria):
+    """Capture Em's proposed corrective clause for the em arm: run Em LIVE on the DEFECT
+    fixture (Gate 0 capture path) and return the first proposed_patches[].value. Returns
+    None when Em proposed nothing (a real outcome → the em arm records skipped_no_proposal,
+    never a 0). One Em call per case (accounted as em_capture_calls in estimate_cost).
+    The §0 `score.py --dump-patches` proves this capture is non-empty before any spend."""
+    from pipeline.agents import AgentContext
+    from pipeline.agents.vision_critic import VisionCriticNode, EmptyCitesInvariant
+    ctx = AgentContext(
+        run_dir=Path("/tmp/gate3-capture"),
+        inputs={"image_path": str(HERE / "fixtures" / case["input"]),
+                "beat_description": case["beat_description"],
+                "frame_id": f"capture-{case['name']}",
+                "impact_tags": case.get("impact_tags", []),
+                "checkpoint": case["checkpoint"],
+                "character_id": case.get("character_id", "sean")},
+        manifest=manifest, criteria=criteria, tier="draft",
+        cache_dir=Path("/tmp/gate3-capture/.cache"))
+    try:
+        res = VisionCriticNode().run(ctx)
+    except EmptyCitesInvariant:
+        return None
+    patches = res.proposed_patches
+    return patches[0].value if patches else None
 
 
 if __name__ == "__main__":

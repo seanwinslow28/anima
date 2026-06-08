@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-06-08 — G6.9 Step 3 setup: null/placebo arm + normalized lift + em-capture ($0; costed run staged)
+
+**What & why.** $0 machinery so the Gate 3 empirical baseline is turnkey when greenlit (no spend here). Implements Sean's locked attribution decision (2026-06-08 follow-on plan, decision #3): the clean-pair apply mechanism has a per-class FLOOR — a useless clause can still regenerate a clean frame — so raw fix-rate over-credits Em. The fix is a measured floor + a floor-corrected headline. Runbook: [`docs/2026-06-08-g6.9-gate3-costed-handoff.md`](docs/2026-06-08-g6.9-gate3-costed-handoff.md).
+
+- **Null/placebo arm** (`evals/vision_critic/patch_efficacy.py`) — `--arm` gains `null` / `both+null` / `all`; **`both+null` is the new default** and the locked first-run config. The null arm splices a fixed defect-orthogonal placebo (`_NULL_CLAUSE = "with a calm, evenly-lit, neutral background"`) through the same clean-pair mechanism as em/golden, measuring how often the base clears **regardless** of corrective content.
+- **Normalized lift** — `normalized_lift(agg)` reports, per class + overall, raw em/golden/null clear-rates + `lift = (em − null)/(golden − null)` + a `discriminative` flag. `golden ≈ null` ⇒ `lift: null, discriminative: false` — the instrument has no power on that class (a finding, not a guess). 1.0 = em matches the golden's lift over the floor; 0.0 = no better than placebo; <0 = worse.
+- **Live em-capture** — `_capture_em_value` runs Em LIVE on the defect fixture (the Gate 0 capture path) to get her actual `proposed_patches[].value` for the em arm (one call/case; None when Em proposed nothing → the arm records `skipped_no_proposal`, never a 0). Replaces the deferred `_live_em_value` stub.
+- **Cost estimate** updated for the em-arm capture (one Em call/case) + the third arm: **first run `both+null --sample 12 --rerolls 3` ≈ $7.80** (nb2=90, em=120 incl. 12 captures); printed before any spend.
+- **Tests** — `tests/test_gate3_null_lift.py` (9): null-arm splice, three-arm independence, lift math (floor-cancel, no-power, N/A-without-all-arms), em-capture (returns clause / None on no-patch), cost-with-capture. Full `tests/` **405 passed**; verdict baseline byte-identical (`md5 2af75906…`). **Still no costed run** — `patch_efficacy --check-only` refuses live until #34's ratified goldens land; the handoff doc gates the spend.
+
 ## 2026-06-08 — G6.9 Gate 1: golden corpus RATIFIED (Sean) — unblocks the costed Gate 3 baseline
 
 **What & why.** Follow-on to the merged G6.9 $0 infra (#32, below). Sean ratified the 30 draft `golden_diff` clauses per the [2026-06-08 follow-on plan](docs/2026-06-08-g6.9-prompt-diff-eval-handoff.md); all flip `golden_diff_ratified: true`, which lifts `patch_efficacy.py`'s exit-4 refusal so the costed Gate 3 baseline becomes reachable (still gated on `GEMINI_API_KEY` present + `ANTHROPIC_API_KEY` unset + a separate spend go-ahead). The five judgment calls were settled first:
@@ -9,7 +19,7 @@
 - **(C, kept) `palette-pad5` ("sneakers in their reference color") + `palette-pad6` ("light stubble")** kept as realistic fixes; they add specifics not pinned in the cited IR rule, so they won't score on diff cite-precision — noted, not a blocker.
 - **Test decoupled from corpus state** — `test_preflight_refuses_unratified_when_live` now synthesizes the unratified condition (the live corpus is ratified), so the §0 refusal stays guarded independently of the goldens' flag. Full `tests/` **396 passed**; verdict baseline `g6.1b-criteria-attached-2026-06-08.md` byte-identical (`md5 2af75906…`). cases.yaml only (+ the one test); no manifest/CLAUDE.md/baseline touched.
 
-
+## 2026-06-08 — G6.9 diff-eval: $0 infrastructure built (the second axis of Em's ruler) — costed runs DEFERRED
 
 **What & why.** After G5/G6.1b the eval suite measures Em's *verdicts* (0.97/1.00/0.00) and *citations* (0.97) but **nothing** about her *constructive* output — the `proposed_patches` (prompt diffs) she stages. The Critic Stack contract is "T2 **proposes prompt diffs**, not pass/fail"; "flags correctly" and "proposes a fix that helps" can diverge arbitrarily. G6.9 builds the second scoring axis. Executes [`docs/2026-06-08-g6.9-prompt-diff-eval-handoff.md`](docs/2026-06-08-g6.9-prompt-diff-eval-handoff.md). Sean-scoped this push to **all $0 infrastructure, stub-tested green, no costed run** (goldens drafted-for-ratification; the costed Gate 2 calibration + Gate 3 baseline are a deferred follow-on behind ratification + a spend go-ahead). **The ratified verdict baseline is purely additive-protected:** `evals/vision_critic/traces/g6.1b-criteria-attached-2026-06-08.md` stays byte-identical (`md5 2af75906502f1caf8857e18828ceb2e4`, verified before+after).
 
