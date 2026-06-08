@@ -4,6 +4,8 @@
 
 **Standing doctrine: verify against the tree, never trust a label — including this brief.**
 
+> **Cleared for parallel execution — 2026-06-08 Cowork planning session.** Sean confirmed this build runs concurrently with G6.9 ([`docs/2026-06-08-g6.9-prompt-diff-eval-handoff.md`](2026-06-08-g6.9-prompt-diff-eval-handoff.md)). Separate worktree, single owner each; SF03 is generation-time and never touches Em's surface, so the two can't collide. Re-verify the tree (HEAD was `3dfdc24` at planning time; `git fetch` was offline in the sandbox) before starting.
+
 ---
 
 ## Sequence
