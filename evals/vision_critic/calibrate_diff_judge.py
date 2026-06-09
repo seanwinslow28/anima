@@ -205,22 +205,68 @@ def run_calibration(pairs: list[Pair], labels: dict, *, judge, n: int = 5
 # --------------------------------------------------------------------------- #
 # Live Em-diff capture (capture_fn injected for tests; live default at runtime)
 # --------------------------------------------------------------------------- #
-def capture_em_diffs(cases: list[dict], *, manifest, criteria, capture_fn=None
-                     ) -> list[dict]:
+_CAPTURE_TIMEOUT_S = 600  # per-case worker ceiling (Opus escalation can run minutes)
+
+
+def _subprocess_capture_value(case_name: str) -> str | None:
+    """Capture Em's first proposed-patch value for ONE case in a FRESH interpreter
+    via `score.py --only <case> --dump-patches` (live, no --stub). Per-case
+    subprocess isolation dodges the exit-144 teardown race (#37) that an in-process
+    30-case loop of Em+Opus calls would hit. rc 4 (flagged case captured no diffs)
+    is a real outcome → None. A STUB value means the live path silently fell back —
+    hard stop, never score it."""
+    import subprocess
+    proc = subprocess.run(
+        [sys.executable, "-m", "evals.vision_critic.score", "--only", case_name,
+         "--dump-patches"],
+        capture_output=True, text=True, timeout=_CAPTURE_TIMEOUT_S,
+        cwd=str(HERE.parents[1]))
+    if proc.returncode == 4:          # PREFLIGHT FAIL: flagged case, no diffs
+        return None
+    if proc.returncode != 0:
+        raise RuntimeError(f"capture worker for {case_name} failed rc="
+                           f"{proc.returncode}: {proc.stderr[-400:]}")
+    out = proc.stdout.strip()
+    try:
+        patches = json.loads(out)
+    except json.JSONDecodeError:      # tolerate any leading log noise
+        i, j = out.find("["), out.rfind("]")
+        patches = json.loads(out[i:j + 1]) if i >= 0 and j > i else []
+    if not patches:
+        return None
+    val = patches[0].get("value")
+    if val and "STUB" in str(val):
+        raise RuntimeError(f"capture for {case_name} returned STUB text — the live "
+                           "path is not real; stop (do not score a stub).")
+    return val
+
+
+def capture_em_diffs(cases: list[dict], *, manifest, criteria, capture_fn=None,
+                     on_row=None) -> list[dict]:
     """Run Em LIVE per defect case and assemble {name, defect_label, golden_diff,
-    em_value, expected_cites} rows. Asserts at least one non-empty em_value — an
-    all-empty capture means the proxy has nothing to score; stop and surface (the
-    2026-06-07 'measured nothing' guard). capture_fn defaults to the real
+    em_value, expected_cites} rows. Per-case failures are contained as honest None
+    gaps (with an `error` reason) so one bad case can't abort the run (the Gate-3 v1
+    containment lesson). `on_row(row)` fires after each case for incremental
+    persistence. Asserts at least one non-empty em_value — an all-empty capture
+    means the proxy has nothing to score; stop and surface (the 2026-06-07
+    'measured nothing' guard). capture_fn defaults to the real
     patch_efficacy._capture_em_value; injected as a fake in tests."""
     if capture_fn is None:
         from evals.vision_critic.patch_efficacy import _capture_em_value
         capture_fn = _capture_em_value
     rows = []
     for case in cases:
-        val = capture_fn(case, manifest=manifest, criteria=criteria)
-        rows.append({"name": case["name"], "defect_label": case["defect_label"],
-                     "golden_diff": case.get("golden_diff", ""), "em_value": val,
-                     "expected_cites": case.get("expected_cites", [])})
+        row = {"name": case["name"], "defect_label": case["defect_label"],
+               "golden_diff": case.get("golden_diff", ""),
+               "expected_cites": case.get("expected_cites", []),
+               "em_value": None, "error": None}
+        try:
+            row["em_value"] = capture_fn(case, manifest=manifest, criteria=criteria)
+        except Exception as exc:  # contained gap, never a run-aborting crash
+            row["error"] = f"{type(exc).__name__}: {exc}"
+        rows.append(row)
+        if on_row is not None:
+            on_row(row)
     if not any(r["em_value"] and str(r["em_value"]).strip() for r in rows):
         raise RuntimeError(
             "capture produced 0 non-empty Em diffs — the proxy has nothing to "
@@ -301,13 +347,28 @@ def _cmd_check_only() -> None:
 
 
 def _cmd_capture(out: str) -> None:
-    manifest, criteria = _eval_manifest_and_criteria()
     cases = load_defect_cases()
-    rows = capture_em_diffs(cases, manifest=manifest, criteria=criteria)
-    write_jsonl(out, rows)
+    out_path = Path(out)
+    out_path.write_text("", encoding="utf-8")  # truncate; we append per case
+
+    def _append(row: dict) -> None:
+        with out_path.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(row) + "\n")
+        tag = "OK" if (row["em_value"] and str(row["em_value"]).strip()) else \
+              ("ERROR" if row["error"] else "no-proposal")
+        print(f"  [{tag}] {row['name']}", file=sys.stderr, flush=True)
+
+    # capture_fn ignores manifest/criteria — each worker reads the live manifest in
+    # its own fresh interpreter (production attach_criteria_text honored there).
+    def _cap(case, *, manifest, criteria):
+        return _subprocess_capture_value(case["name"])
+
+    rows = capture_em_diffs(cases, manifest=None, criteria=None,
+                            capture_fn=_cap, on_row=_append)
     n_nonempty = sum(1 for r in rows if r["em_value"] and str(r["em_value"]).strip())
-    print(f"CAPTURE OK: {n_nonempty}/{len(rows)} non-empty Em diffs → {out}",
-          file=sys.stderr)
+    n_err = sum(1 for r in rows if r["error"])
+    print(f"CAPTURE OK: {n_nonempty}/{len(rows)} non-empty Em diffs "
+          f"({n_err} errored gaps) → {out}", file=sys.stderr)
 
 
 def _cmd_score(set_path: str, labels_path: str, *, judge_name: str, n: int,

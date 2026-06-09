@@ -218,3 +218,60 @@ def test_capture_raises_when_every_diff_empty():
 
     with pytest.raises(RuntimeError, match="non-empty"):
         cal.capture_em_diffs(cases, manifest={}, criteria=None, capture_fn=empty_capture)
+
+
+def test_capture_contains_per_case_failure_as_none_gap():
+    """A worker that dies on ONE case is an honest None gap (with a reason), NOT a
+    run-aborting crash — the Gate-3 v1 containment lesson applied to capture."""
+    cases = [
+        {"name": "a", "defect_label": "palette", "golden_diff": "g", "expected_cites": []},
+        {"name": "b-dies", "defect_label": "palette", "golden_diff": "g", "expected_cites": []},
+        {"name": "c", "defect_label": "palette", "golden_diff": "g", "expected_cites": []},
+    ]
+
+    def flaky(case, *, manifest, criteria):
+        if case["name"] == "b-dies":
+            raise RuntimeError("worker died")
+        return f"clause-{case['name']}"
+
+    rows = cal.capture_em_diffs(cases, manifest={}, criteria=None, capture_fn=flaky)
+    vals = {r["name"]: r["em_value"] for r in rows}
+    assert vals == {"a": "clause-a", "b-dies": None, "c": "clause-c"}
+    assert rows[1]["error"] and "worker died" in rows[1]["error"]
+
+
+def test_capture_calls_on_row_incrementally():
+    """on_row fires per case so partial progress persists if the long run dies."""
+    cases = [
+        {"name": "a", "defect_label": "palette", "golden_diff": "g", "expected_cites": []},
+        {"name": "b", "defect_label": "palette", "golden_diff": "g", "expected_cites": []},
+    ]
+    seen = []
+    cal.capture_em_diffs(cases, manifest={}, criteria=None,
+                         capture_fn=lambda case, *, manifest, criteria: "x",
+                         on_row=seen.append)
+    assert [r["name"] for r in seen] == ["a", "b"]
+
+
+def test_subprocess_capture_value_parses_value_empty_and_guards_stub(monkeypatch):
+    import subprocess
+
+    def _fake(returncode, stdout, stderr=""):
+        class R:
+            pass
+        r = R()
+        r.returncode, r.stdout, r.stderr = returncode, stdout, stderr
+        return lambda *a, **k: r
+
+    # rc 0 with a real clause → returns it.
+    monkeypatch.setattr(subprocess, "run", _fake(0, json.dumps([{"value": "real clause"}])))
+    assert cal._subprocess_capture_value("x") == "real clause"
+
+    # rc 4 (flagged case captured no diffs) → None, never a crash.
+    monkeypatch.setattr(subprocess, "run", _fake(4, "[]", "no diffs"))
+    assert cal._subprocess_capture_value("x") is None
+
+    # A STUB value means the live path silently fell back → hard stop.
+    monkeypatch.setattr(subprocess, "run", _fake(0, json.dumps([{"value": "STUB corrective clause"}])))
+    with pytest.raises(RuntimeError, match="STUB"):
+        cal._subprocess_capture_value("x")
