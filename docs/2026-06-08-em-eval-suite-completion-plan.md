@@ -1,6 +1,6 @@
 # Plan — completing the Em (T2 vision-critic) eval suite: review + the path to "done"
 
-*2026-06-08. Cowork session (orient → analyze → decide → stage). **No model spend.** Reviews the three latest reports (SF03 + G6.9 Gate-3 handoff), confirms the merged work against the git tree, and lays out exactly what remains for the Em eval suite to measure all three of Em's axes. Costed work hands to Claude Code under [`docs/fleet-ops-protocol.md`](fleet-ops-protocol.md). Sequenced from the [G6.9 ratification + costed-Gate-3 plan](2026-06-08-g6.9-ratification-and-costed-gate3-plan.md) and the [Gate-3 costed handoff](2026-06-08-g6.9-gate3-costed-handoff.md).*
+*2026-06-08. Cowork session (orient → analyze → decide → stage). **No model spend.** Reviews the three latest reports (SF03 + G6.9 Gate-3 handoff), confirms the merged work against the git tree, and lays out exactly what remains for the Em eval suite to measure all three of Em's axes. Costed work hands to Claude Code under [`docs/fleet-ops-protocol.md`](fleet-ops-protocol.md). Sequenced from the [G6.9 ratification + costed-Gate-3 plan](COMPLETED/2026-06-08-g6.9-ratification-and-costed-gate3-plan.md) and the [Gate-3 costed handoff](OLD/2026-06-08-g6.9-gate3-costed-handoff.md).*
 
 **Standing doctrine: verify against the tree, never trust a label — including this plan.**
 
@@ -76,7 +76,7 @@ The golden-agreement proxy judge (`diff_eval.py`) is **built but uncalibrated**.
 
 ## 5. Handoff status
 
-The Gate-3 costed handoff [`docs/2026-06-08-g6.9-gate3-costed-handoff.md`](2026-06-08-g6.9-gate3-costed-handoff.md) is **verified ready as written**, with one refinement folded into §3 above: promote the subprocess-isolation wiring to an explicit $0 step-1 (ahead of `--check-only`). No other change needed — the §0 gates, the cost table, the arm config, and the out-of-scope list all hold against the code.
+The Gate-3 costed handoff [`docs/OLD/2026-06-08-g6.9-gate3-costed-handoff.md`](OLD/2026-06-08-g6.9-gate3-costed-handoff.md) is **verified ready as written**, with one refinement folded into §3 above: promote the subprocess-isolation wiring to an explicit $0 step-1 (ahead of `--check-only`). No other change needed — the §0 gates, the cost table, the arm config, and the out-of-scope list all hold against the code.
 
 ## 6. The mistake ledger we’re honoring
 
