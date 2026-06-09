@@ -297,6 +297,121 @@ def labels_from_rows(rows: list[dict]) -> dict:
                            "sean_why": r.get("sean_why", "")} for r in rows}
 
 
+def load_labels(path: str | Path) -> dict:
+    """Sean's ground-truth labels keyed by pair_id. Accepts the filled labeling
+    sheet (.yaml, a {instructions, pairs:[...]} doc with match/why) OR a labels
+    JSONL. sean_match is True/False/None (None = unlabeled or no-diff, excluded)."""
+    p = Path(path)
+    if p.suffix.lower() in (".yaml", ".yml"):
+        doc = yaml.safe_load(p.read_text(encoding="utf-8"))
+        items = doc["pairs"] if isinstance(doc, dict) and "pairs" in doc else doc
+        return {it["pair_id"]: {"sean_match": it.get("match"),
+                                "sean_why": it.get("why", "")} for it in items}
+    return labels_from_rows(load_jsonl(p))
+
+
+# --------------------------------------------------------------------------- #
+# Calibration-set construction
+# --------------------------------------------------------------------------- #
+_CLASS_ORDER = ["proportion", "view-correctness", "anatomy-count",
+                "palette", "construction-lines", "shading-register"]
+
+# Hand-authored HARD same-class negatives: each candidate is in the SAME defect
+# class as its reference golden but expresses a GENUINELY DIFFERENT corrective
+# intent (a different attribute / target / direction), so it is a true non-match.
+# These can't be auto-generated from the corpus — within a class the ratified
+# goldens are near-identical (all proportion fails = "seven heads tall", all
+# shading = "cross-hatch pencil shading"), so same-class case pairings would mostly
+# MATCH. The judge sees only candidate+golden+class (blind to "hard_negative"), so
+# it can't dismiss these on domain — they stress the dangerous over-call directly.
+_HARD_NEGATIVES = [
+    {"defect_label": "palette",
+     "golden": "wearing a navy-blue crew-neck t-shirt",
+     "candidate": "recolor his hair to dirty-blonde; leave the shirt and every "
+                  "other color exactly as drawn"},
+    {"defect_label": "proportion",
+     "golden": "drawn at natural adult proportions, about seven heads tall",
+     "candidate": "widen the shoulders to roughly two-and-a-half head-widths across"},
+    {"defect_label": "view-correctness",
+     "golden": "left profile, full body visible",
+     "candidate": "redraw as a three-quarter back view"},
+    {"defect_label": "anatomy-count",
+     "golden": "with five fingers on each hand",
+     "candidate": "give the figure both legs"},
+    {"defect_label": "construction-lines",
+     "golden": "with light construction lines visible beneath the final pencil line",
+     "candidate": "add stronger line-weight variation along the outer contour, "
+                  "heavier on the shadow side"},
+    {"defect_label": "shading-register",
+     "golden": "shaded with cross-hatch pencil shading",
+     "candidate": "flatten the shading to a two-tone anime cel block"},
+]
+
+
+def build_calibration_pairs(rows: list[dict], *, cross_offsets=(1, 2, 3)) -> list[dict]:
+    """Assemble the balanced calibration set from captured Em diffs:
+      - REAL: (Em's clause, its own golden), one per row — ground truth UNKNOWN
+        (Em may match or differ; Sean labels);
+      - CROSS_NEGATIVE: Em's clause from class B vs class A's golden (A≠B) — faithful
+        cross-domain non-matches that still carry Em's incidental overlap, so they
+        stress the judge (the more realistic FPR test than terse golden-vs-golden);
+      - HARD_NEGATIVE: the authored same-class genuine non-matches above.
+    Every pair carries `kind`/`cand_class` for analysis only — the judge never sees them."""
+    pairs: list[dict] = []
+    for r in rows:
+        pairs.append({"pair_id": f"real::{r['name']}", "defect_label": r["defect_label"],
+                      "kind": "real", "candidate": r.get("em_value"),
+                      "golden": r.get("golden_diff", ""), "ref_case": r["name"],
+                      "cand_case": r["name"], "cand_class": r["defect_label"]})
+    first_by_class: dict[str, dict] = {}
+    for r in rows:
+        first_by_class.setdefault(r["defect_label"], r)
+    classes = [c for c in _CLASS_ORDER if c in first_by_class] or list(first_by_class)
+    for off in cross_offsets:
+        for i, ca in enumerate(classes):
+            cb = classes[(i + off) % len(classes)]
+            if cb == ca:
+                continue
+            a, b = first_by_class[ca], first_by_class[cb]
+            if not (b.get("em_value") and str(b["em_value"]).strip()):
+                continue
+            pairs.append({"pair_id": f"cross::{a['name']}__vs__{b['name']}",
+                          "defect_label": a["defect_label"], "kind": "cross_negative",
+                          "candidate": b["em_value"], "golden": a.get("golden_diff", ""),
+                          "ref_case": a["name"], "cand_case": b["name"],
+                          "cand_class": b["defect_label"]})
+    for i, h in enumerate(_HARD_NEGATIVES):
+        pairs.append({"pair_id": f"hard::{h['defect_label']}-{i + 1}",
+                      "defect_label": h["defect_label"], "kind": "hard_negative",
+                      "candidate": h["candidate"], "golden": h["golden"],
+                      "ref_case": None, "cand_case": None,
+                      "cand_class": h["defect_label"]})
+    return pairs
+
+
+_SHEET_INSTRUCTIONS = (
+    "Em Gate-2 judge calibration — Sean's ground-truth labels.\n"
+    "For each pair below, the CANDIDATE is a corrective prompt-clause; the GOLDEN is "
+    "a ratified human fix for some defect. Set `match: true` if applying the candidate "
+    "would steer a re-generation toward the SAME fix as the golden (judge INTENT, not "
+    "wording); else `match: false`. Add a one-line `why`. Leave `match` blank only if "
+    "the pair is unscoreable. `kind` is context (real / cross_negative / hard_negative) "
+    "— label on the clauses themselves, not the kind. The judge never sees `kind` or `why`."
+)
+
+
+def write_labeling_sheet(pairs: list[dict], path: str | Path) -> None:
+    """Emit the human labeling sheet (YAML): one block per pair with blank match/why
+    for Sean to fill. Parseable straight back via load_labels."""
+    doc = {"instructions": _SHEET_INSTRUCTIONS,
+           "pairs": [{"pair_id": p["pair_id"], "defect_class": p["defect_label"],
+                      "kind": p["kind"], "candidate": p["candidate"],
+                      "golden": p["golden"], "match": None, "why": ""}
+                     for p in pairs]}
+    Path(path).write_text(yaml.safe_dump(doc, sort_keys=False, allow_unicode=True,
+                                         width=100), encoding="utf-8")
+
+
 def load_defect_cases() -> list[dict]:
     """The 30 identity_style defect cases (each carries a ratified golden_diff)."""
     cases = yaml.safe_load((HERE / "cases.yaml").read_text(encoding="utf-8"))["cases"]
@@ -371,10 +486,21 @@ def _cmd_capture(out: str) -> None:
           f"({n_err} errored gaps) → {out}", file=sys.stderr)
 
 
+def _cmd_build_set(diffs_path: str, out_set: str, out_sheet: str) -> None:
+    from collections import Counter
+    rows = load_jsonl(diffs_path)
+    pairs = build_calibration_pairs(rows)
+    write_jsonl(out_set, pairs)
+    write_labeling_sheet(pairs, out_sheet)
+    kinds = Counter(p["kind"] for p in pairs)
+    print(f"BUILD OK: {len(pairs)} pairs {dict(kinds)} → {out_set}\n"
+          f"  labeling sheet (Sean fills match/why) → {out_sheet}", file=sys.stderr)
+
+
 def _cmd_score(set_path: str, labels_path: str, *, judge_name: str, n: int,
                out: str | None) -> None:
     pairs = pairs_from_rows(load_jsonl(set_path))
-    labels = labels_from_rows(load_jsonl(labels_path))
+    labels = load_labels(labels_path)
     judge = _stub_judge if judge_name == "stub" else opus_judge
     scored, agg = run_calibration(pairs, labels, judge=judge, n=n)
     payload = {
@@ -405,10 +531,17 @@ def main(argv: list[str] | None = None) -> None:
     ap.add_argument("--capture", metavar="OUT.jsonl",
                     help="Run Em LIVE on the 30 defect cases → captured-diffs JSONL "
                          "(asserts non-empty). Costed (~$1.50). EXIT.")
+    ap.add_argument("--build-set", action="store_true",
+                    help="Build the balanced calibration set + labeling sheet from "
+                         "captured diffs (--diffs). $0. EXIT.")
+    ap.add_argument("--diffs", help="Captured-diffs JSONL (with --build-set).")
+    ap.add_argument("--out-set", help="Calibration-set JSONL out (with --build-set).")
+    ap.add_argument("--out-sheet", help="Labeling-sheet YAML out (with --build-set).")
     ap.add_argument("--score", action="store_true",
                     help="Score a calibration set against Sean's labels (judge N=5).")
     ap.add_argument("--set", dest="set_path", help="Calibration-set JSONL (with --score).")
-    ap.add_argument("--labels", dest="labels_path", help="Sean-labels JSONL (with --score).")
+    ap.add_argument("--labels", dest="labels_path",
+                    help="Sean's labels: the filled labeling-sheet YAML or a labels JSONL.")
     ap.add_argument("--judge", choices=["opus", "stub"], default="opus")
     ap.add_argument("--n", type=int, default=5, help="Votes per pair (majority).")
     ap.add_argument("--out", help="Write the scored payload JSON here.")
@@ -418,6 +551,10 @@ def main(argv: list[str] | None = None) -> None:
         _cmd_check_only()
     elif args.capture:
         _cmd_capture(args.capture)
+    elif args.build_set:
+        if not (args.diffs and args.out_set and args.out_sheet):
+            ap.error("--build-set requires --diffs, --out-set, --out-sheet")
+        _cmd_build_set(args.diffs, args.out_set, args.out_sheet)
     elif args.score:
         if not (args.set_path and args.labels_path):
             ap.error("--score requires --set and --labels")

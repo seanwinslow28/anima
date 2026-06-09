@@ -275,3 +275,61 @@ def test_subprocess_capture_value_parses_value_empty_and_guards_stub(monkeypatch
     monkeypatch.setattr(subprocess, "run", _fake(0, json.dumps([{"value": "STUB corrective clause"}])))
     with pytest.raises(RuntimeError, match="STUB"):
         cal._subprocess_capture_value("x")
+
+
+# --------------------------------------------------------------------------- #
+# Calibration-set construction + labeling sheet
+# --------------------------------------------------------------------------- #
+def _rows():
+    """Synthetic captured-diff rows: one per defect class, all with an Em value."""
+    classes = ["proportion", "view-correctness", "anatomy-count",
+               "palette", "construction-lines", "shading-register"]
+    return [{"name": f"{c}-d1", "defect_label": c, "golden_diff": f"golden-{c}",
+             "em_value": f"em-clause-{c}", "expected_cites": []} for c in classes]
+
+
+def test_build_pairs_has_reals_cross_and_hard():
+    pairs = cal.build_calibration_pairs(_rows())
+    kinds = {p["kind"] for p in pairs}
+    assert {"real", "cross_negative", "hard_negative"} <= kinds
+    reals = [p for p in pairs if p["kind"] == "real"]
+    assert len(reals) == 6                       # one per synthetic row
+    assert all(p.get("pair_id") for p in pairs)  # every pair is identifiable
+    # The judge is blind to kind — it never appears in the candidate/golden text.
+
+
+def test_cross_negatives_pair_different_classes():
+    rows = _rows()
+    by_id = {r["name"]: r["defect_label"] for r in rows}
+    pairs = cal.build_calibration_pairs(rows)
+    cross = [p for p in pairs if p["kind"] == "cross_negative"]
+    assert cross, "expected cross-class negatives"
+    for p in cross:
+        # candidate came from a DIFFERENT class than the golden's class.
+        assert p["cand_class"] != p["defect_label"]
+
+
+def test_hard_negatives_are_same_class_and_authored():
+    pairs = cal.build_calibration_pairs(_rows())
+    hard = [p for p in pairs if p["kind"] == "hard_negative"]
+    assert len(hard) == len(cal._HARD_NEGATIVES) >= 6
+    for p in hard:
+        # same defect class as its reference golden, candidate genuinely differs.
+        assert p["candidate"] and p["golden"]
+        assert p["candidate"] != p["golden"]
+
+
+def test_labeling_sheet_roundtrips_to_labels(tmp_path):
+    pairs = cal.build_calibration_pairs(_rows())
+    sheet = tmp_path / "sheet.yaml"
+    cal.write_labeling_sheet(pairs, sheet)
+    # Sean fills it: simulate by loading, setting match/why, writing back.
+    import yaml
+    doc = yaml.safe_load(sheet.read_text())
+    for item in doc["pairs"]:
+        item["match"] = item["kind"] == "real"   # arbitrary filled values
+        item["why"] = "filled"
+    sheet.write_text(yaml.safe_dump(doc, sort_keys=False))
+    labels = cal.load_labels(sheet)
+    assert labels[pairs[0]["pair_id"]]["sean_match"] in (True, False)
+    assert all("sean_match" in v for v in labels.values())
