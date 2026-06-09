@@ -20,10 +20,13 @@ STATUS: this push builds + stub-tests the machinery. The first COSTED run is DEF
 behind the §0 pre-flight and ratified goldens (preflight refuses a live run while any
 sampled golden is unratified, or ANTHROPIC_API_KEY is set, or GEMINI_API_KEY is absent).
 
-COSTED-RUN HARDENING NOTE: the in-process re-critique below spawns Em's async children
-(Opus escalation on identity_critical). Before the first costed baseline, wrap each case
-in score.py's subprocess-per-case isolation to dodge the exit-144 interpreter-teardown
-race (documented in score.py). The stub path has no async children, so it is safe here.
+COSTED-RUN HARDENING (wired): the live re-critique spawns Em's async children (Opus
+escalation on identity_critical). Each case runs in a FRESH worker (subprocess-per-case,
+#37) so the orchestrator is isolated from the exit-144 interpreter-teardown race, and
+_run_live_cases contains a per-case timeout / worker failure as an honest errored GAP so
+one bad case can't abort the whole baseline (the 2026-06-08 Gate-2 crash, where an
+uncaught TimeoutExpired on case #0 discarded every completed case). The stub path runs
+in-process (no async children).
 """
 from __future__ import annotations
 
@@ -467,7 +470,12 @@ _ARM_SETS = {
 # flushed the JSON (result captured); one that died before emitting becomes an honest
 # errored gap. Mirrors score.py's _run_case_subprocess.
 _EFFICACY_SENTINEL = "EFFICACY_JSON:"
-_PER_CASE_TIMEOUT_S = 900  # 3 arms × N re-rolls of regen + re-critique; generous ceiling
+_PER_CASE_TIMEOUT_S = 1800  # per-case ceiling. MEASURED 2026-06-08: an identity_critical
+# case at rerolls=3 ≈ 1288s — it forces Opus escalation on every re-critique (~104s/call,
+# near sdk_runners' 120s wait_for ceiling) × ~10 escalated calls + regens. The old 900s
+# cap crashed Gate 2 on case #0. 1800s gives ~512s margin; each model call is itself
+# 120s-bounded, so a case can't run away, and _run_live_cases gaps any case that still
+# exceeds this rather than aborting the whole baseline.
 
 
 def _efficacy_from_dict(d: dict) -> CaseEfficacy:
@@ -510,6 +518,31 @@ def _run_case_subprocess(case: dict, *, arm_set: str, rerolls: int, stub: bool) 
     raise RuntimeError(
         f"worker emitted no CaseEfficacy for {case.get('name')!r} "
         f"(exit={proc.returncode}); stderr tail: {proc.stderr.strip()[-300:] or '(empty)'}")
+
+
+def _run_live_cases(sample: list[dict], *, arm_set: str, rerolls: int):
+    """Run each case in a FRESH worker; a per-case timeout or worker failure is recorded
+    as an honest errored GAP (name, reason) and the run CONTINUES — one bad case never
+    aborts the whole baseline. (2026-06-08 Gate-2 crash: an uncaught TimeoutExpired on
+    case #0 propagated out of the loop and discarded every completed case.) Mirrors
+    score.py's per-case containment. Returns (effs, errored)."""
+    effs: list[CaseEfficacy] = []
+    errored: list[tuple[str, str]] = []
+    n = len(sample)
+    for i, c in enumerate(sample, 1):
+        name = c["name"]
+        try:
+            effs.append(_run_case_subprocess(c, arm_set=arm_set, rerolls=rerolls, stub=False))
+            print(f"[{i}/{n}] {name}: ok", file=sys.stderr, flush=True)
+        except subprocess.TimeoutExpired:
+            errored.append((name, f"timeout after {_PER_CASE_TIMEOUT_S}s"))
+            print(f"[{i}/{n}] {name}: ERRORED — timeout after {_PER_CASE_TIMEOUT_S}s",
+                  file=sys.stderr, flush=True)
+        except Exception as exc:  # noqa: BLE001 — record the gap, never abort the run
+            errored.append((name, f"{type(exc).__name__}: {exc}"))
+            print(f"[{i}/{n}] {name}: ERRORED — {type(exc).__name__}: {exc}",
+                  file=sys.stderr, flush=True)
+    return effs, errored
 
 
 def _build_runners(*, stub: bool):
@@ -600,6 +633,7 @@ def main() -> None:
         return
 
     effs = []
+    errored: list[tuple[str, str]] = []
     if args.stub:
         # Stub fakes spawn no async children — run in-process (fast, CI-safe).
         regen, crit, manifest, criteria = _build_runners(stub=True)
@@ -610,18 +644,19 @@ def main() -> None:
                                  manifest=manifest, criteria=criteria,
                                  regenerate_fn=regen, recritique_fn=crit, **em_kw))
     else:
-        # LIVE: each case in a FRESH worker (exit-144 teardown guard). The worker
-        # re-loads manifest/criteria + captures Em itself; only name/arm/rerolls cross.
-        # Reachable only after preflight passes (ratified goldens, key present,
-        # ANTHROPIC unset).
-        for c in sample:
-            effs.append(_run_case_subprocess(c, arm_set=args.arm,
-                                             rerolls=args.rerolls, stub=False))
+        # LIVE: each case in a FRESH worker (exit-144 teardown guard). _run_live_cases
+        # contains per-case failures (timeout / no-sentinel) as honest errored GAPS so a
+        # single bad case can't abort the whole baseline. Reachable only after preflight
+        # passes (ratified goldens, key present, ANTHROPIC unset).
+        effs, errored = _run_live_cases(sample, arm_set=args.arm, rerolls=args.rerolls)
     agg = aggregate_efficacy(effs)
     lift = normalized_lift(agg)  # {} unless all three arms (em+golden+null) ran
     label = "STUB (no efficacy claim)" if args.stub else "LIVE"
     print(json.dumps({"label": label, "estimate": est, "aggregate": agg,
-                      "normalized_lift": lift}, indent=2))
+                      "normalized_lift": lift, "errored": errored}, indent=2))
+    if errored:
+        print(f"NOTE: {len(errored)} case(s) errored — recorded as gaps, NOT zeros: "
+              f"{[n for n, _ in errored]}", file=sys.stderr)
 
 
 def _manifest() -> dict:
