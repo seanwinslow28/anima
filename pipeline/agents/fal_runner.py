@@ -6,14 +6,18 @@ a single call that self-stubs when FAL_KEY is absent (placeholder PNG, stub_fall
 a content-addressed cache, and a real path behind `fal_client.subscribe` (the idiom already
 in `pipeline/seedance_generate.py`).
 
-SCHEMA STATUS (2026-06-10): the fal endpoint ids + argument schema + output field below are
-UNVERIFIED CANDIDATES — the neighboring Reve runner was first written from third-party mirrors
-and was flatly WRONG; it only worked once corrected from the live API's own error messages.
-So this runner REFUSES the real path until STEP B0 probes the live fal model pages, confirms
-the arg names (`image_urls` vs `image_url`, edit-vs-generate route, the output url field, and
-whether Qwen exposes a denoise/strength knob — sweet-spot 0.78–0.82) and flips
-`_FAL_ENGINES[engine]['verified'] = True`. The stub path is exercised in CI (FAL_KEY absent);
-the unverified-refusal is exercised with a dummy key present. No live call happens until B0.
+SCHEMA STATUS (VERIFIED 2026-06-10, STEP B0) against the live fal OpenAPI — first-party, not
+guessed (the reve mirror-schema lesson):
+  • Seedream: `fal-ai/bytedance/seedream/v4/edit` — {prompt, image_urls[] (≤10)} required, output
+    images[].url. image_size defaults to 2048² SQUARE, so we pass the 16:9 source-frame size.
+  • Qwen: `fal-ai/qwen-image-edit-plus` — the MULTI-IMAGE variant ({prompt, image_urls[]}). The base
+    `fal-ai/qwen-image-edit` takes a single image_url and is unusable for a two-endpoint in-between.
+    Knobs: guidance_scale (def 4) + num_inference_steps (def 50). NO denoise/strength is exposed —
+    the kickoff's "denoise 0.78–0.82" does not exist on this endpoint (left at fal defaults).
+    image_size defaults to square_hd → we pass 16:9. output images[].url.
+`_FAL_ENGINES[engine]['verified']` is True for both. The flag stays as a re-gate: a provider bump
+that invalidates the schema flips it back to False, restoring the loud refusal. The stub path
+(FAL_KEY absent) is CI-green; the unverified-refusal is exercised by forcing verified=False.
 """
 from __future__ import annotations
 
@@ -34,16 +38,17 @@ _REQUEST_TIMEOUT_S = 180
 # served-model string into the bake-off's variants.yaml `snapshots:` block.
 _FAL_ENGINES: dict[str, dict] = {
     "seedream": {
-        # research: SYNTHESIS §2 / prompt-1-perplexity ref 47 — VERIFY LIVE.
+        # VERIFIED 2026-06-10 (B0) against the live fal OpenAPI.
         "endpoint": "fal-ai/bytedance/seedream/v4/edit",
-        "verified": False,
+        "verified": True,
         "cost_usd": 0.02,
     },
     "qwen": {
-        # candidates: fal-ai/qwen-image-edit / …-plus / a -2511 variant — VERIFY LIVE.
-        "endpoint": "fal-ai/qwen-image-edit",
-        "verified": False,
-        "cost_usd": 0.021,
+        # VERIFIED 2026-06-10 (B0): the `-plus` MULTI-IMAGE variant (base qwen-image-edit takes a
+        # single image_url — unusable for a two-endpoint in-between). ~$0.03/MP.
+        "endpoint": "fal-ai/qwen-image-edit-plus",
+        "verified": True,
+        "cost_usd": 0.03,
     },
 }
 
@@ -94,18 +99,24 @@ def _write_placeholder_png(path: Path) -> None:
     Image.new("RGB", (1376, 768), (128, 128, 128)).save(path, "PNG")
 
 
+def _image_size_for(references: list[Path]) -> dict:
+    """16:9-preserving output size = the first reference frame's dimensions. Both fal endpoints
+    default to a SQUARE output (Seedream 2048², Qwen square_hd), which would distort the
+    pencil-test frames and skew the DINOv2 read against the endpoints."""
+    with Image.open(references[0]) as im:
+        w, h = im.size
+    return {"width": w, "height": h}
+
+
 def _build_arguments(engine: str, *, prompt: str, image_urls: list[str],
-                     denoise: float | None) -> dict:
-    """Construct the fal.subscribe arguments. Arg NAMES are CANDIDATES — STEP B0 verifies
-    them against the live fal model page (the reve mirror-schema lesson)."""
-    if engine == "seedream":
-        # VERIFY: `image_urls` (list) vs `image_url` (single); edit route takes prompt + refs.
-        return {"prompt": prompt, "image_urls": image_urls}
-    # qwen — VERIFY: single vs multi image; denoise/strength param name + exposure.
-    args: dict = {"prompt": prompt, "image_urls": image_urls}
-    if denoise is not None:
-        args["denoise"] = denoise  # VERIFY param name (strength? guidance? num_inference_steps?)
-    return args
+                     image_size: dict, denoise: float | None) -> dict:
+    """Construct the fal.subscribe arguments (VERIFIED 2026-06-10 against the live fal OpenAPI).
+
+    Both endpoints take {prompt, image_urls[]} and default to a SQUARE output, so we pass an
+    explicit `image_size` matching the source frames. `denoise` is accepted for API symmetry but
+    NOT forwarded — neither endpoint exposes a denoise/strength knob (Qwen's cfg lever is
+    guidance_scale, left at the fal default 4; Seedream has none)."""
+    return {"prompt": prompt, "image_urls": image_urls, "image_size": image_size}
 
 
 def _extract_output_url(result: object) -> str | None:
@@ -177,7 +188,8 @@ def _invoke_fal(
         raise RuntimeError("live fal path needs `fal-client` (pip install fal-client)") from exc
 
     image_urls = [fal_client.upload_file(str(p)) for p in references]
-    arguments = _build_arguments(engine, prompt=prompt, image_urls=image_urls, denoise=denoise)
+    arguments = _build_arguments(engine, prompt=prompt, image_urls=image_urls,
+                                 image_size=_image_size_for(references), denoise=denoise)
     result = fal_client.subscribe(cfg["endpoint"], arguments=arguments)
     url = _extract_output_url(result)
     if not url:
@@ -196,11 +208,11 @@ def invoke_fal_seedream(
     model: str | None = None,
     timeout_s: int = _REQUEST_TIMEOUT_S,
 ) -> FalResponse:
-    """Edit one image via fal Seedream 4.0, or stub if no FAL_KEY.
+    """Edit via fal Seedream 4.0 (`…/seedream/v4/edit`), or stub if no FAL_KEY.
 
-    In-betweens pass both endpoint keyframes as `reference_images`; the prompt describes
-    the tween position. Content-addressed cache (same prompt+refs+model -> cache hit).
-    Refuses until the endpoint is B0-verified.
+    In-betweens pass both endpoint keyframes as `reference_images` (image_urls[]); the prompt
+    describes the tween position; output size is forced to the 16:9 source-frame size. Content-
+    addressed cache (same prompt+refs+model -> cache hit). Verified B0 2026-06-10.
     """
     return _invoke_fal("seedream", prompt=prompt, reference_images=reference_images,
                        output_path=output_path, cache_dir=cache_dir, model=model,
@@ -217,10 +229,13 @@ def invoke_fal_qwen(
     denoise: float | None = None,
     timeout_s: int = _REQUEST_TIMEOUT_S,
 ) -> FalResponse:
-    """Edit one image via fal Qwen-Image-Edit, or stub if no FAL_KEY.
+    """Edit via fal Qwen-Image-Edit-Plus (`…/qwen-image-edit-plus`, multi-image), or stub if no
+    FAL_KEY.
 
-    `denoise` (sweet-spot 0.78–0.82) threads into the arguments IF B0 confirms the param
-    is exposed. Content-addressed cache. Refuses until the endpoint is B0-verified.
+    Both endpoint keyframes pass as image_urls[]; output size is forced to the 16:9 source-frame
+    size. `denoise` is accepted for API symmetry but NOT sent — qwen-image-edit-plus exposes no
+    denoise/strength knob (verified B0; its cfg lever is guidance_scale, left at the fal default).
+    Content-addressed cache. Verified B0 2026-06-10.
     """
     return _invoke_fal("qwen", prompt=prompt, reference_images=reference_images,
                        output_path=output_path, cache_dir=cache_dir, model=model,

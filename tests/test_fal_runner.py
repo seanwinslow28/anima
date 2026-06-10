@@ -16,6 +16,7 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
+from pipeline.agents import fal_runner
 from pipeline.agents.fal_runner import (
     FalResponse,
     _write_placeholder_png,
@@ -96,10 +97,11 @@ def test_cache_key_changes_with_prompt(tmp_path):
 
 
 def test_seedream_refuses_unverified_endpoint_when_key_present(tmp_path, monkeypatch):
-    """The reve lesson: never silently call an unverified fal endpoint. With a key
-    present (stub path skipped) and the endpoint not yet B0-verified, RAISE before
-    any network call."""
+    """The reve lesson: never silently call an unverified fal endpoint. The refusal MECHANISM
+    must fire whenever an endpoint is marked unverified — force that state (post-B0 the production
+    default is verified=True) and assert it RAISES before any network call."""
     monkeypatch.setenv("FAL_KEY", "dummy-not-used")
+    monkeypatch.setitem(fal_runner._FAL_ENGINES["seedream"], "verified", False)
     with pytest.raises(RuntimeError, match="verif"):
         invoke_fal_seedream(
             prompt="p", reference_images=_refs(tmp_path),
@@ -109,11 +111,21 @@ def test_seedream_refuses_unverified_endpoint_when_key_present(tmp_path, monkeyp
 
 def test_qwen_refuses_unverified_endpoint_when_key_present(tmp_path, monkeypatch):
     monkeypatch.setenv("FAL_KEY", "dummy-not-used")
+    monkeypatch.setitem(fal_runner._FAL_ENGINES["qwen"], "verified", False)
     with pytest.raises(RuntimeError, match="verif"):
         invoke_fal_qwen(
             prompt="p", reference_images=_refs(tmp_path),
             output_path=tmp_path / "out.png", cache_dir=tmp_path / ".cache",
         )
+
+
+def test_both_endpoints_b0_verified():
+    """Regression guard documenting the B0 outcome (2026-06-10): both fal endpoints are verified,
+    so the runner's real path is live. A provider bump that re-gates flips these back to False."""
+    assert fal_runner._FAL_ENGINES["seedream"]["verified"] is True
+    assert fal_runner._FAL_ENGINES["seedream"]["endpoint"] == "fal-ai/bytedance/seedream/v4/edit"
+    assert fal_runner._FAL_ENGINES["qwen"]["verified"] is True
+    assert fal_runner._FAL_ENGINES["qwen"]["endpoint"] == "fal-ai/qwen-image-edit-plus"
 
 
 def test_fal_response_ok_property(tmp_path):
