@@ -297,6 +297,49 @@ critics:
     per_call_timeout_s: 120
     wall_budget_s: 600
 
+  # T3 — the multi-CLI variance council (the vault_critic pattern). Three
+  # heterogeneous peers fan out in parallel; a separate Opus chairman adjudicates.
+  # Placement: pre_museum_publish (wired Session B 2026-06-10) + post_animatic
+  # (declared seam — Phase 4 Animatic does not exist yet; ticketed, NOT wired).
+  # Engine: pipeline/agents/t3_council.py (T3CouncilNode, Session A #41).
+  #
+  # COSMETIC-HONESTY (the t2 A3 lesson): the engine reads ONLY per_call_timeout_s
+  # from this block today; the peer roster + transports are the code source of
+  # truth in t3_council._PEERS (codie/annie/sage). The peers:/chairman: keys below
+  # are the config-of-record and MUST match that roster — they document what serves,
+  # they don't (yet) drive dispatch. If the engine is later wired to read peers
+  # from config, this block becomes load-bearing; until then keep it non-contradictory.
+  #
+  # Annie is gemini_api, NOT agy (settled in docs/research/2026-06-10-t3-cli-
+  # multimodal-smoke.md): agy v1.0.4 rejects -m and is an agentic harness unfit as
+  # a deterministic critic transport. $0 incremental on subscriptions for codie
+  # (ChatGPT Plus) + sage/chairman (Claude SDK); annie bills the bounded
+  # GEMINI_API_KEY (fleet-ops billing), model pinned like Em.
+  t3:
+    peers:
+      # production lens — OpenAI Codex CLI (codex exec -i <img>), ChatGPT Plus
+      - name: codie
+        transport: codex
+      # visual + identity/continuity lens — Gemini API, pinned like Em
+      - name: annie
+        transport: gemini_api
+        model: "gemini-3.5-flash"
+      # narrative/beat lens — Opus 4.7 via the Claude Agent SDK (invoke_opus_vision)
+      - name: sage
+        transport: opus_vision
+        model: "claude-opus-4-7-via-sdk"
+    # The chairman is a SEPARATE Opus text call (Pattern C), not a promoted peer.
+    chairman:
+      transport: opus_text
+      model: "claude-opus-4-8"
+    auto_apply: false        # v2 lock — patches stage, Sean reviews; never auto-apply
+    per_call_timeout_s: 120  # read by T3CouncilNode.run (the only key wired today)
+    wall_budget_s: 600
+    default_context_files:
+      - PHILOSOPHY.md
+      - CLAUDE.md
+      - docs/pipeline-architecture-v1.md
+
 # Character Bible registry.
 # Authoritative spec: docs/pipeline-architecture-v1.md §The Character Bible Primitive
 # Commit 2.0 migrated images/2D-Character-Sketch-Sean-v1.png → characters/sean-anchor/.

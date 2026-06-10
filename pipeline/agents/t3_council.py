@@ -98,6 +98,10 @@ class _PeerResult:
     rate_capped: bool = False
     error: str | None = None
     parsed: dict[str, Any] | None = field(default=None)
+    # Provenance for the live-vs-stub assertion (the live smoke must prove each
+    # peer fired LIVE, not stub — the 2026-06-07 silent-flag lesson).
+    stub_fallback: bool = False
+    model: str | None = None
 
 
 @register_node("t3_council")
@@ -219,10 +223,18 @@ class T3CouncilNode:
                 return _PeerResult(peer.name, status="error", rate_capped=True, error=str(exc)[:300])
             except Exception as exc:  # noqa: BLE001 — contain ANY peer failure
                 return _PeerResult(peer.name, status="error", error=str(exc)[:300])
+            stub_fallback = bool(getattr(resp, "stub_fallback", False))
+            model = getattr(resp, "model", None)
             if not getattr(resp, "ok", True):
-                return _PeerResult(peer.name, status="error", error=getattr(resp, "error", None))
+                return _PeerResult(
+                    peer.name, status="error", error=getattr(resp, "error", None),
+                    stub_fallback=stub_fallback, model=model,
+                )
             parsed = self._parse(getattr(resp, "text", ""))
-            return _PeerResult(peer.name, status="ok", parsed=parsed)
+            return _PeerResult(
+                peer.name, status="ok", parsed=parsed,
+                stub_fallback=stub_fallback, model=model,
+            )
 
         return list(await asyncio.gather(*[_one(p) for p in _PEERS]))
 
@@ -460,6 +472,8 @@ class T3CouncilNode:
                 "reasoning": (p.parsed or {}).get("reasoning") if p.parsed else None,
                 "cites_criteria": (p.parsed or {}).get("cites_criteria", []) if p.parsed else [],
                 "error": p.error,
+                "stub_fallback": p.stub_fallback,
+                "model": p.model,
             }
             for p in peer_results
         }

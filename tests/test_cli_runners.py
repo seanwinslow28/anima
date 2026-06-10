@@ -185,6 +185,42 @@ def test_codex_success_returns_response(monkeypatch):
     assert json.loads(resp.text)["verdict"] == "pass"
 
 
+def test_codex_prompt_precedes_image_flags(tmp_path, monkeypatch):
+    """REGRESSION (verified live against codex-cli 0.139.0, Session B 2026-06-10):
+    `-i/--image <FILE>...` is VARIADIC, so a prompt positional placed AFTER `-i`
+    is swallowed as an extra image and codex falls back to reading the prompt from
+    stdin ("No prompt provided via stdin", exit 1). The prompt positional MUST come
+    before the first `-i`. This test captures the argv and enforces that order."""
+    from pipeline.agents import cli_runners
+
+    captured: dict = {}
+
+    async def _capture_exec(*args, **_k):
+        captured["argv"] = list(args)
+        return _FakeProc(stdout=b'{"verdict":"pass"}', stderr=b"", returncode=0)
+
+    monkeypatch.setattr(cli_runners.shutil, "which", lambda _b: "/opt/homebrew/bin/codex")
+    monkeypatch.setattr(cli_runners.asyncio, "create_subprocess_exec", _capture_exec)
+
+    img1 = tmp_path / "a.png"; img1.write_bytes(b"\x89PNG\r\n\x1a\n")
+    img2 = tmp_path / "b.png"; img2.write_bytes(b"\x89PNG\r\n\x1a\n")
+    prompt = "CRITIQUE_PROMPT_SENTINEL"
+
+    asyncio.run(cli_runners.run_codex_with_image(prompt=prompt, image_paths=[img1, img2], timeout_s=5))
+
+    argv = captured["argv"]
+    assert prompt in argv, "prompt must be passed as a positional arg"
+    prompt_idx = argv.index(prompt)
+    i_indices = [i for i, a in enumerate(argv) if a == "-i"]
+    assert i_indices, "image flags should be present"
+    assert prompt_idx < min(i_indices), (
+        f"prompt (idx {prompt_idx}) must precede the first -i (idx {min(i_indices)}) — "
+        "variadic -i would otherwise swallow it. argv=" + repr(argv)
+    )
+    # both images still attached, each behind its own -i
+    assert str(img1.resolve()) in argv and str(img2.resolve()) in argv
+
+
 def test_codex_empty_stdout_exit0_raises_ratecap(monkeypatch):
     """Empty stdout on exit-0 is the observed quota signal → RateCapExhausted, never a silent verdict."""
     from pipeline.agents import cli_runners

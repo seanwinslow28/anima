@@ -37,6 +37,7 @@ from pipeline.museum.motion import scrape_motion_plates, motion_loop_pingpong  #
 from pipeline.museum.motion_gif import assemble_loop_gif  # noqa: E402
 from pipeline.museum.schema import Exhibit, exhibit_dir, write_exhibit, read_exhibit  # noqa: E402
 from pipeline.museum.render import render_static  # noqa: E402
+from pipeline.museum.t3_gate import t3_council_gate  # noqa: E402
 
 
 def _slug_rules(manifest_path: Path) -> dict[str, list[str]]:
@@ -337,10 +338,19 @@ def main(argv: list[str] | None = None) -> int:
                     help="force Mo's deterministic fallback prose (no model calls)")
     ap.add_argument("--render", action="store_true")
     ap.add_argument("--site", default="museum/_site/", type=Path)
+    ap.add_argument("--t3-gate", action="store_true",
+                    help="run the T3 council over assembled exhibits before --render; "
+                         "a chairman 'fail' (or all-peers-errored) blocks the publish")
+    ap.add_argument("--t3-limit", type=int, default=None,
+                    help="cap the number of exhibits the T3 gate reviews (smoke/cost control)")
+    ap.add_argument("--t3-project", default=None,
+                    help="restrict the T3 gate to one project_slug subtree (e.g. character-bible)")
+    ap.add_argument("--t3-run-dir", type=Path, default=None,
+                    help="where the T3 gate stages proposed patches (default museum/_t3_gate)")
     args = ap.parse_args(argv)
 
-    if not any([args.all, args.only, args.motion, args.narrate, args.render]):
-        ap.error("pass at least one of --all / --only / --motion / --narrate / --render")
+    if not any([args.all, args.only, args.motion, args.narrate, args.render, args.t3_gate]):
+        ap.error("pass at least one of --all / --only / --motion / --narrate / --render / --t3-gate")
 
     museum_root = Path(args.museum)
     if args.all:
@@ -352,10 +362,36 @@ def main(argv: list[str] | None = None) -> int:
     if args.narrate:
         narrate_all(museum_root, force_fallback=args.no_sonnet)
 
+    # The T3 council gate runs AFTER exhibits are assembled/narrated and BEFORE
+    # render — it gates the publish, not the scrape. A 'fail' adjudication (or
+    # all-peers-errored) blocks --render and surfaces the staged patches.
+    if args.t3_gate:
+        gate = t3_council_gate(
+            museum_root, Path(args.manifest),
+            run_dir=args.t3_run_dir, limit=args.t3_limit, project_slug=args.t3_project,
+        )
+        _print_t3_gate_summary(gate)
+        if gate.blocked:
+            print("[t3] GATE BLOCKED — refusing --render. Review the adjudication + "
+                  f"staged patches: python -m pipeline.cli patches list --run-dir {gate.run_dir}")
+            return 2
+
     if args.render:
         index = render_static(museum_root, Path(args.site))
         print(f"[museum] rendered -> file://{index.resolve()}")
     return 0
+
+
+def _print_t3_gate_summary(gate) -> None:
+    print(f"[t3] council reviewed {gate.exhibits_reviewed} exhibit(s); "
+          f"{gate.staged_patches} patch(es) staged -> {gate.run_dir}")
+    for r in gate.results:
+        live = {n: (not v.get("stub_fallback", False)) for n, v in r.peer_verdicts.items()}
+        live_note = ", ".join(f"{n}={'live' if ok else 'STUB'}" for n, ok in live.items())
+        print(f"[t3]   {r.exhibit_id}: verdict={r.verdict} status={r.status} "
+              f"agreement={r.agreement_score:.2f} peers[{live_note}]")
+    if gate.blocking_exhibits:
+        print(f"[t3]   BLOCKING: {[r.exhibit_id for r in gate.blocking_exhibits]}")
 
 
 if __name__ == "__main__":

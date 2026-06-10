@@ -200,7 +200,7 @@ The critic earns its keep when it proposes fixes, not when it flags problems. Th
 |------|------------|-------------|------------------|----------------|
 | **T1** | Rule gates — HF/SF/CC reason codes, PIL dimension checks. Deterministic, instant. | `pipeline/audit.py` + `pipeline/continuity_audit.py` (shipping) | Pass/fail per rule + retry strategy from manifest's retry ladder | $0, <100ms per frame |
 | **T2** | Vision critic — Claude Sonnet or Gemini 3 Pro (TBD bake-off) reviews output against beat description + style guide + storyboard intent. **Proposes specific prompt diffs**, not pass/fail. | Pending agent-fleet session — likely `pipeline/critics/vision_critic.py` | Structured critique notes + proposed prompt diff + confidence | ~$0.01–0.05 per call, 5–15s |
-| **T3** | Multi-CLI variance — Codex CLI + Anti-Gravity CLI run in parallel against the same artifact. The vault-critic pattern in code-brain: $0 incremental on subscriptions. | Pending agent-fleet session — likely `pipeline/critics/cli_critic.py` | Two independent critiques + agreement score + adjudication note | $0 incremental, ~120s per CLI (runs in parallel) |
+| **T3** | Multi-CLI variance council — three heterogeneous peers (Codie/`codex exec`, Annie/Gemini API, Sage/Opus-SDK) fan out in parallel + a separate Opus chairman adjudicates. The vault-critic pattern: $0 incremental on the Codex/Claude subscriptions, bounded Gemini for Annie. | **BUILT (Session B, 2026-06-10):** `pipeline/agents/t3_council.py` (`T3CouncilNode`) + `pipeline/museum/t3_gate.py` (the `pre_museum` gate) | Per-peer verdicts + agreement score + chairman adjudication note + staged patches (`auto_apply: false`) | $0 incremental + ~pennies Gemini, ~58–86s per artifact |
 
 ### The Five Named Checkpoints
 
@@ -212,7 +212,7 @@ The critic earns its keep when it proposes fixes, not when it flags problems. Th
 | post-Assemble | 8 → 9 | T2 | Loop coherence + pacing across the whole cut |
 | pre-Museum publish | parallel | T3 | Narrative + comparison artifacts hold up to independent eyes |
 
-T1 is implemented and shipping. T2 and T3 implementation are scoped for the agent-fleet session. Placement is locked here in commit 1; the schema's `critics:` block declares it so future commits can wire against a stable target.
+T1 is implemented and shipping. T2 (Em) shipped and is fully measured (verdict + citation + fix-rate axes). **T3 is BUILT + live-validated (Session B, 2026-06-10)** and wired at the **pre-Museum publish** checkpoint (`build_museum.py --t3-gate`; chairman `fail` blocks `--render`, `borderline` proceeds, patches stage). The **post-Animatic** T3 checkpoint stays a **declared seam** — Phase 4 Animatic is not built yet, so its gate is placement-locked + ticketed, not wired (don't build a gate for a phase that doesn't exist). The `critics.t3` config block lives in `manifest.yaml`; the live-smoke evidence is at [`docs/anima-test-runs/2026-06-10-t3-council-live-smoke.md`](anima-test-runs/2026-06-10-t3-council-live-smoke.md).
 
 Phase 7 Audit's role has changed from the pencil-test era. It is no longer *where critique happens*; it is where critique findings from distributed critics are *consolidated and routed* to the retry ladder.
 

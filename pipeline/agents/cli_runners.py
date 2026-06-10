@@ -360,9 +360,10 @@ async def run_codex_with_image(
     trap to guard against, unlike agy's `-m`).
 
     Image attachment uses `-i <path>` per image (Codex's documented multimodal
-    flag). NOTE: this live invocation is UNVERIFIED — codex was not installed at
-    build time (Session A smoke). Session B confirms it. The stub path is what
-    the test suite exercises.
+    flag). VERIFIED LIVE against codex-cli 0.139.0 (Session B, 2026-06-10): the
+    prompt positional MUST precede the `-i` flags — `-i/--image <FILE>...` is
+    variadic and otherwise swallows the prompt (codex then reads from stdin and
+    exits 1). See test_codex_prompt_precedes_image_flags + the smoke-doc append.
     """
     if shutil.which(CODEX_BIN) is None:
         return _codex_stub_response(prompt, image_paths)
@@ -371,9 +372,14 @@ async def run_codex_with_image(
     cmd: list[str] = [CODEX_BIN, "exec", "--sandbox", "read-only", "--skip-git-repo-check"]
     if model:
         cmd += ["--model", model]
+    # The prompt MUST be the positional and MUST precede the image flags. `-i,
+    # --image <FILE>...` is VARIADIC (codex-cli 0.139.0) — a prompt placed after
+    # `-i` is swallowed as an extra image, and codex falls back to reading the
+    # prompt from stdin ("No prompt provided via stdin", exit 1). Verified live in
+    # Session B (2026-06-10); see test_codex_prompt_precedes_image_flags.
+    cmd.append(prompt)
     for p in image_paths:
         cmd += ["-i", str(Path(p).resolve())]
-    cmd.append(prompt)
     _LOG.info("codex exec call: model=%s images=%d", model or "<config-default>", len(image_paths))
 
     try:
