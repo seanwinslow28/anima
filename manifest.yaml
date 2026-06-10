@@ -50,16 +50,22 @@ generation:
   #
   # Cosmetic-honest (the T2/T3 lesson): status: wired = transport is live; status:
   # declared/deferred = config exists but the transport is NOT wired, so Flo raises a clear
-  # "route declared, transport not wired" error rather than silently mis-generating. The
-  # in-between/edit tiers are declared seams for Flo-B (the costed fal.ai pencil-preservation
-  # pilot); do not wire them this session.
+  # "route declared, transport not wired" error rather than silently mis-generating.
+  #
+  # Flo-B (2026-06-10, costed pilot — evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/):
+  # the in-between tiers PIVOTED to NB2/NB Pro. Sean's eye disqualified both fal candidates on the
+  # approved Act-1 in-between corpus — fal Seedream morphs faces through the tween (the Reve
+  # failure DINOv2 misses) and fal Qwen-Image-Edit-Plus reframes/degrades. NB2 is the in-between
+  # winner; NB Pro the quality backup. The VERIFIED fal transports live on in
+  # pipeline/agents/fal_runner.py (retained for future non-pencil creation); self-hosted FLUX +
+  # Shakker sketch-LoRA is ticketed as the $0-ongoing in-between future.
   routing:
     hero_keyframe:     { transport: nb_pro, model: gemini-3-pro-image-preview,        usd_per_frame: 0.15,  tier: pro,   status: wired }
     standard_keyframe: { transport: nb2,    model: gemini-3.1-flash-image-preview,    usd_per_frame: 0.07,  tier: draft, status: wired }
-    in_between_cheap:  { transport: fal_seedream,                                     usd_per_frame: 0.02,  tier: draft, status: declared }   # Flo-B pilot
-    in_between_mid:    { transport: fal_qwen,                                         usd_per_frame: 0.021, tier: draft, status: declared }   # Flo-B pilot
+    in_between_cheap:  { transport: nb2,    model: gemini-3.1-flash-image-preview,    usd_per_frame: 0.07,  tier: draft, status: wired }   # Flo-B: NB2 pivot (winner)
+    in_between_mid:    { transport: nb_pro, model: gemini-3-pro-image-preview,        usd_per_frame: 0.15,  tier: pro,   status: wired }   # Flo-B: NB Pro backup
     mask_edit:         { transport: gpt_image_2,                                      usd_per_frame: 0.21,               status: deferred }
-  fallback: nb2   # a declared/failed route falls back to the wired NB2 path
+  fallback: nb2   # a deferred/failed route falls back to the wired NB2 path
 
 act1:
   name: "The Hero Loop"

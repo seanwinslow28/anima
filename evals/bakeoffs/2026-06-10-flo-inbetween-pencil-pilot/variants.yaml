@@ -1,0 +1,60 @@
+# Flo in-between pencil-preservation pilot — variant set.
+#
+# Four generators run the SAME 14 in-between cases (held prompt + references + anchors):
+#   nb2 / nb-pro  — the wired incumbents (pipeline.agents.nb_pro_runner.invoke_image_edit)
+#   fal-seedream / fal-qwen — the candidate in-between routes (pipeline.agents.fal_runner)
+#
+# snapshots: pin the model/endpoint identity so a provider bump re-baselines against this row
+# (mirrors the reve bake-off's snapshots block). The fal rows were VERIFIED B0 2026-06-10 against
+# the live fal OpenAPI (first-party); fal_runner's `verified` flag is True for both. A served-model
+# build string is pinned at the live smoke/run.
+version: 1
+created: 2026-06-10
+cases_ref: evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/cases.yaml
+
+snapshots:
+  nb2: "gemini-3.1-flash-image-preview — NB2 Flash editing tier (the in-between incumbent / locked fallback)"
+  nb-pro: "gemini-3-pro-image-preview — NB Pro painterly hero ceiling"
+  fal-seedream: "fal-ai/bytedance/seedream/v4/edit — VERIFIED B0 2026-06-10 (live fal OpenAPI): {prompt, image_urls[]≤10} required, output images[].url; image_size forced 16:9 (default is 2048² square)"
+  fal-qwen: "fal-ai/qwen-image-edit-plus — VERIFIED B0 2026-06-10: the MULTI-IMAGE variant; {prompt, image_urls[], guidance_scale=4, num_inference_steps=50}; NO denoise/strength exposed; image_size forced 16:9 (default square_hd); ~$0.03/MP"
+
+variants:
+  - id: nb2
+    label: "NB2 incumbent — gemini-3.1-flash-image-preview (in-between baseline)"
+    engine: nb2
+    model: gemini-3.1-flash-image-preview
+    tier: draft
+    cost_per_image_usd: 0.067
+    baseline: true
+    notes: >
+      The locked fallback. If both fal models slick the pencil aesthetic, in-betweens route here.
+
+  - id: nb-pro
+    label: "NB Pro — gemini-3-pro-image-preview (hero ceiling)"
+    engine: nb_pro
+    model: gemini-3-pro-image-preview
+    tier: pro
+    cost_per_image_usd: 0.15
+    notes: >
+      The painterly ceiling. Watch the two-endpoint in-between for the multi-reference
+      downsampling regression that demoted NB Pro for multi-ref keyframes.
+
+  - id: fal-seedream
+    label: "fal Seedream 4.0 edit (~$0.02)"
+    engine: fal_seedream
+    tier: draft
+    cost_per_image_usd: 0.02
+    notes: >
+      Candidate cheap in-between route (manifest in_between_cheap). Endpoint UNVERIFIED until B0.
+
+  - id: fal-qwen
+    label: "fal Qwen-Image-Edit-Plus (~$0.03/MP)"
+    engine: fal_qwen
+    tier: draft
+    cost_per_image_usd: 0.03
+    notes: >
+      Candidate mid in-between route (manifest in_between_mid). The MULTI-IMAGE `-plus` variant
+      (base qwen-image-edit is single-image — unusable for a two-endpoint tween). VERIFIED B0:
+      NO denoise/strength knob exposed (the kickoff's 0.78–0.82 does not exist here);
+      guidance_scale (4) + num_inference_steps (50) left at fal defaults. ~$0.03/MP (≈$0.03 at
+      1376×768).
