@@ -52,10 +52,18 @@ ROUTING_BLOCK = {
         "status": "wired",
     },
     "in_between_cheap": {
-        "transport": "fal_seedream",
-        "usd_per_frame": 0.02,
+        "transport": "nb2",
+        "model": "gemini-3.1-flash-image-preview",
+        "usd_per_frame": 0.07,
         "tier": "draft",
-        "status": "declared",
+        "status": "wired",
+    },
+    "in_between_mid": {
+        "transport": "nb_pro",
+        "model": "gemini-3-pro-image-preview",
+        "usd_per_frame": 0.15,
+        "tier": "pro",
+        "status": "wired",
     },
     "mask_edit": {
         "transport": "gpt_image_2",
@@ -154,6 +162,18 @@ def test_resolve_route_unknown_shot_type_raises():
         resolve_route({"shot_type": "no_such_type"}, _manifest())
 
 
+def test_resolve_route_in_between_pivot_routes_to_wired_nb_transports():
+    # Flo-B (2026-06-10): Sean's eye disqualified both fal candidates on the approved Act-1
+    # corpus — Seedream morphs faces (the Reve failure DINOv2 misses), Qwen reframes/degrades.
+    # In-betweens PIVOTED to the already-wired NB transports: NB2 the winner, NB Pro the backup.
+    cheap = resolve_route({"shot_type": "in_between_cheap"}, _manifest())
+    assert cheap.transport == "nb2"
+    assert cheap.status == "wired"
+    mid = resolve_route({"shot_type": "in_between_mid"}, _manifest())
+    assert mid.transport == "nb_pro"
+    assert mid.status == "wired"
+
+
 # --------------------------------------------------------------------------- #
 # FloNode — registration + dispatch
 # --------------------------------------------------------------------------- #
@@ -207,16 +227,18 @@ def test_flonode_dispatches_nb2_standard(tmp_path, monkeypatch):
     assert "nb2" in result.notes
 
 
-def test_flonode_declared_route_raises_not_wired(tmp_path):
+def test_flonode_deferred_route_raises_not_wired(tmp_path):
+    # mask_edit (gpt_image_2) is the remaining genuinely-deferred seam after the Flo-B
+    # in-between pivot — it still raises a clear not-wired error rather than mis-generating.
     cls = NODE_REGISTRY["flo"]
     ctx = _ctx(
         tmp_path,
         _manifest(),
-        inputs={"frame_num": 12, "prompt": "tween", "references": [], "shot_type": "in_between_cheap"},
+        inputs={"frame_num": 12, "prompt": "masked edit", "references": [], "shot_type": "mask_edit"},
     )
     with pytest.raises(RouteNotWiredError) as exc:
         cls().run(ctx)
-    assert "fal_seedream" in str(exc.value)
+    assert "gpt_image_2" in str(exc.value)
     assert "not wired" in str(exc.value).lower()
 
 
@@ -264,10 +286,10 @@ def test_flonode_cost_estimate_prices_route(tmp_path):
     )
     est = cls().cost_estimate(ctx)
     assert est.usd == 0.15
-    # declared route → lowered confidence.
+    # deferred (not-wired) route → lowered confidence.
     ctx2 = _ctx(
         tmp_path, _manifest(),
-        inputs={"frame_num": 6, "prompt": "x", "references": [], "shot_type": "in_between_cheap"},
+        inputs={"frame_num": 6, "prompt": "x", "references": [], "shot_type": "mask_edit"},
     )
     est2 = cls().cost_estimate(ctx2)
     assert est2.confidence < est.confidence

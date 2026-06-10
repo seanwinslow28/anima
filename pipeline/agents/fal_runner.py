@@ -18,6 +18,13 @@ guessed (the reve mirror-schema lesson):
 `_FAL_ENGINES[engine]['verified']` is True for both. The flag stays as a re-gate: a provider bump
 that invalidates the schema flips it back to False, restoring the loud refusal. The stub path
 (FAL_KEY absent) is CI-green; the unverified-refusal is exercised by forcing verified=False.
+
+FLO-B DISPOSITION (2026-06-10): these transports are VERIFIED but are NOT wired into Flo for pencil
+in-betweens — Sean's eye disqualified both on the approved Act-1 corpus (Seedream morphs faces
+through the tween, the Reve failure DINOv2 misses; Qwen-plus reframes/degrades). In-betweens pivoted
+to NB2/NB Pro (manifest generation.routing). This module is RETAINED for future non-pencil creation
+use and is re-runnable via evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/. See that bake-off's
+results.md + docs/anima-test-runs/2026-06-10-flo-inbetween-pencil-pilot.md.
 """
 from __future__ import annotations
 
