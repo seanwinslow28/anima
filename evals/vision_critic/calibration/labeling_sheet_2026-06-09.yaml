@@ -14,8 +14,8 @@ pairs:
     the floor; knees at two head-heights; lean adult build, NOT chibi, NOT super-deformed, NOT big-head
     small-body; the head must occupy roughly one-seventh of the figure's vertical extent
   golden: drawn at natural adult proportions, about seven heads tall
-  match: null
-  why: ''
+  match: true
+  why: 'candidate locks the 1:7 head-to-body ratio the golden requires; the extra armature detail is fine.'
 - pair_id: real::proportion-pd2-chibi-idle-2
   defect_class: proportion
   kind: real
@@ -24,8 +24,8 @@ pairs:
     the floor, knees at two head-heights, ankle break at one-half head-height — NOT chibi, NOT stylized-short,
     NOT super-deformed
   golden: drawn at natural adult proportions, about seven heads tall
-  match: null
-  why: ''
+  match: true
+  why: 'same 1:7 ratio as the golden; the NOT-chibi guards just reinforce the required target.'
 - pair_id: real::proportion-pd3-elongated-walk
   defect_class: proportion
   kind: real
@@ -35,8 +35,8 @@ pairs:
     the figure against a seven-head armature underlay; do NOT elongate the legs or torso to a fashion-illustration
     silhouette.
   golden: drawn at natural adult proportions, about seven heads tall
-  match: null
-  why: ''
+  match: true
+  why: '1:7 head-to-body on a seven-head armature; delivers the golden''s required proportion.'
 - pair_id: real::proportion-pb2-borderline-over
   defect_class: proportion
   kind: real
@@ -44,8 +44,8 @@ pairs:
     crown-to-sole, hip line at four head-heights above the floor, knees at two head-heights from the floor,
     ankle break at one-half head-height; lean build but NOT elongated, NOT fashion-tall, NOT 1:8
   golden: drawn at the canonical 1-to-7 head-to-body proportion
-  match: null
-  why: ''
+  match: true
+  why: 'exactly 1:7, explicitly not 1:8; matches the canonical proportion the golden names.'
 - pair_id: real::proportion-pb1-borderline-under
   defect_class: proportion
   kind: real
@@ -54,8 +54,8 @@ pairs:
     ankle break at half a head-height. Lengthen the femur and tibia to match — Sean is structurally tall
     in the lower body, not compact.
   golden: drawn at the canonical 1-to-7 head-to-body proportion
-  match: null
-  why: ''
+  match: true
+  why: '1:7 head-to-body, seven head-heights total; the lengthened legs still serve the required ratio.'
 - pair_id: real::view-vd1-declared-3quarter-drawn-profile
   defect_class: view-correctness
   kind: real
@@ -66,8 +66,8 @@ pairs:
     profile. Right hand raised mid-gesture at chest height, palm angled toward camera, fingers relaxed
     and separable. Left hand relaxed at side. NOT a full profile — the far eye must not be hidden.
   golden: left profile, full body visible
-  match: null
-  why: ''
+  match: false
+  why: 'golden wants a left profile (one eye); candidate drives a three-quarter view with both eyes. Different look, not the same frame.'
 - pair_id: real::view-vd2-declared-front-drawn-3quarter
   defect_class: view-correctness
   kind: real
@@ -77,8 +77,8 @@ pairs:
     silhouette edges. Shoulder line horizontal, both shoulders the same depth. Not three-quarter. Not
     turned.'
   golden: three-quarter view
-  match: null
-  why: ''
+  match: false
+  why: 'golden wants three-quarter; candidate forces a strict square front view. Opposite ends of the same mismatch.'
 - pair_id: real::view-vd3-declared-left-drawn-right
   defect_class: view-correctness
   kind: real
@@ -87,8 +87,8 @@ pairs:
     frame; the back of the skull and nape sit toward the RIGHT edge. Do not mirror. Reference convention:
     screen-left = viewer''s left half of the canvas.'
   golden: right profile
-  match: null
-  why: ''
+  match: false
+  why: 'golden wants right profile; candidate turns to show the LEFT side. A mirror flip, not the same view.'
 - pair_id: real::view-vd4-declared-back-drawn-3quarter-back
   defect_class: view-correctness
   kind: real
@@ -99,8 +99,8 @@ pairs:
     facial features visible from this angle: no eye, no eyebrow, no nose, no mouth, no ear, no jaw line,
     no cheek.'
   golden: three-quarter back angle, full body visible
-  match: null
-  why: ''
+  match: false
+  why: 'golden wants a three-quarter back (a sliver of face); candidate hides the face entirely (full back). Different look.'
 - pair_id: real::view-vb1-borderline-60deg
   defect_class: view-correctness
   kind: real
@@ -110,8 +110,8 @@ pairs:
     the nose, not occluded by it. Pencil-test register: soft graphite line, light color wash, cross-hatch
     shadow, warm cream paper.'
   golden: turned about sixty degrees from camera, between a three-quarter view and a profile
-  match: null
-  why: ''
+  match: true
+  why: '45 vs 60 degrees is the same turned-toward-profile pose family; look-and-feel matches and the exact degree is not what I am pinning.'
 - pair_id: real::anatomy-ad1-six-fingers
   defect_class: anatomy-count
   kind: real
@@ -122,8 +122,8 @@ pairs:
     and middle resting on top of the mouse body, ring and pinky curled at the far side, five total. Render
     finger separation cleanly with warm-graphite contour so the count is verifiable.'
   golden: with five fingers on each hand
-  match: null
-  why: ''
+  match: true
+  why: 'candidate enforces exactly five digits per hand, the count the golden requires.'
 - pair_id: real::anatomy-ad2-fused-hand
   defect_class: anatomy-count
   kind: real
@@ -134,15 +134,15 @@ pairs:
     of the palm. No mitten silhouette, no fused-digit blob, no glove. Hand drawn at readable scale — fingers
     individually legible at the frame''s output resolution.'
   golden: with a correctly formed hand showing five distinct fingers
-  match: null
-  why: ''
+  match: true
+  why: 'five distinct fingers, no fused blob; delivers the golden''s correctly-formed hand.'
 - pair_id: real::anatomy-ad3-third-arm
   defect_class: anatomy-count
   kind: real
   candidate: null
   golden: with the correct two arms
   match: null
-  why: ''
+  why: 'excluded - candidate is null (Em proposed nothing); unscoreable.'
 - pair_id: real::anatomy-ad4-missing-leg
   defect_class: anatomy-count
   kind: real
@@ -153,8 +153,8 @@ pairs:
     silhouette of the stool''s near leg. Do not crop the left leg; do not merge the two legs into a single
     mass.'
   golden: with both legs visible
-  match: null
-  why: ''
+  match: true
+  why: 'both legs fully visible, four limbs total; matches the golden''s required two legs.'
 - pair_id: real::palette-pad1-monochrome
   defect_class: palette
   kind: real
@@ -167,8 +167,8 @@ pairs:
     line and cross-hatching #3D3530 stay on top of the color fills; construction lines remain visible
     at half line-weight. No gradient shading, no cel-shading, no monochrome graphite-only finish.'
   golden: rendered in the full reference color palette with light hand-painted color wash
-  match: null
-  why: ''
+  match: true
+  why: 'candidate restores the full reference color palette with a hand-painted wash, exactly what the golden asks.'
 - pair_id: real::palette-pad2-red-shirt
   defect_class: palette
   kind: real
@@ -177,8 +177,8 @@ pairs:
     and collar shadow in #3D3530. Cool-gray jeans at #5C6471 visible at the lap. Closed-palette pencil-test
     register, no garment-color substitution.'
   golden: wearing a navy-blue crew-neck t-shirt
-  match: null
-  why: ''
+  match: true
+  why: 'locks the navy crew-neck tee the golden requires.'
 - pair_id: real::palette-pad3-brown-hair
   defect_class: palette
   kind: real
@@ -187,8 +187,8 @@ pairs:
     for the shadowed underside and the part. Match the anchor''s hair tone exactly; reads lighter and
     warmer than a default ''brown hair'' interpretation on first glance.'
   golden: with dirty-blonde hair
-  match: null
-  why: ''
+  match: true
+  why: 'dirty-blonde hair, the golden''s required color.'
 - pair_id: real::palette-pad4-oversaturated
   defect_class: palette
   kind: real
@@ -199,8 +199,8 @@ pairs:
     low chroma, never a saturated orange or amber fill. No gradient or airbrush shading — fills are flat
     hand-painted color with warm-graphite cross-hatching for form.'
   golden: rendered in the muted reference color palette at natural saturation
-  match: null
-  why: ''
+  match: true
+  why: 'muted reference palette at natural saturation; same target as the golden.'
 - pair_id: real::palette-pad5-brown-jeans-white-sneakers
   defect_class: palette
   kind: real
@@ -210,8 +210,8 @@ pairs:
     shapes at the cream-paper base — no detailed sneaker, no rubber toe cap, no white laces, no canvas
     paneling, no high-top collar.'
   golden: wearing cool-gray jeans, with sneakers in their reference color
-  match: null
-  why: ''
+  match: false
+  why: 'we want frame-to-frame consistency. Golden colors the sneakers to reference; candidate blanks them to silhouette. A changed required piece is not the same fix.'
 - pair_id: real::palette-pad6-brown-hair-beard
   defect_class: palette
   kind: real
@@ -219,8 +219,8 @@ pairs:
     top volume reads a clear shade lighter than the cross-hatched shadow at the part and the nape; warm-graphite
     #3D3530 is used only for shadow cross-hatching, never as the base hair fill'
   golden: with dirty-blonde tousled hair and light stubble
-  match: null
-  why: ''
+  match: false
+  why: 'anchor has dirty-blonde hair AND stubble. Candidate fixes the hair and is silent on the stubble; half a fix is not the same fix.'
 - pair_id: real::construction-cld1-clean-final-portrait
   defect_class: construction-lines
   kind: real
@@ -229,8 +229,8 @@ pairs:
     in warm graphite #3D3530; enforce organic line-weight variation between 0.5px and 1.5px using 2B pencil
     texture to eliminate clean vector outlines'
   golden: with light construction lines visible beneath the final pencil line
-  match: null
-  why: ''
+  match: true
+  why: 'candidate adds visible construction lines under the final line, the golden''s required element.'
 - pair_id: real::construction-cld2-vector-cel-idle
   defect_class: construction-lines
   kind: real
@@ -240,8 +240,8 @@ pairs:
     and clothing folds, on a warm cream paper background substrate #F2E6CC with visible paper grain and
     fibers --no digital cel shading, --no vector cleanup, --no flat digital gradients'
   golden: with light construction lines visible beneath the final pencil line
-  match: null
-  why: ''
+  match: true
+  why: 'visible graphite construction lines under the contour; delivers the required construction lines.'
 - pair_id: real::construction-cld3-clean-final-3quarter
   defect_class: construction-lines
   kind: real
@@ -251,8 +251,8 @@ pairs:
     wash allowing the cream paper texture and graphite grain to show through completely, avoiding all
     solid cel-shading and vector cleanup finishes'
   golden: with light construction lines visible beneath the final pencil line
-  match: null
-  why: ''
+  match: true
+  why: 'adds light construction lines at half weight under the final lines; matches the golden.'
 - pair_id: real::construction-cld4-clean-final-drawing-desk
   defect_class: construction-lines
   kind: real
@@ -260,8 +260,8 @@ pairs:
     hand (gripped near the tip with a three-finger hold), three-quarter view from the waist up. Ensure
     his anatomical right hand is the active drawing hand.
   golden: with light construction lines visible beneath the final pencil line
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires construction lines beneath the final line. Candidate is entirely about pose and the active drawing hand and never mentions construction lines; required piece absent.'
 - pair_id: real::construction-clb1-faintest-trace
   defect_class: construction-lines
   kind: real
@@ -270,8 +270,8 @@ pairs:
     and neck with distinct 2B warm-graphite cross-hatching (#3D3530) following the volumetric form—avoid
     smooth gradient airbrush shading or soft digital watercolor washes
   golden: with light construction lines clearly visible beneath the final pencil line
-  match: null
-  why: ''
+  match: true
+  why: 'adds visible construction lines (face-midline, eye-line) beneath the contour; the required element is there.'
 - pair_id: real::shading-shd1-photographic
   defect_class: shading-register
   kind: real
@@ -282,8 +282,8 @@ pairs:
     texture grain background #F2E6CC. Absolutely no digital airbrush, no smooth gradients, no photoreal
     volumetric skin rendering, no clean vector fills.'
   golden: shaded with cross-hatch pencil shading
-  match: null
-  why: ''
+  match: true
+  why: 'warm-graphite cross-hatching shadow areas; delivers the golden''s cross-hatch shading.'
 - pair_id: real::shading-shd2-anime-cel
   defect_class: shading-register
   kind: real
@@ -294,8 +294,8 @@ pairs:
     solid blocks. Flat, slightly desaturated color washes with visible paper grain showing through, no
     digital gradients or cel shadow lines.'
   golden: shaded with cross-hatch pencil shading
-  match: null
-  why: ''
+  match: true
+  why: 'shadows render as hand-drawn cross-hatching; same shading register the golden requires.'
 - pair_id: real::shading-shd3-flat-no-shading
   defect_class: shading-register
   kind: real
@@ -303,8 +303,8 @@ pairs:
     the shirt collar, and deep within the fabric folds of the jeans — follow the physical forms with varied
     2B pencil weight cross-hatched strokes
   golden: shaded with cross-hatch pencil shading
-  match: null
-  why: ''
+  match: true
+  why: 'adds graphite cross-hatching shadows following the forms; matches the golden.'
 - pair_id: real::shading-shd4-airbrush-gloss
   defect_class: shading-register
   kind: real
@@ -313,8 +313,8 @@ pairs:
     folds, flat desaturated color wash, no airbrush gradients, no glossy specular highlights, raw paper
     texture overlay
   golden: shaded with cross-hatch pencil shading
-  match: null
-  why: ''
+  match: true
+  why: 'loose 2B cross-hatching shadows; delivers the required cross-hatch register.'
 - pair_id: real::shading-shb1-too-smooth
   defect_class: shading-register
   kind: real
@@ -322,8 +322,8 @@ pairs:
     the final sketch, no clean digital lines, replace smooth airbrush gradients with warm-graphite #3D3530
     cross-hatched shadows under jaw and hair folds, varied sketchy line weight 1-3px'
   golden: shaded with visible cross-hatch pencil tooth
-  match: null
-  why: ''
+  match: true
+  why: 'replaces smooth gradients with warm-graphite cross-hatched shadows; matches the golden''s cross-hatch tooth.'
 - pair_id: cross::proportion-pd1-chibi-idle__vs__view-vd1-declared-3quarter-drawn-profile
   defect_class: proportion
   kind: cross_negative
@@ -334,8 +334,8 @@ pairs:
     profile. Right hand raised mid-gesture at chest height, palm angled toward camera, fingers relaxed
     and separable. Left hand relaxed at side. NOT a full profile — the far eye must not be hidden.
   golden: drawn at natural adult proportions, about seven heads tall
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires seven-heads-tall proportion; candidate is a view clause with no proportion spec.'
 - pair_id: cross::view-vd1-declared-3quarter-drawn-profile__vs__anatomy-ad1-six-fingers
   defect_class: view-correctness
   kind: cross_negative
@@ -346,8 +346,8 @@ pairs:
     and middle resting on top of the mouse body, ring and pinky curled at the far side, five total. Render
     finger separation cleanly with warm-graphite contour so the count is verifiable.'
   golden: left profile, full body visible
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires a left profile; candidate is a five-fingers clause with no view.'
 - pair_id: cross::anatomy-ad1-six-fingers__vs__palette-pad1-monochrome
   defect_class: anatomy-count
   kind: cross_negative
@@ -360,8 +360,8 @@ pairs:
     line and cross-hatching #3D3530 stay on top of the color fills; construction lines remain visible
     at half line-weight. No gradient shading, no cel-shading, no monochrome graphite-only finish.'
   golden: with five fingers on each hand
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires five fingers; candidate is a color-palette clause, silent on finger count.'
 - pair_id: cross::palette-pad1-monochrome__vs__construction-cld1-clean-final-portrait
   defect_class: palette
   kind: cross_negative
@@ -370,8 +370,8 @@ pairs:
     in warm graphite #3D3530; enforce organic line-weight variation between 0.5px and 1.5px using 2B pencil
     texture to eliminate clean vector outlines'
   golden: rendered in the full reference color palette with light hand-painted color wash
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires the full color palette; candidate is a construction/cross-hatch clause with no color.'
 - pair_id: cross::construction-cld1-clean-final-portrait__vs__shading-shd1-photographic
   defect_class: construction-lines
   kind: cross_negative
@@ -382,8 +382,8 @@ pairs:
     texture grain background #F2E6CC. Absolutely no digital airbrush, no smooth gradients, no photoreal
     volumetric skin rendering, no clean vector fills.'
   golden: with light construction lines visible beneath the final pencil line
-  match: null
-  why: ''
+  match: true
+  why: 'golden requires construction lines beneath the final line, and the candidate (a shading clause) explicitly includes visible warm graphite construction lines under the final drawing. The required piece is present, plus extra.'
 - pair_id: cross::shading-shd1-photographic__vs__proportion-pd1-chibi-idle
   defect_class: shading-register
   kind: cross_negative
@@ -392,8 +392,8 @@ pairs:
     the floor; knees at two head-heights; lean adult build, NOT chibi, NOT super-deformed, NOT big-head
     small-body; the head must occupy roughly one-seventh of the figure's vertical extent
   golden: shaded with cross-hatch pencil shading
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires cross-hatch shading; candidate is a pure proportion clause.'
 - pair_id: cross::proportion-pd1-chibi-idle__vs__anatomy-ad1-six-fingers
   defect_class: proportion
   kind: cross_negative
@@ -404,8 +404,8 @@ pairs:
     and middle resting on top of the mouse body, ring and pinky curled at the far side, five total. Render
     finger separation cleanly with warm-graphite contour so the count is verifiable.'
   golden: drawn at natural adult proportions, about seven heads tall
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires seven-heads-tall; candidate is a five-fingers clause.'
 - pair_id: cross::view-vd1-declared-3quarter-drawn-profile__vs__palette-pad1-monochrome
   defect_class: view-correctness
   kind: cross_negative
@@ -418,8 +418,8 @@ pairs:
     line and cross-hatching #3D3530 stay on top of the color fills; construction lines remain visible
     at half line-weight. No gradient shading, no cel-shading, no monochrome graphite-only finish.'
   golden: left profile, full body visible
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires a left profile; candidate is a color-palette clause.'
 - pair_id: cross::anatomy-ad1-six-fingers__vs__construction-cld1-clean-final-portrait
   defect_class: anatomy-count
   kind: cross_negative
@@ -428,8 +428,8 @@ pairs:
     in warm graphite #3D3530; enforce organic line-weight variation between 0.5px and 1.5px using 2B pencil
     texture to eliminate clean vector outlines'
   golden: with five fingers on each hand
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires five fingers; candidate is a construction-lines clause.'
 - pair_id: cross::palette-pad1-monochrome__vs__shading-shd1-photographic
   defect_class: palette
   kind: cross_negative
@@ -440,8 +440,8 @@ pairs:
     texture grain background #F2E6CC. Absolutely no digital airbrush, no smooth gradients, no photoreal
     volumetric skin rendering, no clean vector fills.'
   golden: rendered in the full reference color palette with light hand-painted color wash
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires the full reference color palette; the candidate (a shading clause) only mentions a desaturated wash, not the full palette. Required piece not fully present.'
 - pair_id: cross::construction-cld1-clean-final-portrait__vs__proportion-pd1-chibi-idle
   defect_class: construction-lines
   kind: cross_negative
@@ -450,8 +450,8 @@ pairs:
     the floor; knees at two head-heights; lean adult build, NOT chibi, NOT super-deformed, NOT big-head
     small-body; the head must occupy roughly one-seventh of the figure's vertical extent
   golden: with light construction lines visible beneath the final pencil line
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires construction lines; candidate is a proportion clause.'
 - pair_id: cross::shading-shd1-photographic__vs__view-vd1-declared-3quarter-drawn-profile
   defect_class: shading-register
   kind: cross_negative
@@ -462,8 +462,8 @@ pairs:
     profile. Right hand raised mid-gesture at chest height, palm angled toward camera, fingers relaxed
     and separable. Left hand relaxed at side. NOT a full profile — the far eye must not be hidden.
   golden: shaded with cross-hatch pencil shading
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires cross-hatch shading; candidate is a view clause.'
 - pair_id: cross::proportion-pd1-chibi-idle__vs__palette-pad1-monochrome
   defect_class: proportion
   kind: cross_negative
@@ -476,8 +476,8 @@ pairs:
     line and cross-hatching #3D3530 stay on top of the color fills; construction lines remain visible
     at half line-weight. No gradient shading, no cel-shading, no monochrome graphite-only finish.'
   golden: drawn at natural adult proportions, about seven heads tall
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires seven-heads-tall; candidate is a color-palette clause.'
 - pair_id: cross::view-vd1-declared-3quarter-drawn-profile__vs__construction-cld1-clean-final-portrait
   defect_class: view-correctness
   kind: cross_negative
@@ -486,8 +486,8 @@ pairs:
     in warm graphite #3D3530; enforce organic line-weight variation between 0.5px and 1.5px using 2B pencil
     texture to eliminate clean vector outlines'
   golden: left profile, full body visible
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires a left profile; candidate is a construction-lines clause.'
 - pair_id: cross::anatomy-ad1-six-fingers__vs__shading-shd1-photographic
   defect_class: anatomy-count
   kind: cross_negative
@@ -498,8 +498,8 @@ pairs:
     texture grain background #F2E6CC. Absolutely no digital airbrush, no smooth gradients, no photoreal
     volumetric skin rendering, no clean vector fills.'
   golden: with five fingers on each hand
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires five fingers; candidate is a shading clause.'
 - pair_id: cross::palette-pad1-monochrome__vs__proportion-pd1-chibi-idle
   defect_class: palette
   kind: cross_negative
@@ -508,8 +508,8 @@ pairs:
     the floor; knees at two head-heights; lean adult build, NOT chibi, NOT super-deformed, NOT big-head
     small-body; the head must occupy roughly one-seventh of the figure's vertical extent
   golden: rendered in the full reference color palette with light hand-painted color wash
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires the full color palette; candidate is a proportion clause.'
 - pair_id: cross::construction-cld1-clean-final-portrait__vs__view-vd1-declared-3quarter-drawn-profile
   defect_class: construction-lines
   kind: cross_negative
@@ -520,8 +520,8 @@ pairs:
     profile. Right hand raised mid-gesture at chest height, palm angled toward camera, fingers relaxed
     and separable. Left hand relaxed at side. NOT a full profile — the far eye must not be hidden.
   golden: with light construction lines visible beneath the final pencil line
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires construction lines; candidate is a view clause.'
 - pair_id: cross::shading-shd1-photographic__vs__anatomy-ad1-six-fingers
   defect_class: shading-register
   kind: cross_negative
@@ -532,47 +532,47 @@ pairs:
     and middle resting on top of the mouse body, ring and pinky curled at the far side, five total. Render
     finger separation cleanly with warm-graphite contour so the count is verifiable.'
   golden: shaded with cross-hatch pencil shading
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires cross-hatch shading; candidate is a five-fingers clause.'
 - pair_id: hard::palette-1
   defect_class: palette
   kind: hard_negative
   candidate: recolor his hair to dirty-blonde; leave the shirt and every other color exactly as drawn
   golden: wearing a navy-blue crew-neck t-shirt
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires the navy tee; candidate only recolors the hair and explicitly leaves the shirt as drawn. Required piece absent.'
 - pair_id: hard::proportion-2
   defect_class: proportion
   kind: hard_negative
   candidate: widen the shoulders to roughly two-and-a-half head-widths across
   golden: drawn at natural adult proportions, about seven heads tall
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires seven-heads-tall; candidate only widens the shoulders. Wrong target inside the same class.'
 - pair_id: hard::view-correctness-3
   defect_class: view-correctness
   kind: hard_negative
   candidate: redraw as a three-quarter back view
   golden: left profile, full body visible
-  match: null
-  why: ''
+  match: false
+  why: 'golden wants a left profile; candidate redraws a three-quarter back. Different view family.'
 - pair_id: hard::anatomy-count-4
   defect_class: anatomy-count
   kind: hard_negative
   candidate: give the figure both legs
   golden: with five fingers on each hand
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires five fingers per hand; candidate adds legs. Wrong target inside the same class.'
 - pair_id: hard::construction-lines-5
   defect_class: construction-lines
   kind: hard_negative
   candidate: add stronger line-weight variation along the outer contour, heavier on the shadow side
   golden: with light construction lines visible beneath the final pencil line
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires underlying construction lines; candidate only adds outer-contour line-weight. Line-weight is not construction lines.'
 - pair_id: hard::shading-register-6
   defect_class: shading-register
   kind: hard_negative
   candidate: flatten the shading to a two-tone anime cel block
   golden: shaded with cross-hatch pencil shading
-  match: null
-  why: ''
+  match: false
+  why: 'golden requires cross-hatch shading; candidate flattens to an anime cel block, the opposite register.'

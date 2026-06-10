@@ -1,0 +1,850 @@
+{
+  "judge": "opus",
+  "n": 5,
+  "bar": {
+    "kappa_min": 0.6,
+    "fpr_max": 0.1
+  },
+  "pass": true,
+  "aggregate": {
+    "overall": {
+      "cm": {
+        "tp": 22,
+        "fp": 2,
+        "fn": 1,
+        "tn": 28
+      },
+      "precision": 0.9166666666666666,
+      "recall": 0.9565217391304348,
+      "fpr": 0.06666666666666667,
+      "raw_agreement": 0.9433962264150944,
+      "n": 53,
+      "kappa": 0.8853640951694305,
+      "n_scored": 53,
+      "n_no_proposal": 1,
+      "precision_stderr": 0.056416933365527513,
+      "recall_stderr": 0.04252257799320223,
+      "fpr_stderr": 0.04554200340426488
+    },
+    "by_label": {
+      "anatomy-count": {
+        "cm": {
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "tn": 4
+        },
+        "precision": 1.0,
+        "recall": 1.0,
+        "fpr": 0.0,
+        "raw_agreement": 1.0,
+        "n": 7,
+        "kappa": 1.0,
+        "n_scored": 7,
+        "n_no_proposal": 1,
+        "precision_stderr": 0.0,
+        "recall_stderr": 0.0,
+        "fpr_stderr": 0.0
+      },
+      "construction-lines": {
+        "cm": {
+          "tp": 5,
+          "fp": 0,
+          "fn": 0,
+          "tn": 4
+        },
+        "precision": 1.0,
+        "recall": 1.0,
+        "fpr": 0.0,
+        "raw_agreement": 1.0,
+        "n": 9,
+        "kappa": 1.0,
+        "n_scored": 9,
+        "n_no_proposal": 0,
+        "precision_stderr": 0.0,
+        "recall_stderr": 0.0,
+        "fpr_stderr": 0.0
+      },
+      "palette": {
+        "cm": {
+          "tp": 4,
+          "fp": 2,
+          "fn": 0,
+          "tn": 4
+        },
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "fpr": 0.3333333333333333,
+        "raw_agreement": 0.8,
+        "n": 10,
+        "kappa": 0.6153846153846155,
+        "n_scored": 10,
+        "n_no_proposal": 0,
+        "precision_stderr": 0.19245008972987526,
+        "recall_stderr": 0.0,
+        "fpr_stderr": 0.19245008972987526
+      },
+      "proportion": {
+        "cm": {
+          "tp": 5,
+          "fp": 0,
+          "fn": 0,
+          "tn": 4
+        },
+        "precision": 1.0,
+        "recall": 1.0,
+        "fpr": 0.0,
+        "raw_agreement": 1.0,
+        "n": 9,
+        "kappa": 1.0,
+        "n_scored": 9,
+        "n_no_proposal": 0,
+        "precision_stderr": 0.0,
+        "recall_stderr": 0.0,
+        "fpr_stderr": 0.0
+      },
+      "shading-register": {
+        "cm": {
+          "tp": 5,
+          "fp": 0,
+          "fn": 0,
+          "tn": 4
+        },
+        "precision": 1.0,
+        "recall": 1.0,
+        "fpr": 0.0,
+        "raw_agreement": 1.0,
+        "n": 9,
+        "kappa": 1.0,
+        "n_scored": 9,
+        "n_no_proposal": 0,
+        "precision_stderr": 0.0,
+        "recall_stderr": 0.0,
+        "fpr_stderr": 0.0
+      },
+      "view-correctness": {
+        "cm": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "tn": 8
+        },
+        "precision": 0.0,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "raw_agreement": 0.8888888888888888,
+        "n": 9,
+        "kappa": 0.0,
+        "n_scored": 9,
+        "n_no_proposal": 0,
+        "precision_stderr": 0.0,
+        "recall_stderr": 0.0,
+        "fpr_stderr": 0.0
+      }
+    }
+  },
+  "pairs": [
+    {
+      "pair_id": "real::proportion-pd1-chibi-idle",
+      "defect_label": "proportion",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both specify a natural adult ~1:7 head-to-body proportion (seven heads tall), expressing the same corrective intent despite the candidate's added geometric detail."
+    },
+    {
+      "pair_id": "real::proportion-pd2-chibi-idle-2",
+      "defect_label": "proportion",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both specify natural adult ~1:7 head-to-body proportions, so either clause steers the re-generation toward the same seven-heads-tall fix."
+    },
+    {
+      "pair_id": "real::proportion-pd3-elongated-walk",
+      "defect_label": "proportion",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both specify a natural ~7-head-tall adult proportion, so either clause steers the regeneration toward the same 1:7 fix despite the candidate's added precision."
+    },
+    {
+      "pair_id": "real::proportion-pb2-borderline-over",
+      "defect_label": "proportion",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both steer the re-generation toward the identical canonical 1:7 head-to-body proportion; the candidate just adds landmark detail consistent with that same target."
+    },
+    {
+      "pair_id": "real::proportion-pb1-borderline-under",
+      "defect_label": "proportion",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both specify the canonical 1:7 head-to-body proportion; the candidate just adds supporting landmark detail that elaborates the same corrective intent."
+    },
+    {
+      "pair_id": "real::view-vd1-declared-3quarter-drawn-profile",
+      "defect_label": "view-correctness",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate steers toward a three-quarter view with both eyes visible and explicitly forbids profile, while the golden reference calls for a left profile \u2014 opposite corrective intents."
+    },
+    {
+      "pair_id": "real::view-vd2-declared-front-drawn-3quarter",
+      "defect_label": "view-correctness",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate steers toward a strict symmetric front view while the golden fix calls for a three-quarter view \u2014 opposite corrective intents."
+    },
+    {
+      "pair_id": "real::view-vd3-declared-left-drawn-right",
+      "defect_label": "view-correctness",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate describes a LEFT profile (left side of head to camera, nose toward screen-left), which is the mirror opposite of the reference's right profile (right side shown, nose toward screen-right)."
+    },
+    {
+      "pair_id": "real::view-vd4-declared-back-drawn-3quarter-back",
+      "defect_label": "view-correctness",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "Candidate steers to a pure directly-behind view with zero facial features, while the golden asks for a three-quarter back angle that still reveals some side-of-face \u2014 different target orientations."
+    },
+    {
+      "pair_id": "real::view-vb1-borderline-60deg",
+      "defect_label": "view-correctness",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": true,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "Candidate steers to a ~45\u00b0 three-quarter with both eyes fully readable and far cheek past the nose, while the golden targets ~60\u00b0 between three-quarter and profile (closer to profile) \u2014 a meaningfully different view angle."
+    },
+    {
+      "pair_id": "real::anatomy-ad1-six-fingers",
+      "defect_label": "anatomy-count",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both clauses correct the anatomy-count defect by enforcing exactly five fingers/digits per hand, so either would steer the re-generation toward the same fix."
+    },
+    {
+      "pair_id": "real::anatomy-ad2-fused-hand",
+      "defect_label": "anatomy-count",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both correct the hand to show five distinct, individually drawn fingers, fixing the anatomy-count defect with the same intent."
+    },
+    {
+      "pair_id": "real::anatomy-ad3-third-arm",
+      "defect_label": "anatomy-count",
+      "kind": "real",
+      "em_proposed": false,
+      "judge_match": null,
+      "sean_match": null,
+      "spread": [
+        0,
+        0
+      ],
+      "why": "no diff proposed"
+    },
+    {
+      "pair_id": "real::anatomy-ad4-missing-leg",
+      "defect_label": "anatomy-count",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both clauses correct the anatomy-count defect by ensuring both legs are fully visible, the same corrective intent despite the candidate's added pose detail."
+    },
+    {
+      "pair_id": "real::palette-pad1-monochrome",
+      "defect_label": "palette",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both steer the re-generation from a graphite/monochrome finish toward applying the full reference color palette across skin, hair, and clothing."
+    },
+    {
+      "pair_id": "real::palette-pad2-red-shirt",
+      "defect_label": "palette",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both steer the regeneration toward a navy crew-neck tee; the candidate just adds precise hex/register detail to the same color-correction intent."
+    },
+    {
+      "pair_id": "real::palette-pad3-brown-hair",
+      "defect_label": "palette",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both steer the re-generation toward dirty-blonde hair as the palette fix; the candidate just adds precise hex/shading detail around the same core intent."
+    },
+    {
+      "pair_id": "real::palette-pad4-oversaturated",
+      "defect_label": "palette",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both steer the re-generation toward the muted reference pencil-test palette with low/desaturated chroma, the same corrective intent despite the candidate's added color-spec detail."
+    },
+    {
+      "pair_id": "real::palette-pad5-brown-jeans-white-sneakers",
+      "defect_label": "palette",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "Both correct the jeans to cool-gray, but the reference keeps sneakers in their reference color while the candidate strips footwear to silhouette-level shapes with no detailed sneaker, a different corrective intent."
+    },
+    {
+      "pair_id": "real::palette-pad6-brown-hair-beard",
+      "defect_label": "palette",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": false,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both steer the hair toward dirty-blonde/light-brown rather than darker tones, the same palette correction despite the candidate's added detail."
+    },
+    {
+      "pair_id": "real::construction-cld1-clean-final-portrait",
+      "defect_label": "construction-lines",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both restore visible underlying construction lines beneath the final pencil work, sharing the same corrective intent despite the candidate's added specificity."
+    },
+    {
+      "pair_id": "real::construction-cld2-vector-cel-idle",
+      "defect_label": "construction-lines",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both restore visible under-the-contour construction/guideline pencil work, the same corrective intent for the construction-lines defect despite the candidate's far greater stylistic detail."
+    },
+    {
+      "pair_id": "real::construction-cld3-clean-final-3quarter",
+      "defect_label": "construction-lines",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        4,
+        5
+      ],
+      "why": "The candidate includes the construction-line fix but bundles in unrelated shading, watercolor-wash, and palette corrections, so it does not express the same single-axis corrective intent as the construction-lines-only golden."
+    },
+    {
+      "pair_id": "real::construction-cld4-clean-final-drawing-desk",
+      "defect_label": "construction-lines",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The golden fix restores visible construction lines beneath the final pencil line, while the candidate only addresses hand/pose and ignores the construction-lines defect entirely."
+    },
+    {
+      "pair_id": "real::construction-clb1-faintest-trace",
+      "defect_label": "construction-lines",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both call for visible construction lines retained beneath the final contour/pencil line, the same core fix for the construction-lines defect, despite the candidate's extra shading-register specificity."
+    },
+    {
+      "pair_id": "real::shading-shd1-photographic",
+      "defect_label": "shading-register",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both steer the shading defect toward cross-hatch pencil/graphite shading and away from smooth digital gradients."
+    },
+    {
+      "pair_id": "real::shading-shd2-anime-cel",
+      "defect_label": "shading-register",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both steer the shading-register fix toward hand-drawn cross-hatch pencil shading instead of solid/digital blocks."
+    },
+    {
+      "pair_id": "real::shading-shd3-flat-no-shading",
+      "defect_label": "shading-register",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both prescribe adding cross-hatch graphite pencil shading to fix the shading-register defect; the candidate is just more detailed about placement and stroke weight."
+    },
+    {
+      "pair_id": "real::shading-shd4-airbrush-gloss",
+      "defect_label": "shading-register",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both steer the re-generation toward cross-hatch pencil shading to fix the shading-register defect; the candidate just specifies it in more detail."
+    },
+    {
+      "pair_id": "real::shading-shb1-too-smooth",
+      "defect_label": "shading-register",
+      "kind": "real",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both replace smooth digital shading with visible cross-hatch pencil/graphite shadows, the same shading-register correction despite the candidate's extra construction-line detail."
+    },
+    {
+      "pair_id": "cross::proportion-pd1-chibi-idle__vs__view-vd1-declared-3quarter-drawn-profile",
+      "defect_label": "proportion",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The reference fixes head-to-body proportion (seven heads tall), while the candidate addresses three-quarter view orientation and hand posing \u2014 different corrective intents."
+    },
+    {
+      "pair_id": "cross::view-vd1-declared-3quarter-drawn-profile__vs__anatomy-ad1-six-fingers",
+      "defect_label": "view-correctness",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate corrects hand/finger anatomy (five digits per hand), while the reference golden fix specifies camera view/orientation (left profile, full body) \u2014 entirely different corrective intents."
+    },
+    {
+      "pair_id": "cross::anatomy-ad1-six-fingers__vs__palette-pad1-monochrome",
+      "defect_label": "anatomy-count",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate addresses color/shading register while the reference fixes finger count (anatomy-count), so they express entirely different corrective intents."
+    },
+    {
+      "pair_id": "cross::palette-pad1-monochrome__vs__construction-cld1-clean-final-portrait",
+      "defect_label": "palette",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate targets construction lines, cross-hatching, and line-weight (a line/shading fix) while the golden fix restores the full reference color palette and color wash, so their corrective intents differ."
+    },
+    {
+      "pair_id": "cross::construction-cld1-clean-final-portrait__vs__shading-shd1-photographic",
+      "defect_label": "construction-lines",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": true,
+      "spread": [
+        5,
+        5
+      ],
+      "why": "Both steer the re-generation to show construction lines visible beneath the final drawn line, the same construction-lines fix despite the candidate's extra register detail."
+    },
+    {
+      "pair_id": "cross::shading-shd1-photographic__vs__proportion-pd1-chibi-idle",
+      "defect_label": "shading-register",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate addresses head-to-body proportion while the reference addresses cross-hatch pencil shading register \u2014 entirely different corrective intents."
+    },
+    {
+      "pair_id": "cross::proportion-pd1-chibi-idle__vs__anatomy-ad1-six-fingers",
+      "defect_label": "proportion",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate fixes hand digit count (anatomy) while the reference fixes head-to-body proportion \u2014 different corrective intents despite sharing the proportion label."
+    },
+    {
+      "pair_id": "cross::view-vd1-declared-3quarter-drawn-profile__vs__palette-pad1-monochrome",
+      "defect_label": "view-correctness",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate addresses color/shading register (palette, hatching, fills) while the golden fix specifies view orientation (left profile, full body) \u2014 entirely different corrective intents for the view-correctness defect."
+    },
+    {
+      "pair_id": "cross::anatomy-ad1-six-fingers__vs__construction-cld1-clean-final-portrait",
+      "defect_label": "anatomy-count",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate addresses construction lines, shading, and line-weight style, while the reference fixes finger count (anatomy-count), so they target entirely different defects."
+    },
+    {
+      "pair_id": "cross::palette-pad1-monochrome__vs__shading-shd1-photographic",
+      "defect_label": "palette",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": true,
+      "sean_match": false,
+      "spread": [
+        3,
+        5
+      ],
+      "why": "The golden fix simply restores the full reference color palette with a light wash, while the candidate adds many unrelated style constraints (construction lines, cross-hatching, paper grain, anti-digital negatives) rather than expressing the same focused palette-correction intent."
+    },
+    {
+      "pair_id": "cross::construction-cld1-clean-final-portrait__vs__proportion-pd1-chibi-idle",
+      "defect_label": "construction-lines",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate specifies head-to-body proportion (a proportion-class fix), while the reference asks for visible construction lines beneath the final pencil line \u2014 entirely different corrective intents."
+    },
+    {
+      "pair_id": "cross::shading-shd1-photographic__vs__view-vd1-declared-3quarter-drawn-profile",
+      "defect_label": "shading-register",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate describes view orientation and pose geometry, not shading register, so it shares no corrective intent with the golden's cross-hatch pencil shading fix."
+    },
+    {
+      "pair_id": "cross::proportion-pd1-chibi-idle__vs__palette-pad1-monochrome",
+      "defect_label": "proportion",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate addresses color/register/shading (palette and finish) and says nothing about head-to-body proportion, whereas the golden fix corrects proportion to ~seven heads tall."
+    },
+    {
+      "pair_id": "cross::view-vd1-declared-3quarter-drawn-profile__vs__construction-cld1-clean-final-portrait",
+      "defect_label": "view-correctness",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate addresses construction-line and shading-register style fixes while the golden fix corrects the viewing angle to a left profile full-body view \u2014 entirely different corrective intents."
+    },
+    {
+      "pair_id": "cross::anatomy-ad1-six-fingers__vs__shading-shd1-photographic",
+      "defect_label": "anatomy-count",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The reference fixes finger count (anatomy), while the candidate only addresses style/rendering register and never mentions finger or limb count."
+    },
+    {
+      "pair_id": "cross::palette-pad1-monochrome__vs__proportion-pd1-chibi-idle",
+      "defect_label": "palette",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate addresses head-to-body proportion while the reference addresses applying the full color palette \u2014 different corrective intents for the palette defect."
+    },
+    {
+      "pair_id": "cross::construction-cld1-clean-final-portrait__vs__view-vd1-declared-3quarter-drawn-profile",
+      "defect_label": "construction-lines",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The reference fixes construction-lines by adding visible underdrawing, while the candidate addresses three-quarter view geometry and pose, a different corrective intent."
+    },
+    {
+      "pair_id": "cross::shading-shd1-photographic__vs__anatomy-ad1-six-fingers",
+      "defect_label": "shading-register",
+      "kind": "cross_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate corrects finger/digit count (anatomy) while the reference golden fix specifies cross-hatch pencil shading register \u2014 different corrective intents."
+    },
+    {
+      "pair_id": "hard::palette-1",
+      "defect_label": "palette",
+      "kind": "hard_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate recolors only the hair to dirty-blonde while explicitly leaving the shirt unchanged, whereas the reference changes the shirt to navy-blue \u2014 different targets and corrective intent."
+    },
+    {
+      "pair_id": "hard::proportion-2",
+      "defect_label": "proportion",
+      "kind": "hard_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate corrects shoulder width (about 2.5 head-widths across), while the golden fix corrects overall height/figure scale (about seven heads tall) \u2014 different proportional targets."
+    },
+    {
+      "pair_id": "hard::view-correctness-3",
+      "defect_label": "view-correctness",
+      "kind": "hard_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "A three-quarter back view and a left profile view are different viewing angles, so the two clauses steer the re-generation toward different orientations."
+    },
+    {
+      "pair_id": "hard::anatomy-count-4",
+      "defect_label": "anatomy-count",
+      "kind": "hard_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate corrects leg count while the reference corrects finger count \u2014 different anatomical fixes."
+    },
+    {
+      "pair_id": "hard::construction-lines-5",
+      "defect_label": "construction-lines",
+      "kind": "hard_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "Candidate adjusts outer-contour line-weight variation while the reference restores visible underlying construction lines \u2014 different corrective intents."
+    },
+    {
+      "pair_id": "hard::shading-register-6",
+      "defect_label": "shading-register",
+      "kind": "hard_negative",
+      "em_proposed": true,
+      "judge_match": false,
+      "sean_match": false,
+      "spread": [
+        0,
+        5
+      ],
+      "why": "The candidate steers toward flat two-tone cel shading while the golden fix calls for cross-hatch pencil shading \u2014 opposite shading registers."
+    }
+  ]
+}
