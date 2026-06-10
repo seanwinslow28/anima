@@ -112,6 +112,11 @@ _AUDITED_FILES = (
     "cy-character-designer-context.md",
     "em-vision-critic-context.md",
     "maya-planner-context.md",
+    # T3 council peers + chairman (added 2026-06-10, Session A).
+    "codie-context.md",
+    "annie-context.md",
+    "sage-context.md",
+    "chairman-context.md",
 )
 
 

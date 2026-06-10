@@ -291,3 +291,134 @@ async def run_antigravity_with_image(
         # Race: which() returned a path but the binary disappeared. Fall
         # back to the stub rather than crashing the critic.
         return _stub_response(prompt, image_paths)
+
+
+# --------------------------------------------------------------------------- #
+# Codex transport (Codie — T3 production peer).                                #
+#                                                                              #
+# Sibling of run_antigravity_with_image, structurally mirroring the proven     #
+# code-brain vault_critic run_codex (`codex exec --sandbox read-only           #
+# --skip-git-repo-check <prompt>`, run from $HOME). The differences vs agy:    #
+#   - No required model pin. codex selects its model from ~/.codex/config.toml #
+#     by default; `model=` is OPTIONAL and only appended as `--model` when      #
+#     given (unlike agy, where the silent-backend-default forensics forced a    #
+#     required pin — codex has no such trap here).                              #
+#   - Image attachment is UNVERIFIED on this machine (codex absent at build     #
+#     time — see docs/research/2026-06-10-t3-cli-multimodal-smoke.md). The      #
+#     live `-i/--image` invocation is confirmed in Session B; the stub path is  #
+#     what CI exercises, so the build is unblocked.                             #
+# Honesty contract is identical: empty-stdout-on-exit-0 OR a quota signal       #
+# RAISES RateCapExhausted (never a silent verdict); a timeout returns exit 124. #
+# --------------------------------------------------------------------------- #
+
+CODEX_BIN = "codex"
+
+
+def _codex_stub_response(prompt: str, image_paths: list[Path]) -> CLIResponse:
+    """Deterministic structured stub for Codie when the codex binary is absent.
+
+    Mirrors _stub_response (borderline@0.65, cites AC01 so the cites_criteria
+    invariant holds) but tagged cli="codex" with codex-specific install hint."""
+    payload = {
+        "verdict": "borderline",
+        "confidence": 0.65,
+        "reasoning": (
+            "STUB FALLBACK — codex binary not found on PATH. Returning a "
+            "borderline verdict at confidence 0.65 so the council fan-out and "
+            "downstream contract tests exercise the full path without credentials. "
+            "Install the Codex CLI and authenticate to get a real production-lens "
+            "critique from Codie."
+        ),
+        "proposed_patches": [],
+        "cites_criteria": ["AC01"],
+    }
+    return CLIResponse(
+        cli="codex",
+        text=json.dumps(payload),
+        tokens=None,
+        duration_s=0.0,
+        exit_code=0,
+        rate_capped=False,
+        error=None,
+        stub_fallback=True,
+    )
+
+
+async def run_codex_with_image(
+    *,
+    prompt: str,
+    image_paths: list[Path],
+    timeout_s: int = 120,
+    model: str | None = None,
+) -> CLIResponse:
+    """Invoke `codex exec` with a prompt + optional image(s); stub when absent.
+
+    Returns CLIResponse(cli="codex"). Falls back to a deterministic stub when
+    the binary isn't on PATH so the council suite stays green on a fresh
+    machine. `model` is optional — appended as `--model <model>` only if given
+    (codex otherwise uses its config.toml default; there is no silent-backend
+    trap to guard against, unlike agy's `-m`).
+
+    Image attachment uses `-i <path>` per image (Codex's documented multimodal
+    flag). NOTE: this live invocation is UNVERIFIED — codex was not installed at
+    build time (Session A smoke). Session B confirms it. The stub path is what
+    the test suite exercises.
+    """
+    if shutil.which(CODEX_BIN) is None:
+        return _codex_stub_response(prompt, image_paths)
+
+    start = time.monotonic()
+    cmd: list[str] = [CODEX_BIN, "exec", "--sandbox", "read-only", "--skip-git-repo-check"]
+    if model:
+        cmd += ["--model", model]
+    for p in image_paths:
+        cmd += ["-i", str(Path(p).resolve())]
+    cmd.append(prompt)
+    _LOG.info("codex exec call: model=%s images=%d", model or "<config-default>", len(image_paths))
+
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdin=asyncio.subprocess.DEVNULL,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+            cwd=str(Path.home()),
+        )
+        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=timeout_s)
+        text = stdout.decode("utf-8", errors="replace")
+        err_text = stderr.decode("utf-8", errors="replace")
+        exit_code = proc.returncode or 0
+        # Same honesty contract as agy: empty stdout on exit-0, or an explicit
+        # quota signal in stderr, RAISES — never degrade to a silent verdict.
+        quota_signal = any(sig in err_text.lower() for sig in _QUOTA_SIGNALS)
+        if exit_code == 0 and (not text.strip() or quota_signal):
+            raise RateCapExhausted(
+                f"codex returned a quota-exhausted/empty response "
+                f"(empty_stdout={not text.strip()}, quota_signal={quota_signal}). "
+                "Treating as missing data, not a verdict — Codie must error/escalate, "
+                "never silently borderline."
+            )
+        return CLIResponse(
+            cli="codex",
+            text=text,
+            tokens=None,
+            duration_s=time.monotonic() - start,
+            exit_code=exit_code,
+            rate_capped=False,
+            error=err_text if proc.returncode else None,
+            model=model,
+        )
+    except asyncio.TimeoutError:
+        return CLIResponse(
+            cli="codex",
+            text="",
+            tokens=None,
+            duration_s=time.monotonic() - start,
+            exit_code=124,
+            rate_capped=False,
+            error=f"timeout after {timeout_s}s",
+            model=model,
+        )
+    except FileNotFoundError:
+        # Race: which() returned a path but the binary disappeared.
+        return _codex_stub_response(prompt, image_paths)
