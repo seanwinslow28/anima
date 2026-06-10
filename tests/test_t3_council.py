@@ -154,6 +154,33 @@ def test_fan_out_runs_all_three_peers(tmp_path, monkeypatch):
     assert set(result.outputs["peer_verdicts"].keys()) == {"codie", "annie", "sage"}
 
 
+def test_peer_verdicts_surface_stub_fallback_and_model(tmp_path, monkeypatch):
+    """The live-smoke proof (Session B) asserts each peer fired LIVE, not stub.
+    peer_verdicts must therefore carry stub_fallback + model per peer so a silent
+    stub-fallback can't masquerade as a live verdict (the 2026-06-07 lesson)."""
+    @dataclass
+    class _RespWithModel:
+        text: str
+        ok: bool = True
+        stub_fallback: bool = False
+        model: str | None = None
+        error: str | None = None
+
+    _patch_peers(
+        monkeypatch,
+        codie=_RespWithModel(_verdict_json(), stub_fallback=False, model="gpt-5-codex"),
+        annie=_RespWithModel(_verdict_json(), stub_fallback=False, model="gemini-3.5-flash"),
+        sage=_RespWithModel(_verdict_json(), stub_fallback=True, model="stub-fallback"),
+        chairman=_RespWithModel(_verdict_json(cites=["AC01"])),
+    )
+    cls = NODE_REGISTRY["t3_council"]
+    pv = cls().run(_ctx(tmp_path)).outputs["peer_verdicts"]
+
+    assert pv["codie"]["stub_fallback"] is False and pv["codie"]["model"] == "gpt-5-codex"
+    assert pv["annie"]["stub_fallback"] is False and pv["annie"]["model"] == "gemini-3.5-flash"
+    assert pv["sage"]["stub_fallback"] is True and pv["sage"]["model"] == "stub-fallback"
+
+
 def test_chairman_is_a_separate_call_with_peer_outputs(tmp_path, monkeypatch):
     chairman_prompts: list[str] = []
     chairman_calls = {"n": 0}

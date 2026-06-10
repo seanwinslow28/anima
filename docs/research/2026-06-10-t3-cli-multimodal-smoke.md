@@ -130,3 +130,46 @@ still-image judge sees staging / identity / continuity across a clip but **not**
 2. Wire **Annie → `run_gemini_api_with_image`** (Reserved Decision 2), not `agy`.
 3. Leave `cli_runners.py`'s agy path untouched; surface the `-m` latent bug to Sean (above).
 4. Council engine treats every peer's failure as a contained errored gap (Gate-3 lesson).
+
+---
+
+## SESSION B — Codie verified LIVE (2026-06-10), and the `-i` variadic bug it caught
+
+Codex is now installed (`codex-cli 0.139.0`). Verified the binary before depending on it — and the
+verification **caught a real bug in the Session-A wrapper**, exactly the "verify the binary, not the
+docstring" hazard this doc was written to guard against (the agy `-m` lesson, recurring).
+
+**The bug.** `codex exec --help` shows `-i, --image <FILE>...` is **variadic** (one-or-more values).
+Session A built the command as `… --skip-git-repo-check -i <img> <prompt>` — prompt as the trailing
+positional. Run live, the trailing prompt was **swallowed as a second image value**, leaving no
+positional; codex fell back to stdin and exited 1:
+
+```
+$ codex exec --sandbox read-only --skip-git-repo-check -i <anchor.png> '<prompt>'
+Reading prompt from stdin...
+No prompt provided via stdin.       # exit 1
+```
+
+**The fix.** The prompt positional must come **before** the `-i` flags. Confirmed live:
+
+```
+$ codex exec --sandbox read-only --skip-git-repo-check '<JSON-verdict prompt>' -i <anchor.png>
+{"verdict":"pass","confidence":0.9,"reasoning":"cartoon man holding pen"}   # exit 0, 15,378 tokens
+```
+
+`run_codex_with_image` was reordered to emit `[exec, --sandbox, read-only, --skip-git-repo-check,
+(--model X), <prompt>, -i img1, -i img2, …]`. Regression test
+`tests/test_cli_runners.py::test_codex_prompt_precedes_image_flags` captures the argv and asserts
+`prompt_idx < min(-i idx)`; it was written RED (reproduced idx 9 vs 5), then GREEN after the fix. All
+11 `test_cli_runners.py` tests pass (stub path unchanged → CI stays credential-free green).
+
+**End-to-end live confirmation** through the real wrapper (not just raw codex):
+
+```
+run_codex_with_image(prompt=<Codie verdict prompt>, image_paths=[sean-anchor/anchor.png])
+→ cli='codex'  exit_code=0  stub_fallback=False  ok=True
+  text={"verdict":"pass","confidence":0.91,"reasoning":"Clear character sketch with appealing readable production design"}
+```
+
+Codie is **live, three-vendor council unblocked.** The flags `-s/--sandbox` (read-only valid),
+`--skip-git-repo-check`, `-i/--image`, `-m/--model` are all confirmed present on 0.139.0.
