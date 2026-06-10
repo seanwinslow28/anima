@@ -1,6 +1,6 @@
 # Plan — completing the Em (T2 vision-critic) eval suite: review + the path to "done"
 
-*2026-06-08. Cowork session (orient → analyze → decide → stage). **No model spend.** Reviews the three latest reports (SF03 + G6.9 Gate-3 handoff), confirms the merged work against the git tree, and lays out exactly what remains for the Em eval suite to measure all three of Em's axes. Costed work hands to Claude Code under [`docs/fleet-ops-protocol.md`](fleet-ops-protocol.md). Sequenced from the [G6.9 ratification + costed-Gate-3 plan](2026-06-08-g6.9-ratification-and-costed-gate3-plan.md) and the [Gate-3 costed handoff](2026-06-08-g6.9-gate3-costed-handoff.md).*
+*2026-06-08. Cowork session (orient → analyze → decide → stage). **No model spend.** Reviews the three latest reports (SF03 + G6.9 Gate-3 handoff), confirms the merged work against the git tree, and lays out exactly what remains for the Em eval suite to measure all three of Em's axes. Costed work hands to Claude Code under [`docs/fleet-ops-protocol.md`](fleet-ops-protocol.md). Sequenced from the [G6.9 ratification + costed-Gate-3 plan](COMPLETED/2026-06-08-g6.9-ratification-and-costed-gate3-plan.md) and the [Gate-3 costed handoff](OLD/2026-06-08-g6.9-gate3-costed-handoff.md).*
 
 **Standing doctrine: verify against the tree, never trust a label — including this plan.**
 
@@ -35,9 +35,11 @@ Re-checked every claim against the git object store and re-ran the relevant mach
 |---|---|---|---|
 | **Verdict** | Does Em flag the right defect? | ✅ **0.97 / 1.00 / 0.00**, ratified | G5, blind baseline `traces/baseline-2026-06-04-scored.md` |
 | **Citation** | Does she cite the real `IR.*` handle? | ✅ **cites-correct 0.97**, ratified | G6.1b, `traces/g6.1b-criteria-attached-2026-06-08.md` |
-| **Constructive** | Does applying her proposed fix actually clear the defect (identity held)? | ❌ **unmeasured** — the headline that remains | G6.9 Gate 3 (pending spend) |
+| **Constructive** | Does applying her proposed fix actually clear the defect (identity held)? | ✅ **normalized lift 0.667**, ratified | G6.9 Gate 3, [field report](anima-test-runs/2026-06-08-em-g6.9-gate3-fixrate.md) (#39) |
 
-The constructive axis is *what Em is for*. Closing it is the suite’s completion headline.
+The constructive axis is *what Em is for*. Closing it was the suite’s completion headline.
+
+> **STATUS (2026-06-10) — Tier 1 CLOSED.** All three axes are now measured (verdict + citation ratified; constructive fix-rate landed #39). The **Gate-2 golden-agreement proxy is CALIBRATED** ([field report](anima-test-runs/2026-06-10-em-gate2-judge-calibration.md)): Opus judge N=5 vs a 53-pair Sean-labeled set → **κ 0.885 / FPR 0.067**, clears the κ ≥ 0.6 & FPR ≤ 0.10 bar on iteration 1 — trustworthy enough to track fix-rate between costed Gate-3 runs (residual: palette completeness over-call). Tier 2/3 below are ticketed/deferred.
 
 ## 3. The plan — sequenced, with a recommended default order (Sean prioritizes)
 
@@ -58,9 +60,9 @@ The golden-agreement proxy judge (`diff_eval.py`) is **built but uncalibrated**.
 
 | # | Item | Disposition | Note |
 |---|---|---|---|
-| 1 | **Gate 3 fix-rate baseline (`both+null 12×3`)** | **DO NOW (P1)** | The headline. Closes the constructive axis. Costed (~$7.85 incl. capture-proof), fleet-ops handoff. |
-| 2 | **Subprocess-isolation wiring** | **DO NOW (P1 step 1, $0)** | Hard pre-req for #1. Code + test, no spend. |
-| 3 | **Gate 2 judge calibration** | **DO NOW / parallel (P2, cheap)** | Makes the cheap per-run proxy trustworthy. Not on #1’s critical path. |
+| 1 | **Gate 3 fix-rate baseline (`both+null 12×3`)** | **✅ DONE (#39)** | normalized lift 0.667, discriminative on all six classes. Closed the constructive axis. |
+| 2 | **Subprocess-isolation wiring** | **✅ DONE (#37 + #39 containment)** | Per-case isolation + the orchestrator try/except that the v1 crash exposed. |
+| 3 | **Gate 2 judge calibration** | **✅ DONE (Tier 1, 2026-06-10)** | Calibrated **κ 0.885 / FPR 0.067** — trustworthy. [field report](anima-test-runs/2026-06-10-em-gate2-judge-calibration.md). Residual: palette completeness over-call (re-open condition documented). |
 | 4 | **motion-proper (6 cases)** | **ACCEPTED GAP** | Structurally unscoreable by a still contact sheet (eval-strategy §3.5). Ships-red / xfail by design — do not chase. |
 | 5 | **motion-citation handles** | **ACCEPTED GAP** | Low-value; not worth authoring. |
 | 6 | **Fuller `30×5` Gate 3 run** | **DEFER** | Until `12×3` characterizes the floor + which classes are discriminative. |
@@ -68,15 +70,15 @@ The golden-agreement proxy judge (`diff_eval.py`) is **built but uncalibrated**.
 | 8 | **Identity-mode corpus (hair/jaw/eye)** | **DEFER** | Consciously re-deferred at G6; a later coverage extension. |
 | 9 | **SF03 sean-anchor re-bake + re-lock** | **DECIDED — bundle with next heads-tall authoring** (Sean, 2026-06-08) | Converts the `indeterminate` retroactive read into a certified pass. No standalone costed run; the re-bake rides the next authoring session that already spins up the Approach-A feeder. Recorded in the CLAUDE.md SF03 "Open:" note as the trigger. |
 | 10 | **Cy hot-loop SF03 auto-wiring** | **DEFER** | No current consumer (sean locked, mascot opt-out). Primitives + probe are the reference impl. |
-| 11 | **Delete 3 stale merged branches** | **DO NOW ($0, Sean’s machine)** | `g6.9-gate3-costed`, `ratify-g6.9-goldens`, `docs/g6.9-sf03-planning-2026-06-08` (+ remote `feature/em-g6.1-citation-grounding-handoff`). |
+| 11 | **Delete stale merged branches** | **✅ DONE (Tier 1)** | Local branch deleted; the 7 stale remotes were already gone on GitHub (auto-deleted on PR merge — verified via PR state, not `git branch --merged` which can't see squash merges), stale local refs pruned. |
 
-**Suite is “complete” when:** items 1–3 land green and the CLAUDE.md Em row carries a measured fix-rate. Items 4–5 are permanent accepted gaps; 6–10 are coverage/robustness extensions outside the “all three axes measured” bar.
+**Suite is COMPLETE (2026-06-10):** items 1–3 are green and the CLAUDE.md Em row carries the measured fix-rate **and** the calibrated Gate-2 proxy. Items 4–5 are permanent accepted gaps; **6–10 are deferred coverage/robustness extensions (ticketed)** outside the “all three axes measured + cheap proxy calibrated” bar — the Tier 2/3 of the close-out.
 
 **Broader horizon (note only):** beyond Em, the eval handbook’s per-agent matrix (Maya planner, Cy character-designer, Mo museum-writer, the T3 council) is the longer eval arc. Em is the most-built — out of scope here.
 
 ## 5. Handoff status
 
-The Gate-3 costed handoff [`docs/2026-06-08-g6.9-gate3-costed-handoff.md`](2026-06-08-g6.9-gate3-costed-handoff.md) is **verified ready as written**, with one refinement folded into §3 above: promote the subprocess-isolation wiring to an explicit $0 step-1 (ahead of `--check-only`). No other change needed — the §0 gates, the cost table, the arm config, and the out-of-scope list all hold against the code.
+The Gate-3 costed handoff [`docs/OLD/2026-06-08-g6.9-gate3-costed-handoff.md`](OLD/2026-06-08-g6.9-gate3-costed-handoff.md) is **verified ready as written**, with one refinement folded into §3 above: promote the subprocess-isolation wiring to an explicit $0 step-1 (ahead of `--check-only`). No other change needed — the §0 gates, the cost table, the arm config, and the out-of-scope list all hold against the code.
 
 ## 6. The mistake ledger we’re honoring
 
