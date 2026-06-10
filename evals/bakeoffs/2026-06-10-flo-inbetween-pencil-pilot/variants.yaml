@@ -1,0 +1,58 @@
+# Flo in-between pencil-preservation pilot — variant set.
+#
+# Four generators run the SAME 14 in-between cases (held prompt + references + anchors):
+#   nb2 / nb-pro  — the wired incumbents (pipeline.agents.nb_pro_runner.invoke_image_edit)
+#   fal-seedream / fal-qwen — the candidate in-between routes (pipeline.agents.fal_runner)
+#
+# snapshots: pin the model/endpoint identity so a provider bump re-baselines against this row
+# (mirrors the reve bake-off's snapshots block). The two fal rows are PLACEHOLDERS until STEP
+# B0 probes the live fal model pages and pins the verified endpoint id + observed served-model
+# string. Do NOT run the fal variants live until B0 flips fal_runner's `verified` flag.
+version: 1
+created: 2026-06-10
+cases_ref: evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/cases.yaml
+
+snapshots:
+  nb2: "gemini-3.1-flash-image-preview — NB2 Flash editing tier (the in-between incumbent / locked fallback)"
+  nb-pro: "gemini-3-pro-image-preview — NB Pro painterly hero ceiling"
+  fal-seedream: "TODO(B0): pin fal-ai/bytedance/seedream/v4/edit (CANDIDATE) — endpoint id + served-model string"
+  fal-qwen: "TODO(B0): pin fal Qwen-Image-Edit(-2511) (CANDIDATE) — endpoint id + served-model string + denoise exposure"
+
+variants:
+  - id: nb2
+    label: "NB2 incumbent — gemini-3.1-flash-image-preview (in-between baseline)"
+    engine: nb2
+    model: gemini-3.1-flash-image-preview
+    tier: draft
+    cost_per_image_usd: 0.067
+    baseline: true
+    notes: >
+      The locked fallback. If both fal models slick the pencil aesthetic, in-betweens route here.
+
+  - id: nb-pro
+    label: "NB Pro — gemini-3-pro-image-preview (hero ceiling)"
+    engine: nb_pro
+    model: gemini-3-pro-image-preview
+    tier: pro
+    cost_per_image_usd: 0.15
+    notes: >
+      The painterly ceiling. Watch the two-endpoint in-between for the multi-reference
+      downsampling regression that demoted NB Pro for multi-ref keyframes.
+
+  - id: fal-seedream
+    label: "fal Seedream 4.0 edit (~$0.02)"
+    engine: fal_seedream
+    tier: draft
+    cost_per_image_usd: 0.02
+    notes: >
+      Candidate cheap in-between route (manifest in_between_cheap). Endpoint UNVERIFIED until B0.
+
+  - id: fal-qwen
+    label: "fal Qwen-Image-Edit (~$0.021, denoise 0.80)"
+    engine: fal_qwen
+    tier: draft
+    cost_per_image_usd: 0.021
+    denoise: 0.80
+    notes: >
+      Candidate mid in-between route (manifest in_between_mid). Denoise sweet-spot 0.78–0.82
+      (B0 confirms exposure + param name). Endpoint UNVERIFIED until B0.

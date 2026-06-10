@@ -1,0 +1,457 @@
+# Flo in-between pencil-preservation pilot — case set (n=14).
+#
+# Ground truth: runs/run_2026-04-04_174805/approved/ — 7 approved Act-1 transitions with 14
+# approved in-between (IB) targets. Each case is ONE approved IB: the two endpoint keyframes are
+# the `references` AND the `per_view_anchors` (score the output's DINOv2 against BOTH endpoints
+# and take the MIN — the Subject-Collapse floor, eval-strategy §3.5). The approved IB itself is
+# the `reference_target` — the visual reference for what a GOOD in-between looks like, used for
+# Sean's grain/morph review; it is NOT a DINOv2 target.
+#
+# Prompt convention: each case names a tween FRACTION (IB index within its transition) and the
+# beat motion from docs/pencil-test-storyboard.md (Act 1). The prompt is held CONSTANT across all
+# four variants — only the engine varies. The pencil-preservation clauses (graphite line, cream
+# paper grain, "do NOT clean up / re-style into a digital look") are the whole point: the two
+# failure modes Sean's eye arbitrates are (a) grain slicked into clean digital and (b) the figure
+# morphing through the tween (the Reve failure DINOv2 missed). DINOv2 headlines, Em corroborates,
+# Sean decides. SHIPS-RED: do NOT relax a case so a variant passes.
+#
+# Per-case schema mirrors evals/bakeoffs/2026-06-07-reve-vs-nb2-editing/cases.yaml:
+#   name, test, edit_type (remix — two endpoints), references (the 2 endpoints),
+#   per_view_anchors (the 2 endpoints; MIN), reference_target (the approved IB; Sean's eye only),
+#   prompt, aspect_ratio, register, probe, difficulty, is_intentionally_red, sean_note.
+#   Em fields (only with --score-em): beat_description, checkpoint, character_id, case_class,
+#   expected_verdict, expected_cites.
+
+cases:
+
+  # ============================================================
+  # Transition 1 — F01 → F06 — idle → glance down (Beat 1, 3 IBs)
+  # ============================================================
+  - name: ib-f01f06-01
+    test: t1
+    edit_type: remix
+    references: &f01f06_refs
+      - evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F01_key.png
+      - evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F06_key.png
+    per_view_anchors: *f01f06_refs
+    reference_target: evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F01toF06_IB01.png
+    prompt: >
+      In-between frame for a 2D pencil-test animation. Image 1 and image 2 are two approved,
+      consecutive keyframes. Generate the single in-between drawing at approximately 25% of the
+      way from image 1 to image 2: Sean's head just beginning to tilt down toward the stylus,
+      eyes starting to drop, a slight shoulder dip beginning. Hold identity, costume, hair, full
+      color palette, and proportions constant with BOTH references. Keep the warm pencil-test
+      render exactly — graphite line, flat color fills, cross-hatch shadow, visible cream
+      production-paper grain. Stylus in the right hand. Fixed camera, locked tripod. Do NOT clean
+      up, re-ink, smooth, or re-style the drawing into a digital look. 16:9. No text or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "early tween of a subtle head tilt — grain-preservation floor. If the pencil grain slicks here on a near-no-op motion, the model is disqualified."
+    difficulty: moderate
+    is_intentionally_red: false
+    sean_note: "Compare the output against PT_A1_F01toF06_IB01.png (the approved IB) for grain + morph; DINOv2 scores against F01 & F06 (min)."
+    beat_description: "Sean beginning to glance down toward the stylus, head tilting, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
+
+  - name: ib-f01f06-02
+    test: t1
+    edit_type: remix
+    references: *f01f06_refs
+    per_view_anchors: *f01f06_refs
+    reference_target: evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F01toF06_IB02.png
+    prompt: >
+      In-between frame for a 2D pencil-test animation. Image 1 and image 2 are two approved,
+      consecutive keyframes. Generate the single in-between drawing at approximately 50% of the
+      way from image 1 to image 2: Sean's head tilted roughly halfway down toward the stylus,
+      gaze lowering, shoulders dipping into the contemplating pose. Hold identity, costume, hair,
+      full color palette, and proportions constant with BOTH references. Keep the warm pencil-test
+      render exactly — graphite line, flat color fills, cross-hatch shadow, visible cream
+      production-paper grain. Stylus in the right hand. Fixed camera, locked tripod. Do NOT clean
+      up, re-ink, smooth, or re-style the drawing into a digital look. 16:9. No text or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "mid head-tilt tween — identity hold across the downward motion."
+    difficulty: moderate
+    is_intentionally_red: false
+    sean_note: "Midpoint of the glance-down. Reference target PT_A1_F01toF06_IB02.png."
+    beat_description: "Sean halfway through glancing down at the stylus, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
+
+  - name: ib-f01f06-03
+    test: t1
+    edit_type: remix
+    references: *f01f06_refs
+    per_view_anchors: *f01f06_refs
+    reference_target: evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F01toF06_IB03.png
+    prompt: >
+      In-between frame for a 2D pencil-test animation. Image 1 and image 2 are two approved,
+      consecutive keyframes. Generate the single in-between drawing at approximately 75% of the
+      way from image 1 to image 2: Sean's head nearly all the way down at the stylus, eyes almost
+      on it, shoulders near the full contemplating dip. Hold identity, costume, hair, full color
+      palette, and proportions constant with BOTH references. Keep the warm pencil-test render
+      exactly — graphite line, flat color fills, cross-hatch shadow, visible cream production-paper
+      grain. Stylus in the right hand. Fixed camera, locked tripod. Do NOT clean up, re-ink,
+      smooth, or re-style the drawing into a digital look. 16:9. No text or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "late head-tilt tween, near endpoint B — should read close to F06 with grain intact."
+    difficulty: moderate
+    is_intentionally_red: false
+    sean_note: "Near F06. Reference target PT_A1_F01toF06_IB03.png."
+    beat_description: "Sean nearly finished glancing down at the stylus, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
+
+  # ============================================================
+  # Transition 2 — F06 → F10 — glance down → the spark (Beat 1, 1 IB)
+  # ============================================================
+  - name: ib-f06f10-01
+    test: t1
+    edit_type: remix
+    references: &f06f10_refs
+      - evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F06_key.png
+      - evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F10_key.png
+    per_view_anchors: *f06f10_refs
+    reference_target: evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F06toF10_IB01.png
+    prompt: >
+      In-between frame for a 2D pencil-test animation. Image 1 and image 2 are two approved,
+      consecutive keyframes. Generate the single in-between drawing at approximately 50% of the
+      way from image 1 to image 2: Sean's head snapping back up mid-rise, eyebrows lifting, mouth
+      opening from a closed to an open half-smile, left shoulder beginning to rise. Hold identity,
+      costume, hair, full color palette, and proportions constant with BOTH references. Keep the
+      warm pencil-test render exactly — graphite line, flat color fills, cross-hatch shadow,
+      visible cream production-paper grain. Stylus in the right hand. Fixed camera, locked tripod.
+      Do NOT clean up, re-ink, smooth, or re-style the drawing into a digital look. 16:9. No text
+      or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "the fast 'idea' head-snap (Disney take) — expression change is where identity tends to slide; watch the face."
+    difficulty: moderate
+    is_intentionally_red: false
+    sean_note: "Single midpoint of the spark. Reference target PT_A1_F06toF10_IB01.png."
+    beat_description: "Sean's head snapping up into the spark, brows lifting, half-smile opening, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
+
+  # ============================================================
+  # Transition 3 — F10 → F13 — spark → wind up (Beat 2, 1 IB)
+  # ============================================================
+  - name: ib-f10f13-01
+    test: t2
+    edit_type: remix
+    references: &f10f13_refs
+      - evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F10_key.png
+      - evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F13_key.png
+    per_view_anchors: *f10f13_refs
+    reference_target: evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F10toF13_IB01.png
+    prompt: >
+      In-between frame for a 2D pencil-test animation. Image 1 and image 2 are two approved,
+      consecutive keyframes. Generate the single in-between drawing at approximately 50% of the
+      way from image 1 to image 2: Sean's right arm lifting mid-rise, elbow leading, stylus tip
+      rising toward head height, body beginning to lean forward into the gesture. Hold identity,
+      costume, hair, full color palette, and proportions constant with BOTH references. Keep the
+      warm pencil-test render exactly — graphite line, flat color fills, cross-hatch shadow,
+      visible cream production-paper grain. Stylus in the right hand. Fixed camera, locked tripod.
+      Do NOT clean up, re-ink, smooth, or re-style the drawing into a digital look. 16:9. No text
+      or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "arm-raise tween — limb motion stresses pose interpolation and stylus-hand continuity (CC01/CC02)."
+    difficulty: hard
+    is_intentionally_red: false
+    sean_note: "Single midpoint of the arm wind-up. Reference target PT_A1_F10toF13_IB01.png."
+    beat_description: "Sean lifting his right arm into the draw wind-up, elbow leading, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
+
+  # ============================================================
+  # Transition 4 — F13 → F18 — wind up → mid-gesture (Beat 2, 3 IBs)
+  # ============================================================
+  - name: ib-f13f18-01
+    test: t2
+    edit_type: remix
+    references: &f13f18_refs
+      - evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F13_key.png
+      - evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F18_key.png
+    per_view_anchors: *f13f18_refs
+    reference_target: evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F13toF18_IB01.png
+    prompt: >
+      In-between frame for a 2D pencil-test animation. Image 1 and image 2 are two approved,
+      consecutive keyframes. Generate the single in-between drawing at approximately 25% of the
+      way from image 1 to image 2: Sean's right arm just past the wind-up, stylus tip near head
+      height, the gesture's arc beginning to sweep right. Hold identity, costume, hair, full color
+      palette, and proportions constant with BOTH references. Keep the warm pencil-test render
+      exactly — graphite line, flat color fills, cross-hatch shadow, visible cream production-paper
+      grain. Stylus in the right hand. Fixed camera, locked tripod. Do NOT clean up, re-ink,
+      smooth, or re-style the drawing into a digital look. 16:9. No text or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "start of the big arm sweep — the widest pose delta in Act 1; identity must hold through large limb travel."
+    difficulty: hard
+    is_intentionally_red: false
+    sean_note: "Early in the gesture sweep. Reference target PT_A1_F13toF18_IB01.png."
+    beat_description: "Sean's right arm starting the gesture sweep, stylus near head height, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
+
+  - name: ib-f13f18-02
+    test: t2
+    edit_type: remix
+    references: *f13f18_refs
+    per_view_anchors: *f13f18_refs
+    reference_target: evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F13toF18_IB02.png
+    prompt: >
+      In-between frame for a 2D pencil-test animation. Image 1 and image 2 are two approved,
+      consecutive keyframes. Generate the single in-between drawing at approximately 50% of the
+      way from image 1 to image 2: Sean's right arm halfway through the confident rightward sweep,
+      stylus mid-arc, weight shifted forward. Hold identity, costume, hair, full color palette, and
+      proportions constant with BOTH references. Keep the warm pencil-test render exactly —
+      graphite line, flat color fills, cross-hatch shadow, visible cream production-paper grain.
+      Stylus in the right hand. Fixed camera, locked tripod. Do NOT clean up, re-ink, smooth, or
+      re-style the drawing into a digital look. 16:9. No text or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "mid arm-sweep — peak limb travel; the hardest pose interpolation in the set."
+    difficulty: hard
+    is_intentionally_red: false
+    sean_note: "Mid gesture sweep. Reference target PT_A1_F13toF18_IB02.png."
+    beat_description: "Sean's right arm mid-sweep through the draw gesture, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
+
+  - name: ib-f13f18-03
+    test: t2
+    edit_type: remix
+    references: *f13f18_refs
+    per_view_anchors: *f13f18_refs
+    reference_target: evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F13toF18_IB03.png
+    prompt: >
+      In-between frame for a 2D pencil-test animation. Image 1 and image 2 are two approved,
+      consecutive keyframes. Generate the single in-between drawing at approximately 75% of the
+      way from image 1 to image 2: Sean's right arm near the end of the rightward sweep, stylus tip
+      well to the right, the gesture nearly complete. Hold identity, costume, hair, full color
+      palette, and proportions constant with BOTH references. Keep the warm pencil-test render
+      exactly — graphite line, flat color fills, cross-hatch shadow, visible cream production-paper
+      grain. Stylus in the right hand. Fixed camera, locked tripod. Do NOT clean up, re-ink,
+      smooth, or re-style the drawing into a digital look. 16:9. No text or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "end of the arm sweep, near endpoint B — should read close to F18 with grain intact."
+    difficulty: hard
+    is_intentionally_red: false
+    sean_note: "Near F18. Reference target PT_A1_F13toF18_IB03.png."
+    beat_description: "Sean's right arm near the end of the draw gesture, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
+
+  # ============================================================
+  # Transition 5 — F28 → F31 — sprite bounce → sprite lands (Beat 3, 2 IBs)
+  # ============================================================
+  - name: ib-f28f31-01
+    test: t3
+    edit_type: remix
+    references: &f28f31_refs
+      - evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F28_key.png
+      - evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F31_key.png
+    per_view_anchors: *f28f31_refs
+    reference_target: evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F28toF31_IB01.png
+    prompt: >
+      In-between frame for a 2D pencil-test animation. Image 1 and image 2 are two approved,
+      consecutive keyframes. Generate the single in-between drawing at approximately 33% of the
+      way from image 1 to image 2: Sean's head beginning to turn left toward his shoulder, a smirk
+      starting to form. Keep any pixel sprite element consistent with the references. Hold identity,
+      costume, hair, full color palette, and proportions constant with BOTH references. Keep the
+      warm pencil-test render exactly — graphite line, flat color fills, cross-hatch shadow,
+      visible cream production-paper grain. Stylus in the right hand. Fixed camera, locked tripod.
+      Do NOT clean up, re-ink, smooth, or re-style the drawing into a digital look. 16:9. No text
+      or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "head-turn tween with a composited sprite present — watch for the sprite morphing or the head-turn collapsing identity."
+    difficulty: moderate
+    is_intentionally_red: false
+    sean_note: "Early head turn toward the shoulder sprite. Reference target PT_A1_F28toF31_IB01.png."
+    beat_description: "Sean beginning to turn his head left toward the sprite on his shoulder, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
+
+  - name: ib-f28f31-02
+    test: t3
+    edit_type: remix
+    references: *f28f31_refs
+    per_view_anchors: *f28f31_refs
+    reference_target: evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F28toF31_IB02.png
+    prompt: >
+      In-between frame for a 2D pencil-test animation. Image 1 and image 2 are two approved,
+      consecutive keyframes. Generate the single in-between drawing at approximately 67% of the
+      way from image 1 to image 2: Sean's head most of the way turned left toward the sprite on his
+      shoulder, the pleased smirk nearly set. Keep any pixel sprite element consistent with the
+      references. Hold identity, costume, hair, full color palette, and proportions constant with
+      BOTH references. Keep the warm pencil-test render exactly — graphite line, flat color fills,
+      cross-hatch shadow, visible cream production-paper grain. Stylus in the right hand. Fixed
+      camera, locked tripod. Do NOT clean up, re-ink, smooth, or re-style the drawing into a
+      digital look. 16:9. No text or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "later head-turn tween, near F31 — profile-ward head with grain intact."
+    difficulty: moderate
+    is_intentionally_red: false
+    sean_note: "Near F31. Reference target PT_A1_F28toF31_IB02.png."
+    beat_description: "Sean's head most of the way turned toward the shoulder sprite, smirk set, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
+
+  # ============================================================
+  # Transition 6 — F31 → F36 — sprite lands → the nod (Beat 3, 2 IBs)
+  # ============================================================
+  - name: ib-f31f36-01
+    test: t3
+    edit_type: remix
+    references: &f31f36_refs
+      - evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F31_key.png
+      - evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F36_key.png
+    per_view_anchors: *f31f36_refs
+    reference_target: evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F31toF36_IB01.png
+    prompt: >
+      In-between frame for a 2D pencil-test animation. Image 1 and image 2 are two approved,
+      consecutive keyframes. Generate the single in-between drawing at approximately 33% of the
+      way from image 1 to image 2: Sean's chin beginning a small downward nod, head still turned
+      toward his shoulder. Keep any pixel sprite element consistent with the references. Hold
+      identity, costume, hair, full color palette, and proportions constant with BOTH references.
+      Keep the warm pencil-test render exactly — graphite line, flat color fills, cross-hatch
+      shadow, visible cream production-paper grain. Stylus in the right hand. Fixed camera, locked
+      tripod. Do NOT clean up, re-ink, smooth, or re-style the drawing into a digital look. 16:9.
+      No text or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "start of the signature nod — small motion; identity must not drift on a near-hold."
+    difficulty: moderate
+    is_intentionally_red: false
+    sean_note: "Start of the nod. Reference target PT_A1_F31toF36_IB01.png."
+    beat_description: "Sean beginning the small satisfied nod, head toward the shoulder sprite, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
+
+  - name: ib-f31f36-02
+    test: t3
+    edit_type: remix
+    references: *f31f36_refs
+    per_view_anchors: *f31f36_refs
+    reference_target: evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F31toF36_IB02.png
+    prompt: >
+      In-between frame for a 2D pencil-test animation. Image 1 and image 2 are two approved,
+      consecutive keyframes. Generate the single in-between drawing at approximately 67% of the
+      way from image 1 to image 2: Sean's chin most of the way through the small downward nod. Keep
+      any pixel sprite element consistent with the references. Hold identity, costume, hair, full
+      color palette, and proportions constant with BOTH references. Keep the warm pencil-test
+      render exactly — graphite line, flat color fills, cross-hatch shadow, visible cream
+      production-paper grain. Stylus in the right hand. Fixed camera, locked tripod. Do NOT clean
+      up, re-ink, smooth, or re-style the drawing into a digital look. 16:9. No text or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "deep into the nod, near F36 — small motion, grain intact."
+    difficulty: moderate
+    is_intentionally_red: false
+    sean_note: "Near F36. Reference target PT_A1_F31toF36_IB02.png."
+    beat_description: "Sean most of the way through the satisfied nod, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
+
+  # ============================================================
+  # Transition 7 — F36 → F40 — the nod → return to idle (Beat 3, 2 IBs)
+  # ============================================================
+  - name: ib-f36f40-01
+    test: t3
+    edit_type: remix
+    references: &f36f40_refs
+      - evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F36_key.png
+      - evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F40_key.png
+    per_view_anchors: *f36f40_refs
+    reference_target: evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F36toF40_IB01.png
+    prompt: >
+      In-between frame for a 2D pencil-test animation. Image 1 and image 2 are two approved,
+      consecutive keyframes. Generate the single in-between drawing at approximately 33% of the
+      way from image 1 to image 2: Sean's head and body beginning to ease back from the nod toward
+      the neutral idle pose. Hold identity, costume, hair, full color palette, and proportions
+      constant with BOTH references. Keep the warm pencil-test render exactly — graphite line, flat
+      color fills, cross-hatch shadow, visible cream production-paper grain. Stylus in the right
+      hand. Fixed camera, locked tripod. Do NOT clean up, re-ink, smooth, or re-style the drawing
+      into a digital look. 16:9. No text or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "easing back toward the loop-return idle — identity must land back on the A-2 pose cleanly."
+    difficulty: moderate
+    is_intentionally_red: false
+    sean_note: "Easing back from the nod. Reference target PT_A1_F36toF40_IB01.png."
+    beat_description: "Sean beginning to ease back from the nod toward the idle pose, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
+
+  - name: ib-f36f40-02
+    test: t3
+    edit_type: remix
+    references: *f36f40_refs
+    per_view_anchors: *f36f40_refs
+    reference_target: evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/fixtures/PT_A1_F36toF40_IB02.png
+    prompt: >
+      In-between frame for a 2D pencil-test animation. Image 1 and image 2 are two approved,
+      consecutive keyframes. Generate the single in-between drawing at approximately 67% of the
+      way from image 1 to image 2: Sean's head and body most of the way back to the neutral A-2
+      idle pose, weight shifting back to the starting leg. Hold identity, costume, hair, full color
+      palette, and proportions constant with BOTH references. Keep the warm pencil-test render
+      exactly — graphite line, flat color fills, cross-hatch shadow, visible cream production-paper
+      grain. Stylus in the right hand. Fixed camera, locked tripod. Do NOT clean up, re-ink,
+      smooth, or re-style the drawing into a digital look. 16:9. No text or watermarks.
+    aspect_ratio: "16:9"
+    register: pencil-test-colored
+    probe: "near the loop-return idle, near F40 — should read close to the A-2 idle with grain intact."
+    difficulty: moderate
+    is_intentionally_red: false
+    sean_note: "Near F40 / loop return. Reference target PT_A1_F36toF40_IB02.png."
+    beat_description: "Sean nearly back to the neutral idle pose, pencil-test register."
+    checkpoint: phase_5_generate
+    character_id: sean
+    case_class: identity_style
+    expected_verdict: pass
+    expected_cites: []
