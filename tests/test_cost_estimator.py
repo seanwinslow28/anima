@@ -97,6 +97,62 @@ def test_phase_5_uses_routing_table_prices(tmp_path):
     assert p5["high_usd"] == 8.40
 
 
+def test_phase_5_sums_full_routing_table(tmp_path):
+    """Flo-A: Phase 5 cost sums the FULL routing table, not just hero/standard —
+    declared in-between + mask-edit counts price at their config estimate too."""
+    cls = NODE_REGISTRY["cost_estimator"]
+    manifest = {
+        "generation": {
+            "routing": {
+                "hero_keyframe": {"usd_per_frame": 0.15},
+                "standard_keyframe": {"usd_per_frame": 0.07},
+                "in_between_cheap": {"usd_per_frame": 0.02, "status": "declared"},
+                "mask_edit": {"usd_per_frame": 0.21, "status": "deferred"},
+            }
+        },
+        "phases": {
+            "phase_5": {
+                "frame_count_hero": 0,
+                "frame_count_standard": 0,
+                "frame_count_in_between_cheap": 10,
+                "frame_count_mask_edit": 2,
+            }
+        },
+    }
+    p5 = cls().run(_ctx(tmp_path, manifest)).outputs["estimate"].by_phase["phase_5"]
+    # The declared/deferred routes must contribute to the band: 10×$0.02 + 2×$0.21
+    # = $0.62 at the optimistic single-attempt low.
+    assert p5["low_usd"] == 0.62
+    # And the high band must exceed the low (a widened uncertainty band).
+    assert p5["high_usd"] > p5["low_usd"]
+
+
+def test_phase_5_declared_route_lowers_confidence(tmp_path):
+    """A plan that budgets a not-wired (declared/deferred) route carries lowered
+    confidence; a wired-only plan stays full confidence."""
+    cls = NODE_REGISTRY["cost_estimator"]
+    wired_only = {
+        "generation": {"routing": {"standard_keyframe": {"usd_per_frame": 0.07}}},
+        "phases": {"phase_5": {"frame_count_standard": 5}},
+    }
+    p5_wired = cls().run(_ctx(tmp_path, wired_only)).outputs["estimate"].by_phase["phase_5"]
+    assert p5_wired["confidence"] == "full"
+
+    with_declared = {
+        "generation": {
+            "routing": {
+                "standard_keyframe": {"usd_per_frame": 0.07},
+                "in_between_cheap": {"usd_per_frame": 0.02, "status": "declared"},
+            }
+        },
+        "phases": {
+            "phase_5": {"frame_count_standard": 5, "frame_count_in_between_cheap": 4}
+        },
+    }
+    p5_declared = cls().run(_ctx(tmp_path, with_declared)).outputs["estimate"].by_phase["phase_5"]
+    assert p5_declared["confidence"] == "lowered"
+
+
 def test_phase_6_seedance_fast_to_pro_split(tmp_path):
     """Phase 6 uses Seedance Fast → Pro escalation rate."""
     cls = NODE_REGISTRY["cost_estimator"]

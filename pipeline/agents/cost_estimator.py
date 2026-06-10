@@ -181,7 +181,14 @@ class CostEstimatorNode:
         }
 
     def _phase_5_cost(self, manifest: dict) -> dict[str, float]:
-        """Phase 5 keyframe generation. Reads generation.routing: per Flo."""
+        """Phase 5 keyframe generation. Sums the FULL generation.routing: table.
+
+        Wired keyframe routes (hero/standard) keep the escalation-ladder math.
+        Declared/deferred routes (the Flo in-between + mask-edit seams) price at
+        their config estimate with a widened band, and any budgeted not-wired
+        route lowers the phase confidence flag — their real cost is unproven
+        until Flo-B measures it.
+        """
         routing = (manifest.get("generation") or {}).get("routing") or {}
         phase_5 = (manifest.get("phases") or {}).get("phase_5") or {}
         hero_count = int(phase_5.get("frame_count_hero", 0))
@@ -189,6 +196,7 @@ class CostEstimatorNode:
         hero_price = float((routing.get("hero_keyframe") or {}).get("usd_per_frame", 0.15))
         standard_price = float((routing.get("standard_keyframe") or {}).get("usd_per_frame", 0.07))
 
+        # Wired keyframe routes — existing escalation-ladder math (preserved).
         # Low: draft throughout, single attempt, no escalation.
         low = standard_count * standard_price + hero_count * standard_price
         # High: pro throughout, 3 attempts per frame (retry budget).
@@ -199,10 +207,27 @@ class CostEstimatorNode:
             hero_count * hero_price
             + standard_count * (0.5 * hero_price * 2 + 0.5 * standard_price)
         )
+
+        # Declared/deferred routes — the in-between + mask-edit seams. Not wired
+        # this session, so there's no measured retry behavior: price the low band
+        # at a single attempt and widen the high band to the same 3× retry ceiling
+        # the wired routes carry. Any budgeted declared route lowers confidence.
+        confidence = "full"
+        for shot_type in ("in_between_cheap", "in_between_mid", "mask_edit"):
+            count = int(phase_5.get(f"frame_count_{shot_type}", 0))
+            if count == 0:
+                continue
+            price = float((routing.get(shot_type) or {}).get("usd_per_frame", 0.0))
+            confidence = "lowered"
+            low += count * price
+            median += count * price * 1.5
+            high += count * price * 3
+
         return {
             "low_usd": round(low, 2),
             "median_usd": round(median, 2),
             "high_usd": round(high, 2),
+            "confidence": confidence,
         }
 
     def _phase_6_cost(self, manifest: dict) -> dict[str, float]:

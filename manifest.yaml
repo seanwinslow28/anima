@@ -42,6 +42,25 @@ generation:
   prompt_source: "docs/act1-keyframe-prompts.md"
   style_cluster: ".claude/skills/gemini-pencil-animation-image-gen/references/pencil-animation-prompt-templates.md"
 
+  # Flo — the Phase 5 generation router (build plan: docs/2026-06-10-flo-router-build-plan.md).
+  # Per-shot-type route table mirroring Image-Model-DR-2026/SYNTHESIS.md §2. Each route =
+  # {transport, model, usd_per_frame, tier, status}. The single-model fields above stay for
+  # back-compat: when this `routing:` block is ABSENT, Flo falls through to the legacy
+  # single-model frame_generate path unchanged.
+  #
+  # Cosmetic-honest (the T2/T3 lesson): status: wired = transport is live; status:
+  # declared/deferred = config exists but the transport is NOT wired, so Flo raises a clear
+  # "route declared, transport not wired" error rather than silently mis-generating. The
+  # in-between/edit tiers are declared seams for Flo-B (the costed fal.ai pencil-preservation
+  # pilot); do not wire them this session.
+  routing:
+    hero_keyframe:     { transport: nb_pro, model: gemini-3-pro-image-preview,        usd_per_frame: 0.15,  tier: pro,   status: wired }
+    standard_keyframe: { transport: nb2,    model: gemini-3.1-flash-image-preview,    usd_per_frame: 0.07,  tier: draft, status: wired }
+    in_between_cheap:  { transport: fal_seedream,                                     usd_per_frame: 0.02,  tier: draft, status: declared }   # Flo-B pilot
+    in_between_mid:    { transport: fal_qwen,                                         usd_per_frame: 0.021, tier: draft, status: declared }   # Flo-B pilot
+    mask_edit:         { transport: gpt_image_2,                                      usd_per_frame: 0.21,               status: deferred }
+  fallback: nb2   # a declared/failed route falls back to the wired NB2 path
+
 act1:
   name: "The Hero Loop"
   duration: "3-5 seconds"
