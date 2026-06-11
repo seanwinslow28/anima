@@ -42,7 +42,7 @@ from pipeline.agents import (
     NODE_REGISTRY,
     Tier,
 )
-from pipeline.criteria import load_criteria
+from pipeline.criteria import CriteriaBundle, load_criteria
 
 
 # ---------- Graph types ----------
@@ -216,6 +216,8 @@ class Runner:
         manifest: dict,
         criteria: Path | None = None,
         max_workers: int = 4,
+        criteria_bundle: CriteriaBundle | None = None,
+        criteria_hash: str | None = None,
     ):
         self.run_dir = Path(run_dir)
         self.manifest = manifest
@@ -223,8 +225,16 @@ class Runner:
         self.cache_dir = self.run_dir / ".cache"
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         self.max_workers = max_workers
-        self._criteria_bundle = load_criteria(criteria) if criteria else None
-        self._criteria_hash = hash_criteria_file(criteria)
+        if criteria_bundle is not None:
+            # A pre-built (merged) bundle — the run orchestrator passes brief
+            # AC.* + every Bible's IR.* via load_all_criteria, with a combined
+            # hash over all source files so a mutation in ANY of them still
+            # invalidates downstream cache. The single-path form is unchanged.
+            self._criteria_bundle = criteria_bundle
+            self._criteria_hash = criteria_hash or ""
+        else:
+            self._criteria_bundle = load_criteria(criteria) if criteria else None
+            self._criteria_hash = hash_criteria_file(criteria)
         self._hooks: dict[HookName, list[HookFn]] = defaultdict(list)
 
     def add_hook(self, name: HookName, fn: HookFn) -> None:

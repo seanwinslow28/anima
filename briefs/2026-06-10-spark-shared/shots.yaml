@@ -1,0 +1,100 @@
+# "The Spark, Shared" — the human-authored shot list (Phase 3).
+# Externalized VERBATIM from scripts/spark_frame.py's FRAMES dict (Slice 2);
+# tests/test_spark_shots_equivalence.py pins the equivalence. This file is the
+# input to the costed one-command validation:
+#   python -m pipeline.run --brief briefs/2026-06-10-spark-shared
+# cast: IR namespaces (first = primary -> Flo's folder key); chain_anchors: whose
+# Bible anchor joins the chain refs on frames >= 2 (spark chains Sean only);
+# extra_references: the beat's mascot plate (A-7 pairing carries the perch in F01).
+slug: SS
+frames:
+- id: 1
+  cast:
+  - sean
+  - claude-mascot
+  beat: 'Establishing two-shot: Sean three-quarter at his desk, focused down on the page, stylus in his
+    RIGHT hand to paper; the Claude mascot perched on his shoulder, idle/neutral. Sets look, framing,
+    scale — the compositional anchor the chain hangs from.'
+  prompt: Wide two-shot establishing frame. A young man (Sean) seated three-quarter view at a drawing
+    desk, head down and focused on the page, a stylus held in his RIGHT hand touching the paper mid-stroke.
+    A small terracotta-orange box-shaped creature (the Claude mascot) perches on his shoulder, idle and
+    neutral, facing forward at a small consistent scale. Both fully in frame, calm and companionable.
+    Pencil test animation key drawing on cream paper with visible paper grain; warm graphite line, light
+    construction lines and sparse cross-hatching for shading; hand-drawn rough animation, soft colored-pencil
+    fills in the pencil-test-colored register. 16:9 widescreen, fixed camera, locked framing. NOT a clean
+    digital, anime, or 3D render.
+  extra_references:
+  - characters/claude-mascot/source-refs/sean-with-claude-mascot.png
+  chain_anchors:
+  - sean
+  hold: 2
+- id: 2
+  cast:
+  - sean
+  - claude-mascot
+  beat: 'The draw: Sean stays focused, his right hand with the stylus moving along the paper; the mascot
+    turns its head to LOOK down at what he is making (look plate).'
+  prompt: Same two-shot, same framing and identities. Sean stays focused down on the page, his RIGHT hand
+    with the stylus moving along the paper mid-stroke. The terracotta box-creature on his shoulder turns
+    its head to LOOK down at the drawing, curious, just beginning to notice. Pencil test animation key
+    drawing on cream paper with visible paper grain; warm graphite line, light construction lines and
+    sparse cross-hatching for shading; hand-drawn rough animation, soft colored-pencil fills in the pencil-test-colored
+    register. 16:9 widescreen, fixed camera, locked framing. NOT a clean digital, anime, or 3D render.
+  extra_references:
+  - characters/claude-mascot/motion_plates/look-01.png
+  chain_anchors:
+  - sean
+  hold: 2
+- id: 3
+  cast:
+  - sean
+  - claude-mascot
+  beat: 'The notice: Sean keeps drawing, head down, stylus in right hand; the mascot perks up alert —
+    body lifting, attention sharpening — the spark of catching the idea (alert-perk).'
+  prompt: Same two-shot. Sean continues drawing, head down, stylus in his RIGHT hand. The mascot on his
+    shoulder perks up ALERT — its small box body lifting slightly, attention sharpening on the drawing,
+    the spark of catching the idea. Pencil test animation key drawing on cream paper with visible paper
+    grain; warm graphite line, light construction lines and sparse cross-hatching for shading; hand-drawn
+    rough animation, soft colored-pencil fills in the pencil-test-colored register. 16:9 widescreen, fixed
+    camera, locked framing. NOT a clean digital, anime, or 3D render.
+  extra_references:
+  - characters/claude-mascot/expressions/alert-perk.png
+  chain_anchors:
+  - sean
+  hold: 2
+- id: 4
+  cast:
+  - sean
+  - claude-mascot
+  beat: 'The delight: Sean stays absorbed in the work, head down, stylus in right hand, unchanged; the
+    mascot reacts with small, genuine delight at the drawing — a quiet beat, not a gag.'
+  prompt: Same two-shot. Sean stays absorbed in the work, head down, stylus in his RIGHT hand, unchanged.
+    The terracotta box-creature on his shoulder reacts with small, genuine DELIGHT at the drawing — a
+    quiet, happy, earned beat, not a big cartoon take, not mugging at the camera. Pencil test animation
+    key drawing on cream paper with visible paper grain; warm graphite line, light construction lines
+    and sparse cross-hatching for shading; hand-drawn rough animation, soft colored-pencil fills in the
+    pencil-test-colored register. 16:9 widescreen, fixed camera, locked framing. NOT a clean digital,
+    anime, or 3D render.
+  extra_references:
+  - characters/claude-mascot/expressions/delight.png
+  chain_anchors:
+  - sean
+  hold: 2
+- id: 5
+  cast:
+  - sean
+  - claude-mascot
+  beat: 'The settle: the mascot eases back toward idle/perched; Sean''s drawing hand returns to its start
+    position; composition matches F01 so the loop closes cleanly (idle plate).'
+  prompt: Same two-shot, returning to the opening composition. The terracotta box-creature eases back
+    down toward its idle perched pose, settling. Sean's RIGHT hand with the stylus returns to its starting
+    position on the page, head still down. Framing and scale match the establishing frame so the cycle
+    reads continuous when looped. Pencil test animation key drawing on cream paper with visible paper
+    grain; warm graphite line, light construction lines and sparse cross-hatching for shading; hand-drawn
+    rough animation, soft colored-pencil fills in the pencil-test-colored register. 16:9 widescreen, fixed
+    camera, locked framing. NOT a clean digital, anime, or 3D render.
+  extra_references:
+  - characters/claude-mascot/motion_plates/idle-01.png
+  chain_anchors:
+  - sean
+  hold: 2

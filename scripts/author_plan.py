@@ -38,7 +38,6 @@ pass the human gate undetected. This driver guards two ways:
 from __future__ import annotations
 
 import argparse
-import asyncio
 import os
 import sys
 from pathlib import Path
@@ -54,39 +53,18 @@ from pipeline.agents import AgentContext  # noqa: E402
 # calls NODE_REGISTRY["cost_estimator"]() internally for the cost preview.
 import pipeline.agents.cost_estimator  # noqa: E402,F401
 from pipeline.agents.planner import PlannerNode  # noqa: E402
-from pipeline.agents.sdk_runners import invoke_opus_text  # noqa: E402
-
-_STUB_MARKER = "STUB FALLBACK"
+# The guards were extracted to pipeline.orchestration.guards (Slice 2) so the
+# run orchestrator (`python -m pipeline.run`) shares them; behavior here is
+# unchanged (stderr message + exit 1).
+from pipeline.orchestration.guards import GuardError, scan_stub_marker, smoke_live_opus  # noqa: E402
 
 
 def _smoke_live_opus() -> None:
-    """Cheap real Opus call to confirm the live (non-stub) subscription path.
-
-    Exits non-zero if the SDK is unavailable (stub) or the call errors (CLI not
-    authed / API key absent on the fallback path). Subscription-absorbed — one
-    tiny prompt.
-    """
-    print("Smoke: confirming live Opus path (subscription billing)…")
-    resp = asyncio.run(invoke_opus_text(prompt="Reply with exactly: SPARK-OK"))
-    if resp.stub_fallback:
-        print(
-            "\nERROR: Opus smoke returned a STUB envelope — no real SDK path.\n"
-            "  Maya would silently produce a stub plan that parses cleanly and could\n"
-            "  pass the human gate. Install claude-agent-sdk and authenticate the\n"
-            "  `claude` CLI (subscription), then re-run.",
-            file=sys.stderr,
-        )
+    try:
+        smoke_live_opus()
+    except GuardError as e:
+        print(f"\nERROR: {e}", file=sys.stderr)
         sys.exit(1)
-    if not resp.ok:
-        print(
-            f"\nERROR: Opus smoke failed (exit_code={resp.exit_code}, error={resp.error}).\n"
-            "  The claude-agent-sdk path is importable but the call did not succeed —\n"
-            "  likely the `claude` CLI isn't authenticated, or it fell through to the\n"
-            "  anthropic SDK with no ANTHROPIC_API_KEY. Fix auth, then re-run.",
-            file=sys.stderr,
-        )
-        sys.exit(1)
-    print(f"  live: model={resp.model} duration={resp.duration_s:.1f}s ok=True")
 
 
 def main() -> int:
@@ -164,11 +142,7 @@ def main() -> int:
     # Post-hoc stub guard — scan the emitted artifacts for the stub marker.
     plan_path = Path(result.outputs["plan_path"])
     brief_path = Path(result.outputs["production_brief_path"])
-    emitted_text = ""
-    for p in (plan_path, brief_path):
-        if p.exists():
-            emitted_text += p.read_text(encoding="utf-8")
-    if _STUB_MARKER in emitted_text:
+    if scan_stub_marker([plan_path, brief_path]):
         print(
             "\nERROR: Maya's emitted artifacts contain the STUB FALLBACK marker — the\n"
             "  plan was NOT really authored. Do not approve it. Fix the SDK/auth and\n"
