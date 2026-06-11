@@ -26,7 +26,17 @@ import pytest
 
 from pipeline.agents.nb_pro_runner import (
     NBProResponse,
+    _build_skill_cmd,
+    _compute_cache_key,
     invoke_image_edit,
+)
+
+# Pre-Flo-C cache key for a deterministic no-reference input. Locks the
+# byte-identity of the cache key when aspect_ratio is None — the regression
+# guard that keeps Cy's locked-Bible plate generation (which passes no
+# aspect_ratio) cache-stable across the HF01 fix.
+_GOLDEN_KEY_ASPECT_NONE = (
+    "7a84b9130f7bb71ff37bbdcf95bc45cbdf951ca05fa0031e828a7c3281d4258d"
 )
 
 
@@ -248,6 +258,68 @@ def test_default_model_is_nb2_flash(monkeypatch, tmp_path, fake_reference_image,
     )
     assert default_resp.cache_key == explicit_nb2.cache_key
     assert default_resp.cache_key != explicit_pro.cache_key
+
+
+# ---------------------------------------------------------------------------
+# HF01 — aspect ratio on the NB Pro path (Flo-C)
+# ---------------------------------------------------------------------------
+
+
+def test_build_skill_cmd_omits_aspect_ratio_when_none(tmp_path):
+    """Regression-lock Cy's path: no aspect_ratio → argv carries no
+    --aspect-ratio flag (byte-identical to the pre-Flo-C command)."""
+    cmd = _build_skill_cmd(
+        prompt="p",
+        reference_images=[],
+        output_path=tmp_path / "o.png",
+        model="gemini-3.1-flash-image-preview",
+    )
+    assert "--aspect-ratio" not in cmd
+
+
+def test_build_skill_cmd_includes_aspect_ratio_when_set(tmp_path):
+    """HF01 fix: aspect_ratio='16:9' → argv carries --aspect-ratio 16:9."""
+    cmd = _build_skill_cmd(
+        prompt="p",
+        reference_images=[],
+        output_path=tmp_path / "o.png",
+        model="gemini-3.1-flash-image-preview",
+        aspect_ratio="16:9",
+    )
+    assert "--aspect-ratio" in cmd
+    assert cmd[cmd.index("--aspect-ratio") + 1] == "16:9"
+
+
+def test_cache_key_byte_identical_when_aspect_ratio_none():
+    """aspect_ratio=None (and omitted) must leave the cache key byte-identical
+    to the pre-Flo-C digest — Cy's locked-Bible plates stay cache-stable."""
+    omitted = _compute_cache_key(
+        prompt="lock", reference_images=[], cites_identity_rules=(),
+        reject_reason=None, model="gemini-3.1-flash-image-preview",
+    )
+    explicit_none = _compute_cache_key(
+        prompt="lock", reference_images=[], cites_identity_rules=(),
+        reject_reason=None, model="gemini-3.1-flash-image-preview",
+        aspect_ratio=None,
+    )
+    assert omitted == _GOLDEN_KEY_ASPECT_NONE
+    assert explicit_none == _GOLDEN_KEY_ASPECT_NONE
+
+
+def test_aspect_ratio_changes_cache_key_when_set():
+    """A non-None aspect_ratio perturbs the cache key (so a 16:9 keyframe and a
+    square plate from otherwise-identical inputs don't collide)."""
+    none_key = _compute_cache_key(
+        prompt="lock", reference_images=[], cites_identity_rules=(),
+        reject_reason=None, model="gemini-3.1-flash-image-preview",
+        aspect_ratio=None,
+    )
+    set_key = _compute_cache_key(
+        prompt="lock", reference_images=[], cites_identity_rules=(),
+        reject_reason=None, model="gemini-3.1-flash-image-preview",
+        aspect_ratio="16:9",
+    )
+    assert none_key != set_key
 
 
 # ---------------------------------------------------------------------------

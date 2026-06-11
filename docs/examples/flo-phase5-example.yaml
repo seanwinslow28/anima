@@ -1,0 +1,70 @@
+# Flo Phase-5 declarative dispatch — worked example (Flo-C, 2026-06-10)
+#
+# This is a TEMPLATE, not a production manifest. It shows the seam the run
+# session (Maya's scene graph) builds on: a `phases.phase_5.nodes` graph whose
+# entries carry `node: flo`, dispatched by the DAG runner
+# (pipeline/dag.py load_graph_from_manifest → Runner). Flo resolves each shot to
+# a transport from `generation.routing:` and dispatches it — hero→NB Pro (16:9),
+# standard→NB2 — threading shot_type + character_id off the node's input bindings.
+#
+# Run it (the nb_pro/hero node is stub-green with no key; the nb2/standard node
+# shells to the gemini skill, so it needs GEMINI_API_KEY for a real frame — the
+# CI proof is the monkeypatched smoke in tests/test_dag.py):
+#   USE_DAG_RUNNER=1 python pipeline/generate.py \
+#       --manifest docs/examples/flo-phase5-example.yaml \
+#       --run-dir runs/flo-c-smoke/
+#
+# Back-compat: drop the `generation.routing:` block and Flo's resolve_route
+# returns None → legacy single-model generate_frame fall-through (the
+# pencil-test reference path, byte-identical).
+
+project:
+  name: flo-phase5-example
+  version: "0.1"
+
+generation:
+  # Legacy single-model fields — the nb2 route reuses generate_frame(), which
+  # reads these and passes --aspect-ratio 16:9 to the gemini skill.
+  model: gemini-3.1-flash-image-preview
+  aspect_ratio: "16:9"
+  script: .claude/skills/gemini-pencil-animation-image-gen/scripts/generate_image.py
+  env_file: .env
+
+  # The route table Flo consults per shot. Mirrors manifest.yaml.
+  routing:
+    hero_keyframe:     { transport: nb_pro, model: gemini-3-pro-image-preview,     usd_per_frame: 0.15, tier: pro,   status: wired }
+    standard_keyframe: { transport: nb2,    model: gemini-3.1-flash-image-preview, usd_per_frame: 0.07, tier: draft, status: wired }
+    in_between_cheap:  { transport: nb2,    model: gemini-3.1-flash-image-preview, usd_per_frame: 0.07, tier: draft, status: wired }
+    in_between_mid:    { transport: nb_pro, model: gemini-3-pro-image-preview,     usd_per_frame: 0.15, tier: pro,   status: wired }
+    mask_edit:         { transport: gpt_image_2,                                   usd_per_frame: 0.21,               status: deferred }
+  fallback: nb2
+
+characters:
+  sean-anchor:
+    folder: characters/sean-anchor/
+    style_register: pencil-test-colored
+
+phases:
+  phase_5:
+    nodes:
+      # Hero keyframe → NB Pro @ pro tier, rendered 16:9 (clears HF01).
+      - id: f06_flo
+        node: flo
+        tier: pro
+        inputs:
+          frame_num:    "literal_json:6"
+          prompt:       "literal:glance down — head tilts ~15deg, eyes on stylus, contemplative"
+          references:   'literal_json:["characters/sean-anchor/anchor.png"]'
+          shot_type:    "literal:hero_keyframe"
+          character_id: "literal:sean-anchor"
+
+      # Standard keyframe → NB2 @ draft tier (the production default).
+      - id: f10_flo
+        node: flo
+        tier: draft
+        inputs:
+          frame_num:    "literal_json:10"
+          prompt:       "literal:idle hold — relaxed standing, stylus in right hand"
+          references:   'literal_json:["characters/sean-anchor/anchor.png"]'
+          shot_type:    "literal:standard_keyframe"
+          character_id: "literal:sean-anchor"

@@ -212,6 +212,9 @@ class FloNode:
                 output_path=output_path,
                 cache_dir=ctx.cache_dir / "flo",
                 model=route.model or "gemini-3-pro-image-preview",
+                # HF01: the nb_pro skill path defaults to 1:1 — pin 16:9 so
+                # hero_keyframe + in_between_mid clear audit.check_aspect_ratio.
+                aspect_ratio="16:9",
             )
             if not resp.ok:
                 raise RuntimeError(

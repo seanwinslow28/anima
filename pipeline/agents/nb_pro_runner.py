@@ -120,6 +120,7 @@ def invoke_image_edit(
     cites_identity_rules: tuple[str, ...] = (),
     reject_reason: str | None = None,
     model: str = "gemini-3.1-flash-image-preview",
+    aspect_ratio: str | None = None,
     timeout_s: int = 180,
 ) -> NBProResponse:
     """Generate (or fetch from cache) one image-edit plate.
@@ -142,6 +143,7 @@ def invoke_image_edit(
         cites_identity_rules=cites_identity_rules,
         reject_reason=reject_reason,
         model=model,
+        aspect_ratio=aspect_ratio,
     )
     cached_file = cache_dir / f"{cache_key}.png"
 
@@ -192,6 +194,7 @@ def invoke_image_edit(
         reference_images=reference_images,
         output_path=output_path,
         model=model,
+        aspect_ratio=aspect_ratio,
     )
     try:
         result = subprocess.run(
@@ -236,6 +239,7 @@ def _compute_cache_key(
     cites_identity_rules: tuple[str, ...],
     reject_reason: str | None,
     model: str,
+    aspect_ratio: str | None = None,
 ) -> str:
     """SHA-256 of the inputs that determine the generated plate.
 
@@ -243,6 +247,11 @@ def _compute_cache_key(
     same image at a different path stays in cache. The reject_reason field is
     what `cy iterate` threads through to invalidate the cache for a single
     rejected plate without re-running the whole Bible.
+
+    `aspect_ratio` is folded into the key ONLY when non-None, so a None value
+    leaves the digest byte-identical to the pre-Flo-C algorithm — Cy's
+    locked-Bible plate cache (which passes no aspect_ratio) is unperturbed.
+    A set aspect_ratio (Flo's 16:9 keyframes) gets its own key.
     """
     h = hashlib.sha256()
     h.update(b"prompt:")
@@ -261,6 +270,9 @@ def _compute_cache_key(
     for rh in ref_hashes:
         h.update(rh.encode("utf-8"))
         h.update(b",")
+    if aspect_ratio is not None:
+        h.update(b"\naspect:")
+        h.update(aspect_ratio.encode("utf-8"))
     return h.hexdigest()
 
 
@@ -280,6 +292,7 @@ def _build_skill_cmd(
     reference_images: list[Path],
     output_path: Path,
     model: str,
+    aspect_ratio: str | None = None,
 ) -> list[str]:
     """The exact argv the skill script expects. Matches its --help shape.
 
@@ -288,6 +301,11 @@ def _build_skill_cmd(
     site-packages — google-genai, Pillow, etc.) as the caller. The previous
     PATH-based shape silently failed against system Python on machines where
     .venv carries the dependencies and the system interpreter does not.
+
+    `aspect_ratio` is appended only when set. When None the argv is
+    byte-identical to the pre-Flo-C command (the skill defaults to 1:1) — Cy's
+    locked-Bible plate generation must not change. Flo's nb_pro keyframe route
+    passes "16:9" to clear HF01 (pipeline/audit.py check_aspect_ratio).
     """
     cmd = [
         sys.executable,
@@ -297,6 +315,8 @@ def _build_skill_cmd(
         "--model", model,
         "--env-file", str(_PROJECT_ROOT / ".env"),
     ]
+    if aspect_ratio is not None:
+        cmd.extend(["--aspect-ratio", aspect_ratio])
     if reference_images:
         cmd.append("--reference")
         cmd.extend(str(p) for p in reference_images)
