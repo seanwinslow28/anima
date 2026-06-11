@@ -271,3 +271,56 @@ def test_phase_2_cost_missing_plate_plan_treated_as_zero(tmp_path):
     cls = NODE_REGISTRY["cost_estimator"]
     estimate = cls().run(_ctx(tmp_path, manifest)).outputs["estimate"]
     assert estimate.by_phase["phase_2"]["low_usd"] == 0.0
+
+
+def _write_lock(folder: Path, locked: bool) -> None:
+    folder.mkdir(parents=True, exist_ok=True)
+    (folder / "acceptance_criteria.json").write_text(
+        json.dumps({"locked": locked}), encoding="utf-8"
+    )
+
+
+def test_phase_2_cost_zero_when_bible_locked(tmp_path):
+    """#5: a registered character whose Bible is locked (acceptance_criteria.json
+    locked: true) is already authored — an animation_piece loads it, never re-pays
+    to bake it. Even with a full plate plan present, Phase 2 contributes $0."""
+    char_dir = tmp_path / "characters" / "sean-anchor"
+    _write_plate_plan(
+        char_dir,
+        [{"target_path": f"p{i}.png", "source": "generate"} for i in range(20)],
+    )
+    _write_lock(char_dir, locked=True)
+    manifest = {
+        "characters": {
+            "sean-anchor": {"folder": str(char_dir), "style_register": "pencil-test-colored"},
+        },
+        "phases": {"phase_5": {}, "phase_6": {}},
+    }
+    cls = NODE_REGISTRY["cost_estimator"]
+    estimate = cls().run(_ctx(tmp_path, manifest)).outputs["estimate"]
+    assert estimate.by_phase["phase_2"]["low_usd"] == 0.0
+    assert estimate.by_phase["phase_2"]["median_usd"] == 0.0
+    assert estimate.by_phase["phase_2"]["high_usd"] == 0.0
+
+
+def test_phase_2_cost_prices_unlocked_bible_with_lock_file(tmp_path):
+    """#5 (surgical guard): a character with acceptance_criteria.json present but
+    locked: false is a genuine Bible-authoring run — price its plates exactly as
+    today. The fix keys on locked == true, not on file presence."""
+    char_dir = tmp_path / "characters" / "in-progress"
+    _write_plate_plan(
+        char_dir,
+        [{"target_path": f"p{i}.png", "source": "generate"} for i in range(5)],
+    )
+    _write_lock(char_dir, locked=False)
+    manifest = {
+        "characters": {
+            "in-progress": {"folder": str(char_dir), "style_register": "pencil-test-colored"},
+        },
+        "phases": {"phase_5": {}, "phase_6": {}},
+    }
+    cls = NODE_REGISTRY["cost_estimator"]
+    estimate = cls().run(_ctx(tmp_path, manifest)).outputs["estimate"]
+    # 5 generate plates × $0.15 = $0.75 low (unchanged from today's behavior).
+    assert estimate.by_phase["phase_2"]["low_usd"] == 0.75
+    assert estimate.by_phase["phase_2"]["high_usd"] == round(5 * 0.15 * 3, 2)

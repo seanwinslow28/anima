@@ -232,6 +232,36 @@ def test_flonode_nb_pro_passes_16_9_aspect_ratio(tmp_path, monkeypatch):
     assert captured["aspect_ratio"] == "16:9"
 
 
+def test_flonode_normalizes_jpeg_as_png_candidate_to_real_png(tmp_path, monkeypatch):
+    # #12: the Gemini transport can return JPEG bytes under a .png name. FloNode
+    # normalizes at the return boundary, so Em / assemble / museum all get real PNG.
+    import pipeline.agents.frame_router as fr
+    from pipeline.agents.nb_pro_runner import NBProResponse
+    from PIL import Image
+
+    def fake_invoke(**kwargs):
+        out = Path(kwargs["output_path"])
+        out.parent.mkdir(parents=True, exist_ok=True)
+        Image.new("RGB", (16, 9), color=(200, 100, 50)).save(out, "JPEG")  # JPEG-as-.png
+        return NBProResponse(
+            output_path=out, cache_key="k", cache_hit=False,
+            stub_fallback=True, exit_code=0,
+        )
+
+    monkeypatch.setattr(fr, "invoke_image_edit", fake_invoke)
+    cls = NODE_REGISTRY["flo"]
+    ctx = _ctx(
+        tmp_path,
+        _manifest(),
+        inputs={"frame_num": 6, "prompt": "hero pose", "references": [], "shot_type": "hero_keyframe"},
+        tier="pro",
+    )
+    result = cls().run(ctx)
+    candidate = Path(result.outputs["candidate_path"])
+    with Image.open(candidate) as img:
+        assert img.format == "PNG"
+
+
 def test_flonode_dispatches_nb2_standard(tmp_path, monkeypatch):
     # nb2 route reuses the legacy generate_frame() path (subprocess boundary
     # monkeypatched).
