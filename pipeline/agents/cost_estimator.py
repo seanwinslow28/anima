@@ -147,10 +147,14 @@ class CostEstimatorNode:
 
         When the manifest has no `characters:` block or the block is empty,
         Phase 2 spend is $0 — animation-piece runs against already-authored
-        Bibles don't re-pay NB Pro to load the Bible. When the registry has
-        characters but their plate plans don't yet exist on disk (Bible
-        hasn't been authored yet), spend is also $0 — surfaces the unknown
-        as zero rather than guessing a budget envelope.
+        Bibles don't re-pay NB Pro to load the Bible. A registered Bible that
+        is *locked* (its acceptance_criteria.json `locked: true`) is likewise
+        already authored — an animation_piece loads it for references; it never
+        re-bakes it — so a locked character contributes $0 even when its plate
+        plan is still on disk. When the registry has characters but their plate
+        plans don't yet exist on disk (Bible hasn't been authored yet), spend is
+        also $0 — surfaces the unknown as zero rather than guessing a budget
+        envelope.
         """
         chars = manifest.get("characters")
         if not chars or not isinstance(chars, dict):
@@ -161,7 +165,13 @@ class CostEstimatorNode:
             folder_str = (cfg or {}).get("folder") if isinstance(cfg, dict) else None
             if not folder_str:
                 continue
-            plan_path = Path(folder_str) / "plate_generation_plan.json"
+            folder = Path(folder_str)
+            # A locked Bible is already authored — load-only, never re-baked.
+            # The authoritative per-Bible lock signal is the same one that
+            # `pipeline.cli bible approve` flips and criteria.load_criteria reads.
+            if self._bible_locked(folder):
+                continue
+            plan_path = folder / "plate_generation_plan.json"
             if not plan_path.exists():
                 continue
             try:
@@ -179,6 +189,22 @@ class CostEstimatorNode:
             "median_usd": round(base * _PHASE_2_MEDIAN_MULTIPLIER, 2),
             "high_usd": round(base * _PHASE_2_HIGH_MULTIPLIER, 2),
         }
+
+    @staticmethod
+    def _bible_locked(folder: Path) -> bool:
+        """True iff the character's acceptance_criteria.json carries locked: true.
+
+        Read directly (mirroring how _phase_2_cost reads the plate plan and how
+        bible.approve_bible reads/writes the flag) — no lock file, or unreadable
+        JSON, or locked: false → not locked, so the plates price as today.
+        """
+        crit_path = folder / "acceptance_criteria.json"
+        if not crit_path.exists():
+            return False
+        try:
+            return bool(json.loads(crit_path.read_text(encoding="utf-8")).get("locked"))
+        except (OSError, json.JSONDecodeError):
+            return False
 
     def _phase_5_cost(self, manifest: dict) -> dict[str, float]:
         """Phase 5 keyframe generation. Sums the FULL generation.routing: table.
