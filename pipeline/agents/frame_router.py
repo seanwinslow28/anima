@@ -30,6 +30,7 @@ from pipeline.agents import (
     CostEstimate,
     register_node,
 )
+from pipeline.agents.image_utils import normalize_to_png
 from pipeline.agents.nb_pro_runner import invoke_image_edit
 
 # The shot type assumed when a frame spec carries no explicit `shot_type`.
@@ -177,6 +178,9 @@ class FloNode:
             )
             if candidate is None:
                 raise RuntimeError(f"flo F{frame_num:02d} legacy path returned no candidate")
+            # #12: the Gemini transport may write JPEG bytes under a .png name —
+            # normalize at the source so Em / assemble / museum get a real PNG.
+            normalize_to_png(candidate)
             return AgentResult(
                 outputs={"candidate_path": str(candidate)},
                 tier=ctx.tier,
@@ -222,6 +226,8 @@ class FloNode:
                 )
             candidate_path = Path(resp.output_path)
 
+        # #12: same source-normalization for the routed (nb2 / nb_pro) paths.
+        normalize_to_png(candidate_path)
         return AgentResult(
             outputs={"candidate_path": str(candidate_path)},
             tier=ctx.tier,
