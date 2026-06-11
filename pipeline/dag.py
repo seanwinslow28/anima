@@ -14,6 +14,9 @@ Input bindings: each Node declares input_bindings — a dict mapping input
 port name to a source spec. Three spec forms:
 
   - "literal:foo"                     → the literal string "foo"
+  - "literal_json:[\"a.png\"]"        → a JSON-parsed literal (list/int/bool/…);
+                                        lets a node bind a list-valued input
+                                        (e.g. FloNode's `references`) inline
   - "node:a.mid"                      → output port "mid" of node "a"
   - "manifest:generation.aspect_ratio" → manifest.lock.yaml dotted-path lookup
 """
@@ -168,7 +171,15 @@ def _resolve_bindings(
 ) -> dict[str, Any]:
     resolved: dict[str, Any] = {}
     for port, spec in bindings.items():
-        if spec.startswith("literal:"):
+        if spec.startswith("literal_json:"):
+            raw = spec[len("literal_json:"):]
+            try:
+                resolved[port] = json.loads(raw)
+            except json.JSONDecodeError as e:
+                raise ValueError(
+                    f"Binding {spec!r} has malformed JSON after 'literal_json:': {e}"
+                ) from e
+        elif spec.startswith("literal:"):
             resolved[port] = spec[len("literal:"):]
         elif spec.startswith("node:"):
             node_id, _, output_port = spec[len("node:"):].partition(".")
@@ -185,7 +196,8 @@ def _resolve_bindings(
             resolved[port] = cursor
         else:
             raise ValueError(
-                f"Binding spec {spec!r} must start with literal:, node:, or manifest:"
+                f"Binding spec {spec!r} must start with literal_json:, literal:, "
+                "node:, or manifest:"
             )
     return resolved
 

@@ -202,6 +202,36 @@ def test_flonode_dispatches_nb_pro_hero(tmp_path):
     assert "nb_pro" in result.notes
 
 
+def test_flonode_nb_pro_passes_16_9_aspect_ratio(tmp_path, monkeypatch):
+    # HF01 fix (Flo-C): the nb_pro keyframe route must render 16:9, not the
+    # skill's 1:1 default. Flo passes aspect_ratio="16:9" to invoke_image_edit.
+    import pipeline.agents.frame_router as fr
+    from pipeline.agents.nb_pro_runner import NBProResponse
+
+    captured: dict = {}
+
+    def fake_invoke(**kwargs):
+        captured.update(kwargs)
+        out = Path(kwargs["output_path"])
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_bytes(b"png")
+        return NBProResponse(
+            output_path=out, cache_key="k", cache_hit=False,
+            stub_fallback=True, exit_code=0,
+        )
+
+    monkeypatch.setattr(fr, "invoke_image_edit", fake_invoke)
+    cls = NODE_REGISTRY["flo"]
+    ctx = _ctx(
+        tmp_path,
+        _manifest(),
+        inputs={"frame_num": 6, "prompt": "hero pose", "references": [], "shot_type": "hero_keyframe"},
+        tier="pro",
+    )
+    cls().run(ctx)
+    assert captured["aspect_ratio"] == "16:9"
+
+
 def test_flonode_dispatches_nb2_standard(tmp_path, monkeypatch):
     # nb2 route reuses the legacy generate_frame() path (subprocess boundary
     # monkeypatched).
