@@ -3,6 +3,10 @@
 Shells to the FFmpeg recipe. Output is the export/ directory contents
 (GIF + WebM + MP4). Byte-identical to direct invocation; that's the
 verification step §Verification depends on.
+
+Optional `slug` / `sequence_file` inputs (#13) thread a per-piece sequence
+spec + output slug to the assembler so Slice 2's orchestrator can drive an
+arbitrary piece; absent → the legacy PT_A1 default (byte-identical).
 """
 
 from __future__ import annotations
@@ -23,6 +27,10 @@ class AssembleNode:
     name = "assemble"
     inputs: dict = {
         "run_dir": str,
+        # Optional (#13): per-piece sequence spec + output slug. Absent → the
+        # assembler's embedded PT_A1 default (byte-identical legacy behavior).
+        "slug": str,
+        "sequence_file": str,
     }
     outputs: dict = {
         "gif_path": str,
@@ -36,10 +44,14 @@ class AssembleNode:
 
     def run(self, ctx: AgentContext) -> AgentResult:
         run_dir = Path(str(ctx.inputs["run_dir"]))
-        subprocess.run(
-            ["bash", "pipeline/assemble.sh", str(run_dir)],
-            check=True,
-        )
+        cmd = ["bash", "pipeline/assemble.sh", str(run_dir)]
+        slug = ctx.inputs.get("slug")
+        if slug:
+            cmd += ["--slug", str(slug)]
+        sequence_file = ctx.inputs.get("sequence_file")
+        if sequence_file:
+            cmd += ["--sequence-file", str(sequence_file)]
+        subprocess.run(cmd, check=True)
         export = run_dir / "export"
         gif = next(export.glob("*.gif"), None)
         webm = next(export.glob("*.webm"), None)

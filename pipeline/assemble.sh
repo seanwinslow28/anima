@@ -13,7 +13,20 @@
 
 set -euo pipefail
 
-RUN_DIR="${1:?Usage: bash pipeline/assemble.sh <run-dir>}"
+RUN_DIR="${1:?Usage: bash pipeline/assemble.sh <run-dir> [--slug <name>] [--sequence-file <path>]}"
+shift
+
+# Optional generalization (#13): a per-piece sequence + output slug. The defaults
+# below reproduce the PT_A1 behavior byte-identically when no flags are passed.
+SLUG="pencil-test-act1"
+SEQUENCE_FILE=""
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --slug)          SLUG="${2:?--slug needs a value}"; shift 2 ;;
+        --sequence-file) SEQUENCE_FILE="${2:?--sequence-file needs a value}"; shift 2 ;;
+        *) echo "Error: unknown argument: $1" >&2; exit 1 ;;
+    esac
+done
 
 if [ ! -d "$RUN_DIR/approved" ]; then
     echo "Error: No approved/ directory in $RUN_DIR" >&2
@@ -74,8 +87,19 @@ echo ""
 echo "Step 1: Building frame sequence..."
 
 # Sequence definition: "source_file:hold_count" pairs
-# Keyframes use F##_key format, in-betweens use F##toF##_IB## format
-FRAME_SEQ="
+# Keyframes use F##_key format, in-betweens use F##toF##_IB## format.
+# Default (no --sequence-file): the embedded PT_A1 sequence + PT_A1_ source prefix.
+# With --sequence-file: read the same KEY:hold format from disk; its keys are full
+# basenames (e.g. SS_F03b_key), so the source prefix is empty.
+if [ -n "$SEQUENCE_FILE" ]; then
+    if [ ! -f "$SEQUENCE_FILE" ]; then
+        echo "Error: sequence file not found: $SEQUENCE_FILE" >&2
+        exit 1
+    fi
+    FRAME_SEQ="$(cat "$SEQUENCE_FILE")"
+    SRC_PREFIX=""
+else
+    FRAME_SEQ="
 F01_key:3
 F01toF06_IB01:1
 F01toF06_IB02:1
@@ -104,13 +128,15 @@ F36toF40_IB01:1
 F36toF40_IB02:1
 F40_key:3
 "
+    SRC_PREFIX="PT_A1_"
+fi
 
 FRAME_COUNTER=1
 
 for ENTRY in $FRAME_SEQ; do
     ASSET="${ENTRY%%:*}"
     HOLD="${ENTRY##*:}"
-    SRC="$APPROVED/PT_A1_${ASSET}.png"
+    SRC="$APPROVED/${SRC_PREFIX}${ASSET}.png"
 
     if [ ! -f "$SRC" ]; then
         echo "  Warning: Missing $SRC — skipping" >&2
@@ -177,12 +203,12 @@ ffmpeg -y -framerate 12 -start_number 1 \
     -i "$SEQUENCE/frame_%04d.png" \
     -c:v libx264 -crf 18 -pix_fmt yuv420p \
     -vf "scale=1920:1080:flags=lanczos" \
-    "$EXPORT/pencil-test-act1.mp4" \
+    "$EXPORT/${SLUG}.mp4" \
     2>/dev/null
 
-if [ -f "$EXPORT/pencil-test-act1.mp4" ]; then
-    SIZE=$(du -h "$EXPORT/pencil-test-act1.mp4" | cut -f1)
-    echo "  Created: pencil-test-act1.mp4 ($SIZE)"
+if [ -f "$EXPORT/${SLUG}.mp4" ]; then
+    SIZE=$(du -h "$EXPORT/${SLUG}.mp4" | cut -f1)
+    echo "  Created: ${SLUG}.mp4 ($SIZE)"
 else
     echo "  Error: MP4 creation failed" >&2
 fi
@@ -190,15 +216,15 @@ echo ""
 
 # --- Step 4: Convert to WebM (web playback) ---
 echo "Step 4: Converting to WebM..."
-ffmpeg -y -i "$EXPORT/pencil-test-act1.mp4" \
+ffmpeg -y -i "$EXPORT/${SLUG}.mp4" \
     -c:v libvpx-vp9 -crf 30 -b:v 0 \
     -vf "scale=1920:1080:flags=lanczos" \
-    "$EXPORT/pencil-test-act1.webm" \
+    "$EXPORT/${SLUG}.webm" \
     2>/dev/null
 
-if [ -f "$EXPORT/pencil-test-act1.webm" ]; then
-    SIZE=$(du -h "$EXPORT/pencil-test-act1.webm" | cut -f1)
-    echo "  Created: pencil-test-act1.webm ($SIZE)"
+if [ -f "$EXPORT/${SLUG}.webm" ]; then
+    SIZE=$(du -h "$EXPORT/${SLUG}.webm" | cut -f1)
+    echo "  Created: ${SLUG}.webm ($SIZE)"
 else
     echo "  Error: WebM creation failed" >&2
 fi
@@ -206,16 +232,16 @@ echo ""
 
 # --- Step 5: Create GIF (hero loop, two-pass palette, <5MB target) ---
 echo "Step 5: Creating GIF (two-pass palette)..."
-ffmpeg -y -i "$EXPORT/pencil-test-act1.mp4" \
+ffmpeg -y -i "$EXPORT/${SLUG}.mp4" \
     -vf "fps=15,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" \
-    "$EXPORT/pencil-test-act1.gif" \
+    "$EXPORT/${SLUG}.gif" \
     2>/dev/null
 
-if [ -f "$EXPORT/pencil-test-act1.gif" ]; then
-    SIZE_BYTES=$(stat -f%z "$EXPORT/pencil-test-act1.gif" 2>/dev/null || stat -c%s "$EXPORT/pencil-test-act1.gif" 2>/dev/null)
+if [ -f "$EXPORT/${SLUG}.gif" ]; then
+    SIZE_BYTES=$(stat -f%z "$EXPORT/${SLUG}.gif" 2>/dev/null || stat -c%s "$EXPORT/${SLUG}.gif" 2>/dev/null)
     SIZE_MB=$(echo "scale=2; $SIZE_BYTES / 1048576" | bc)
-    SIZE_HUMAN=$(du -h "$EXPORT/pencil-test-act1.gif" | cut -f1)
-    echo "  Created: pencil-test-act1.gif ($SIZE_HUMAN)"
+    SIZE_HUMAN=$(du -h "$EXPORT/${SLUG}.gif" | cut -f1)
+    echo "  Created: ${SLUG}.gif ($SIZE_HUMAN)"
 
     # Check 5MB limit
     if (( $(echo "$SIZE_MB > 5" | bc -l) )); then
@@ -233,4 +259,4 @@ echo "=== Assembly Complete ==="
 echo "Exports in: $EXPORT/"
 ls -lh "$EXPORT/"*.{mp4,webm,gif} 2>/dev/null || echo "  (no exports found)"
 echo ""
-echo "To preview the loop: open $EXPORT/pencil-test-act1.gif"
+echo "To preview the loop: open $EXPORT/${SLUG}.gif"
