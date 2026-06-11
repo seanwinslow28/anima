@@ -349,3 +349,57 @@ def test_explicit_animation_piece_in_frontmatter_also_unchanged(
     cls().run(_ctx(tmp_path, brief_dir))
     plan = (brief_dir / "plan.md").read_text(encoding="utf-8")
     assert "Phase scope (bible_authoring)" not in plan
+
+
+# --- envelope parser robustness (first integrated run, 2026-06-11) -----------
+# Opus 4.8 reliably prefaces its planning envelope with persona prose
+# ("Maya here — Pass 1 ..."), so the response is neither bare JSON nor a fully
+# anchored ```json fence. The parser must extract the JSON object out of the
+# surrounding prose, and must not be confused by braces / backticks inside the
+# envelope's own markdown string values (plan_md / production_brief_md).
+
+from pipeline.agents.planner import _parse_json_envelope  # noqa: E402
+
+
+def test_parse_envelope_bare_json():
+    out = _parse_json_envelope('{"production_brief_md":"a","criteria_json":{},"plan_md":"b"}')
+    assert out["plan_md"] == "b"
+
+
+def test_parse_envelope_fully_fenced():
+    out = _parse_json_envelope(
+        '```json\n{"production_brief_md":"a","criteria_json":{},"plan_md":"b"}\n```'
+    )
+    assert out["plan_md"] == "b"
+
+
+def test_parse_envelope_persona_preamble_and_fence():
+    """Persona preamble + ```json fence + postamble — the live Opus 4.8 shape."""
+    text = (
+        "Maya here — Pass 1 primary planning for the integrated run.\n\n"
+        "```json\n"
+        '{"production_brief_md": "x", "criteria_json": {"version": "1.1"}, "plan_md": "y"}\n'
+        "```\n\n"
+        "That is my plan — ready for Sean."
+    )
+    out = _parse_json_envelope(text)
+    assert out["criteria_json"]["version"] == "1.1"
+    assert out["plan_md"] == "y"
+
+
+def test_parse_envelope_internal_braces_and_fences_in_strings():
+    """Braces and nested ``` fences inside the JSON string values don't truncate."""
+    text = (
+        "Maya here — planning.\n\n```json\n"
+        '{"production_brief_md": "Use `code` and a {placeholder}.",'
+        ' "criteria_json": {"criteria": []},'
+        ' "plan_md": "# Plan\\n\\n```bash\\necho hi\\n```\\nDone."}\n```\n'
+    )
+    out = _parse_json_envelope(text)
+    assert "{placeholder}" in out["production_brief_md"]
+    assert "echo hi" in out["plan_md"]
+
+
+def test_parse_envelope_empty_raises():
+    with pytest.raises(ValueError):
+        _parse_json_envelope("   ")

@@ -1,0 +1,259 @@
+{
+  "version": "1.1",
+  "locked": true,
+  "criteria": [
+    {
+      "id": "AC.identity.two-character-no-morph",
+      "description": "Sean stays recognizably Sean and the mascot stays recognizably the mascot across all five frames, including any chained in-betweens. No face-drift, no identity blend, no morph from one character into the other through the sequence.",
+      "cites_phase": [
+        5,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "cy",
+        "sage",
+        "annie",
+        "chairman"
+      ],
+      "impact_tag": "identity_critical",
+      "parent_id": null,
+      "derived_from": [
+        "studio_brief.non_negotiables",
+        "philosophy.engine-truth"
+      ]
+    },
+    {
+      "id": "AC.identity.mascot-terracotta-box-form",
+      "description": "The Claude mascot holds its terracotta box-creature silhouette and palette in every frame. No drift to a different creature shape and no color drift away from the locked terracotta register.",
+      "cites_phase": [
+        5,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "cy",
+        "annie"
+      ],
+      "impact_tag": "identity_critical",
+      "parent_id": null,
+      "derived_from": [
+        "studio_brief.non_negotiables",
+        "characters.claude-mascot.style_register"
+      ]
+    },
+    {
+      "id": "AC.identity.stylus-right-hand",
+      "description": "Sean's stylus stays in his right hand and is visible in every frame, including in-betweens (CC01/CC02). Never the left hand, never absent.",
+      "cites_phase": [
+        5,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "cy",
+        "annie"
+      ],
+      "impact_tag": "identity_critical",
+      "parent_id": null,
+      "derived_from": [
+        "studio_brief.non_negotiables"
+      ]
+    },
+    {
+      "id": "AC.identity.sean-stays-absorbed",
+      "description": "Sean stays absorbed in the drawing across all five frames: head and gaze down on the page, posture on-task, stylus to paper. He never looks up at the camera or at the mascot and never reacts to it. This non-reaction is a behavioral identity marker as load-bearing as the stylus rule \u2014 the asymmetry between Sean's stillness and the mascot's reaction is the piece's narrative premise, so a failure here must escalate, not pass at flash tier.",
+      "cites_phase": [
+        5,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "sage",
+        "annie",
+        "chairman"
+      ],
+      "impact_tag": "identity_critical",
+      "parent_id": null,
+      "derived_from": [
+        "studio_brief.non_negotiables",
+        "studio_brief.tone"
+      ]
+    },
+    {
+      "id": "AC.continuity.mascot-perched-shoulder",
+      "description": "The mascot stays perched on Sean's shoulder at consistent scale and placement across all five frames, matching the A-7 pairing reference. Relative two-character scale does not drift frame to frame.",
+      "cites_phase": [
+        5,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "annie"
+      ],
+      "impact_tag": "continuity",
+      "parent_id": null,
+      "derived_from": [
+        "studio_brief.non_negotiables",
+        "characters.claude-mascot.source-refs.a7-pairing"
+      ]
+    },
+    {
+      "id": "AC.structural.single-continuous-two-shot",
+      "description": "The piece reads as one continuous two-shot with both characters in frame throughout. No act break, no cut, not two separate shots stitched together.",
+      "cites_phase": [
+        4,
+        5,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "sage",
+        "chairman"
+      ],
+      "impact_tag": "structural",
+      "parent_id": null,
+      "derived_from": [
+        "studio_brief.format",
+        "studio_brief.tone"
+      ]
+    },
+    {
+      "id": "AC.timing.clean-loop",
+      "description": "Frame 5 returns to frame 1's pose and composition so the cycle reads continuous when looped. The mascot eases back toward idle and Sean's drawing hand returns to its frame-1 start position.",
+      "cites_phase": [
+        4,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "sage",
+        "chairman"
+      ],
+      "impact_tag": "structural",
+      "parent_id": null,
+      "derived_from": [
+        "studio_brief.format",
+        "studio_brief.non_negotiables"
+      ]
+    },
+    {
+      "id": "AC.tone.mascot-carries-reaction",
+      "description": "The mascot carries the entire emotional arc across the five beats \u2014 idle -> look -> alert-perk -> delight -> settle. The reaction lives wholly on the mascot, and each frame advances its beat; if the arc fails to progress, the loop has no story. Re-weighted to identity_critical after adversarial review so a flash-tier miss on the narrative premise escalates to Opus rather than passing silently.",
+      "cites_phase": [
+        5,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "sage",
+        "chairman"
+      ],
+      "impact_tag": "identity_critical",
+      "parent_id": null,
+      "derived_from": [
+        "studio_brief.tone"
+      ]
+    },
+    {
+      "id": "AC.tone.delight-small-not-gag",
+      "description": "The delight beat (frame 4) reads small and earned by the drawing \u2014 a quiet beat, not a gag, not mugging, not a broad cartoon take. This is the run's one genuinely interpretive criterion: Em flags the mechanical proxy (the expression changed from the alert-perk), but the taste call \u2014 small-and-real versus over-played \u2014 is Sean's at the human gate, which is why it stays aesthetic rather than escalating.",
+      "cites_phase": [
+        5,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "sage",
+        "chairman"
+      ],
+      "impact_tag": "aesthetic",
+      "parent_id": "AC.tone.mascot-carries-reaction",
+      "derived_from": [
+        "studio_brief.tone"
+      ]
+    },
+    {
+      "id": "AC.tone.register-pencil-test-colored",
+      "description": "Every assembled frame reads cleanly in the pencil-test-colored register the loaded Bibles carry: graphite-rough, hand-drawn, never a clean digital, anime, or 3D render (HF05). Consistency of register across all five frames.",
+      "cites_phase": [
+        5,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "sage",
+        "chairman"
+      ],
+      "impact_tag": "aesthetic",
+      "parent_id": null,
+      "derived_from": [
+        "studio_brief.tone",
+        "characters.*.style_register",
+        "manifest.style"
+      ]
+    },
+    {
+      "id": "AC.technical.cream-paper-texture",
+      "description": "Cream paper grain is present in the background of every frame; not pure white, gray, or a flat digital field (HF02/SF04). Hole-punch and production-label markers consistent with the register.",
+      "cites_phase": [
+        5
+      ],
+      "cites_personas": [
+        "em"
+      ],
+      "impact_tag": "technical",
+      "parent_id": "AC.tone.register-pencil-test-colored",
+      "derived_from": [
+        "studio_brief.non_negotiables",
+        "manifest.audit.HF02"
+      ]
+    },
+    {
+      "id": "AC.technical.graphite-line-not-digital",
+      "description": "Warm graphite line character across every frame: construction lines present, varied 1-3px line weight, cross-hatching where shading reads (SF01). Not vector-clean, not a digital cleanup pass (HF05).",
+      "cites_phase": [
+        5,
+        8
+      ],
+      "cites_personas": [
+        "em",
+        "sage"
+      ],
+      "impact_tag": "technical",
+      "parent_id": "AC.tone.register-pencil-test-colored",
+      "derived_from": [
+        "studio_brief.non_negotiables",
+        "manifest.audit.SF01"
+      ]
+    },
+    {
+      "id": "AC.technical.aspect-ratio-16-9",
+      "description": "Every frame is 16:9 within 2% tolerance (HF01). Deterministic PIL check at Phase 5.",
+      "cites_phase": [
+        5
+      ],
+      "cites_personas": [],
+      "impact_tag": "structural",
+      "parent_id": null,
+      "derived_from": [
+        "production_brief.target_medium",
+        "manifest.audit.HF01"
+      ]
+    },
+    {
+      "id": "AC.structural.standard-tier-nb2-all-frames",
+      "description": "All five frames are generated at standard tier (NB2, gemini-3.1-flash-image-preview) with zero hero frames. The establishing frame anchors the chain rather than routing to NB Pro. Recorded for museum provenance and to lock the deliberate reliability choice.",
+      "cites_phase": [
+        5
+      ],
+      "cites_personas": [],
+      "impact_tag": "technical",
+      "parent_id": null,
+      "derived_from": [
+        "studio_brief.non_negotiables",
+        "production_brief.routing"
+      ]
+    }
+  ]
+}

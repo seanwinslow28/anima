@@ -248,6 +248,13 @@ export:
 phases:
   # Listed sequentially; per-phase definitions live in the architecture doc.
   enabled: []  # commit 4 enables 'phase_0' through 'phase_9' as their nodes land
+  # phase_5 frame counts feed Maya's Phase-0 cost preview (cost_estimator._phase_5_cost).
+  # "The Spark, Shared": 5 standard keyframes (all NB2), no hero. Deliberately NO
+  # `nodes:` block — Flo is driven inline per-frame for the human-gated chain, so the
+  # DAG sees no phase_5 graph and real DAG runs stay inert here.
+  phase_5:
+    frame_count_standard: 5
+    frame_count_hero: 0
 
 # Draft → Pro tier escalation defaults.
 # Authoritative spec: docs/pipeline-architecture-v1.md §Draft → Pro Coverage by Phase
@@ -403,7 +410,7 @@ characters:
 # skipped non-fatally by load_all_criteria — listing them ahead of authoring
 # is safe.
 criteria_sources:
-  brief_file: ""                          # briefs/{slug}/acceptance_criteria.json (Maya's AC.*)
+  brief_file: briefs/2026-06-10-spark-shared/acceptance_criteria.json   # Maya's AC.* (spark-shared, locked)
   bibles:
     - characters/sean-anchor/acceptance_criteria.json
     - characters/claude-mascot/acceptance_criteria.json
@@ -441,7 +448,7 @@ museum:
 # the templates; `pipeline plan show / approve / mutate` operate against the
 # files Maya emits.
 brief:
-  active_dir: briefs/2026-05-27-pencil-test-act2   # adjust per piece
+  active_dir: briefs/2026-06-10-spark-shared       # adjust per piece (was briefs/2026-05-27-pencil-test-act2)
   studio_brief: 00_studio_brief.md
   production_brief: 01_production_brief.md
   criteria: acceptance_criteria.json               # symlink to a versioned file post-mutation

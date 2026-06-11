@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
 import re
 from pathlib import Path
 from typing import Any, ClassVar
@@ -54,6 +55,15 @@ _CODE_FENCE_RE = re.compile(r"^\s*```(?:json)?\s*\n?(.*?)\n?\s*```\s*$", re.DOTA
 # show CLI renders these from Maya's clean prose; emitting them inline burns
 # Opus tokens on rendering and pollutes downstream consumers' context windows.
 _BOX_CHARACTERS = frozenset("╔═╗║╚╝┌─┐│└┘├┤┬┴┼")
+
+# Per-call timeout for Maya's Opus/Sonnet authoring calls. The sdk_runners
+# default is 120s, but live Opus-4.8 authoring (extended thinking + a single
+# large 3-key JSON emission) runs ~285-400s per call — the 120s default silently
+# times out into an empty-text `_parse_opus` "Empty response from model" crash.
+# Surfaced by the first integrated run (2026-06-11): the primary call completes
+# in ~350s with a real ~19K-char plan envelope when given room. Tunable via env
+# for slower/faster contexts (rate-limit contention widens the band).
+_MAYA_CALL_TIMEOUT_S = int(os.environ.get("MAYA_CALL_TIMEOUT_S", "1200"))
 
 
 @register_node("planner")
@@ -105,8 +115,9 @@ class PlannerNode:
         opus_prompt = self._build_opus_prompt(
             studio_brief, manifest, cost_estimate, project_type=project_type,
         )
-        opus_resp = asyncio.run(invoke_opus_text(prompt=opus_prompt))
+        opus_resp = asyncio.run(invoke_opus_text(prompt=opus_prompt, timeout_s=_MAYA_CALL_TIMEOUT_S))
         counts["opus"] += 1
+        _dump_raw(ctx.run_dir, "maya_raw_pass1.txt", opus_resp.text)
         parsed = self._parse_opus(opus_resp.text)
         production_brief_md: str = parsed["production_brief_md"]
         criteria_json: dict = parsed["criteria_json"]
@@ -114,7 +125,7 @@ class PlannerNode:
 
         # Pass 2 — Sonnet adversarial validation.
         sonnet_prompt = self._build_sonnet_prompt(plan_md, criteria_json, cost_estimate)
-        sonnet_resp = asyncio.run(invoke_sonnet_text(prompt=sonnet_prompt))
+        sonnet_resp = asyncio.run(invoke_sonnet_text(prompt=sonnet_prompt, timeout_s=_MAYA_CALL_TIMEOUT_S))
         counts["sonnet"] += 1
         sonnet_parsed = self._parse_sonnet(sonnet_resp.text)
 
@@ -125,7 +136,7 @@ class PlannerNode:
             revision_prompt = self._build_revision_prompt(
                 plan_md, criteria_json, sonnet_parsed["flag"]
             )
-            revision_resp = asyncio.run(invoke_opus_text(prompt=revision_prompt))
+            revision_resp = asyncio.run(invoke_opus_text(prompt=revision_prompt, timeout_s=_MAYA_CALL_TIMEOUT_S))
             counts["opus"] += 1
             revised = self._parse_opus(revision_resp.text)
             plan_md = revised["plan_md"]
@@ -133,7 +144,7 @@ class PlannerNode:
             production_brief_md = revised.get("production_brief_md", production_brief_md)
         elif sonnet_parsed.get("low_signal"):
             # Low-signal — second Opus acts as validator.
-            second_opus_resp = asyncio.run(invoke_opus_text(prompt=sonnet_prompt))
+            second_opus_resp = asyncio.run(invoke_opus_text(prompt=sonnet_prompt, timeout_s=_MAYA_CALL_TIMEOUT_S))
             counts["opus"] += 1
             second_parsed = self._parse_sonnet(second_opus_resp.text)
             if second_parsed.get("flag"):
@@ -410,15 +421,82 @@ class PlannerNode:
 
 
 def _parse_json_envelope(text: str) -> dict:
-    """Strip a ```json``` code fence if present, then json.loads."""
+    """Extract and parse the JSON envelope from a model response.
+
+    Tolerant of three shapes:
+      1. The whole (stripped) response is a single ```json``` fence — the
+         instructed shape.
+      2. A JSON object embedded in conversational prose. Surfaced by the first
+         integrated run (2026-06-11): Opus 4.8 reliably prefaces its planning
+         envelope with a persona lead-in ("Maya here — Pass 1 ..."), so the
+         response neither starts with `{` nor is fully fenced; the old
+         anchored-fence parser crashed on it at char 0.
+      3. Braces / backticks inside the JSON's own string values (the embedded
+         plan_md / production_brief_md markdown) — handled by the string-aware
+         scan in _extract_json_object.
+    """
     if not text.strip():
         raise ValueError("Empty response from model")
     match = _CODE_FENCE_RE.match(text.strip())
-    body = match.group(1) if match else text
+    if match:
+        body = match.group(1)
+    else:
+        body = _extract_json_object(text)
     try:
         return json.loads(body)
     except json.JSONDecodeError as exc:
         raise ValueError(f"Model response is not parseable JSON: {exc}") from exc
+
+
+def _extract_json_object(text: str) -> str:
+    """Return the first balanced top-level JSON object substring in `text`.
+
+    Skips any conversational preamble (and a ```json fence opener if present),
+    then scans brace depth while respecting string literals + escapes, so braces
+    and backticks inside JSON string values don't terminate the scan early.
+    """
+    # If a ```json fence opener exists, start scanning just past it so a stray
+    # brace in the preamble prose can't anchor the scan to the wrong object.
+    fence = re.search(r"```(?:json)?[ \t]*\r?\n", text)
+    region = text[fence.end():] if fence else text
+    start = region.find("{")
+    if start == -1:
+        raise ValueError("Model response is not parseable JSON: no JSON object found")
+    depth = 0
+    in_str = False
+    escape = False
+    for i in range(start, len(region)):
+        c = region[i]
+        if in_str:
+            if escape:
+                escape = False
+            elif c == "\\":
+                escape = True
+            elif c == '"':
+                in_str = False
+        elif c == '"':
+            in_str = True
+        elif c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+            if depth == 0:
+                return region[start:i + 1]
+    raise ValueError("Model response is not parseable JSON: unbalanced braces")
+
+
+def _dump_raw(run_dir: Path, name: str, text: str) -> None:
+    """Best-effort persist of a raw model response for debugging / evidence.
+
+    The first integrated run (2026-06-11) used this to capture Opus's
+    persona-preamble shape ("Maya here — ...") that broke the envelope parser.
+    Never raises — a dump failure must not abort a live planning run.
+    """
+    try:
+        run_dir.mkdir(parents=True, exist_ok=True)
+        (run_dir / name).write_text(text or "", encoding="utf-8")
+    except Exception:
+        pass
 
 
 def _atomic_write(path: Path, content: str) -> None:
