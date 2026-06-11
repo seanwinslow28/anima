@@ -373,6 +373,8 @@ python3 pipeline/audit.py --run-dir runs/{run_id} --frame F06 --attempt 1
 bash pipeline/assemble.sh runs/{run_id}
 ```
 
+Defaults to the PT_A1 sequence + `pencil-test-act1` output slug (byte-identical legacy behavior). For a non-PT_A1 piece, pass an optional `--sequence-file <path>` (the same `KEY:hold` line format, with full-basename keys like `SS_F03b_key`) and `--slug <name>`; `AssembleNode` threads matching optional `slug` / `sequence_file` inputs (#13).
+
 ### DAG-orchestrated run (opt-in)
 
 The hand-rolled DAG runner orchestrates pipeline phases as typed nodes with
