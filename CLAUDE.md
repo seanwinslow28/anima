@@ -194,7 +194,7 @@ anima/                                   # renamed from sw-portfolio-animation-p
 │   └── sean-character-dataset/          # RETIRED staging dir (2026-06-04) — corpus complete; all 46 ratified images
 │                                        #   live at evals/vision_critic/fixtures/frames/ (P-B1 + PA-D4 re-rolls landed)
 ├── pipeline/                            # Pipeline scripts
-│   ├── run.py                           # `python -m pipeline.run` — the resumable run orchestrator (Slice 2; see Key Commands)
+│   ├── run.py                           # `python -m pipeline.run` — the resumable run orchestrator (Slice 2 + 2.1; see Key Commands)
 │   ├── orchestration/                   # Its helpers: state.py (run_state.json), shots.py (shots.yaml), cast.py,
 │   │                                    #   guards.py (silent-stub), plan_stage.py, generate_stage.py, assemble_stage.py
 │   ├── generate.py                      # Generation orchestrator with frame chaining (USE_DAG_RUNNER=1 routes to dag.py)
@@ -361,7 +361,7 @@ python3 .claude/skills/gemini-pencil-animation-image-gen/scripts/generate_image.
   --env-file .env
 ```
 
-### The run orchestrator (Slice 2, 2026-06-11) — one command, brief → loop
+### The run orchestrator (Slice 2 + 2.1, 2026-06-11) — one command, brief → loop
 
 `python -m pipeline.run` is the resumable stage machine (`PLAN → GENERATE →
 ASSEMBLE → DONE`, durable `runs/<id>/run_state.json`) that chains Maya → plan
@@ -371,7 +371,11 @@ retry ladder → assemble. It generalizes `scripts/author_plan.py` +
 [`pipeline/orchestration/`](pipeline/orchestration/). The brief dir must carry
 `00_studio_brief.md` + a human-authored `shots.yaml` (slug + per frame
 id/cast/beat/prompt/extra_references/chain_anchors/hold — Phase 3 stays
-human-authored; the orchestrator never invents frame prompts). Run from the
+human-authored; the orchestrator never invents frame prompts). **The brief is
+snapshotted per run (Slice 2.1):** `_start` copies it to `run_dir/brief/` and
+the whole run (Maya's artifacts, the criteria lock) lives in the copy — a
+committed brief is never mutated by `pipeline.run` (`scripts/author_plan.py`
+still writes in place; `state.brief_src` records provenance). Run from the
 repo root, from a **plain terminal** for costed runs (the nested-SDK throttle,
 seam #4); museum capture is Slice 3.
 
@@ -388,9 +392,16 @@ python -m pipeline.run --resume <run-dir> --status      # print state, no advanc
 python -m pipeline.run --resume <run-dir> --assemble    # retry a failed tail.
 ```
 
-`--stub` is the explicit $0 smoke mode (skips the live-Opus smoke; records
-`plan.stub: true`). Without it, the silent-stub marker scan hard-fails — a
-stubbed Maya plan can never silently pass the human gate.
+`--stub` is the **fully-offline $0 smoke mode** (Slice 2.1): it stubs Maya's
+plan, dispatches the `flo_stub` placeholder node instead of Flo's live image
+transport (real 1376×768 PNGs, HF01-clean), lets Em fall back to its no-key
+stub, and exports `ANIMA_FORCE_STUB=1` for the invocation so **no model
+transport can go live** — guaranteed $0 even with `claude-agent-sdk`
+installed, `agy` on PATH, or a populated `.env`. The whole chain proves
+end-to-end with no key (`--brief <dir> --stub` → … → DONE → loop files);
+`--status` flags the run `[stub]` everywhere. Without `--stub`, the
+silent-stub marker scan hard-fails — a stubbed Maya plan can never silently
+pass the human gate.
 
 ### Orchestrated generation run (legacy single-phase path)
 ```bash

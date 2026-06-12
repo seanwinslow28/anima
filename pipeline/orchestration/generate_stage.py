@@ -32,6 +32,7 @@ from pathlib import Path
 # Populate NODE_REGISTRY for the per-frame fan.
 import pipeline.nodes  # noqa: F401  (audit_gate, assemble, ...)
 import pipeline.agents.frame_router  # noqa: F401  (flo)
+import pipeline.agents.flo_stub  # noqa: F401  (flo_stub — offline --stub placeholder)
 import pipeline.agents.vision_critic  # noqa: F401  (vision_critic)
 from pipeline.agents.patch_stager import stage_patches_hook
 from pipeline.agents.vision_critic import EmptyCitesInvariant
@@ -140,11 +141,17 @@ def run_frame_fan(
     )
     runner.add_hook("post_run", stage_patches_hook(run_dir))
 
+    # Fix A (Slice 2.1): a --stub run dispatches the offline placeholder node.
+    # Node id stays flo_{fid} so audit bindings + gen_results lookups are
+    # unchanged; node_name is in the cache key, so stub and real results can
+    # never cross-serve.
+    flo_node_name = "flo_stub" if state.get("stub") else "flo"
+
     gen_graph = Graph(
         nodes=[
             Node(
                 id=f"flo_{fid}",
-                node_name="flo",
+                node_name=flo_node_name,
                 config={"attempt": attempt_idx},  # cache salt — same-note retries re-roll
                 input_bindings={
                     "frame_num": f"literal_json:{shot.id}",

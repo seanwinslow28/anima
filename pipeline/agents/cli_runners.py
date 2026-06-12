@@ -40,6 +40,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import os
 import shutil
 import time
 from dataclasses import dataclass
@@ -183,7 +184,9 @@ async def run_antigravity_with_image(
     (run_gemini_api_with_image), where resp.model_version confirms what served. The
     stub path needs no model (it is not a costed call). See the provenance kickoff §A2.
     """
-    if shutil.which(ANTI_GRAVITY_BIN) is None:
+    # ANIMA_FORCE_STUB: a --stub orchestrator run can never silently spend,
+    # even with agy on PATH.
+    if os.environ.get("ANIMA_FORCE_STUB") or shutil.which(ANTI_GRAVITY_BIN) is None:
         return _stub_response(prompt, image_paths)
 
     # No silent backend-default ever again (A2). A real, costed agy call must pin a

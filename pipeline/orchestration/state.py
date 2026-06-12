@@ -40,6 +40,7 @@ def new_state(
     slug: str,
     stub: bool,
     cast: list[dict],
+    brief_src: str | None = None,
 ) -> dict:
     now = _now()
     return {
@@ -48,6 +49,7 @@ def new_state(
         "created_at": now,
         "updated_at": now,
         "brief_dir": brief_dir,
+        "brief_src": brief_src,
         "manifest_path": manifest_path,
         "shots_path": shots_path,
         "slug": slug,
@@ -131,7 +133,8 @@ def render_status(state: dict) -> str:
     lines = [
         f"run:     {state['run_id']}",
         f"stage:   {state['stage']}" + ("  [stub]" if state.get("stub") else ""),
-        f"brief:   {state['brief_dir']}",
+        f"brief:   {state['brief_dir']}"
+        + (f"  (snapshot of {state['brief_src']})" if state.get("brief_src") else ""),
         f"slug:    {state['slug']}",
         f"plan:    {state['plan']['status']}"
         + ("  [stub plan — do not approve as real]" if state["plan"].get("stub") else ""),

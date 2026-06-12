@@ -153,6 +153,30 @@ def fake_flo_generate(monkeypatch) -> list[dict]:
     return calls
 
 
+def spy_flo_stub(monkeypatch) -> list[dict]:
+    """Record flo_stub dispatches (the --stub boundary post-Slice-2.1-Fix-A)
+    with the same call-dict shape fake_flo_generate uses:
+    frame_num/prompt/references/attempt. The real node still runs — this is a
+    spy, not a fake."""
+    from pipeline.agents import flo_stub as fs
+
+    calls: list[dict] = []
+    orig = fs.FloStubNode.run
+
+    def _spy(self, ctx):
+        result = orig(self, ctx)
+        calls.append(
+            {"frame_num": int(ctx.inputs["frame_num"]),
+             "prompt": str(ctx.inputs["prompt"]),
+             "references": [str(r) for r in ctx.inputs.get("references", [])],
+             "attempt": int(Path(result.outputs["candidate_path"]).stem.split("_")[1])}
+        )
+        return result
+
+    monkeypatch.setattr(fs.FloStubNode, "run", _spy)
+    return calls
+
+
 def fake_ffmpeg_path(tmp_path: Path, monkeypatch) -> Path:
     """The tests/test_assemble.py PATH-shim pattern: a stub ffmpeg that just
     creates its output file (last arg) — assemble.sh runs for real, encodes don't."""

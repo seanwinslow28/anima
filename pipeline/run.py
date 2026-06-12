@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import shutil
 import sys
 from datetime import date
 from pathlib import Path
@@ -38,6 +39,12 @@ from pipeline.orchestration.cast import derive_cast
 from pipeline.orchestration.shots import read_slug
 
 RUN_SUBDIRS = ("candidates", "approved", "rejected", "audit", "export", ".cache")
+
+# Exported for the dynamic extent of a --stub invocation; every model transport
+# gate (sdk_runners, gemini_api_runner, cli_runners) honors it, so a $0 stub
+# run can never silently spend — even with the SDK importable, agy on PATH, or
+# a populated .env.
+FORCE_STUB_ENV = "ANIMA_FORCE_STUB"
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -80,9 +87,18 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    if args.brief:
-        return _start(args)
-    return _resume(args)
+    prior = os.environ.get(FORCE_STUB_ENV)
+    try:
+        if args.brief:
+            return _start(args)
+        return _resume(args)
+    finally:
+        # Scope the force-stub export to this invocation (in-process callers,
+        # e.g. tests, must not leak it).
+        if prior is None:
+            os.environ.pop(FORCE_STUB_ENV, None)
+        else:
+            os.environ[FORCE_STUB_ENV] = prior
 
 
 def _api_key_guard(args: argparse.Namespace) -> int:
@@ -113,6 +129,8 @@ def _start(args: argparse.Namespace) -> int:
     rc = _api_key_guard(args)
     if rc:
         return rc
+    if args.stub:
+        os.environ[FORCE_STUB_ENV] = "1"  # $0 contract: no transport goes live
 
     manifest_path = Path(args.manifest)
     if not manifest_path.exists():
@@ -156,9 +174,18 @@ def _start(args: argparse.Namespace) -> int:
     for sub in RUN_SUBDIRS:
         (run_dir / sub).mkdir(parents=True, exist_ok=True)
 
+    # Snapshot the brief into the run (Slice 2.1 Fix B): the PLAN stage writes
+    # plan.md/criteria into brief_dir and --approve-plan locks the criteria —
+    # those must hit the run-local copy, never the committed brief.
+    brief_src = brief_dir
+    brief_dir = run_dir / "brief"
+    shutil.copytree(brief_src, brief_dir, dirs_exist_ok=True)
+    shots_path = brief_dir / "shots.yaml"
+
     state = st.new_state(
         run_id=run_dir.name,
         brief_dir=str(brief_dir),
+        brief_src=str(brief_src),
         manifest_path=str(manifest_path),
         shots_path=str(shots_path),
         slug=str(slug),
@@ -198,6 +225,9 @@ def _resume(args: argparse.Namespace) -> int:
     except st.StateError as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
+
+    if state.get("stub"):
+        os.environ[FORCE_STUB_ENV] = "1"  # a stub run stays $0 across resumes
 
     if args.status:
         print(st.render_status(state))

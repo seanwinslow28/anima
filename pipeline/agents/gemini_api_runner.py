@@ -183,7 +183,9 @@ async def run_gemini_api_with_image(
     """Invoke Gemini via the API with a prompt + one-or-more images. Drop-in for
     run_antigravity_with_image. Removes the Go/Node child entirely — no detach
     gymnastics needed (a plain foreground run is fine)."""
-    if not _genai_available() or not _has_gemini_api_key():
+    # ANIMA_FORCE_STUB: a --stub orchestrator run can never silently spend —
+    # even with google-genai installed and a key in the env or project .env.
+    if os.environ.get("ANIMA_FORCE_STUB") or not _genai_available() or not _has_gemini_api_key():
         return _stub_response(prompt, image_paths)
 
     start = time.monotonic()
