@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import shutil
 import sys
 from datetime import date
 from pathlib import Path
@@ -156,9 +157,18 @@ def _start(args: argparse.Namespace) -> int:
     for sub in RUN_SUBDIRS:
         (run_dir / sub).mkdir(parents=True, exist_ok=True)
 
+    # Snapshot the brief into the run (Slice 2.1 Fix B): the PLAN stage writes
+    # plan.md/criteria into brief_dir and --approve-plan locks the criteria —
+    # those must hit the run-local copy, never the committed brief.
+    brief_src = brief_dir
+    brief_dir = run_dir / "brief"
+    shutil.copytree(brief_src, brief_dir, dirs_exist_ok=True)
+    shots_path = brief_dir / "shots.yaml"
+
     state = st.new_state(
         run_id=run_dir.name,
         brief_dir=str(brief_dir),
+        brief_src=str(brief_src),
         manifest_path=str(manifest_path),
         shots_path=str(shots_path),
         slug=str(slug),

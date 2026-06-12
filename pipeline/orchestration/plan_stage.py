@@ -36,7 +36,8 @@ def run_plan_stage(state: dict, manifest: dict, run_dir: Path, *, stub: bool, sk
             print(f"error: {e}", file=sys.stderr)
             return 1
 
-    print(f"\nDriving Maya — Phase 0 planning for {Path(state['brief_dir']).name}")
+    print(f"\nDriving Maya — Phase 0 planning for "
+          f"{Path(state.get('brief_src') or state['brief_dir']).name}")
     print("  Opus primary -> Sonnet adversarial -> resolve (3-call ceiling)")
     ctx = AgentContext(
         run_dir=Path(run_dir),
