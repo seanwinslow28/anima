@@ -40,6 +40,12 @@ from pipeline.orchestration.shots import read_slug
 
 RUN_SUBDIRS = ("candidates", "approved", "rejected", "audit", "export", ".cache")
 
+# Exported for the dynamic extent of a --stub invocation; every model transport
+# gate (sdk_runners, gemini_api_runner, cli_runners) honors it, so a $0 stub
+# run can never silently spend — even with the SDK importable, agy on PATH, or
+# a populated .env.
+FORCE_STUB_ENV = "ANIMA_FORCE_STUB"
+
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
@@ -81,9 +87,18 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    if args.brief:
-        return _start(args)
-    return _resume(args)
+    prior = os.environ.get(FORCE_STUB_ENV)
+    try:
+        if args.brief:
+            return _start(args)
+        return _resume(args)
+    finally:
+        # Scope the force-stub export to this invocation (in-process callers,
+        # e.g. tests, must not leak it).
+        if prior is None:
+            os.environ.pop(FORCE_STUB_ENV, None)
+        else:
+            os.environ[FORCE_STUB_ENV] = prior
 
 
 def _api_key_guard(args: argparse.Namespace) -> int:
@@ -114,6 +129,8 @@ def _start(args: argparse.Namespace) -> int:
     rc = _api_key_guard(args)
     if rc:
         return rc
+    if args.stub:
+        os.environ[FORCE_STUB_ENV] = "1"  # $0 contract: no transport goes live
 
     manifest_path = Path(args.manifest)
     if not manifest_path.exists():
@@ -208,6 +225,9 @@ def _resume(args: argparse.Namespace) -> int:
     except st.StateError as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
+
+    if state.get("stub"):
+        os.environ[FORCE_STUB_ENV] = "1"  # a stub run stays $0 across resumes
 
     if args.status:
         print(st.render_status(state))

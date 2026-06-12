@@ -63,7 +63,12 @@ def _sdk_available() -> bool:
     Order of preference:
       1. claude-agent-sdk (subscription-absorbed via Claude Code auth)
       2. anthropic SDK + ANTHROPIC_API_KEY (API-key path)
+
+    ANIMA_FORCE_STUB short-circuits both: a --stub orchestrator run exports it
+    so a $0 run can never silently spend, even with the SDK importable.
     """
+    if os.environ.get("ANIMA_FORCE_STUB"):
+        return False
     try:
         import claude_agent_sdk  # noqa: F401
         return True
