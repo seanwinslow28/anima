@@ -6,8 +6,11 @@ stage_patches_hook attached — patch staging fires for free (seam #7). The eye
 gate exits; --approve-frame chains N+1 off the approved prior; --retry-frame
 re-rolls with the correction note appended and a fresh attempt salt.
 
-Stub-green: Flo is faked at the established pipeline.generate.generate_frame
-boundary (real 1376x768 PNGs — the audit gate PIL-opens candidates); Em runs
+Stub-green: a --stub run dispatches the REAL flo_stub production node (Slice
+2.1 Fix A) — tests spy it via tests/orch_fixtures.spy_flo_stub (real 1376x768
+PNGs; the audit gate PIL-opens candidates). The real `flo` node's dispatch +
+seam #11 threading is covered by the non-stub run_frame_fan switch test, with
+pipeline.generate.generate_frame faked at the established boundary. Em runs
 its real node logic over stubbed or faked transports.
 """
 
@@ -24,6 +27,7 @@ from tests.orch_fixtures import (
     fake_em_transport,
     fake_flo_generate,
     mk_project,
+    spy_flo_stub,
     stub_critic_env,
 )
 
@@ -39,7 +43,7 @@ def _start_and_approve(root, brief_dir, *, run_name="tt-run"):
 def test_approve_plan_generates_frame1_through_the_fan(tmp_path, monkeypatch, capsys):
     root, brief_dir = mk_project(tmp_path, monkeypatch)
     stub_critic_env(monkeypatch)
-    flo_calls = fake_flo_generate(monkeypatch)
+    flo_calls = spy_flo_stub(monkeypatch)
 
     rc, run_dir = _start_and_approve(root, brief_dir)
 
@@ -77,13 +81,12 @@ def test_approve_plan_generates_frame1_through_the_fan(tmp_path, monkeypatch, ca
 def test_flo_gets_folder_key_em_gets_namespace(tmp_path, monkeypatch):
     root, brief_dir = mk_project(tmp_path, monkeypatch)
     stub_critic_env(monkeypatch)
-    fake_flo_generate(monkeypatch)
 
-    import pipeline.agents.frame_router as fr
+    import pipeline.agents.flo_stub as fs
     import pipeline.agents.vision_critic as vc
 
     flo_char_ids, em_char_ids = [], []
-    real_flo_run, real_em_run = fr.FloNode.run, vc.VisionCriticNode.run
+    real_flo_run, real_em_run = fs.FloStubNode.run, vc.VisionCriticNode.run
 
     def spy_flo(self, ctx):
         flo_char_ids.append(ctx.inputs.get("character_id"))
@@ -93,7 +96,7 @@ def test_flo_gets_folder_key_em_gets_namespace(tmp_path, monkeypatch):
         em_char_ids.append(ctx.inputs.get("character_id"))
         return real_em_run(self, ctx)
 
-    monkeypatch.setattr(fr.FloNode, "run", spy_flo)
+    monkeypatch.setattr(fs.FloStubNode, "run", spy_flo)
     monkeypatch.setattr(vc.VisionCriticNode, "run", spy_em)
 
     rc, _ = _start_and_approve(root, brief_dir)
@@ -106,7 +109,7 @@ def test_flo_gets_folder_key_em_gets_namespace(tmp_path, monkeypatch):
 def test_approve_frame_copies_attempt_and_chains_with_correct_refs(tmp_path, monkeypatch):
     root, brief_dir = mk_project(tmp_path, monkeypatch)
     stub_critic_env(monkeypatch)
-    flo_calls = fake_flo_generate(monkeypatch)
+    flo_calls = spy_flo_stub(monkeypatch)
     rc, run_dir = _start_and_approve(root, brief_dir)
     assert rc == 0
 
@@ -142,7 +145,7 @@ def test_approve_frame_copies_attempt_and_chains_with_correct_refs(tmp_path, mon
 def test_retry_appends_note_and_same_note_still_rerolls(tmp_path, monkeypatch):
     root, brief_dir = mk_project(tmp_path, monkeypatch)
     stub_critic_env(monkeypatch)
-    flo_calls = fake_flo_generate(monkeypatch)
+    flo_calls = spy_flo_stub(monkeypatch)
     rc, run_dir = _start_and_approve(root, brief_dir)
     assert rc == 0
 
@@ -169,7 +172,6 @@ def test_retry_appends_note_and_same_note_still_rerolls(tmp_path, monkeypatch):
 def test_empty_cites_invariant_records_human_review_and_continues(tmp_path, monkeypatch):
     root, brief_dir = mk_project(tmp_path, monkeypatch)
     stub_critic_env(monkeypatch)
-    fake_flo_generate(monkeypatch)
     # high confidence (no escalation), blocking verdict, NO cites -> the invariant
     fake_em_transport(monkeypatch, verdict="fail", confidence=0.95, cites=())
 
@@ -188,7 +190,6 @@ def test_empty_cites_invariant_records_human_review_and_continues(tmp_path, monk
 def test_em_patches_staged_via_post_run_hook(tmp_path, monkeypatch):
     root, brief_dir = mk_project(tmp_path, monkeypatch)
     stub_critic_env(monkeypatch)
-    fake_flo_generate(monkeypatch)
     fake_em_transport(
         monkeypatch, verdict="fail", confidence=0.95,
         cites=("IR.al.style.line-weight",),
@@ -214,7 +215,6 @@ def test_em_patches_staged_via_post_run_hook(tmp_path, monkeypatch):
 def test_approve_last_frame_enters_assemble(tmp_path, monkeypatch):
     root, brief_dir = mk_project(tmp_path, monkeypatch)
     stub_critic_env(monkeypatch)
-    fake_flo_generate(monkeypatch)
     rc, run_dir = _start_and_approve(root, brief_dir)
     assert rc == 0
 
@@ -238,13 +238,16 @@ def test_gate_guards_wrong_frame_and_errored_attempt(tmp_path, monkeypatch, caps
     root, brief_dir = mk_project(tmp_path, monkeypatch)
     stub_critic_env(monkeypatch)
 
-    # Flo blows up -> an honest errored attempt, not a crash or a fake candidate
-    from pipeline import generate as legacy_generate
+    # Flo blows up -> an honest errored attempt, not a crash or a fake candidate.
+    # Post-Fix-A the --stub fan dispatches flo_stub, so that's the node to melt.
+    import pipeline.agents.flo_stub as fs
 
-    def boom(**kwargs):
+    real_run = fs.FloStubNode.run
+
+    def boom(self, ctx):
         raise RuntimeError("transport melted")
 
-    monkeypatch.setattr(legacy_generate, "generate_frame", boom)
+    monkeypatch.setattr(fs.FloStubNode, "run", boom)
     rc, run_dir = _start_and_approve(root, brief_dir)
 
     assert rc == 1
@@ -262,10 +265,64 @@ def test_gate_guards_wrong_frame_and_errored_attempt(tmp_path, monkeypatch, caps
     assert run_cli.main(["--resume", str(run_dir), "--approve-frame", "1"]) == 2
 
     # the retry ladder recovers: fix the transport, re-roll with a note
-    flo_calls = fake_flo_generate(monkeypatch)
+    monkeypatch.setattr(fs.FloStubNode, "run", real_run)
+    flo_calls = spy_flo_stub(monkeypatch)
     assert run_cli.main(["--resume", str(run_dir), "--retry-frame", "1",
                          "--note", "re-roll after transport error"]) == 0
     assert flo_calls[0]["attempt"] == 1  # no candidate file was written by the errored attempt
     state = st.load_state(run_dir)
     assert st.get_frame(state, 1)["status"] == "generated"
     assert [a["index"] for a in st.get_frame(state, 1)["attempts"]] == [1, 2]
+
+
+@pytest.mark.parametrize("stub,expected", [(True, "flo_stub"), (False, "flo")])
+def test_run_frame_fan_dispatches_node_by_stub_flag(tmp_path, monkeypatch, stub, expected):
+    """The Fix A switch: state['stub'] selects flo_stub; a real run keeps the
+    real flo node — including seam #11 (FOLDER key) threading on that path."""
+    import yaml
+
+    import pipeline.agents.flo_stub as fs
+    import pipeline.agents.frame_router as fr
+    from pipeline.criteria import load_all_criteria
+    from pipeline.orchestration import generate_stage
+    from pipeline.orchestration.cast import derive_cast
+    from pipeline.orchestration.shots import load_shots
+
+    root, brief_dir = mk_project(tmp_path, monkeypatch)
+    stub_critic_env(monkeypatch)
+    fake_flo_generate(monkeypatch)  # the real FloNode's transport boundary (stub=False arm)
+
+    dispatched, flo_char_ids = [], []
+    real_flo, real_stub = fr.FloNode.run, fs.FloStubNode.run
+
+    def spy_flo(self, ctx):
+        dispatched.append("flo")
+        flo_char_ids.append(ctx.inputs.get("character_id"))
+        return real_flo(self, ctx)
+
+    def spy_stub(self, ctx):
+        dispatched.append("flo_stub")
+        return real_stub(self, ctx)
+
+    monkeypatch.setattr(fr.FloNode, "run", spy_flo)
+    monkeypatch.setattr(fs.FloStubNode, "run", spy_stub)
+
+    manifest = yaml.safe_load((root / "manifest.yaml").read_text())
+    bundle = load_all_criteria(manifest)
+    run_dir = root / "runs" / "switch-run"
+    state = st.new_state(
+        run_id="switch-run", brief_dir=str(brief_dir), manifest_path="manifest.yaml",
+        shots_path=str(brief_dir / "shots.yaml"), slug="TT", stub=stub,
+        cast=derive_cast(manifest),
+    )
+    state["frame_order"] = [1, 2]
+    st.set_frame(state, 1, {"status": "pending", "attempts": [],
+                            "approved_attempt": None, "approved_path": None})
+    shot_list = load_shots(brief_dir / "shots.yaml", known_namespaces={"al", "be"})
+
+    rc = generate_stage.run_frame_fan(state, shot_list.by_id(1), manifest, bundle, run_dir)
+
+    assert rc == 0
+    assert dispatched == [expected]  # exactly one Flo-side node fired
+    if expected == "flo":
+        assert flo_char_ids == ["alpha"]  # seam #11 held on the REAL node
