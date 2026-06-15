@@ -1,0 +1,44 @@
+{
+  "slug": "the-spark-shared",
+  "logline": "Sean draws; the mascot notices and delights; everything settles back to the start.",
+  "beats": [
+    {
+      "id": 1,
+      "title": "Establishing two-shot",
+      "intent": "Set the look, framing, and scale — the compositional anchor the loop returns to.",
+      "emotional_beat": "calm focus",
+      "cast": ["sean", "claude-mascot"],
+      "feel": "establishing — let it breathe",
+      "notes": "frame 5 returns here"
+    },
+    {
+      "id": 2,
+      "title": "The draw",
+      "intent": "Sean's hand moves on the page; the mascot turns to look at what he's making.",
+      "emotional_beat": "first stir",
+      "cast": ["sean", "claude-mascot"]
+    },
+    {
+      "id": 3,
+      "title": "The notice",
+      "intent": "The mascot perks up (alert-perk) — the spark of catching the idea.",
+      "emotional_beat": "spark",
+      "cast": ["claude-mascot"]
+    },
+    {
+      "id": 4,
+      "title": "The delight",
+      "intent": "The mascot reacts with small, real delight; Sean stays absorbed in the work.",
+      "emotional_beat": "delight",
+      "cast": ["sean", "claude-mascot"]
+    },
+    {
+      "id": 5,
+      "title": "The settle",
+      "intent": "The mascot eases back toward idle; Sean's hand returns to start — the loop closes.",
+      "emotional_beat": "settled warmth",
+      "cast": ["sean", "claude-mascot"],
+      "notes": "clean loop back to frame 1"
+    }
+  ]
+}

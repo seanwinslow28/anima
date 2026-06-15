@@ -378,6 +378,7 @@ async def invoke_opus_text(
     *,
     prompt: str,
     timeout_s: int = 120,
+    stub_fn=_stub_opus_text,
 ) -> SDKResponse:
     """Invoke the Opus authoring tier (4.8) with a text-only prompt.
 
@@ -385,12 +386,17 @@ async def invoke_opus_text(
     here. Uses OPUS_AUTHORING_MODEL (4.8) rather than OPUS_MODEL (4.7, Em's
     vision-escalation seat) so the fidelity-fix bump stays revertible in
     isolation.
+
+    stub_fn defaults to Maya's planning-envelope stub. A caller whose parser
+    expects a different envelope shape passes its own (e.g. Sam the scriptwriter
+    passes _stub_sam_text so the credential-free stub round-trips through
+    load_beats). Backward-compatible: existing callers keep the planning stub.
     """
     return await _invoke_text(
         model=OPUS_AUTHORING_MODEL,
         prompt=prompt,
         timeout_s=timeout_s,
-        stub_fn=_stub_opus_text,
+        stub_fn=stub_fn,
     )
 
 

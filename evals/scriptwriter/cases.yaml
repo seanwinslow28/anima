@@ -1,0 +1,87 @@
+# Sam the Scriptwriter — eval cases (scaffold stage).
+#
+# The pairwise-preference harness is DEFERRED (campaign item) — see README.md.
+# Two kinds:
+#   - positive: a Sean-ratified ground-truth beat sheet that must round-trip
+#     through load_beats + Sam's deterministic structural pass.
+#   - ships_red: a by-ear voice defect seeded for the deferred pairwise harness.
+#     detector: none  -> xfail (documented gap; not regex-deterministic).
+#     detector: default_prop -> caught now by the eval-side default_prop_lint.
+
+cases:
+  # ---------- positive: ground-truth beat sheets ----------
+  - name: spark-shared-plumbing
+    kind: positive
+    description: >-
+      The Spark, Shared — a real anima brief (wordless two-character loop). Tests
+      the brief->beats plumbing/coverage contract. Studio brief lives at
+      briefs/2026-06-10-spark-shared/00_studio_brief.md.
+    known_namespaces: [sean, claude-mascot]
+    expected_beats: spark-shared-expected-beats.json
+
+  - name: figgy-pudding-voice
+    kind: positive
+    description: >-
+      Figgy Pudding — the 2026-06-15 Sean-ratified voice dry-run (dialogue-heavy,
+      synthetic premise; non-anima cast greta/doug, so it round-trips in isolation
+      against its own declared namespaces). Additive to the Spark plumbing case:
+      anchors a real voice exemplar's beat structure. Voice QUALITY is not asserted
+      here (that's the deferred pairwise harness) — only structural soundness.
+      Premise: figgy-pudding-brief.md.
+    known_namespaces: [greta, doug]
+    expected_beats: figgy-pudding-expected-beats.json
+
+  # ---------- ships-red: by-ear voice defects (seed for the pairwise harness) ----------
+  - name: sr-1-narrator-quip-in-dialogue
+    kind: ships_red
+    detector: none
+    description: A narrator-grade meta-quip smuggled into a character's mouth.
+    fixture_script: ships-red/sr-1-narrator-quip.md
+    red_reason: >-
+      By-ear: dialogue commenting on the premise's own irony from outside the
+      character's in-moment POV. NOT regex-deterministic (needs semantics) — the
+      deferred pairwise harness owns it.
+
+  - name: sr-2-register-collapse
+    kind: ships_red
+    detector: none
+    description: Two clever people — Register-Contrast Casting collapses (no energy split).
+    fixture_script: ships-red/sr-2-register-collapse.md
+    red_reason: >-
+      By-ear: both speakers land polished quips, so the immovable-wall vs.
+      flailing-fool engine is gone. The dry-run flagged this as caught by ear, not
+      by checklist.
+
+  - name: anti-pattern-recycled-coffee-prop
+    kind: ships_red
+    detector: default_prop
+    description: Opens on a recycled default prop (coffee) — the chronic scene-setting crutch.
+    fixture_script: ships-red/coffee-default-prop.md
+    red_reason: The one genuinely-deterministic ships-red — default_prop_lint catches it.
+
+  - name: anti-pattern-theme-spoken
+    kind: ships_red
+    detector: none
+    description: Theme stated aloud in dialogue.
+    fixture_script: ships-red/theme-spoken.md
+    red_reason: >-
+      By-ear: "I've learned to let go" names the theme. Sean never speaks it. The
+      pairwise harness owns it.
+
+  - name: anti-pattern-naked-tender-pivot
+    kind: ships_red
+    detector: none
+    description: A mid-scene turn to un-armored, un-punished sincerity.
+    fixture_script: ships-red/naked-tender-pivot.md
+    red_reason: >-
+      By-ear: Sean's feeling only lands buried-and-punished, or as a small dirty
+      victory at the close — never a naked mid-scene pivot.
+
+  - name: anti-pattern-clean-catharsis
+    kind: ships_red
+    detector: none
+    description: Clean Pixar catharsis — Want resolved, theme landed, world fixed.
+    fixture_script: ships-red/clean-catharsis.md
+    red_reason: >-
+      By-ear: his catharsis is dirty — the squalor stays in frame. A clean, fixed-
+      world resolution reads false on him.

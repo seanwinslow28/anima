@@ -1,0 +1,45 @@
+{
+  "slug": "figgy-pudding",
+  "logline": "A dessert-based home invasion conscripts two people who've quietly quit on their marriage into the kitchen together — and the dirty victory is that, for one wrecked-window hour, they're on the same side and don't hate it.",
+  "beats": [
+    {
+      "id": 1,
+      "title": "The Dinner",
+      "intent": "DECLARE an ironic-narrator title ('The Mahoneys had everything'); PUNCTURE to Greta and Doug eating a gray, weeping casserole in silence. The doorbell rings like a mercy.",
+      "emotional_beat": "dead-air resignation",
+      "cast": ["greta", "doug"],
+      "feel": "cold open — let the silence sit",
+      "notes": "the inedible dinner IS the marriage"
+    },
+    {
+      "id": 2,
+      "title": "The Carol Turns",
+      "intent": "DECLARE the carolers softening the couple ('real Christmas, how nice'); PUNCTURE as the lyric curdles into a demand — they retreat, kill the porch light, and the carolers do not leave.",
+      "emotional_beat": "unease creeping in",
+      "cast": ["greta", "doug"]
+    },
+    {
+      "id": 3,
+      "title": "The Fig",
+      "intent": "DECLARE Doug's dismissal ('It's kids. Ignore it.') at a midnight crash; PUNCTURE as the carol restarts closer and a second fig lands — a home invasion treated as a noise complaint.",
+      "emotional_beat": "absurd under-reaction",
+      "cast": ["greta", "doug"]
+    },
+    {
+      "id": 4,
+      "title": "The Kitchen",
+      "intent": "DECLARE 'We are not making these people a single thing'; PUNCTURE to both elbow-deep in flour building a pudding for the terrorists. The thaw is built only through action — the wordless bowl handoff, the spoon takeover, the four-note hum.",
+      "emotional_beat": "reluctant alliance, warming",
+      "cast": ["greta", "doug"],
+      "notes": "loaded objects: the fig-as-projectile, the mixing bowl handed over"
+    },
+    {
+      "id": 5,
+      "title": "The Handoff / Dirty Victory",
+      "intent": "DECLARE the pudding delivered and the carolers gone silent — siege won; PUNCTURE with a callback to Beat 1: they eat the leftovers standing in the wreck, in coats, snow blowing in, and it's the first food either enjoys.",
+      "emotional_beat": "clawed, unspoken warmth",
+      "cast": ["greta", "doug"],
+      "notes": "dirty-victory + callback closer; the word 'marriage' never appears"
+    }
+  ]
+}
