@@ -136,7 +136,10 @@ class StoryboardArtistNode:
                 raise RuntimeError(f"Bea's Sonnet authoring call failed: {resp.error}")
             parsed = self._parse(resp.text)
             _atomic_write(storyboard_path, parsed["storyboard_md"])
-            _atomic_write(shots_path, yaml.safe_dump(parsed["shots_yaml"], sort_keys=False))
+            _atomic_write(
+                shots_path,
+                yaml.safe_dump(parsed["shots_yaml"], sort_keys=False, allow_unicode=True),
+            )
 
             try:
                 shot_list = load_shots(shots_path, known_namespaces=known_namespaces)
