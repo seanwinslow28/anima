@@ -30,7 +30,7 @@ from __future__ import annotations
 import argparse
 import sys
 
-from pipeline.cli import bible, patches, plan
+from pipeline.cli import bible, patches, plan, script
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -68,6 +68,31 @@ def main(argv: list[str] | None = None) -> int:
     mutate_p.add_argument("--brief-dir", required=True, type=str)
     mutate_p.add_argument("--run-dir", required=True, type=str)
     mutate_p.add_argument("--new-version", required=True, type=str)
+
+    # ----- script (Sam — scriptwriter) -----
+    script_p = sub.add_parser(
+        "script", help="Sam the scriptwriter — init / show / approve / mutate.",
+    )
+    script_sub = script_p.add_subparsers(dest="script_cmd", required=True)
+
+    s_init = script_sub.add_parser("init", help="Scaffold beats.json + script.md.")
+    s_init.add_argument("--target", required=True, type=str)
+
+    s_show = script_sub.add_parser("show", help="Render beats.json as a terminal tear sheet.")
+    s_show.add_argument("--beats", required=True, type=str)
+
+    s_approve = script_sub.add_parser("approve", help="Lock the brief's beats.json.")
+    s_approve.add_argument("--brief-dir", required=True, type=str)
+
+    s_mutate = script_sub.add_parser("mutate", help="Audited mutation of one beat field.")
+    s_mutate.add_argument("--force", action="store_true")
+    s_mutate.add_argument("--actor", default="", type=str)
+    s_mutate.add_argument("--reason", default="", type=str)
+    s_mutate.add_argument("--target", required=True, type=str, help="Beat id (int).")
+    s_mutate.add_argument("--field", required=True, type=str)
+    s_mutate.add_argument("--value", required=True, type=str)
+    s_mutate.add_argument("--brief-dir", required=True, type=str)
+    s_mutate.add_argument("--run-dir", required=True, type=str)
 
     # ----- bible (Cy — character designer) -----
     bible_p = sub.add_parser(
@@ -161,6 +186,25 @@ def main(argv: list[str] | None = None) -> int:
                 field=args.field,
                 value=args.value,
                 new_version=args.new_version,
+            )
+
+    if args.cmd == "script":
+        if args.script_cmd == "init":
+            return script.init_script(args.target)
+        if args.script_cmd == "show":
+            return script.show_script(args.beats)
+        if args.script_cmd == "approve":
+            return script.approve_script(args.brief_dir)
+        if args.script_cmd == "mutate":
+            return script.mutate_script(
+                run_dir=args.run_dir,
+                brief_dir=args.brief_dir,
+                force=args.force,
+                actor=args.actor,
+                reason=args.reason,
+                target=args.target,
+                field=args.field,
+                value=args.value,
             )
 
     if args.cmd == "bible":
