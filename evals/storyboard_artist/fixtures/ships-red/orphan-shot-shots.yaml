@@ -1,0 +1,41 @@
+# Ships-red: an orphan shot. All 5 beats are boarded, but shot 6 points at beat_id 9,
+# which does not exist in spark-shared-beats.json (beats 1-5). storyboard_validate must
+# raise "orphan". (Deterministic.)
+slug: SS
+frames:
+- id: 1
+  beat_id: 1
+  cast: [sean, claude-mascot]
+  beat: establishing two-shot
+  prompt: board it. pencil test register.
+  hold: 2
+- id: 2
+  beat_id: 2
+  cast: [sean, claude-mascot]
+  beat: the draw
+  prompt: board it. pencil test register.
+  hold: 2
+- id: 3
+  beat_id: 3
+  cast: [sean, claude-mascot]
+  beat: the notice
+  prompt: board it. pencil test register.
+  hold: 2
+- id: 4
+  beat_id: 4
+  cast: [sean, claude-mascot]
+  beat: the delight
+  prompt: board it. pencil test register.
+  hold: 2
+- id: 5
+  beat_id: 5
+  cast: [sean, claude-mascot]
+  beat: the settle
+  prompt: board it. pencil test register.
+  hold: 2
+- id: 6
+  beat_id: 9
+  cast: [sean, claude-mascot]
+  beat: a shot for a beat that does not exist
+  prompt: board it. pencil test register.
+  hold: 2
