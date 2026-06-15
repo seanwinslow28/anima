@@ -1,0 +1,37 @@
+# Ships-red: a script<->board conflict. Beat 3 ("The notice") in spark-shared-beats.json
+# is about the mascot (cast [claude-mascot]); this board drops it from shot 3 (boards sean
+# only), so the beat's focal character is missing from its shot. storyboard_validate must
+# raise "conflict" (beat.cast not a subset of shot.cast). (Deterministic.)
+slug: SS
+frames:
+- id: 1
+  beat_id: 1
+  cast: [sean, claude-mascot]
+  beat: establishing two-shot
+  prompt: board it. pencil test register.
+  hold: 2
+- id: 2
+  beat_id: 2
+  cast: [sean, claude-mascot]
+  beat: the draw
+  prompt: board it. pencil test register.
+  hold: 2
+- id: 3
+  beat_id: 3
+  cast: [sean]                 # drops claude-mascot, whom beat 3 is about
+  beat: the notice
+  prompt: board it. pencil test register.
+  chain_anchors: [sean]
+  hold: 2
+- id: 4
+  beat_id: 4
+  cast: [sean, claude-mascot]
+  beat: the delight
+  prompt: board it. pencil test register.
+  hold: 2
+- id: 5
+  beat_id: 5
+  cast: [sean, claude-mascot]
+  beat: the settle
+  prompt: board it. pencil test register.
+  hold: 2

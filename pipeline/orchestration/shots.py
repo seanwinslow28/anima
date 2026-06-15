@@ -15,8 +15,8 @@ from pathlib import Path
 import yaml
 
 _SLUG_RE = re.compile(r"^[A-Za-z0-9_-]+$")
-_TOP_KEYS = {"slug", "frames"}
-_FRAME_KEYS = {"id", "cast", "beat", "prompt", "extra_references", "chain_anchors", "hold"}
+_TOP_KEYS = {"slug", "frames", "locked"}
+_FRAME_KEYS = {"id", "cast", "beat", "prompt", "extra_references", "chain_anchors", "hold", "beat_id"}
 
 
 @dataclass(frozen=True)
@@ -28,12 +28,14 @@ class Shot:
     extra_references: list[str] = field(default_factory=list)
     chain_anchors: list[str] = field(default_factory=list)  # ⊆ cast; default: all of cast
     hold: int = 2                # on-twos default
+    beat_id: int | None = None   # Bea's beat->shot link (Phase 3b); inert downstream
 
 
 @dataclass(frozen=True)
 class ShotList:
     slug: str
     frames: list[Shot]
+    locked: bool = False         # storyboard-approve curation flag; inert downstream
 
     def by_id(self, n: int) -> Shot:
         for s in self.frames:
@@ -48,6 +50,9 @@ def load_shots(path: Path, *, known_namespaces: set[str]) -> ShotList:
     unknown_top = set(raw) - _TOP_KEYS
     if unknown_top:
         raise ValueError(f"shots.yaml: unknown top-level key(s) {sorted(unknown_top)}")
+    locked = raw.get("locked", False)
+    if not isinstance(locked, bool):
+        raise ValueError(f"shots.yaml: locked must be a bool, got {locked!r}")
     slug = raw.get("slug")
     if not slug or not _SLUG_RE.match(str(slug)):
         raise ValueError(f"shots.yaml: slug must match [A-Za-z0-9_-]+, got {slug!r}")
@@ -96,6 +101,11 @@ def load_shots(path: Path, *, known_namespaces: set[str]) -> ShotList:
         hold = entry.get("hold", 2)
         if not isinstance(hold, int) or hold < 1:
             raise ValueError(f"shots.yaml frame {fid}: hold must be an int >= 1, got {hold!r}")
+        beat_id = entry.get("beat_id")
+        if beat_id is not None and (not isinstance(beat_id, int) or beat_id < 1):
+            raise ValueError(
+                f"shots.yaml frame {fid}: beat_id must be an int >= 1 when present, got {beat_id!r}"
+            )
         frames.append(
             Shot(
                 id=fid,
@@ -105,9 +115,10 @@ def load_shots(path: Path, *, known_namespaces: set[str]) -> ShotList:
                 extra_references=[str(p) for p in (entry.get("extra_references") or [])],
                 chain_anchors=list(chain_anchors),
                 hold=hold,
+                beat_id=beat_id,
             )
         )
-    return ShotList(slug=str(slug), frames=frames)
+    return ShotList(slug=str(slug), frames=frames, locked=locked)
 
 
 def read_slug(path: Path) -> str | None:

@@ -1,0 +1,59 @@
+# Bea the Storyboard Artist — eval cases (scaffold stage).
+#
+# Unlike Sam's by-ear voice defects, Bea's named failure modes — shot-coverage
+# gaps, orphan shots, and script<->board cast conflicts — are DETERMINISTIC
+# (beat_id makes the beat<->shot link checkable), so the ships-red cases are
+# GREEN catches here: storyboard_validate must raise. The composition/taste
+# pairwise harness + the Sonnet/Gemini/Codex bake-off are DEFERRED (campaign
+# items) — see README.md.
+#
+# Two kinds:
+#   - positive: a beat_id-annotated ground-truth board that must round-trip
+#     through load_shots + Bea's deterministic storyboard_validate (coverage +
+#     conflict) against its source beat sheet.
+#   - ships_red (detector: structural): a malformed board that storyboard_validate
+#     must reject with the expected error.
+
+cases:
+  # ---------- positive: ground-truth board ----------
+  - name: spark-shared-board-plumbing
+    kind: positive
+    description: >-
+      The Spark, Shared — the beat_id-annotated ground-truth board derived from the
+      shipped briefs/2026-06-10-spark-shared/shots.yaml. Tests the beats->board
+      plumbing/coverage contract: every beat boarded, no orphans, every shot keeps
+      its beat's focal cast (note beat 3 is mascot-only but its two-shot boards
+      both — legal under beat.cast subset of shot.cast).
+    known_namespaces: [sean, claude-mascot]
+    beats: spark-shared-beats.json
+    expected_shots: spark-shared-expected-shots.yaml
+
+  # ---------- ships-red: deterministic structural defects (GREEN catches) ----------
+  - name: coverage-gap
+    kind: ships_red
+    detector: structural
+    description: A beat with no shot — the shot-coverage-gap failure class.
+    known_namespaces: [sean, claude-mascot]
+    beats: spark-shared-beats.json
+    fixture_shots: ships-red/coverage-gap-shots.yaml
+    expect_error: coverage gap
+
+  - name: orphan-shot
+    kind: ships_red
+    detector: structural
+    description: A shot pointing at a beat_id that does not exist in the sheet.
+    known_namespaces: [sean, claude-mascot]
+    beats: spark-shared-beats.json
+    fixture_shots: ships-red/orphan-shot-shots.yaml
+    expect_error: orphan
+
+  - name: cast-conflict
+    kind: ships_red
+    detector: structural
+    description: >-
+      A shot that drops a character its beat is about — the script<->board
+      conflict class (beat.cast not a subset of shot.cast).
+    known_namespaces: [sean, claude-mascot]
+    beats: spark-shared-beats.json
+    fixture_shots: ships-red/cast-conflict-shots.yaml
+    expect_error: conflict

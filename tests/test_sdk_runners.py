@@ -113,3 +113,30 @@ def test_invoke_sonnet_text_stub_returns_adversarial_envelope(monkeypatch):
     assert "low_signal" in payload
     # The stub flags low_signal so Maya's second-Opus escalation path fires.
     assert payload["low_signal"] is True
+
+
+def test_invoke_sonnet_text_accepts_custom_stub_fn(monkeypatch):
+    """A caller (e.g. Bea) can override stub_fn so the credential-free stub
+    round-trips through its own parser, just like Sam does on invoke_opus_text."""
+    from pipeline.agents import sdk_runners
+
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.setattr(sdk_runners, "_sdk_available", lambda: False)
+
+    def _custom_stub(prompt: str) -> sdk_runners.SDKResponse:
+        return sdk_runners.SDKResponse(
+            model=sdk_runners.STUB_MODEL,
+            text=json.dumps({"bea_shaped": True}),
+            duration_s=0.0,
+            exit_code=0,
+            error=None,
+            stub_fallback=True,
+        )
+
+    resp = asyncio.run(sdk_runners.invoke_sonnet_text(
+        prompt="board the beats",
+        timeout_s=5,
+        stub_fn=_custom_stub,
+    ))
+    assert resp.stub_fallback is True
+    assert json.loads(resp.text) == {"bea_shaped": True}

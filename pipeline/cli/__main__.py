@@ -30,7 +30,7 @@ from __future__ import annotations
 import argparse
 import sys
 
-from pipeline.cli import bible, patches, plan, script
+from pipeline.cli import bible, patches, plan, script, storyboard
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -93,6 +93,34 @@ def main(argv: list[str] | None = None) -> int:
     s_mutate.add_argument("--value", required=True, type=str)
     s_mutate.add_argument("--brief-dir", required=True, type=str)
     s_mutate.add_argument("--run-dir", required=True, type=str)
+
+    # ----- storyboard (Bea — storyboard artist) -----
+    sb_p = sub.add_parser(
+        "storyboard", help="Bea the storyboard artist — init / show / approve / mutate.",
+    )
+    sb_sub = sb_p.add_subparsers(dest="storyboard_cmd", required=True)
+
+    sb_init = sb_sub.add_parser("init", help="Scaffold shots.yaml + storyboard.md.")
+    sb_init.add_argument("--target", required=True, type=str)
+
+    sb_show = sb_sub.add_parser("show", help="Render shots.yaml as a terminal tear sheet.")
+    sb_show.add_argument("--shots", required=True, type=str)
+
+    sb_approve = sb_sub.add_parser(
+        "approve", help="Curation gate: validate the curated shots.yaml, then lock it.",
+    )
+    sb_approve.add_argument("--brief-dir", required=True, type=str)
+    sb_approve.add_argument("--manifest", default="manifest.yaml", type=str)
+
+    sb_mutate = sb_sub.add_parser("mutate", help="Audited mutation of one frame field.")
+    sb_mutate.add_argument("--force", action="store_true")
+    sb_mutate.add_argument("--actor", default="", type=str)
+    sb_mutate.add_argument("--reason", default="", type=str)
+    sb_mutate.add_argument("--target", required=True, type=str, help="Frame id (int).")
+    sb_mutate.add_argument("--field", required=True, type=str)
+    sb_mutate.add_argument("--value", required=True, type=str)
+    sb_mutate.add_argument("--brief-dir", required=True, type=str)
+    sb_mutate.add_argument("--run-dir", required=True, type=str)
 
     # ----- bible (Cy — character designer) -----
     bible_p = sub.add_parser(
@@ -197,6 +225,25 @@ def main(argv: list[str] | None = None) -> int:
             return script.approve_script(args.brief_dir)
         if args.script_cmd == "mutate":
             return script.mutate_script(
+                run_dir=args.run_dir,
+                brief_dir=args.brief_dir,
+                force=args.force,
+                actor=args.actor,
+                reason=args.reason,
+                target=args.target,
+                field=args.field,
+                value=args.value,
+            )
+
+    if args.cmd == "storyboard":
+        if args.storyboard_cmd == "init":
+            return storyboard.init_storyboard(args.target)
+        if args.storyboard_cmd == "show":
+            return storyboard.show_storyboard(args.shots)
+        if args.storyboard_cmd == "approve":
+            return storyboard.approve_storyboard(args.brief_dir, args.manifest)
+        if args.storyboard_cmd == "mutate":
+            return storyboard.mutate_storyboard(
                 run_dir=args.run_dir,
                 brief_dir=args.brief_dir,
                 force=args.force,

@@ -404,13 +404,20 @@ async def invoke_sonnet_text(
     *,
     prompt: str,
     timeout_s: int = 120,
+    stub_fn=_stub_sonnet_text,
 ) -> SDKResponse:
-    """Invoke Sonnet 4.6 with a text-only prompt. Maya's adversarial validation pass."""
+    """Invoke Sonnet 4.6 with a text-only prompt. Maya's adversarial validation pass.
+
+    stub_fn defaults to Maya's adversarial-validation stub. A caller whose parser
+    expects a different envelope shape passes its own (e.g. Bea the storyboard
+    artist passes _stub_bea_text so the credential-free stub round-trips through
+    load_shots). Backward-compatible: existing callers keep the validation stub.
+    """
     return await _invoke_text(
         model=SONNET_MODEL,
         prompt=prompt,
         timeout_s=timeout_s,
-        stub_fn=_stub_sonnet_text,
+        stub_fn=stub_fn,
     )
 
 

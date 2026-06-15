@@ -1,0 +1,30 @@
+# Ships-red: a coverage gap. Validated against spark-shared-beats.json (beats 1-5),
+# this board boards only beats 1, 2, 4, 5 — beat 3 ("The notice") has NO shot.
+# storyboard_validate must raise "coverage gap". (Deterministic — beat_id makes it
+# checkable; Bea's named failure class, caught now, not deferred.)
+slug: SS
+frames:
+- id: 1
+  beat_id: 1
+  cast: [sean, claude-mascot]
+  beat: establishing two-shot
+  prompt: board it. pencil test register.
+  hold: 2
+- id: 2
+  beat_id: 2
+  cast: [sean, claude-mascot]
+  beat: the draw
+  prompt: board it. pencil test register.
+  hold: 2
+- id: 3
+  beat_id: 4
+  cast: [sean, claude-mascot]
+  beat: the delight
+  prompt: board it. pencil test register.
+  hold: 2
+- id: 4
+  beat_id: 5
+  cast: [sean, claude-mascot]
+  beat: the settle
+  prompt: board it. pencil test register.
+  hold: 2
