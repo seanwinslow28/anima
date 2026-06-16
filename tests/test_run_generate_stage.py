@@ -40,6 +40,47 @@ def _start_and_approve(root, brief_dir, *, run_name="tt-run"):
     return rc, run_dir
 
 
+def test_enter_generate_is_reusable_from_storyboard_stage(tmp_path, monkeypatch):
+    """The refactor's payoff: enter_generate (load_shots -> validate -> seed ->
+    advance -> fan frame 1) is callable from STORYBOARD, not only the plan gate.
+    This is the seam the storyboard gate reuses, so both entry paths can't drift."""
+    import yaml
+
+    from pipeline.criteria import load_all_criteria
+    from pipeline.orchestration import generate_stage
+    from pipeline.orchestration.plan_stage import wire_brief_criteria
+
+    root, brief_dir = mk_project(tmp_path, monkeypatch)
+    stub_critic_env(monkeypatch)
+    run_dir = root / "runs" / "eg-run"
+    assert run_cli.main(["--brief", str(brief_dir), "--stub", "--run-dir", str(run_dir)]) == 0
+    state = st.load_state(run_dir)
+    # Walk the authoring stages directly (unit-isolating enter_generate from the gates).
+    st.advance_stage(state, "SCRIPT")
+    st.advance_stage(state, "STORYBOARD")
+
+    manifest = yaml.safe_load((root / "manifest.yaml").read_text())
+    wire_brief_criteria(manifest, state["brief_dir"])
+    bundle = load_all_criteria(manifest)
+
+    fanned: list[int | None] = []
+
+    def fake_fan(s, m, b, rd):
+        fanned.append(st.current_frame(s))
+        return 0
+
+    monkeypatch.setattr(generate_stage, "generate_current_frame", fake_fan)
+
+    rc = generate_stage.enter_generate(state, manifest, bundle, run_dir)
+
+    assert rc == 0
+    assert state["stage"] == "GENERATE"
+    assert state["frame_order"] == [1, 2]
+    assert state["holds"] == {"1": 2, "2": 3}
+    assert fanned == [1]  # frame 1 fanned after seeding
+    assert st.load_state(run_dir)["stage"] == "GENERATE"  # persisted
+
+
 def test_approve_plan_generates_frame1_through_the_fan(tmp_path, monkeypatch, capsys):
     root, brief_dir = mk_project(tmp_path, monkeypatch)
     stub_critic_env(monkeypatch)

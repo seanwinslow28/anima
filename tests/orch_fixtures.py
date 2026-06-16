@@ -59,10 +59,23 @@ def default_shots() -> dict:
     }
 
 
-def mk_project(tmp_path: Path, monkeypatch, *, shots: dict | None = None) -> tuple[Path, Path]:
-    """Returns (project_root, brief_dir); cwd is the project root afterwards."""
+def mk_project(
+    tmp_path: Path,
+    monkeypatch,
+    *,
+    shots: dict | None = None,
+    with_shots: bool = True,
+    cast: tuple[tuple[str, str], ...] = CAST_FIXTURE,
+) -> tuple[Path, Path]:
+    """Returns (project_root, brief_dir); cwd is the project root afterwards.
+
+    with_shots=False omits shots.yaml — the authoring brief shape (Sam/Bea draft
+    the board). cast overrides the (folder_key, ir_namespace) pairs so the
+    authoring walk can build sean/claude-mascot Bibles matching Sam's stub cast.
+    Defaults preserve the legacy alpha/beta + shots.yaml project byte-for-byte.
+    """
     root = tmp_path / "proj"
-    for folder_key, ns in CAST_FIXTURE:
+    for folder_key, ns in cast:
         write_bible(root, folder_key, ns)
 
     brief_dir = root / "briefs" / "piece"
@@ -70,10 +83,11 @@ def mk_project(tmp_path: Path, monkeypatch, *, shots: dict | None = None) -> tup
     (brief_dir / "00_studio_brief.md").write_text(
         "# Studio Brief\n\nA tiny two-character test piece.\n", encoding="utf-8"
     )
-    (brief_dir / "shots.yaml").write_text(
-        yaml.safe_dump(shots if shots is not None else default_shots()),
-        encoding="utf-8",
-    )
+    if with_shots:
+        (brief_dir / "shots.yaml").write_text(
+            yaml.safe_dump(shots if shots is not None else default_shots()),
+            encoding="utf-8",
+        )
 
     # The real (self-contained) assembler — AssembleNode shells `bash
     # pipeline/assemble.sh` CWD-relative, so the hermetic project carries it.
@@ -86,14 +100,11 @@ def mk_project(tmp_path: Path, monkeypatch, *, shots: dict | None = None) -> tup
     manifest = {
         "project": {"name": "test-piece"},
         "characters": {
-            "alpha": {"folder": "characters/alpha/", "style_register": "pencil-test-colored"},
-            "beta": {"folder": "characters/beta/", "style_register": "pencil-test-colored"},
+            fk: {"folder": f"characters/{fk}/", "style_register": "pencil-test-colored"}
+            for fk, _ in cast
         },
         "criteria_sources": {
-            "bibles": [
-                "characters/alpha/acceptance_criteria.json",
-                "characters/beta/acceptance_criteria.json",
-            ],
+            "bibles": [f"characters/{fk}/acceptance_criteria.json" for fk, _ in cast],
         },
     }
     (root / "manifest.yaml").write_text(yaml.safe_dump(manifest), encoding="utf-8")

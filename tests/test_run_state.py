@@ -101,6 +101,59 @@ def test_advance_stage_rejects_illegal_transition():
         st.advance_stage(s, "PLAN")  # no going back
 
 
+# ---------- Phase 3 (SCRIPT + STORYBOARD) conditional graph ----------
+
+
+def test_stages_include_script_and_storyboard_in_order():
+    assert st.STAGES == ("PLAN", "SCRIPT", "STORYBOARD", "GENERATE", "ASSEMBLE", "DONE")
+
+
+def test_plan_can_branch_to_either_script_or_generate():
+    # back-compat: PLAN -> GENERATE stays legal (a provided shots.yaml)
+    s = _new_state()
+    st.advance_stage(s, "GENERATE")
+    assert s["stage"] == "GENERATE"
+    # authoring: PLAN -> SCRIPT is the other legal target
+    s2 = _new_state()
+    st.advance_stage(s2, "SCRIPT")
+    assert s2["stage"] == "SCRIPT"
+
+
+def test_authoring_chain_script_to_storyboard_to_generate():
+    s = _new_state()
+    st.advance_stage(s, "SCRIPT")
+    # SCRIPT only goes to STORYBOARD (not straight to GENERATE)
+    with pytest.raises(st.StateError):
+        st.advance_stage(s, "GENERATE")
+    st.advance_stage(s, "STORYBOARD")
+    assert s["stage"] == "STORYBOARD"
+    st.advance_stage(s, "GENERATE")
+    assert s["stage"] == "GENERATE"
+
+
+def test_new_state_records_needs_storyboard():
+    # default (back-compat) is False; authoring runs flip it True
+    assert _new_state()["needs_storyboard"] is False
+    s = st.new_state(
+        run_id="r", brief_dir="b", manifest_path="m", shots_path="",
+        slug="X", stub=True, cast=_cast(), needs_storyboard=True,
+    )
+    assert s["needs_storyboard"] is True
+
+
+def test_next_hint_covers_script_and_storyboard_gates():
+    s = _new_state()
+    s["stage"] = "SCRIPT"
+    s["script"] = {"status": "drafted"}
+    assert "--approve-script" in st._next_hint(s)
+
+    s["stage"] = "STORYBOARD"
+    s["storyboard"] = {"status": "drafted"}
+    hint = st._next_hint(s)
+    assert "--approve-storyboard" in hint
+    assert "shots.yaml" in hint  # the curation instruction
+
+
 def test_current_frame_first_non_approved():
     s = _new_state()
     s["frame_order"] = [1, 2, 3]
