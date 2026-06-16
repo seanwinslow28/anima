@@ -253,6 +253,51 @@ def run_frame_fan(
     return 0
 
 
+def enter_generate(state: dict, manifest: dict, bundle, run_dir: Path) -> int:
+    """Load the board, validate inputs, seed frame state, advance to GENERATE, fan frame 1.
+
+    The single shared entry into the GENERATE stage — called from the plan gate
+    (back-compat: a brief that carries a shots.yaml) AND the storyboard gate
+    (authoring: the curated shots.yaml Bea drafted). Criteria locking + bundle
+    building stay with the caller (they're gate-level); this owns everything from
+    the board down, so the two entry paths can't drift. Returns 2 on a bad board
+    or a missing input file (fail fast, before any generation).
+    """
+    run_dir = Path(run_dir)
+    known = {m["ir_namespace"] for m in state["cast"] if m["ir_namespace"]}
+    try:
+        shot_list = load_shots(Path(state["shots_path"]), known_namespaces=known)
+    except (ValueError, OSError) as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 2
+
+    # Fail fast before any generation: cast anchors + extra references must exist.
+    members = namespace_to_member(state["cast"])
+    missing: list[str] = []
+    for shot in shot_list.frames:
+        for ns in shot.cast:
+            anchor = Path(members[ns]["anchor"])
+            if not anchor.exists():
+                missing.append(str(anchor))
+        for ref in shot.extra_references:
+            if not Path(ref).exists():
+                missing.append(ref)
+    if missing:
+        print(f"error: missing input file(s): {sorted(set(missing))}", file=sys.stderr)
+        return 2
+
+    state["frame_order"] = [s.id for s in shot_list.frames]
+    state["holds"] = {str(s.id): s.hold for s in shot_list.frames}
+    for shot in shot_list.frames:
+        st.set_frame(
+            state, shot.id,
+            {"status": "pending", "attempts": [], "approved_attempt": None, "approved_path": None},
+        )
+    st.advance_stage(state, "GENERATE")
+    st.save_state(run_dir, state)
+    return generate_current_frame(state, manifest, bundle, run_dir)
+
+
 def generate_current_frame(state: dict, manifest: dict, bundle, run_dir: Path,
                            *, note: str | None = None, escalate: bool = False) -> int:
     n = st.current_frame(state)
