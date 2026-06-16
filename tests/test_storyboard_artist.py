@@ -146,6 +146,19 @@ def test_stub_run_emits_storyboard_and_valid_shots(tmp_path, monkeypatch):
     assert result.notes
 
 
+def test_stub_run_dumps_raw_response(tmp_path, monkeypatch):
+    """Bea dumps her raw model envelope to run_dir/bea_raw.txt (mirrors Maya's
+    maya_raw_pass1.txt) — visibility for the live run; best-effort, never fatal."""
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    brief_dir = tmp_path / "brief"
+    _write_brief(brief_dir)
+    StoryboardArtistNode().run(_ctx(tmp_path, brief_dir))
+
+    raw_path = tmp_path / "bea_raw.txt"  # _ctx sets run_dir=tmp_path
+    assert raw_path.exists()
+    assert raw_path.read_text(encoding="utf-8").strip()
+
+
 def test_stub_draft_has_no_box_drawing(tmp_path, monkeypatch):
     monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
     brief_dir = tmp_path / "brief"

@@ -33,7 +33,7 @@ from typing import ClassVar
 from pipeline.agents import AgentContext, AgentResult, CostEstimate, register_node
 # Reuse Maya's battle-tested envelope hardening (brace-balanced scan tolerating
 # a persona preamble — "Sam here — ..." — and ```json fences / nested braces).
-from pipeline.agents.planner import _parse_json_envelope
+from pipeline.agents.planner import _dump_raw, _parse_json_envelope
 from pipeline.agents.sdk_runners import STUB_MODEL, SDKResponse, invoke_opus_text
 from pipeline.orchestration.beats import BeatSheet, load_beats
 from pipeline.orchestration.cast import derive_cast
@@ -100,6 +100,9 @@ class ScriptwriterNode:
         )
         if not resp.ok:
             raise RuntimeError(f"Sam's Opus authoring call failed: {resp.error}")
+        # Best-effort raw dump BEFORE parsing — mirrors Maya's maya_raw_pass1.txt
+        # so a parse failure on a live run still leaves the raw envelope on disk.
+        _dump_raw(ctx.run_dir, "sam_raw.txt", resp.text)
         parsed = self._parse(resp.text)
         script_md: str = parsed["script_md"]
         beats_json: dict = parsed["beats_json"]

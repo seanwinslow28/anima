@@ -36,7 +36,7 @@ import yaml
 from pipeline.agents import AgentContext, AgentResult, CostEstimate, register_node
 # Reuse Maya's battle-tested envelope hardening (brace-balanced scan tolerating
 # a persona preamble — "Bea here — ..." — and ```json fences / nested braces).
-from pipeline.agents.planner import _parse_json_envelope
+from pipeline.agents.planner import _dump_raw, _parse_json_envelope
 from pipeline.agents.sdk_runners import STUB_MODEL, SDKResponse, invoke_sonnet_text
 from pipeline.orchestration.beats import BeatSheet, load_beats
 from pipeline.orchestration.cast import derive_cast
@@ -134,6 +134,9 @@ class StoryboardArtistNode:
             )
             if not resp.ok:
                 raise RuntimeError(f"Bea's Sonnet authoring call failed: {resp.error}")
+            # Best-effort raw dump BEFORE parsing — mirrors Maya's maya_raw_pass1.txt.
+            # On a re-roll the last attempt overwrites (the attempt actually used).
+            _dump_raw(ctx.run_dir, "bea_raw.txt", resp.text)
             parsed = self._parse(resp.text)
             _atomic_write(storyboard_path, parsed["storyboard_md"])
             _atomic_write(
