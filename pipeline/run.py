@@ -6,8 +6,14 @@ to look at, and exits:
 
   python -m pipeline.run --brief <dir> [--slug S] [--run-dir <dir>] [--stub]
       # start: derive cast, run PLAN (drive Maya), stop at the plan gate.
+      # A brief WITHOUT a shots.yaml is an authoring run (Sam -> Bea draft the
+      # board); --slug is required there. A brief WITH a shots.yaml is back-compat.
   python -m pipeline.run --resume <run-dir> --approve-plan
-      # lock criteria, enter GENERATE, generate frame 1, stop at its eye gate.
+      # back-compat: lock criteria, enter GENERATE. authoring: enter SCRIPT (Sam).
+  python -m pipeline.run --resume <run-dir> --approve-script
+      # authoring: lock beats.json, run Bea, stop at the storyboard curation gate.
+  python -m pipeline.run --resume <run-dir> --approve-storyboard
+      # authoring: validate + lock the curated shots.yaml, enter GENERATE.
   python -m pipeline.run --resume <run-dir> --approve-frame N [--attempt K]
       # lock attempt -> approved/, chain + generate N+1 (or assemble if last).
   python -m pipeline.run --resume <run-dir> --retry-frame N --note "<correction>"
@@ -33,7 +39,7 @@ from pathlib import Path
 import yaml
 
 from pipeline.criteria import load_all_criteria
-from pipeline.orchestration import generate_stage, plan_stage
+from pipeline.orchestration import generate_stage, plan_stage, script_stage, storyboard_stage
 from pipeline.orchestration import state as st
 from pipeline.orchestration.cast import derive_cast
 from pipeline.orchestration.shots import read_slug
@@ -68,7 +74,11 @@ def build_parser() -> argparse.ArgumentParser:
                    help="Permit ANTHROPIC_API_KEY set (bills the API, not the subscription). Default: refuse.")
     # --resume actions (exactly one required)
     p.add_argument("--approve-plan", action="store_true",
-                   help="Approve the drafted plan: lock criteria, enter GENERATE.")
+                   help="Approve the drafted plan: lock criteria, enter GENERATE (or SCRIPT, authoring).")
+    p.add_argument("--approve-script", action="store_true",
+                   help="Approve the drafted script: lock beats.json, run Bea, enter STORYBOARD.")
+    p.add_argument("--approve-storyboard", action="store_true",
+                   help="Approve the curated board: validate + lock shots.yaml, enter GENERATE.")
     p.add_argument("--approve-frame", type=int, metavar="N",
                    help="Approve frame N's attempt (Sean's eye said go).")
     p.add_argument("--attempt", type=int, metavar="K",
@@ -147,11 +157,16 @@ def _start(args: argparse.Namespace) -> int:
         print(f"error: Studio Brief not found at {brief_dir / '00_studio_brief.md'}",
               file=sys.stderr)
         return 2
-    shots_path = brief_dir / "shots.yaml"
-    slug = args.slug or (read_slug(shots_path) if shots_path.exists() else None)
+    # Auto-detect mode: a brief carrying a shots.yaml is back-compat (PLAN ->
+    # GENERATE); without one it's an authoring run (PLAN -> SCRIPT -> STORYBOARD,
+    # Sam + Bea draft the board). The slug names the run dir, fixed once at start.
+    src_shots = brief_dir / "shots.yaml"
+    needs_storyboard = not src_shots.exists()
+    slug = args.slug or (read_slug(src_shots) if src_shots.exists() else None)
     if not slug:
         print(
-            f"error: no slug — add a slug: to {shots_path} or pass --slug.",
+            "error: no slug — an authoring brief (no shots.yaml) requires --slug; "
+            f"a back-compat brief needs a slug: in {src_shots}.",
             file=sys.stderr,
         )
         return 2
@@ -191,6 +206,7 @@ def _start(args: argparse.Namespace) -> int:
         slug=str(slug),
         stub=bool(args.stub),
         cast=cast_table,
+        needs_storyboard=needs_storyboard,
     )
     st.save_state(run_dir, state)
     return plan_stage.run_plan_stage(
@@ -201,6 +217,8 @@ def _start(args: argparse.Namespace) -> int:
 def _resume(args: argparse.Namespace) -> int:
     actions = [
         bool(args.approve_plan),
+        bool(args.approve_script),
+        bool(args.approve_storyboard),
         args.approve_frame is not None,
         args.retry_frame is not None,
         bool(args.assemble),
@@ -209,8 +227,8 @@ def _resume(args: argparse.Namespace) -> int:
     if sum(actions) != 1:
         print(
             "error: --resume requires exactly one of "
-            "--approve-plan | --approve-frame N | --retry-frame N --note | "
-            "--assemble | --status",
+            "--approve-plan | --approve-script | --approve-storyboard | "
+            "--approve-frame N | --retry-frame N --note | --assemble | --status",
             file=sys.stderr,
         )
         return 2
@@ -239,6 +257,19 @@ def _resume(args: argparse.Namespace) -> int:
             file=sys.stderr,
         )
         return 2
+    if args.approve_script and state["stage"] != "SCRIPT":
+        print(
+            f"error: --approve-script only applies in the SCRIPT stage (run is at {state['stage']}).",
+            file=sys.stderr,
+        )
+        return 2
+    if args.approve_storyboard and state["stage"] != "STORYBOARD":
+        print(
+            "error: --approve-storyboard only applies in the STORYBOARD stage "
+            f"(run is at {state['stage']}).",
+            file=sys.stderr,
+        )
+        return 2
     if (args.approve_frame is not None or args.retry_frame is not None) \
             and state["stage"] != "GENERATE":
         print(
@@ -256,6 +287,10 @@ def _resume(args: argparse.Namespace) -> int:
 
     if args.approve_plan:
         return _do_approve_plan(args, state, run_dir)
+    if args.approve_script:
+        return _do_approve_script(args, state, run_dir)
+    if args.approve_storyboard:
+        return _do_approve_storyboard(args, state, run_dir)
     if args.approve_frame is not None:
         return _do_approve_frame(args, state, run_dir)
     if args.assemble:
@@ -271,6 +306,26 @@ def _do_approve_plan(args: argparse.Namespace, state: dict, run_dir: Path) -> in
     if manifest is None:
         return 2
     return plan_stage.approve_plan_gate(state, manifest, run_dir)
+
+
+def _do_approve_script(args: argparse.Namespace, state: dict, run_dir: Path) -> int:
+    rc = _api_key_guard(args)
+    if rc:
+        return rc
+    manifest = _load_manifest(state)
+    if manifest is None:
+        return 2
+    return script_stage.approve_script_gate(state, manifest, run_dir)
+
+
+def _do_approve_storyboard(args: argparse.Namespace, state: dict, run_dir: Path) -> int:
+    rc = _api_key_guard(args)
+    if rc:
+        return rc
+    manifest = _load_manifest(state)
+    if manifest is None:
+        return 2
+    return storyboard_stage.approve_storyboard_gate(state, manifest, run_dir)
 
 
 def _resume_manifest_and_bundle(state: dict) -> tuple[dict | None, object | None]:

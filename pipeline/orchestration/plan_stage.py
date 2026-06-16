@@ -22,7 +22,7 @@ from pipeline.agents import AgentContext
 from pipeline.agents.planner import PlannerNode
 from pipeline.cli.plan import approve_plan as _lock_brief_criteria
 from pipeline.criteria import load_all_criteria
-from pipeline.orchestration import generate_stage, guards
+from pipeline.orchestration import generate_stage, guards, script_stage
 from pipeline.orchestration import state as st
 
 
@@ -106,12 +106,21 @@ def approve_plan_gate(state: dict, manifest: dict, run_dir: Path) -> int:
     if rc != 0:
         return 2
 
-    wire_brief_criteria(manifest, state["brief_dir"])
-    bundle = load_all_criteria(manifest)
     state["plan"]["status"] = "approved"
 
-    # Back-compat (a brief that carries a shots.yaml): enter GENERATE now. The
-    # authoring branch (needs_storyboard) lands in step 3 — SCRIPT then STORYBOARD,
-    # with enter_generate reached at the storyboard gate instead.
+    # Authoring (no shots.yaml at start): hand off to SCRIPT (Sam), then STORYBOARD
+    # (Bea). Criteria are locked here (plan-level), but the bundle is rebuilt at the
+    # storyboard gate — the board (and so the GENERATE entry) doesn't exist yet.
+    if state.get("needs_storyboard"):
+        st.advance_stage(state, "SCRIPT")
+        st.save_state(run_dir, state)
+        print("plan approved — criteria locked; entering SCRIPT (Sam)")
+        return script_stage.run_script_stage(
+            state, manifest, run_dir, stub=state.get("stub", False)
+        )
+
+    # Back-compat (a brief that carries a shots.yaml): enter GENERATE now.
+    wire_brief_criteria(manifest, state["brief_dir"])
+    bundle = load_all_criteria(manifest)
     print("plan approved — criteria locked; entering GENERATE")
     return generate_stage.enter_generate(state, manifest, bundle, run_dir)
