@@ -22,7 +22,13 @@ import json
 import yaml
 
 from pipeline import run as run_cli
+from pipeline.agents import AgentResult
+from pipeline.agents.scriptwriter import ScriptwriterNode
+from pipeline.agents.storyboard_artist import StoryboardArtistNode
+from pipeline.orchestration import guards
 from pipeline.orchestration import state as st
+from pipeline.orchestration.script_stage import run_script_stage
+from pipeline.orchestration.storyboard_stage import run_storyboard_stage
 from tests.orch_fixtures import (
     fake_ffmpeg_path,
     mk_project,
@@ -175,6 +181,130 @@ def test_curation_gate_refuses_board_with_a_coverage_gap(tmp_path, monkeypatch, 
     assert rc == 2
     assert "coverage gap" in capsys.readouterr().err.lower()
     assert st.load_state(run_dir)["stage"] == "STORYBOARD"
+
+
+# ---------- the gate smokes: fail before the authoring spend ----------
+#
+# run_plan_stage smokes Opus before Maya; the script + storyboard gates now do
+# the matching pre-authoring smoke (Opus for Sam, Sonnet for Bea) so a broken
+# auth fails *before* the costed authoring call, not after (the post-hoc
+# stub-marker scan only catches a silently-stubbed call once it returns).
+
+
+def _stub_script_node(monkeypatch, run_dir):
+    """Replace Sam's node with a marker-free no-op; record if it ran."""
+    ran: list[bool] = []
+
+    def _run(self, ctx):
+        sp = run_dir / "script.md"; sp.write_text("clean", encoding="utf-8")
+        bp = run_dir / "beats.json"; bp.write_text("{}", encoding="utf-8")
+        ran.append(True)
+        return AgentResult(outputs={"script_path": str(sp), "beats_path": str(bp)}, notes="ok")
+
+    monkeypatch.setattr(ScriptwriterNode, "run", _run)
+    return ran
+
+
+def _stub_storyboard_node(monkeypatch, run_dir):
+    """Replace Bea's node with a marker-free no-op; record if it ran."""
+    ran: list[bool] = []
+
+    def _run(self, ctx):
+        sp = run_dir / "storyboard.md"; sp.write_text("clean", encoding="utf-8")
+        yp = run_dir / "shots.yaml"; yp.write_text("frames: []\n", encoding="utf-8")
+        ran.append(True)
+        return AgentResult(
+            outputs={"storyboard_path": str(sp), "shots_path": str(yp)}, notes="ok"
+        )
+
+    monkeypatch.setattr(StoryboardArtistNode, "run", _run)
+    return ran
+
+
+def test_script_gate_smokes_opus_on_nonstub_path(tmp_path, monkeypatch):
+    run_dir = tmp_path / "run"; run_dir.mkdir()
+    smoked: list[bool] = []
+    monkeypatch.setattr(guards, "smoke_live_opus", lambda: smoked.append(True))
+    ran = _stub_script_node(monkeypatch, run_dir)
+    state = {"brief_dir": str(tmp_path / "brief"), "stub": False}
+
+    rc = run_script_stage(state, {}, run_dir, stub=False)
+
+    assert rc == 0
+    assert smoked == [True]   # smoked before authoring
+    assert ran == [True]      # ...then proceeded
+
+
+def test_script_gate_does_not_smoke_under_stub(tmp_path, monkeypatch):
+    run_dir = tmp_path / "run"; run_dir.mkdir()
+    smoked: list[bool] = []
+    monkeypatch.setattr(guards, "smoke_live_opus", lambda: smoked.append(True))
+    _stub_script_node(monkeypatch, run_dir)
+    state = {"brief_dir": str(tmp_path / "brief"), "stub": True}
+
+    rc = run_script_stage(state, {}, run_dir, stub=True)
+
+    assert rc == 0
+    assert smoked == []   # $0 stub run never smokes
+
+
+def test_script_gate_guarderror_fails_before_authoring(tmp_path, monkeypatch):
+    run_dir = tmp_path / "run"; run_dir.mkdir()
+
+    def _boom():
+        raise guards.GuardError("Opus auth down")
+
+    monkeypatch.setattr(guards, "smoke_live_opus", _boom)
+    ran = _stub_script_node(monkeypatch, run_dir)
+    state = {"brief_dir": str(tmp_path / "brief"), "stub": False}
+
+    rc = run_script_stage(state, {}, run_dir, stub=False)
+
+    assert rc != 0       # non-zero — fail before spend
+    assert ran == []     # Sam never authored
+
+
+def test_storyboard_gate_smokes_sonnet_on_nonstub_path(tmp_path, monkeypatch):
+    run_dir = tmp_path / "run"; run_dir.mkdir()
+    smoked: list[bool] = []
+    monkeypatch.setattr(guards, "smoke_live_sonnet", lambda: smoked.append(True))
+    ran = _stub_storyboard_node(monkeypatch, run_dir)
+    state = {"brief_dir": str(tmp_path / "brief"), "stub": False}
+
+    rc = run_storyboard_stage(state, {}, run_dir, stub=False)
+
+    assert rc == 0
+    assert smoked == [True]
+    assert ran == [True]
+
+
+def test_storyboard_gate_does_not_smoke_under_stub(tmp_path, monkeypatch):
+    run_dir = tmp_path / "run"; run_dir.mkdir()
+    smoked: list[bool] = []
+    monkeypatch.setattr(guards, "smoke_live_sonnet", lambda: smoked.append(True))
+    _stub_storyboard_node(monkeypatch, run_dir)
+    state = {"brief_dir": str(tmp_path / "brief"), "stub": True}
+
+    rc = run_storyboard_stage(state, {}, run_dir, stub=True)
+
+    assert rc == 0
+    assert smoked == []
+
+
+def test_storyboard_gate_guarderror_fails_before_authoring(tmp_path, monkeypatch):
+    run_dir = tmp_path / "run"; run_dir.mkdir()
+
+    def _boom():
+        raise guards.GuardError("Sonnet auth down")
+
+    monkeypatch.setattr(guards, "smoke_live_sonnet", _boom)
+    ran = _stub_storyboard_node(monkeypatch, run_dir)
+    state = {"brief_dir": str(tmp_path / "brief"), "stub": False}
+
+    rc = run_storyboard_stage(state, {}, run_dir, stub=False)
+
+    assert rc != 0
+    assert ran == []
 
 
 def test_authoring_brief_requires_slug(tmp_path, monkeypatch):
