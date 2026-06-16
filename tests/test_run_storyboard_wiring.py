@@ -124,6 +124,59 @@ def test_backcompat_brief_with_shots_skips_to_generate(tmp_path, monkeypatch):
     assert "script" not in state  # authoring stages never ran
 
 
+# ---------- the curation gate: a human edit that breaks the board is refused ----------
+
+
+def _walk_to_storyboard_draft(tmp_path, monkeypatch):
+    """Drive PLAN -> SCRIPT -> STORYBOARD; return (run_dir, draft shots.yaml path)."""
+    root, brief_dir = mk_project(
+        tmp_path, monkeypatch, with_shots=False, cast=AUTHORING_CAST
+    )
+    stub_critic_env(monkeypatch)
+    run_dir = root / "runs" / "cure-run"
+    assert run_cli.main([
+        "--brief", str(brief_dir), "--stub", "--slug", "SS", "--run-dir", str(run_dir),
+    ]) == 0
+    assert run_cli.main(["--resume", str(run_dir), "--approve-plan"]) == 0
+    assert run_cli.main(["--resume", str(run_dir), "--approve-script"]) == 0
+    assert st.load_state(run_dir)["stage"] == "STORYBOARD"
+    return run_dir, run_dir / "brief" / "shots.yaml"
+
+
+def test_curation_gate_refuses_board_that_drops_a_beats_character(tmp_path, monkeypatch, capsys):
+    """Sean edits the draft to drop a character its beat carries — the gate refuses
+    (beat.cast ⊆ shot.cast, the #54 rule, re-run on the human-curated file)."""
+    run_dir, shots_path = _walk_to_storyboard_draft(tmp_path, monkeypatch)
+    data = yaml.safe_load(shots_path.read_text())
+    # Beat 1's cast is [sean, claude-mascot]; drop claude-mascot from its shot.
+    for f in data["frames"]:
+        if f["beat_id"] == 1:
+            f["cast"] = ["sean"]
+    shots_path.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+
+    rc = run_cli.main(["--resume", str(run_dir), "--approve-storyboard"])
+
+    assert rc == 2
+    assert "conflict" in capsys.readouterr().err.lower()
+    # not advanced, not locked — a broken board never reaches GENERATE
+    assert st.load_state(run_dir)["stage"] == "STORYBOARD"
+    assert yaml.safe_load(shots_path.read_text()).get("locked") is not True
+
+
+def test_curation_gate_refuses_board_with_a_coverage_gap(tmp_path, monkeypatch, capsys):
+    """Sean deletes the shot boarding a beat — coverage gap refused."""
+    run_dir, shots_path = _walk_to_storyboard_draft(tmp_path, monkeypatch)
+    data = yaml.safe_load(shots_path.read_text())
+    data["frames"] = [f for f in data["frames"] if f["beat_id"] != 3]  # unboard beat 3
+    shots_path.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+
+    rc = run_cli.main(["--resume", str(run_dir), "--approve-storyboard"])
+
+    assert rc == 2
+    assert "coverage gap" in capsys.readouterr().err.lower()
+    assert st.load_state(run_dir)["stage"] == "STORYBOARD"
+
+
 def test_authoring_brief_requires_slug(tmp_path, monkeypatch):
     root, brief_dir = mk_project(
         tmp_path, monkeypatch, with_shots=False, cast=AUTHORING_CAST
