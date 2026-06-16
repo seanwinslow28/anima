@@ -28,6 +28,14 @@ from pipeline.orchestration import state as st
 
 def run_script_stage(state: dict, manifest: dict, run_dir: Path, *, stub: bool) -> int:
     run_dir = Path(run_dir)
+    # Fail before spend — smoke the live Opus path before Sam authors (mirrors
+    # run_plan_stage). A broken auth fails here, not after a silent stub returns.
+    if not stub:
+        try:
+            guards.smoke_live_opus()
+        except guards.GuardError as e:
+            print(f"error: {e}", file=sys.stderr)
+            return 1
     print(f"\nDriving Sam — Phase 3a script for "
           f"{Path(state.get('brief_src') or state['brief_dir']).name}")
     print("  Opus 4.8 single authoring call -> deterministic structural pass")

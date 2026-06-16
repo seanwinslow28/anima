@@ -95,6 +95,23 @@ def test_stub_run_emits_script_and_valid_beats(tmp_path, monkeypatch):
     assert result.notes  # provenance recorded
 
 
+def test_stub_run_dumps_raw_response(tmp_path, monkeypatch):
+    """Sam dumps her raw model envelope to run_dir/sam_raw.txt (mirrors Maya's
+    maya_raw_pass1.txt) — visibility for the live run; best-effort, never fatal."""
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    brief_dir = tmp_path / "brief"
+    brief_dir.mkdir()
+    (brief_dir / "00_studio_brief.md").write_text(
+        "# Brief\nSean draws; the mascot notices and delights; the loop returns.\n",
+        encoding="utf-8",
+    )
+    ScriptwriterNode().run(_ctx(tmp_path, brief_dir))
+
+    raw_path = tmp_path / "sam_raw.txt"  # _ctx sets run_dir=tmp_path
+    assert raw_path.exists()
+    assert raw_path.read_text(encoding="utf-8").strip()
+
+
 # ----- prompt assembly (the Opus authoring path wiring) -----
 
 def test_prompt_loads_voice_instrument_and_context():
