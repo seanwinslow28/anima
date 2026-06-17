@@ -1,0 +1,66 @@
+# Ships-red (lint flags): the post-mortem Finding 2 anti-pattern. Frame 2 is an
+# NB2 edit frame, but it is authored as a FULL literary re-description of the whole
+# scene (no `ONLY CHANGE:` delta, no loop-return match) — the verbose-prose form
+# that competes with the reference and drifts identity. edit_frame_form_lint must
+# FLAG it (frame 2 offends). Frame 1 (establishing) is exempt; 3-5 are terse and
+# clean, so the lint should isolate exactly the offending frame.
+slug: SS
+frames:
+- id: 1
+  beat_id: 1
+  cast: [sean, claude-mascot]
+  beat: establishing two-shot
+  prompt: >-
+    Establishing two-shot. Sean at his desk with the mascot on his shoulder. Pencil
+    test register, cream paper. NOT a clean digital, anime, or 3D render. Do not render
+    any text, captions, labels, or watermarks.
+  chain_anchors: [sean]
+  hold: 2
+- id: 2
+  beat_id: 2
+  cast: [sean, claude-mascot]
+  beat: the draw
+  prompt: >-
+    A young man named Sean sits three-quarter at a wooden drawing desk, head bowed in
+    focus, a stylus held in his right hand pressing into the cream page mid-stroke; a
+    small terracotta box-shaped creature perches on his left shoulder at a consistent
+    scale, idle and neutral, both fully in frame in a calm companionable two-shot.
+    Pencil test animation key drawing on cream paper with visible paper grain; warm
+    graphite line, light construction lines and sparse cross-hatching, soft
+    colored-pencil fills in the pencil-test-colored register. 16:9 widescreen, fixed
+    camera, locked framing. NOT a clean digital, anime, or 3D render. Do not render any
+    text, captions, labels, or watermarks.
+  chain_anchors: [sean]
+  hold: 2
+- id: 3
+  beat_id: 3
+  cast: [sean, claude-mascot]
+  beat: the notice
+  prompt: >-
+    Same fixed two-shot, same framing/identities/scale as the previous frame. ONLY
+    CHANGE: the mascot's eyes widen as it notices the page. Pencil test register. NOT
+    a clean digital, anime, or 3D render. Do not render any text, captions, labels, or
+    watermarks.
+  chain_anchors: [sean]
+  hold: 2
+- id: 4
+  beat_id: 4
+  cast: [sean, claude-mascot]
+  beat: the delight
+  prompt: >-
+    Same fixed two-shot, same framing/identities/scale as the previous frame. ONLY
+    CHANGE: the mascot lights up with delight. Pencil test register. NOT a clean
+    digital, anime, or 3D render. Do not render any text, captions, labels, or
+    watermarks.
+  chain_anchors: [sean]
+  hold: 2
+- id: 5
+  beat_id: 5
+  cast: [sean, claude-mascot]
+  beat: the settle (loop return)
+  prompt: >-
+    Composition identical to frame 1: the mascot settled back to neutral. Pencil test
+    register. NOT a clean digital, anime, or 3D render. Do not render any text,
+    captions, labels, or watermarks.
+  chain_anchors: [sean]
+  hold: 2
