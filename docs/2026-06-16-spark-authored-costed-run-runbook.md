@@ -33,19 +33,29 @@ minutes each) — paced by your reviews.
 ```bash
 cd /Users/seanwinslow/Code-Brain/anima            # open your terminal HERE
 
-# 1. Be synced to main (after the hardening PR merged)
+# 1. Activate the project virtualenv — REQUIRED. macOS zsh has no bare `python`,
+#    and the pipeline's deps (pyyaml, google-genai, …) live ONLY in this venv
+#    (include-system-site-packages = false), so system python3 won't have them.
+source .venv/bin/activate                          # prompt should now show (.venv)
+python -c "import yaml; print('deps OK')"          # sanity — expect: deps OK
+
+# 2. Be synced to main (after the hardening PR merged)
 git fetch origin && git status -sb | head -1      # expect: ## main...origin/main (clean)
 
-# 2. Subscription billing — Opus/Sonnet must NOT hit the metered API.
+# 3. Subscription billing — Opus/Sonnet must NOT hit the metered API.
 unset ANTHROPIC_API_KEY
 echo "${ANTHROPIC_API_KEY:-ABSENT}"               # expect ABSENT (the run refuses to start otherwise)
 
-# 3. Confirm the Gemini key is present (NB2 + Em — the only metered spend)
+# 4. Confirm the Gemini key is present (NB2 + Em — the only metered spend)
 grep -q "GEMINI_API_KEY" .env && echo ".env has GEMINI_API_KEY" || echo "MISSING — add it before running"
 
-# 4. Confirm you're logged in for the subscription-billed agents
+# 5. Confirm you're logged in for the subscription-billed agents
 claude --version                                   # and that `claude` is logged in (claude login)
 ```
+
+> **Every command in this runbook assumes the venv is active** (the `(.venv)` prefix). If you open a
+> new terminal tab/window mid-run, re-run `source .venv/bin/activate` **and** `unset ANTHROPIC_API_KEY`
+> there — neither carries across windows.
 
 Then **create the authoring brief** — a fresh dir holding *only* the studio brief (no `shots.yaml`, no
 `plan.md`), which is what makes the orchestrator run the full Maya→Sam→Bea chain instead of skipping to
