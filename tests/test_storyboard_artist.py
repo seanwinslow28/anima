@@ -187,6 +187,56 @@ def test_prompt_loads_voice_instrument_and_context():
     assert "pencil test" in prompt.lower()         # the register clause requirement
 
 
+# ----- Slice A: establishing-vs-edit discipline + no-text negative -----
+
+def test_register_clause_carries_no_text_negative():
+    # F6 fix: the register block had "NOT a clean digital render" but no no-text
+    # negative, so the A-7 label on the pairing reference bled into every frame.
+    from pipeline.agents.storyboard_artist import _REGISTER_CLAUSE
+    assert "Do not render any text" in _REGISTER_CLAUSE
+    assert "watermark" in _REGISTER_CLAUSE.lower()
+
+
+def test_prompt_carries_establishing_vs_edit_and_no_text_rules():
+    # The establishing-vs-edit rule (F2) + loop-return-as-match (F3) + no-text (F6)
+    # must reach Sonnet through the assembled prompt (context file + constant).
+    prompt = StoryboardArtistNode()._build_prompt(
+        "SB", "PLAN", _spark_beats(), {"sean", "claude-mascot"}
+    )
+    low = prompt.lower()
+    assert "only change" in low             # the terse edit-delta discipline
+    assert "establishing" in low            # the first-shot-is-a-full-generation rule
+    assert "identical to frame 1" in low    # loop-return authored as a match, not a transition
+    assert "do not render any text" in low  # the no-text negative reaches the model
+
+
+def test_stub_emits_establishing_then_edit_form(tmp_path, monkeypatch):
+    # The credential-free stub demonstrates the discipline: frame 1 is a full
+    # establishing generation; every subsequent frame opens as a terse NB2 edit
+    # off the prior frame. Proves the form $0, and the eval lint checks real
+    # stub output.
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    brief_dir = tmp_path / "brief"
+    _write_brief(brief_dir)  # the 5-beat Spark sheet
+    result = StoryboardArtistNode().run(_ctx(tmp_path, brief_dir))
+
+    sl = load_shots(Path(result.outputs["shots_path"]), known_namespaces=KNOWN)
+    frames = sorted(sl.frames, key=lambda f: f.id)
+    assert len(frames) >= 3
+
+    # frame 1 — the establishing generation: NOT an edit delta
+    assert "ONLY CHANGE:" not in frames[0].prompt
+
+    # frames >= 2 — terse NB2 edits off the previous approved frame
+    for f in frames[1:]:
+        assert f.prompt.startswith("Same "), f"frame {f.id} not editing form: {f.prompt[:60]!r}"
+        assert "ONLY CHANGE:" in f.prompt
+
+    # the register clause (now carrying the no-text negative) still closes every prompt
+    for f in frames:
+        assert "Do not render any text" in f.prompt
+
+
 # ----- deterministic validation pass (coverage + conflict) -----
 
 def test_validate_accepts_clean_beat_linked_sheet():
