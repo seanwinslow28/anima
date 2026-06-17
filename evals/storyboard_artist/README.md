@@ -28,6 +28,21 @@ so these are **green catches**: `storyboard_validate` must raise.
 | `orphan-shot` | `structural` | **green** — a shot at a non-existent beat raises "orphan" |
 | `cast-conflict` | `structural` | **green** — a shot dropping its beat's character raises "conflict" |
 
+**Prompt-quality lint (Tier 1 Slice A, 2026-06-17).** `checks.py:edit_frame_form_lint`
+is a deterministic **warning** — the analogue of Sam's `default_prop_lint`, and the
+ONE prompt-quality check the first costed-run post-mortem (Findings 2/3) sanctions.
+On a chained pencil-test loop, frame 1 is the establishing generation (a full
+descriptive prompt) but every later frame is an NB2 *edit* off the prior approved
+frame and must be a terse delta — `Same … ONLY CHANGE: <delta>`, or the loop-return
+match `composition identical to frame 1` — not a full re-description (verbose prose
+competes with the reference and drifts identity). It is **never** wired into
+production `storyboard_validate`; the human still curates at the gate.
+
+| Case | Detector | Result |
+|------|----------|--------|
+| `edit-form-accepted` | `edit_frame_form` | **green** — frame 1 full + frames 2–4 `ONLY CHANGE:` + frame 5 loop-return match → lint accepts (no offenders) |
+| `full-redescription-on-edit-frame` | `edit_frame_form` | **green** — frame 2 a full re-description → lint flags it |
+
 ## Deliberately deferred (campaign items)
 
 - **Composition pairwise-preference harness.** Whether a board *reads well* —

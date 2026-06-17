@@ -57,3 +57,29 @@ cases:
     beats: spark-shared-beats.json
     fixture_shots: ships-red/cast-conflict-shots.yaml
     expect_error: conflict
+
+  # ---------- Slice A: edit-frame-form lint (prompt quality; warning, eval-side only) ----------
+  # The first costed run's biggest curation cost (post-mortem F2/F3): Bea wrote full
+  # re-descriptions for NB2 *edit* frames. edit_frame_form_lint is a deterministic
+  # warning — NOT a production gate (the human still curates). These two cases prove
+  # it accepts the terse editing form and flags a full re-description.
+  - name: edit-form-accepted
+    kind: lint
+    detector: edit_frame_form
+    description: >-
+      A chained looping board done right — frame 1 a full establishing prompt,
+      frames 2-4 terse `Same … ONLY CHANGE:` deltas, frame 5 the loop-return
+      `composition identical to frame 1`. The lint must ACCEPT it (no offenders).
+    known_namespaces: [sean, claude-mascot]
+    fixture_shots: prompt-quality/edit-form-board.yaml
+    expect_flag: false
+
+  - name: full-redescription-on-edit-frame
+    kind: lint
+    detector: edit_frame_form
+    description: >-
+      The F2 anti-pattern — frame 2 is a full literary re-description of the whole
+      scene instead of a terse edit delta. The lint must FLAG it (frame 2 offends).
+    known_namespaces: [sean, claude-mascot]
+    fixture_shots: ships-red/full-redescription-shots.yaml
+    expect_flag: true

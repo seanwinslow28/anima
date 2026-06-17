@@ -1,0 +1,65 @@
+# Positive (lint-clean): the establishing-vs-edit discipline applied correctly.
+# Validated against spark-shared-beats.json (beats 1-5, a loop). Frame 1 is the
+# full establishing generation; frames 2-4 are terse `ONLY CHANGE:` edit deltas off
+# the prior approved frame; frame 5 is the loop-return authored as a frame-1 match.
+# edit_frame_form_lint must return [] (no offenders).
+slug: SS
+frames:
+- id: 1
+  beat_id: 1
+  cast: [sean, claude-mascot]
+  beat: establishing two-shot
+  prompt: >-
+    Establishing two-shot. Sean sits three-quarter at his drawing desk, stylus in
+    his right hand resting on the page; the terracotta box-mascot perches idle on
+    his left shoulder, both calm and in frame. Pencil test animation key drawing on
+    cream paper with visible paper grain; warm graphite line, soft colored-pencil
+    fills in the pencil-test-colored register. 16:9 widescreen, fixed camera, locked
+    framing. NOT a clean digital, anime, or 3D render. Do not render any text,
+    captions, labels, or watermarks.
+  chain_anchors: [sean]
+  hold: 2
+- id: 2
+  beat_id: 2
+  cast: [sean, claude-mascot]
+  beat: the draw
+  prompt: >-
+    Same fixed two-shot, same framing/identities/scale as the previous frame. ONLY
+    CHANGE: Sean's stylus hand presses into the page mid-stroke. Pencil test register,
+    cream paper, warm graphite line. NOT a clean digital, anime, or 3D render. Do not
+    render any text, captions, labels, or watermarks.
+  chain_anchors: [sean]
+  hold: 2
+- id: 3
+  beat_id: 3
+  cast: [sean, claude-mascot]
+  beat: the notice
+  prompt: >-
+    Same fixed two-shot, same framing/identities/scale as the previous frame. ONLY
+    CHANGE: the mascot's eyes widen as it perks toward the page. Pencil test register,
+    cream paper, warm graphite line. NOT a clean digital, anime, or 3D render. Do not
+    render any text, captions, labels, or watermarks.
+  chain_anchors: [sean]
+  hold: 2
+- id: 4
+  beat_id: 4
+  cast: [sean, claude-mascot]
+  beat: the delight
+  prompt: >-
+    Same fixed two-shot, same framing/identities/scale as the previous frame. ONLY
+    CHANGE: the mascot lights up, leaning in with delight. Pencil test register, cream
+    paper, warm graphite line. NOT a clean digital, anime, or 3D render. Do not render
+    any text, captions, labels, or watermarks.
+  chain_anchors: [sean]
+  hold: 2
+- id: 5
+  beat_id: 5
+  cast: [sean, claude-mascot]
+  beat: the settle (loop return)
+  prompt: >-
+    Composition identical to frame 1: the mascot settled back to idle-neutral on
+    Sean's shoulder, Sean's stylus hand at rest, the loop closed. Pencil test register,
+    cream paper, warm graphite line. NOT a clean digital, anime, or 3D render. Do not
+    render any text, captions, labels, or watermarks.
+  chain_anchors: [sean]
+  hold: 2

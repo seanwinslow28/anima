@@ -20,6 +20,8 @@ Heroic-realistic. Head height fits seven times into total body height (1:7), mea
 
 The Pencil Test Act 1 (Frames 1-42, 12fps loop) shipped against the A-2 anchor at `characters/sean-anchor/anchor.png`. The approved keyframes live under `runs/act1-*/approved/` and serve as the authoritative continuity reference for what already exists. Act 2 is in flight; the Seedance generation plan + shot list live at `docs/act2-seedance-shot-list.md` and `docs/2026-04-27-act2-seedance-execution-plan.md`. Cy should consider any IR.sean.* rule that would invalidate Act 1's shipped frames a contract conflict — Sean reviews those flags before approval.
 
+**`anchor.png` label-cleaned 2026-06-17 (Tier 1 Slice A).** The drawn `(A-2)` corner label was patched out — it bleeds as text into generated frames (NB2's caption-rendering failure mode) and the anchor is injected first on every Spark frame. The labeled original is kept verbatim at `characters/sean-anchor/anchor.labeled-original.png`; the figure and dimensions are byte-untouched. (Reference hygiene only — no IR.sean.* rule changed; the criteria lock is intact.)
+
 ## Costume
 
 Default outfit: dark navy tee, cool gray jeans, the stylus. No outfit variations exist in commit 2; a hoodie / jacket / formal variant would be a future Bible authoring pass (a new entry under `characters/sean-anchor/costumes/{variant}/`).

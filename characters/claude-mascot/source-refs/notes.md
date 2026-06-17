@@ -46,7 +46,10 @@ there is no large mouth to emote with. Expression range is narrow by design.
 
 - `../anchor.png` (C-B) — the canonical **identity anchor**, a clean ¾-front hero
   portrait. Cy reads this at every Pass-1 rule emission and it is injected first
-  on every generated plate.
+  on every generated plate. **Label-cleaned 2026-06-17 (Tier 1 Slice A):** the
+  drawn `C-B` corner label was patched out (it bleeds as text into generated
+  frames — NB2's caption-rendering failure mode); the labeled original is kept
+  verbatim at `../anchor.labeled-original.png`. The figure is byte-untouched.
 - `turnaround-c1.png` (C-1 TURNAROUND) — the **authoritative multi-angle reference**:
   five views (FRONT / ¾ FRONT / SIDE / ¾ BACK / BACK) on one sheet, drawn on a
   shared horizon line. This is what closes the angle-expansion gap the pixel
@@ -54,6 +57,11 @@ there is no large mouth to emote with. Expression range is narrow by design.
 - `sean-with-claude-mascot.png` (A-7) — the **relationship / scale reference** and
   the Act 2 two-character continuity ground-truth: Sean (full-color pencil-test,
   stylus in hand) with the mascot on his shoulder. A-7 is the canonical pairing.
+  **Label-cleaned 2026-06-17 (Tier 1 Slice A):** the drawn `(A-7)` corner label
+  and a faint right-edge pencil annotation were patched out (they bled as text
+  into every Spark frame — post-mortem Finding 6). The labeled original is kept
+  verbatim at `sean-with-claude-mascot.labeled-original.png`; dims and the figure
+  are unchanged.
 
 ## What's not covered (name in risk-bible)
 

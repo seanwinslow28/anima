@@ -60,7 +60,8 @@ _REGISTER_CLAUSE = (
     "warm graphite line, light construction lines and sparse cross-hatching for "
     "shading; hand-drawn rough animation, soft colored-pencil fills in the "
     "pencil-test-colored register. 16:9 widescreen, fixed camera, locked framing. "
-    "NOT a clean digital, anime, or 3D render."
+    "NOT a clean digital, anime, or 3D render. "
+    "Do not render any text, captions, labels, or watermarks."
 )
 
 _STUB_MARKER = "STUB FALLBACK"
@@ -359,14 +360,28 @@ def _make_bea_stub(sheet: BeatSheet):
     def _stub_bea_text(prompt: str) -> SDKResponse:
         frames = []
         lines = []
-        for b in sheet.beats:
+        for idx, b in enumerate(sheet.beats):
             cast = list(b.cast)
+            if idx == 0:
+                # Frame 1 — the establishing generation built from the Bibles:
+                # a full descriptive prompt (not an edit delta).
+                shot_prompt = (
+                    f"Establishing two-shot. {b.title}: {b.intent}. {_REGISTER_CLAUSE}"
+                )
+            else:
+                # Frames >= 2 — NB2 edits off the previous approved frame: a terse
+                # `ONLY CHANGE:` delta opening with a continuity anchor (the
+                # 2026-05-30 storyboard-variant discipline). One change per frame.
+                shot_prompt = (
+                    "Same fixed two-shot, same framing/identities/scale as the "
+                    f"previous frame. ONLY CHANGE: {b.intent}. {_REGISTER_CLAUSE}"
+                )
             frames.append({
                 "id": b.id,
                 "beat_id": b.id,
                 "cast": cast,
                 "beat": b.intent or b.title,
-                "prompt": f"{b.title}: {b.intent} {_REGISTER_CLAUSE}",
+                "prompt": shot_prompt,
                 "chain_anchors": cast[:1],
                 "hold": 2,
             })
