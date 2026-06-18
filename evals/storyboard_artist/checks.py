@@ -49,3 +49,22 @@ def edit_frame_form_lint(shot_list: ShotList) -> list[int]:
     return sorted(
         s.id for s in shot_list.frames if s.id >= 2 and not is_edit_delta(s.prompt)
     )
+
+
+def is_loop_return(prompt: str) -> bool:
+    """True if the prompt is a loop-return match (`composition identical to frame 1`)."""
+    return bool(_LOOP_MATCH.search(prompt))
+
+
+def chain_from_lint(shot_list: ShotList) -> list[int]:
+    """Return the ids of loop-return frames that fail to DECLARE their loop anchor.
+
+    A loop-return frame (prompt = `composition identical to frame 1`) must carry
+    `chain_from: 1`, so resolve_references chains it off frame 1 — the loop anchor —
+    not the prior approved frame (the F3 structural defect from the first costed run).
+    Empty list = clean. Warning-level, eval-side only (the human still curates).
+    """
+    return sorted(
+        s.id for s in shot_list.frames
+        if is_loop_return(s.prompt) and s.chain_from != 1
+    )

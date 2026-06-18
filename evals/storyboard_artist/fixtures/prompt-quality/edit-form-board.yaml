@@ -56,6 +56,9 @@ frames:
   beat_id: 5
   cast: [sean, claude-mascot]
   beat: the settle (loop return)
+  # The loop-return frame declares its loop anchor: chain_from: 1 makes
+  # resolve_references chain it off frame 1, not the prior (delight) frame.
+  chain_from: 1
   prompt: >-
     Composition identical to frame 1: the mascot settled back to idle-neutral on
     Sean's shoulder, Sean's stylus hand at rest, the loop closed. Pencil test register,

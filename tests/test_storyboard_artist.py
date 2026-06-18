@@ -207,17 +207,19 @@ def test_prompt_carries_establishing_vs_edit_and_no_text_rules():
     assert "only change" in low             # the terse edit-delta discipline
     assert "establishing" in low            # the first-shot-is-a-full-generation rule
     assert "identical to frame 1" in low    # loop-return authored as a match, not a transition
+    assert "chain_from: 1" in low            # B2: loop-return frame DECLARES its loop anchor
     assert "do not render any text" in low  # the no-text negative reaches the model
 
 
-def test_stub_emits_establishing_then_edit_form(tmp_path, monkeypatch):
+def test_stub_emits_establishing_edit_then_loop_return_form(tmp_path, monkeypatch):
     # The credential-free stub demonstrates the discipline: frame 1 is a full
-    # establishing generation; every subsequent frame opens as a terse NB2 edit
-    # off the prior frame. Proves the form $0, and the eval lint checks real
-    # stub output.
+    # establishing generation; the MIDDLE frames open as terse NB2 edits off the
+    # prior frame; the FINAL frame is the loop-return — authored as a frame-1 match
+    # and declaring chain_from: 1 (Slice B, F3). Proves the form $0, and the eval
+    # lint checks real stub output.
     monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
     brief_dir = tmp_path / "brief"
-    _write_brief(brief_dir)  # the 5-beat Spark sheet
+    _write_brief(brief_dir)  # the 5-beat Spark sheet (a loop)
     result = StoryboardArtistNode().run(_ctx(tmp_path, brief_dir))
 
     sl = load_shots(Path(result.outputs["shots_path"]), known_namespaces=KNOWN)
@@ -226,15 +228,35 @@ def test_stub_emits_establishing_then_edit_form(tmp_path, monkeypatch):
 
     # frame 1 — the establishing generation: NOT an edit delta
     assert "ONLY CHANGE:" not in frames[0].prompt
+    assert frames[0].chain_from is None
 
-    # frames >= 2 — terse NB2 edits off the previous approved frame
-    for f in frames[1:]:
+    # middle frames — terse NB2 edits off the previous approved frame
+    for f in frames[1:-1]:
         assert f.prompt.startswith("Same "), f"frame {f.id} not editing form: {f.prompt[:60]!r}"
         assert "ONLY CHANGE:" in f.prompt
 
-    # the register clause (now carrying the no-text negative) still closes every prompt
+    # final frame — the loop-return: a frame-1 match that DECLARES its loop anchor
+    last = frames[-1]
+    assert "identical to frame 1" in last.prompt.lower()
+    assert last.chain_from == 1
+
+    # the register clause (carrying the no-text negative) still closes every prompt
     for f in frames:
         assert "Do not render any text" in f.prompt
+
+
+def test_stub_board_is_chain_from_lint_clean(tmp_path, monkeypatch):
+    # The eval lint can check real stub output: the stub's loop-return frame
+    # declares chain_from: 1, so chain_from_lint reports no offenders.
+    from evals.storyboard_artist.checks import chain_from_lint
+
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    brief_dir = tmp_path / "brief"
+    _write_brief(brief_dir)
+    result = StoryboardArtistNode().run(_ctx(tmp_path, brief_dir))
+
+    sl = load_shots(Path(result.outputs["shots_path"]), known_namespaces=KNOWN)
+    assert chain_from_lint(sl) == []
 
 
 # ----- deterministic validation pass (coverage + conflict) -----
