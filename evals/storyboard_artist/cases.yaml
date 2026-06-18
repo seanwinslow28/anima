@@ -83,3 +83,27 @@ cases:
     known_namespaces: [sean, claude-mascot]
     fixture_shots: ships-red/full-redescription-shots.yaml
     expect_flag: true
+
+  # ---------- Slice B: loop-return chain_from lint (warning, eval-side only) ----------
+  # F3 structural half (post-mortem): the loop-return frame must DECLARE its loop
+  # anchor with chain_from: 1 so resolve_references chains it off frame 1, not the
+  # prior (delight) frame. chain_from_lint flags a loop-return frame missing it.
+  - name: chain-from-on-loop-return-accepted
+    kind: lint
+    detector: chain_from
+    description: >-
+      The done-right looping board — the loop-return frame (frame 5, "composition
+      identical to frame 1") carries chain_from: 1. The lint must ACCEPT it.
+    known_namespaces: [sean, claude-mascot]
+    fixture_shots: prompt-quality/edit-form-board.yaml
+    expect_flag: false
+
+  - name: loop-return-missing-chain-from
+    kind: lint
+    detector: chain_from
+    description: >-
+      The F3 defect — a loop-return frame authored without chain_from: 1, so it
+      would still chain off the prior (delight) frame. The lint must FLAG it.
+    known_namespaces: [sean, claude-mascot]
+    fixture_shots: ships-red/loop-return-missing-chain-from-shots.yaml
+    expect_flag: true

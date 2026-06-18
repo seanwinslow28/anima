@@ -80,7 +80,11 @@ def resolve_references(shot: Shot, state: dict, run_dir: Path) -> list[str]:
     if shot.id == first:
         refs = [members[ns]["anchor"] for ns in shot.cast] + list(shot.extra_references)
     else:
-        prior = order[order.index(shot.id) - 1]
+        # chain_from (when set) names the loop anchor to chain off — e.g. a
+        # loop-return frame sets chain_from: 1, so its refs are approved(1) +
+        # anchors, and the dedup drops the duplicate prior-frame ref. Absent →
+        # the prior frame in shot order (unchanged recipe).
+        prior = shot.chain_from if shot.chain_from is not None else order[order.index(shot.id) - 1]
         f_first = approved_key_path(state, run_dir, first)
         f_prior = approved_key_path(state, run_dir, prior)
         missing = [str(p) for p in (f_first, f_prior) if not p.exists()]
@@ -215,6 +219,13 @@ def run_frame_fan(
                 {"frame": frame_id, "character": ns,
                  "verdict": r.outputs["verdict"], "confidence": r.outputs["confidence"],
                  "cites": list(r.cites_criteria), "patches": len(r.proposed_patches),
+                 # the patch SUMMARIES (not just the count) so the eye gate can show
+                 # Em's grounded fix in-memory, without re-reading manifest.lock.yaml
+                 "proposed_patches": [
+                     {"target": p.target, "path": p.path, "value": p.value,
+                      "rationale": p.rationale}
+                     for p in r.proposed_patches
+                 ],
                  "reasoning": r.outputs["reasoning"], "notes": r.notes}
             )
         except EmptyCitesInvariant as e:
@@ -223,7 +234,7 @@ def run_frame_fan(
             em_records.append(
                 {"frame": frame_id, "character": ns,
                  "verdict": "human_review (empty-cites invariant)", "confidence": None,
-                 "cites": [], "patches": 0, "reasoning": e.reasoning,
+                 "cites": [], "patches": 0, "proposed_patches": [], "reasoning": e.reasoning,
                  "notes": "EmptyCitesInvariant"}
             )
 
@@ -245,11 +256,23 @@ def run_frame_fan(
     for v in em_records:
         print(f"  Em[{v['character']}]: {v['verdict']} "
               f"(conf={v['confidence']}, cites={v['cites']})")
+        # On a flagged verdict, surface Em's grounded diagnosis (the reasoning
+        # paragraph + her proposed fix) — the human reads it before writing a
+        # note instead of diagnosing from scratch (B1, F4/F5). A pass prints the
+        # one-liner only.
+        if v["verdict"] != "pass":
+            if v.get("reasoning"):
+                print(f"    reasoning: {v['reasoning']}")
+            for p in v.get("proposed_patches", []):
+                print(f"    proposed fix: {p['target']}:{p['path']} -> {p['value']}"
+                      f"  ({p['rationale']})")
     print("\nHUMAN GATE — eye the candidate, then:")
     print(f"  python -m pipeline.run --resume {run_dir} --approve-frame {shot.id} "
           f"[--attempt {attempt_idx}]")
     print(f'  python -m pipeline.run --resume {run_dir} --retry-frame {shot.id} '
           f'--note "<correction>"')
+    print('  tip: write --note as the desired end-state (a positive identity-lock), '
+          "not the defect — it's appended to the prompt, so naming the flaw reinforces it.")
     return 0
 
 

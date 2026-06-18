@@ -1,0 +1,48 @@
+# ships-red (lint): the loop-return frame (frame 5, "composition identical to
+# frame 1") is authored WITHOUT chain_from: 1, so resolve_references would still
+# chain it off the prior (delight) frame — the F3 structural defect Slice B closes.
+# chain_from_lint must FLAG frame 5. (Frames 2-4 are valid terse edit deltas; this
+# board is edit_frame_form-clean — the defect is purely the missing chain_from.)
+slug: SS
+frames:
+- id: 1
+  beat_id: 1
+  cast: [sean, claude-mascot]
+  beat: establishing two-shot
+  prompt: >-
+    Establishing two-shot. Sean sits three-quarter at his drawing desk, stylus in his
+    right hand; the terracotta box-mascot perches idle on his left shoulder. Pencil
+    test register, cream paper, warm graphite line. NOT a clean digital, anime, or 3D
+    render. Do not render any text, captions, labels, or watermarks.
+  chain_anchors: [sean]
+  hold: 2
+- id: 2
+  beat_id: 2
+  cast: [sean, claude-mascot]
+  beat: the draw
+  prompt: >-
+    Same fixed two-shot, same framing/identities/scale as the previous frame. ONLY
+    CHANGE: Sean's stylus hand presses into the page mid-stroke. Pencil test register.
+    Do not render any text, captions, labels, or watermarks.
+  chain_anchors: [sean]
+  hold: 2
+- id: 3
+  beat_id: 3
+  cast: [sean, claude-mascot]
+  beat: the delight
+  prompt: >-
+    Same fixed two-shot, same framing/identities/scale as the previous frame. ONLY
+    CHANGE: the mascot lights up, leaning in with delight. Pencil test register. Do
+    not render any text, captions, labels, or watermarks.
+  chain_anchors: [sean]
+  hold: 2
+- id: 5
+  beat_id: 5
+  cast: [sean, claude-mascot]
+  beat: the settle (loop return)
+  prompt: >-
+    Composition identical to frame 1: the mascot settled back to idle-neutral on
+    Sean's shoulder, Sean's stylus hand at rest, the loop closed. Pencil test register.
+    Do not render any text, captions, labels, or watermarks.
+  chain_anchors: [sean]
+  hold: 2

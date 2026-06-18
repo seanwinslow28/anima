@@ -148,15 +148,24 @@ open "$RUN/em_verdicts.jsonl"                       # Em's reads, appended per f
 
 ### Gate 5 — the per-frame eye gate (repeat for each frame, in order)
 
-For each frame, look at the candidate and the printed Em verdict, then either approve or retry:
+For each frame, look at the candidate and the printed Em verdict, then either approve or retry. On a
+**borderline/fail** verdict the gate now prints Em's **reasoning** and her **proposed fix** (target →
+value + rationale) under the verdict line — read that *before* writing a note; Em has usually already
+diagnosed the real issue and grounded it in a criterion. Don't re-diagnose from scratch.
 
 ```bash
 # happy path — approve frame N (chains into frame N+1 automatically):
 python -m pipeline.run --resume "$RUN" --approve-frame 1
 
 # or re-roll with a correction (up to 3 attempts), e.g.:
-python -m pipeline.run --resume "$RUN" --retry-frame 1 --note "mascot drifted toward red — hold the terracotta box-creature palette"
+python -m pipeline.run --resume "$RUN" --retry-frame 1 --note "hold the terracotta box-creature palette — warm clay-orange box body"
 ```
+
+**Write the note as the desired end-state, never the defect.** The note is appended to the prompt
+verbatim as `CORRECTION:`, so naming the flaw ("mascot drifted toward red", "shirt too blue")
+*reinforces* it — the model sees the word and re-draws it. State the positive identity-lock you want
+("warm terracotta box body, idle-neutral on the shoulder") instead. This is the single biggest lever
+on re-roll quality after Slice B.
 
 Approve frames **in sequence** (1, then 2, …) — the chain references the prior approved frame, so the
 orchestrator enforces order. The Spark piece is 5 frames, but the real count comes from your curated
@@ -195,6 +204,7 @@ diff briefs/2026-06-10-spark-shared/shots.yaml "$RUN/brief/shots.yaml" | less
 - **"manifest not found"** → you're not in the repo root. `cd /Users/seanwinslow/Code-Brain/anima`.
 - **"--approve-frame N but the current frame is X"** → approve frames in order; check `--status`.
 - **4th attempt on a frame** → the retry ladder stops and flags for you. Either curate the prompt and retry, or accept the best attempt.
+- **A re-roll keeps reproducing the defect you named** → you wrote the note as the defect, not the end-state. The note is appended as `CORRECTION:`, so "too red" re-draws red. Re-roll with the positive target instead ("hold the warm terracotta box palette"). Read Em's surfaced reasoning/proposed-fix first.
 - **Never pass `--stub`** here — that's the $0 offline smoke; it would not produce real frames.
 
 ## Two reminders

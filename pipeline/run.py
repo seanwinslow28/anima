@@ -85,7 +85,9 @@ def build_parser() -> argparse.ArgumentParser:
                    help="Attempt to approve (default: the latest).")
     p.add_argument("--retry-frame", type=int, metavar="N",
                    help="Re-roll frame N with --note appended to the prompt.")
-    p.add_argument("--note", help="Correction note for --retry-frame (required with it).")
+    p.add_argument("--note", help="Correction note for --retry-frame (required with it). "
+                   "Write it as the desired end-state (a positive identity-lock), not the "
+                   "defect — it's appended to the prompt, so naming the flaw reinforces it.")
     p.add_argument("--escalate", action="store_true",
                    help="Force Em's Opus read (identity_critical) on the generated attempt.")
     p.add_argument("--assemble", action="store_true",

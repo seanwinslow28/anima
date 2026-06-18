@@ -29,7 +29,9 @@ import yaml
 from pipeline.orchestration.beats import load_beats
 from pipeline.orchestration.shots import load_shots
 from pipeline.agents.storyboard_artist import storyboard_validate
-from evals.storyboard_artist.checks import edit_frame_form_lint
+from evals.storyboard_artist.checks import chain_from_lint, edit_frame_form_lint
+
+_LINTS = {"edit_frame_form": edit_frame_form_lint, "chain_from": chain_from_lint}
 
 CASES = yaml.safe_load(
     (Path(__file__).parent / "cases.yaml").read_text(encoding="utf-8")
@@ -72,19 +74,22 @@ def _run_ships_red(case: dict, fixtures_dir: Path) -> None:
 
 
 def _run_lint(case: dict, fixtures_dir: Path) -> None:
-    # The edit-frame-form lint is a prompt-quality WARNING (not a production gate).
-    # A board parses fine through load_shots; the lint reads each frame's prompt
-    # and reports non-establishing frames written as full re-descriptions.
+    # Lints are prompt-quality WARNINGS (not production gates). A board parses fine
+    # through load_shots; the lint reads it and reports offending frames. The
+    # `detector` field selects which lint runs (edit_frame_form | chain_from).
     known = set(case["known_namespaces"])
     shot_list = load_shots(fixtures_dir / case["fixture_shots"], known_namespaces=known)
-    offenders = edit_frame_form_lint(shot_list)
+    detector = case.get("detector", "edit_frame_form")
+    lint = _LINTS.get(detector)
+    assert lint is not None, f"{case['name']}: unknown lint detector {detector!r}"
+    offenders = lint(shot_list)
     if case["expect_flag"]:
         assert offenders, (
-            f"{case['name']}: edit_frame_form_lint should flag a full re-description "
-            f"on a non-establishing frame, got none"
+            f"{case['name']}: {detector} lint should flag the offending frame(s), "
+            f"got none"
         )
     else:
         assert not offenders, (
-            f"{case['name']}: edit_frame_form_lint should accept the terse editing "
-            f"form, but flagged frames {offenders}"
+            f"{case['name']}: {detector} lint should accept the board, "
+            f"but flagged frames {offenders}"
         )

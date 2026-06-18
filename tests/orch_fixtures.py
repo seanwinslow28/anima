@@ -211,9 +211,10 @@ def fake_em_transport(
     confidence: float = 0.95,
     cites: tuple = ("IR.al.style.line-weight",),
     patches: tuple = (),
+    reasoning: str = "fake-em",
 ) -> list[dict]:
     """Replace both Em vision transports with a deterministic high-confidence
-    payload (no escalation), so tests can steer verdict/cites/patches."""
+    payload (no escalation), so tests can steer verdict/cites/patches/reasoning."""
     import json as _json
     from types import SimpleNamespace
 
@@ -226,7 +227,7 @@ def fake_em_transport(
         payload = {
             "verdict": verdict,
             "confidence": confidence,
-            "reasoning": "fake-em",
+            "reasoning": reasoning,
             "cites_criteria": list(cites),
             "proposed_patches": [dict(p) for p in patches],
         }

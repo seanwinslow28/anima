@@ -183,6 +183,56 @@ def test_approve_frame_copies_attempt_and_chains_with_correct_refs(tmp_path, mon
     assert [v["character"] for v in frame2["attempts"][0]["em"]] == ["al"]
 
 
+def _refs_state():
+    return {
+        "slug": "TT",
+        "frame_order": [1, 2, 3],
+        "cast": [
+            {"ir_namespace": "al", "folder_key": "alpha", "anchor": "characters/alpha/anchor.png"},
+            {"ir_namespace": "be", "folder_key": "beta", "anchor": "characters/beta/anchor.png"},
+        ],
+    }
+
+
+def test_resolve_references_chain_from_chains_off_the_named_frame_not_prior(tmp_path):
+    """A loop-return frame (F3, chain_from: 1) chains off frame 1 — the loop
+    anchor — not the prior approved frame (F2). The dedup collapses
+    approved(first)+approved(chain_from) to a single ref, so F2 never appears."""
+    from pipeline.orchestration.generate_stage import approved_key_path, resolve_references
+    from pipeline.orchestration.shots import Shot
+
+    state = _refs_state()
+    (tmp_path / "approved").mkdir()
+    for n in (1, 2):
+        approved_key_path(state, tmp_path, n).write_bytes(b"x")
+
+    loop = Shot(id=3, cast=["al"], beat="b", prompt="p", chain_anchors=["al"], chain_from=1)
+    refs = resolve_references(loop, state, tmp_path)
+
+    assert refs == [str(approved_key_path(state, tmp_path, 1)), "characters/alpha/anchor.png"]
+    assert str(approved_key_path(state, tmp_path, 2)) not in refs  # F4 (the delight mascot) dropped
+
+
+def test_resolve_references_without_chain_from_uses_prior_frame_unchanged(tmp_path):
+    from pipeline.orchestration.generate_stage import approved_key_path, resolve_references
+    from pipeline.orchestration.shots import Shot
+
+    state = _refs_state()
+    (tmp_path / "approved").mkdir()
+    for n in (1, 2):
+        approved_key_path(state, tmp_path, n).write_bytes(b"x")
+
+    f3 = Shot(id=3, cast=["al"], beat="b", prompt="p", chain_anchors=["al"])  # no chain_from
+    refs = resolve_references(f3, state, tmp_path)
+
+    # prior == F2, so both approved(1) and approved(2) are present (unchanged recipe)
+    assert refs == [
+        str(approved_key_path(state, tmp_path, 1)),
+        str(approved_key_path(state, tmp_path, 2)),
+        "characters/alpha/anchor.png",
+    ]
+
+
 def test_retry_appends_note_and_same_note_still_rerolls(tmp_path, monkeypatch):
     root, brief_dir = mk_project(tmp_path, monkeypatch)
     stub_critic_env(monkeypatch)
@@ -251,6 +301,37 @@ def test_em_patches_staged_via_post_run_hook(tmp_path, monkeypatch):
     before = (run_dir / "manifest.lock.yaml").read_bytes()
     assert run_cli.main(["--resume", str(run_dir), "--status"]) == 0
     assert (run_dir / "manifest.lock.yaml").read_bytes() == before
+
+
+def test_eye_gate_surfaces_em_reasoning_and_patch_on_flagged_verdict(tmp_path, monkeypatch, capsys):
+    """B1: a borderline/fail verdict surfaces Em's grounded diagnosis — the
+    reasoning paragraph AND her proposed-patch summary — at the eye gate, instead
+    of dropping them (the F4/F5 finding). The retry hint steers the note positive."""
+    root, brief_dir = mk_project(tmp_path, monkeypatch)
+    stub_critic_env(monkeypatch)
+    fake_em_transport(
+        monkeypatch, verdict="fail", confidence=0.95,
+        reasoning="front face lacks pencil construction cross-lines; shading is a flat color step",
+        cites=("IR.al.style.construction-lines",),
+        patches=({"target": "manifest.lock.yaml", "path": "generation.model",
+                  "operation": "set", "value": "nb-pro",
+                  "rationale": "restore graphite cross-hatching",
+                  "cites_criteria": ["IR.al.style.construction-lines"]},),
+    )
+
+    rc, run_dir = _start_and_approve(root, brief_dir)
+    assert rc == 0
+
+    out = capsys.readouterr().out
+    # Em's reasoning surfaces (was dropped at the gate before)
+    assert "front face lacks pencil construction cross-lines" in out
+    # her proposed-patch summary surfaces (target / value / rationale)
+    assert "generation.model" in out
+    assert "nb-pro" in out
+    assert "restore graphite cross-hatching" in out
+    # the retry hint steers toward the positive end-state, not the defect
+    assert "desired end-state" in out
+    assert "naming the flaw reinforces it" in out
 
 
 def test_approve_last_frame_enters_assemble(tmp_path, monkeypatch):

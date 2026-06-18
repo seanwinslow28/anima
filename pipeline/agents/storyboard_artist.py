@@ -360,31 +360,40 @@ def _make_bea_stub(sheet: BeatSheet):
     def _stub_bea_text(prompt: str) -> SDKResponse:
         frames = []
         lines = []
+        last_idx = len(sheet.beats) - 1
         for idx, b in enumerate(sheet.beats):
             cast = list(b.cast)
-            if idx == 0:
-                # Frame 1 — the establishing generation built from the Bibles:
-                # a full descriptive prompt (not an edit delta).
-                shot_prompt = (
-                    f"Establishing two-shot. {b.title}: {b.intent}. {_REGISTER_CLAUSE}"
-                )
-            else:
-                # Frames >= 2 — NB2 edits off the previous approved frame: a terse
-                # `ONLY CHANGE:` delta opening with a continuity anchor (the
-                # 2026-05-30 storyboard-variant discipline). One change per frame.
-                shot_prompt = (
-                    "Same fixed two-shot, same framing/identities/scale as the "
-                    f"previous frame. ONLY CHANGE: {b.intent}. {_REGISTER_CLAUSE}"
-                )
-            frames.append({
+            frame = {
                 "id": b.id,
                 "beat_id": b.id,
                 "cast": cast,
                 "beat": b.intent or b.title,
-                "prompt": shot_prompt,
                 "chain_anchors": cast[:1],
                 "hold": 2,
-            })
+            }
+            if idx == 0:
+                # Frame 1 — the establishing generation built from the Bibles:
+                # a full descriptive prompt (not an edit delta).
+                frame["prompt"] = (
+                    f"Establishing two-shot. {b.title}: {b.intent}. {_REGISTER_CLAUSE}"
+                )
+            elif idx == last_idx:
+                # Final frame — the loop-return: authored as a frame-1 MATCH (a single
+                # destination, not a multi-step transition) and declaring chain_from: 1
+                # so resolve_references chains it off frame 1, not the prior frame (F3).
+                frame["prompt"] = (
+                    f"Composition identical to frame 1: {b.intent}. {_REGISTER_CLAUSE}"
+                )
+                frame["chain_from"] = 1
+            else:
+                # Middle frames — NB2 edits off the previous approved frame: a terse
+                # `ONLY CHANGE:` delta opening with a continuity anchor (the
+                # 2026-05-30 storyboard-variant discipline). One change per frame.
+                frame["prompt"] = (
+                    "Same fixed two-shot, same framing/identities/scale as the "
+                    f"previous frame. ONLY CHANGE: {b.intent}. {_REGISTER_CLAUSE}"
+                )
+            frames.append(frame)
             lines.append(f"- Beat {b.id} — {b.title}: {b.intent}")
         storyboard_md = (
             "# Storyboard (STUB)\n\n"
