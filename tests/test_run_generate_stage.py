@@ -303,6 +303,37 @@ def test_em_patches_staged_via_post_run_hook(tmp_path, monkeypatch):
     assert (run_dir / "manifest.lock.yaml").read_bytes() == before
 
 
+def test_eye_gate_surfaces_em_reasoning_and_patch_on_flagged_verdict(tmp_path, monkeypatch, capsys):
+    """B1: a borderline/fail verdict surfaces Em's grounded diagnosis — the
+    reasoning paragraph AND her proposed-patch summary — at the eye gate, instead
+    of dropping them (the F4/F5 finding). The retry hint steers the note positive."""
+    root, brief_dir = mk_project(tmp_path, monkeypatch)
+    stub_critic_env(monkeypatch)
+    fake_em_transport(
+        monkeypatch, verdict="fail", confidence=0.95,
+        reasoning="front face lacks pencil construction cross-lines; shading is a flat color step",
+        cites=("IR.al.style.construction-lines",),
+        patches=({"target": "manifest.lock.yaml", "path": "generation.model",
+                  "operation": "set", "value": "nb-pro",
+                  "rationale": "restore graphite cross-hatching",
+                  "cites_criteria": ["IR.al.style.construction-lines"]},),
+    )
+
+    rc, run_dir = _start_and_approve(root, brief_dir)
+    assert rc == 0
+
+    out = capsys.readouterr().out
+    # Em's reasoning surfaces (was dropped at the gate before)
+    assert "front face lacks pencil construction cross-lines" in out
+    # her proposed-patch summary surfaces (target / value / rationale)
+    assert "generation.model" in out
+    assert "nb-pro" in out
+    assert "restore graphite cross-hatching" in out
+    # the retry hint steers toward the positive end-state, not the defect
+    assert "desired end-state" in out
+    assert "naming the flaw reinforces it" in out
+
+
 def test_approve_last_frame_enters_assemble(tmp_path, monkeypatch):
     root, brief_dir = mk_project(tmp_path, monkeypatch)
     stub_critic_env(monkeypatch)
