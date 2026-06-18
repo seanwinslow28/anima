@@ -8,7 +8,7 @@ anima came out of shipping a single piece — **Pencil Test — Sean Winslow** (
 
 ## Start Here
 
-Every session, read **[`PHILOSOPHY.md`](PHILOSOPHY.md)** first — it's the load-bearing intent document, the soul of what anima is for. The architecture serves the philosophy, not the other way around. Then **[`docs/pipeline-architecture-v1.md`](docs/pipeline-architecture-v1.md)** for the canonical 10-phase architecture lock. After that, **[`docs/production-checklist.md`](docs/production-checklist.md)** tracks where the current work actually is (Pencil Test status across acts and frames). Update the checklist as work completes.
+Every session, read **[`PHILOSOPHY.md`](PHILOSOPHY.md)** first — it's the load-bearing intent document, the soul of what anima is for. The architecture serves the philosophy, not the other way around. Then **[`ROADMAP.md`](ROADMAP.md)** — the trajectory source of truth: where the system is, the single active workstream, and the anti-drift contract (no new workstream until the current one's Definition of Done is met). Then **[`docs/pipeline-architecture-v1.md`](docs/pipeline-architecture-v1.md)** for the canonical 10-phase architecture lock. After that, **[`docs/production-checklist.md`](docs/production-checklist.md)** tracks where the current Pencil Test *artifact* stands (acts and frames) — distinct from ROADMAP, which tracks the *system*. Update both as work completes.
 
 ## Maintenance Conventions
 
