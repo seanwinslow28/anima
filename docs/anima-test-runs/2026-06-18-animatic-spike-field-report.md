@@ -48,7 +48,24 @@ on any stub — a stubbed spike proves nothing). Transport: the same `invoke_ima
 
 ![A/B contact sheet](assets/2026-06-18-animatic-spike/spike_sheet_ab.png)
 
-Full-res outputs (all 14): [`assets/2026-06-18-animatic-spike/outputs/`](assets/2026-06-18-animatic-spike/outputs/).
+Full-res outputs: [`assets/2026-06-18-animatic-spike/outputs/`](assets/2026-06-18-animatic-spike/outputs/).
+
+**Sheet 3 — Sean's pre-build request: colored rough vs silhouette across ALL six keys (no baseline).**
+After ruling GO, Sean asked to extend the silhouette test from the two A/B keys to the full kickflip
+before any stage code. The four missing silhouettes (F3, F9, F14, F18) were generated from the colored
+roughs by color-keying the uniform `(254, 232, 255)` pink ground (PIL, no ImageMagick here) — figure →
+black, near-white shoes kept white, matching the two pre-made silhouettes — and run through the same
+anchor + role-tag clause. 4 more live calls (~$0.28).
+
+![colored vs silhouette, six keys](assets/2026-06-18-animatic-spike/spike_sheet_color_vs_silhouette.png)
+
+**Read:** both forms land the pose and hold identity across all six. The **silhouette outputs avoid the
+colored rough's palette echo** (no green board on the F5 apex) and read clean. Two costs on the
+silhouette side: a couple of cells (F14, F18) render lighter / more line-sketch than fully shaded, and
+two (F9, F14) picked up a faint hallucinated text artifact in a corner. The colored outputs are a touch
+more consistently shaded but carry the minor palette-echo risk. **Net: silhouettes are a viable — arguably
+cleaner — authoring path; the stage is agnostic to which the human drops in** (`animatic_ref` points at
+whatever rough is dropped), so this is authoring guidance, not a code fork.
 
 ## Initial read (mine — Sean's eye decides)
 
