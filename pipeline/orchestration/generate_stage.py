@@ -80,7 +80,11 @@ def resolve_references(shot: Shot, state: dict, run_dir: Path) -> list[str]:
     if shot.id == first:
         refs = [members[ns]["anchor"] for ns in shot.cast] + list(shot.extra_references)
     else:
-        prior = order[order.index(shot.id) - 1]
+        # chain_from (when set) names the loop anchor to chain off — e.g. a
+        # loop-return frame sets chain_from: 1, so its refs are approved(1) +
+        # anchors, and the dedup drops the duplicate prior-frame ref. Absent →
+        # the prior frame in shot order (unchanged recipe).
+        prior = shot.chain_from if shot.chain_from is not None else order[order.index(shot.id) - 1]
         f_first = approved_key_path(state, run_dir, first)
         f_prior = approved_key_path(state, run_dir, prior)
         missing = [str(p) for p in (f_first, f_prior) if not p.exists()]

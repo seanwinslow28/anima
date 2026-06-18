@@ -16,7 +16,7 @@ import yaml
 
 _SLUG_RE = re.compile(r"^[A-Za-z0-9_-]+$")
 _TOP_KEYS = {"slug", "frames", "locked"}
-_FRAME_KEYS = {"id", "cast", "beat", "prompt", "extra_references", "chain_anchors", "hold", "beat_id"}
+_FRAME_KEYS = {"id", "cast", "beat", "prompt", "extra_references", "chain_anchors", "hold", "beat_id", "chain_from"}
 
 
 @dataclass(frozen=True)
@@ -29,6 +29,7 @@ class Shot:
     chain_anchors: list[str] = field(default_factory=list)  # ⊆ cast; default: all of cast
     hold: int = 2                # on-twos default
     beat_id: int | None = None   # Bea's beat->shot link (Phase 3b); inert downstream
+    chain_from: int | None = None  # earlier frame to chain refs off (loop-return → 1); resolve_references reads it
 
 
 @dataclass(frozen=True)
@@ -62,6 +63,7 @@ def load_shots(path: Path, *, known_namespaces: set[str]) -> ShotList:
 
     frames: list[Shot] = []
     prev_id = 0
+    seen_ids: set[int] = set()
     for i, entry in enumerate(frames_raw):
         unknown = set(entry) - _FRAME_KEYS
         if unknown:
@@ -75,6 +77,7 @@ def load_shots(path: Path, *, known_namespaces: set[str]) -> ShotList:
                 f"(duplicate or out of order after {prev_id}) — ids define the chain order"
             )
         prev_id = fid
+        seen_ids.add(fid)
         cast = entry.get("cast") or []
         if not cast:
             raise ValueError(f"shots.yaml frame {fid}: cast must be a non-empty list")
@@ -106,6 +109,20 @@ def load_shots(path: Path, *, known_namespaces: set[str]) -> ShotList:
             raise ValueError(
                 f"shots.yaml frame {fid}: beat_id must be an int >= 1 when present, got {beat_id!r}"
             )
+        chain_from = entry.get("chain_from")
+        if chain_from is not None:
+            # Must name an EARLIER frame that exists in the sheet. ids are strictly
+            # ascending and validated in order, so a valid earlier frame is already
+            # in seen_ids; chain_from >= fid or an absent id both fail this check.
+            if not isinstance(chain_from, int) or isinstance(chain_from, bool):
+                raise ValueError(
+                    f"shots.yaml frame {fid}: chain_from must be an int when present, got {chain_from!r}"
+                )
+            if chain_from >= fid or chain_from not in seen_ids:
+                raise ValueError(
+                    f"shots.yaml frame {fid}: chain_from {chain_from} must name an earlier "
+                    f"frame present in the sheet (seen ids: {sorted(seen_ids)})"
+                )
         frames.append(
             Shot(
                 id=fid,
@@ -116,6 +133,7 @@ def load_shots(path: Path, *, known_namespaces: set[str]) -> ShotList:
                 chain_anchors=list(chain_anchors),
                 hold=hold,
                 beat_id=beat_id,
+                chain_from=chain_from,
             )
         )
     return ShotList(slug=str(slug), frames=frames, locked=locked)

@@ -72,6 +72,40 @@ def test_load_shots_unknown_key_raises(tmp_path):
         load_shots(_write(tmp_path, data), known_namespaces=KNOWN)
 
 
+def test_load_shots_chain_from_round_trips_when_valid(tmp_path):
+    data = default_shots()
+    data["frames"][1]["chain_from"] = 1  # frame 2 chains off frame 1 (the loop anchor)
+    sl = load_shots(_write(tmp_path, data), known_namespaces=KNOWN)
+    assert sl.frames[0].chain_from is None
+    assert sl.frames[1].chain_from == 1
+
+
+def test_load_shots_chain_from_absent_defaults_none(tmp_path):
+    sl = load_shots(_write(tmp_path, default_shots()), known_namespaces=KNOWN)
+    assert all(f.chain_from is None for f in sl.frames)
+
+
+def test_load_shots_chain_from_must_name_an_earlier_in_sheet_frame(tmp_path):
+    # >= id (cannot chain off itself or a later frame)
+    data = default_shots()
+    data["frames"][1]["chain_from"] = 2
+    with pytest.raises(ValueError, match="chain_from"):
+        load_shots(_write(tmp_path, data), known_namespaces=KNOWN)
+
+    # earlier-by-value but absent from the sheet (ids are 1, 2 — no frame 5; and
+    # forward-reference 99 on frame 1)
+    data = default_shots()
+    data["frames"][0]["chain_from"] = 99
+    with pytest.raises(ValueError, match="chain_from"):
+        load_shots(_write(tmp_path, data), known_namespaces=KNOWN)
+
+    # wrong type
+    data = default_shots()
+    data["frames"][1]["chain_from"] = "1"
+    with pytest.raises(ValueError, match="chain_from"):
+        load_shots(_write(tmp_path, data), known_namespaces=KNOWN)
+
+
 def test_load_shots_requires_nonempty_prompt_beat_cast_and_valid_slug(tmp_path):
     for field, value in (("prompt", ""), ("beat", ""), ("cast", [])):
         data = default_shots()
