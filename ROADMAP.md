@@ -37,13 +37,15 @@ It's the right thing to build now for two independent reasons. PHILOSOPHY names 
 
 **Definition of Done (ratified):**
 1. ✅ A ratified Animatic design doc + Claude Code execution kickoff (this session).
-2. **A green costed spike** proving a placement rough makes NB2 respect placement — judged by Sean's eye — *before* any stage code (a red spike stops the build).
-3. A new **opt-in `ANIMATIC` stage** wired into [`pipeline/run.py`](pipeline/run.py) between `STORYBOARD` and `GENERATE`, with its own author-and-ingest gate; existing runs byte-identical (back-compat tests green).
-4. The placement reference wired into generation (role-tagged, appended last); the timing sidecar driving ASSEMBLE holds; both captured under `runs/<id>/animatic/`.
-5. The `post_animatic` T3 gate **consciously deferred** — seam kept in [`manifest.yaml`](manifest.yaml), hook point placed, promotion trigger recorded (timing feeds an orchestrated Motion phase). Not wired in v1.
-6. A costed run exercising the new stage end-to-end that ships a loop whose placement holds.
+2. ✅ **A green costed spike** proving a placement rough makes NB2 respect placement — judged by Sean's eye — *before* any stage code. (Kickflip spike, ~$1.0 Gemini; **Sean ruled GO** 2026-06-18; [field report](docs/anima-test-runs/2026-06-18-animatic-spike-field-report.md). Riders: silhouette = recommended form; the end-of-run "trail-off" diagnosed (production-sheet text / hole-punches / loose sketch) + fixed with a no-text/finished-frame negative baked into the role-tag clause.)
+3. ✅ A new **opt-in `ANIMATIC` stage** wired into [`pipeline/run.py`](pipeline/run.py) between `STORYBOARD` and `GENERATE`, with its own author-and-ingest gate; existing runs byte-identical (back-compat tests green).
+4. ✅ The placement reference wired into generation (role-tagged, appended last, run-state primary so the locked board is never mutated); the timing sidecar driving ASSEMBLE holds; both captured under `runs/<id>/animatic/`.
+5. ✅ The `post_animatic` T3 gate **consciously deferred** — seam kept in [`manifest.yaml`](manifest.yaml), hook point placed, promotion trigger recorded (timing feeds an orchestrated Motion phase). Not wired in v1.
+6. ⏳ A costed run exercising the new stage end-to-end that ships a loop whose placement holds. **The one open item** — the build is stub-green complete (+20 tests, 665 → 685; both md5 guards intact); this is the real proof and needs Sean drawing roughs for a real loop.
 
-**Explicitly not now:** Tier-2 Em calibration and the Museum orchestrator wiring. Both are real, both are next, and both are held until this DoD is met.
+**Status:** the Animatic *stage* is **BUILT** (spike GO + $0 stub-green, TDD, 2026-06-18). Current focus **stays on Animatic** until DoD #6 (the costed end-to-end run) closes — per the anti-drift contract, Tier-2 does not open until then.
+
+**Explicitly not now:** Tier-2 Em calibration and the Museum orchestrator wiring. Both are real, both are next, and both are held until this DoD is met (DoD #6).
 
 ---
 
@@ -101,7 +103,7 @@ The heart of the document. Every original idea, principle, persona, and checkpoi
 
 | Idea | Status | Evidence | What's left |
 |---|---|---|---|
-| **TOP-1 Animatic** | ❌ (design ratified) | `STAGES = ("PLAN","SCRIPT","STORYBOARD","GENERATE","ASSEMBLE","DONE")` in [`pipeline/orchestration/state.py`](pipeline/orchestration/state.py) — no animatic stage exists. `manifest.yaml` declares `post_animatic: T3` (line 269) but the comment block notes it is ticketed, not wired. | **The current focus.** Design + kickoff ratified 2026-06-18 (v1 = placement seed). Next: costed spike (gates the build) → wire the opt-in `ANIMATIC` stage → defer the T3 gate (seam kept). Build not started. |
+| **TOP-1 Animatic** | ◑ (stage BUILT; costed run pending) | `STAGES = (...,"STORYBOARD","ANIMATIC","GENERATE",...)` in [`pipeline/orchestration/state.py`](pipeline/orchestration/state.py); new [`pipeline/orchestration/animatic_stage.py`](pipeline/orchestration/animatic_stage.py) + `--animatic`/`--approve-animatic` in [`pipeline/run.py`](pipeline/run.py); `animatic_ref` + role-tag clause in [`generate_stage.py`](pipeline/orchestration/generate_stage.py); `animatic:` block in `manifest.yaml`. Costed kickflip spike **GO** ([field report](docs/anima-test-runs/2026-06-18-animatic-spike-field-report.md)). +20 tests (665→685), both md5 guards intact. | **Still the current focus.** Built $0 stub-green (TDD) 2026-06-18 — opt-in placement gate (default off ⇒ byte-identical). `post_animatic` T3 deferred (seam + hook kept). **DoD #6 open:** a costed end-to-end run shipping a loop whose placement holds (Sean draws real roughs). |
 | **TOP-2 Brief→Plan→Approval** | ✅ | Maya wired via `plan_stage.run_plan_stage` ([`pipeline/orchestration/plan_stage.py`](pipeline/orchestration/plan_stage.py)); plan gate in `run.py`; [`pipeline/agents/cost_estimator.py`](pipeline/agents/cost_estimator.py) emits the spend preview. Exercised in the 06-17/06-18 costed runs. | — |
 | **TOP-3 Museum** | ◑ | [`pipeline/museum/`](pipeline/museum/) + [`scripts/build_museum.py`](scripts/build_museum.py) + committed exhibit tree all exist. But `pipeline/run.py` has **zero** museum references — capture is a separate post-run invocation, not wired into the run. Astro publish into `sw-ai-pm-portfolio` not built. | Wire capture into the orchestrator; build the Astro export. (Road-ahead workstream 3.) |
 | **TOP-4 DAG + cache** | ✅ | [`pipeline/dag.py`](pipeline/dag.py): `NODE_REGISTRY`, topological sort, `.cache/{sha256}.json` per node. Note `manifest phases.enabled: []` is intentionally empty (keeps pencil-test runs byte-identical); the orchestrator uses inline stages plus `dag.Runner` where it needs the graph. | — |
@@ -133,7 +135,7 @@ The heart of the document. Every original idea, principle, persona, and checkpoi
 
 | Checkpoint | Tier | Status | Evidence |
 |---|---|---|---|
-| post-Animatic (4→5) | T3 | ❌ | The phase doesn't exist; gate declared in manifest, unwired. |
+| post-Animatic (4→5) | T3 | ⏳ (consciously deferred) | The ANIMATIC phase now exists (2026-06-18), but the T3 gate is deliberately unwired in v1 — seam declared in `manifest.yaml`, a no-op hook point placed in [`animatic_stage.py`](pipeline/orchestration/animatic_stage.py). Promote when the timing animatic feeds an orchestrated Motion phase (the Seedance burn it exists to protect). |
 | per-frame Generate (within 5) | T1 + T2 | ✅ | Wired in `generate_stage` (Flo → T1 → Em per frame). |
 | post-Motion (6→7) | T2 | ⏳ | Motion isn't orchestrated (Seedance scripts standalone). |
 | post-Assemble (8→9) | T2 | ⏳ | Declared; not wired. |

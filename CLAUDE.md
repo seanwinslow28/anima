@@ -29,8 +29,8 @@ Phase 0  BRIEF & PLAN       brief.md → planner agent → plan.md + cost estima
 Phase 1  SCAFFOLD           project structure + manifest skeleton
 Phase 2  CHARACTER BIBLE    characters/{id}/ folders authored or referenced
 Phase 3  STORYBOARD         beat sheet + shot list (largely human-authored)
-Phase 4  ANIMATIC           shape-block timing pass (Procreate Dreams / Procreate PNG)
-                            ⚖ T3 critic gate
+Phase 4  ANIMATIC           BUILT (v1, opt-in) — human placement-rough seed + holds
+                            ⚖ T3 critic gate (post_animatic) DEFERRED — seam kept
 Phase 5  GENERATE           NB2 stills, DAG-orchestrated, multi-character Bible-loaded
                             ⚖ T1 + T2 critics
 Phase 6  MOTION             Seedance video between approved anchors, draft → pro escalation
@@ -52,7 +52,7 @@ Phase 9  QA REVIEW          creative-director + final human gate
 
 **Phase 3 — Storyboard.** Beat sheet plus shot list. Mostly human-authored — agents assist with prompt drafts and continuity checks; they don't pick beats. **Both agents shipped (2026-06-15):** Sam (`scriptwriter`) authors the script half (Opus 4.8 → `script.md` + `beats.json` → human gate at `script approve`); Bea (`storyboard_artist`) authors the board half (Sonnet 4.6 → `storyboard.md` + draft `shots.yaml` → human curation gate at `storyboard approve`). **Phase 3 is now WIRED into the run orchestrator (2026-06-16):** `python -m pipeline.run` drives Maya → Sam → Bea → human-curate → GENERATE as one resumable program (`PLAN → SCRIPT → STORYBOARD → GENERATE`), auto-detecting back-compat (a brief that already carries a `shots.yaml` skips straight to GENERATE, byte-unchanged). The remaining orchestrator work is museum capture (its own slice) and the deferred live authoring costed run.
 
-**Phase 4 — Animatic.** The load-bearing pre-production stage. Sean blocks motion and timing in simple shapes — Procreate Dreams when the artifact wants to be a video, Procreate PNG sequences when it wants to be a stack of hand-drawn keys. The pipeline ingests either as a motion-and-timing constraint downstream. A **T3 critic gate** runs here because everything after this point is expensive; if the timing arc didn't land in shapes, no amount of Seedance compute will save it.
+**Phase 4 — Animatic. BUILT 2026-06-18 (v1, opt-in; the placement seed).** The load-bearing pre-production stage and the one keystone idea never built until now. v1 is a **placement seed**: Sean drops one human-authored rough per keyframe (a stick-figure / silhouette) that pins where characters stand, which way they face, their scale, and the leg count *before* a frame is drawn — plus the timing (holds) that drives the loop's pacing. A **costed kickflip spike gated the build** (Sean's GO; [field report](docs/anima-test-runs/2026-06-18-animatic-spike-field-report.md)): a placement rough reliably makes NB2 respect placement while identity holds, and the role-tag clause quarantines the rough's look. The stage is an **opt-in human author-and-ingest gate** between STORYBOARD and GENERATE (no LLM call — the human draws): `--animatic` (or `manifest.animatic.enabled`) switches it on; Sean drops frame-named roughs (`F<NN>.png`, **silhouette recommended**) + an optional `holds.json` into `runs/<id>/animatic/`; `--approve-animatic` deterministically ingests them into run-state (the locked board is never mutated), populating each shot's placement reference (appended **last** + role-tagged at GENERATE) and overriding the holds that drive ASSEMBLE. **Default off ⇒ STORYBOARD → GENERATE byte-identical to before.** The **`post_animatic` T3 critic gate is consciously deferred** (seam declared, hook point placed, council not wired) — it validates a *timing* arc before Seedance burn, and v1 has no orchestrated Motion to protect; promote when timing feeds Motion. The origin-doc's Procreate Dreams/PNG dual ingest collapses to one frame-named-directory contract (Dreams export can populate the same dir later, no schema change). Full per-phase ingestion spec: [`docs/2026-06-18-animatic-phase-design.md`](docs/2026-06-18-animatic-phase-design.md).
 
 **Phase 5 — Generate.** NB2 produces stills, DAG-orchestrated with content-hashed caching so editing one prompt only re-runs its node and downstream. Character Bibles load per shot. **T1** is the existing HF/SF rule gates; **T2** is a vision critic that reads the frame against the beat description and *proposes* prompt diffs, not pass/fail.
 
@@ -309,6 +309,7 @@ Future anima projects use their own project prefixes (`{PROJECT}_{ActID}_{FrameN
 - `characters:` — Character Bible registry
 - `museum:` — capture config + `project_slugs` derivation rules + noise-filter + standalone render target + publishing target (schema source of truth: [`docs/museum-exhibit-schema.md`](docs/museum-exhibit-schema.md))
 - `brief:` — Phase 0 brief file convention
+- `animatic:` — Phase 4 placement gate (opt-in, `enabled: false` default + `dir`/`rough_pattern`/`holds_sidecar` convention). See [`docs/2026-06-18-animatic-phase-design.md`](docs/2026-06-18-animatic-phase-design.md)
 
 ## QA Gates
 
@@ -368,10 +369,17 @@ python3 .claude/skills/gemini-pencil-animation-image-gen/scripts/generate_image.
 ### The run orchestrator (Slice 2 + 2.1 + Phase-3 wiring, 2026-06-11/16) — one command, brief → loop
 
 `python -m pipeline.run` is the resumable stage machine (`PLAN → SCRIPT →
-STORYBOARD → GENERATE → ASSEMBLE → DONE`, durable `runs/<id>/run_state.json`)
-that chains Maya → plan gate → Sam → script gate → Bea → curation gate →
-per-frame Flo → T1 → Em (one pass per cast namespace) → eye gate → retry
-ladder → assemble. **Eye-gate ergonomics (Slice B, 2026-06-18):** on a non-pass
+STORYBOARD → [ANIMATIC] → GENERATE → ASSEMBLE → DONE`, durable
+`runs/<id>/run_state.json`) that chains Maya → plan gate → Sam → script gate →
+Bea → curation gate → [animatic placement gate] → per-frame Flo → T1 → Em (one
+pass per cast namespace) → eye gate → retry ladder → assemble. **Phase 4
+ANIMATIC (opt-in, 2026-06-18):** `--animatic` (or `manifest.animatic.enabled`)
+inserts a human placement gate between STORYBOARD and GENERATE — Sean drops
+frame-named roughs (`F<NN>.png`, silhouette recommended) + an optional
+`holds.json` into `runs/<id>/animatic/`, and `--approve-animatic` deterministically
+ingests them into run-state (the locked board is never mutated): each shot's
+placement reference rides **last + role-tagged** into GENERATE, the holds drive
+ASSEMBLE. **Default off ⇒ STORYBOARD → GENERATE byte-identical.** **Eye-gate ergonomics (Slice B, 2026-06-18):** on a non-pass
 Em verdict the gate prints Em's `reasoning` + her proposed-fix summary
 (`target:path -> value (rationale)`), not just `verdict (conf, cites)` — read it
 before writing a `--note`; the gate/`--note` help steer the note toward the
@@ -406,8 +414,14 @@ python -m pipeline.run --resume <run-dir> --approve-plan
         # back-compat: lock criteria, enter GENERATE, fan frame 1. authoring: enter SCRIPT (Sam).
 python -m pipeline.run --resume <run-dir> --approve-script
         # authoring: lock beats.json, run Bea, stop at the storyboard curation gate.
+python -m pipeline.run --brief <dir> --animatic --slug S [--run-dir <dir>] [--stub]
+        # authoring + opt-in ANIMATIC: storyboard-approve pauses at the placement gate.
 python -m pipeline.run --resume <run-dir> --approve-storyboard
-        # authoring: re-validate + lock the curated shots.yaml, enter GENERATE, fan frame 1.
+        # authoring: re-validate + lock the curated shots.yaml; enter GENERATE
+        #   (or pause at ANIMATIC when --animatic/manifest.animatic.enabled).
+python -m pipeline.run --resume <run-dir> --approve-animatic
+        # animatic: ingest runs/<id>/animatic/ roughs (F<NN>.png) + holds.json into
+        #   run-state, then enter GENERATE, fan frame 1. (Opt-in; default off.)
 python -m pipeline.run --resume <run-dir> --approve-frame N [--attempt K]
         # lock attempt -> approved/, chain + generate N+1 (or assemble if last).
 python -m pipeline.run --resume <run-dir> --retry-frame N --note "<correction>"

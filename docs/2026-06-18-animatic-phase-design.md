@@ -100,10 +100,10 @@ The **`post_animatic` T3 critic gate** is declared in the manifest but stays unw
 
 ## Definition of Done (refines the ROADMAP candidate)
 
-1. This ratified design doc (done) and the Claude Code execution kickoff.
-2. **A green costed spike** proving a placement rough makes the model respect placement, with a field report and a go/no-go — *before* the stage is built.
-3. The ANIMATIC stage wired into the run orchestrator between STORYBOARD and GENERATE, opt-in, with its own author-and-ingest gate; existing runs byte-identical (back-compat tests green).
-4. The placement reference mechanism wired into generation, role-tagged; the timing sidecar driving the loop's holds at ASSEMBLE; both captured in the run's animatic directory.
-5. The `post_animatic` T3 gate consciously deferred — seam kept, hook point placed, promotion trigger recorded.
-6. A costed run that exercises the new stage end-to-end and ships a loop whose placement holds.
-7. Both md5 guards intact; nothing touched under `evals/vision_critic/`; ROADMAP updated.
+1. ✅ This ratified design doc and the Claude Code execution kickoff.
+2. ✅ **A green costed spike** proving a placement rough makes the model respect placement, with a field report and a go/no-go — *before* the stage is built. (Kickflip spike, ~$1.0; **Sean ruled GO** 2026-06-18; [field report](anima-test-runs/2026-06-18-animatic-spike-field-report.md). Silhouette = recommended form; trail-off diagnosed + fixed.)
+3. ✅ The ANIMATIC stage wired into the run orchestrator between STORYBOARD and GENERATE, opt-in, with its own author-and-ingest gate; existing runs byte-identical (back-compat tests green).
+4. ✅ The placement reference mechanism wired into generation, role-tagged; the timing sidecar driving the loop's holds at ASSEMBLE; both captured in the run's animatic directory.
+5. ✅ The `post_animatic` T3 gate consciously deferred — seam kept, hook point placed, promotion trigger recorded.
+6. ⏳ A costed run that exercises the new stage end-to-end and ships a loop whose placement holds. *(follow-on — the real proof; the build is stub-green complete.)*
+7. ◑ Both md5 guards intact ✅; nothing touched under `evals/vision_critic/` ✅; ROADMAP updated (on merge).
