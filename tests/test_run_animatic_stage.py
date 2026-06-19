@@ -157,6 +157,9 @@ def test_authoring_walk_with_animatic_reaches_done(tmp_path, monkeypatch):
 
     _approve_all_frames_to_done(run_dir)
     assert st.load_state(run_dir)["stage"] == "DONE"
+    # the timing half landed: the sidecar hold rode through to the assembled sequence
+    seq = (run_dir / "export" / "sequence.txt").read_text()
+    assert f"SS_F{first:02d}_key:5" in seq
 
 
 # ---------- default off: authoring without --animatic skips the stage ----------
@@ -181,6 +184,21 @@ def test_authoring_without_animatic_skips_stage_to_generate(tmp_path, monkeypatc
     state = st.load_state(run_dir)
     assert state["stage"] == "GENERATE"
     assert "animatic" not in state or not state.get("animatic")
+
+
+# ---------- the timing half: animatic holds drive ASSEMBLE ----------
+
+
+def test_animatic_holds_drive_the_assemble_sequence_file(tmp_path):
+    """The override the ingest writes to state['holds'] (via enter_generate) is what
+    assemble_stage.write_sequence_file consumes — the timing half's real consumer."""
+    from pipeline.orchestration.assemble_stage import write_sequence_file
+
+    # frame 1's hold overridden to 5 by an animatic sidecar; frame 2 keeps the board's 2
+    state = {"slug": "TT", "frame_order": [1, 2], "holds": {"1": 5, "2": 2}}
+    seq = write_sequence_file(state, tmp_path)
+
+    assert seq.read_text().strip().splitlines() == ["TT_F01_key:5", "TT_F02_key:2"]
 
 
 # ---------- the gate guard ----------
