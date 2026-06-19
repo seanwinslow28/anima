@@ -1,6 +1,6 @@
 # Em — vision-critic eval case set (v2: the ratified class-isolated corpus).
 #
-# REBUILT 2026-06-03 (eval-foundation reset, docs/2026-06-03-eval-foundation-reset-plan.md).
+# REBUILT 2026-06-03 (eval-foundation reset, docs/design/2026-06-03-eval-foundation-reset-plan.md).
 # The old 29-case set was retired wholesale: 19/23 fixtures were SHA-identical copies of
 # Bible/source plates, the Bible's body turnarounds had drifted to ~1:4-1:5.3 heads, five
 # fail cases carried compound labels, and per-class n was ~1. Its baseline figures

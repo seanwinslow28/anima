@@ -1,8 +1,8 @@
 # Field Report — Pre-costed-run hardening: Sam/Bea raw-dumps + gate smokes ($0 stub-green, TDD)
 
 **Date:** 2026-06-16
-**Kickoff:** [`docs/2026-06-16-costed-run-prep-kickoff.md`](../2026-06-16-costed-run-prep-kickoff.md)
-**Precedes:** [`docs/2026-06-16-spark-authored-costed-run-runbook.md`](../2026-06-16-spark-authored-costed-run-runbook.md) (the first live authoring run — human-driven by Sean, **not** this session)
+**Kickoff:** [`docs/2026-06-16-costed-run-prep-kickoff.md`](../COMPLETED/orchestrator/2026-06-16-costed-run-prep-kickoff.md)
+**Precedes:** [`docs/2026-06-16-spark-authored-costed-run-runbook.md`](../COMPLETED/orchestrator/2026-06-16-spark-authored-costed-run-runbook.md) (the first live authoring run — human-driven by Sean, **not** this session)
 **Spend:** $0 (stub-green throughout; no model call — smokes asserted *invoked* via a mock, dumps write whatever the call returned)
 **Branch / PR:** `costed-run-prep-hardening` off `origin/main` `98aeed8` (#55) → [PR #56](https://github.com/seanwinslow28/anima/pull/56); two TDD commits, each revertible alone
 
@@ -66,7 +66,7 @@ The kickoff offered an optional "fidelity" polish: persist `skip_smoke` in `new_
 
 ## How to proceed
 
-1. **The live authoring run is now unblocked — and is Sean's to drive.** With raw-dumps and gate smokes in place, the first costed Sam/Bea run ([runbook](../2026-06-16-spark-authored-costed-run-runbook.md)) will fail fast on a broken auth (before any spend) and leave `sam_raw.txt` / `bea_raw.txt` on disk for inspection if the envelope parser trips. Run it from a plain terminal (the nested-SDK throttle), subscription billing, per the fleet-ops protocol. **This session does not launch it.**
+1. **The live authoring run is now unblocked — and is Sean's to drive.** With raw-dumps and gate smokes in place, the first costed Sam/Bea run ([runbook](../COMPLETED/orchestrator/2026-06-16-spark-authored-costed-run-runbook.md)) will fail fast on a broken auth (before any spend) and leave `sam_raw.txt` / `bea_raw.txt` on disk for inspection if the envelope parser trips. Run it from a plain terminal (the nested-SDK throttle), subscription billing, per the fleet-ops protocol. **This session does not launch it.**
 2. **The raw dumps are the diagnostic for the run's first real failure mode.** The first integrated run (2026-06-11) broke on Opus's persona preamble; Maya's raw dump is what diagnosed it. Sam/Bea now have the same safety net. If the live run's structural pass or curation gate rejects, read the raw envelope first — it is the ground truth the parser saw.
 3. **`skip_smoke` symmetry is a parked, low-priority follow-on, not a debt.** If a future workflow genuinely needs `--skip-smoke` to apply at the script/storyboard gates (e.g. an offline-but-non-stub dev path), persist it in `new_state` and gate `not (stub or state.get("skip_smoke"))` — the one-line change the kickoff described. Until such a consumer exists, the gap is correct.
 

@@ -1,8 +1,8 @@
 # Field Report — Tier 1 Slice B: eye-gate ergonomics + loop-return chaining ($0 stub-green, TDD)
 
 **Date:** 2026-06-18
-**Kickoff:** [`docs/2026-06-17-tier1-slice-b-kickoff.md`](../2026-06-17-tier1-slice-b-kickoff.md)
-**Plan of record:** [`docs/2026-06-17-tier1-slice-b-build-plan.md`](../2026-06-17-tier1-slice-b-build-plan.md)
+**Kickoff:** [`docs/2026-06-17-tier1-slice-b-kickoff.md`](../COMPLETED/orchestrator/2026-06-17-tier1-slice-b-kickoff.md)
+**Plan of record:** [`docs/2026-06-17-tier1-slice-b-build-plan.md`](../COMPLETED/orchestrator/2026-06-17-tier1-slice-b-build-plan.md)
 **Why:** [`docs/anima-test-runs/2026-06-17-spark-authored-costed-run-post-mortem.md`](2026-06-17-spark-authored-costed-run-post-mortem.md) (F3/F4/F5) + the [Slice A field report](2026-06-17-bea-prompt-quality-field-report.md) lesson #4
 **Spend:** $0 (stub-green throughout; no model transport invoked in this session — the suite is green with `ANTHROPIC_API_KEY` ABSENT)
 **Branch / PR:** `worktree-tier1-slice-b` off `origin/main` `99dc389` (#59) → [PR #60](https://github.com/seanwinslow28/anima/pull/60); four TDD commits, each revertible alone
@@ -71,7 +71,7 @@ While updating the runbook (docs step) I found its Gate-5 example `--note` was `
 
 ## How to proceed
 
-1. **The costed validation run is the real proof of Tier 1.** Slice A made Bea's edit-frame prompts terse and the references label-free; Slice B chains the loop-return off frame 1 (B2) and hands the human Em's grounded diagnosis instead of a blank note (B1). None of this is proven against *live model output* yet — the stub demonstrates the field and the form, but a real Sonnet board + a real Em verdict are what validate the curation-cost drop, the no-text-bleed, and the loop-return hold. Run "The Spark, Shared" end-to-end per the [runbook](../2026-06-16-spark-authored-costed-run-runbook.md).
+1. **The costed validation run is the real proof of Tier 1.** Slice A made Bea's edit-frame prompts terse and the references label-free; Slice B chains the loop-return off frame 1 (B2) and hands the human Em's grounded diagnosis instead of a blank note (B1). None of this is proven against *live model output* yet — the stub demonstrates the field and the form, but a real Sonnet board + a real Em verdict are what validate the curation-cost drop, the no-text-bleed, and the loop-return hold. Run "The Spark, Shared" end-to-end per the [runbook](../COMPLETED/orchestrator/2026-06-16-spark-authored-costed-run-runbook.md).
 2. **Harvest the Em-vs-eye labels.** That same run is the label source for **Tier 2: the Em calibration campaign** (the autonomy core, planned in Cowork). Every eye-gate decision where Sean agrees or overrides Em's surfaced reasoning/patch is a calibration datum — B1 is precisely what makes that comparison legible at the gate.
 3. **`--apply-em-patch` is the Tier-2 seam, not a follow-on bug.** It was scoped out on purpose. When the calibration campaign establishes that Em's patches clear defects at an acceptable rate (the Gate-3 fix-rate work is the precedent), wiring a propose→apply flag onto the now-visible patch is the natural next step.
 4. **Tier 1 is done. Stop hardening the orchestrator seams and run it.** `chain_from` is validated + back-compat, the eye gate is legible, the retry note steers positive, the stub + eval cover the new field. The remaining named-but-unbuilt orchestrator work (museum capture) is its own slice; the immediate move is the costed run, not more `$0` polish.

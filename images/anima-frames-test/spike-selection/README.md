@@ -1,7 +1,7 @@
 # Animatic placement spike — kickflip corpus
 
 Curated input for the Animatic phase spike (build step 1 of
-[`docs/2026-06-18-animatic-phase-kickoff.md`](../../../docs/2026-06-18-animatic-phase-kickoff.md)).
+[`docs/2026-06-18-animatic-phase-kickoff.md`](../../../docs/active/2026-06-18-animatic-phase-kickoff.md)).
 Tests the load-bearing bet: **does a hand-drawn placement rough make NB2 respect
 placement on poses far outside Sean's "sitting and drawing" register?** Here, a
 skateboard kickflip.

@@ -1,6 +1,6 @@
 # Field report — SF03 proportion gate (G6.4): built, probed, Approach A, merged
 
-*Ran 2026-06-08, executing the [SF03 build handoff](../2026-06-04-sf03-proportion-gate-build-handoff.md) over the parked [design spike](../2026-06-03-sf03-proportion-gate-design.md). Costed Claude Code run under [fleet-ops](../fleet-ops-protocol.md): one isolated worktree, `ANTHROPIC_API_KEY` absent, `GEMINI_API_KEY` bounded from `.env`, two human checkpoints (probe verdict + pre-merge). **Merged to `main` via [PR #33](https://github.com/seanwinslow28/anima/pull/33) (`43987df`)** — Sean approved both gates live. This report is the session retrospective; the in-tree build log + plate evidence + retroactive JSON live alongside it ([`2026-06-08-sf03-probe-and-build.md`](2026-06-08-sf03-probe-and-build.md), [`2026-06-08-sf03-probe-plates/`](2026-06-08-sf03-probe-plates/), [`2026-06-08-sf03-retroactive-sean-anchor.json`](2026-06-08-sf03-retroactive-sean-anchor.json)).*
+*Ran 2026-06-08, executing the [SF03 build handoff](../COMPLETED/evals-foundation/2026-06-04-sf03-proportion-gate-build-handoff.md) over the parked [design spike](../COMPLETED/evals-foundation/2026-06-03-sf03-proportion-gate-design.md). Costed Claude Code run under [fleet-ops](../architecture/fleet-ops-protocol.md): one isolated worktree, `ANTHROPIC_API_KEY` absent, `GEMINI_API_KEY` bounded from `.env`, two human checkpoints (probe verdict + pre-merge). **Merged to `main` via [PR #33](https://github.com/seanwinslow28/anima/pull/33) (`43987df`)** — Sean approved both gates live. This report is the session retrospective; the in-tree build log + plate evidence + retroactive JSON live alongside it ([`2026-06-08-sf03-probe-and-build.md`](2026-06-08-sf03-probe-and-build.md), [`2026-06-08-sf03-probe-plates/`](2026-06-08-sf03-probe-plates), [`2026-06-08-sf03-retroactive-sean-anchor.json`](2026-06-08-sf03-retroactive-sean-anchor.json)).*
 
 ## TL;DR
 
@@ -37,7 +37,7 @@ Sean's planning call set the build order: because the measurement is determinist
 | back | 8 → 8 | **7.05** | pass | tightest alignment (0.03) |
 | ¾ | 8 → **9** | 8.29 → **~7.25** | fail → pass | NB2 redrew a 9th line; ruler-rescale, not a figure miss |
 
-**Make-or-break answered YES.** The figures are production-quality pencil-test turnarounds, not just test rigs. The lone ¾ "failure" was NB2 redrawing the ladder with 9 lines instead of 8 — a *ruler* problem, fixed by anchoring the measure on the bold crown/feet lines + the **known division count** (7), never the detected line count. Plates: [`2026-06-08-sf03-probe-plates/`](2026-06-08-sf03-probe-plates/).
+**Make-or-break answered YES.** The figures are production-quality pencil-test turnarounds, not just test rigs. The lone ¾ "failure" was NB2 redrawing the ladder with 9 lines instead of 8 — a *ruler* problem, fixed by anchoring the measure on the bold crown/feet lines + the **known division count** (7), never the detected line count. Plates: [`2026-06-08-sf03-probe-plates/`](2026-06-08-sf03-probe-plates).
 
 ## What we learned
 

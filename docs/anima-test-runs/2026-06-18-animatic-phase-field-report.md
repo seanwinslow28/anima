@@ -1,8 +1,8 @@
 # Field Report — Animatic phase v1: the placement seed (costed spike GO → $0 stub-green build, TDD)
 
 **Date:** 2026-06-18
-**Kickoff:** [`docs/2026-06-18-animatic-phase-kickoff.md`](../2026-06-18-animatic-phase-kickoff.md)
-**Design of record:** [`docs/2026-06-18-animatic-phase-design.md`](../2026-06-18-animatic-phase-design.md)
+**Kickoff:** [`docs/2026-06-18-animatic-phase-kickoff.md`](../active/2026-06-18-animatic-phase-kickoff.md)
+**Design of record:** [`docs/2026-06-18-animatic-phase-design.md`](../active/2026-06-18-animatic-phase-design.md)
 **Spike report:** [`docs/anima-test-runs/2026-06-18-animatic-spike-field-report.md`](2026-06-18-animatic-spike-field-report.md)
 **Spend:** **~$1.3** Gemini-metered (15 spike calls + 4 trail-off-fix calls; subscription untouched, `ANTHROPIC_API_KEY` absent). The stage build was **$0 stub-green**.
 **Branch:** `animatic-phase-v1` off `main` `71ad992` (isolated worktree) — 9 commits, each revertible.

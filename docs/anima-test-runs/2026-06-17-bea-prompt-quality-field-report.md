@@ -1,8 +1,8 @@
 # Field Report — Tier 1 Slice A: Bea prompt quality + reference hygiene ($0 stub-green, TDD)
 
 **Date:** 2026-06-17
-**Kickoff:** [`docs/2026-06-17-bea-prompt-quality-kickoff.md`](../2026-06-17-bea-prompt-quality-kickoff.md)
-**Plan of record:** [`docs/2026-06-17-tier1-fixes-build-plan.md`](../2026-06-17-tier1-fixes-build-plan.md) (Slice A)
+**Kickoff:** [`docs/2026-06-17-bea-prompt-quality-kickoff.md`](../COMPLETED/bea/2026-06-17-bea-prompt-quality-kickoff.md)
+**Plan of record:** [`docs/2026-06-17-tier1-fixes-build-plan.md`](../COMPLETED/orchestrator/2026-06-17-tier1-fixes-build-plan.md) (Slice A)
 **Why (the evidence):** [`docs/anima-test-runs/2026-06-17-spark-authored-costed-run-post-mortem.md`](2026-06-17-spark-authored-costed-run-post-mortem.md) §3 (Findings 2, 3, 6)
 **Spend:** $0 (stub-green throughout; the real Bea authoring path is exercised by Sean's next live run, not here)
 **Branch / PR:** `tier1-slice-a-bea-prompt-quality` off `origin/main` `a655657` (#57) → [PR #58](https://github.com/seanwinslow28/anima/pull/58); four TDD commits, each revertible alone

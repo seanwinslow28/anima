@@ -4,7 +4,7 @@ Born from the 2026-06-03 eval-foundation reset: 19 of 23 old vision-critic
 fixtures were byte-identical (SHA-256-matched) copies of Bible/source plates,
 which made "clean" mean "is the reference plate" and turned the
 reference-grounding experiment into a confabulation trap by construction
-(docs/2026-06-03-eval-foundation-reset-plan.md §1, §5).
+(docs/design/2026-06-03-eval-foundation-reset-plan.md §1, §5).
 
 This test converts the "don't contaminate the fixtures" convention into an
 enforced invariant:
@@ -76,7 +76,7 @@ def test_fixtures_share_no_sha256_with_references():
 
     assert not collisions, (
         "CONTAMINATED FIXTURES (fixture IS a reference plate — see "
-        "docs/2026-06-03-eval-foundation-reset-plan.md §5):\n  "
+        "docs/design/2026-06-03-eval-foundation-reset-plan.md §5):\n  "
         + "\n  ".join(collisions)
     )
 

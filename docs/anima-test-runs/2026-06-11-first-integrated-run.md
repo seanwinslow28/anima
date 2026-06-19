@@ -1,6 +1,6 @@
 # Field Report — The First Integrated End-to-End Run: "The Spark, Shared"
 
-**Date:** 2026-06-11 (kickoff written 2026-06-10: [`docs/2026-06-10-first-integrated-run-kickoff.md`](../2026-06-10-first-integrated-run-kickoff.md))
+**Date:** 2026-06-11 (kickoff written 2026-06-10: [`docs/2026-06-10-first-integrated-run-kickoff.md`](../COMPLETED/orchestrator/2026-06-10-first-integrated-run-kickoff.md))
 **Branch:** `feature/first-integrated-run` (isolated worktree off `origin/main`)
 **Billing:** subscription-absorbed (Maya, Em-escalation, T3 Sage/chairman) + ~$0.66 real (NB2 + Gemini critic)
 **Verdict:** **SHIPS** — Sean's eye on the assembled loop. The fleet ran as one chain for the first time.

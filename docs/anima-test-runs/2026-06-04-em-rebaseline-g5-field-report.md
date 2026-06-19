@@ -1,6 +1,6 @@
 # Em Re-Baseline (G5) — Field Report
 
-*2026-06-04. Executes [`docs/2026-06-03-em-rebaseline-g5-handoff.md`](../2026-06-03-em-rebaseline-g5-handoff.md) — the G5 gate of the eval-foundation reset. These are **THE new baseline numbers**; they replace the void contaminated figures (precision 0.62 / recall 1.00 / false_pass 0.15). Numbers stand pending Sean's ratification before the CLAUDE.md Em-row update.*
+*2026-06-04. Executes [`docs/2026-06-03-em-rebaseline-g5-handoff.md`](../COMPLETED/em/2026-06-03-em-rebaseline-g5-handoff.md) — the G5 gate of the eval-foundation reset. These are **THE new baseline numbers**; they replace the void contaminated figures (precision 0.62 / recall 1.00 / false_pass 0.15). Numbers stand pending Sean's ratification before the CLAUDE.md Em-row update.*
 
 ---
 

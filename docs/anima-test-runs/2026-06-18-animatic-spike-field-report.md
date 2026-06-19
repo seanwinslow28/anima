@@ -1,8 +1,8 @@
 # Field Report — Animatic placement spike: the kickflip (the bet, tested before any plumbing)
 
 **Date:** 2026-06-18
-**Kickoff:** [`docs/2026-06-18-animatic-phase-kickoff.md`](../2026-06-18-animatic-phase-kickoff.md) (Step 1)
-**Design of record:** [`docs/2026-06-18-animatic-phase-design.md`](../2026-06-18-animatic-phase-design.md)
+**Kickoff:** [`docs/2026-06-18-animatic-phase-kickoff.md`](../active/2026-06-18-animatic-phase-kickoff.md) (Step 1)
+**Design of record:** [`docs/2026-06-18-animatic-phase-design.md`](../active/2026-06-18-animatic-phase-design.md)
 **Spend:** ~**$1.0** (15 live NB2 calls — 14 spike + 1 transport smoke — at ~$0.07/image, `gemini-3.1-flash-image-preview`, Gemini-metered; well under the ~$2–3 ceiling)
 **Branch:** `animatic-phase-v1` off `main` `71ad992` (isolated worktree)
 **Status:** spike complete; **awaiting Sean's GO/NO-GO** (his eye is the engine-truth arbiter)
@@ -48,7 +48,7 @@ on any stub — a stubbed spike proves nothing). Transport: the same `invoke_ima
 
 ![A/B contact sheet](assets/2026-06-18-animatic-spike/spike_sheet_ab.png)
 
-Full-res outputs: [`assets/2026-06-18-animatic-spike/outputs/`](assets/2026-06-18-animatic-spike/outputs/).
+Full-res outputs: [`assets/2026-06-18-animatic-spike/outputs/`](assets/2026-06-18-animatic-spike/outputs).
 
 **Sheet 3 — Sean's pre-build request: colored rough vs silhouette across ALL six keys (no baseline).**
 After ruling GO, Sean asked to extend the silhouette test from the two A/B keys to the full kickflip

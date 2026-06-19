@@ -1,7 +1,7 @@
 # Field report — Flo-B: the fal in-between pencil-preservation pilot (NB2 pivot)
 
 **Date:** 2026-06-10 · **Spend:** ~$0.58 (2 B0 probes + an 8-frame smoke) · **Outcome:** NB2 pivot
-**Branch:** `feature/flo-router-b` (worktree) off `origin/main` `112a99b` · **Plan:** [build-plan §Flo-B](../2026-06-10-flo-router-build-plan.md) · **Kickoff:** [session-b-kickoff](../2026-06-10-flo-router-session-b-kickoff.md)
+**Branch:** `feature/flo-router-b` (worktree) off `origin/main` `112a99b` · **Plan:** [build-plan §Flo-B](../COMPLETED/flo/2026-06-10-flo-router-build-plan.md) · **Kickoff:** [session-b-kickoff](../COMPLETED/flo/2026-06-10-flo-router-session-b-kickoff.md)
 
 ## TL;DR
 
