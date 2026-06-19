@@ -90,22 +90,49 @@ whatever rough is dropped), so this is authoring guidance, not a code fork.
    not a requirement. (The harder per-loop questions — establishing-frame propagation, fifth-ref
    dilution — ride to the first costed *loop* run, per the design doc.)
 
-## Recommendation
+**Sheet 4 — the trail-off, diagnosed and fixed.** Sean's eye caught that both forms "start off
+great but trail off at the end of the run." At full res the cause is clear and it is **a prompt gap,
+not a model limit**: the "warm pencil-test register" cue pulls the model toward real *animation
+production sheets* — so later/action frames sprouted **hallucinated label text** ("KICKFLIP APEX /
+CLEAN SKETCH / POSE B", frame numbers like "0042"), **hole-punch marks**, and a drift from finished
+shading toward a looser line-rough. The spike prompt carried no negative against any of that. Fix
+tested on the two worst later keys (F14 + F18, both forms; 4 live calls, ~$0.28): add a strengthened
+negative + a finished-frame clause —
 
-**GO-leaning** on my read: the mechanism does the one thing the stage rests on (visual rough →
-respected placement) while holding identity and quarantining the look, and it does so on a corpus
-deliberately harder than the real use case. The colored-rough-works finding additionally *lowers*
-the authoring cost the design flagged as the #1 risk.
+> *"Do not render any text, captions, labels, frame numbers, hole-punch marks, watermarks, or
+> production-sheet annotations — draw only Sean and the skateboard on clean cream paper. Render a
+> fully finished, shaded pencil-test frame, not a loose line rough."*
 
-**This is not the ruling.** Per the kickoff and PHILOSOPHY (engine truth), **Sean's eye is the
-arbiter.** Review the two sheets:
+![trail-off before/after](assets/2026-06-18-animatic-spike/spike_sheet_notext_fix.png)
 
-- **GO** → I proceed to Steps 2–7: the $0 stub-green, TDD build of the opt-in ANIMATIC stage.
-- **NO-GO / ambiguous** → I stop, do not build, and we rethink the conditioning path (stronger
-  reference, heavier prompt-staging) before spending effort on the gate.
+**Result:** the label text and the line-sketch looseness are **cleared reliably** — F14 silhouette
+AFTER is a fully shaded, label-free Sean kickflip; F18 colored AFTER re-centers and finishes. One
+**residual**: hole-punch marks are greatly reduced but can persist faintly at the frame's bottom edge
+(F18 AFTER still shows three) — the hole-punch motif is more stubborn than the text. Acceptable for v1
+(faint, bottom-edge, croppable); a stronger lever can follow. **Build consequence:** the strengthened
+negative + finished-frame clause is baked into the animatic role-tag clause Step 3 appends — an
+extension of the no-text negative Bea shipped in Tier-1 Slice A (F6), which covers text/labels but not
+production-sheet artifacts or sketch-looseness. (Recommendation noted: Bea's base register negative
+could grow the same way — out of this phase's scope.)
 
-On GO, the full 18-frame kickflip becomes the proven-bet follow-on and a publishable museum piece
-("Sean lands a kickflip, generated from his own roughs").
+## Ruling — GO (Sean, 2026-06-18)
+
+**Sean ruled GO.** The mechanism does the one thing the stage rests on (visual rough → respected
+placement) while holding identity and quarantining the look, on a corpus deliberately harder than the
+real use case; the colored-rough-works finding *lowers* the authoring cost the design flagged as the
+#1 risk. Two riders on the GO:
+
+1. **Silhouette is the recommended authoring form** (Sean's call). Both work and the stage is agnostic
+   (`animatic_ref` points at whatever rough is dropped), but silhouettes read cleaner and avoid the
+   colored rough's palette echo — so the stage docs/instructions recommend silhouettes while keeping
+   colored roughs fully supported.
+2. **The trail-off was Sean's catch and is fixed before the build** (Sheet 4): the strengthened
+   no-text/no-production-artifact + finished-frame negative goes into the animatic role-tag clause
+   Step 3 bakes in. Residual hole-punch faintness noted.
+
+→ Proceed to Steps 2–7: the $0 stub-green, TDD build of the opt-in ANIMATIC stage. The full 18-frame
+kickflip becomes the proven-bet follow-on and a publishable museum piece ("Sean lands a kickflip,
+generated from his own roughs").
 
 ## Spend + fleet-ops
 
