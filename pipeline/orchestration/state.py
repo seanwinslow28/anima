@@ -14,13 +14,16 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 STATE_FILENAME = "run_state.json"
-STAGES = ("PLAN", "SCRIPT", "STORYBOARD", "GENERATE", "ASSEMBLE", "DONE")
+STAGES = ("PLAN", "SCRIPT", "STORYBOARD", "ANIMATIC", "GENERATE", "ASSEMBLE", "DONE")
 _LEGAL_TRANSITIONS: dict[str, tuple[str, ...]] = {
     # PLAN forks at runtime on needs_storyboard: SCRIPT (authoring, Sam->Bea)
     # or GENERATE (back-compat, a brief that already carries a shots.yaml).
     "PLAN": ("SCRIPT", "GENERATE"),
     "SCRIPT": ("STORYBOARD",),
-    "STORYBOARD": ("GENERATE",),
+    # STORYBOARD forks on animatic_enabled: ANIMATIC (opt-in placement gate) or
+    # GENERATE (default off — byte-identical to pre-Phase-4).
+    "STORYBOARD": ("ANIMATIC", "GENERATE"),
+    "ANIMATIC": ("GENERATE",),
     "GENERATE": ("ASSEMBLE",),
     "ASSEMBLE": ("DONE",),
     "DONE": (),
@@ -46,6 +49,7 @@ def new_state(
     cast: list[dict],
     brief_src: str | None = None,
     needs_storyboard: bool = False,
+    animatic_enabled: bool = False,
 ) -> dict:
     now = _now()
     return {
@@ -61,6 +65,7 @@ def new_state(
         "stub": stub,
         "stage": "PLAN",
         "needs_storyboard": needs_storyboard,
+        "animatic_enabled": animatic_enabled,
         "cast": cast,
         "plan": {
             "status": "pending",
@@ -179,6 +184,11 @@ def _next_hint(state: dict) -> str:
                 "--resume <run-dir> --approve-storyboard"
             )
         return "next:    drafting the storyboard (Bea)..."
+    if stage == "ANIMATIC":
+        return (
+            "next:    drop frame-named roughs (F01.png ...) + optional holds.json into "
+            "<run-dir>/animatic/, then --resume <run-dir> --approve-animatic"
+        )
     if stage == "GENERATE":
         n = current_frame(state)
         if n is None:

@@ -39,7 +39,13 @@ from pathlib import Path
 import yaml
 
 from pipeline.criteria import load_all_criteria
-from pipeline.orchestration import generate_stage, plan_stage, script_stage, storyboard_stage
+from pipeline.orchestration import (
+    animatic_stage,
+    generate_stage,
+    plan_stage,
+    script_stage,
+    storyboard_stage,
+)
 from pipeline.orchestration import state as st
 from pipeline.orchestration.cast import derive_cast
 from pipeline.orchestration.shots import read_slug
@@ -68,6 +74,9 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--manifest", default="manifest.yaml", help="Manifest path (default manifest.yaml).")
     p.add_argument("--stub", action="store_true",
                    help="Stub-transport run: skip the live-Opus smoke; record plan.stub=true. $0, for tests/smokes.")
+    p.add_argument("--animatic", action="store_true",
+                   help="Insert the opt-in ANIMATIC placement gate between STORYBOARD and "
+                        "GENERATE (also enabled by manifest animatic.enabled). Default off.")
     p.add_argument("--skip-smoke", action="store_true",
                    help="Skip the pre-run live-Opus smoke call (not recommended for costed runs).")
     p.add_argument("--allow-api-key", action="store_true",
@@ -78,7 +87,10 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--approve-script", action="store_true",
                    help="Approve the drafted script: lock beats.json, run Bea, enter STORYBOARD.")
     p.add_argument("--approve-storyboard", action="store_true",
-                   help="Approve the curated board: validate + lock shots.yaml, enter GENERATE.")
+                   help="Approve the curated board: validate + lock shots.yaml, enter GENERATE "
+                        "(or ANIMATIC, when animatic is enabled).")
+    p.add_argument("--approve-animatic", action="store_true",
+                   help="Ingest the dropped placement roughs + holds sidecar, then enter GENERATE.")
     p.add_argument("--approve-frame", type=int, metavar="N",
                    help="Approve frame N's attempt (Sean's eye said go).")
     p.add_argument("--attempt", type=int, metavar="K",
@@ -209,6 +221,10 @@ def _start(args: argparse.Namespace) -> int:
         stub=bool(args.stub),
         cast=cast_table,
         needs_storyboard=needs_storyboard,
+        # Opt-in placement gate: the --animatic flag OR manifest animatic.enabled.
+        # Only consulted on the authoring path (the storyboard gate); a back-compat
+        # brief goes PLAN -> GENERATE and never reads it.
+        animatic_enabled=bool(args.animatic) or bool((manifest.get("animatic") or {}).get("enabled")),
     )
     st.save_state(run_dir, state)
     return plan_stage.run_plan_stage(
@@ -221,6 +237,7 @@ def _resume(args: argparse.Namespace) -> int:
         bool(args.approve_plan),
         bool(args.approve_script),
         bool(args.approve_storyboard),
+        bool(args.approve_animatic),
         args.approve_frame is not None,
         args.retry_frame is not None,
         bool(args.assemble),
@@ -230,7 +247,8 @@ def _resume(args: argparse.Namespace) -> int:
         print(
             "error: --resume requires exactly one of "
             "--approve-plan | --approve-script | --approve-storyboard | "
-            "--approve-frame N | --retry-frame N --note | --assemble | --status",
+            "--approve-animatic | --approve-frame N | --retry-frame N --note | "
+            "--assemble | --status",
             file=sys.stderr,
         )
         return 2
@@ -272,6 +290,13 @@ def _resume(args: argparse.Namespace) -> int:
             file=sys.stderr,
         )
         return 2
+    if args.approve_animatic and state["stage"] != "ANIMATIC":
+        print(
+            "error: --approve-animatic only applies in the ANIMATIC stage "
+            f"(run is at {state['stage']}).",
+            file=sys.stderr,
+        )
+        return 2
     if (args.approve_frame is not None or args.retry_frame is not None) \
             and state["stage"] != "GENERATE":
         print(
@@ -293,6 +318,8 @@ def _resume(args: argparse.Namespace) -> int:
         return _do_approve_script(args, state, run_dir)
     if args.approve_storyboard:
         return _do_approve_storyboard(args, state, run_dir)
+    if args.approve_animatic:
+        return _do_approve_animatic(args, state, run_dir)
     if args.approve_frame is not None:
         return _do_approve_frame(args, state, run_dir)
     if args.assemble:
@@ -339,6 +366,16 @@ def _resume_manifest_and_bundle(state: dict) -> tuple[dict | None, object | None
         return None, None
     plan_stage.wire_brief_criteria(manifest, state["brief_dir"])
     return manifest, load_all_criteria(manifest)
+
+
+def _do_approve_animatic(args: argparse.Namespace, state: dict, run_dir: Path) -> int:
+    rc = _api_key_guard(args)
+    if rc:
+        return rc
+    manifest = _load_manifest(state)
+    if manifest is None:
+        return 2
+    return animatic_stage.approve_animatic_gate(state, manifest, run_dir)
 
 
 def _do_approve_frame(args: argparse.Namespace, state: dict, run_dir: Path) -> int:

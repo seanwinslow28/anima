@@ -357,6 +357,10 @@ def enter_generate(state: dict, manifest: dict, bundle, run_dir: Path) -> int:
 
     state["frame_order"] = [s.id for s in shot_list.frames]
     state["holds"] = {str(s.id): s.hold for s in shot_list.frames}
+    # Phase 4: an ANIMATIC ingest may override holds from its sidecar. Overlay
+    # (not replace) so non-animatic runs are byte-identical — an empty/absent
+    # override leaves the board holds untouched.
+    state["holds"].update((state.get("animatic") or {}).get("holds") or {})
     for shot in shot_list.frames:
         st.set_frame(
             state, shot.id,
