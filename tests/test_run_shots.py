@@ -106,6 +106,33 @@ def test_load_shots_chain_from_must_name_an_earlier_in_sheet_frame(tmp_path):
         load_shots(_write(tmp_path, data), known_namespaces=KNOWN)
 
 
+def test_load_shots_animatic_ref_round_trips_when_valid(tmp_path):
+    data = default_shots()
+    data["frames"][0]["animatic_ref"] = "animatic/F01.png"  # placement rough path
+    sl = load_shots(_write(tmp_path, data), known_namespaces=KNOWN)
+    assert sl.frames[0].animatic_ref == "animatic/F01.png"
+    assert sl.frames[1].animatic_ref is None
+
+
+def test_load_shots_animatic_ref_absent_defaults_none(tmp_path):
+    sl = load_shots(_write(tmp_path, default_shots()), known_namespaces=KNOWN)
+    assert all(f.animatic_ref is None for f in sl.frames)
+
+
+def test_load_shots_animatic_ref_must_be_nonempty_string_when_set(tmp_path):
+    # empty / whitespace string
+    data = default_shots()
+    data["frames"][0]["animatic_ref"] = "  "
+    with pytest.raises(ValueError, match="animatic_ref"):
+        load_shots(_write(tmp_path, data), known_namespaces=KNOWN)
+
+    # wrong type
+    data = default_shots()
+    data["frames"][0]["animatic_ref"] = 7
+    with pytest.raises(ValueError, match="animatic_ref"):
+        load_shots(_write(tmp_path, data), known_namespaces=KNOWN)
+
+
 def test_load_shots_requires_nonempty_prompt_beat_cast_and_valid_slug(tmp_path):
     for field, value in (("prompt", ""), ("beat", ""), ("cast", [])):
         data = default_shots()
