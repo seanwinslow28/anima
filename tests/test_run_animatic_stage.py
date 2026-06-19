@@ -186,6 +186,22 @@ def test_authoring_without_animatic_skips_stage_to_generate(tmp_path, monkeypatc
 # ---------- the gate guard ----------
 
 
+def test_manifest_animatic_enabled_turns_the_gate_on_without_the_flag(tmp_path, monkeypatch):
+    """manifest animatic.enabled: true is the other on-switch (no --animatic needed)."""
+    root, brief_dir = mk_project(tmp_path, monkeypatch, with_shots=False, cast=AUTHORING_CAST)
+    stub_critic_env(monkeypatch)
+    manifest_path = root / "manifest.yaml"
+    data = yaml.safe_load(manifest_path.read_text())
+    data["animatic"] = {"enabled": True}
+    manifest_path.write_text(yaml.safe_dump(data), encoding="utf-8")
+    run_dir = root / "runs" / "manifest-anim-run"
+
+    assert run_cli.main([
+        "--brief", str(brief_dir), "--stub", "--slug", "SS", "--run-dir", str(run_dir),
+    ]) == 0
+    assert st.load_state(run_dir)["animatic_enabled"] is True
+
+
 def test_approve_animatic_only_applies_in_animatic_stage(tmp_path, monkeypatch, capsys):
     root, brief_dir = mk_project(tmp_path, monkeypatch)  # back-compat brief
     stub_critic_env(monkeypatch)

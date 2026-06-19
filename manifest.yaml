@@ -266,7 +266,14 @@ tiering:
 # Authoritative spec: docs/pipeline-architecture-v1.md §Critic Stack (Full)
 critics:
   placement:
-    post_animatic: T3
+    post_animatic: T3   # DEFERRED in Phase-4 v1 (2026-06-18): seam declared, hook
+                        # point placed in pipeline/orchestration/animatic_stage.py,
+                        # council NOT wired. Its job is validating a TIMING arc before
+                        # downstream Seedance burn — and v1 has no orchestrated Motion
+                        # (no burn to protect) + the human authored + eyed the roughs.
+                        # PROMOTION TRIGGER: wire when the timing animatic feeds an
+                        # orchestrated Motion phase. The deterministic ingest at the
+                        # animatic gate is plumbing, not a critic — it runs regardless.
     per_frame_generate: [T1, T2]
     post_motion: T2
     post_assemble: T2
@@ -454,6 +461,21 @@ brief:
   criteria: acceptance_criteria.json               # symlink to a versioned file post-mutation
   plan: plan.md
   cost_preview: cost-preview.png                   # optional; non-blocking enhancement
+
+# Phase 4 — the ANIMATIC placement gate (built 2026-06-18; design lock:
+# docs/2026-06-18-animatic-phase-design.md). OPT-IN, DEFAULT OFF: a run sets it on
+# with `--animatic` OR `enabled: true` here; otherwise STORYBOARD -> GENERATE is
+# byte-identical to pre-Phase-4 and a back-compat brief (carrying shots.yaml) never
+# enters ANIMATIC. The human drops frame-named placement roughs into the run's
+# `dir` + an optional holds sidecar; `--approve-animatic` deterministically ingests
+# them into run-state (the locked board is never mutated) and enters GENERATE.
+# Recommended rough form: a stripped SILHOUETTE (cleaner than a colored rough; the
+# 2026-06-18 kickflip spike); colored roughs work too. Per-frame optional.
+animatic:
+  enabled: false
+  dir: animatic                # runs/<id>/animatic/ — the placement-rough drop directory
+  rough_pattern: "F<NN>.png"   # convention: frame-named, padding-insensitive (F1 == F01)
+  holds_sidecar: holds.json    # optional {frame_id: hold_int}; overrides board holds at ASSEMBLE
 
 # Acceptance criteria — the rubric Maya emits at Phase 0 post-approval.
 # Authoritative spec: docs/2026-05-26-agent-fleet-brainstorm-v2.md §2.3 + §5 Pattern B.
