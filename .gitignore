@@ -26,6 +26,7 @@ venv/
 *.swo
 *~
 .vscode/
+.idea/
 
 # Antigravity CLI local config (per-machine OAuth tokens etc.)
 .antigravitycli/
@@ -49,3 +50,12 @@ docs/superpowers/plans/
 
 # Sean's private portfolio-grade-moments ledger (not a public artifact)
 PORTFOLIO-GOLD.md
+
+# Retired / exploration image staging — untracked 2026-06-19 (kept on disk, not
+# part of the public tree). Canonical assets live in evals/ and characters/.
+# See CHANGELOG 2026-06-19 (repo reorg). The back-compat symlink, anima-frames-test/,
+# NEW-ANIMATION-PIPELINE/, head-turn/, and the referenced PNGs stay tracked.
+images/sean-character-dataset/
+images/Claude-Mascot/
+images/3D-Character-Reference-Test/
+images/Sprite-reference/

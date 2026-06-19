@@ -1,6 +1,6 @@
 # Em References Re-Test — Field Report
 
-*2026-06-04. G6 sequence step 2 (instrumented mini-run ✅ → **references re-test** → G6.1 citation grounding). Run brief: [`docs/2026-06-04-em-references-retest-handoff.md`](../2026-06-04-em-references-retest-handoff.md). Result trace: [`evals/vision_critic/traces/references-retest-2026-06-04.md`](../../evals/vision_critic/traces/references-retest-2026-06-04.md). Control = the ratified G5 blind baseline ([`traces/baseline-2026-06-04-scored.md`](../../evals/vision_critic/traces/baseline-2026-06-04-scored.md)).*
+*2026-06-04. G6 sequence step 2 (instrumented mini-run ✅ → **references re-test** → G6.1 citation grounding). Run brief: [`docs/2026-06-04-em-references-retest-handoff.md`](../COMPLETED/em/2026-06-04-em-references-retest-handoff.md). Result trace: [`evals/vision_critic/traces/references-retest-2026-06-04.md`](../../evals/vision_critic/traces/references-retest-2026-06-04.md). Control = the ratified G5 blind baseline ([`traces/baseline-2026-06-04-scored.md`](../../evals/vision_critic/traces/baseline-2026-06-04-scored.md)).*
 
 **This was a diagnostic-with-teeth, not a flag flip.** The repo default `critics.t2.attach_references: false` did NOT change. The flip is a separate, Sean-gated decision against the §Decision-rules below.
 

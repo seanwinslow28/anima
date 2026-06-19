@@ -1,8 +1,8 @@
 # Field Report — Run Orchestrator: Phase 3 wiring (the STORYBOARD slice) ($0 stub-green, TDD)
 
 **Date:** 2026-06-16
-**Kickoff:** [`docs/2026-06-15-orchestrator-storyboard-wiring-kickoff.md`](../2026-06-15-orchestrator-storyboard-wiring-kickoff.md)
-**Plan of record:** [`docs/2026-06-15-orchestrator-storyboard-wiring-build-plan.md`](../2026-06-15-orchestrator-storyboard-wiring-build-plan.md)
+**Kickoff:** [`docs/2026-06-15-orchestrator-storyboard-wiring-kickoff.md`](../COMPLETED/orchestrator/2026-06-15-orchestrator-storyboard-wiring-kickoff.md)
+**Plan of record:** [`docs/2026-06-15-orchestrator-storyboard-wiring-build-plan.md`](../COMPLETED/orchestrator/2026-06-15-orchestrator-storyboard-wiring-build-plan.md)
 **Spend:** $0 (stub-green throughout; running Sam (Opus) + Bea (Sonnet) live is the deferred costed run, never invoked in CI or this session)
 **Branch / PR:** `worktree-phase3-storyboard-wiring` off `origin/main` `b51440f` (#54) → [PR #55](https://github.com/seanwinslow28/anima/pull/55); six commits, each revertible alone
 

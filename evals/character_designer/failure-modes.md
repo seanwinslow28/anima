@@ -50,7 +50,7 @@
 
 **How this is regression-prevented:** Not by this eval suite directly — by `tests/test_prompt_style_neutrality.py` (the Task 1.4.6 guardrail). The guardrail fires at CI time when register-anchored markers in load-bearing prompt sections appear without cross-register companions. The Task 1.4.5 defang is what removed the bias; the Task 1.4.6 guardrail is what prevents regression. Case 2 (claude-mascot-reproduction) is the eval-layer validation that the architecture supports the pixel-art register — the mock envelope carries `style_register: pixel-art-8bit` and the suite asserts the emitted Bible carries the same.
 
-**Fix vector:** If the guardrail catches a regression, fix the offending prompt section by adding parallel cross-register language. See `docs/prompt-style-neutrality-doctrine.md` for the procedure.
+**Fix vector:** If the guardrail catches a regression, fix the offending prompt section by adding parallel cross-register language. See `docs/architecture/prompt-style-neutrality-doctrine.md` for the procedure.
 
 ---
 

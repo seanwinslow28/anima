@@ -1,6 +1,6 @@
 # The visual-fidelity fix — session writeup
 
-*2026-05-29. This is the narrative of the implementation session that acted on the [visual-fidelity post-mortem](../2026-05-29-cy-visual-fidelity-post-mortem.md). The post-mortem diagnosed why Cy's generated Bible plates passed every automated gate and still read as a different character. This session built the fix, validated it against live models on both registers, and surfaced (and fixed) three second-order failures along the way. It ends with what was deliberately deferred and what to do next.*
+*2026-05-29. This is the narrative of the implementation session that acted on the [visual-fidelity post-mortem](../COMPLETED/cy/2026-05-29-cy-visual-fidelity-post-mortem.md). The post-mortem diagnosed why Cy's generated Bible plates passed every automated gate and still read as a different character. This session built the fix, validated it against live models on both registers, and surfaced (and fixed) three second-order failures along the way. It ends with what was deliberately deferred and what to do next.*
 
 ---
 

@@ -1,6 +1,6 @@
 # Field report — SF03 proportion gate (G6.4): Approach-A probe + scaffold build
 
-*2026-06-08. Costed run under [`docs/fleet-ops-protocol.md`](../fleet-ops-protocol.md). Executes the parked design [`docs/2026-06-03-sf03-proportion-gate-design.md`](../2026-06-03-sf03-proportion-gate-design.md) under the [SF03 build handoff](../2026-06-04-sf03-proportion-gate-build-handoff.md). Scaffold-first build order (Sean's 2026-06-08 planning call): the whole deterministic gate was built CI-green BEFORE this probe; the probe only decides which input-feeder to wire.*
+*2026-06-08. Costed run under [`docs/fleet-ops-protocol.md`](../architecture/fleet-ops-protocol.md). Executes the parked design [`docs/2026-06-03-sf03-proportion-gate-design.md`](../COMPLETED/evals-foundation/2026-06-03-sf03-proportion-gate-design.md) under the [SF03 build handoff](../COMPLETED/evals-foundation/2026-06-04-sf03-proportion-gate-build-handoff.md). Scaffold-first build order (Sean's 2026-06-08 planning call): the whole deterministic gate was built CI-green BEFORE this probe; the probe only decides which input-feeder to wire.*
 
 ---
 
@@ -30,7 +30,7 @@
 - **Measurement:** the just-built `pipeline/agents/proportion_gate.py` — `detect_armature_lines` + `figure_extent` + `measure_proportion(out, sean_spec, armature_path=out)` (Approach-A path, the gridded output IS the verification artifact).
 - **Spec:** sean-anchor `character.yaml` — declared `head_to_body_target: 7.0`, `tolerance_heads: [6.5, 7.5]`.
 - **Fleet-ops:** isolated worktree `worktree-sf03-proportion-gate`; `ANTHROPIC_API_KEY` absent; `GEMINI_API_KEY` sourced bounded into the worktree's gitignored `.env` (removed at teardown); single owner; no `start_new_session`.
-- **Plates (committed evidence):** [`2026-06-08-sf03-probe-plates/`](2026-06-08-sf03-probe-plates/) — armature + 4 outputs.
+- **Plates (committed evidence):** [`2026-06-08-sf03-probe-plates/`](2026-06-08-sf03-probe-plates) — armature + 4 outputs.
 
 ## Findings
 

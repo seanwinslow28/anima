@@ -86,14 +86,14 @@ See [`failure-modes.md`](failure-modes.md). Four named modes today:
 
 ## Provenance
 
-- **Source-of-truth spec.** [`docs/2026-05-26-maya-planner-brainstorm.md`](../../docs/2026-05-26-maya-planner-brainstorm.md) §6 (Top 5) + §8 (file map).
-- **Architecture lock.** [`docs/2026-05-26-agent-fleet-brainstorm-v2.md`](../../docs/2026-05-26-agent-fleet-brainstorm-v2.md) §6 (per-role table) + §2.3 (Pattern B shared rubric).
+- **Source-of-truth spec.** [`docs/design/2026-05-26-maya-planner-brainstorm.md`](../../docs/design/2026-05-26-maya-planner-brainstorm.md) §6 (Top 5) + §8 (file map).
+- **Architecture lock.** [`docs/2026-05-26-agent-fleet-brainstorm-v2.md`](../../docs/COMPLETED/agent-fleet/2026-05-26-agent-fleet-brainstorm-v2.md) §6 (per-role table) + §2.3 (Pattern B shared rubric).
 - **Eval-suite template.** Established here in commit 3b; commit 8b
   (vision-critic) and commit 9b (cli-critic) mirror this structure. The
   schema in `cases.yaml`, the mocked-runner pattern in `runner.py`, the
   `_BOX_CHARS` invariant assertion, the red/xfail discipline — all carry
   forward unchanged.
-- **Change-map sequencing.** [`docs/2026-05-24-pipeline-v2-change-map.md`](../../docs/2026-05-24-pipeline-v2-change-map.md) §7 names commit 3b as the eval-template establishment commit. Subsequent eval commits reuse `runner.py`, `conftest.py`, and `README.md` shape.
+- **Change-map sequencing.** [`docs/2026-05-24-pipeline-v2-change-map.md`](../../docs/COMPLETED/pipeline-v2/2026-05-24-pipeline-v2-change-map.md) §7 names commit 3b as the eval-template establishment commit. Subsequent eval commits reuse `runner.py`, `conftest.py`, and `README.md` shape.
 - **Discipline references.** Hamel Husain (*"Your AI Product Needs Evals"*),
   Shreya Shankar (*"Eval-Driven Development for Modern AI Systems"*),
   Anthropic engineering (*"Demystifying Agent Evals"*). The discipline is

@@ -8,7 +8,7 @@
 # Sean's grain/morph review; it is NOT a DINOv2 target.
 #
 # Prompt convention: each case names a tween FRACTION (IB index within its transition) and the
-# beat motion from docs/pencil-test-storyboard.md (Act 1). The prompt is held CONSTANT across all
+# beat motion from docs/pencil-test/pencil-test-storyboard.md (Act 1). The prompt is held CONSTANT across all
 # four variants — only the engine varies. The pencil-preservation clauses (graphite line, cream
 # paper grain, "do NOT clean up / re-style into a digital look") are the whole point: the two
 # failure modes Sean's eye arbitrates are (a) grain slicked into clean digital and (b) the figure

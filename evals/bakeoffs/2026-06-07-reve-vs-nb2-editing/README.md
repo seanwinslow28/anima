@@ -50,7 +50,7 @@ python evals/bakeoffs/2026-06-07-reve-vs-nb2-editing/bakeoff.py --stage all --st
 ```
 `--stub` hard-short-circuits the runners (it never calls a model — important, because `invoke_image_edit` reads the `.env` file directly, so a populated `.env` would otherwise fire a real costed NB2 call). Outputs are gray placeholders; DINOv2 on them is meaningless by design.
 
-**Live run (costed) — under fleet-ops discipline** ([`docs/fleet-ops-protocol.md`](../../../docs/fleet-ops-protocol.md)):
+**Live run (costed) — under fleet-ops discipline** ([`docs/architecture/fleet-ops-protocol.md`](../../../docs/architecture/fleet-ops-protocol.md)):
 ```bash
 # 1. isolated git worktree (never the main checkout)
 # 2. ANTHROPIC_API_KEY UNSET  → Em's escalation bills your Claude subscription,

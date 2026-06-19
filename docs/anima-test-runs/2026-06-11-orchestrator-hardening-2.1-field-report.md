@@ -1,8 +1,8 @@
 # Field Report — Run Orchestrator Slice 2.1: pre-costed hardening ($0 stub-green, TDD)
 
 **Date:** 2026-06-11
-**Kickoff:** [`docs/2026-06-11-orchestrator-hardening-2.1-kickoff.md`](../2026-06-11-orchestrator-hardening-2.1-kickoff.md)
-**Plan of record:** [`docs/2026-06-11-orchestrator-hardening-2.1-build-plan.md`](../2026-06-11-orchestrator-hardening-2.1-build-plan.md)
+**Kickoff:** [`docs/2026-06-11-orchestrator-hardening-2.1-kickoff.md`](../COMPLETED/orchestrator/2026-06-11-orchestrator-hardening-2.1-kickoff.md)
+**Plan of record:** [`docs/2026-06-11-orchestrator-hardening-2.1-build-plan.md`](../COMPLETED/orchestrator/2026-06-11-orchestrator-hardening-2.1-build-plan.md)
 **Spend:** $0 (one in-flight Maya Opus call killed before completion — see Surprise #1)
 **Branch:** `worktree-orch-hardening-2.1` off `origin/main` `dea68e3` (#50); three TDD commits, each revertible alone
 

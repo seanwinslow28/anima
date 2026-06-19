@@ -1,6 +1,6 @@
 # Field report — Em instrumented mini-run (G6.2)
 
-*2026-06-04. First costed move of the G6 arc, run under [`docs/fleet-ops-protocol.md`](../fleet-ops-protocol.md). Single-pass diagnostic (`--runs 1`, 50 cases), config held identical to the ratified G5 baseline so the verdicts are comparable. This run moved no baseline, changed no labels, no prompt, no criteria. Trace: [`evals/vision_critic/traces/2026-06-04-instrumented-mini-run.md`](../../evals/vision_critic/traces/2026-06-04-instrumented-mini-run.md).*
+*2026-06-04. First costed move of the G6 arc, run under [`docs/fleet-ops-protocol.md`](../architecture/fleet-ops-protocol.md). Single-pass diagnostic (`--runs 1`, 50 cases), config held identical to the ratified G5 baseline so the verdicts are comparable. This run moved no baseline, changed no labels, no prompt, no criteria. Trace: [`evals/vision_critic/traces/2026-06-04-instrumented-mini-run.md`](../../evals/vision_critic/traces/2026-06-04-instrumented-mini-run.md).*
 
 **Standing doctrine: verify against the tree, never trust a label — including this report.**
 

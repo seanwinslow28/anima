@@ -1,9 +1,9 @@
 # Field Report — Bea the Storyboard Artist (Phase 3b): the fleet's last named agent ($0 stub-green, TDD)
 
 **Date:** 2026-06-15
-**Kickoff:** [`docs/2026-06-15-bea-storyboard-kickoff.md`](../2026-06-15-bea-storyboard-kickoff.md)
-**Plan of record:** [`docs/2026-06-15-bea-storyboard-build-plan.md`](../2026-06-15-bea-storyboard-build-plan.md)
-**Build input:** [`docs/2026-06-15-bea-action-line-bank-context.md`](../2026-06-15-bea-action-line-bank-context.md)
+**Kickoff:** [`docs/2026-06-15-bea-storyboard-kickoff.md`](../COMPLETED/bea/2026-06-15-bea-storyboard-kickoff.md)
+**Plan of record:** [`docs/2026-06-15-bea-storyboard-build-plan.md`](../COMPLETED/bea/2026-06-15-bea-storyboard-build-plan.md)
+**Build input:** [`docs/2026-06-15-bea-action-line-bank-context.md`](../design/2026-06-15-bea-action-line-bank-context.md)
 **Spend:** $0 (stub-green throughout; the real Sonnet path is written + guarded, never invoked in CI or this session)
 **Branch / PR:** `bea-storyboard-artist` off `origin/main` `807cf99` (#53) → [PR #54](https://github.com/seanwinslow28/anima/pull/54); six TDD commits, each revertible alone
 

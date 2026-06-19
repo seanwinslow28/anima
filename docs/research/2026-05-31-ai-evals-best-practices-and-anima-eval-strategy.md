@@ -1,8 +1,8 @@
 # AI Evals — Best Practice (2026) and the anima Fleet Eval Strategy
 
 **Date:** 2026-05-31
-**Status:** Research findings. Methodological basis for the critic-spine hardening kickoff ([`2026-05-31-critic-spine-hardening-kickoff.md`](../2026-05-31-critic-spine-hardening-kickoff.md)) and for every agent eval suite that follows it.
-**Grounded in:** [`PHILOSOPHY.md`](../../PHILOSOPHY.md) ("empirical, not vibes"; "the critic earns its keep when it proposes fixes") · [`2026-05-26-agent-fleet-brainstorm-v2.md`](../2026-05-26-agent-fleet-brainstorm-v2.md) §2.5, §8 · [`2026-05-24-pipeline-v2-change-map.md`](../2026-05-24-pipeline-v2-change-map.md) §7 · the `code-brain/evals/vault-synthesizer/` lineage.
+**Status:** Research findings. Methodological basis for the critic-spine hardening kickoff ([`2026-05-31-critic-spine-hardening-kickoff.md`](../COMPLETED/em/2026-05-31-critic-spine-hardening-kickoff.md)) and for every agent eval suite that follows it.
+**Grounded in:** [`PHILOSOPHY.md`](../../PHILOSOPHY.md) ("empirical, not vibes"; "the critic earns its keep when it proposes fixes") · [`2026-05-26-agent-fleet-brainstorm-v2.md`](../COMPLETED/agent-fleet/2026-05-26-agent-fleet-brainstorm-v2.md) §2.5, §8 · [`2026-05-24-pipeline-v2-change-map.md`](../COMPLETED/pipeline-v2/2026-05-24-pipeline-v2-change-map.md) §7 · the `code-brain/evals/vault-synthesizer/` lineage.
 **Scope note:** This is a research doc, not a build plan. It establishes the *method* anima judges its fleet by. No pipeline code is touched here; the eval suites get built against this method in the sessions that follow. Where the field genuinely disagrees, this doc says so rather than papering over it — that is the "empirical, not vibes" contract applied to the ruler itself.
 
 ---

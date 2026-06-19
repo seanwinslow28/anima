@@ -2,7 +2,7 @@
 
 **Purpose:** the single sheet to follow when actually running the costed Em live re-baseline that the reference-images workstream deferred. Folds the three operational gates + the field report's run recipe + the scoring disciplines into one ordered procedure.
 
-**Sources this consolidates:** [field report](2026-06-02-em-reference-images-field-report.md) (§"the deferred run" recipe + §9 disciplines) · [remediation plan](2026-06-02-operational-incidents-remediation-plan.md) (the three gates) · [fleet-ops protocol](../fleet-ops-protocol.md).
+**Sources this consolidates:** [field report](2026-06-02-em-reference-images-field-report.md) (§"the deferred run" recipe + §9 disciplines) · [remediation plan](2026-06-02-operational-incidents-remediation-plan.md) (the three gates) · [fleet-ops protocol](../architecture/fleet-ops-protocol.md).
 
 **What we're measuring:** does giving Em references + criteria lift **precision** on the performs segment **without costing any false pass** (recall must hold at 1.00, false-pass at 0.00)? The reference-blind baseline to beat: **performs precision 0.62, recall 1.00, false-pass 0.00** (2026-06-01).
 

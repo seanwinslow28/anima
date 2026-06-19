@@ -6,7 +6,7 @@
 - [`2026-05-26-Anima-Deep-Research-Perplexity-Deep-Research.md`](2026-05-26-Anima-Deep-Research-Perplexity-Deep-Research.md) — 408 lines, strong production-case-study density, three configurations (Budget / Balanced [recommended] / Pinnacle)
 - [`2026-05-26-orchestrator-judge-delegation-llm-council.md`](2026-05-26-orchestrator-judge-delegation-llm-council.md) — 1089 lines, four-vendor council (Opus 4.7 + GPT-5.5 + Gemini Pro + Grok 4.20) with Opus 4.7 chairman synthesis at line 943
 
-**Purpose:** Read this first; raw outputs are the receipts. This synthesis is the decision artifact that gates the v2 revision of [`docs/2026-05-25-agent-fleet-brainstorm.md`](../2026-05-25-agent-fleet-brainstorm.md) and [`docs/2026-05-25-agent-fleet-implementation-prompt.md`](../2026-05-25-agent-fleet-implementation-prompt.md). Mirrors the [`docs/Image-Model-DR-2026/SYNTHESIS.md`](../Image-Model-DR-2026/SYNTHESIS.md) pattern.
+**Purpose:** Read this first; raw outputs are the receipts. This synthesis is the decision artifact that gates the v2 revision of [`docs/2026-05-25-agent-fleet-brainstorm.md`](../COMPLETED/agent-fleet/2026-05-25-agent-fleet-brainstorm.md) and [`docs/2026-05-25-agent-fleet-implementation-prompt.md`](../COMPLETED/agent-fleet/2026-05-25-agent-fleet-implementation-prompt.md). Mirrors the [`docs/Image-Model-DR-2026/SYNTHESIS.md`](../Image-Model-DR-2026/SYNTHESIS.md) pattern.
 
 ---
 

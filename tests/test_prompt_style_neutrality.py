@@ -6,7 +6,7 @@ register-anchored markers in load-bearing prompt sections must be paired
 with at least one cross-register example, proving the language is
 comparative rather than default-anchored.
 
-The doctrine note at docs/prompt-style-neutrality-doctrine.md is the
+The doctrine note at docs/architecture/prompt-style-neutrality-doctrine.md is the
 human-readable companion explaining the principle and the procedure for
 adding a new style register or new prompt file.
 
@@ -236,7 +236,7 @@ def test_doctrine_note_exists_and_names_the_principle():
     """The companion doctrine note must exist and reference the test + procedure."""
     doctrine_path = (
         Path(__file__).resolve().parents[1]
-        / "docs" / "prompt-style-neutrality-doctrine.md"
+        / "docs" / "architecture" / "prompt-style-neutrality-doctrine.md"
     )
     assert doctrine_path.exists(), (
         f"doctrine note not found at {doctrine_path}; Task 1.4.6 ships both "

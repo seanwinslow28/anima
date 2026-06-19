@@ -2,7 +2,7 @@
 
 **Date:** 2026-06-10 · **Spend:** $0 (stub-green wiring; no model calls, no real frames) · **Outcome:** Flo dispatched + HF01 fixed
 **Branch:** `worktree-feature+flo-router-c` (worktree) off `origin/main` `3659032` · **Merged:** PR #45 (squash → `15dc7c0`)
-**Plan:** [build-plan](../2026-06-10-flo-router-build-plan.md) · **Kickoff:** [session-c-kickoff](../2026-06-10-flo-router-session-c-kickoff.md)
+**Plan:** [build-plan](../COMPLETED/flo/2026-06-10-flo-router-build-plan.md) · **Kickoff:** [session-c-kickoff](../COMPLETED/flo/2026-06-10-flo-router-session-c-kickoff.md)
 
 ## TL;DR
 
@@ -15,7 +15,7 @@ integrated end-to-end run ("The Spark, Shared"). All five steps shipped TDD red�
 
 The single notable event was an **operational incident** — early test edits leaked to the main-repo
 path instead of the worktree — caught by the "wrong test count" signal and fully corrected. It is the
-post-mortem centerpiece below, because it is exactly the class of mistake [`fleet-ops-protocol.md`](../fleet-ops-protocol.md)
+post-mortem centerpiece below, because it is exactly the class of mistake [`fleet-ops-protocol.md`](../architecture/fleet-ops-protocol.md)
 exists to prevent.
 
 ## Fleet-ops (§0 before AND after)
@@ -93,7 +93,7 @@ continuing. No work lost; no main-branch pollution shipped.
 - A `git -C <main-repo> status -s` spot-check after the first worktree edit cheaply confirms the main
   tree is still clean.
 
-This mirrors the operational-incident class that prompted [`fleet-ops-protocol.md`](../fleet-ops-protocol.md)
+This mirrors the operational-incident class that prompted [`fleet-ops-protocol.md`](../architecture/fleet-ops-protocol.md)
 (adopted 2026-06-02 after three incidents) — "one isolated worktree per plan" only protects you if
 every mutation actually lands *in* it.
 
