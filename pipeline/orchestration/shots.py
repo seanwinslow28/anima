@@ -16,7 +16,7 @@ import yaml
 
 _SLUG_RE = re.compile(r"^[A-Za-z0-9_-]+$")
 _TOP_KEYS = {"slug", "frames", "locked"}
-_FRAME_KEYS = {"id", "cast", "beat", "prompt", "extra_references", "chain_anchors", "hold", "beat_id", "chain_from"}
+_FRAME_KEYS = {"id", "cast", "beat", "prompt", "extra_references", "chain_anchors", "hold", "beat_id", "chain_from", "animatic_ref"}
 
 
 @dataclass(frozen=True)
@@ -30,6 +30,7 @@ class Shot:
     hold: int = 2                # on-twos default
     beat_id: int | None = None   # Bea's beat->shot link (Phase 3b); inert downstream
     chain_from: int | None = None  # earlier frame to chain refs off (loop-return → 1); resolve_references reads it
+    animatic_ref: str | None = None  # Phase 4 placement rough (a path); usually populated from run-state by the ingest, never required to exist at load. resolve_references appends it last + role-tags it.
 
 
 @dataclass(frozen=True)
@@ -123,6 +124,17 @@ def load_shots(path: Path, *, known_namespaces: set[str]) -> ShotList:
                     f"shots.yaml frame {fid}: chain_from {chain_from} must name an earlier "
                     f"frame present in the sheet (seen ids: {sorted(seen_ids)})"
                 )
+        animatic_ref = entry.get("animatic_ref")
+        if animatic_ref is not None:
+            # A path to a placement rough. Validate lightly: a non-empty string.
+            # The file need NOT exist at load — the ANIMATIC ingest usually fills
+            # this into run-state (the board stays clean), and the ingest is what
+            # checks the rough exists. An inline-authored board may carry it here.
+            if not isinstance(animatic_ref, str) or not animatic_ref.strip():
+                raise ValueError(
+                    f"shots.yaml frame {fid}: animatic_ref must be a non-empty string "
+                    f"when present, got {animatic_ref!r}"
+                )
         frames.append(
             Shot(
                 id=fid,
@@ -134,6 +146,7 @@ def load_shots(path: Path, *, known_namespaces: set[str]) -> ShotList:
                 hold=hold,
                 beat_id=beat_id,
                 chain_from=chain_from,
+                animatic_ref=animatic_ref,
             )
         )
     return ShotList(slug=str(slug), frames=frames, locked=locked)

@@ -105,7 +105,10 @@ def test_advance_stage_rejects_illegal_transition():
 
 
 def test_stages_include_script_and_storyboard_in_order():
-    assert st.STAGES == ("PLAN", "SCRIPT", "STORYBOARD", "GENERATE", "ASSEMBLE", "DONE")
+    # ANIMATIC (Phase 4) sits between STORYBOARD and GENERATE (opt-in; STORYBOARD
+    # keeps the direct STORYBOARD -> GENERATE edge for the default-off path).
+    assert st.STAGES == ("PLAN", "SCRIPT", "STORYBOARD", "ANIMATIC", "GENERATE",
+                         "ASSEMBLE", "DONE")
 
 
 def test_plan_can_branch_to_either_script_or_generate():

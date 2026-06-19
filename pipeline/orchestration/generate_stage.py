@@ -67,6 +67,48 @@ def approved_key_path(state: dict, run_dir: Path, n: int) -> Path:
     return Path(run_dir) / "approved" / f"{state['slug']}_F{n:02d}_key.png"
 
 
+# Phase 4 placement role-tag — appended to a frame's prompt iff it has a placement
+# rough. The image carries the staging; this clause quarantines the rough's LOOK so
+# only its composition transfers (the NB2 reference-gap + attribute-bleed fix the
+# 2026-05-30 research names). The placement vocabulary (left/right, leg/limb count,
+# facing) and the no-text/finished-frame negative were both validated live in the
+# 2026-06-18 kickflip spike — the negative closes the "trail-off" Sean caught, where
+# "pencil-test register" pulled the model toward production-sheet text + hole-punches
+# + loose line-roughs. (Extends Bea's Tier-1 Slice A no-text negative to cover
+# production-sheet artifacts + sketch-looseness.)
+_ANIMATIC_ROLE_TAG = (
+    "\n\nThe final reference is the placement rough — the composition target: match the "
+    "character positions, facing direction, left/right orientation, leg and limb count, "
+    "and relative scale shown there; do NOT copy its line quality, colour, character "
+    "design, or background — identity and style come only from the character anchor(s), "
+    "in the established register. Do not render any text, captions, labels, frame numbers, "
+    "hole-punch marks, watermarks, or production-sheet annotations; render a fully "
+    "finished, shaded frame, not a loose line rough."
+)
+
+
+def animatic_ref_for(shot: Shot, state: dict) -> str | None:
+    """The placement rough for this shot, run-state first.
+
+    The ANIMATIC ingest writes state['animatic']['refs'][str(id)] -> path, so the
+    locked board is never mutated (design lock). An inline-authored board's
+    Shot.animatic_ref is the fallback. Absent everywhere -> None (back-compat)."""
+    by_frame = (state.get("animatic") or {}).get("refs") or {}
+    return by_frame.get(str(shot.id)) or shot.animatic_ref
+
+
+def frame_prompt(shot: Shot, state: dict, note: str | None = None) -> str:
+    """The prompt dispatched to Flo. Byte-identical to the bare shot.prompt (+ any
+    correction note) when the frame has no placement rough; gains the role-tag clause
+    when it does. The clause sits before the note so the latest correction stays last."""
+    prompt = shot.prompt
+    if animatic_ref_for(shot, state):
+        prompt += _ANIMATIC_ROLE_TAG
+    if note:
+        prompt += f"\n\nCORRECTION (re-roll, address the prior attempt's defect): {note}"
+    return prompt
+
+
 def resolve_references(shot: Shot, state: dict, run_dir: Path) -> list[str]:
     """spark_frame's reference recipe, generalized and deduped order-preserving.
 
@@ -98,6 +140,12 @@ def resolve_references(shot: Shot, state: dict, run_dir: Path) -> list[str]:
             + [members[ns]["anchor"] for ns in shot.chain_anchors]
             + list(shot.extra_references)
         )
+    # Phase 4: the placement rough rides LAST (composition target, role-tagged in the
+    # prompt). Appended after both branches so it's the final reference; dedup keeps it
+    # once. Absent -> the list is byte-identical to today (the back-compat hinge).
+    animatic_ref = animatic_ref_for(shot, state)
+    if animatic_ref:
+        refs.append(animatic_ref)
     seen: set[str] = set()
     deduped: list[str] = []
     for r in refs:
@@ -126,9 +174,7 @@ def run_frame_fan(
     run_dir = Path(run_dir)
     frame_rec = st.get_frame(state, shot.id)
     attempt_idx = len(frame_rec["attempts"]) + 1
-    prompt = shot.prompt
-    if note:
-        prompt += f"\n\nCORRECTION (re-roll, address the prior attempt's defect): {note}"
+    prompt = frame_prompt(shot, state, note)
     refs = resolve_references(shot, state, run_dir)
     members = namespace_to_member(state["cast"])
     primary_folder_key = members[shot.cast[0]]["folder_key"]
@@ -311,6 +357,10 @@ def enter_generate(state: dict, manifest: dict, bundle, run_dir: Path) -> int:
 
     state["frame_order"] = [s.id for s in shot_list.frames]
     state["holds"] = {str(s.id): s.hold for s in shot_list.frames}
+    # Phase 4: an ANIMATIC ingest may override holds from its sidecar. Overlay
+    # (not replace) so non-animatic runs are byte-identical — an empty/absent
+    # override leaves the board holds untouched.
+    state["holds"].update((state.get("animatic") or {}).get("holds") or {})
     for shot in shot_list.frames:
         st.set_frame(
             state, shot.id,

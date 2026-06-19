@@ -106,6 +106,19 @@ def approve_storyboard_gate(state: dict, manifest: dict, run_dir: Path) -> int:
 
     state["storyboard"]["status"] = "approved"
 
+    # Phase 4 fork: with animatic enabled, the board is locked but generation
+    # waits on the human placement pass — advance to ANIMATIC and pause. Criteria
+    # wiring + the GENERATE entry move to the animatic-approve gate. Default off:
+    # straight to GENERATE, byte-identical to pre-Phase-4.
+    if state.get("animatic_enabled"):
+        from pipeline.orchestration import animatic_stage
+
+        st.advance_stage(state, "ANIMATIC")
+        st.save_state(run_dir, state)
+        print("storyboard approved — board validated + locked; entering ANIMATIC "
+              "(placement gate)")
+        return animatic_stage.run_animatic_stage(state, manifest, run_dir)
+
     # Separate process from the plan gate: re-wire the brief criteria override
     # in-memory and rebuild the merged bundle before entering GENERATE. Imported
     # lazily to avoid a plan_stage -> script_stage -> storyboard_stage cycle.

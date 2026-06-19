@@ -233,6 +233,141 @@ def test_resolve_references_without_chain_from_uses_prior_frame_unchanged(tmp_pa
     ]
 
 
+def test_resolve_references_appends_animatic_ref_last_first_frame(tmp_path):
+    """Phase 4: a placement rough (run-state) is appended LAST on the first frame —
+    after the cast anchors + extras — so it's the composition target the role-tag names."""
+    from pipeline.orchestration.generate_stage import resolve_references
+    from pipeline.orchestration.shots import Shot
+
+    state = _refs_state()
+    state["animatic"] = {"refs": {"1": "runs/x/animatic/F01.png"}}
+    f1 = Shot(id=1, cast=["al", "be"], beat="b", prompt="p", extra_references=["x/extra.png"])
+    refs = resolve_references(f1, state, tmp_path)
+
+    assert refs == [
+        "characters/alpha/anchor.png",
+        "characters/beta/anchor.png",
+        "x/extra.png",
+        "runs/x/animatic/F01.png",  # last
+    ]
+
+
+def test_resolve_references_appends_animatic_ref_last_chained_frame(tmp_path):
+    """And LAST on a chained frame N — after approved frames + chain anchors + extras."""
+    from pipeline.orchestration.generate_stage import approved_key_path, resolve_references
+    from pipeline.orchestration.shots import Shot
+
+    state = _refs_state()
+    state["animatic"] = {"refs": {"3": "a/F03.png"}}
+    (tmp_path / "approved").mkdir()
+    for n in (1, 2):
+        approved_key_path(state, tmp_path, n).write_bytes(b"x")
+    f3 = Shot(id=3, cast=["al"], beat="b", prompt="p", chain_anchors=["al"])
+    refs = resolve_references(f3, state, tmp_path)
+
+    assert refs[-1] == "a/F03.png"
+    assert refs == [
+        str(approved_key_path(state, tmp_path, 1)),
+        str(approved_key_path(state, tmp_path, 2)),
+        "characters/alpha/anchor.png",
+        "a/F03.png",
+    ]
+
+
+def test_resolve_references_animatic_ref_shot_field_fallback(tmp_path):
+    """Run-state is primary; an inline-authored board's Shot.animatic_ref is the fallback."""
+    from pipeline.orchestration.generate_stage import resolve_references
+    from pipeline.orchestration.shots import Shot
+
+    state = _refs_state()  # no "animatic" key at all
+    f1 = Shot(id=1, cast=["al"], beat="b", prompt="p", animatic_ref="board/F01.png")
+    refs = resolve_references(f1, state, tmp_path)
+
+    assert refs == ["characters/alpha/anchor.png", "board/F01.png"]
+
+
+def test_resolve_references_no_animatic_ref_byte_identical(tmp_path):
+    """Hard back-compat: with no animatic ref anywhere, the ref list is unchanged
+    from today (an empty animatic block must not perturb it)."""
+    from pipeline.orchestration.generate_stage import resolve_references
+    from pipeline.orchestration.shots import Shot
+
+    state = _refs_state()
+    state["animatic"] = {"refs": {}}  # present but empty (a no-rough animatic run)
+    f1 = Shot(id=1, cast=["al", "be"], beat="b", prompt="p")
+    assert resolve_references(f1, state, tmp_path) == [
+        "characters/alpha/anchor.png",
+        "characters/beta/anchor.png",
+    ]
+
+
+def test_frame_prompt_adds_role_tag_clause_when_animatic_ref_present():
+    """The role-tag clause (placement quarantine + the spike's no-text/finished-frame
+    negative) is appended only when the frame has a placement rough."""
+    from pipeline.orchestration.generate_stage import _ANIMATIC_ROLE_TAG, frame_prompt
+    from pipeline.orchestration.shots import Shot
+
+    state = {"animatic": {"refs": {"1": "a/F01.png"}}}
+    shot = Shot(id=1, cast=["al"], beat="b", prompt="BASE PROMPT")
+    p = frame_prompt(shot, state)
+
+    assert p.startswith("BASE PROMPT")
+    assert _ANIMATIC_ROLE_TAG in p
+    # the trail-off fix is baked in (spike Sheet 4)
+    assert "hole-punch" in p
+    assert "not a loose line rough" in p
+
+
+def test_frame_prompt_byte_identical_without_animatic_ref():
+    """Hard back-compat: no rough => the prompt is exactly today's (base, and base+note)."""
+    from pipeline.orchestration.generate_stage import frame_prompt
+    from pipeline.orchestration.shots import Shot
+
+    shot = Shot(id=1, cast=["al"], beat="b", prompt="BASE")
+    assert frame_prompt(shot, {}) == "BASE"
+    assert frame_prompt(shot, {}, note="fix it") == (
+        "BASE\n\nCORRECTION (re-roll, address the prior attempt's defect): fix it"
+    )
+
+
+def test_run_frame_fan_threads_animatic_clause_and_ref_to_flo(tmp_path, monkeypatch):
+    """End to end through the real fan: with a run-state placement rough, the dispatched
+    Flo prompt carries the role-tag clause and the rough is last in references."""
+    import yaml
+
+    from pipeline.criteria import load_all_criteria
+    from pipeline.orchestration import generate_stage
+    from pipeline.orchestration.cast import derive_cast
+    from pipeline.orchestration.shots import load_shots
+
+    root, brief_dir = mk_project(tmp_path, monkeypatch)
+    stub_critic_env(monkeypatch)
+    calls = spy_flo_stub(monkeypatch)
+
+    manifest = yaml.safe_load((root / "manifest.yaml").read_text())
+    bundle = load_all_criteria(manifest)
+    run_dir = root / "runs" / "anim-fan"
+    rough = brief_dir / "rough_F01.png"
+    rough.write_bytes(b"x")
+    state = st.new_state(
+        run_id="anim-fan", brief_dir=str(brief_dir), manifest_path="manifest.yaml",
+        shots_path=str(brief_dir / "shots.yaml"), slug="TT", stub=True,
+        cast=derive_cast(manifest),
+    )
+    state["frame_order"] = [1, 2]
+    state["animatic"] = {"refs": {"1": str(rough)}}
+    st.set_frame(state, 1, {"status": "pending", "attempts": [],
+                            "approved_attempt": None, "approved_path": None})
+    shot_list = load_shots(brief_dir / "shots.yaml", known_namespaces={"al", "be"})
+
+    rc = generate_stage.run_frame_fan(state, shot_list.by_id(1), manifest, bundle, run_dir)
+
+    assert rc == 0
+    assert len(calls) == 1
+    assert generate_stage._ANIMATIC_ROLE_TAG in calls[0]["prompt"]
+    assert calls[0]["references"][-1] == str(rough)
+
+
 def test_retry_appends_note_and_same_note_still_rerolls(tmp_path, monkeypatch):
     root, brief_dir = mk_project(tmp_path, monkeypatch)
     stub_critic_env(monkeypatch)
