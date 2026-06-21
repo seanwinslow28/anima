@@ -252,6 +252,51 @@ def test_planner_rejects_box_chars_in_opus_output(tmp_path, brief_dir, monkeypat
         cls().run(_ctx(tmp_path, brief_dir))
 
 
+def test_planner_rejects_illegal_impact_tag_at_authoring(tmp_path, brief_dir, monkeypatch):
+    """An illegal impact_tag — a category word like 'timing' stamped as a tag —
+    raises at authoring, not four gates later. Mirrors the box-char guard.
+
+    This is the cancelled-run failure (2026-06-21): Maya emitted
+    `impact_tag: "timing"` on AC.timing.on-twos; it locked clean and ValueError'd
+    at the animatic gate. The guard now fails fast inside run()."""
+    bad_criteria = [
+        {
+            "id": "AC.timing.on-twos",
+            "description": "Animate on twos; enforcement is structural, not perceptual.",
+            "cites_phase": [4, 8],
+            "cites_personas": [],
+            "impact_tag": "timing",  # illegal — 'timing' is a category, not an impact_tag
+            "parent_id": None,
+            "derived_from": ["studio_brief.timing"],
+        },
+    ]
+    _patch_runners(monkeypatch, [_planning_envelope(criteria=bad_criteria)], [_sonnet_clean()])
+    cls = NODE_REGISTRY["planner"]
+    with pytest.raises(ValueError, match="impact_tag"):
+        cls().run(_ctx(tmp_path, brief_dir))
+
+
+def test_planner_accepts_timing_criterion_tagged_structural(tmp_path, brief_dir, monkeypatch):
+    """The correct labeling for a timing criterion is `impact_tag: structural` —
+    it authors cleanly (the fix is correct labeling, not a wider vocabulary)."""
+    good_criteria = [
+        {
+            "id": "AC.timing.on-twos",
+            "description": "Animate on twos; enforcement is structural, not perceptual.",
+            "cites_phase": [4, 8],
+            "cites_personas": [],
+            "impact_tag": "structural",
+            "parent_id": None,
+            "derived_from": ["studio_brief.timing"],
+        },
+    ]
+    _patch_runners(monkeypatch, [_planning_envelope(criteria=good_criteria)], [_sonnet_clean()])
+    cls = NODE_REGISTRY["planner"]
+    cls().run(_ctx(tmp_path, brief_dir))  # no raise
+    crit = json.loads((brief_dir / "acceptance_criteria.json").read_text())
+    assert crit["criteria"][0]["impact_tag"] == "structural"
+
+
 def test_criteria_json_has_v1_1_graph_shape(tmp_path, brief_dir, monkeypatch):
     """acceptance_criteria.json is v1.1 with mnemonic IDs + impact_tags."""
     _patch_runners(monkeypatch, [_planning_envelope()], [_sonnet_clean()])

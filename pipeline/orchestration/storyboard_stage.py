@@ -20,6 +20,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+import yaml
+
 from pipeline.agents import AgentContext
 from pipeline.agents.storyboard_artist import StoryboardArtistNode  # registers the node
 from pipeline.cli.storyboard import approve_storyboard as _validate_and_lock_board
@@ -48,7 +50,8 @@ def run_storyboard_stage(state: dict, manifest: dict, run_dir: Path, *, stub: bo
         criteria=None,
         tier="draft",
         cache_dir=run_dir / ".cache",
-        extras={},
+        # Fix B: thread the human's --frames N target to Bea (None when unset).
+        extras={"target_frames": state.get("target_frames")},
     )
     result = StoryboardArtistNode().run(ctx)
 
@@ -88,6 +91,30 @@ def run_storyboard_stage(state: dict, manifest: dict, run_dir: Path, *, stub: bo
     return 0
 
 
+def _enforce_frame_count(shots_path: str, target: int) -> int:
+    """Fix B count gate: refuse to lock a board that isn't exactly `target` frames.
+
+    PHILOSOPHY's one non-negotiable — the human owns the loop length. Bea proposes;
+    the operator curates to N. Runs BEFORE the lock so a wrong-count board never
+    reaches GENERATE/ANIMATIC. A malformed board is left to _validate_and_lock_board
+    to report (it owns the schema error)."""
+    try:
+        data = yaml.safe_load(Path(shots_path).read_text(encoding="utf-8")) or {}
+        frames = data.get("frames") or []
+        n = len(frames)
+    except (OSError, yaml.YAMLError):
+        return 0
+    if n != target:
+        print(
+            f"error: board has {n} frame(s) but the target loop length is {target} "
+            f"(--frames {target}) — curate the board to exactly {target} frames before "
+            f"approving (the human owns the count).",
+            file=sys.stderr,
+        )
+        return 2
+    return 0
+
+
 def approve_storyboard_gate(state: dict, manifest: dict, run_dir: Path) -> int:
     if state.get("storyboard", {}).get("status") != "drafted":
         print(
@@ -96,6 +123,14 @@ def approve_storyboard_gate(state: dict, manifest: dict, run_dir: Path) -> int:
             file=sys.stderr,
         )
         return 2
+
+    # Fix B: when the human set a target loop length, the curated board must be
+    # exactly that many frames — refuse BEFORE locking (the human owns the count).
+    target = state.get("target_frames")
+    if target is not None:
+        rc = _enforce_frame_count(state["shots_path"], target)
+        if rc != 0:
+            return rc
 
     # The curation gate: re-validate the human-edited shots.yaml against beats.json
     # (coverage + no-orphans + beat.cast subset-of shot.cast) and lock only if it

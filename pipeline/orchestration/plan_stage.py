@@ -21,7 +21,7 @@ import pipeline.agents.cost_estimator  # noqa: F401 — registers cost_estimator
 from pipeline.agents import AgentContext
 from pipeline.agents.planner import PlannerNode
 from pipeline.cli.plan import approve_plan as _lock_brief_criteria
-from pipeline.criteria import load_all_criteria
+from pipeline.criteria import load_all_criteria, load_criteria
 from pipeline.orchestration import generate_stage, guards, script_stage
 from pipeline.orchestration import state as st
 
@@ -98,6 +98,22 @@ def approve_plan_gate(state: dict, manifest: dict, run_dir: Path) -> int:
     if state["plan"]["status"] != "drafted":
         print(
             f"error: plan status is {state['plan']['status']!r} — nothing to approve.",
+            file=sys.stderr,
+        )
+        return 2
+
+    # Refuse-at-lock: validate the brief criteria BEFORE locking. An invalid
+    # criteria file (e.g. an illegal impact_tag — the cancelled 2026-06-21 run)
+    # can never lock, on EITHER the authoring or back-compat path. Today the
+    # back-compat lock fires first and load_all_criteria only catches it after;
+    # on the authoring path nothing validates here at all (it hands off to SCRIPT).
+    # The ValueError already names the legal set — surface it at the gate.
+    criteria_path = Path(state["brief_dir"]) / "acceptance_criteria.json"
+    try:
+        load_criteria(criteria_path)
+    except (ValueError, OSError) as e:
+        print(
+            f"error: brief criteria failed validation — refusing to lock: {e}",
             file=sys.stderr,
         )
         return 2

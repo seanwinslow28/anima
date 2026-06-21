@@ -77,6 +77,11 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--animatic", action="store_true",
                    help="Insert the opt-in ANIMATIC placement gate between STORYBOARD and "
                         "GENERATE (also enabled by manifest animatic.enabled). Default off.")
+    p.add_argument("--frames", type=int, metavar="N",
+                   help="Target loop length: Bea boards N frames and the storyboard gate "
+                        "refuses to lock a board that isn't exactly N (the human owns the "
+                        "count). Authoring runs only. Absent -> Bea's natural count, "
+                        "byte-identical.")
     p.add_argument("--skip-smoke", action="store_true",
                    help="Skip the pre-run live-Opus smoke call (not recommended for costed runs).")
     p.add_argument("--allow-api-key", action="store_true",
@@ -225,6 +230,9 @@ def _start(args: argparse.Namespace) -> int:
         # Only consulted on the authoring path (the storyboard gate); a back-compat
         # brief goes PLAN -> GENERATE and never reads it.
         animatic_enabled=bool(args.animatic) or bool((manifest.get("animatic") or {}).get("enabled")),
+        # Fix B: the human owns the loop length. Threaded to Bea (target) and
+        # enforced at the storyboard gate (exact-count check). Authoring only.
+        target_frames=args.frames,
     )
     st.save_state(run_dir, state)
     return plan_stage.run_plan_stage(

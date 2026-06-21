@@ -245,6 +245,77 @@ def test_stub_emits_establishing_edit_then_loop_return_form(tmp_path, monkeypatc
         assert "Do not render any text" in f.prompt
 
 
+def _ctx_with_target(tmp_path: Path, brief_dir: Path, target: int) -> AgentContext:
+    return AgentContext(
+        run_dir=tmp_path,
+        inputs={"brief_dir": str(brief_dir)},
+        manifest=_manifest(),
+        criteria=None,
+        tier="draft",
+        cache_dir=tmp_path / ".cache",
+        extras={"target_frames": target},
+    )
+
+
+def test_stub_honors_target_frames_above_beat_count(tmp_path, monkeypatch):
+    """Fix B: --frames 7 over a 5-beat sheet → the stub boards exactly 7 frames,
+    keeps coverage valid (every beat boarded), ascending ids 1..7, establishing
+    frame 1 + loop-return last. The node's own storyboard_validate would have
+    raised if any of that broke, so a clean return is the proof."""
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    brief_dir = tmp_path / "brief"
+    _write_brief(brief_dir)  # the 5-beat Spark sheet
+    result = StoryboardArtistNode().run(_ctx_with_target(tmp_path, brief_dir, 7))
+
+    sl = load_shots(Path(result.outputs["shots_path"]), known_namespaces=KNOWN)
+    frames = sorted(sl.frames, key=lambda f: f.id)
+    assert len(frames) == 7
+    assert [f.id for f in frames] == [1, 2, 3, 4, 5, 6, 7]
+    assert {f.beat_id for f in frames} == {1, 2, 3, 4, 5}  # every beat covered
+    assert "ONLY CHANGE:" not in frames[0].prompt          # establishing
+    assert frames[0].chain_from is None
+    assert frames[-1].chain_from == 1                        # loop-return declared
+    assert "identical to frame 1" in frames[-1].prompt.lower()
+
+
+def test_stub_target_equal_beat_count_is_natural_board(tmp_path, monkeypatch):
+    """--frames 5 over a 5-beat sheet boards exactly 5 (one per beat)."""
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    brief_dir = tmp_path / "brief"
+    _write_brief(brief_dir)
+    result = StoryboardArtistNode().run(_ctx_with_target(tmp_path, brief_dir, 5))
+    sl = load_shots(Path(result.outputs["shots_path"]), known_namespaces=KNOWN)
+    assert len(sl.frames) == 5
+    assert {f.beat_id for f in sl.frames} == {1, 2, 3, 4, 5}
+
+
+def test_absent_target_frames_boards_one_per_beat(tmp_path, monkeypatch):
+    """No --frames → Bea's natural one-shot-per-beat count (byte-identical path)."""
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    brief_dir = tmp_path / "brief"
+    _write_brief(brief_dir)
+    result = StoryboardArtistNode().run(_ctx(tmp_path, brief_dir))  # no extras
+    sl = load_shots(Path(result.outputs["shots_path"]), known_namespaces=KNOWN)
+    assert len(sl.frames) == 5  # == beat count
+
+
+def test_prompt_names_target_loop_length_when_set():
+    """When a target is set, the live-Sonnet prompt states the target frame count."""
+    prompt = StoryboardArtistNode()._build_prompt(
+        "SB", "PLAN", _spark_beats(), {"sean", "claude-mascot"}, target_frames=7,
+    )
+    assert "7" in prompt
+    assert "frame" in prompt.lower()
+
+
+def test_prompt_omits_target_when_unset():
+    """No target → no target-count instruction (the natural board)."""
+    prompt = StoryboardArtistNode()._build_prompt(
+        "SB", "PLAN", _spark_beats(), {"sean", "claude-mascot"},
+    )
+    assert "target loop length" not in prompt.lower()
+
+
 def test_stub_board_is_chain_from_lint_clean(tmp_path, monkeypatch):
     # The eval lint can check real stub output: the stub's loop-return frame
     # declares chain_from: 1, so chain_from_lint reports no offenders.

@@ -162,6 +162,29 @@ def test_authoring_walk_with_animatic_reaches_done(tmp_path, monkeypatch):
     assert f"SS_F{first:02d}_key:5" in seq
 
 
+# ---------- Fix B: the ANIMATIC gate states the board count ----------
+
+
+def test_animatic_gate_surfaces_board_frame_count(tmp_path, monkeypatch, capsys):
+    """The ANIMATIC gate states the board's frame COUNT explicitly so a rough/board
+    mismatch (the 2026-06-21 7-roughs-vs-5-board) is visible BEFORE dropping."""
+    root, brief_dir = mk_project(tmp_path, monkeypatch, with_shots=False, cast=AUTHORING_CAST)
+    stub_critic_env(monkeypatch)
+    run_dir = root / "runs" / "anim-count-run"
+    assert run_cli.main([
+        "--brief", str(brief_dir), "--stub", "--animatic", "--slug", "SS",
+        "--frames", "7", "--run-dir", str(run_dir),
+    ]) == 0
+    assert run_cli.main(["--resume", str(run_dir), "--approve-plan"]) == 0
+    assert run_cli.main(["--resume", str(run_dir), "--approve-script"]) == 0
+    capsys.readouterr()  # clear prior output
+    assert run_cli.main(["--resume", str(run_dir), "--approve-storyboard"]) == 0
+
+    assert st.load_state(run_dir)["stage"] == "ANIMATIC"
+    out = capsys.readouterr().out
+    assert "Board has 7 frame(s)" in out  # the explicit count, not just ids
+
+
 # ---------- default off: authoring without --animatic skips the stage ----------
 
 

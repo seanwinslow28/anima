@@ -110,9 +110,16 @@ class StoryboardArtistNode:
         # Sam's approved beat sheet — the spine Bea boards. Validated by load_beats.
         sheet = load_beats(beats_path, known_namespaces=known_namespaces)
 
+        # Fix B: the human owns the loop length. --frames N rides in via the
+        # orchestrator (state.target_frames -> ctx.extras); when set, Bea targets
+        # N frames and the storyboard gate enforces the exact count. None -> Bea's
+        # natural one-shot-per-beat count (byte-identical to before).
+        target_frames = ctx.extras.get("target_frames")
+
         # The credential-free stub emits one shot per real beat (so coverage /
         # conflict pass by construction for ANY beats.json), with the STUB marker.
-        stub_fn = _make_bea_stub(sheet)
+        # With a target it boards exactly N while keeping coverage valid.
+        stub_fn = _make_bea_stub(sheet, target_frames=target_frames)
 
         brief_dir.mkdir(parents=True, exist_ok=True)
         storyboard_path = brief_dir / "storyboard.md"
@@ -126,7 +133,7 @@ class StoryboardArtistNode:
         for _ in range(2):
             prompt = self._build_prompt(
                 studio_brief, plan_md, _beats_payload(sheet), known_namespaces,
-                reject_reason=reject_reason,
+                reject_reason=reject_reason, target_frames=target_frames,
             )
             resp = asyncio.run(
                 invoke_sonnet_text(
@@ -177,13 +184,15 @@ class StoryboardArtistNode:
         known_namespaces: set[str],
         *,
         reject_reason: str = "",
+        target_frames: int | None = None,
     ) -> str:
         return "\n\n".join([
             _load(ANIMA_PREAMBLE_FILE),
             _load(BEA_ADDENDUM_FILE),
             _load(VOICE_FILE),
             self._per_invocation_brief(
-                studio_brief, plan_md, beats_payload, known_namespaces, reject_reason
+                studio_brief, plan_md, beats_payload, known_namespaces, reject_reason,
+                target_frames,
             ),
         ])
 
@@ -194,6 +203,7 @@ class StoryboardArtistNode:
         beats_payload: dict,
         known_namespaces: set[str],
         reject_reason: str,
+        target_frames: int | None = None,
     ) -> str:
         has_plan = bool(plan_md.strip())
         plan_section = f"### Maya's plan.md\n\n{plan_md}\n\n" if has_plan else ""
@@ -204,9 +214,23 @@ class StoryboardArtistNode:
             if reject_reason
             else ""
         )
+        # Fix B: when the human sets a target loop length, the board must be
+        # EXACTLY that many frames (the storyboard gate enforces it). A beat may
+        # span more than one shot; never drop a beat to hit the count.
+        target_section = (
+            f"### Target loop length — board EXACTLY {target_frames} frames\n\n"
+            f"Sean set the loop length: the board must have exactly {target_frames} "
+            "frames (ids 1.."
+            f"{target_frames}). Still cover every beat (a beat may span more than "
+            "one shot — split a beat across frames to reach the count); never drop a "
+            "beat to hit the number. The last frame is the loop-return.\n\n"
+            if target_frames is not None
+            else ""
+        )
         return (
             "## Board the beats\n\n"
             + retry_section
+            + target_section
             + "Read Sam's approved beat sheet"
             + (" and Maya's plan" if has_plan else "")
             + " and the Studio Brief. Author a studio-voice `storyboard.md` board "
@@ -347,24 +371,44 @@ def _atomic_write(path: Path, content: str) -> None:
     tmp.replace(path)
 
 
-def _make_bea_stub(sheet: BeatSheet):
+def _stub_slots(sheet: BeatSheet, target_frames: int | None) -> list[tuple[int, "object"]]:
+    """The (shot_id, beat) assignment the stub boards.
+
+    Default (target None): one shot per beat, shot id == beat id — byte-identical
+    to the pre-Fix-B stub. With a target >= the beat count: exactly N frames,
+    ascending ids 1..N, the first len(beats) slots map 1:1 to beats and the
+    remainder pad against the LAST beat — so every beat is still covered (coverage
+    / conflict stay green for ANY beats.json). A target BELOW the beat count can't
+    cover every beat, so the stub falls back to one-shot-per-beat and lets the
+    storyboard count gate flag the mismatch for the operator to curate.
+    """
+    beats = sheet.beats
+    if target_frames is None or target_frames < len(beats):
+        return [(b.id, b) for b in beats]
+    return [(i + 1, beats[min(i, len(beats) - 1)]) for i in range(target_frames)]
+
+
+def _make_bea_stub(sheet: BeatSheet, target_frames: int | None = None):
     """Build Bea's deterministic stub from the real beat sheet.
 
-    Emits one shot per beat (beat_id-linked, cast = the beat's cast, so coverage /
-    orphan / conflict all pass by construction for ANY beats.json), each prompt
-    ending in the register clause block. Carries the STUB FALLBACK marker in the
-    storyboard so author_storyboard.py's scan_stub_marker refuses to treat it as a
-    real authored board. Proves the whole contract end-to-end with no key.
+    Emits one shot per beat by default (beat_id-linked, cast = the beat's cast, so
+    coverage / orphan / conflict all pass by construction for ANY beats.json), each
+    prompt ending in the register clause block. With a Fix-B target loop length it
+    boards exactly N frames keeping coverage valid (see _stub_slots). Carries the
+    STUB FALLBACK marker in the storyboard so author_storyboard.py's
+    scan_stub_marker refuses to treat it as a real authored board. Proves the whole
+    contract end-to-end with no key.
     """
 
     def _stub_bea_text(prompt: str) -> SDKResponse:
         frames = []
         lines = []
-        last_idx = len(sheet.beats) - 1
-        for idx, b in enumerate(sheet.beats):
+        slots = _stub_slots(sheet, target_frames)
+        last_idx = len(slots) - 1
+        for idx, (sid, b) in enumerate(slots):
             cast = list(b.cast)
             frame = {
-                "id": b.id,
+                "id": sid,
                 "beat_id": b.id,
                 "cast": cast,
                 "beat": b.intent or b.title,
