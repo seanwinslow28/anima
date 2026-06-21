@@ -130,6 +130,9 @@ def run_animatic_stage(state: dict, manifest: dict, run_dir: Path) -> int:
 
     print("\nANIMATIC (placement) — human author gate. PHILOSOPHY: the human owns "
           "placement + timing.")
+    # Surface the board COUNT explicitly (Fix B): a rough/board mismatch (the
+    # 2026-06-21 7-roughs-vs-5-board) is visible BEFORE dropping, not after.
+    print(f"  Board has {len(ids)} frame(s).")
     print(f"  Drop one rough per keyframe you want to pin into:\n    {adir}")
     print(f"  Name them by frame id: " + (", ".join(f"F{n:02d}.png" for n in ids[:6]) or "F01.png ...")
           + ("  ..." if len(ids) > 6 else ""))

@@ -183,6 +183,61 @@ def test_curation_gate_refuses_board_with_a_coverage_gap(tmp_path, monkeypatch, 
     assert st.load_state(run_dir)["stage"] == "STORYBOARD"
 
 
+# ---------- Fix B: the human owns the frame count (--frames N) ----------
+
+
+def _walk_to_storyboard_draft_with_frames(tmp_path, monkeypatch, n):
+    """PLAN -> SCRIPT -> STORYBOARD with --frames N set; return (run_dir, shots path)."""
+    root, brief_dir = mk_project(
+        tmp_path, monkeypatch, with_shots=False, cast=AUTHORING_CAST
+    )
+    stub_critic_env(monkeypatch)
+    run_dir = root / "runs" / "frames-run"
+    assert run_cli.main([
+        "--brief", str(brief_dir), "--stub", "--slug", "SS",
+        "--frames", str(n), "--run-dir", str(run_dir),
+    ]) == 0
+    assert run_cli.main(["--resume", str(run_dir), "--approve-plan"]) == 0
+    assert run_cli.main(["--resume", str(run_dir), "--approve-script"]) == 0
+    assert st.load_state(run_dir)["stage"] == "STORYBOARD"
+    return run_dir, run_dir / "brief" / "shots.yaml"
+
+
+def test_frames_target_recorded_and_bea_boards_it(tmp_path, monkeypatch):
+    """--frames 7 lands in run-state and Bea (stub) boards exactly 7 (over a 5-beat sheet)."""
+    run_dir, shots_path = _walk_to_storyboard_draft_with_frames(tmp_path, monkeypatch, 7)
+    assert st.load_state(run_dir)["target_frames"] == 7
+    assert len(yaml.safe_load(shots_path.read_text())["frames"]) == 7
+
+
+def test_count_gate_accepts_board_matching_target(tmp_path, monkeypatch):
+    """A curated board whose count == target locks and enters GENERATE."""
+    spy_flo_stub(monkeypatch)
+    run_dir, shots_path = _walk_to_storyboard_draft_with_frames(tmp_path, monkeypatch, 7)
+    assert run_cli.main(["--resume", str(run_dir), "--approve-storyboard"]) == 0
+    assert st.load_state(run_dir)["stage"] == "GENERATE"
+    assert yaml.safe_load(shots_path.read_text())["locked"] is True
+
+
+def test_count_gate_refuses_board_not_matching_target(tmp_path, monkeypatch, capsys):
+    """Sean curated to the wrong count — the gate refuses to lock (the human's
+    target wins; the 2026-06-21 inversion is corrected). The deleted frame is a
+    beat-5 padding frame, so coverage stays clean and the COUNT check is what fires."""
+    run_dir, shots_path = _walk_to_storyboard_draft_with_frames(tmp_path, monkeypatch, 7)
+    data = yaml.safe_load(shots_path.read_text())
+    data["frames"] = [f for f in data["frames"] if f["id"] != 6]  # 7 -> 6, coverage held
+    shots_path.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+
+    rc = run_cli.main(["--resume", str(run_dir), "--approve-storyboard"])
+
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert "7" in err and "6" in err  # names the target and the actual count
+    # not advanced, not locked — the board never reaches GENERATE
+    assert st.load_state(run_dir)["stage"] == "STORYBOARD"
+    assert yaml.safe_load(shots_path.read_text()).get("locked") is not True
+
+
 # ---------- the gate smokes: fail before the authoring spend ----------
 #
 # run_plan_stage smokes Opus before Maya; the script + storyboard gates now do

@@ -50,6 +50,17 @@ def _new_state() -> dict:
 # ---------- state file round-trip ----------
 
 
+def test_new_state_defaults_target_frames_none_and_records_override():
+    """Fix B: the human's --frames N target rides in run-state (None by default —
+    Bea byte-identical when absent)."""
+    assert _new_state().get("target_frames") is None
+    s = st.new_state(
+        run_id="r", brief_dir="b", manifest_path="m", shots_path="s",
+        slug="SS", stub=True, cast=_cast(), target_frames=7,
+    )
+    assert s["target_frames"] == 7
+
+
 def test_state_roundtrip_preserves_all_fields(tmp_path):
     s = _new_state()
     s["frame_order"] = [1, 2, 3]

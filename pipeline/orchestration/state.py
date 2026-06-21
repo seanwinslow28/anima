@@ -50,6 +50,7 @@ def new_state(
     brief_src: str | None = None,
     needs_storyboard: bool = False,
     animatic_enabled: bool = False,
+    target_frames: int | None = None,
 ) -> dict:
     now = _now()
     return {
@@ -66,6 +67,9 @@ def new_state(
         "stage": "PLAN",
         "needs_storyboard": needs_storyboard,
         "animatic_enabled": animatic_enabled,
+        # Fix B: the human's --frames N target loop length (None = unset; Bea
+        # boards her natural one-shot-per-beat count, byte-identical to before).
+        "target_frames": target_frames,
         "cast": cast,
         "plan": {
             "status": "pending",
