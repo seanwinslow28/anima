@@ -119,6 +119,41 @@ def test_approve_plan_locks_criteria_and_advances(tmp_path, monkeypatch, capsys)
     assert len(fan_calls) == 1
 
 
+def test_approve_plan_refuses_to_lock_illegal_criteria(tmp_path, monkeypatch, capsys):
+    """An illegal impact_tag in the brief criteria can NEVER lock — the gate
+    refuses at plan-approve, not four gates later (the cancelled 2026-06-21 run).
+    Defense in depth: even if a bad criteria file lands in the snapshot (hand
+    edit, bad merge), the human gate refuses it."""
+    root, brief_dir = mk_project(tmp_path, monkeypatch)
+    force_stub_sdk(monkeypatch)
+    rc, run_dir = _start_stub_run(root, brief_dir)
+    assert rc == 0
+
+    snap_criteria = run_dir / "brief" / "acceptance_criteria.json"
+    snap_criteria.write_text(json.dumps({
+        "version": "1.1", "locked": False, "criteria": [{
+            "id": "AC.timing.on-twos",
+            "description": "Animate on twos; enforcement is structural, not perceptual.",
+            "cites_phase": [4, 8],
+            "cites_personas": [],
+            "impact_tag": "timing",  # illegal — a category, not an impact_tag
+            "parent_id": None,
+            "derived_from": ["studio_brief.timing"],
+        }],
+    }), encoding="utf-8")
+
+    rc = run_cli.main(["--resume", str(run_dir), "--approve-plan"])
+
+    assert rc != 0
+    assert "impact_tag" in capsys.readouterr().err  # the legal-set message at the gate
+    # never locked, never advanced past PLAN
+    raw = json.loads(snap_criteria.read_text())
+    assert raw["locked"] is False
+    state = st.load_state(run_dir)
+    assert state["stage"] == "PLAN"
+    assert state["plan"]["status"] == "drafted"
+
+
 def test_approve_plan_wires_brief_file_and_merges_bundle(tmp_path, monkeypatch):
     root, brief_dir = mk_project(tmp_path, monkeypatch)
     force_stub_sdk(monkeypatch)

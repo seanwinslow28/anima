@@ -42,6 +42,7 @@ from pipeline.agents import (
     register_node,
 )
 from pipeline.agents.sdk_runners import invoke_opus_text, invoke_sonnet_text
+from pipeline.criteria import validate_criteria
 
 PROMPTS_DIR = Path(__file__).parent / "prompts"
 ANIMA_PREAMBLE_FILE = PROMPTS_DIR / "anima-standing-context.md"
@@ -164,6 +165,13 @@ class PlannerNode:
                 f"Maya emitted box-drawing characters in plan.md: {sorted(offending)!r}. "
                 f"pipeline plan show renders boxes in the CLI layer; Maya emits clean prose."
             )
+
+        # Contract enforcement: the criteria graph must validate at authoring —
+        # fail fast inside run() rather than locking clean and exploding gates
+        # later. The cancelled 2026-06-21 run emitted impact_tag "timing" (a
+        # category, not a tag); load_all_criteria only caught it at the animatic
+        # gate. validate_criteria's ValueError already names the legal set.
+        validate_criteria(criteria_json)
 
         # Inject unresolved concern as a confidence note (no fourth model call).
         if unresolved_concern:
