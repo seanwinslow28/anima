@@ -42,6 +42,9 @@ docs/research/.sessions/
 .claude/plans/
 .claude/settings.local.json
 
+# Vendored third-party skill/plugin — not anima's own work, kept local
+.claude/skills/frontend-design/
+
 # Superpowers local config
 .superpowers/
 
