@@ -45,6 +45,8 @@ Why Tier-2 next: the Animatic placement seed reduces what Em must catch, which n
 
 **Status:** the Animatic *stage* is **BUILT + PROVEN** — DoD #6 closed 2026-06-22 by the costed Spark-animatic driven run (placement held, loop shipped, Sean's eye). **All six DoD items met; this workstream is complete.** Per the anti-drift contract, the current focus now advances to **workstream 2 (Tier-2 Em calibration).**
 
+**Outward turn scoped (2026-06-29).** The three vision-expansion directions — ① brainstorm front door, ② Flow-like interface, ③ generation economics — were scoped and sequenced as future workstreams (see *Product vision* and *The road ahead* below). ③ runs in parallel now (a decision, not a build); ① then ② wait for Tier-2's DoD. Tier-2 remains the only active build.
+
 **Explicitly not now:** the Museum orchestrator wiring (workstream 3). Real and next, but held until Tier-2's DoD is met. The `post_animatic` T3 gate stays consciously deferred (its promotion trigger — timing feeding an orchestrated Motion phase — is unchanged).
 
 ---
@@ -189,15 +191,33 @@ Where an origin doc claims something the code or the runs don't bear out. These 
 
 ---
 
+## Product vision — the outward turn
+
+For months anima was built **inward** — the ten phases, the fleet, the critic stack, the Em eval saga. The 2026-06-29 vision-expansion brainstorm named the **outward turn**: anima as a creative *tool* Sean uses to make animated shorts with an agent crew, not only a pipeline that ships one piece. The three directions scoped that day are one product arc — *brainstorm a concept with the crew, the orchestrated pipeline builds it, a desktop shell with a timeline strings it together and exports, and cost-optimized transports run the whole thing underneath.*
+
+- **① Brainstorm front door** — a relentless elicitation chain (Grill Me's shape, anima's crew) that turns a spark into a concept doc + Studio Brief (the Phase 0 input Maya consumes), with a cheap in-session art-viz loop to lock the look first. *Verdict: HIGH, near-term, parallel-safe — touches nothing in Em.* Design: [`docs/active/2026-06-29-brainstorm-front-door-design.md`](docs/active/2026-06-29-brainstorm-front-door-design.md).
+- **② Flow-like interface** — a native desktop app (Electron/Tauri) that wraps the orchestrator as a face: a FastAPI daemon over the existing stage functions + a frontend rendering the gates as screens, phased v1 chat+gates → v2 stage pages → v3 simple timeline. *Verdict: MEDIUM, phased — the long-game centerpiece; its daemon foundation is a parallel-safe early slice.* Design: [`docs/active/2026-06-29-flow-like-interface-design.md`](docs/active/2026-06-29-flow-like-interface-design.md).
+- **③ Generation economics** — the transport-per-stage cost decision: run the pipeline on fal + direct Gemini/OpenAI keys (already wired, cheapest), trial Higgsfield a month, measure, decide. *Verdict: a decision, not a build; ~$0; runs now.* Design: [`docs/active/2026-06-29-generation-economics-design.md`](docs/active/2026-06-29-generation-economics-design.md).
+
+Naming these is how we make room for them without drifting into them. The order below is the anti-drift contract applied to ambition.
+
+---
+
 ## The road ahead
 
-Three workstreams, in Sean's locked priority order. Each is a **to-brainstorm placeholder, not a design** — every one gets its own brainstorm session before any plan. Do not design them here.
+In Sean's locked priority order (ratified 2026-06-29). Each future item is a **scoped placeholder, not a green-lit build** — every one gets its own build-brainstorm before any plan, and **none opens until the active workstream's DoD is met** (the anti-drift contract). The *why* and the resolved forks live in the three design notes linked from the *Product vision* section above.
 
-**1. Animatic (TOP-1) — the keystone, design ratified, build pending.** *(This is the current focus.)* The brainstorm settled all five open questions (2026-06-18, [design doc](docs/active/2026-06-18-animatic-phase-design.md)): v1 is a **placement seed**, not a timing-for-motion seed — a human-authored shape-block rough carrying placement (a role-tagged reference appended last, fixing the L/R / scale / shoulder / leg-count drift) and timing (a holds sidecar driving ASSEMBLE pacing now, captured for Seedance later); format is PNG roughs + holds in one Dreams-compatible ingestion contract; the stage is an **opt-in** author-and-ingest gate between STORYBOARD and GENERATE (back-compat byte-identical); the `post_animatic` T3 gate is consciously deferred. The whole design rests on one bet — *a hand-drawn rough actually makes NB2 respect placement* — de-risked by a **costed spike as build step 1** that gates everything downstream. Build handoff: [kickoff](docs/active/2026-06-18-animatic-phase-kickoff.md).
+**NOW — active build · Tier 2, Em calibration (the autonomy core).** The data is already harvested — the Em-vs-eye label table in [`docs/anima-test-runs/2026-06-18-tier1-validation-run-post-mortem.md`](docs/anima-test-runs/2026-06-18-tier1-validation-run-post-mortem.md). Open questions for the brainstorm: severity/threshold calibration separate from detection coverage; the left/right-axis unreliability shared by *both* generator and critic; the mascot-anatomy blind spots (leg-count); the `identity_critical` → Opus escalation gap (discrepancy B); and whether to wire propose→apply. Slice 1 (the mascot eval corpus) is awaiting Sean's Flow fixtures; Slice 2 (the calibration) brainstorms next. **Hard guard: any Em change is eval-gated, and the verdict-baseline md5 moves only on a deliberate, ratified re-baseline.**
 
-**2. Tier 2 — Em calibration (the autonomy core).** Flows naturally out of the Animatic work: a human-authored placement seed reduces what Em must catch, which narrows the calibration target. The data is already harvested — the Em-vs-eye label table in [`docs/anima-test-runs/2026-06-18-tier1-validation-run-post-mortem.md`](docs/anima-test-runs/2026-06-18-tier1-validation-run-post-mortem.md). Open questions for the brainstorm: severity/threshold calibration separate from detection coverage; the left/right-axis unreliability shared by *both* generator and critic; the mascot-anatomy blind spots (leg-count); the `identity_critical` → Opus escalation gap (discrepancy B); and whether to wire propose→apply. **Hard guard: any Em change is eval-gated, and the verdict-baseline md5 moves only on a deliberate, ratified re-baseline.**
+**NOW — parallel, not a build · ③ Generation economics.** The pipeline already runs the cheap path (fal + direct Gemini/OpenAI keys); the open call — keep or drop the Higgsfield subscription — is settled by a one-month measurement against a ~100-Seedance-clip/month break-even. ~$0, zero drift risk, so it rides alongside Tier-2 without competing for the active-build slot. Decision note: [`docs/active/2026-06-29-generation-economics-design.md`](docs/active/2026-06-29-generation-economics-design.md).
 
-**3. Museum — make "the pipeline is the portfolio" true.** Wire museum capture into the orchestrator (today it's a separate post-run pass) and build the Astro publish into `sw-ai-pm-portfolio`. Open questions: when capture fires within a run, how the standalone render and the published site relate, and the `pre_museum` T3 gate's role in the run loop (it exists, but only on the standalone path today).
+**NEXT — ① Brainstorm front door.** The creative entry point and the start of the arc: an orchestrated grilling-loop chain that emits a concept doc + Studio Brief + locked style refs, with character seeds handing to Cy. HIGH achievability, independent of Em. Its $0 manual dry-run may precede in parallel if Sean opts in; the build itself waits for Tier-2's DoD. Design: [`docs/active/2026-06-29-brainstorm-front-door-design.md`](docs/active/2026-06-29-brainstorm-front-door-design.md).
+
+**THEN — ② interface · the daemon foundation.** A thin FastAPI over the existing stage functions (`plan_stage` … `animatic_stage`, over `run_state.json`) — backend plumbing, parallel-safe, the spine both ① and the UI plug into. Can overlap behind ①. Design: [`docs/active/2026-06-29-flow-like-interface-design.md`](docs/active/2026-06-29-flow-like-interface-design.md).
+
+**LATER (the long game) — Museum wiring + the ② interface (v1→v3).** Wire museum capture into the orchestrator (today it's a separate post-run pass) and build the Astro publish into `sw-ai-pm-portfolio` — open questions: when capture fires within a run, how the standalone render and the published site relate, and the `pre_museum` T3 gate's role in the run loop (it exists, but only on the standalone path today). Alongside it, the desktop interface itself: v1 chat + gates (kills the terminal) → v2 per-stage pages → v3 simple timeline (arrange/trim/preview/export; no full NLE, by design). The Museum is naturally a view inside that app.
+
+*Animatic (TOP-1) closed 2026-06-22 — see Current focus and the scorecard; it shipped a placement-holding 7-frame loop. The `post_animatic` T3 gate stays consciously deferred (promotion trigger: timing feeding an orchestrated Motion phase).*
 
 ---
 
