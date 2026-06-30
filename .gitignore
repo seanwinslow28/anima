@@ -45,6 +45,17 @@ docs/research/.sessions/
 # Vendored third-party skill/plugin — not anima's own work, kept local
 .claude/skills/frontend-design/
 
+# Vendored Higgsfield CLI-wrapper skills from `npx skills add higgsfield-ai/skills`
+# (2026-06-22). Third-party generative-AI cloud wrappers, not anima's own work —
+# the installer-owned source tree plus the Claude Code symlinks it created. They
+# carry external security flags (curl|sh bootstrap; see CHANGELOG 2026-06-22), so
+# kept local and out of the public tree.
+.agents/
+.claude/skills/higgsfield-generate
+.claude/skills/higgsfield-marketplace-cards
+.claude/skills/higgsfield-product-photoshoot
+.claude/skills/higgsfield-soul-id
+
 # Superpowers local config
 .superpowers/
 
