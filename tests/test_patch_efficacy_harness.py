@@ -23,7 +23,12 @@ from evals.vision_critic.patch_efficacy import (
 
 _ROOT = Path(__file__).resolve().parents[1]
 _CASES = yaml.safe_load((_ROOT / "evals/vision_critic/cases.yaml").read_text())["cases"]
-_DEFECTS = [c for c in _CASES if c["case_class"] == "identity_style"]
+# patch_efficacy (Gate-3 fix-rate) resolves base prompts from the SEAN corpus spec
+# (_CORPUS below). The claude-mascot corpus (ingested 2026-06-22, Tier-2 Slice 1)
+# is a measurement baseline only; it is wired into Gate-3 in Slice 2 (mascot-aware
+# parse_corpus + character-keyed resolve_base). Scope to sean until then.
+_DEFECTS = [c for c in _CASES
+            if c["case_class"] == "identity_style" and c.get("character_id") == "sean"]
 _CORPUS = parse_corpus(_ROOT / "prompts/eval-corpus/sean-anchor-fixture-corpus.md")
 
 
