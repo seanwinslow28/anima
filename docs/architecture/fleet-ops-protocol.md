@@ -58,6 +58,22 @@ A child started with `start_new_session=True` (Python `setsid`) becomes its own 
   ```
 - Any costed process you didn't intend to leave running gets terminated before you walk away.
 
+## 6. Driving costed runs from inside a Claude Code session — *(the operator model; resolves seam #4, the nested-SDK throttle)*
+
+When Claude Code drives the run itself — the operator model: Claude Code runs every command, the human makes only the taste calls — the orchestrator shells out to the Claude SDK for Maya/Sam/Bea. The spawned `claude` **inherits the session's markers** and runs as a throttled child. Confirmed 2026-06-21: a warm-up canary degraded from ~3s to **94s** and Maya returned an **empty 0-byte response** (`ValueError: Empty response from model`).
+
+**Remedy — strip the markers, gate the first spend with a canary.** Run every costed orchestrator command under a stripped environment:
+
+```bash
+env -u CLAUDECODE -u CLAUDE_CODE_SESSION_ID -u CLAUDE_CODE_CHILD_SESSION \
+    -u CLAUDE_CODE_ENTRYPOINT -u AI_AGENT -u CLAUDE_CODE_ENABLE_TASKS \
+    python3 -m pipeline.run …
+```
+
+A stripped-env canary returns in **~7s** (vs ~94s nested) — run it before the first paid call and bail if it's slow. The strip leaves `CLAUDE_CODE_EXECPATH` intact, so `shutil.which('claude')` still resolves the CLI. A **plain human-run terminal** (outside any session) remains the zero-risk alternative; the env-strip is what lets Claude Code drive end-to-end without one.
+
+**Background commands must `cd` explicitly.** A *background* task starts from the **primary** checkout, not the worktree — the foreground Bash tool's persisted CWD does not carry. A backgrounded `--approve-*` / `--resume` launched without an explicit `cd` resolves the run-dir against the wrong tree and exits 1 (no spend, no state mutation, but a wasted round-trip). Always prefix every background command with `cd /…/worktree && …`.
+
 ---
 
 ## Pre-costed-run checklist (the one-screen version)
@@ -68,3 +84,4 @@ A child started with `start_new_session=True` (Python `setsid`) becomes its own 
 4. MCP overhead handled (incident #2): `agy plugin list` shows the heavy servers disabled for the run (no per-invocation flag exists; scope the disable in time — re-enable after).
 5. Smoke first (`--limit 2`), then the full run.
 6. At end: orphan sweep clean; worktree removed on merge.
+7. **Operator-driven (in-session) runs:** every costed command under the env-strip set (canary ~7s, not ~94s); every *background* command `cd`s into the worktree explicitly.
