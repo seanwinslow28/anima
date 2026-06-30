@@ -81,6 +81,29 @@ def test_fixtures_share_no_sha256_with_references():
     )
 
 
+def test_no_two_fixtures_are_byte_identical():
+    """INTRA-corpus guard (Tier-2 Slice 1): no two fixtures share a SHA-256.
+
+    The reference guards above catch a fixture that IS a reference plate; this
+    catches a fixture that is a duplicate of ANOTHER fixture. The mascot ingest
+    surfaced exactly this: C02 and C03 came out of Flow byte-identical, so the
+    declared 'left-side' C03 case was silently the same image as C02's
+    three-quarter — a duplicated pose masquerading as two distinct cases. A
+    re-roll fixed it; this guard makes the class of defect non-recurring."""
+    by_digest: dict[str, list[Path]] = {}
+    for fixture in _iter_files(FIXTURES_DIR):
+        by_digest.setdefault(_sha256(fixture), []).append(fixture)
+
+    dupes = [paths for paths in by_digest.values() if len(paths) > 1]
+    report = "\n  ".join(
+        " == ".join(str(p.relative_to(REPO_ROOT)) for p in group) for group in dupes
+    )
+    assert not dupes, (
+        "DUPLICATE FIXTURES (two fixtures are byte-identical — a re-roll is owed, "
+        "see the C02/C03 case in the Tier-2 Slice 1 ingest):\n  " + report
+    )
+
+
 def test_fixtures_share_no_inode_with_references():
     ref_inodes: dict[tuple[int, int], Path] = {}
     for root in REFERENCE_ROOTS:

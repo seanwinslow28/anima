@@ -405,7 +405,8 @@ _CASESCORE_SENTINEL = "CASESCORE_JSON:"
 _PER_CASE_TIMEOUT_S = 600  # ~3x the observed 199s escalating-case latency
 
 
-def _select_cases(segment: str, motion_smoke: int) -> tuple[list[dict], list[dict]]:
+def _select_cases(segment: str, motion_smoke: int,
+                  character_id: str | None = None) -> tuple[list[dict], list[dict]]:
     """Return (selected, excluded). segment='all' runs every case; 'performs' runs
     the 23 clean+identity_style cases plus the first `motion_smoke` motion cases.
     The headline metrics (precision / false-pass / cites-correct) all live in the
@@ -413,16 +414,54 @@ def _select_cases(segment: str, motion_smoke: int) -> tuple[list[dict], list[dic
     motion-proper (eval-strategy §3.5), so the remaining motion cases are excluded
     and LOGGED — honest segmentation, never silent truncation. One motion case is
     kept live to smoke-test reference-attach on the phase-6 contact-sheet path
-    (spec §5.1)."""
-    performs = [c for c in CASES if c["case_class"] in ("clean", "identity_style")]
-    motion = [c for c in CASES if c["case_class"] == "motion_proper"]
+    (spec §5.1).
+
+    `character_id` (Tier-2 Slice 1) narrows the case universe to one corpus before
+    segmenting — so the mascot baseline scores ONLY the `claude-mascot` cases and
+    never re-runs the frozen sean corpus (whose ratified trace must not move). An
+    unlabeled case is treated as `sean`, the convention used throughout this module.
+    Default None = the legacy universe (every case), byte-identical to before."""
+    universe = CASES if character_id is None else [
+        c for c in CASES if c.get("character_id", "sean") == character_id
+    ]
+    performs = [c for c in universe if c["case_class"] in ("clean", "identity_style")]
+    motion = [c for c in universe if c["case_class"] == "motion_proper"]
     if segment == "all":
-        return list(CASES), []
+        return list(universe), []
     return performs + motion[:motion_smoke], motion[motion_smoke:]
 
 
+def _apply_attach_flags(manifest: dict, *, attach_references: bool,
+                        attach_criteria_text: bool,
+                        reference_blind: bool) -> tuple[bool, bool]:
+    """Resolve the run-scoped attach overrides against the in-memory manifest, the
+    SINGLE enable/disable point for both orchestrator and worker. Returns the
+    effective (attach_references, attach_criteria_text).
+
+    `--attach-references` / `--attach-criteria-text` turn a lever ON for this run
+    only (the repo manifest.yaml is never touched). `--reference-blind` forces BOTH
+    OFF, overriding the shipped manifest default (post-G6.1b, `attach_criteria_text`
+    ships true) — this is how the mascot baseline mirrors sean's G5 protocol. Blind
+    wins over the attach flags as a safe default (the caller also rejects the
+    combination). Mutating the in-memory manifest here flows to the worker's
+    VisionCriticNode via `_ctx(manifest)` AND to `_refs_label` (the honest trace
+    label); the worker re-reads manifest.yaml from disk, so the deciding flags are
+    also forwarded on its command line — never enabled by a committed manifest change."""
+    t2 = manifest.setdefault("critics", {}).setdefault("t2", {})
+    if attach_references:
+        t2["attach_references"] = True
+    if attach_criteria_text:
+        t2["attach_criteria_text"] = True
+    if reference_blind:
+        t2["attach_references"] = False
+        t2["attach_criteria_text"] = False
+    return (bool(t2.get("attach_references", False)),
+            bool(t2.get("attach_criteria_text", False)))
+
+
 def _run_case_subprocess(case: dict, stub: bool, attach_references: bool = False,
-                         attach_criteria_text: bool = False) -> CaseScore:
+                         attach_criteria_text: bool = False,
+                         reference_blind: bool = False) -> CaseScore:
     """Run ONE case in a fresh Python process and parse its emitted CaseScore.
 
     The worker re-loads manifest + criteria + the worktree .env (GEMINI/FAL only,
@@ -441,6 +480,8 @@ def _run_case_subprocess(case: dict, stub: bool, attach_references: bool = False
         cmd.append("--attach-references")
     if attach_criteria_text:
         cmd.append("--attach-criteria-text")
+    if reference_blind:
+        cmd.append("--reference-blind")
     proc = subprocess.run(
         cmd, capture_output=True, text=True, timeout=_PER_CASE_TIMEOUT_S,
         cwd=str(HERE.parents[1]),  # repo root: find_dotenv + relative bible paths resolve
@@ -474,6 +515,12 @@ def main() -> None:
     ap.add_argument("--segment", choices=["all", "performs"], default="all",
                     help="all = every case; performs = the 23 clean+identity_style "
                          "cases (+ --motion-smoke motion cases).")
+    ap.add_argument("--character-id", metavar="ID", default=None,
+                    help="Scope the run to ONE corpus by character_id (e.g. "
+                         "claude-mascot). The other characters' cases are not in scope "
+                         "for this run — so the mascot baseline never re-runs the frozen "
+                         "sean corpus or moves its ratified trace. An unlabeled case is "
+                         "'sean'. Default (unset) = every case (legacy behavior).")
     ap.add_argument("--motion-smoke", type=int, default=0,
                     help="With --segment performs, include the first N motion_proper "
                          "cases (a phase-6 reference-attach smoke check). The rest are "
@@ -516,6 +563,15 @@ def main() -> None:
                          "re-baseline proved the criteria block was inert reference-blind. "
                          "Propagated to every per-case worker so the trace can't claim a "
                          "criteria block a blind worker never saw. Repo default stays off.")
+    ap.add_argument("--reference-blind", action="store_true",
+                    help="Run-scoped override that forces BOTH attach levers OFF "
+                         "(attach_references=false AND attach_criteria_text=false), "
+                         "overriding the shipped manifest default. Since G6.1b the "
+                         "manifest ships attach_criteria_text=true, so a default run is "
+                         "NOT blind — this restores sean's G5 protocol for a clean "
+                         "verdict-engine baseline (e.g. the Tier-2 mascot baseline). "
+                         "Propagated to every per-case worker so criteria text can't "
+                         "silently re-attach. Mutually exclusive with the --attach-* flags.")
     ap.add_argument("--dump-prompt", action="store_true",
                     help="With --only: build the prompt for that one case (exactly as "
                          "run() would, honoring --attach-criteria-text / --attach-references), "
@@ -549,27 +605,25 @@ def main() -> None:
         )
         raise SystemExit(3)
 
+    # Mutually exclusive: --reference-blind asks for NEITHER lever; the attach flags
+    # ask for one. Allowing both would be an ambiguous, footgun trace claim.
+    if args.reference_blind and (args.attach_references or args.attach_criteria_text):
+        print("REFUSING TO RUN: --reference-blind cannot be combined with "
+              "--attach-references / --attach-criteria-text.", file=sys.stderr)
+        raise SystemExit(2)
+
     manifest = _manifest()
-    # Run-scoped references override (--attach-references). Mutating the in-memory
-    # manifest here — before the attach_refs read below and before the worker/
-    # orchestrator split — is the SINGLE enable point: it flows to the worker's
-    # VisionCriticNode (the actual attach, via _ctx(manifest)) AND to _refs_label
-    # (the honest trace label). The repo manifest.yaml is never touched; the repo
-    # default stays attach_references: false. The worker is a fresh process that
-    # re-reads manifest.yaml, so the flag is also forwarded on its command line
-    # (_run_case_subprocess) — never enabled by a committed manifest change.
-    if args.attach_references:
-        manifest.setdefault("critics", {}).setdefault("t2", {})["attach_references"] = True
-    # Run-scoped criteria-text override (--attach-criteria-text, G6.1b). Same single
-    # enable point as --attach-references and equally forwarded to the worker cmd —
-    # but it attaches ONLY the criteria block (text handles), zero reference images.
-    if args.attach_criteria_text:
-        manifest.setdefault("critics", {}).setdefault("t2", {})["attach_criteria_text"] = True
-    # Trace-honesty (A1/G6.1b): only claim in the log what Em actually attaches.
-    # attach_references defaults off (reference-blind is production); attach_criteria_text
-    # defaults off. The trace must not list refs/criteria Em never saw.
-    attach_refs = bool(manifest.get("critics", {}).get("t2", {}).get("attach_references", False))
-    attach_criteria_text = bool(manifest.get("critics", {}).get("t2", {}).get("attach_criteria_text", False))
+    # Run-scoped attach overrides — the SINGLE resolution point (see _apply_attach_flags).
+    # --reference-blind forces both levers off over the manifest (sean's G5 protocol);
+    # the attach flags turn a single lever on for this run only. The deciding flags ride
+    # the worker command line below so a fresh-process worker re-reading manifest.yaml
+    # can never silently re-attach criteria the orchestrator's label says are off.
+    attach_refs, attach_criteria_text = _apply_attach_flags(
+        manifest,
+        attach_references=args.attach_references,
+        attach_criteria_text=args.attach_criteria_text,
+        reference_blind=args.reference_blind,
+    )
 
     # ---- worker mode: run one case in this process, emit JSON, exit ----
     if args.only:
@@ -635,7 +689,7 @@ def main() -> None:
         return
 
     # ---- orchestrator mode: select cases, run each in an isolated subprocess ----
-    selected, excluded = _select_cases(args.segment, args.motion_smoke)
+    selected, excluded = _select_cases(args.segment, args.motion_smoke, args.character_id)
     if args.limit:
         selected = selected[:args.limit]  # cheap smoke-validation; partial, not a baseline
     transport = manifest.get("critics", {}).get("t2", {}).get("transport", "agy")
@@ -662,7 +716,7 @@ def main() -> None:
         for i, c in enumerate(selected, 1):
             try:
                 cs = _run_case_subprocess(c, args.stub, args.attach_references,
-                                          args.attach_criteria_text)
+                                          args.attach_criteria_text, args.reference_blind)
                 pass_scores.append(cs)
                 print(f"[{run_tag}{i}/{len(selected)}] {c['name']}: {cs.predicted_verdict} "
                       f"(conf={cs.confidence:.2f}, {cs.wall_s:.0f}s) "
