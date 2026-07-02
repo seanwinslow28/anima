@@ -1,0 +1,17 @@
+# Test manifest for the front-door acceptance test (§8 step 6) — registers the
+# piñata characters as minimal namespaces so `pipeline.run --brief` can start.
+# The production manifest.yaml is NEVER mutated by the front door; a real run
+# of this piece would register these after Cy authors the Bibles (see the
+# emitted manifest_gap_report.md).
+project:
+  name: pinata-short-test
+characters:
+  kid:
+    folder: characters/kid/
+    style_register: pencil-test-colored
+  grandma:
+    folder: characters/grandma/
+    style_register: pencil-test-colored
+  host-dad:
+    folder: characters/host-dad/
+    style_register: pencil-test-colored

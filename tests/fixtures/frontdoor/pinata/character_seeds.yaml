@@ -1,0 +1,44 @@
+# Character seeds — the hand to Cy (§5.4). NOT Bibles: Cy authors from these
+# (source_notes seeds source-refs/notes.md; Cy refuses an empty source-refs/).
+# Schema grounded in templates/bible/character.yaml.template + Cy's node (R3).
+- character_id: kid
+  display_name: "The Kid"
+  story_role: "protagonist — smallest at the party, timid, easy to laugh at, with something coiled underneath"
+  style_register: pencil-test-colored
+  source_notes: |
+    Angular, graphic Tartakovsky-style design (Samurai Jack lineage: flat
+    color + shape + silhouette, self-colored darker-value lines, NO black
+    outlines). Wears his late grandmother's faded headband — too big at the
+    start (slips over his eyes), fitting by the return. The headband is the
+    load-bearing continuity object, not a prop. Design must read in
+    silhouette; he grows into the headband across the year.
+  anchor_ref: null
+  style_ref_ids: []
+  cy_target_dir: characters/kid/
+- character_id: grandma
+  display_name: "The Late Grandmother"
+  story_role: "the engine — never on screen as a living character; present through the room, the headband, one unfinished VHS tape, and one photo"
+  style_register: pencil-test-colored
+  source_notes: |
+    Two looks, both from artifacts: (a) the framed photo with the kid —
+    warm, ordinary, specific (a person, never a "tough grandma" cutout);
+    (b) the faded snapshot of her YOUNG and mid-flying-kick, fierce and
+    unmistakably a warrior — the reveal. Plus one ghost-beat maximum: her
+    soft reflection in the dark TV glass. Carried by object, room, and
+    photo, never by dialogue.
+  anchor_ref: null
+  style_ref_ids: []
+  cy_target_dir: characters/grandma/
+- character_id: host-dad
+  display_name: "The Host Dad"
+  story_role: "the unwitting antagonist — runs the piñata ritual (calls the kid up, tosses the stick, works the string); outmaneuvered and disarmed on the return"
+  style_register: pencil-test-colored
+  source_notes: |
+    Backyard-birthday suburban dad, angular Tartakovsky simplification.
+    Reads as benign authority, not a villain — the genre collision casts
+    him as the "antagonist." Key beats: the string-tug, the mid-air
+    disarm (ninja star severs the string from his hand), and the final
+    close-up examining the ninja star in horror.
+  anchor_ref: null
+  style_ref_ids: []
+  cy_target_dir: characters/host-dad/
