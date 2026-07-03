@@ -1,0 +1,16 @@
+{
+  "slug": "grandmaster",
+  "characters": [
+    "kid",
+    "grandma",
+    "host-dad"
+  ],
+  "stage_provenance": [
+    "micro-expand",
+    "expand:host-dad-reversal",
+    "interrogate",
+    "synthesize",
+    "art-viz"
+  ],
+  "mode": "interactive"
+}
