@@ -109,6 +109,31 @@ def test_emit_is_idempotent(tmp_path):
     assert first == second
 
 
+def test_chosen_route_seed_passthrough(tmp_path):
+    """Characterization (Slice 3): a chosen ART-VIZ route's refs pass through the
+    already-permitted seed fields — anchor_ref + style_ref_ids — with byte-identical
+    code. Passthrough / the future Cy landing spot (red-team F6): no pipeline code
+    reads style_ref_ids yet; this pins the seam, not a current consumer."""
+    seeds = make_seeds()
+    seeds[0]["anchor_ref"] = "characters/kid/source-refs/route-c.png"
+    seeds[0]["style_ref_ids"] = ["route-c-hybrid"]
+    out = emit_brief_dir(
+        tmp_path / "brief",
+        studio_brief_md=seed_brief_text(),
+        concept_md="# Concept\n\n## Logline\n\nA tiny test concept.\n",
+        seeds=seeds,
+        handoff=Handoff(
+            slug="testpiece",
+            characters=["kid", "grandma"],
+            stage_provenance=["micro-expand", "interrogate", "art-viz", "synthesize"],
+        ),
+    )
+    assert validate_brief_dir(out) == []
+    emitted = yaml.safe_load((out / "character_seeds.yaml").read_text(encoding="utf-8"))
+    assert emitted[0]["anchor_ref"] == "characters/kid/source-refs/route-c.png"
+    assert emitted[0]["style_ref_ids"] == ["route-c-hybrid"]
+
+
 def emit_from_fixture(bundle: str, out_dir: Path, manifest: dict | None = None) -> Path:
     """Emit a bundle from a committed golden fixture's own inputs."""
     src = FIXTURES / "frontdoor" / bundle

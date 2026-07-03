@@ -69,6 +69,24 @@ def test_stage_provenance_carries_axis_tagged_expand_with_no_schema_change():
     assert Handoff.from_json(h.to_json()) == h
 
 
+def test_stage_provenance_carries_art_viz_with_no_schema_change():
+    """Characterization: the seam already carries an 'art-viz' stage entry — no art_viz.py needed.
+    Synthetic (a real run would interleave it); proves the CONTRACT, not a run."""
+    h = Handoff(slug="grandmaster", characters=["kid", "grandma", "host-dad"],
+                stage_provenance=["micro-expand", "interrogate", "art-viz", "synthesize"],
+                mode="interactive")
+    assert Handoff.from_json(h.to_json()) == h
+
+
+def test_rejects_unknown_field():
+    """Generic unknown-field rejection (Slice 3, red-team F5): the schema is
+    deliberately not widened — from_json refuses any field it doesn't know.
+    Generic by design; never a style_route-specific magic-word assert."""
+    payload = '{"slug": "x", "characters": ["a"], "stage_provenance": ["s"], "nonesuch": 1}'
+    with pytest.raises(ValueError, match="unknown frontdoor.json fields"):
+        Handoff.from_json(payload)
+
+
 def test_maya_plan_gate_accepts_frontdoor_brief(tmp_path, monkeypatch):
     """--brief <pinata golden> --slug grandmaster --stub reaches the PLAN gate."""
     from pipeline import run as run_cli
