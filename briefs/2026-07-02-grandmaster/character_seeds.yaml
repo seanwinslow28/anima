@@ -1,0 +1,69 @@
+- character_id: kid
+  display_name: The Kid
+  story_role: protagonist — smallest at the party, timid, a specific silhouette-readable
+    tell that resolves by the return
+  style_register: primal-sketch-grit (NEW — not yet in the six-register vocabulary;
+    needs doctrine extension per docs/architecture/prompt-style-neutrality-doctrine.md
+    before Cy authors a real Bible)
+  source_notes: 'Silhouette-readable timid tell: shoulders in, avoids eye contact,
+    glasses a size too big for his face — must read even in a busy backyard-party
+    wide shot. Wears his late grandmother''s faded headband: too-big-swallowing-his-head
+    at the start, fitting by the return — the one object that visibly transforms across
+    the year; treat it as a continuity anchor, not a prop. Register caveat (updated
+    2026-07-03, ART-VIZ Route B locked — supersedes the earlier "no black outlines,
+    flat color, silhouette" draft of this rule): the piece''s non-negotiables now call
+    for Genndy Tartakovsky''s *Primal* register — raw, visible, weight-varying hand-drawn
+    ink linework, gritty painterly texture, warm earthy desaturated palette. No register
+    in the closed six-vocabulary satisfies this; the nearest, line-art-only, mandates
+    bold *uniform* outlines, the opposite of Primal''s raw sketch. Flag to Sean before
+    locking the Bible — do not silently approximate into line-art-only or pencil-test-colored.
+
+    '
+  anchor_ref: null
+  style_ref_ids: []
+  cy_target_dir: characters/kid/
+- character_id: grandma
+  display_name: The Late Grandmother
+  story_role: the engine — never on-screen as a living character; present only through
+    the room, the headband, one unfinished VHS tape, and one photograph
+  style_register: primal-sketch-grit (NEW — shares the kid's register; needs doctrine
+    extension per docs/architecture/prompt-style-neutrality-doctrine.md before Cy
+    authors a real Bible)
+  source_notes: 'Two looks, both from artifacts: (a) a framed photo with the kid —
+    warm, ordinary, a specific person, never a "tough grandma" cutout; (b) a faded
+    snapshot of her YOUNG and mid-flying-kick, fierce and unmistakably a warrior —
+    the reveal. Plus one ghost-beat maximum: her soft reflection in the dark TV glass
+    as the kid ties on the headband, gone in a second. She never speaks and is never
+    shown giving instruction — the kid finds the photo and presses play on the tape
+    himself; the training is entirely his own choice. Same register caveat as the
+    kid (updated 2026-07-03, ART-VIZ Route B locked): no register in the closed
+    six-vocabulary satisfies Primal''s raw hand-drawn ink linework — flag to Sean
+    before locking the Bible, do not silently approximate.
+
+    '
+  anchor_ref: null
+  style_ref_ids: []
+  cy_target_dir: characters/grandma/
+- character_id: host-dad
+  display_name: The Host Dad
+  story_role: the unwitting fulcrum of the reversal, not a villain — runs the piñata
+    ritual (calls the kid up, tosses the stick, works the string), disarmed on the
+    return
+  style_register: primal-sketch-grit (NEW — shares the other two seeds' register;
+    needs doctrine extension per docs/architecture/prompt-style-neutrality-doctrine.md
+    before Cy authors a real Bible)
+  source_notes: 'Backyard-birthday suburban dad, benign authority, not a villain design.
+    Key beat (this session''s correction to the obvious reading): his reaction at
+    the disarm is "the ritual itself just got weird," aimed at the situation, not
+    personal defeat — his hand freezes on the cut string and he looks at the kid with
+    one half-beat of genuine respect before he defaults to bewildered horror at the
+    ninja star. Design and expression sheets need that two-beat turn (respect, then
+    bewilderment) to be legible, not a single "humiliated" pose. Same register caveat
+    as the other two seeds (updated 2026-07-03, ART-VIZ Route B locked): no register
+    in the closed six-vocabulary satisfies Primal''s raw hand-drawn ink linework —
+    flag to Sean before locking the Bible, do not silently approximate.
+
+    '
+  anchor_ref: null
+  style_ref_ids: []
+  cy_target_dir: characters/host-dad/
