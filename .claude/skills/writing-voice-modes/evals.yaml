@@ -1,0 +1,61 @@
+# Eval suite for writing-voice-modes autoresearch optimization.
+# See docs/superpowers/specs/2026-05-09-writing-voice-modes-autoresearch-design.md
+schema_version: 1
+
+training_prompts:
+  - id: sean_quitting_job
+    mode: sean
+    prompt: "Write a 250-word Substack blog post intro about quitting your day job to bet on AI. Sean Mode, full intensity."
+  - id: sedaris_coffee_ritual
+    mode: sedaris
+    prompt: "Write a 250-word Substack intro in Domestic Observer mode about how your morning coffee ritual changed when you started talking to Claude every day."
+  - id: gonzo_broken_deploy
+    mode: gonzo
+    prompt: "Write a 250-word Substack intro in Gonzo mode about deploying a broken migration to production at 11:47 PM on a Wednesday."
+  - id: kerouac_agent_moment
+    mode: kerouac
+    prompt: "Write a 250-word Substack intro in Beat Flow mode about the moment you understood Claude Code agents: the sensory rush of watching code rewrite itself."
+  - id: vonnegut_leaving_loved_job
+    mode: vonnegut
+    prompt: "Write a 250-word Substack intro in Vonnegut mode about leaving a job you loved for a job that scared you."
+
+holdout_prompts:
+  - id: dial_60_slipped_launch
+    mode: sean
+    dial: 0.60
+    prompt: "Write a 250-word Substack intro about a launch that slipped two weeks. Sean Mode, dialed to 60%, appropriate for cross-posting on LinkedIn where former colleagues will read it."
+  - id: combo_gonzo_to_vonnegut
+    mode: gonzo_to_vonnegut
+    prompt: "Write a 250-word Substack intro that opens Gonzo (cold open, mid-action) and lands Vonnegut (flat collision closer). Topic: the day you realized your side project was actually your job."
+
+structural_criteria:
+  - id: substack_format_intro
+    function: structural_checks.substack_format_intro
+  - id: anti_pattern_overreference
+    function: structural_checks.anti_pattern_overreference
+  - id: stylometric_distance
+    function: structural_checks.stylometric_distance
+    requires_baseline: true
+
+llm_judge_criteria:
+  - id: signature_move_present
+    ensemble: false
+    question: "Does this output contain at least one signature move from the prescribed mode (e.g., for Sedaris: sentence-end punchline OR mundane→pivot OR cold-description defamiliarization)?"
+  - id: sounds_like_sean
+    ensemble: true
+    n_judges: 3
+    question: "Does this output read like a Sean-Winslow-authored Substack intro rather than a generic AI imitation?"
+  - id: no_anti_pattern_violation
+    ensemble: true
+    n_judges: 3
+    question: "Is this output free of the prescribed mode's documented anti-patterns (e.g., for Kerouac: NOT 'rambling without a jewel center', NOT 'dashes everywhere with no rhythmic variation')?"
+
+scoring:
+  runs_per_prompt: 15
+  per_criterion_floor: 0.60
+  aggregate_target: 0.75
+  iteration_cap: 25
+  plateau_halt_iterations: 3
+  moving_average_window: 3
+  bootstrap_resamples: 1000
+  bootstrap_ci: 0.95

@@ -1,0 +1,54 @@
+# Eval suite for writing-humanity-pass. Before/after editing cases.
+# Manual-review schema (not wired to skill_optimizer; that adapter is out of scope).
+# NOTE: `input` fields contain em dashes on purpose; they are the specimens to scrub.
+schema_version: 1
+
+cases:
+  - id: voice_dashes_removed
+    register: voice
+    input: "An agent rebuilt the entire pipeline in fourteen minutes — I sat there with my coffee getting cold and my ego getting colder."
+    expect:
+      - "zero em/en dashes in output"
+      - "breath-mark rhythm preserved via comma or period"
+      - "self-deprecation kept (ego getting colder)"
+
+  - id: voice_slop_around_a_move
+    register: voice
+    input: "This pivotal moment serves as a testament to the transformative power of agents, fundamentally reshaping how I work — fuelled by new skills, fresh coffee, and a glimmer of hope."
+    expect:
+      - "significance inflation cut (#1, no deflation present)"
+      - "copula avoidance fixed (#8 serves as -> is)"
+      - "persuasive-authority trope cut (#27 fundamentally)"
+      - "em dash cut (#14)"
+      - "Rule-of-Three pivot PRESERVED (skills, coffee, glimmer of hope)"
+
+  - id: rule_of_three_keep_vs_cut
+    register: voice
+    input: "The event features innovation, inspiration, and industry insights. I showed up tired, broke, and quietly hopeful."
+    expect:
+      - "first triple cut or loosened (#10 decorative, no pivot)"
+      - "second triple KEPT (pivots on 'quietly hopeful')"
+
+  - id: neutral_full_scrub
+    register: neutral
+    input: "Launch Phase: Let's dive in! The system serves as a robust solution that boasts end-to-end encryption — ensuring security. I hope this helps!"
+    expect:
+      - "signposting removed (#28 Let's dive in)"
+      - "copula fixed (#8 serves as/boasts -> is/has)"
+      - "em dash + -ing tail removed (#14/#3)"
+      - "chatbot artifact removed (#20 I hope this helps)"
+      - "NO personality or first person added (neutral register)"
+
+  - id: false_positive_guard
+    register: voice
+    input: "I think the migration mostly worked, but something about the rollback still bothers me, and I cannot fully explain why."
+    expect:
+      - "left essentially unchanged"
+      - "mixed-feelings human signal preserved (no clustering of tells present)"
+
+  - id: polysyndeton_preserved
+    register: voice
+    input: "The dashboard lit up and started screaming and the alerts piled up and I just sat there and watched."
+    expect:
+      - "polysyndeton PRESERVED (deliberate Beat Flow drumbeat, not 'and' overuse)"
+      - "no em dashes introduced"

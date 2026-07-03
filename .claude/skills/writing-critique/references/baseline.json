@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "generated_from": "baseline-corpus.md",
+  "mattr_window": 50,
+  "segments": 6,
+  "metrics": {
+    "cv": {
+      "mean": 0.8575,
+      "stdev": 0.1795,
+      "n": 6
+    },
+    "mattr": {
+      "mean": 0.8443,
+      "stdev": 0.0502,
+      "n": 6
+    },
+    "first_person_rate": {
+      "mean": 4.6433,
+      "stdev": 2.0329,
+      "n": 6
+    },
+    "opener_other_pct": {
+      "mean": 51.6167,
+      "stdev": 21.5403,
+      "n": 6
+    }
+  }
+}

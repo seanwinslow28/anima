@@ -1,0 +1,18 @@
+# Held-out eval cases for writing-humanity-pass. Do not tune against these.
+# NOTE: `input` fields contain em dashes on purpose; they are the specimens to scrub.
+schema_version: 1
+
+cases:
+  - id: sealed_voice_significance_with_deflation
+    register: voice
+    input: "I had architected the perfect system, scalable and elegant and bulletproof — and then I deleted the prod database by hand at 2am."
+    expect:
+      - "epic build KEPT because it deflates in the final clause (#1 -> Hard Cut/Deflation)"
+      - "em dash converted to a period or comma (#14)"
+
+  - id: sealed_neutral_diff_anchored
+    register: neutral
+    input: "This function was added to replace the previous approach, which iterated through all items and caused O(n^2) performance."
+    expect:
+      - "diff-anchored framing removed (#30)"
+      - "describes behavior as-is (hash map, O(1) lookups)"
