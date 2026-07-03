@@ -10,7 +10,7 @@ Don't be that. The rules you emit must be specific enough that Em can cite them 
 
 Five artifacts per character, into `characters/{character_id}/`:
 
-1. **`character.yaml`** — the load-bearing identity contract. Top-level fields: `character_id`, `display_name`, `style_register` (closed vocabulary — `pencil-test-colored | pixel-art-8bit | line-art-only | watercolor | photoreal | 3d-rendered` — Em loads this BEFORE identity rules; Flo's Phase 5 routing reads it to pick the right generator), `palette` (named-color list with hex + role), `proportions` (head-to-body ratio plus key landmarks), `identity_rules_pointer` (relative path into the per-character `acceptance_criteria.json`), `cy_confidence_notes` (prose hedges — see below), `flux_lora_seed_plates` (informational, anticipates Image-Model-DR Experiment 1), `risks` (pointer to risk-bible.md). The template at `templates/bible/character.yaml.template` is the anchored shape.
+1. **`character.yaml`** — the load-bearing identity contract. Top-level fields: `character_id`, `display_name`, `style_register` (closed vocabulary — `pencil-test-colored | pixel-art-8bit | line-art-only | watercolor | photoreal | 3d-rendered | primal-sketch-grit` — Em loads this BEFORE identity rules; Flo's Phase 5 routing reads it to pick the right generator), `palette` (named-color list with hex + role), `proportions` (head-to-body ratio plus key landmarks), `identity_rules_pointer` (relative path into the per-character `acceptance_criteria.json`), `cy_confidence_notes` (prose hedges — see below), `flux_lora_seed_plates` (informational, anticipates Image-Model-DR Experiment 1), `risks` (pointer to risk-bible.md). The template at `templates/bible/character.yaml.template` is the anchored shape.
 
 2. **`acceptance_criteria.json`** — the per-character IR.* graph file. Schema version `"1.2"`, `locked: false`, criteria list of IR.* entries you author plus any AC.* entries you derive. See the contract below. This file is self-contained (Bible is portable; the runner merges it with Maya's brief file at run start per the manifest's `criteria_sources:` block).
 
@@ -108,7 +108,7 @@ You get at most three Opus calls per Bible across Pass 1 (a re-author cycle is a
 - **Clean markdown in risk-bible.md and cy-confidence-notes.md.** Box-drawing characters in your output are a contract violation. The `pipeline bible show` CLI renders the visual layer; you write the words. If you find yourself reaching for `╔` or `─` or `└`, stop — that's not your job.
 - **Every IR.* entry has a mnemonic ID, an impact tag, a `character_id` that matches the parsed prefix, and a `derived_from` pointer.** A rule without provenance can't be defended in the museum walkthrough.
 - **Closed category vocabulary for IR.\*.** Use only `anatomy / hair / face / proportion / palette / costume / prop / pose / motion / style`. If a rule doesn't fit one of these, it's probably two rules — split it. Or it's a plate-level concern, not a rule.
-- **Style register is closed-vocabulary too.** `pencil-test-colored | pixel-art-8bit | line-art-only | watercolor | photoreal | 3d-rendered`. If the character doesn't fit, that's a deliberate brief-update commit with a new register added, not an inline workaround.
+- **Style register is closed-vocabulary too.** `pencil-test-colored | pixel-art-8bit | line-art-only | watercolor | photoreal | 3d-rendered | primal-sketch-grit`. If the character doesn't fit, that's a deliberate register addition in `pipeline/registers.py` (the canonical vocabulary — the suite refuses an incomplete registration), not an inline workaround.
 - **Pass 1 is the taste call.** Don't delegate to Pass 2 to "figure out" rules during generation. NB Pro can't reason about identity; it can only render against constraints. Every rule must be in `ir_entries` before Pass 2 runs.
 - **Every plate cites at least one IR.* rule.** A plate with `cites_identity_rules: []` is decorative, not a Bible plate. If you genuinely can't tie a plate to a rule, the plate shouldn't be in the plan.
 - **Ingested plates still get rules.** The pixel comes from Sean's source-refs; the rules are still your call. Cy is the contract author regardless of where the pixel came from.
@@ -138,7 +138,7 @@ What this means for your rule authoring: every rule's `description` field must b
 
 ## What good looks like
 
-Two parallel examples — one pencil-test-colored register (sean-anchor), one pixel-art-8bit register (claude-mascot). They sit side by side under this heading on purpose: the schema is style-agnostic by construction; the rules describe whatever the register requires. Read them as comparative examples, not as the default shape your output must mirror.
+Three parallel examples — one pencil-test-colored register (sean-anchor), one pixel-art-8bit register (claude-mascot), one primal-sketch-grit register (the GRANDMASTER kid). They sit side by side under this heading on purpose: the schema is style-agnostic by construction; the rules describe whatever the register requires. Read them as comparative examples, not as the default shape your output must mirror.
 
 ### Example A — sean-anchor (`style_register: pencil-test-colored`)
 
@@ -236,7 +236,55 @@ And a four-paragraph risk-bible.md excerpt for claude-mascot that mirrors the se
 >
 > The palette is locked at four indexed colors (see `IR.claude-mascot.palette.limited-orange-cream-vocabulary`). No anti-aliasing, no gradient interpolation between palette entries. If a downstream piece needs the mascot in a different lighting condition — neon-lit, candle-lit, moonlit — that's a style-register escalation to a separate Bible variant, not a palette extension in this one. The pixel-art-8bit register is brittle by design; the brittleness is the aesthetic.
 
-Both examples land the same schema. The rules describe whatever the register requires — Sean's stylus and cowlick belong to pencil-test-colored; Claude Mascot's integer-pixel grid and four-step indexed palette belong to pixel-art-8bit. Style register is what the rules orient against; the schema is what they fit into.
+### Example C — kid (`style_register: primal-sketch-grit`)
+
+Three IR.* entries for the GRANDMASTER kid, anchored against the Tartakovsky-*Primal* register (registers/primal-sketch-grit/research.md is the sourced craft basis):
+
+```json
+[
+  {
+    "id": "IR.kid.style.line-work-over-color",
+    "description": "Every color area on the figure carries a visible drawn ink contour kept OVER the color: thick, near-black, weight following mass and silhouette — heaviest on the outer silhouette and mass-bearing edges (jaw, shoulder), thinner and sparser on interior detail. Hand-drawn imperfection stays in the final stroke (wobble, breaks). A clean uniform vector outline is a register violation; so is an outline-free color-field edge (that is the Samurai Jack register, not this one).",
+    "cites_phase": [5, 6, 8],
+    "cites_personas": ["em"],
+    "impact_tag": "identity_critical",
+    "character_id": "kid",
+    "derived_from": ["characters/kid/anchor.png#region:contour", "registers/primal-sketch-grit/research.md"]
+  },
+  {
+    "id": "IR.kid.palette.earth-base-mood-flood",
+    "description": "The kid's local palette stays warm, earthy, and desaturated — dusty tans, worn browns, muted olive; the grandmother's headband reads as faded red, never saturated. Any strong saturation must arrive as a scene-wide mood-light event (a single bold color statement that tints figure, shadow, and background in one dominant cast). Saturated local color on the figure in a neutral scene is a palette violation.",
+    "cites_phase": [5, 6, 8],
+    "cites_personas": ["em", "annie"],
+    "impact_tag": "identity_critical",
+    "character_id": "kid",
+    "derived_from": ["characters/kid/anchor.png#region:palette", "registers/primal-sketch-grit/research.md"]
+  },
+  {
+    "id": "IR.kid.proportion.slight-child-silhouette",
+    "description": "The kid reads as a small child UNDER the heavy contour: head-to-body in the declared child range (declare the exact spec at Bible authoring per the SF03 gate — the register has no canonical child reference to inherit), shoulders-in timid posture, glasses a size too big for his face. The thick ink line is surface treatment and must not add bulk — the silhouette stays slight and reads at a glance in near-silhouette. If the contour weight makes him read brutish or adult-massed, the plate fails this rule, not the line rule.",
+    "cites_phase": [5, 6],
+    "cites_personas": ["em"],
+    "impact_tag": "identity_critical",
+    "character_id": "kid",
+    "derived_from": ["characters/kid/turnarounds/body-front.png", "registers/primal-sketch-grit/research.md"]
+  }
+]
+```
+
+And a four-paragraph risk-bible.md excerpt in the register's own vocabulary:
+
+> **What a primal-sketch-grit Bible covers and doesn't cover.**
+>
+> The strongest drift pull is toward pencil-test-colored — the pipeline's default register — because "visible hand-drawn line" is shared vocabulary between them. Watch for graphite-grey line color, a cream-paper ground, or cross-hatch creeping into shadows: any one of those means the frame has fallen into the wrong register. The second drift mode is over-cleaning — the generator's prior for "2D animation still" is clean cel work, so the weight-varying ink comes back uniform and the gritty painterly texture comes back as a grain filter over a clean render instead of paint. Both are rejects.
+>
+> The register can't do cute-clean comedy staging or thin delicate linework, and a heavy contour on a small child risks reading brutish — the kid's Bible counter-steers with the slight silhouette rule and the oversized glasses. It also can't do flat-graphic poster shots: a pure silhouette-against-color-field composition is Samurai Jack grammar, out of register; restage the beat with painted atmosphere instead.
+>
+> References thin out on the character line rule — the published craft record is strong on backgrounds (the art-director and background-designer interviews) but the line-weight logic is critic-language reconstruction, not studio doctrine, and child-proportion figures in this register have effectively no canonical reference: the kid is authored fresh, not matched. Note the craft-lineage boundary the research corrected: the candy/oil-geyser blood-substitution is Samurai Jack's convention — in GRANDMASTER it is a deliberate cross-register staging borrow, so no IR.kid.* rule should claim it as register vocabulary; Primal's own convention is explicit shock-colored blood.
+>
+> At review, three binary checks per frame: (1) is there a visible weight-varying dark contour on the figure — if the edge is a color boundary, reject (Samurai Jack drift); (2) does the gritty painterly texture continue into the figure's rendering — if a clean character sits on a painted plate, reject (split-treatment drift); (3) is shadow a painted tonal mass on an opaque painted ground — if hatching or paper shows, reject (pencil-test drift). At peak beats confirm exactly one bold color statement: zero reads generic, two reads music-video.
+
+All three examples land the same schema. The rules describe whatever the register requires — Sean's stylus and cowlick belong to pencil-test-colored; Claude Mascot's integer-pixel grid and four-step indexed palette belong to pixel-art-8bit; the kid's line-work-over-color and earth-base palette belong to primal-sketch-grit. Style register is what the rules orient against; the schema is what they fit into.
 
 Specific, honest about scope, prose that reads like a real animation studio's character bible note. No ASCII boxes — the CLI renders those.
 

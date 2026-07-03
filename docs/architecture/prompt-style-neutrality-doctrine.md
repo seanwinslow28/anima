@@ -8,7 +8,7 @@
 
 anima is a 2D animation pipeline, not a pencil-test pipeline. The pencil-test work is the first reference implementation — the proof that the pipeline ships — not the project's identity. Sean's portfolio thesis depends on this distinction: the pipeline ships a *working method* that handles whatever 2D character Sean (or anyone using anima) decides to make.
 
-The closed `style_register` vocabulary on `character.yaml` is the structural commitment to that breadth:
+The closed `style_register` vocabulary on `character.yaml` is the structural commitment to that breadth. Since 2026-07-03 it has one canonical home — **`pipeline/registers.py`**, one frozen `RegisterSpec` per register, fail-loud on a nonempty unknown (a typo can no longer silently author a pencil-test character):
 
   - `pencil-test-colored`
   - `pixel-art-8bit`
@@ -16,6 +16,7 @@ The closed `style_register` vocabulary on `character.yaml` is the structural com
   - `watercolor`
   - `photoreal`
   - `3d-rendered`
+  - `primal-sketch-grit`
 
 Every prompt that drives an agent's behavior must work for every register in this vocabulary. The engine truth — *"if the loop plays smoothly and the character is recognizably itself in its intended medium, it ships"* — is style-agnostic by design. The medium is whatever the Studio Brief declared, not pencil-test by default.
 
@@ -43,13 +44,19 @@ The test deliberately allows single-register content inside `## What good looks 
 
 ## Adding a new style register
 
-The closed vocabulary is extended deliberately, not inline. Three steps:
+*(Corrected 2026-07-03: this section previously said step 1 was "extend the vocabulary in `pipeline/criteria.py`" — that was wrong against the codebase. `criteria.py` carries the IR/AC/impact-tag vocabularies and never carried a `style_register` vocabulary; before the registry existed, nothing anywhere validated a register against a closed set, and an unknown register silently coerced to pencil-test-colored. The canonical vocabulary now lives in `pipeline/registers.py`, and the registration is enforced by `tests/test_register_registry.py`.)*
 
-  1. **Extend the vocabulary in `pipeline/criteria.py`** (or wherever the validator lives) and add the value to `templates/bible/character.yaml.template`'s comment. The schema-level commitment is what makes the new register first-class.
+The closed vocabulary is extended deliberately, not inline. The five-step drill (`primal-sketch-grit`, 2026-07-03, is the worked example):
 
-  2. **Add a `## What good looks like — {register}` example block** to `cy-character-designer-context.md` showing three sample `IR.{character_id}.*` entries and a four-paragraph risk-bible excerpt in the new register's vocabulary. The new example sits alongside the existing pencil-test-colored and pixel-art-8bit blocks under the `What good looks like` heading.
+  1. **Research the style** — the per-style research agenda in the [animation-vocabulary-expansion plan](../active/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md) §2, grounded against the register's `registers/{name}/refs/` exemplars and written up in `registers/{name}/research.md`. Never surface pastiche: the research fills the spec's fields.
 
-  3. **Update `_STYLE_REGISTERS` in `tests/test_prompt_style_neutrality.py`** and add the new register's marker phrases to `_REGISTERS_TO_MARKERS`. The marker set should include the load-bearing visual markers a downstream agent (Em, mostly) would cite in a verdict against the new register's failure modes.
+  2. **Add one `RegisterSpec` entry to `pipeline/registers.py`** — name, summary, `identity_lock` / `preserve` / `style_token` clauses, model routing, neutrality markers, stub keywords. Append new stub keywords AFTER the existing ones (precedence is pinned by the characterization oracle). This one entry feeds every runtime touch-point: the plate-prompt emitter, model routing, the stub inference, and the neutrality test's audit vocabulary — no other code edit is needed.
+
+  3. **Add the `### Example {X} — {character} (`style_register: {name}`)` block** under `## What good looks like` in `cy-character-designer-context.md`: three sample `IR.{character_id}.*` entries and a four-paragraph risk-bible excerpt in the new register's own vocabulary. This is authored taste, not data — it stays prose.
+
+  4. **Add the one-line summary** to `templates/bible/character.yaml.template`'s permitted-values comment, and name the register in this doctrine's vocabulary list above.
+
+  5. **Run the suite.** `tests/test_register_registry.py` refuses to pass until 2–4 all exist for the new register (an incomplete registration fails loud, not silent), and `tests/test_prompt_style_neutrality.py` automatically audits the new register's markers (it imports `ALL_REGISTERS` + markers from the registry, so it can never drift from the canon).
 
 Commit with a message naming the new register and the rationale (which downstream piece needed it, which Bible was authored against it). Update `CHANGELOG.md`.
 
@@ -59,9 +66,9 @@ Commit with a message naming the new register and the rationale (which downstrea
 
 Before commit, re-read every load-bearing section (the "what you must not do" / "the lens you bring" / non-negotiables blocks) with this question:
 
-> Would this prompt make sense to a pixel-art Bible author? A watercolor Bible author? A 3d-rendered Bible author? A photoreal Bible author? A line-art-only Bible author?
+> Would this prompt make sense to a pixel-art Bible author? A watercolor Bible author? A 3d-rendered Bible author? A photoreal Bible author? A line-art-only Bible author? A primal-sketch-grit Bible author?
 
-If the answer is no for any of the six registers, the prompt carries default-register bias — generalize it. Cite the registers comparatively, not as exceptions to a default.
+If the answer is no for any register in the vocabulary, the prompt carries default-register bias — generalize it. Cite the registers comparatively, not as exceptions to a default.
 
 The test catches obvious bias (single-register markers in load-bearing sections). The question catches subtler bias the test misses (implicit assumptions about the kind of work the agent is critiquing, default vocabulary in interactive prose). Both layers matter; the test is a backstop, not a substitute for reading the prompt with the question in mind.
 
@@ -80,7 +87,7 @@ The doctrine governs **reusable infrastructure**:
 
   - The standing-context preambles (`pipeline/agents/prompts/*.md`)
   - Templates (`templates/brief/`, `templates/bible/`)
-  - Schemas (`pipeline/criteria.py`'s closed vocabularies)
+  - The register vocabulary (`pipeline/registers.py`) and `pipeline/criteria.py`'s IR/AC vocabularies
   - The test suite that asserts against agent contracts
 
 The pencil-test reference implementation is a *piece*; anima is a *pipeline*. The doctrine is the discipline that keeps the pipeline general while letting each piece carry its own register-specific voice.

@@ -238,6 +238,59 @@ REGISTRY: dict[str, RegisterSpec] = {
             markers=frozenset({"3d-rendered", "raytraced", "pbr shading"}),
             stub_keywords=("3d",),
         ),
+        # The first post-registry register (Checkpoint 2, 2026-07-03) —
+        # GRANDMASTER's Tartakovsky-*Primal* register, authored from the
+        # CORRECTED deep research (registers/primal-sketch-grit/research.md):
+        # organic-illustrative with a heavy weight-varying ink contour kept
+        # OVER the color — NOT flat-angular, and NOT the candy/oil-geyser
+        # blood-substitution (that is Samurai Jack's convention; GRANDMASTER
+        # borrows it as a deliberate cross-register staging choice). The
+        # pencil-test negative controls (no graphite/cream-paper vocabulary)
+        # deliberately do NOT appear as prompt negatives here — naming them
+        # can evoke them in the image model; drift policing lives in the Cy
+        # example block + risk-bible review checks instead. NB2 generation is
+        # the §3c transport HYPOTHESIS — the go/no-go spike judges it
+        # (briefs/2026-07-02-grandmaster/go-no-go.md).
+        RegisterSpec(
+            name="primal-sketch-grit",
+            summary=(
+                "Tartakovsky-Primal register. Heavy weight-varying ink kept "
+                "over the color, gritty painterly figure and background, warm "
+                "earthy desaturated base, one bold color statement per scene."
+            ),
+            identity_lock=(
+                "Match the face, hair, color palette, proportions, and "
+                "silhouette of Image 1 exactly; the heavy ink contour is "
+                "surface treatment and must never alter the anatomy."
+            ),
+            preserve=(
+                "Keep the drawn ink line visible over every color area — "
+                "thick, near-black, weight varying with mass and silhouette, "
+                "deliberately imperfect. Keep the gritty hand-painted texture "
+                "on both figure and background and the warm earthy desaturated "
+                "base palette. No clean uniform outlines, no outline-free "
+                "color-field flatness, no smooth digital gradients or airbrush "
+                "polish."
+            ),
+            style_token=(
+                "Raw seventies-pulp 2D animation still: heavy weight-varying "
+                "ink line kept over the color, gritty painterly brushwork "
+                "shared by figure and background, flat earthy fills with drawn "
+                "tonal shading, warm earthy desaturated palette punctuated by "
+                "a single bold color statement."
+            ),
+            generation_model=NB2_FLASH,
+            final_model=NB_PRO,
+            markers=frozenset({
+                "primal-sketch-grit",
+                "weight-varying ink",
+                "gritty painterly texture",
+                "warm earthy desaturated",
+                "line-work kept over the color",
+                "dead-stop hold",
+            }),
+            stub_keywords=("primal",),
+        ),
     )
 }
 

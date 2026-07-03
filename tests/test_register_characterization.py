@@ -181,16 +181,24 @@ def test_reject_threaded_prompt_snapshot():
 def test_stub_keyword_map_full_order_snapshot():
     """Verifier-flagged gap: the stub keyword map's precedence rides on dict
     insertion order. Pin the ENTIRE key order + mapping (not just the two
-    precedence edges) so reordering REGISTRY entries fails loud here."""
+    precedence edges) so reordering REGISTRY entries fails loud here.
+
+    The first SIX entries are the frozen pre-registry order — never reorder
+    or interleave them. A NEW register's keywords append strictly AFTER
+    (primal-sketch-grit, Checkpoint 2, is the pattern): appended-last keeps
+    every pre-registry character id resolving exactly as before."""
     from pipeline.agents.character_designer import _STUB_STYLE_REGISTER_BY_KEYWORD
 
     assert list(_STUB_STYLE_REGISTER_BY_KEYWORD.items()) == [
+        # frozen pre-registry prefix (main 4a75500 behavior) —
         ("mascot", "pixel-art-8bit"),
         ("pixel", "pixel-art-8bit"),
         ("watercolor", "watercolor"),
         ("lineart", "line-art-only"),
         ("photoreal", "photoreal"),
         ("3d", "3d-rendered"),
+        # — post-registry registers append below, never above.
+        ("primal", "primal-sketch-grit"),
     ]
 
 
