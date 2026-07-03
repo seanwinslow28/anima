@@ -2,8 +2,10 @@
 
 Slice-1 minimal: slug (the run's --slug), characters (the gap report's
 input), stage_provenance, plus the R1 `mode` marker (a fixture-built brief
-in tests can never masquerade as a real interactive run). style_route /
-stress_verdict land with Slices 3/4 — the schema grows with real consumers.
+in tests can never masquerade as a real interactive run). Slices 3/4
+deliberately added NO style_route / stress_verdict fields — the route and the
+verdict live as prose + seed refs; the schema grows only when a real consumer
+exists (nothing reads either today).
 """
 
 from __future__ import annotations

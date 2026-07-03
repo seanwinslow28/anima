@@ -78,6 +78,16 @@ def test_stage_provenance_carries_art_viz_with_no_schema_change():
     assert Handoff.from_json(h.to_json()) == h
 
 
+def test_stage_provenance_carries_stress_test_with_no_schema_change():
+    """Characterization: the seam already carries a 'stress-test' stage entry — no stress.py, no field.
+    Synthetic (a real run would interleave it); proves the CONTRACT, not a run. Note: element types are
+    NOT code-enforced (stage_provenance is validated non-empty only); string values round-trip by convention."""
+    h = Handoff(slug="grandmaster", characters=["kid", "grandma", "host-dad"],
+                stage_provenance=["micro-expand", "interrogate", "art-viz", "stress-test", "synthesize"],
+                mode="interactive")
+    assert Handoff.from_json(h.to_json()) == h
+
+
 def test_rejects_unknown_field():
     """Generic unknown-field rejection (Slice 3, red-team F5): the schema is
     deliberately not widened — from_json refuses any field it doesn't know.
