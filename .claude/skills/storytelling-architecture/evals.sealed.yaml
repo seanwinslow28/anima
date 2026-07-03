@@ -1,0 +1,27 @@
+# SEALED surprise cases for storytelling-architecture. Held out to test generalization.
+# Same manual-review schema as evals.yaml. Do not train/tune against these.
+schema_version: 1
+
+surprise_cases:
+  - id: surprise_talk_outline
+    input: "Beat map for a 10-minute conference talk about why my pixel-art mascot drifted and what per-view references fixed it."
+    expect:
+      - "cold open on the drift, not on agenda/intro slides"
+      - "every beat passes but/therefore; the failed mascot is an escalating beat"
+      - "loop (why did it drift) opens early and closes at the per-view-reference payoff"
+      - "output is a beat map, not slide prose"
+
+  - id: surprise_case_study_arc
+    input: "Beat map for a portfolio case study using before-after-bridge: manual QA before, agent-eval after."
+    expect:
+      - "before-after-bridge order, bridge carries the value"
+      - "the bridge beat is specific (the actual eval mechanism), not a generic 'then I built a system'"
+      - "template is bent enough to not be nameable; specificity check passes"
+      - "no prose; beats only"
+
+  - id: surprise_anti_chasm_hook
+    input: "Beat map for a post whose draft hook is 'here is the secret to great AI products'."
+    expect:
+      - "flags the hook as a vague chasm, not a closeable gap"
+      - "proposes a specific, closeable replacement hook as a beat (e.g. one concrete decision)"
+      - "the promised payoff is attainable within the beats that follow"

@@ -1,0 +1,54 @@
+# Eval suite for writing-critique.
+# Manual-review schema (input -> expected critique-output properties). Not wired to skill_optimizer.
+# These test the SHAPE of the critique (findings, verdict, deferral, advisory analyzer),
+# never prose. The skill critiques, it never rewrites.
+schema_version: 1
+
+cases:
+  - id: finds_reader_cost_not_typos
+    input: "Critique this draft intro: a structurally flat 200-word piece whose hook promises a vague 'secret to great AI products' and whose value section is a bolted-on '5 tips' list. Also it has one typo."
+    expect:
+      - "leads with a reader-cost finding (vague chasm hook OR bolted-on value seam), not the typo"
+      - "each finding cites a span and names the concrete reader cost"
+      - "the typo, if mentioned at all, is a minor, ranked below the structural findings"
+
+  - id: findings_are_directable
+    input: "Red-team this post and make sure I know what to do next with each note."
+    expect:
+      - "every finding is a tuple: quoted span -> why it fails (dimension) -> severity -> directed fix"
+      - "no vague 'could be stronger' findings with no action"
+      - "the author can act on each finding without guessing"
+
+  - id: defers_to_owner_skill
+    input: "Critique this: the Value Gate already PASSED (real itch, artifact, concrete transfer), but the post buries the artifact in paragraph 9."
+    expect:
+      - "critiques execution (artifact buried too late) without re-litigating the passed Value Gate"
+      - "defers the gate verdict itself to substack-value-engine"
+      - "frames it as a value-DELIVERY finding, not a premise argument"
+
+  - id: verdict_is_explicit
+    input: "Is this ready to ship? Give me a straight answer."
+    expect:
+      - "output ends with exactly one verdict: ship / revise / structural-rework"
+      - "names the single highest-leverage fix in one sentence"
+
+  - id: never_rewrites
+    input: "This paragraph is flat. Critique it."
+    expect:
+      - "returns findings about the flatness, NOT a rewritten paragraph"
+      - "if a fix is needed, routes it back to writing-voice-modes / writing-humanity-pass / Sean"
+      - "no rewritten prose appears in the output"
+
+  - id: flags_ai_flatness_with_analyzer
+    input: "Critique this draft where every sentence is nearly the same length and opens with 'The system': run the analyzer against my baseline."
+    expect:
+      - "surfaces a prose/line flatness finding grounded in the analyzer's sentence-length CV (burstiness), NOT an absolute stdev cutoff"
+      - "frames the flatness as baseline-relative ('monotonous vs your voice'), not an absolute AI verdict"
+      - "treats the analyzer output as advisory evidence for the finding, never as a finding on its own"
+
+  - id: persona_separation_when_same_model_voiced_it
+    input: "You just wrote this draft in voice-modes. Now critique it as the chain gate."
+    expect:
+      - "adopts the hostile-reviewer persona explicitly ('you did not write this')"
+      - "does not flatter its own prior output (no self-enhancement praise)"
+      - "praise is capped to at most one calibration line"

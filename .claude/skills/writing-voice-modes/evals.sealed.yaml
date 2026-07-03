@@ -1,0 +1,14 @@
+# SEALED SURPRISE PROMPTS: the optimizer subagent must NOT have read access
+# to this file. Used by the orchestrator to score generalization every 5 iterations.
+schema_version: 1
+
+surprise_prompts:
+  - id: surprise_sean_obsidian
+    mode: sean
+    prompt: "Write a 250-word Substack intro about throwing away your second-brain Notion vault and starting from zero in Obsidian."
+  - id: surprise_sedaris_ai_stack
+    mode: sedaris_with_gonzo_passage
+    prompt: "Write a 250-word Substack intro in Domestic Observer mode, with one Gonzo escalation passage in the middle. Topic: the absurdity of having an AI stack, fourteen autonomous agents, three local models, more MCPs than friends, that knows your morning routine better than anyone in your life."
+  - id: surprise_kerouac_drive
+    mode: kerouac
+    prompt: "Write a 250-word Substack intro in Beat Flow mode about driving from New York to Boston the day you accepted your move."

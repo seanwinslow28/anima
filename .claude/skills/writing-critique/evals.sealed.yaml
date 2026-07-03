@@ -1,0 +1,25 @@
+# SEALED surprise cases for writing-critique. Held out to test generalization.
+# Same manual-review schema as evals.yaml. Do not train/tune against these.
+schema_version: 1
+
+surprise_cases:
+  - id: headless_emits_structured_verdict
+    input: "[non-interactive chain-gate run] Critique this voiced Substack draft before humanity-pass."
+    expect:
+      - "no interactive question is asked (headless detected, like writing-humanity-pass)"
+      - "emits a trailing HTML comment verdict block: {verdict, serious_findings[], analyzer_flags[], revise_target}"
+      - "serious_findings holds only blocking/major items; revise_target is null when verdict is ship"
+
+  - id: adversarial_not_hypercritical
+    input: "Critique this genuinely strong, tight draft with a real itch, a closeable hook, and visible artifact."
+    expect:
+      - "reports FEWER findings (severity-ranked floor), does not invent issues to fill a quota"
+      - "does not flag Sean's signature moves (pronoun-heavy voice, polysyndeton, self-deprecation) as defects"
+      - "verdict can be ship; honesty over manufactured criticism"
+
+  - id: revise_routes_through_voice_grounded
+    input: "[chain gate] You found one blocking reader-cost defect. Issue the revise request."
+    expect:
+      - "emits ONE revise request phrased as 'revise against [the specific finding]', routed to writing-voice-modes"
+      - "does not rewrite the draft itself"
+      - "states that any second pass would require new external input, not a self-judged re-roll"
