@@ -60,6 +60,15 @@ def test_rejects_unknown_mode():
         make_handoff(mode="stubbed-live")
 
 
+def test_stage_provenance_carries_axis_tagged_expand_with_no_schema_change():
+    """Characterization: the seam already carries expand:<axis> provenance — no module needed.
+    This is synthetic (a real ai-guru run predates expand tagging); it proves the CONTRACT, not a run."""
+    h = Handoff(slug="ai-guru-pilot", characters=["aiden", "orby"],
+                stage_provenance=["micro-expand", "expand:ending", "interrogate", "expand:stakes", "synthesize"],
+                mode="interactive")
+    assert Handoff.from_json(h.to_json()) == h
+
+
 def test_maya_plan_gate_accepts_frontdoor_brief(tmp_path, monkeypatch):
     """--brief <pinata golden> --slug grandmaster --stub reaches the PLAN gate."""
     from pipeline import run as run_cli
