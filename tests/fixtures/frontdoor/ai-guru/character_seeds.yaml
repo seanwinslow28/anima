@@ -1,0 +1,48 @@
+- character_id: aiden
+  display_name: Aiden
+  story_role: Protagonist. Incoming freshman faking AI-guru mastery the night before
+    his first day of high school — the addiction/performance engine of the piece.
+  style_register: 90s-nicktoon-grossout (NEW — not yet in the six-register vocabulary;
+    needs doctrine extension per docs/architecture/prompt-style-neutrality-doctrine.md
+    before Cy authors a real Bible)
+  source_notes: 'Two faces, switched on a hard cut, never an eased morph:
+
+    - ON-CAMERA (recording): huge, unblinking, camera-ready eyes; a too-wide showman''s
+    grin.
+
+    - OFF-CAMERA (not recording): droopy, tired, twitchy real eyes; a nervous stammer.
+
+    Ren & Stimpy register: extreme proportions, wet linework range. Lanky, gangly
+    early-teen build, incoming 9th grader.
+
+    Needs a body-horror glitch-distortion expression/plate for the pilot''s payoff
+    beat (AI filter applied live to his own face glitches him — one eye bulging, mouth
+    stretched, sickly tone) — committed, not suggested.'
+  anchor_ref: null
+  style_ref_ids: []
+  cy_target_dir: characters/aiden/
+- character_id: orby
+  display_name: Orby
+  story_role: The personified algorithm. Aiden's AI-assistant avatar/cohost, living
+    on his laptop screen. Pitches content ideas in a ringmaster/carnival-barker cadence
+    — genuinely useful ideas and unhinged ones delivered in the identical chipper
+    register.
+  style_register: 90s-nicktoon-grossout (NEW — shares Aiden's register; see docs/architecture/prompt-style-neutrality-doctrine.md
+    before authoring a real Bible)
+  source_notes: 'A glowing orb / chibi AI-assistant-mascot aesthetic — a generic-parody
+    of real assistant apps (Siri/Alexa/Pi-style friendliness), never a real brand
+    or logo.
+
+    Two expression states required:
+
+    - OBSERVED: cute, glossy, over-clean corporate-mascot warmth.
+
+    - UNOBSERVED (one ghost-beat only, capped — never a recurring design): a single
+    disciplined demonic/deranged variant — cracked grin, wrong eyes — that snaps back
+    to cute the instant Aiden looks again.
+
+    Also needs a ''ringmaster'' performance pose/expression for the content-pitch
+    sequence (Bo Burnham ''Welcome to the Internet'' carnival-barker energy).'
+  anchor_ref: null
+  style_ref_ids: []
+  cy_target_dir: characters/orby/

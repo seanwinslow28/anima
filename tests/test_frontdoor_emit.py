@@ -10,11 +10,21 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+import yaml
+
 from pipeline.frontdoor.brief import parse
 from pipeline.frontdoor.emit import BUNDLE_FILES, emit_brief_dir
 from pipeline.frontdoor.handoff import Handoff
+from pipeline.frontdoor.validate import validate_brief_dir
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
+
+# The golden front-door bundles: manifest fixture + expected cast per bundle.
+GOLDEN_BUNDLES = {
+    "pinata": ("manifest_pinata.yaml", ["kid", "grandma", "host-dad"]),
+    "ai-guru": ("manifest_ai_guru.yaml", ["aiden", "orby"]),
+}
 
 
 def seed_brief_text() -> str:
@@ -97,3 +107,47 @@ def test_emit_is_idempotent(tmp_path):
     out2 = do_emit(tmp_path / "brief")
     second = {p.name: p.read_bytes() for p in out2.iterdir()}
     assert first == second
+
+
+def emit_from_fixture(bundle: str, out_dir: Path, manifest: dict | None = None) -> Path:
+    """Emit a bundle from a committed golden fixture's own inputs."""
+    src = FIXTURES / "frontdoor" / bundle
+    return emit_brief_dir(
+        out_dir,
+        studio_brief_md=(src / "00_studio_brief.md").read_text(encoding="utf-8"),
+        concept_md=(src / "concept.md").read_text(encoding="utf-8"),
+        seeds=yaml.safe_load((src / "character_seeds.yaml").read_text(encoding="utf-8")),
+        handoff=Handoff.from_json((src / "frontdoor.json").read_text(encoding="utf-8")),
+        manifest=manifest,
+    )
+
+
+@pytest.mark.parametrize("bundle", ["pinata", "ai-guru"])
+def test_golden_bundle_reemits_and_revalidates(bundle, tmp_path):
+    out = emit_from_fixture(bundle, tmp_path / "brief")
+    assert sorted(p.name for p in out.iterdir()) == sorted(BUNDLE_FILES)
+    assert validate_brief_dir(out) == []
+
+
+@pytest.mark.parametrize("bundle", ["pinata", "ai-guru"])
+def test_golden_bundle_gap_report(bundle, tmp_path):
+    manifest_name, characters = GOLDEN_BUNDLES[bundle]
+    manifest = yaml.safe_load(
+        (FIXTURES / "frontdoor" / manifest_name).read_text(encoding="utf-8")
+    )
+
+    # Against the registering manifest: zero unregistered.
+    out = emit_from_fixture(bundle, tmp_path / "registered", manifest=manifest)
+    report = (out / "manifest_gap_report.md").read_text(encoding="utf-8")
+    unregistered_block = report.split("## Registered")[0]
+    assert "## Unregistered characters (0)" in unregistered_block
+    for cid in characters:
+        assert f"- **{cid}**" not in unregistered_block
+
+    # Against no manifest: every seed character is a gap.
+    out = emit_from_fixture(bundle, tmp_path / "empty", manifest=None)
+    report = (out / "manifest_gap_report.md").read_text(encoding="utf-8")
+    unregistered_block = report.split("## Registered")[0]
+    assert f"## Unregistered characters ({len(characters)})" in unregistered_block
+    for cid in characters:
+        assert f"- **{cid}**" in unregistered_block

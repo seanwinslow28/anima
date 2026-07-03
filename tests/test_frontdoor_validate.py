@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from pipeline.frontdoor import cli
 from pipeline.frontdoor.validate import validate_brief_dir
 from tests.test_frontdoor_emit import do_emit
@@ -17,8 +19,9 @@ FIXTURES = Path(__file__).resolve().parent / "fixtures" / "frontdoor"
 PINATA = FIXTURES / "pinata"
 
 
-def test_validate_passes_on_pinata_golden():
-    assert validate_brief_dir(PINATA) == []
+@pytest.mark.parametrize("bundle", ["pinata", "ai-guru"])
+def test_validate_passes_on_golden_bundle(bundle):
+    assert validate_brief_dir(FIXTURES / bundle) == []
 
 
 def test_validate_fails_on_truncated_brief(tmp_path):

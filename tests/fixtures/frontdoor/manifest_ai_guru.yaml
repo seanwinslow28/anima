@@ -1,0 +1,17 @@
+# Test manifest for golden fixture #2 (the ai-guru pilot) — registers the
+# TERMINALLY ONLINE characters as minimal namespaces so the gap report (and a
+# future Maya-gate parametrization) can run against a registered manifest.
+# The production manifest.yaml is NEVER mutated by the front door; a real run
+# of this piece would register these after Cy authors the Bibles — which for
+# this register also needs the prompt-style-neutrality doctrine's 3-step
+# extension first (90s-nicktoon-grossout is not yet in the closed vocabulary;
+# Slice 3 work, surfaced by the emitted manifest_gap_report.md).
+project:
+  name: ai-guru-pilot-test
+characters:
+  aiden:
+    folder: characters/aiden/
+    style_register: 90s-nicktoon-grossout
+  orby:
+    folder: characters/orby/
+    style_register: 90s-nicktoon-grossout

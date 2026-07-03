@@ -1,0 +1,13 @@
+{
+  "slug": "ai-guru-pilot",
+  "characters": [
+    "aiden",
+    "orby"
+  ],
+  "stage_provenance": [
+    "micro-expand",
+    "interrogate",
+    "synthesize"
+  ],
+  "mode": "fixture"
+}
