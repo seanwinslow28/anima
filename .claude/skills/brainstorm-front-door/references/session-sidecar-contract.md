@@ -18,6 +18,7 @@ inline in the conversation (the storytelling-skill sidecar rule).
 - [L5] single objective: <...>
 - [L6] <one line per resolved North-Star point / character specific / non-negotiable>
 - ...
+- [Ln] stress verdict: proceed (residuals: <named Tigers>)   <!-- after Sean decides; `revise` names what to fix -->
 - [Ln] SUPERSEDES [Lk]: <new decision + why>   <!-- history is never edited -->
 
 ## PROPOSALS LOG   <!-- stage-appended; four content kinds only -->
@@ -52,6 +53,18 @@ inline in the conversation (the storytelling-skill sidecar rule).
 - recommendation: <the stated lean, one line — which route and why>
 - open_questions: <a register anima can't yet build — seed `style_register`
   NEW-flag + the doctrine pointer; missing reference knowledge for a route>
+
+### stress-test   <!-- pre-mortem + red-team — the fresh-context reviewer's findings -->
+- observations: <which assumptions are load-bearing, in a line each; plus the
+  honesty note — whether this pass was the in-room reflex (same-context,
+  biased) or the fresh-context reviewer (the authority)>
+- options: <the triaged risks — Tiger / Paper-Tiger / Elephant, default-to-
+  Tiger, each written as "Fails if ___" with its cheapest test and tagged
+  Launch-Blocking / Fast-Follow / Track>
+- recommendation: <the recommended verdict — `proceed` with named residuals,
+  or `revise` naming what to fix; a recommendation only — Sean decides>
+- open_questions: <unresolved — e.g. a risk the room can't classify without
+  information it doesn't have>
 
 ### synthesize
 - open_questions: <only if a hole was found; otherwise empty>

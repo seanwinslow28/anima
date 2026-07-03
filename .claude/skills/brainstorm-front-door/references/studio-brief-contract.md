@@ -47,6 +47,17 @@ validator ignores them; the piñata golden carries both).
   numbers, holds, objects, continuity rules. "Timing is a song: ~15% silent
   held buildup before payoffs" is checkable; "great timing" is not.
 
+## Where stress residuals land
+
+A **production-binding** stress residual — a Launch-Blocking Tiger, or a
+proceed-with-residual that changes buildability / budget / constraints
+(GRANDMASTER's register gap is the exemplar) — **must land in this brief**,
+under `### What this is NOT` or `## What are the non-negotiables?` (existing
+free-text sections; no new schema — a stress-driven constraint is one more
+checkable directive). Maya, Sam, and Bea read only this file: a residual left
+in `concept.md` alone is invisible to planning. Non-binding (Fast-Follow /
+Track) findings stay in `concept.md`'s Open-threads tail.
+
 ## Style
 
 Directive prose, no decoration. Every sentence either constrains or

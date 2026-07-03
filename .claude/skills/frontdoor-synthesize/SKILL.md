@@ -29,12 +29,31 @@ and your job is to place them. If Sean picked a route, carry the chosen-route
 lock as prose (e.g. "Chosen route: C — hybrid"). Never re-derive or
 "improve" a route the room already wrote.
 
+When the sidecar carries a `### stress-test` block, **fold its proposals into
+the concept doc's Stress-test movement** — the Tiger / Paper-Tiger / Elephant
+triage with the Launch-Blocking Tigers named, each risk as its "Fails if ___"
+with the cheapest test — and carry the verdict lock as prose (e.g. "Stress
+verdict: proceed — residuals: the register-gap Tiger"). **Populate the
+Open-threads movement from the non-launch-blocking residuals** (Fast-Follow /
+Track) — Open threads is the stress test's downstream tail. Never soften a
+Tiger into an observation, and never re-run the red-team here — you place
+findings, you don't re-litigate them.
+
 **`00_studio_brief.md` — the machine-facing distillation.** The 8-section
 shape in `brainstorm-front-door/references/studio-brief-contract.md`, exact
 headers, in order, with the `### What this is NOT` block under tone. Maya,
 Sam, and Bea consume this as free text: every sentence should be a directive
 or a constraint, nothing decorative. The non-negotiables section is the
 piece's contract — checkable phrasing only.
+
+**A production-binding stress residual reaches this file — this is the
+load-bearing fold.** A Launch-Blocking Tiger, or a proceed-with-residual that
+changes buildability / budget / constraints, lands under `### What this is
+NOT` or the non-negotiables as one more checkable directive (see
+`brainstorm-front-door/references/studio-brief-contract.md` §Where stress
+residuals land). Maya reads only this brief — a Tiger left in `concept.md`
+alone is invisible to planning. Non-binding (Fast-Follow / Track) findings
+stay in `concept.md`.
 
 **`character_seeds.yaml` — the hand to Cy.** One entry per character:
 `character_id` (lowercase-kebab), `display_name`, `story_role`,
@@ -50,8 +69,9 @@ prose.
 **`frontdoor.json`** — slug, characters, stage_provenance, `mode:
 "interactive"` (a real session is interactive; only test fixtures say
 `fixture`). Include `art-viz` in `stage_provenance` when the sidecar carries
-an `### art-viz` block; leave it absent when the stage was skipped — the
-provenance list records what actually ran.
+an `### art-viz` block, and `stress-test` when it carries a `### stress-test`
+block; leave either absent when the stage was skipped — the provenance list
+records what actually ran.
 
 ## How you emit (only through the seam)
 
