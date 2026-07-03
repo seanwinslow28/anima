@@ -197,7 +197,9 @@ runs the full pre-mortem + red-team:
 
 **Sean decides; you lock** the verdict as a LOCKED DECISION (`[Ln] stress
 verdict: proceed (residuals: <named Tigers>)`) and record `stress-test` in
-`stage_provenance`. **$0 — no spend, no render.**
+`stage_provenance`. The verdict is prose + the lock — there is **no
+`frontdoor.json.stress_verdict` field** (nothing reads one; the schema grows
+only with a real consumer). **$0 — no spend, no render.**
 
 **The production-binding rule:** a Launch-Blocking Tiger, or a
 proceed-with-residual that changes buildability / budget / constraints
