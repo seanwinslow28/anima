@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>anima interface — v1.1 addendum mockups (Direction C)</title>
+<!-- Static+interactive mockups for the v1.1 spec addendum: the eye-gate instrument (Picks 1/2/7/8),
+     the taste ledger (Pick 4), the crew at their stations (Pick 3). Direction C tokens, no backend. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBF5E9; --panel:#F3EAD8; --card:#FFFDF7; --line:#E4D8C0; --line2:#C9B994;
+  --ink:#23201B; --ink2:#5A5348; --ink3:#6F6349;
+  --st0:#15161A; --st1:#1B1D22; --stline:#2A2E38; --stink:#EAEAF0; --stmute:#9AA0AA;
+  --teal:#0A3E42; --teal-bright:#37C7A6; --teal-bg:#E7F0EC; --teal-line:#BFDAD3;
+  --grease:#B23A2E; --grease-soft:#C56A5E; --amber:#B2802E; --amber-dk:#E8A33D; --green:#2F6B4F; --green-bright:#5BC98C;
+  --serif:'Newsreader',Georgia,serif; --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  --r-card:12px; --r-ctl:8px; --e-out:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#E7DFCF;color:var(--ink);font-family:var(--mono);-webkit-font-smoothing:antialiased}
+body{padding:26px 22px 60px;display:flex;flex-direction:column;align-items:center;gap:26px}
+button{font-family:var(--mono);cursor:pointer}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.stagepanel :focus-visible,.anntoolbar :focus-visible{outline-color:var(--teal-bright)}
+.doc{width:100%;max-width:1000px}
+.dochead{font-family:var(--serif);font-weight:500;font-size:21px;margin:0 0 4px}
+.docsub{font-size:12px;color:var(--ink2);margin:0 0 22px;max-width:70ch;line-height:1.5}
+.mock{width:100%;max-width:1000px;background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 16px 44px #0000002b}
+.cap{display:flex;align-items:baseline;gap:10px;padding:14px 20px 0}
+.capn{font-family:var(--serif);font-size:17px;font-weight:500}
+.captag{font-size:11px;color:var(--teal);background:var(--teal-bg);border:1px solid var(--teal-line);padding:2px 8px;border-radius:20px}
+.capd{font-size:11.5px;color:var(--ink3);padding:2px 20px 12px;line-height:1.5}
+.btn{border-radius:var(--r-ctl);border:1px solid var(--line2);background:var(--card);color:var(--ink);padding:8px 13px;font-size:12px;transition:background .12s}
+.btn:hover{background:var(--panel)}
+.btn-primary{background:var(--teal);border:none;color:var(--paper)}
+.btn-primary:hover{background:#0c4b50}
+.stagewrap{padding:14px 20px 20px}
+
+/* ---- stepper (crew stations) ---- */
+.stepper{display:flex;align-items:center;gap:5px;padding:11px 20px;border-bottom:1px solid #EADCC2;flex-wrap:wrap;font-size:11px;background:var(--panel)}
+.step{color:var(--ink2);background:none;border:none;padding:4px 8px;border-radius:6px;display:flex;flex-direction:column;align-items:flex-start;gap:1px;line-height:1.2}
+.step .who{font-size:9.5px;color:var(--ink3);letter-spacing:.3px}
+.step:hover{background:var(--card)}
+.step.active{background:var(--teal);color:var(--paper)}
+.step.active .who{color:#BFE7DD}
+.step.done .nm::before{content:"✓ "}
+.step.todo{color:var(--ink3)}
+.sep{color:var(--line2)}
+
+/* ---- eye-gate ---- */
+.stagepanel{background:var(--st0);border:1px solid var(--stline);border-radius:var(--r-card);padding:12px;position:relative;transition:background .2s}
+.stagetop{display:flex;align-items:center;gap:9px;margin-bottom:10px;font-size:11px;flex-wrap:wrap}
+.stagetop .lbl{letter-spacing:1px;color:var(--teal-bright)}
+.stagetop .fid{color:var(--stmute)}
+.anntoolbar{display:inline-flex;gap:3px;background:var(--st1);border:1px solid var(--stline);border-radius:7px;padding:2px}
+.anntoolbar button{background:none;border:none;color:var(--stmute);border-radius:5px;padding:3px 8px;font-size:12px;line-height:1;font-family:var(--mono)}
+.anntoolbar button.on{background:#123029;color:var(--teal-bright)}
+.attn{display:flex;align-items:center;gap:5px;margin-left:auto;color:var(--stmute)}
+.att{width:20px;height:18px;border-radius:4px;background:var(--st1);border:1px solid var(--stline);color:#7A7F8A;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
+.att.sel{background:#123029;border-color:var(--teal-bright);color:var(--teal-bright)}
+.matwrap{border-radius:8px;padding:16px;display:flex;justify-content:center;background:#ECE3D2;transition:background .2s;position:relative;overflow:hidden}
+.matwrap.lightsout{padding:6px;background:#0c0d10}
+.frameart{position:relative;width:72%;transition:transform .12s var(--e-out)}
+.frameart.rock{animation:rock .5s var(--e-out) infinite alternate}
+@keyframes rock{from{transform:translateX(-4px)}to{transform:translateX(4px)}}
+.onion{position:absolute;inset:16px;display:flex;justify-content:center;pointer-events:none;opacity:0;transition:opacity .2s}
+.onion .frameart{width:72%;transform:translateX(-9px)}
+.onion.show{opacity:.34}
+.onion svg *{stroke:#7FA8B0 !important}
+.wipe{position:absolute;top:0;bottom:0;width:2px;background:var(--teal-bright);left:56%;display:none;box-shadow:0 0 0 100px #15161a00}
+.wipe.show{display:block}
+.wipe::after{content:"◂ ▸";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--teal-bright);color:#08201b;font-size:10px;padding:2px 5px;border-radius:10px;white-space:nowrap}
+.wipelbl{position:absolute;top:8px;font-size:10px;color:var(--teal-bright);background:#0c2a24;padding:2px 7px;border-radius:10px;display:none}
+.wipelbl.a{left:12px}.wipelbl.b{right:12px}
+.wipe.show ~ .wipelbl{display:block}
+
+/* recipe strip (Pick 8) */
+.recipe{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:9px;border-top:1px solid #23262F;font-size:10.5px;color:var(--stmute);flex-wrap:wrap}
+.recipe .rl{letter-spacing:.8px;color:#7A7F8A}
+.plate{display:inline-flex;align-items:center;gap:4px;background:var(--st1);border:1px solid var(--stline);border-radius:6px;padding:3px 8px;color:#C4C7D0;font-size:10.5px}
+.plate .o{color:var(--teal-bright);font-size:9px}
+.bib{margin-left:auto;color:var(--green-bright);font-size:10.5px}
+
+/* Em fielded read-out (Pick 2) */
+.emgrid{display:grid;grid-template-columns:auto 1fr auto;gap:8px 14px;margin-top:10px;padding-top:10px;border-top:1px solid #262A33;align-items:start;font-size:11px}
+.emk{color:#6F7480;letter-spacing:.6px;font-size:10px;padding-top:2px}
+.emv{color:#C4C7D0}
+.emlbl{letter-spacing:1px;color:var(--teal-bright)}
+.vpill{font-size:10.5px;padding:2px 9px;border-radius:20px;background:#3A2E17;color:var(--amber-dk)}
+.emwhy{color:#C4C7D0;font-family:var(--serif);font-style:italic;font-size:12.5px;line-height:1.4}
+.emfix{font-family:var(--mono);color:var(--stink)}
+.emfix .clause{color:var(--teal-bright)}
+.emcite{color:#6F7480;font-size:10.5px}
+.grease{color:var(--grease-soft)}
+
+/* warm action bar + reel */
+.actionbar{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);padding:11px 13px}
+.actionrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.costline{font-size:11.5px;color:var(--ink2)}
+.khint{margin-left:auto;font-size:11px;color:var(--ink3)}
+.reel{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:11px;color:var(--ink2)}
+.cell{width:26px;height:20px;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line2);background:var(--panel);color:var(--ink3);position:relative}
+.cell.ok{background:var(--teal-bg);border-color:var(--teal);color:var(--teal)}
+.cell.now{background:#FBF3E2;border:1.5px solid var(--amber);color:#8A5A10}
+.cell.retry::after{content:"";position:absolute;inset:-1px;border-radius:3px;border:1.5px solid var(--grease);animation:pulse 1.4s var(--e-out) infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hidewhenout{transition:opacity .2s}
+.lightsout-parent .hidewhenout{opacity:.12;pointer-events:none}
+
+/* ---- taste ledger (Pick 4) ---- */
+.ledger{padding:16px 20px 22px}
+.ledgerhead{display:flex;align-items:baseline;gap:10px;margin-bottom:3px}
+.ledgerhead h3{font-family:var(--serif);font-weight:500;font-size:16px;margin:0}
+.ledgerhead .cnt{font-size:11px;color:var(--ink3)}
+.honesty{font-size:11px;color:var(--ink3);margin:0 0 16px;font-style:italic;font-family:var(--serif)}
+.lline{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:12px 0;border-bottom:1px dashed #DCCDA9;transition:opacity .25s}
+.lline:last-child{border:none}
+.lline.forgotten{opacity:.4}
+.lstate{font-family:var(--serif);font-size:14.5px;color:var(--ink);grid-column:1}
+.lline.forgotten .lstate{text-decoration:line-through}
+.lctl{grid-column:2;grid-row:1 / span 2;display:flex;gap:6px;align-items:flex-start}
+.lmini{font-size:10.5px;color:var(--ink3);border:1px solid var(--line);background:var(--card);border-radius:6px;padding:3px 8px}
+.lmini:hover{background:var(--panel);border-color:var(--line2)}
+.lmeta{grid-column:1;display:flex;gap:8px;flex-wrap:wrap;font-size:11px;margin-top:2px}
+.eviden{color:var(--ink2)}
+.effect{color:var(--teal)}
+.effect::before{content:"→ "}
+
+/* ---- crew stations (Pick 3) ---- */
+.crewwrap{padding:16px 20px 20px;display:grid;grid-template-columns:1fr 250px;gap:18px}
+.provcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);padding:14px}
+.provart{background:var(--st0);border-radius:8px;padding:12px;display:flex;justify-content:center;margin-bottom:10px}
+.provline{font-size:11.5px;color:var(--ink2)}
+.provline b{font-family:var(--serif);font-weight:500;color:var(--ink)}
+.provline .you{color:var(--teal)}
+.working{margin-top:12px;font-size:11.5px;color:var(--ink2);display:flex;align-items:center;gap:7px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse 1.6s var(--e-out) infinite}
+.roster .h{font-size:11px;letter-spacing:.6px;color:var(--ink3);margin:0 0 9px}
+.crewmember{display:flex;gap:9px;padding:7px 0;border-bottom:1px dashed #E4D8C0;font-size:11.5px}
+.crewmember:last-child{border:none}
+.crewmember .nm{font-family:var(--serif);font-weight:500;min-width:38px}
+.crewmember .role{color:var(--ink2)}
+.crewmember .bound{color:var(--ink3);font-size:10.5px}
+.voicecard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-card);padding:12px 14px;margin-top:14px}
+.voicecard .vh{font-size:10.5px;letter-spacing:.6px;color:var(--ink3);margin-bottom:7px}
+.saidem{font-family:var(--serif);font-size:13.5px;color:var(--ink);line-height:1.45}
+.saidem .em{color:var(--grease)}
+.badreg{font-family:var(--serif);font-size:12.5px;color:var(--ink3);text-decoration:line-through;margin-top:6px}
+@media(max-width:720px){.crewwrap{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="doc">
+  <div class="dochead">anima — v1.1 addendum mockups</div>
+  <div class="docsub">Faithful Direction C (warm chrome / dark stage, Newsreader + JetBrains Mono). Three highest-leverage new surfaces from the picks. Buttons are live where they sell the idea; no backend.</div>
+</div>
+
+<!-- ============ 1 · EYE-GATE INSTRUMENT ============ -->
+<section class="mock" id="m1">
+  <div class="cap"><span class="capn">The eye-gate, as an instrument</span><span class="captag">Picks 1 · 2 · 7 · 8</span></div>
+  <div class="capd">Rock the loop to see the motion · lights-out to judge it clean · onion-skin the anchor · diff two attempts · Em reads in the margin as a hand · the recipe shows which Bible plates were injected.</div>
+  <div class="stagewrap">
+    <div class="stagepanel" id="stage">
+      <div class="stagetop hidewhenout">
+        <span class="lbl">STAGE</span>
+        <span class="fid">F03 · loop mid-gesture</span>
+        <span class="anntoolbar">
+          <button id="b-rock" title="Rock the loop (Space)">↔ rock</button>
+          <button id="b-onion" title="Onion-skin the anchor (O)">◐ onion</button>
+          <button id="b-diff" title="Diff two attempts (D)">◫ diff</button>
+          <button id="b-lights" title="Lights-out (L)">☾ lights</button>
+        </span>
+        <span class="attn"><span style="margin-right:2px">att</span>
+          <span class="att">1</span><span class="att sel">2</span><span class="att">3</span>
+        </span>
+      </div>
+      <div class="matwrap" id="mat">
+        <div class="frameart" id="art"></div>
+        <div class="onion" id="onion"></div>
+        <div class="wipe" id="wipe"></div>
+        <span class="wipelbl a">attempt 1</span><span class="wipelbl b">attempt 2</span>
+      </div>
+      <div class="recipe hidewhenout">
+        <span class="rl">INJECTED</span>
+        <span class="plate"><span class="o">1</span> sean · anchor</span>
+        <span class="plate"><span class="o">2</span> sean · ¾ turnaround</span>
+        <span class="plate"><span class="o">3</span> stylus prop</span>
+        <span class="plate">claude-mascot · anchor</span>
+        <span class="bib">Bible ✓ · 1:7 · appended last</span>
+      </div>
+      <div class="emgrid hidewhenout">
+        <span class="emk">EM</span>
+        <span class="emv"><span class="vpill">borderline · 0.72</span></span>
+        <span class="emcite">read of F03</span>
+        <span class="emk">WHY</span>
+        <span class="emwhy"><span class="grease">✎</span> Stylus drifted to the left hand. Identity held; palette clean.</span>
+        <span></span>
+        <span class="emk">FIX</span>
+        <span class="emfix">put the <span class="clause">stylus in the right hand</span> · <span style="color:#6F7480">prefilled into your retry note</span></span>
+        <span class="emcite">IR.sean.prop.stylus-right-hand</span>
+      </div>
+    </div>
+    <div class="actionbar hidewhenout">
+      <div class="actionrow">
+        <button class="btn btn-primary">Approve ⏎</button>
+        <button class="btn">↺ Retry — prefilled from Em</button>
+        <span class="costline">spent <b>$0.58</b> · est $1.10</span>
+        <span class="khint">⏎ approve+advance · R retry · Space rock · L lights · O onion · D diff · ? keys</span>
+      </div>
+      <div class="reel">reel &nbsp;
+        <span class="cell ok">✓</span>
+        <span class="cell ok">✓</span>
+        <span class="cell now retry">3</span>
+        <span class="cell">4</span>
+        <span class="cell">5</span>
+        <span style="color:var(--ink3);font-size:10.5px;margin-left:4px">teal edge = approved · pulse = retrying · neutral = unseen</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 · TASTE LEDGER ============ -->
+<section class="mock" id="m2">
+  <div class="cap"><span class="capn">The taste ledger</span><span class="captag">Pick 4 · the special one · D5</span></div>
+  <div class="capd">What the studio remembers about your eye — each line traces to real evidence, shows its effect, and you can edit or forget it. The reflection is the personalization.</div>
+  <div class="ledger">
+    <div class="ledgerhead"><h3>What your studio remembers about your eye</h3><span class="cnt" id="lcnt">4 active · editable, reversible</span></div>
+    <p class="honesty">Nothing here is invented. Every line traces to a ratified call, a lock, or a reason-code you can open.</p>
+    <div id="lines">
+      <div class="lline">
+        <div class="lstate">You reject digital-render looks.</div>
+        <div class="lmeta"><span class="eviden">from 6 ratified verdicts (HF05)</span><span class="effect">HF05 weighted up in Em's read</span></div>
+        <div class="lctl"><button class="lmini">edit</button><button class="lmini forget">forget</button></div>
+      </div>
+      <div class="lline">
+        <div class="lstate">Your loops run about 7 heads tall.</div>
+        <div class="lmeta"><span class="eviden">from the sean-anchor proportion lock (1:7)</span><span class="effect">SF03 proportion-gate target</span></div>
+        <div class="lctl"><button class="lmini">edit</button><button class="lmini forget">forget</button></div>
+      </div>
+      <div class="lline">
+        <div class="lstate">You prefer terse, edit-form prompts.</div>
+        <div class="lmeta"><span class="eviden">from Bea's establishing-vs-edit discipline you ratified</span><span class="effect">board prompts default to ONLY CHANGE deltas</span></div>
+        <div class="lctl"><button class="lmini">edit</button><button class="lmini forget">forget</button></div>
+      </div>
+      <div class="lline">
+        <div class="lstate">Stylus stays in the right hand.</div>
+        <div class="lmeta"><span class="eviden">from your F12 continuity call</span><span class="effect">IR.sean.prop.stylus-right-hand (hard rule)</span></div>
+        <div class="lctl"><button class="lmini">edit</button><button class="lmini forget">forget</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 · CREW AT THEIR STATIONS ============ -->
+<section class="mock" id="m3">
+  <div class="cap"><span class="capn">The crew at their stations</span><span class="captag">Pick 3 · D3</span></div>
+  <div class="capd">Each stage names its agent · every frame is signed by who made it, your call last · agents show one honest boundary · the voice is wire-service, never chirpy.</div>
+  <div class="stepper">
+    <button class="step done"><span class="nm">brainstorm</span><span class="who">the room</span></button><span class="sep">·</span>
+    <button class="step done"><span class="nm">plan</span><span class="who">Maya</span></button><span class="sep">·</span>
+    <button class="step done"><span class="nm">script</span><span class="who">Sam</span></button><span class="sep">·</span>
+    <button class="step active"><span class="nm">storyboard</span><span class="who">Bea</span></button><span class="sep">·</span>
+    <button class="step todo"><span class="nm">animatic</span><span class="who">you</span></button><span class="sep">·</span>
+    <button class="step todo"><span class="nm">generate</span><span class="who">Flo · Em</span></button><span class="sep">·</span>
+    <button class="step todo"><span class="nm">assemble</span><span class="who">you</span></button>
+  </div>
+  <div class="crewwrap">
+    <div>
+      <div class="provcard">
+        <div class="provart"><div id="provartinner"></div></div>
+        <div class="provline">F03 · <b>drawn by Flo</b> (NB2, standard tier) · <b>read by Em</b> · <span class="you">your call</span></div>
+        <div class="working"><span class="dot"></span> Bea is drafting the board… <span style="color:var(--ink3)">· Cy on deck for the mascot Bible</span></div>
+      </div>
+      <div class="voicecard">
+        <div class="vh">THE HOUSE REGISTER</div>
+        <div class="saidem"><span class="em">Em ·</span> Palette drift on F03: hair reads warm-brown, spec is ash. Proposing a recolor clause.</div>
+        <div class="badreg">Ooh, I noticed something! 😊 Great work so far!!</div>
+      </div>
+    </div>
+    <div class="roster">
+      <div class="h">YOUR CREW</div>
+      <div class="crewmember"><span class="nm">Maya</span><span><span class="role">planner</span><br><span class="bound">costs before you spend</span></span></div>
+      <div class="crewmember"><span class="nm">Sam</span><span><span class="role">scriptwriter</span><br><span class="bound">proposes beats, you decide</span></span></div>
+      <div class="crewmember"><span class="nm">Bea</span><span><span class="role">storyboard</span><br><span class="bound">boards; you curate + lock</span></span></div>
+      <div class="crewmember"><span class="nm">Cy</span><span><span class="role">character designer</span><br><span class="bound">bakes the Bible</span></span></div>
+      <div class="crewmember"><span class="nm">Flo</span><span><span class="role">frame router</span><br><span class="bound">picks the model per shot</span></span></div>
+      <div class="crewmember"><span class="nm">Em</span><span><span class="role">vision critic</span><br><span class="bound">reads stills, not motion</span></span></div>
+      <div class="crewmember"><span class="nm">Mo</span><span><span class="role">docent</span><br><span class="bound">narrates, never invents</span></span></div>
+    </div>
+  </div>
+</section>
+
+<script>
+function art(cool){const s=cool?'#7FA8B0':'';return `<svg viewBox="0 0 300 150" width="100%" style="display:block" aria-hidden="true">
+  <line x1="24" y1="126" x2="276" y2="126" stroke="${s||'#B8A98C'}" stroke-width="1.3"/>
+  <rect x="54" y="36" width="60" height="44" rx="4" fill="none" stroke="${s||'#8A7F6B'}" stroke-width="1.4"/>
+  <rect x="186" y="36" width="60" height="44" rx="4" fill="none" stroke="${s||'#8A7F6B'}" stroke-width="1.4"/>
+  <rect x="120" y="26" width="60" height="38" rx="4" fill="none" stroke="${s||'#8A7F6B'}" stroke-width="1.4"/>
+  <path d="M62 52 h44 M62 62 h30" stroke="${s||'#C9BCA0'}" stroke-width="1.1"/>
+  <path d="M196 52 h44 M196 62 h34" stroke="${s||'#C9BCA0'}" stroke-width="1.1"/>
+  <path d="M120 126 q0 -38 30 -38 q30 0 30 38" fill="${cool?'none':'#E4D9C1'}" stroke="${s||'#8A7F6B'}" stroke-width="1.3"/>
+  <circle cx="150" cy="82" r="15" fill="${cool?'none':'#F3EAD6'}" stroke="${s||'#6E665A'}" stroke-width="1.4"/>
+  <path d="M137 76 q13 -13 26 0" fill="none" stroke="${s||'#6E665A'}" stroke-width="1.3"/>
+  <line x1="163" y1="75" x2="174" y2="67" stroke="${cool?s:'#B2802E'}" stroke-width="2.4"/>
+  <ellipse cx="212" cy="70" rx="12" ry="10" fill="${cool?'none':'#C97C54'}" stroke="${s||'#7A4A2E'}" stroke-width="1.2"/></svg>`;}
+document.getElementById('art').innerHTML=art(false);
+document.getElementById('onion').innerHTML=art(true);
+document.getElementById('provartinner').innerHTML='<div style="width:72%">'+art(false)+'</div>';
+
+const stage=document.getElementById('stage'),mat=document.getElementById('mat'),artEl=document.getElementById('art');
+function toggle(btn,on){btn.classList.toggle('on',on);}
+let rock=false,onion=false,diff=false,lights=false;
+document.getElementById('b-rock').onclick=e=>{rock=!rock;toggle(e.target,rock);artEl.classList.toggle('rock',rock);};
+document.getElementById('b-onion').onclick=e=>{onion=!onion;toggle(e.target,onion);document.getElementById('onion').classList.toggle('show',onion);};
+document.getElementById('b-diff').onclick=e=>{diff=!diff;toggle(e.target,diff);document.getElementById('wipe').classList.toggle('show',diff);};
+document.getElementById('b-lights').onclick=e=>{lights=!lights;toggle(e.target,lights);mat.classList.toggle('lightsout',lights);stage.classList.toggle('lightsout-parent',lights);stage.style.background=lights?'#0c0d10':'';};
+
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT')return;
+  if(e.key===' '){e.preventDefault();document.getElementById('b-rock').click();}
+  if(e.key==='o'||e.key==='O')document.getElementById('b-onion').click();
+  if(e.key==='d'||e.key==='D')document.getElementById('b-diff').click();
+  if(e.key==='l'||e.key==='L')document.getElementById('b-lights').click();
+});
+
+document.querySelectorAll('.lmini.forget').forEach(b=>b.onclick=()=>{
+  const line=b.closest('.lline');line.classList.toggle('forgotten');
+  b.textContent=line.classList.contains('forgotten')?'restore':'forget';
+  const n=document.querySelectorAll('.lline:not(.forgotten)').length;
+  document.getElementById('lcnt').textContent=n+' active · editable, reversible';
+});
+document.querySelectorAll('.lmini:not(.forget)').forEach(b=>b.onclick=()=>{
+  const s=b.closest('.lline').querySelector('.lstate');
+  s.setAttribute('contenteditable','true');s.style.outline='1.5px solid var(--teal)';s.style.borderRadius='4px';s.style.padding='1px 4px';s.focus();
+  s.onblur=()=>{s.removeAttribute('contenteditable');s.style.outline='';s.style.padding='';};
+});
+</script>
+</body>
+</html>
