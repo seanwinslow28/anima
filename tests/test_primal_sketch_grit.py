@@ -20,8 +20,6 @@ coercion, $0, no keys.
 
 from __future__ import annotations
 
-import pytest
-
 from pipeline.registers import ALL_REGISTERS, get_register
 
 _PRIMAL = "primal-sketch-grit"
@@ -95,6 +93,8 @@ def test_primal_spec_does_not_claim_the_candy_geyser():
     spec = get_register(_PRIMAL)
     joined = " ".join(
         [spec.summary, spec.identity_lock, spec.preserve, spec.style_token]
+        + list(spec.markers)
+        + list(spec.stub_keywords)
     ).lower()
     assert "candy" not in joined
     assert "geyser" not in joined
