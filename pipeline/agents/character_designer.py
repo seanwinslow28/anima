@@ -56,6 +56,13 @@ from pipeline.agents.sdk_runners import invoke_opus_text
 from pipeline.agents.proportion_gate import plate_status_fields as _sf03_plate_status
 from pipeline.agents.similarity_gate import compute_similarity
 from pipeline.criteria import validate_criteria
+from pipeline.registers import (
+    DEFAULT_REGISTER,
+    NB2_FLASH,
+    NB_PRO,
+    REGISTRY,
+    get_register,
+)
 
 PROMPTS_DIR = Path(__file__).parent / "prompts"
 ANIMA_PREAMBLE_FILE = PROMPTS_DIR / "anima-standing-context.md"
@@ -87,13 +94,12 @@ _BOX_CHARACTERS = frozenset("╔═╗║╚╝┌─┐│└┘├┤┬┴┼
 # but per-plate scope since Cy may have many plates.
 _PLATE_ATTEMPT_CEILING = 3
 
-# The default style register + the editing-model slug. Defined here (above the
-# class) because they are default-arg values on _run_plate, evaluated at
-# module-load time; the per-register clause library + model table + emitter
-# that also reference them live further down (they only need them at call time).
-_DEFAULT_REGISTER = "pencil-test-colored"
-_NB2_FLASH = "gemini-3.1-flash-image-preview"
-_NB_PRO = "gemini-3-pro-image-preview"
+# The default style register + the editing-model slugs are canonical in
+# pipeline/registers.py (the closed-vocabulary registry); the local aliases
+# keep default-arg values and long-standing internal names working.
+_DEFAULT_REGISTER = DEFAULT_REGISTER
+_NB2_FLASH = NB2_FLASH
+_NB_PRO = NB_PRO
 
 # Pass-1 call ceiling. Cy gets up to three Opus calls to produce a parseable
 # envelope; a transient malformed emission (Opus 4.8 narration/truncation) is
@@ -1137,119 +1143,36 @@ def _resolve_generate_references(
 
 # The per-register clause library — the operative artifact from
 # docs/research/2026-05-30-nb2-editing-character-consistency-template.md
-# §"The per-register clause library". The template structure is
-# register-agnostic; this table is where the register-aware clauses live.
-# Adding a register is a deliberate row-add here, not an inline prose edit.
-# Each row supplies the three runner-owned, register-parameterized slots:
-#   identity_lock  — the enumerated markers to match in Image 1
-#   preserve       — what stays identical / register-specific negatives
-#   style_token    — the medium token, applied LATE
-# The universal anti-text clause is appended to every register's
-# preserve_and_negative slot (it is not register-specific).
+# The per-register clause data (identity_lock / preserve / style_token) and
+# the per-register model routing are canonical in pipeline/registers.py —
+# one frozen RegisterSpec per register, fail-loud on a nonempty unknown.
+# Adding a register is a deliberate RegisterSpec add there, plus the prose
+# touch-points tests/test_register_registry.py enforces. The universal
+# anti-text clause is appended to every register's preserve_and_negative
+# slot (it is not register-specific), so it stays here with the emitter.
 _UNIVERSAL_ANTI_TEXT = (
     "Do not add any text, captions, labels, annotations, or watermarks to the image."
 )
-
-_REGISTER_CLAUSE_LIBRARY: dict[str, dict[str, str]] = {
-    "pencil-test-colored": {
-        "identity_lock": (
-            "Match the face, hair, full color palette, skin tone, and "
-            "proportions of Image 1 exactly."
-        ),
-        "preserve": (
-            "Keep the warm cream paper, the cross-hatch shadow, and the full "
-            "color of Image 1. Do not render the figure in monochrome. No "
-            "photographic shading."
-        ),
-        "style_token": (
-            "Warm pencil-test render: graphite line (not vector black), flat "
-            "color fills, cross-hatch shadow, warm cream paper, hole-punch "
-            "production marks."
-        ),
-    },
-    "pixel-art-8bit": {
-        "identity_lock": (
-            "Match the indexed palette, the round silhouette, and the "
-            "head-to-body ratio of Image 1 exactly."
-        ),
-        "preserve": "Hard pixel edges. No smooth anti-aliased gradients.",
-        "style_token": (
-            "16-bit pixel-art sprite, limited indexed palette, hard pixel "
-            "edges, clean outlines."
-        ),
-    },
-    "line-art-only": {
-        "identity_lock": (
-            "Match the contour shapes, line weight, hair silhouette, and "
-            "proportions of Image 1 exactly."
-        ),
-        "preserve": (
-            "No shading, no gradients, no soft shadow, no texture; flat color "
-            "fills only."
-        ),
-        "style_token": "Clean line art, bold uniform outlines, flat fills.",
-    },
-    "watercolor": {
-        "identity_lock": (
-            "Match the face, the pigment-pool palette, and the proportions of "
-            "Image 1 exactly."
-        ),
-        "preserve": "Keep the paper grain; let washes bleed; no hard vector edges.",
-        "style_token": "Soft watercolor wash, pigment-pool bleed, visible paper grain.",
-    },
-    "photoreal": {
-        "identity_lock": (
-            "Match the face, skin tone, hair, and proportions of Image 1 exactly."
-        ),
-        "preserve": (
-            "Keep the lighting direction and color temperature of Image 1; "
-            "clean edges, no halos."
-        ),
-        "style_token": (
-            "Photographic rendering, natural lighting, shallow depth of field."
-        ),
-    },
-    "3d-rendered": {
-        "identity_lock": (
-            "Match the face, material palette, and proportions of Image 1 exactly."
-        ),
-        "preserve": "Keep soft global illumination; no flat-shading artifacts.",
-        "style_token": (
-            "3D-rendered look, soft global illumination, subtle ambient occlusion."
-        ),
-    },
-}
-
-# Per-register model routing (Amendment B). Generation/editing is NB2 for
-# every register (cheaper, faster, more identity-stable for the across-edit
-# work that is Cy's whole job). A FINAL render routes to NB Pro only for the
-# painterly registers — and that path is a documented seam: no Pro-routed
-# character exists yet, so _run_plate never takes the final branch, and the
-# NB-Pro reference-fidelity guard the forum teams built is deferred until a
-# consumer exists (re-verify the Pro multi-reference regression first).
-_REGISTER_MODELS: dict[str, dict[str, str]] = {
-    "pencil-test-colored": {"generation": _NB2_FLASH, "final": _NB2_FLASH},
-    "pixel-art-8bit": {"generation": _NB2_FLASH, "final": _NB2_FLASH},
-    "line-art-only": {"generation": _NB2_FLASH, "final": _NB2_FLASH},
-    "watercolor": {"generation": _NB2_FLASH, "final": _NB_PRO},
-    "photoreal": {"generation": _NB2_FLASH, "final": _NB_PRO},
-    "3d-rendered": {"generation": _NB2_FLASH, "final": _NB_PRO},
-}
 
 
 def _resolve_plate_model(
     style_register: str, char_cfg: dict | None = None, *, final: bool = False
 ) -> str:
     """Resolve the model for a plate. Manifest per-character override wins;
-    otherwise the register default from _REGISTER_MODELS. Bible plates are
-    editing operations and use the generation model (final=False)."""
+    otherwise the register default from the registry (registers.py). Bible
+    plates are editing operations and use the generation model (final=False).
+
+    Empty/missing register defaults to pencil-test-colored (back-compat for
+    pre-registry character folders); a nonempty unknown register raises
+    UnknownRegisterError — loud, never a silent pencil coercion (Task 1.2b).
+    """
     char_cfg = char_cfg or {}
     key = "final_model" if final else "generation_model"
     override = char_cfg.get(key)
     if override:
         return str(override)
-    row = _REGISTER_MODELS.get(style_register) or _REGISTER_MODELS[_DEFAULT_REGISTER]
-    return row["final" if final else "generation"]
+    spec = get_register(style_register or _DEFAULT_REGISTER)
+    return spec.final_model if final else spec.generation_model
 
 
 def _build_plate_prompt(
@@ -1288,10 +1211,9 @@ def _build_plate_prompt(
     if is_prop:
         return _build_prop_prompt(plate_intent, reject_reason=reject_reason)
 
-    row = (
-        _REGISTER_CLAUSE_LIBRARY.get(style_register)
-        or _REGISTER_CLAUSE_LIBRARY[_DEFAULT_REGISTER]
-    )
+    # Empty/missing register -> pencil default (back-compat); nonempty
+    # unknown -> UnknownRegisterError, loud (Task 1.2b inversion).
+    spec = get_register(style_register or _DEFAULT_REGISTER)
 
     parts: list[str] = []
     # 1. reference-role preamble (fixed)
@@ -1304,7 +1226,7 @@ def _build_plate_prompt(
             "pose, but the identity always comes from Image 1."
         )
     # 2. identity_lock (register-parameterized)
-    parts.append(row["identity_lock"])
+    parts.append(spec.identity_lock)
     # 3. variation (Cy's terse intent, ONLY CHANGE idiom)
     intent = plate_intent.strip() or "a clean reference plate of this character"
     parts.append(
@@ -1312,7 +1234,7 @@ def _build_plate_prompt(
         f"exactly as in Image 1."
     )
     # 4. preserve_and_negative (register preserve + universal anti-text + correction)
-    preserve = row["preserve"] + " " + _UNIVERSAL_ANTI_TEXT
+    preserve = spec.preserve + " " + _UNIVERSAL_ANTI_TEXT
     if reject_reason and reject_reason.strip():
         preserve += (
             " Correction from the previous attempt — address this and do not "
@@ -1320,7 +1242,7 @@ def _build_plate_prompt(
         )
     parts.append(preserve)
     # 5. style_register (applied LATE)
-    parts.append(row["style_token"])
+    parts.append(spec.style_token)
     # 6. output_spec (minimal; the storyboard variant extends this later)
     parts.append("The character must stay recognizably identical to Image 1.")
     return " ".join(parts)
@@ -1368,16 +1290,16 @@ def _atomic_write_text(path: Path, content: str) -> None:
 # Folder-name heuristics for the stub fallback's style_register inference.
 # Intentional-test-only: real Cy reads source-refs and infers the register
 # from the material; this map exists so the stub Bible for a pixel-art
-# character doesn't get the pencil-test-colored default the rest of the
-# pipeline would silently coerce against. Extend conservatively; new entries
-# are a deliberate commit, not an inline tweak.
+# character doesn't get the pencil-test-colored default. Derived from the
+# registry specs' stub_keywords — extending it means adding stub_keywords to
+# a RegisterSpec, a deliberate commit, not an inline tweak. REGISTRY's
+# insertion order preserves the pre-registry keyword precedence
+# (mascot, pixel, watercolor, lineart, photoreal, 3d); the characterization
+# oracle pins the precedence edges.
 _STUB_STYLE_REGISTER_BY_KEYWORD = {
-    "mascot": "pixel-art-8bit",
-    "pixel": "pixel-art-8bit",
-    "watercolor": "watercolor",
-    "lineart": "line-art-only",
-    "photoreal": "photoreal",
-    "3d": "3d-rendered",
+    keyword: spec.name
+    for spec in REGISTRY.values()
+    for keyword in spec.stub_keywords
 }
 
 
