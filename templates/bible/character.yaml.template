@@ -41,9 +41,16 @@ display_name: ""                          # How Sean talks about this character
 #   - watercolor             Soft wet-media bleeds, paper grain, layered washes.
 #   - photoreal              Photographic rendering, lit volumes, surface detail.
 #   - 3d-rendered            Constructed geometry, raytraced or PBR shading.
+#   - primal-sketch-grit     Tartakovsky-Primal register. Heavy weight-varying
+#                            ink kept over the color, gritty painterly figure
+#                            and background, warm earthy desaturated base, one
+#                            bold color statement per scene.
 #
 # If a new character needs a register that isn't in this list, that's a
-# deliberate brief-update commit + an architecture decision. Don't add inline.
+# deliberate commit, not an inline edit: add a RegisterSpec to
+# pipeline/registers.py, the Cy example block, and this comment line — the
+# five-step drill in docs/architecture/prompt-style-neutrality-doctrine.md.
+# The suite refuses an incomplete registration.
 
 style_register: ""
 

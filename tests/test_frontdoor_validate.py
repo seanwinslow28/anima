@@ -63,6 +63,53 @@ def test_validate_fails_on_missing_files(tmp_path):
     assert any("frontdoor.json" in p and "missing" in p for p in problems)
 
 
+def test_validate_soft_flags_unregistered_register(tmp_path):
+    """Task 1.2c: the front door is where a NEW register is DISCOVERED, so an
+    unregistered style_register warns on a separate channel — it must never
+    fail validate_brief_dir (that would block the very brainstorm that
+    surfaces the gap). Cy execution is the hard gate (UnknownRegisterError)."""
+    from pipeline.frontdoor.validate import register_warnings
+
+    out = do_emit(tmp_path / "brief")
+    seeds_text = (out / "character_seeds.yaml").read_text(encoding="utf-8")
+    (out / "character_seeds.yaml").write_text(
+        seeds_text.replace(
+            "style_register: pencil-test-colored",
+            "style_register: brand-new-register",
+            1,
+        ),
+        encoding="utf-8",
+    )
+    assert validate_brief_dir(out) == []  # soft: structurally still valid
+    warnings = register_warnings(out)
+    assert len(warnings) == 1
+    assert "brand-new-register" in warnings[0]
+    assert "doctrine" in warnings[0].lower()
+
+
+def test_register_warnings_empty_for_known_registers(tmp_path):
+    from pipeline.frontdoor.validate import register_warnings
+
+    out = do_emit(tmp_path / "brief")
+    assert register_warnings(out) == []
+
+
+def test_cli_validate_warns_but_exits_zero_on_new_register(tmp_path, capsys):
+    out = do_emit(tmp_path / "brief")
+    seeds_text = (out / "character_seeds.yaml").read_text(encoding="utf-8")
+    (out / "character_seeds.yaml").write_text(
+        seeds_text.replace(
+            "style_register: pencil-test-colored",
+            "style_register: brand-new-register",
+            1,
+        ),
+        encoding="utf-8",
+    )
+    assert cli.main(["validate", str(out)]) == 0
+    printed = capsys.readouterr().out
+    assert "WARN" in printed and "brand-new-register" in printed
+
+
 def test_cli_validate_exit_codes(tmp_path, capsys):
     assert cli.main(["validate", str(PINATA)]) == 0
 

@@ -31,79 +31,24 @@ from pathlib import Path
 
 import pytest
 
+from pipeline.registers import ALL_REGISTERS, REGISTRY
+
 PROMPTS_DIR = Path(__file__).resolve().parents[1] / "pipeline" / "agents" / "prompts"
 
-# The closed style-register vocabulary anima supports. Every register named
-# in a prompt is fine; the failure mode the guardrail catches is naming
-# pencil-test (or any one register) as the implicit default.
-_STYLE_REGISTERS = frozenset({
-    "pencil-test-colored",
-    "pixel-art-8bit",
-    "line-art-only",
-    "watercolor",
-    "photoreal",
-    "3d-rendered",
-})
+# The closed style-register vocabulary anima supports, read from the
+# canonical registry (pipeline/registers.py) so this guardrail can never
+# drift from the canon: registering a new register automatically brings it
+# under audit here. Every register named in a prompt is fine; the failure
+# mode the guardrail catches is naming pencil-test (or any one register)
+# as the implicit default.
+_STYLE_REGISTERS = ALL_REGISTERS
 
-# Register-specific marker phrases. When any pencil marker appears in a
-# load-bearing section, at least one pixel / watercolor / photoreal marker
-# (or a different-register name) must also appear in the same section.
-# Phrases are searched case-insensitively as whole substrings.
-_PENCIL_MARKERS = frozenset({
-    "cross-hatching",
-    "construction lines",
-    "graphite",
-    "cream paper",
-    "varied 1-3px",
-    "pencil-test rough",
-    "pencil-test-colored",
-})
-
-_PIXEL_MARKERS = frozenset({
-    "dithering",
-    "integer-pixel grid",
-    "anti-aliasing",
-    "closed palette",
-    "indexed palette",
-    "closed indexed palette",
-    "limited indexed palette",
-    "pixel-art-8bit",
-})
-
-_WATERCOLOR_MARKERS = frozenset({
-    "watercolor",
-    "edge-feathering",
-    "pigment-pool",
-    "paper grain",
-    "wet-media",
-})
-
-_PHOTOREAL_MARKERS = frozenset({
-    "photoreal",
-    "lit volume",
-    "surface detail",
-    "specular",
-})
-
-_LINEART_MARKERS = frozenset({
-    "line-art-only",
-})
-
-_3D_MARKERS = frozenset({
-    "3d-rendered",
-    "raytraced",
-    "pbr shading",
-})
-
-# Map register-name → its marker set, for the failure-message companion-find.
-_REGISTERS_TO_MARKERS = {
-    "pencil-test-colored": _PENCIL_MARKERS,
-    "pixel-art-8bit": _PIXEL_MARKERS,
-    "watercolor": _WATERCOLOR_MARKERS,
-    "photoreal": _PHOTOREAL_MARKERS,
-    "line-art-only": _LINEART_MARKERS,
-    "3d-rendered": _3D_MARKERS,
-}
+# Map register-name → its marker phrases (each RegisterSpec.markers), for
+# the failure-message companion-find. When any pencil marker appears in a
+# load-bearing section, at least one other register's marker must also
+# appear in the same section. Phrases are searched case-insensitively as
+# whole substrings.
+_REGISTERS_TO_MARKERS = {name: spec.markers for name, spec in REGISTRY.items()}
 
 # Prompt files this test audits. Adding a new addendum to anima's fleet means
 # adding it here; the doctrine note names the procedure.

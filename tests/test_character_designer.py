@@ -1172,13 +1172,28 @@ def test_plate_emitter_watercolor_keeps_paper_grain():
     assert "paper grain" in p.lower() or "paper" in p.lower()
 
 
-def test_plate_emitter_unknown_register_falls_back_to_pencil():
+def test_plate_emitter_unknown_register_raises():
+    """Inverted (Task 1.2b): a nonempty unknown register must FAIL LOUD.
+    The old silent pencil fallback meant a typo'd register authored a
+    pencil-test character with no error — the exact defect the registry
+    kills. Empty/missing still defaults to pencil (next test)."""
     from pipeline.agents.character_designer import _build_plate_prompt
-    p = _build_plate_prompt(
-        "neutral, front view", style_register="not-a-real-register", has_pose_ref=False
-    )
-    # defensive default — register is validated upstream, but a typo must not
-    # crash a bake; pencil-test-colored is the safe fallback.
+    from pipeline.registers import UnknownRegisterError
+
+    with pytest.raises(UnknownRegisterError):
+        _build_plate_prompt(
+            "neutral, front view",
+            style_register="not-a-real-register",
+            has_pose_ref=False,
+        )
+
+
+def test_plate_emitter_empty_register_defaults_to_pencil():
+    """Back-compat preserved: an EMPTY style_register (every pre-registry
+    character folder) still defaults to pencil-test-colored."""
+    from pipeline.agents.character_designer import _build_plate_prompt
+
+    p = _build_plate_prompt("neutral, front view", style_register="", has_pose_ref=False)
     assert "full color" in p.lower()
 
 
@@ -1272,5 +1287,15 @@ def test_resolve_plate_model_routes_by_register():
     assert _resolve_plate_model("pencil-test-colored", {}, final=True) == NB2
     # manifest per-character override wins
     assert _resolve_plate_model("pencil-test-colored", {"generation_model": PRO}) == PRO
-    # unknown register falls back to pencil defaults (NB2)
-    assert _resolve_plate_model("not-real", {}) == NB2
+    # empty register still defaults to pencil routing (back-compat)
+    assert _resolve_plate_model("", {}) == NB2
+
+
+def test_resolve_plate_model_unknown_register_raises():
+    """Inverted (Task 1.2b): unknown-nonempty register routing fails loud
+    instead of silently returning the pencil default row."""
+    from pipeline.agents.character_designer import _resolve_plate_model
+    from pipeline.registers import UnknownRegisterError
+
+    with pytest.raises(UnknownRegisterError):
+        _resolve_plate_model("not-real", {})

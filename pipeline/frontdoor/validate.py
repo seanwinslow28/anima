@@ -14,6 +14,7 @@ import yaml
 
 from pipeline.frontdoor.brief import parse
 from pipeline.frontdoor.handoff import SLUG_RE, Handoff
+from pipeline.registers import ALL_REGISTERS
 
 REQUIRED_SEED_FIELDS = (
     "character_id",
@@ -85,3 +86,36 @@ def validate_brief_dir(brief_dir: Path) -> list[str]:
         )
 
     return problems
+
+
+def register_warnings(brief_dir: Path) -> list[str]:
+    """SOFT flags, separate from validate_brief_dir's problems (Task 1.2c).
+
+    The front door is where a NEW style register is *discovered* — a brief
+    may legitimately name a register nobody has authored yet, and failing
+    here would block the very brainstorm that surfaces the gap. So an
+    unregistered nonempty style_register WARNS (pointing at the authoring
+    procedure); the hard gate is Cy execution, where pipeline.registers
+    raises UnknownRegisterError before any costed pass.
+    """
+    brief_dir = Path(brief_dir)
+    warnings: list[str] = []
+    seeds_path = brief_dir / "character_seeds.yaml"
+    if not seeds_path.exists():
+        return warnings
+    seeds = yaml.safe_load(seeds_path.read_text(encoding="utf-8"))
+    if not isinstance(seeds, list):
+        return warnings
+    for i, seed in enumerate(seeds):
+        if not isinstance(seed, dict):
+            continue
+        reg = seed.get("style_register")
+        if isinstance(reg, str) and reg and reg not in ALL_REGISTERS:
+            warnings.append(
+                f"seed #{i} ({seed.get('character_id', '?')}): style_register "
+                f"{reg!r} is not in the closed vocabulary yet — author it per "
+                f"docs/architecture/prompt-style-neutrality-doctrine.md + "
+                f"pipeline/registers.py before the Cy pass (Cy fails loud on "
+                f"an unregistered register)."
+            )
+    return warnings
