@@ -8,7 +8,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from pipeline.frontdoor.validate import validate_brief_dir
+from pipeline.frontdoor.validate import register_warnings, validate_brief_dir
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -26,6 +26,11 @@ def main(argv: list[str] | None = None) -> int:
         print(f"error: {brief_dir} is not a directory")
         return 2
     problems = validate_brief_dir(brief_dir)
+    # Soft flags print on every path but never affect the exit code: an
+    # unregistered register at the front door is a discovery, not a failure
+    # (the hard gate is Cy execution — see pipeline/registers.py).
+    for w in register_warnings(brief_dir):
+        print(f"WARN: {w}")
     if problems:
         for p in problems:
             print(f"FAIL: {p}")
