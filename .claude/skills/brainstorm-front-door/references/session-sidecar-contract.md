@@ -42,6 +42,17 @@ inline in the conversation (the storytelling-skill sidecar rule).
 - recommendation: ...
 - open_questions: ...
 
+### art-viz   <!-- inline style stage — ONE block; routes are the options -->
+- observations: <the hero frame picked (the piece's signature moment) +
+  whether the frame IS the mechanic moment or a pre-mechanic beat>
+- options: <≥3 mutually-distinct, Flow-ready route prompts (A/B/C…), each
+  rendering the SAME composition in a different register; the signature
+  mechanic rendered in-frame or captured in the money-shot/timing-bible
+  prose — never dropped>
+- recommendation: <the stated lean, one line — which route and why>
+- open_questions: <a register anima can't yet build — seed `style_register`
+  NEW-flag + the doctrine pointer; missing reference knowledge for a route>
+
 ### synthesize
 - open_questions: <only if a hole was found; otherwise empty>
 ```

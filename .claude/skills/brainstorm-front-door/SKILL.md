@@ -16,10 +16,10 @@ The stage skills do the craft; **you own every decision that sticks.** A stage
 proposes; Sean decides; you record. When you have enough to act, act — do not
 re-interview what the room already settled.
 
-## The chain (Slice 2)
+## The chain (Slice 3)
 
 ```
-spark → MICRO-EXPAND (always) → deepen? → INTERROGATE → SYNTHESIZE → emit + validate
+spark → MICRO-EXPAND (always) → deepen? → INTERROGATE → ART-VIZ (inline) → SYNTHESIZE → emit + validate
                                    │            │
                                    └─ EXPAND ───┘   the inline contested-axis workshop —
                                                     on "deepen", or mid-grill whenever an
@@ -28,9 +28,9 @@ spark → MICRO-EXPAND (always) → deepen? → INTERROGATE → SYNTHESIZE → e
 ```
 
 `references/chain-map.md` has the full routing rules and skip conditions. The
-future stages (ART-VIZ / STRESS-TEST) are named there too — if a session
-clearly needs one before it's built, say so and do the best inline
-approximation; never pretend a stage ran.
+one future stage (STRESS-TEST) is named there too — if a session clearly
+needs it before it's built, say so and do the best inline approximation;
+never pretend a stage ran.
 
 ## Step 0 — open the session sidecar
 
@@ -110,6 +110,50 @@ Sean picks; **you** lock, and record `expand:<axis-slug>` in
 Invoke the `frontdoor-interrogate` skill. It reads the sidecar and grills Sean
 one question at a time until the North Star is nailed down. It appends
 proposals only; as answers resolve, **you** append the locked decisions.
+
+## Step 2.5 — ART-VIZ (inline, no skill call)
+
+Once the North Star is locked, propose the look — in place, without leaving
+the room. **Not** a skill call: the `genndy-tartakovsky` style skill is a
+deferred Cy-layer asset, not built here, and there is no `frontdoor-art-viz`
+skill to invoke.
+
+- **Pick one hero frame** — the piece's signature moment — and write **≥3
+  mutually-distinct, Flow-ready route prompts** that render **that same
+  composition** in different registers (a faithful homage, a grittier
+  sibling, a personal-lineage fusion with anima's own pencil-test warmth).
+  Vary the rendering language, not the frame, so Sean compares looks
+  apples-to-apples.
+- **The piece's signature mechanic is never dropped.** Rendered in the hero
+  frame when the frame *is* the mechanic moment (ai-guru's Orby-glitch); or
+  captured in the money-shot/timing-bible prose when the frame is a
+  pre-mechanic beat (the piñata's landing pose, with candy-as-oil locked in
+  the money-shot section).
+- **Each route is a self-contained prompt** Sean could paste into Flow and
+  get the hero frame — a named specific, never a category label.
+- **Capture the piece's timing/craft bible as prose** — the numbered spine
+  directives. It also seeds the Studio Brief non-negotiables.
+- **Flag any register anima can't yet build** as an `open_question` + a seed
+  `style_register` NEW-flag + the doctrine pointer
+  (`docs/architecture/prompt-style-neutrality-doctrine.md`). Surface it;
+  never extend the closed vocabulary inline.
+- **The no-library operating rule:** draw the route language from the locked
+  references, the timing bible, and the character seeds' `source_notes` —
+  the material already in the room. If that reference knowledge is missing
+  for a route, raise an `open_question`; **do not invent a reusable style
+  doctrine** (that is the deferred style skill's job, on a real Cy run).
+
+Append only the four proposal kinds to the sidecar (`### art-viz` — see
+`references/session-sidecar-contract.md`): `options` = the routes,
+`recommendation` = the lean, `open_questions` = the un-buildable-register
+flag. Sean renders on Flow and picks; **you** lock the chosen route and
+record `art-viz` in `stage_provenance`. **This is a $0 prompt-only stage —
+you never render or spend; Sean runs Flow himself.**
+
+Skip condition: a piece with a locked register already (e.g. an act inside
+an existing piece) skips ART-VIZ — declared skipped in `stage_provenance`,
+never silently faked. The quality bar and Sean's live-review checklist:
+`references/good-art-viz-rubric.md`.
 
 ## Step 3 — SYNTHESIZE
 

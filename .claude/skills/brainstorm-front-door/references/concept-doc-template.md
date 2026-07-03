@@ -23,8 +23,10 @@ worked example of every movement below.
 7. **The money shot** — the single image/mechanic the whole piece builds
    toward, and the craft rule that makes it land.
 8. **Style routes** — ≥3 render-ready route prompts (A/B/C), visually
-   distinct, each one paragraph. ($0 prose until ART-VIZ ships; Route
-   letters become `style_route` ids.)
+   distinct, each one paragraph. ($0 prose — the inline ART-VIZ step writes
+   these. Route letters are prose labels / locked-decision handles; there is
+   **no** `frontdoor.json.style_route`. A rendered route's ref later lives
+   in the chosen character seed's `anchor_ref` / `style_ref_ids`.)
 9. **Objective / audience / distribution** — your read, marked as steerable.
 10. **Open threads** — what a fuller session would still grill. Honest list;
     an empty one reads as "we stopped thinking," not "we finished."

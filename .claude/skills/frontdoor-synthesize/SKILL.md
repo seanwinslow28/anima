@@ -22,6 +22,13 @@ document Sean rereads in six months to remember why the piece mattered. Pull
 phrasing from the sidecar verbatim where it sings — the locked decisions were
 written in the room's voice; don't launder them into neutral summary.
 
+When the sidecar carries an `### art-viz` block, **fold its proposals into
+the concept doc's Style-routes, timing-bible, and money-shot movements** —
+the routes are prose you *emit*, not invent; they were authored in the room
+and your job is to place them. If Sean picked a route, carry the chosen-route
+lock as prose (e.g. "Chosen route: C — hybrid"). Never re-derive or
+"improve" a route the room already wrote.
+
 **`00_studio_brief.md` — the machine-facing distillation.** The 8-section
 shape in `brainstorm-front-door/references/studio-brief-contract.md`, exact
 headers, in order, with the `### What this is NOT` block under tone. Maya,
@@ -32,13 +39,19 @@ piece's contract — checkable phrasing only.
 **`character_seeds.yaml` — the hand to Cy.** One entry per character:
 `character_id` (lowercase-kebab), `display_name`, `story_role`,
 `style_register`, `source_notes` (multi-line: the design-bearing specifics Cy
-seeds `source-refs/notes.md` from), `anchor_ref: null`, `style_ref_ids: []`,
+seeds `source-refs/notes.md` from), `anchor_ref`, `style_ref_ids`,
 `cy_target_dir`. Seeds, not Bibles — write what a designer needs to start,
-not what the Bible will conclude.
+not what the Bible will conclude. **Populate `anchor_ref` /
+`style_ref_ids` only when actual refs exist** (e.g. Sean rendered the chosen
+route on Flow and the file is on disk); otherwise keep `anchor_ref: null` /
+`style_ref_ids: []`. Never invent a ref path for a route that was only
+prose.
 
 **`frontdoor.json`** — slug, characters, stage_provenance, `mode:
 "interactive"` (a real session is interactive; only test fixtures say
-`fixture`).
+`fixture`). Include `art-viz` in `stage_provenance` when the sidecar carries
+an `### art-viz` block; leave it absent when the stage was skipped — the
+provenance list records what actually ran.
 
 ## How you emit (only through the seam)
 
