@@ -28,5 +28,16 @@ worked example of every movement below.
    **no** `frontdoor.json.style_route`. A rendered route's ref later lives
    in the chosen character seed's `anchor_ref` / `style_ref_ids`.)
 9. **Objective / audience / distribution** — your read, marked as steerable.
-10. **Open threads** — what a fuller session would still grill. Honest list;
-    an empty one reads as "we stopped thinking," not "we finished."
+10. **Stress test (pre-mortem + red-team + verdict)** — the STRESS-TEST
+    stage's findings, folded as prose: the Tiger / Paper-Tiger / Elephant
+    triage with the **Launch-Blocking** Tigers named, each surviving risk as
+    a **"Fails if ___"** with its cheapest test, and the recommended verdict
+    — `proceed` with named residuals, or `revise` — plus Sean's decision.
+    A sound concept says so plainly; manufactured doubt reads worse than an
+    honest clean pass. (A production-binding residual also lands in the
+    Studio Brief's NOT-block/non-negotiables — this movement is the record,
+    not the only home.)
+11. **Open threads** — the stress test's downstream tail: the non-launch-
+    blocking residuals (Fast-Follow / Track) plus what a fuller session
+    would still grill. Honest list; an empty one reads as "we stopped
+    thinking," not "we finished."

@@ -16,10 +16,10 @@ The stage skills do the craft; **you own every decision that sticks.** A stage
 proposes; Sean decides; you record. When you have enough to act, act — do not
 re-interview what the room already settled.
 
-## The chain (Slice 3)
+## The chain (Slice 4 — complete)
 
 ```
-spark → MICRO-EXPAND (always) → deepen? → INTERROGATE → ART-VIZ (inline) → SYNTHESIZE → emit + validate
+spark → MICRO-EXPAND (always) → deepen? → INTERROGATE → ART-VIZ (inline) → STRESS-TEST → SYNTHESIZE → emit + validate
                                    │            │
                                    └─ EXPAND ───┘   the inline contested-axis workshop —
                                                     on "deepen", or mid-grill whenever an
@@ -28,9 +28,9 @@ spark → MICRO-EXPAND (always) → deepen? → INTERROGATE → ART-VIZ (inline)
 ```
 
 `references/chain-map.md` has the full routing rules and skip conditions. The
-one future stage (STRESS-TEST) is named there too — if a session clearly
-needs it before it's built, say so and do the best inline approximation;
-never pretend a stage ran.
+chain is complete: the STRESS-TEST stage runs as Step 2.75 (inline reflex →
+fresh-context authority). A skipped stage is declared skipped in
+`stage_provenance`; never pretend a stage ran.
 
 ## Step 0 — open the session sidecar
 
@@ -154,6 +154,68 @@ Skip condition: a piece with a locked register already (e.g. an act inside
 an existing piece) skips ART-VIZ — declared skipped in `stage_provenance`,
 never silently faked. The quality bar and Sean's live-review checklist:
 `references/good-art-viz-rubric.md`.
+
+## Step 2.75 — STRESS-TEST (inline reflex → fresh-context authority)
+
+Once the look is locked, pressure-test the concept the room just built. Two
+passes, in order. **Not** a skill call — there is no `frontdoor-stress-test`
+skill; the stage is an orchestrator discipline, like EXPAND and ART-VIZ.
+
+**First, the cheap in-room reflex.** A quick pre-mortem in place: surface the
+obvious Tigers while still in context. This is a warm-up, not the authority —
+the room red-teaming a concept it just built is self-critique, and
+same-context self-critique is biased toward its own work. Feed its findings
+into the fresh-context pass.
+
+**Then the authoritative pass: dispatch a fresh-context reviewer** — a
+sub-agent that reads **only the draft `concept.md` + `00_studio_brief.md`,
+not this sidecar, not the proposals log** — blind to the room's love story.
+The fresh-context pass holds the authority because verification wants
+independence: STRESS-TEST is the one stage whose job is to verify, not
+author, and it is exactly where same-context bias hits hardest. The reviewer
+runs the full pre-mortem + red-team:
+
+- **Triage every risk:** **Tiger** (real → act) / **Paper-Tiger** (overblown
+  → document) / **Elephant** (unspoken → investigate). **Default to Tiger
+  when unsure.** Name the **Launch-Blocking** Tigers and separate them from
+  Fast-Follow / Track.
+- **Steelman each load-bearing assumption, then attack it** — the strongest
+  version, never a strawman.
+- **Write each surviving risk as "Fails if ___"** with its **cheapest test**
+  (the cheapest way to find out this week); rank by impact × likelihood ×
+  cheapness-to-test.
+- **Do not manufacture doubt.** A sound concept is said sound plainly — five
+  real kill-assumptions beat twenty generic risks. **Never attack the fragile
+  high-value intuition** — and every invocation of "protecting the intuition"
+  must name three things: (a) the protected engine, (b) the nearest
+  legitimate adjacent risk, and (c) why the flagged weakness is not the
+  engine wearing a scary label (rubric criterion 4).
+- **Propose a recommended verdict** — **`proceed` (with named residuals) or
+  `revise`** — as a `recommendation`. Append only the four proposal kinds to
+  the sidecar (`### stress-test` — see
+  `references/session-sidecar-contract.md`).
+
+**Sean decides; you lock** the verdict as a LOCKED DECISION (`[Ln] stress
+verdict: proceed (residuals: <named Tigers>)`) and record `stress-test` in
+`stage_provenance`. **$0 — no spend, no render.**
+
+**The production-binding rule:** a Launch-Blocking Tiger, or a
+proceed-with-residual that changes buildability / budget / constraints
+(GRANDMASTER's register gap is the exemplar), must be handed to SYNTHESIZE
+for **`00_studio_brief.md`** — under `### What this is NOT` or the
+non-negotiables — because Maya reads only the Studio Brief; a Tiger left in
+`concept.md` alone is invisible to planning. Non-binding (Fast-Follow /
+Track) residuals stay in `concept.md`'s Open-threads tail.
+
+Skip condition: none — always-on, non-blocking. A concept that needs no
+revision is still run through and returns `proceed` with an honest "no
+launch-blocking Tigers"; it is never skipped. The stage never halts the
+session — it informs Sean, who decides. **Demotion trigger:** if ≥2 live runs
+show the fresh-context pass redundant with the in-room reflex, or missing
+load-bearing in-room context that mattered, demote it to an escalation and
+make the inline reflex the default — a prose edit, not a new slice. The
+quality bar and Sean's live-review checklist:
+`references/good-stress-test-rubric.md`.
 
 ## Step 3 — SYNTHESIZE
 
