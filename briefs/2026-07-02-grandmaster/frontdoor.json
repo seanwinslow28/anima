@@ -10,7 +10,8 @@
     "expand:host-dad-reversal",
     "interrogate",
     "synthesize",
-    "art-viz"
+    "art-viz",
+    "stress-test"
   ],
   "mode": "interactive"
 }

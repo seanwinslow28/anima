@@ -1,6 +1,6 @@
 # Grandmaster — Concept Doc
 
-*Front-door live session, 2026-07-02 (micro-expand → the inline contested-axis workshop → INTERROGATE → SYNTHESIZE), plus a 2026-07-03 ART-VIZ pass run after the fact — ART-VIZ (Slice 3) didn't exist as a chain stage yet on 2026-07-02. Produced by running the built ① brainstorm front door on Sean's spark.*
+*Front-door live session, 2026-07-02 (micro-expand → the inline contested-axis workshop → INTERROGATE → SYNTHESIZE), plus a 2026-07-03 ART-VIZ pass and a 2026-07-03 STRESS-TEST pass, both run after the fact — neither ART-VIZ (Slice 3) nor STRESS-TEST (Slice 4) existed as a chain stage yet on 2026-07-02. Produced by running the built ① brainstorm front door on Sean's spark.*
 
 ---
 
@@ -71,10 +71,26 @@ Tartakovsky fought **robots** in *Samurai Jack* specifically so he could show "b
 - **Distribution:** portfolio centerpiece + festival short as the 16:9 master, plus a vertical social cut-down built around the candy-geyser strike as a standalone hook.
 - **Deadline:** TBD — Sean to set. Smoke the pipeline in `--stub` mode ($0) before any costed Maya plan.
 
-## Open threads (what a fuller session would still grill)
+## Stress test (pre-mortem + red-team + verdict)
 
-- **The register gap** (above) — the sharpest open thread. Route A/B need doctrine work before they're real options; Route C is the practical path today, and that's a real creative concession, not a footnote.
-- Exact runtime + how much the Act-2 montage flexes.
-- Music/sound — a samurai score against comedic silence is its own design pass.
+*Run 2026-07-03 — Step 2.75, the STRESS-TEST stage. An in-room reflex ran first (a same-context warm-up, not the authority — it surfaced nothing beyond the already-named threads below). The authoritative pass was a fresh-context reviewer that read only this concept doc + the Studio Brief, blind to the session sidecar and blind to the room's own history — genuine independence from the love story that built this piece.*
+
+The concept's protected core — the dual sincerity-and-collision-comedy objective, delivered through evidence-not-instruction and symmetric no-mockery restraint toward the kid, the dad, and the grandmother alike — was steelmanned and attacked. It held. Sound as specified; the pass did not touch it.
+
+Two real, falsifiable risks surfaced, both Launch-Blocking for Cy/Bea (not front-door-blocking):
+
+- **The ninja-star/host-dad beat has no staged safety valve.** The candy-as-oil "blood substitution" logic covers the piñata strike; it does not cover the separate action of a child throwing a real edged weapon near an adult's actively-gripping hand. **Fails if** a cold read of just that beat (wind-up → release → flight path → impact → the dad's hand/face) registers as "the kid attacked the dad" rather than "a movie flourish." **Cheapest test:** 4–5 stills, shown cold, one question — what just happened, and how do you feel about the dad. More than 1-in-5 alarmed reads means redirecting the star's trajectory away from the hand's vicinity.
+- **The register-extension decision ([L17]) has no owner, deadline, or fallback trigger.** Resolving it is currently an aspiration, not a decision procedure. **Fails if** the Primal-grit spike is attempted mid-Bible-pass with no pre-agreed fallback to Route C. **Cheapest test:** one single-frame spike shown against Route C's already-buildable prompt, with an explicit go/no-go recorded before Cy's pass starts.
+
+**Verdict: revise.** Sean's call, 2026-07-03 — clear both items above before Cy's Bible pass locks; lightweight, not a re-brainstorm. Both residuals are production-binding and fold into `00_studio_brief.md`'s non-negotiables — Maya, Sam, and Bea read only that file, so a Launch-Blocking Tiger living here alone would be invisible to planning.
+
+## Open threads (the stress test's downstream tail — Fast-Follow / Track, not launch-blocking)
+
+- **Act-1 dad staging risk (Fast-Follow).** As currently staged (kid called up first, no other kid shown getting a fair or successful turn), Act 1 risks reading as "adult picks on the smallest kid" rather than "adult runs a game everyone plays" — undercutting the Act-3 redemption beat before it lands. Fold into Bea's storyboard pass: show one other kid getting a normal, unremarkable turn. (The no-mockery-toward-the-dad engine itself is sound and untouched — this is the adjacent staging risk, not the engine relabeled.)
+- **Grief-legibility gap (Fast-Follow).** The current minimum cueing (framed photo, posters, tapes, one reflection) could read as "she moved away" as easily as "she died" — the word "late" lives only in this prose, never on screen. Fold into Bea's pass: one additional object-only cue (a black ribbon, a dated label, undisturbed dust broken only by his hand) — no dialogue, no instruction added. (The restrained object-only grief doctrine itself is sound and untouched — this just strengthens the device it already sits inside.)
+- **Music/sound (Fast-Follow).** "Timing is a song" is audio-load-bearing (the holds, the drop-then-snap gags) but no reference score exists yet — a samurai score against comedic silence is its own design pass. Sketch a temp track against the stated act timings before stills lock in hold durations.
+- **Homage-vs-derivative concern (Track/Paper-Tiger).** Looks scary this close to *Samurai Jack* specifically, but the piece's own stated audience — "who'll clock what the homage costs" — makes transparent homage the point. Document, don't act.
+- **Vertical social cutdown decontextualization (Track).** Downstream of the ninja-star fix above; revisit at Assemble, not now.
+- **Montage runtime arithmetic (Track).** Exact runtime + how much the Act-2 montage flexes — check once Bea drafts the shot list (vignette count × estimated shot length vs. the 70s budget), no generation needed.
 - The title pick (leaning GRANDMASTER).
 - A "hall of fallen challengers" beat (other kids' failed attempts, shown in Act 1) was considered as texture during the micro-expand but never locked — worth a look if Act 1 needs more scale, not committed.
