@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>anima interface prototype (Direction C)</title>
+<!-- Clickable UX prototype for anima's Flow-like desktop app. Mock data, no backend.
+     Aesthetic: Direction C, warm studio chrome, dark judging stage.
+     Flow: dashboard, brainstorm front door, plan gate, script, storyboard, animatic, eye-gate, timeline.
+     New in this pass: brainstorm board, screenplay view, shared annotation layer (red pen + pin). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBF5E9; --panel:#F3EAD8; --card:#FFFDF7; --line:#E4D8C0; --line2:#C9B994;
+  --ink:#23201B; --ink2:#5A5348; --ink3:#6F6349;
+  --st0:#15161A; --st1:#1B1D22; --stline:#2A2E38; --stink:#EAEAF0; --stmute:#9AA0AA;
+  --teal:#0A3E42; --teal-bright:#37C7A6; --teal-bg:#E7F0EC; --teal-line:#BFDAD3;
+  --grease:#B23A2E; --amber:#B2802E; --amber-dk:#E8A33D; --green:#2F6B4F; --green-bright:#5BC98C;
+  --serif:'Newsreader',Georgia,serif; --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  --r-card:12px; --r-ctl:8px; --e-out:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#E7DFCF;color:var(--ink);font-family:var(--mono);-webkit-font-smoothing:antialiased}
+body{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:22px}
+button{font-family:var(--mono);cursor:pointer}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.stagepanel :focus-visible,.anntoolbar :focus-visible,.iconbtn:focus-visible{outline-color:var(--teal-bright)}
+.app{width:100%;max-width:1000px;background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 18px 50px #0000002e}
+.screen{display:none}.screen.active{display:block}
+.stage{display:none}.stage.active{display:block}
+.wordmark{font-family:var(--serif);font-size:22px;font-weight:500;letter-spacing:.4px;cursor:pointer}
+.tag{font-size:11px;color:var(--ink2);border-left:1px solid var(--line2);padding-left:12px}
+.btn{border-radius:var(--r-ctl);border:1px solid var(--line2);background:var(--card);color:var(--ink);padding:8px 13px;font-size:12px;transition:background .12s}
+.btn:hover{background:var(--panel)}
+.btn-primary{background:var(--teal);border:none;color:var(--paper)}
+.btn-primary:hover{background:#0c4b50}
+.sectlabel{font-size:11px;letter-spacing:.6px;color:var(--ink3);margin:2px 0 12px}
+
+/* dashboard */
+.dashhead{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line);background:var(--panel)}
+.dashbody{padding:18px 20px 24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.runcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);padding:12px;cursor:pointer;transition:border-color .15s,transform .15s var(--e-out)}
+.runcard:hover{border-color:var(--teal);transform:translateY(-2px)}
+.thumb{background:var(--st0);border-radius:8px;padding:8px;margin-bottom:10px;display:flex;justify-content:center}
+.runname{font-family:var(--serif);font-size:16px;font-weight:500;margin:0 0 6px}
+.stagechip{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:var(--panel);border:1px solid var(--line2);color:var(--ink2)}
+.cta{margin-top:9px;font-size:11.5px;color:var(--teal);display:flex;align-items:center;gap:5px}
+.meta{margin-top:8px;font-size:11px;color:var(--ink3)}
+.newcard{border:1.5px dashed var(--line2);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--ink2);min-height:150px}
+.newcard:hover{border-color:var(--teal);color:var(--teal)}
+
+/* run shell */
+.appbar{display:flex;align-items:center;gap:11px;padding:11px 18px;background:var(--panel);border-bottom:1px solid var(--line)}
+.mockpill{font-size:11px;color:var(--ink2);background:var(--paper);border:1px solid var(--line2);padding:2px 7px;border-radius:20px}
+.live{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11px;color:var(--teal)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block}
+.dot.pulse{animation:pulse 1.6s var(--e-out) infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.stepper{display:flex;align-items:center;gap:6px;padding:9px 18px;border-bottom:1px solid #EADCC2;flex-wrap:wrap;font-size:11px}
+.step{color:var(--ink2);background:none;border:none;padding:3px 7px;border-radius:5px}
+.step:hover{background:var(--panel)}
+.step.active{background:var(--teal);color:var(--paper)}
+.step.todo{color:var(--ink3)}
+.sep{color:var(--line2)}
+.commandbar{display:flex;align-items:center;gap:10px;padding:11px 18px;background:var(--panel);border-top:1px solid var(--line)}
+.cmdinput{flex:1;font-size:12.5px;color:var(--ink3)}
+.stagewrap{padding:16px 18px}
+
+/* overview */
+.hero{background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);padding:18px 20px}
+.hero h1{font-family:var(--serif);font-weight:500;font-size:20px;margin:0 0 4px}
+.hero .sub{font-size:11.5px;color:var(--ink2);margin-bottom:16px}
+.nextrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.costline{margin-left:auto;font-size:11.5px;color:var(--ink2)}
+.minireel{display:flex;align-items:center;gap:7px;margin-top:18px;font-size:11px;color:var(--ink3)}
+.cell{width:26px;height:20px;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line2);background:var(--panel);color:var(--ink3)}
+.cell.ok{background:var(--teal-bg);border-color:var(--teal);color:var(--teal)}
+.cell.now{background:#FBF3E2;border:1.5px solid var(--amber);color:#8A5A10}
+
+/* brainstorm front door */
+.bswrap{display:grid;grid-template-columns:118px 1fr 210px;gap:14px;padding:16px 18px}
+.chainrail{display:flex;flex-direction:column;gap:4px}
+.chainrail .cr{font-size:11px;padding:6px 8px;border-radius:6px;color:var(--ink3);border:1px solid transparent}
+.chainrail .cr.done{color:var(--ink2)}
+.chainrail .cr.active{background:var(--teal-bg);border-color:var(--teal-line);color:var(--teal)}
+.board .klabel{font-size:11px;letter-spacing:.5px;color:var(--ink3);margin:0 0 9px}
+.routegrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.route{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.route .pic{background:var(--st0);padding:6px;display:flex;justify-content:center;position:relative}
+.route .rp{padding:8px 9px}
+.route .rt{font-family:var(--serif);font-size:12.5px;font-weight:500;margin:0 0 3px}
+.route .rd{font-size:11px;color:var(--ink2);line-height:1.4}
+.route.pickable{cursor:pointer}
+.route.hero{grid-column:span 3;display:grid;grid-template-columns:1.3fr 1fr}
+.dropref{border:1.5px dashed var(--line2);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:var(--ink3);font-size:11px;min-height:96px;cursor:pointer}
+.dropref:hover{border-color:var(--teal);color:var(--teal)}
+.sidecar{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px}
+.sidecar .h{font-size:11px;letter-spacing:.6px;color:var(--ink3);margin:0 0 8px}
+.lock{font-size:11px;line-height:1.45;color:var(--ink);padding:6px 0;border-bottom:1px dashed #DCCDA9}
+.lock b{font-family:var(--serif);font-weight:500}
+.lock:last-child{border:none}
+
+/* gate + script */
+.gatehead{font-family:var(--serif);font-size:20px;font-weight:500;margin:0 0 3px}
+.gatesub{font-size:11.5px;color:var(--ink2);margin-bottom:16px}
+.gcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);padding:16px 18px;margin-bottom:14px}
+.readbody{font-family:var(--serif);font-size:14.5px;line-height:1.55}.readbody p{margin:0 0 10px}
+.klabel{font-size:11px;letter-spacing:.5px;color:var(--ink3);margin-bottom:8px}
+.costgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.costcell{background:var(--panel);border-radius:8px;padding:11px 12px}
+.costcell .k{font-size:11px;color:var(--ink2)}.costcell .v{font-family:var(--serif);font-size:22px;font-weight:500;margin-top:2px}
+.costcell.mid{background:var(--teal-bg);outline:1.5px solid var(--teal-line)}
+.byphase{font-size:11px;color:var(--ink2);margin-top:10px;line-height:1.7}
+.gateactions{display:flex;gap:10px;align-items:center;margin-top:4px}
+.toggle{display:inline-flex;background:var(--panel);border:1px solid var(--line2);border-radius:20px;padding:2px;margin-bottom:14px}
+.toggle button{border:none;background:none;color:var(--ink2);font-size:11.5px;padding:5px 14px;border-radius:20px}
+.toggle button.on{background:var(--teal);color:var(--paper)}
+.script{font-family:var(--mono);font-size:12.5px;line-height:1.55;color:var(--ink);max-width:58ch;margin:0 auto}
+.sh{font-weight:500;margin:16px 0 8px;letter-spacing:.3px}
+.ac{margin:0 0 11px}
+.ch{margin:11px 0 0;padding-left:34%;font-weight:500}
+.pa{padding-left:26%;color:var(--ink2);margin:1px 0;font-size:11.5px}
+.di{margin:0 0 9px;padding-left:20%;padding-right:16%}
+.beatgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:6px}
+.beat{background:var(--panel);border-radius:8px;padding:9px 10px;font-size:11.5px}
+.beat b{font-family:var(--serif);font-weight:500;font-size:13px}
+.slot{aspect-ratio:1.4;border:1.5px dashed var(--line2);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--ink3);font-size:11px}
+.slot.filled{border-style:solid;border-color:var(--teal);background:var(--teal-bg);color:var(--teal)}
+
+/* eye-gate */
+.stagepanel{background:var(--st0);border:1px solid var(--stline);border-radius:var(--r-card);padding:12px}
+.stagetop{display:flex;align-items:center;gap:9px;margin-bottom:9px;font-size:11px;flex-wrap:wrap}
+.stagetop .lbl{letter-spacing:1px;color:var(--teal-bright)}
+.stagetop .fid{color:var(--stmute)}
+.anntoolbar{display:inline-flex;gap:3px;background:var(--st1);border:1px solid var(--stline);border-radius:7px;padding:2px}
+.anntoolbar button{background:none;border:none;color:var(--stmute);border-radius:5px;padding:3px 7px;font-size:13px;line-height:1}
+.anntoolbar button.on{background:#123029;color:var(--teal-bright)}
+.attn{display:flex;align-items:center;gap:5px;margin-left:auto;color:var(--stmute)}
+.att{width:20px;height:18px;border-radius:4px;background:var(--st1);border:1px solid var(--stline);color:#6F7480;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
+.att.sel{background:#123029;border-color:var(--teal-bright);color:var(--teal-bright)}
+.iconbtn{background:var(--st1);border:1px solid var(--stline);color:var(--stmute);border-radius:5px;padding:2px 7px}
+.matwrap{border-radius:8px;padding:8px;display:flex;justify-content:center;transition:background .2s;position:relative}
+.annlayer{position:absolute;inset:8px;touch-action:none}
+.annsvg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.pin{position:absolute;transform:translate(-10px,-10px);display:flex;align-items:flex-start;gap:4px}
+.pinnum{width:20px;height:20px;border-radius:50%;background:#151515;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;border:2px solid #fff}
+.pinin{background:#151515;color:#fff;border:none;border-radius:6px;padding:4px 8px;font-size:11px;font-family:var(--mono);width:150px;outline:1px solid #444}
+.emrow{display:flex;align-items:center;gap:9px;margin-top:10px;padding-top:9px;border-top:1px solid #262A33;font-size:11px}
+.emlbl{letter-spacing:1px;color:var(--teal-bright)}
+.vpill{font-size:11px;padding:2px 8px;border-radius:20px}
+.vpill.borderline{background:#3A2E17;color:var(--amber-dk)}
+.emwhy{color:#C4C7D0;font-family:var(--serif);font-style:italic;font-size:12px}
+.emcite{margin-left:auto;font-size:11px;color:#6F7480}
+.actionbar{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);padding:12px}
+.notehdr{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:11px;letter-spacing:.5px;color:var(--grease)}
+.annchip{display:inline-block;background:#FBECE9;border:1px solid #E4B7B0;color:var(--grease);font-size:11px;padding:2px 8px;border-radius:20px;margin-left:8px}
+.notefield{background:var(--paper);border:1.5px solid var(--teal);border-radius:8px;padding:9px 11px;font-size:13px;color:var(--ink);outline:none;width:100%;font-family:var(--mono)}
+.actionrow{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.khint{margin-left:auto;font-size:11px;color:var(--ink3)}
+.reel{display:flex;align-items:center;gap:8px;padding:10px 18px;border-top:1px solid #EADCC2;font-size:11px;color:var(--ink2)}
+.flip{animation:flip .26s var(--e-out)}
+@keyframes flip{from{opacity:0;transform:translateX(26px)}to{opacity:1;transform:none}}
+
+/* timeline */
+.player{background:var(--st0);border:1px solid var(--stline);border-radius:var(--r-card);padding:14px;display:flex;justify-content:center}
+.clipstrip{display:flex;gap:6px;padding:12px;background:var(--panel);border-radius:var(--r-card);margin-top:12px;overflow-x:auto}
+.clip{flex:0 0 auto;width:78px;background:var(--card);border:1px solid var(--line2);border-radius:6px;padding:5px}
+.clip .n{font-size:11px;color:var(--ink3);text-align:center;margin-top:3px}
+.exports{display:flex;gap:10px;margin-top:14px;align-items:center;flex-wrap:wrap}
+
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(14px);background:var(--ink);color:var(--paper);font-size:12px;padding:9px 16px;border-radius:20px;opacity:0;pointer-events:none;transition:.25s var(--e-out);z-index:50}
+#toast.show{opacity:1;transform:translateX(-50%)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.tealtx{color:var(--teal)}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ DASHBOARD ============ -->
+  <section id="dashboard" class="screen active">
+    <div class="dashhead">
+      <span class="wordmark" onclick="goDash()">anima</span>
+      <span class="tag">studio</span>
+      <button class="btn" style="margin-left:auto" onclick="toast('Search is mock in this prototype')">⌕ search</button>
+      <button class="btn btn-primary" onclick="openBrainstorm()">＋ New project</button>
+    </div>
+    <div class="dashbody">
+      <div class="sectlabel">your runs · the card tells you your next move</div>
+      <div class="grid" id="rungrid"></div>
+    </div>
+  </section>
+
+  <!-- ============ RUN SHELL ============ -->
+  <section id="run" class="screen">
+    <div class="appbar">
+      <span class="wordmark" style="font-size:18px" onclick="goDash()">anima</span>
+      <span class="tag" id="runtag">pencil-test — act 2</span>
+      <span class="mockpill">mock · no backend</span>
+      <span class="live"><span class="dot pulse" id="livedot"></span><span id="livetxt">generating F04…</span></span>
+    </div>
+    <div class="stepper" id="stepper"></div>
+
+    <div id="stagecontent">
+
+      <!-- brainstorm front door -->
+      <div id="s-brainstorm" class="stage">
+        <div class="bswrap">
+          <div class="chainrail">
+            <div class="cr done">✓ spark</div>
+            <div class="cr done">✓ expand</div>
+            <div class="cr done">✓ interrogate</div>
+            <div class="cr active">● art-viz</div>
+            <div class="cr">stress-test</div>
+            <div class="cr">synthesize</div>
+          </div>
+          <div class="board">
+            <div class="klabel">ART-VIZ · one hero frame, three registers — render on Flow, pick one</div>
+            <div class="routegrid">
+              <div class="route hero">
+                <div class="pic" id="bs-hero"></div>
+                <div class="rp">
+                  <div class="rt">Route A · faithful</div>
+                  <div class="rd">The studio, warm graphite over cream, hole-punched cel taped to the board. Pencil-test register held.</div>
+                  <span class="anntoolbar" id="bs-tools" style="margin-top:10px;background:var(--panel);border-color:var(--line2)">
+                    <button data-tool="cursor" class="on" title="Select" style="color:var(--ink2)">⌖</button>
+                    <button data-tool="pen" title="Red pen" style="color:var(--ink2)">✎</button>
+                    <button data-tool="pin" title="Pin a note" style="color:var(--ink2)">◉</button>
+                    <button data-clear title="Clear marks" style="color:var(--ink2)">⌫</button>
+                  </span>
+                  <div style="margin-top:8px;font-size:11px;color:var(--ink3)">same red pen as the eye-gate: mark up any reference</div>
+                </div>
+              </div>
+              <div class="route pickable" onclick="toast('Route B chosen — locked to the sidecar')"><div class="pic">SVGB</div><div class="rp"><div class="rt">Route B · grittier</div><div class="rd">Same frame, heavier ink, colder light.</div></div></div>
+              <div class="route pickable" onclick="toast('Route C chosen — locked to the sidecar')"><div class="pic">SVGC</div><div class="rp"><div class="rt">Route C · fusion</div><div class="rd">Homage meets anima's own warmth.</div></div></div>
+              <div class="dropref" onclick="toast('Drop a reference (mock): character, style, or background')">＋ drop a reference<span style="font-size:11px;color:var(--ink3)">characters · styles · backgrounds</span></div>
+            </div>
+          </div>
+          <div class="sidecar">
+            <div class="h">LOCKED DECISIONS</div>
+            <div class="lock"><b>spark</b><br>"the mascot fixes the frame he can't"</div>
+            <div class="lock"><b>premise</b><br>quiet collaboration, not rescue</div>
+            <div class="lock"><b>tone</b><br>warm, dry, no saccharine</div>
+            <div class="lock"><b>hero frame</b><br>the two-tap nudge</div>
+            <button class="btn btn-primary" style="width:100%;margin-top:12px" onclick="emitBrief()">Emit brief → start run</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- overview -->
+      <div id="s-overview" class="stage stagewrap">
+        <div class="hero">
+          <h1>Your move: review F03</h1>
+          <div class="sub">the loop's mid-gesture · attempt 2 of 3 · Em flagged it borderline</div>
+          <div class="nextrow">
+            <button class="btn btn-primary" onclick="showStage('generate')">Review F03 →</button>
+            <button class="btn" onclick="showStage('plan')">Revisit the plan</button>
+            <span class="costline">spent <b>$0.58</b> · est $1.10 · gemini-3.1-flash</span>
+          </div>
+          <div class="minireel" id="ovreel"></div>
+        </div>
+      </div>
+
+      <!-- plan gate -->
+      <div id="s-plan" class="stage stagewrap">
+        <div class="gatehead">The plan</div>
+        <div class="gatesub">Maya drafted it. Nothing burns compute until you approve.</div>
+        <div class="gcard"><div class="readbody">
+          <p>A 5-frame idle-to-gesture loop for act 2. Sean at the monitors, the claude-mascot on his shoulder. Pencil-test register, 16:9, held on the animatic's timing.</p>
+          <p>Runs Plan, Script, Storyboard, Animatic, Generate, Assemble. Cast loads two Bibles: <span class="tealtx">sean</span>, <span class="tealtx">claude-mascot</span>.</p>
+        </div></div>
+        <div class="gcard">
+          <div class="klabel">COST PREVIEW · the thing Flow can't show you</div>
+          <div class="costgrid">
+            <div class="costcell"><div class="k">low</div><div class="v">$0.80</div></div>
+            <div class="costcell mid"><div class="k">median</div><div class="v">$1.10</div></div>
+            <div class="costcell"><div class="k">high</div><div class="v">$1.60</div></div>
+          </div>
+          <div class="byphase">generate 5×$0.07 · motion draft · assemble free · critic passes ~$0.05 · <span style="color:var(--ink3)">estimate, not a cap</span></div>
+        </div>
+        <div class="gateactions">
+          <button class="btn btn-primary" onclick="approvePlan()">Approve plan</button>
+          <button class="btn" onclick="toast('Sent back to Maya with your note (mock)')">Send back</button>
+        </div>
+      </div>
+
+      <!-- script gate: screenplay + beats -->
+      <div id="s-script" class="stage stagewrap">
+        <div class="gatehead">The script</div>
+        <div class="gatesub">Sam proposes. You decide. Read it like a script, or check the beats.</div>
+        <div class="toggle">
+          <button id="tg-script" class="on" onclick="scriptView('script')">Script</button>
+          <button id="tg-beats" onclick="scriptView('beats')">Beats</button>
+        </div>
+        <div class="gcard">
+          <div id="script-page">
+            <div class="script">
+              <div class="sh">INT. SEAN'S STUDIO — CONTINUOUS</div>
+              <div class="ac">Sean settles at the drafting table. The CLAUDE-MASCOT, a small terracotta box of a creature, dozes on his shoulder.</div>
+              <div class="ch">SEAN</div>
+              <div class="pa">(under his breath)</div>
+              <div class="di">Okay. One more pass.</div>
+              <div class="ac">The mascot stirs. Blinks at the screen. Taps it. Twice.</div>
+              <div class="ch">SEAN (CONT'D)</div>
+              <div class="di">...yeah. Yeah, that's the one that's wrong.</div>
+              <div class="ac">He fixes it. They both, somehow, exhale.</div>
+            </div>
+          </div>
+          <div id="beats-page" style="display:none">
+            <div class="klabel">BEATS · the Sam→Bea contract</div>
+            <div class="beatgrid">
+              <div class="beat"><b>1 · settle</b><br>sean, idle</div>
+              <div class="beat"><b>2 · nudge</b><br>mascot points</div>
+              <div class="beat"><b>3 · fix</b><br>both exhale</div>
+            </div>
+          </div>
+        </div>
+        <div class="gateactions">
+          <button class="btn btn-primary" onclick="showStage('storyboard')">Approve script</button>
+          <button class="btn" onclick="toast('Sent back to Sam (mock)')">Send back</button>
+        </div>
+      </div>
+
+      <!-- storyboard gate -->
+      <div id="s-storyboard" class="stage stagewrap">
+        <div class="gatehead">The board</div>
+        <div class="gatesub">Bea drafted the shots. This gate is a <b>curation</b>: cut, reorder, then lock.</div>
+        <div class="gcard"><div class="beatgrid" style="grid-template-columns:repeat(3,1fr)">
+          <div class="beat"><b>F01</b><br>wide · settle</div>
+          <div class="beat"><b>F02</b><br>push in</div>
+          <div class="beat"><b>F03</b><br>mascot nudge</div>
+          <div class="beat"><b>F04</b><br>the fix</div>
+          <div class="beat"><b>F05</b><br>loop back to F01</div>
+          <div class="beat" style="border:1.5px dashed var(--line2);background:transparent;color:var(--ink3)">＋ add shot</div>
+        </div></div>
+        <div class="gateactions">
+          <button class="btn btn-primary" onclick="showStage('animatic')">Lock the board</button>
+          <button class="btn" onclick="toast('Frame cut (mock)')">Cut a shot</button>
+        </div>
+      </div>
+
+      <!-- animatic gate -->
+      <div id="s-animatic" class="stage stagewrap">
+        <div class="gatehead">Placement</div>
+        <div class="gatesub">You own timing. Drop a silhouette rough per frame. It pins where they stand before anything's drawn.</div>
+        <div class="gcard">
+          <div class="beatgrid" style="grid-template-columns:repeat(5,1fr)">
+            <div class="slot filled">F01 ✓</div><div class="slot filled">F02 ✓</div><div class="slot filled">F03 ✓</div>
+            <div class="slot">F04<br>drop</div><div class="slot">F05<br>drop</div>
+          </div>
+          <div class="byphase">holds.json · F01 6f · F03 8f · loop 12f</div>
+        </div>
+        <div class="gateactions">
+          <button class="btn btn-primary" onclick="showStage('generate')">Ingest &amp; generate</button>
+          <button class="btn" onclick="toast('Skipped — generate without placement (mock)')">Skip animatic</button>
+        </div>
+      </div>
+
+      <!-- eye-gate -->
+      <div id="s-generate" class="stage stagewrap">
+        <div class="stagepanel">
+          <div class="stagetop">
+            <span class="lbl">STAGE</span>
+            <span class="fid" id="eg-fid">F03</span>
+            <span class="anntoolbar" id="eg-tools">
+              <button data-tool="cursor" class="on" title="Select">⌖</button>
+              <button data-tool="pen" title="Red pen">✎</button>
+              <button data-tool="pin" title="Pin a note">◉</button>
+              <button data-clear title="Clear marks">⌫</button>
+            </span>
+            <span class="attn"><span style="margin-right:2px">att</span><span id="eg-atts"></span>
+              <button class="iconbtn" onclick="toggleMat()" title="Toggle warm mat">☀</button>
+            </span>
+          </div>
+          <div class="matwrap" id="eg-mat" style="background:#ECE3D2"><div id="eg-art"></div></div>
+          <div class="emrow" id="eg-em"></div>
+        </div>
+        <div class="actionbar" id="eg-action"></div>
+      </div>
+
+      <!-- timeline -->
+      <div id="s-assemble" class="stage stagewrap">
+        <div class="gatehead">Assemble the loop</div>
+        <div class="gatesub">Arrange, trim, preview, export. You finish in your real editor.</div>
+        <div class="player"><div class="matwrap" style="background:#ECE3D2;width:58%"><div id="tl-art"></div></div></div>
+        <div class="clipstrip" id="tl-clips"></div>
+        <div class="exports">
+          <button class="btn" onclick="toast('Rendered pencil-test-act2.gif (mock)')">▸ GIF</button>
+          <button class="btn" onclick="toast('Rendered .webm (mock)')">WebM</button>
+          <button class="btn" onclick="toast('Rendered .mp4 (mock)')">MP4</button>
+          <span class="khint" style="margin-left:auto">Engine truth: if the loop plays smoothly and he's still himself, it ships.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="commandbar">
+      <span style="color:var(--ink2)" aria-hidden="true">✉</span>
+      <span class="cmdinput" id="cmdlabel">talk to the crew…</span>
+      <button class="btn btn-primary" style="padding:6px 10px" aria-label="Send message" onclick="toast('Message sent (mock)')">↑</button>
+    </div>
+  </section>
+</div>
+<div id="toast"></div>
+
+<script>
+const STAGES=[["brainstorm","done"],["plan","done"],["script","done"],["storyboard","done"],["animatic","done"],["generate","active"],["assemble","todo"]];
+const run={
+  frames:[
+    {id:"F01",label:"wide · settle",status:"approved",sel:1},
+    {id:"F02",label:"push in",status:"approved",sel:1},
+    {id:"F03",label:"loop mid-gesture",status:"review",attempts:2,sel:2,
+      verdict:{v:"borderline",score:0.72,why:"Stylus drifted to the left hand. Identity held.",fix:"stylus in right hand",cite:"IR.sean.prop.stylus-right-hand"}},
+    {id:"F04",label:"the fix",status:"pending",sel:0},
+    {id:"F05",label:"loop back to F01",status:"pending",sel:0}
+  ],
+  cur:2, note:false, cost:0.58
+};
+function art(){return `<svg viewBox="0 0 300 150" width="72%" style="display:block" aria-hidden="true">
+  <line x1="24" y1="126" x2="276" y2="126" stroke="#B8A98C" stroke-width="1.3"/>
+  <rect x="54" y="36" width="60" height="44" rx="4" fill="none" stroke="#8A7F6B" stroke-width="1.4"/>
+  <rect x="186" y="36" width="60" height="44" rx="4" fill="none" stroke="#8A7F6B" stroke-width="1.4"/>
+  <rect x="120" y="26" width="60" height="38" rx="4" fill="none" stroke="#8A7F6B" stroke-width="1.4"/>
+  <path d="M62 52 h44 M62 62 h30" stroke="#C9BCA0" stroke-width="1.1"/>
+  <path d="M196 52 h44 M196 62 h34" stroke="#C9BCA0" stroke-width="1.1"/>
+  <path d="M120 126 q0 -38 30 -38 q30 0 30 38" fill="#E4D9C1" stroke="#8A7F6B" stroke-width="1.3"/>
+  <circle cx="150" cy="82" r="15" fill="#F3EAD6" stroke="#6E665A" stroke-width="1.4"/>
+  <path d="M137 76 q13 -13 26 0" fill="none" stroke="#6E665A" stroke-width="1.3"/>
+  <line x1="163" y1="75" x2="174" y2="67" stroke="#B2802E" stroke-width="2.4"/>
+  <line x1="150" y1="70" x2="150" y2="95" stroke="#CDBFA3" stroke-width="0.9" stroke-dasharray="2 2"/></svg>`;}
+function artSmall(w){return art().replace('width="72%"','width="'+w+'"');}
+
+/* ---------- shared annotation layer (red pen + pin) ---------- */
+function mountAnnotator(host){
+  if(host._ann) return host._ann;
+  host.style.position='relative';
+  const layer=document.createElement('div'); layer.className='annlayer';
+  layer.innerHTML='<svg class="annsvg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>';
+  host.appendChild(layer);
+  const svg=layer.querySelector('svg');
+  const store={strokes:[],pins:[],tool:'cursor'};
+  let drawing=null;
+  const pos=e=>{const r=layer.getBoundingClientRect();return [(e.clientX-r.left)/r.width*100,(e.clientY-r.top)/r.height*100];};
+  function render(){
+    svg.innerHTML=store.strokes.map(s=>`<polyline points="${s.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ')}" fill="none" stroke="#E5484D" stroke-width="3.2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>`).join('');
+    layer.querySelectorAll('.pin').forEach(p=>p.remove());
+    store.pins.forEach((pin,i)=>{
+      const d=document.createElement('div'); d.className='pin'; d.style.left=pin.x+'%'; d.style.top=pin.y+'%';
+      d.innerHTML=`<span class="pinnum">${i+1}</span><input class="pinin" value="${pin.text.replace(/"/g,'&quot;')}" placeholder="what's wrong here?"/>`;
+      d.querySelector('input').addEventListener('input',ev=>pin.text=ev.target.value);
+      layer.appendChild(d);
+    });
+  }
+  layer.addEventListener('pointerdown',e=>{
+    if(store.tool==='pen'){drawing=[pos(e)];store.strokes.push(drawing);layer.setPointerCapture(e.pointerId);render();}
+    else if(store.tool==='pin'){const[x,y]=pos(e);store.pins.push({x,y,text:''});render();setTimeout(()=>{const ins=layer.querySelectorAll('.pinin');ins[ins.length-1]&&ins[ins.length-1].focus();},20);}
+  });
+  layer.addEventListener('pointermove',e=>{if(drawing&&store.tool==='pen'){drawing.push(pos(e));render();}});
+  layer.addEventListener('pointerup',()=>{drawing=null;});
+  store.setTool=t=>{store.tool=t; layer.style.pointerEvents=(t==='cursor')?'none':'auto'; layer.style.cursor=t==='pen'?'crosshair':t==='pin'?'copy':'default';};
+  store.clear=()=>{store.strokes=[];store.pins=[];render();};
+  store.summary=()=>{const m=store.strokes.length,p=store.pins.filter(x=>x.text.trim()).length;const a=[];if(m)a.push(m+' mark'+(m>1?'s':''));if(p)a.push(p+' pin'+(p>1?'s':''));return a.join(' · ');};
+  store.setTool('cursor'); render(); host._ann=store; return store;
+}
+function wireToolbar(barEl,store){
+  barEl.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{store.setTool(b.dataset.tool);barEl.querySelectorAll('[data-tool]').forEach(x=>x.classList.toggle('on',x===b));});
+  const c=barEl.querySelector('[data-clear]'); if(c)c.onclick=()=>{store.clear();if(run.note)renderEye();};
+}
+let eyeAnn=null;
+
+/* ---------- dashboard ---------- */
+const RUNS=[
+  {name:"pencil-test — act 2",stage:"generate",cta:"F03 waiting on your eye →",meta:"2m ago",wired:true},
+  {name:"claude-mascot — bible",stage:"character bible",cta:"Cy proposed 6 plates →",meta:"1h ago"},
+  {name:"kickflip spike",stage:"brainstorm",cta:"Art-viz: pick a route →",meta:"yesterday"}
+];
+function renderDash(){
+  document.getElementById("rungrid").innerHTML=RUNS.map((r,i)=>`<div class="runcard" onclick="openRun(${i})">
+     <div class="thumb">${artSmall('52%')}</div><div class="runname">${r.name}</div>
+     <span class="stagechip">${r.stage}</span><div class="cta">▸ ${r.cta}</div><div class="meta">updated ${r.meta}</div></div>`).join("")
+   +`<div class="runcard newcard" onclick="openBrainstorm()"><div style="font-size:24px">＋</div><div>New project</div><div style="font-size:11px;color:var(--ink3)">start in the brainstorm room</div></div>`;
+}
+function openRun(i){ if(!RUNS[i].wired){toast("This is a mock. The act-2 run is the wired path");return;}
+  document.getElementById("dashboard").classList.remove("active");
+  document.getElementById("run").classList.add("active"); showStage("overview"); window.scrollTo(0,0);}
+function openBrainstorm(){document.getElementById("dashboard").classList.remove("active");document.getElementById("run").classList.add("active");showStage("brainstorm");window.scrollTo(0,0);}
+function goDash(){document.getElementById("run").classList.remove("active");document.getElementById("dashboard").classList.add("active");}
+function emitBrief(){toast("Brief emitted → concept.md · 00_studio_brief.md · seeds. Starting run.");setTimeout(()=>showStage("plan"),500);}
+
+/* ---------- run shell ---------- */
+function renderStepper(){
+  document.getElementById("stepper").innerHTML=STAGES.map((s,i)=>{
+    const on=s[0]===window._stage;
+    const cls=on?"active":(s[1]==="todo"?"todo":"");
+    const mark=s[1]==="done"&&!on?"✓ ":(s[1]==="todo"?"○ ":"● ");
+    return `<button class="step ${cls}" onclick="showStage('${s[0]}')">${mark}${s[0]}</button>`+(i<STAGES.length-1?'<span class="sep">·</span>':'');
+  }).join("");
+}
+function showStage(stage){
+  window._stage=stage;
+  document.querySelectorAll("#stagecontent .stage").forEach(el=>el.classList.remove("active"));
+  document.getElementById("s-"+stage).classList.add("active");
+  renderStepper();
+  const cl=document.getElementById("cmdlabel");
+  cl.textContent = stage==="brainstorm" ? "the room — deepen, or proceed?" : "talk to the crew…";
+  if(stage==="brainstorm")initBrainstorm();
+  if(stage==="generate"){run.note=false;renderEye();mountEye();}
+  if(stage==="assemble")renderTimeline();
+  if(stage==="overview")renderOvReel();
+  document.getElementById("livetxt").textContent = stage==="generate"?"Flo is drawing F04…":(stage==="brainstorm"?"the room is open":"crew idle");
+  window.scrollTo(0,0);
+}
+function approvePlan(){toast("Plan approved · the crew is drafting");setTimeout(()=>showStage("generate"),400);}
+function renderOvReel(){document.getElementById("ovreel").innerHTML="reel &nbsp;"+run.frames.map(f=>{const c=f.status==="approved"?"ok":f.status==="review"?"now":"";return `<span class="cell ${c}">${f.status==="approved"?"✓":f.id.slice(1)}</span>`;}).join("");}
+
+/* ---------- brainstorm ---------- */
+let bsInit=false;
+function initBrainstorm(){ if(bsInit)return;
+  document.getElementById("bs-hero").innerHTML=artSmall('70%');
+  document.querySelectorAll('#s-brainstorm .route .pic').forEach(p=>{const t=p.textContent.trim();if(t==='SVGB'||t==='SVGC')p.innerHTML=artSmall('62%');});
+  const ann=mountAnnotator(document.getElementById("bs-hero")); ann.setTool('cursor');
+  wireToolbar(document.getElementById("bs-tools"),ann);
+  bsInit=true;
+}
+
+/* ---------- script ---------- */
+function scriptView(v){
+  document.getElementById("script-page").style.display=v==="script"?"block":"none";
+  document.getElementById("beats-page").style.display=v==="beats"?"block":"none";
+  document.getElementById("tg-script").classList.toggle("on",v==="script");
+  document.getElementById("tg-beats").classList.toggle("on",v==="beats");
+}
+
+/* ---------- eye-gate ---------- */
+function mountEye(){const mat=document.getElementById("eg-mat");eyeAnn=mountAnnotator(mat);wireToolbar(document.getElementById("eg-tools"),eyeAnn);}
+function renderEye(){
+  const f=run.frames[run.cur];
+  document.getElementById("eg-fid").textContent=`${f.id} · ${f.label}`;
+  document.getElementById("eg-atts").innerHTML=[1,2,3].map(n=>`<span class="att ${n===f.sel?'sel':''}" onclick="pickAtt(${n})">${n}</span>`).join("");
+  const artEl=document.getElementById("eg-art"); artEl.innerHTML=art(); artEl.classList.remove("flip"); void artEl.offsetWidth; artEl.classList.add("flip");
+  const v=f.verdict;
+  document.getElementById("eg-em").innerHTML=v?
+    `<span class="emlbl">EM</span><span class="vpill ${v.v}">${v.v} · ${v.score}</span><span class="emwhy">"${v.why}"</span><span class="emcite">${v.cite}</span>`
+    :`<span class="emlbl">EM</span><span class="vpill">reading…</span>`;
+  const a=document.getElementById("eg-action");
+  const annsum = eyeAnn ? eyeAnn.summary() : "";
+  if(run.note){
+    a.innerHTML=`<div class="notehdr"><span style="color:var(--grease)">✎</span> RETRY NOTE · prefilled from Em ${annsum?`<span class="annchip">+ ${annsum} on the frame</span>`:''}</div>
+      <input class="notefield" id="notein" value="${v?v.fix:''}"/>
+      <div class="actionrow">
+        <button class="btn btn-primary" onclick="sendRetry()">Send retry ⏎</button>
+        <button class="btn" onclick="cancelNote()">Approve as-is</button>
+        <span class="khint">draw with ✎ · drop ◉ · ⏎ send · esc cancel</span>
+      </div>`;
+    setTimeout(()=>{const n=document.getElementById("notein");if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length);}},30);
+  }else{
+    a.innerHTML=`<div class="actionrow" style="margin-top:0">
+        <button class="btn btn-primary" onclick="approveFrame()">Approve ⏎</button>
+        <button class="btn" onclick="openNote()">↺ Retry</button>
+        <span class="costline">spent $${run.cost.toFixed(2)} · est $1.10</span>
+        <span class="khint">⏎ approve · R retry · mark with ✎ / ◉ · ↑↓ frames</span>
+      </div>`;
+  }
+  renderReel();
+}
+function renderReel(){const r=document.getElementById("eg-reel");if(!r)return;
+  r.innerHTML='reel &nbsp;'+run.frames.map((f,i)=>{let c=f.status==="approved"?"ok":i===run.cur?"now":"";let t=f.status==="approved"?"✓":f.id.slice(1);return `<span class="cell ${c}" style="cursor:pointer" onclick="jump(${i})">${t}</span>`;}).join("");}
+function pickAtt(n){run.frames[run.cur].sel=n;renderEye();}
+let matWarm=true;
+function toggleMat(){matWarm=!matWarm;const m=document.getElementById("eg-mat");m.style.background=matWarm?"#ECE3D2":"#0f1013";const b=document.querySelector('#s-generate .iconbtn');if(b){b.setAttribute('aria-pressed',String(!matWarm));b.style.color=matWarm?'':'#37C7A6';}}
+function openNote(){run.note=true;renderEye();}
+function cancelNote(){run.note=false;renderEye();}
+function sendRetry(){const f=run.frames[run.cur];const extra=eyeAnn&&eyeAnn.summary()?` + ${eyeAnn.summary()}`:"";run.note=false;run.cost+=0.14;f.sel=Math.min(3,(f.sel||2)+1);if(eyeAnn)eyeAnn.clear();toast(`Re-rolling ${f.id} · note + annotations sent as CORRECTION${extra}`);renderEye();}
+function approveFrame(){const f=run.frames[run.cur];f.status="approved";run.cost+=0.14;if(eyeAnn)eyeAnn.clear();
+  const next=run.frames.findIndex(x=>x.status!=="approved");toast(`${f.id} approved`);
+  if(next===-1){setTimeout(()=>showStage("assemble"),450);return;}
+  run.cur=next;run.note=false;document.getElementById("livetxt").textContent=`Flo is drawing ${run.frames[next].id}…`;renderEye();}
+function jump(i){if(run.frames[i].status!=="pending"){run.cur=i;run.note=false;if(eyeAnn)eyeAnn.clear();renderEye();}}
+
+document.addEventListener("keydown",e=>{
+  const onEye=document.getElementById("run").classList.contains("active")&&window._stage==="generate";
+  if(!onEye)return;
+  if(e.target&&e.target.classList&&(e.target.classList.contains('notefield')||e.target.classList.contains('pinin'))){
+    if(run.note&&e.key==="Enter"){e.preventDefault();sendRetry();} if(e.key==="Escape"&&run.note){e.preventDefault();cancelNote();} return;
+  }
+  if(run.note){if(e.key==="Enter"){e.preventDefault();sendRetry();}if(e.key==="Escape"){e.preventDefault();cancelNote();}return;}
+  if(e.key==="Enter"){e.preventDefault();approveFrame();}
+  if(e.key==="r"||e.key==="R"){e.preventDefault();openNote();}
+  if(e.key==="ArrowDown"){e.preventDefault();for(let i=run.cur+1;i<run.frames.length;i++){if(run.frames[i].status!=="pending"){jump(i);break;}}}
+  if(e.key==="ArrowUp"){e.preventDefault();for(let i=run.cur-1;i>=0;i--){if(run.frames[i].status!=="pending"){jump(i);break;}}}
+});
+document.getElementById("s-generate").insertAdjacentHTML("beforeend",'<div class="reel" id="eg-reel"></div>');
+
+/* ---------- timeline ---------- */
+function renderTimeline(){document.getElementById("tl-art").innerHTML=art();
+  document.getElementById("tl-clips").innerHTML=run.frames.map(f=>`<div class="clip">${artSmall('100%')}<div class="n">${f.id}</div></div>`).join("");}
+
+let tt;function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),2400);}
+renderDash();
+document.querySelectorAll('button[title]').forEach(b=>{if(!b.getAttribute('aria-label'))b.setAttribute('aria-label',b.title);});
+</script>
+</body>
+</html>
