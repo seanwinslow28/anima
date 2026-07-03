@@ -149,6 +149,51 @@ def test_stub_register_inference_snapshot(character_id, expected):
     assert _infer_stub_style_register(character_id) == expected
 
 
+def test_reject_threaded_prompt_snapshot():
+    """Verifier-flagged gap: the reject_reason clause threads into the
+    preserve slot; snapshot the full composed prompt so a regression in that
+    clause trips the oracle, not just the cache key. (Literal verified
+    hash-identical to main's output across all registers/pose arms by the
+    fresh-context Checkpoint-1 verifier.)"""
+    got = _build_plate_prompt(
+        _INTENT,
+        style_register="pencil-test-colored",
+        has_pose_ref=False,
+        reject_reason="eyes too large",
+    )
+    assert got == (
+        'Image 1 is the identity anchor — the canonical reference for this '
+        'character. Match the face, hair, full color palette, skin tone, and '
+        'proportions of Image 1 exactly. Render: neutral standing pose. '
+        'Change only what this names; keep everything else exactly as in '
+        'Image 1. Keep the warm cream paper, the cross-hatch shadow, and the '
+        'full color of Image 1. Do not render the figure in monochrome. No '
+        'photographic shading. Do not add any text, captions, labels, '
+        'annotations, or watermarks to the image. Correction from the '
+        'previous attempt — address this and do not repeat it: eyes too '
+        'large Warm pencil-test render: graphite line (not vector black), '
+        'flat color fills, cross-hatch shadow, warm cream paper, hole-punch '
+        'production marks. The character must stay recognizably identical '
+        'to Image 1.'
+    )
+
+
+def test_stub_keyword_map_full_order_snapshot():
+    """Verifier-flagged gap: the stub keyword map's precedence rides on dict
+    insertion order. Pin the ENTIRE key order + mapping (not just the two
+    precedence edges) so reordering REGISTRY entries fails loud here."""
+    from pipeline.agents.character_designer import _STUB_STYLE_REGISTER_BY_KEYWORD
+
+    assert list(_STUB_STYLE_REGISTER_BY_KEYWORD.items()) == [
+        ("mascot", "pixel-art-8bit"),
+        ("pixel", "pixel-art-8bit"),
+        ("watercolor", "watercolor"),
+        ("lineart", "line-art-only"),
+        ("photoreal", "photoreal"),
+        ("3d", "3d-rendered"),
+    ]
+
+
 @pytest.mark.parametrize("reg", _SIX)
 def test_cache_key_snapshot(reg, tmp_path):
     """The composed NB2 cache key is what actually protects the locked
