@@ -28,6 +28,14 @@ inline in the conversation (the storytelling-skill sidecar rule).
 - recommendation: <the stated lean>
 - open_questions: ...
 
+### expand:<axis-slug>   <!-- workshop depth — ONE block per contested axis -->
+- observations: <why this axis is contested — the live tension, in a line>
+- options: <N≈3–5 mutually distinct, each a named specific WITH its tradeoff>
+- recommendation: <one synthesized lean — combining options is fair — phrased
+  so Sean accepts/vetoes in a line; name the fragile intuition it protects>
+- open_questions: <buildability risks — e.g. a register anima can't yet build
+  — flagged, never waved through>
+
 ### interrogate
 - observations: ...
 - options: ...

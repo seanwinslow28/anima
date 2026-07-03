@@ -16,15 +16,20 @@ The stage skills do the craft; **you own every decision that sticks.** A stage
 proposes; Sean decides; you record. When you have enough to act, act — do not
 re-interview what the room already settled.
 
-## The chain (Slice 1)
+## The chain (Slice 2)
 
 ```
 spark → MICRO-EXPAND (always) → deepen? → INTERROGATE → SYNTHESIZE → emit + validate
+                                   │            │
+                                   └─ EXPAND ───┘   the inline contested-axis workshop —
+                                                    on "deepen", or mid-grill whenever an
+                                                    axis turns contested. Same room; the
+                                                    session never steps out to a skill.
 ```
 
 `references/chain-map.md` has the full routing rules and skip conditions. The
-future stages (EXPAND / ART-VIZ / STRESS-TEST) are named there too — if a
-session clearly needs one before it's built, say so and do the best inline
+future stages (ART-VIZ / STRESS-TEST) are named there too — if a session
+clearly needs one before it's built, say so and do the best inline
 approximation; never pretend a stage ran.
 
 ## Step 0 — open the session sidecar
@@ -55,13 +60,50 @@ Before any interviewing, lead with divergence. Produce, tersely:
   premise could wear.
 - **3 risk questions** — what would make this generic, saccharine, or mean?
 
-Then ask Sean **one question**: *deepen into a full fan-out, or proceed to
-interrogate?* ("Deepen" is Slice 2's EXPAND — until it ships, offer a longer
-inline fan-out honestly labeled as the stopgap.) Lock his picks: which premise,
-which tonal lean, which risks to carry as live constraints.
+Then ask Sean **one question**: *deepen, or proceed to interrogate?* On
+"deepen", run the contested-axis workshop below. Lock his picks: which
+premise, which tonal lean, which risks to carry as live constraints.
 
 This runs even when the spark arrives rich. A rich spark with one fragile
 high-value intuition is exactly the one a lazy front door flattens.
+
+### The contested-axis workshop (EXPAND at workshop depth — inline, same room)
+
+The micro-expand is EXPAND's reflex depth; this is the same mechanism turned
+up on **one contested axis** — a live tension the room hasn't resolved (the
+ending, the stakes, the signature mechanic). Two triggers, one behavior:
+
+- Sean answers **"deepen"** at the micro-expand gate, or
+- an axis turns contested **mid-grill** — INTERROGATE deepens **in place**;
+  it does not raise-and-return or invoke a sibling. The room never leaves
+  itself.
+
+**Not a volume fan-out.** The old "≥8 avenues across ≥4 domains" count is
+dead — volume is gameable (eight semantic neighbours hit the number and say
+nothing). Per contested axis, run this instead:
+
+1. **N≈3–5 options, mutually distinct.** Rotate the lens to force real
+   spread — emotional core / structural mechanic / tonal register /
+   failure-mode / cross-domain analogy — because left alone the model
+   clusters semantically: four phrasings of one idea wearing four hats.
+2. **Each option is a named specific with its tradeoff.** "His biggest hit
+   is an accidental humiliating clip he never meant to film — and he's
+   mortified it worked" locks; "a surprising ending" doesn't.
+3. **Qualify against the job.** JTBD (functional / emotional / social) and
+   "structural, not narrative": does the option change how the piece is
+   built, or just re-describe it?
+4. **Converge.** One stated recommendation — combining options is fair —
+   phrased so Sean can accept or veto in a line.
+5. **Protect the fragile intuition.** Name the duality/tension that makes
+   the spark special and check no option flattens it into a clean moral.
+6. **Surface buildability risks as `open_questions`.** A register anima
+   can't yet build gets flagged, not waved through.
+
+Append only the four proposal kinds to the sidecar, one block per axis
+(`### expand:<axis-slug>` — see `references/session-sidecar-contract.md`);
+Sean picks; **you** lock, and record `expand:<axis-slug>` in
+`stage_provenance`. The quality bar and Sean's live-review checklist:
+`references/good-expand-rubric.md`.
 
 ## Step 2 — INTERROGATE
 
