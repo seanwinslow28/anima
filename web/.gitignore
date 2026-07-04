@@ -1,0 +1,21 @@
+# dependencies
+node_modules
+
+# build output
+dist
+dist-ssr
+
+# vite / vitest caches
+.vite
+coverage
+
+# logs
+*.log
+npm-debug.log*
+
+# local env / editor
+*.local
+.DS_Store
+
+# typescript incremental build cache
+*.tsbuildinfo
