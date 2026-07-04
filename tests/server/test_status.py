@@ -118,3 +118,45 @@ def test_status_view_frames_projection():
     assert [f["n"] for f in frames] == [1, 2]
     assert frames[0] == {"n": 1, "status": "approved", "attempts": 2, "hold": 3}
     assert frames[1]["status"] == "generated" and frames[1]["hold"] == 2  # default hold
+
+
+def test_status_unknown_run_404(client):
+    assert client.get("/runs/does-not-exist/status").status_code == 404
+
+
+def test_status_traversal_404(client):
+    # Starlette normalizes many dot-segments; this asserts we never 200 on traversal.
+    assert client.get("/runs/..%2f..%2fetc/status").status_code == 404
+
+
+def test_status_corrupt_state_422(client, runs_root):
+    run_dir = runs_root / "corrupt"
+    run_dir.mkdir(parents=True)
+    (run_dir / "run_state.json").write_text("{ not json", encoding="utf-8")
+    r = client.get("/runs/corrupt/status")
+    assert r.status_code == 422
+    assert "run_state.json" in r.json()["detail"]
+
+
+def test_status_malformed_shape_is_422_not_500(client, runs_root):
+    # load_state accepts this (valid JSON + schema_version==1) but it lacks
+    # 'stage'/'plan'/'frames' — the projector must 422, never 500.
+    run_dir = runs_root / "malformed"
+    run_dir.mkdir(parents=True)
+    (run_dir / "run_state.json").write_text('{"schema_version": 1}', encoding="utf-8")
+    r = client.get("/runs/malformed/status")
+    assert r.status_code == 422
+    assert "malformed" in r.json()["detail"]
+
+
+def test_status_never_calls_a_gate(client, make_run, monkeypatch):
+    import pipeline.orchestration.generate_stage as gs
+    import pipeline.orchestration.plan_stage as ps
+
+    def _explode(*a, **k):
+        raise AssertionError("a gate function was called from the read path")
+
+    monkeypatch.setattr(gs, "run_frame_fan", _explode, raising=False)
+    monkeypatch.setattr(ps, "run_plan_stage", _explode, raising=False)
+    make_run("decoupled")
+    assert client.get("/runs/decoupled/status").status_code == 200
