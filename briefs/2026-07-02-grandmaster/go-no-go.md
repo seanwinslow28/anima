@@ -1,9 +1,65 @@
 # GRANDMASTER register go/no-go — the recorded decision the Bible pass is gated on
 
-**Status: `PENDING SPIKE`**
-*(The only legal successor values: `GO` or `NO-GO (Route C)`. The GRANDMASTER
-Cy Bible pass DOES NOT START until this field resolves — a hard precondition,
-not an aspiration. No calendar deadline; Sean sets pace.)*
+**Status: `NB2 NO-GO → TRANSPORT-ESCALATED to gpt-image` (resolved 2026-07-04)**
+*(The pre-agreed rule offered `GO` or `NO-GO (Route C)`; the spike surfaced a
+third outcome the binary didn't anticipate — the style is real and achievable,
+just not on NB2. See "## Resolution" below. The GRANDMASTER Cy Bible pass is
+still gated — now on a gpt-image across-edit identity validation, NOT on the
+register, which is authored and done. No calendar deadline; Sean sets pace.)*
+
+## Resolution (2026-07-04)
+
+**The spike ran** (Checkpoint 3, ~$0.25, three NB2 frames in
+`registers/primal-sketch-grit/refs/spike-2026-07-04/`): register clauses
+verbatim (A), grit-amplified (B), and Route C pencil (C). **Verdict: NB2
+NO-GO.** A read Primal-*lite* (clean uniform line, smooth render); B was
+meaningfully grittier and moodier (grit-amplification clearly helped — a real
+signal the clauses are under-powered) but still a *polished digital-comic*
+render, not the raw retained-hand-mark grit of the ART-VIZ target (pose 2).
+Exactly the miss research §4 predicted.
+
+**But the style is achievable — off NB2.** Sean independently tested the same
+prompts across **four engines** (ChatGPT Image 2 / gpt-image, NB Pro, NB2):
+**ChatGPT Image 2 was best by far.** He also confirmed NB2 cannot **edit** a
+frame into this style. So this is a **model limit, not a style limit** — and
+it resolves cleanly via the architecture's own mechanism: the register's
+`generation_model` moves off NB2 to **gpt-image**. (The pre-agreed ladder said
+"no chasing a new transport mid-pass"; that rule was written to prevent
+prompt-fiddling, not to reject a decisive four-engine finding made *before* the
+Bible pass. The escalation is recorded here, not chased mid-pass.)
+
+**The real remaining gate (this is the honest part).** NB2's failure was
+specifically at **editing** — and Cy's Bible pass IS an edit pipeline (anchor →
+turnarounds → expressions, holding the kid's identity across every plate).
+gpt-image clearly *generates* Primal well; whether it holds a character's
+identity **across a whole Bible of edits** is **unproven** (NB2 was originally
+chosen for exactly that across-edit consistency, per Flo-B). So:
+- **Style render** — solved (gpt-image). ✅
+- **Across-edit identity hold in that style** — the open question; a small
+  gpt-image edit-consistency spike answers it **before** GRANDMASTER's costed
+  Bible pass.
+
+**Two ways through, both deferred until GRANDMASTER is actually built** (NOT a
+vocabulary-workstream blocker): (a) wire a gpt-image transport into the
+pipeline + validate its edit-consistency; or (b) the pragmatic path — Sean
+hand-authors GRANDMASTER's key plates in ChatGPT Image 2 (as he did the
+mascot's colored keys) and ingests them as the Bible anchors, sidestepping the
+transport build.
+
+**Fallback REVISED (2026-07-04, Sean's call).** The pre-agreed NO-GO fallback
+was `pencil-test-colored` (Route C). Sean now prefers **`samurai-jack-s5`** —
+the same Tartakovsky/samurai-cinema world, rendered clean on gpt-image (a
+strong ChatGPT Image 2 example exists: `images/samuria-first-pose-chatgpt.png`;
+research: `docs/research/samurai-jack-season-5-art-style-description.md`). If
+gpt-image's across-edit identity hold fails for Primal, GRANDMASTER pivots to
+`samurai-jack-s5` (keeping the mood) rather than pencil-test (abandoning it).
+`samurai-jack-s5` is a candidate register in the
+[backlog](../../docs/active/2026-07-04-register-backlog-and-transport-findings.md),
+not yet authored. Route C (pencil-test) stays as the last-resort buildable-today
+option only.
+
+*The pre-agreed spike / decision-rule / ladder below are retained as the record
+of what was agreed before the spike ran.*
 
 **Provenance.** The 2026-07-03 STRESS-TEST returned `revise` because the
 piece's locked register (`primal-sketch-grit`, ART-VIZ Route B) had no home

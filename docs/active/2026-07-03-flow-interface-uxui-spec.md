@@ -166,7 +166,7 @@ Navigation is driven by the daemon's `next_action.kind` — each token routes to
 
 **Async job model:** every POST gate returns `202 {job_id}`; the UI polls `GET /jobs/{job_id}` and re-reads status on completion. While a job owns the run, the mutating `next_action` is suppressed (the active-cascade overlay) so you can't double-fire.
 
-**Keyboard (locked):** `⌘K` command palette (jump to any run / stage / action). Eye-gate: `Enter` approve, `R` retry, `Esc` cancel, `↑↓` frames, number keys switch attempts. `⌘Enter` approves a gate.
+**Keyboard (locked):** `⌘K` command palette (jump to any run / stage / action). Eye-gate: `Enter` approve, `R` retry, `Esc` cancel, `↑↓` frames, number keys switch attempts. `⌘Enter` approves a gate. **v1.1 (ratified 2026-07-03, R1) extends the eye-gate:** `Space` rock the loop, `L` lights-out, `O` onion-skin, `D` diff/compare (`[`/`]` wipe), `?` cheat-sheet — see the [v1.1 addendum](2026-07-03-flow-interface-spec-addendum-v1.1.md).
 
 **The shared annotation layer:** red pen + pin, mounted on any judged image — one component, two homes (brainstorm references, eye-gate candidates). Spec under the eye-gate.
 
@@ -455,3 +455,5 @@ The recurring strings, following the ux-writing standard: sentence case, verb-fi
 ---
 
 *Ratified 2026-07-03. This spec and the prototype are the build inputs for the Flow-like interface; the daemon deltas above are the backend's phased asks. Update this doc in place when a decision changes, per the anima maintenance convention.*
+
+**Extended by the ratified [v1.1 addendum](2026-07-03-flow-interface-spec-addendum-v1.1.md) (2026-07-03):** six design-research picks (the eye-gate instrument, Em-as-a-hand, the crew at their stations, the taste ledger, warmth-as-motion, the Bible recipe) + daemon deltas **D5** (studio taste-memory) and **D6** (`injected_plates` on the candidate). The eye-gate keyboard additions above are R1. Research basis: [`2026-07-03-flow-interface-design-research-brief.md`](2026-07-03-flow-interface-design-research-brief.md); mockups: [`2026-07-03-flow-interface-mockups-v1.1.html`](2026-07-03-flow-interface-mockups-v1.1.html).
