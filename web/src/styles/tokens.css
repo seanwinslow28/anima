@@ -1,0 +1,109 @@
+/*
+ * anima design tokens — lifted verbatim from the ratified prototype
+ * (docs/active/2026-07-03-flow-interface-ux-prototype.html :root) and the
+ * UX/UI spec's Design system section. OKLCH values live in the spec table;
+ * hex is what ships (broad support, the spec's own source of truth).
+ *
+ * Rules that are load-bearing (spec §Design system): one splash per surface,
+ * flat fills only (no gradients, no glow), two font families only, the paper
+ * grain is a static surface and never animated. Warmth is motion + instant
+ * response, not texture (addendum Pick 7).
+ */
+:root {
+  /* warm chrome — where you work */
+  --paper: #fbf5e9;
+  --panel: #f3ead8;
+  --card: #fffdf7;
+  --line: #e4d8c0;
+  --line2: #c9b994;
+  --ink: #23201b;
+  --ink2: #5a5348;
+  --ink3: #6f6349; /* darkened for AA at >=11px (spec a11y contract) */
+
+  /* dark stage — where you judge (present for the reel/overview accents) */
+  --st0: #15161a;
+  --st1: #1b1d22;
+  --stline: #2a2e38;
+  --stink: #eaeaf0;
+  --stmute: #9aa0aa;
+
+  /* one accent bridges both surfaces; semantic mapping is fixed */
+  --teal: #0a3e42; /* next / active — on warm */
+  --teal-bright: #37c7a6; /* next / active — on stage */
+  --teal-bg: #e7f0ec;
+  --teal-line: #bfdad3;
+  --grease: #b23a2e; /* the critic mark / fail / attention */
+  --amber: #b2802e;
+  --amber-dk: #e8a33d;
+  --green: #2f6b4f; /* approved / pass */
+  --green-bright: #5bc98c;
+
+  /* type — two families, one rule (spec §Type) */
+  --serif: "Newsreader", Georgia, serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+  /* radius + motion */
+  --r-card: 12px;
+  --r-ctl: 8px;
+  --r-pill: 20px;
+  --e-out: cubic-bezier(0.16, 1, 0.3, 1); /* ease-out-expo */
+
+  /* 4px base spacing scale (spec §Space) */
+  --sp-1: 6px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-6: 24px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Palette-aware focus ring — 2px teal on warm surfaces (spec a11y contract).
+   Never outline:none without a replacement. */
+:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+button {
+  font-family: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Reduced motion collapses every motion to an instant swap / short crossfade.
+   Scoped to animation + long transitions so hover/press feedback survives. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
