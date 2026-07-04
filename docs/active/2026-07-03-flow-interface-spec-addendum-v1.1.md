@@ -1,8 +1,8 @@
 # anima — Flow-like Interface: Spec Addendum v1.1
 
 **Date:** 2026-07-03
-**Status:** Proposals for ratification. Six picks chosen by Sean from the 2026-07-03 design-research + brainstorm session. Extends the v1 spec ([`2026-07-03-flow-interface-uxui-spec.md`](2026-07-03-flow-interface-uxui-spec.md)); grounded in the research brief ([`2026-07-03-flow-interface-design-research-brief.md`](2026-07-03-flow-interface-design-research-brief.md)); companion mockups in [`2026-07-03-flow-interface-mockups-v1.1.html`](2026-07-03-flow-interface-mockups-v1.1.html).
-**Decider:** Sean. Every proposal carries a lean; the picks are his. Items that change a *locked* v1 decision are flagged **→ ratify** and consolidated at the end.
+**Status:** RATIFIED 2026-07-03 (Sean approved R1–R5). Six picks chosen by Sean from the 2026-07-03 design-research + brainstorm session, now build-ready. Extends the v1 spec ([`2026-07-03-flow-interface-uxui-spec.md`](2026-07-03-flow-interface-uxui-spec.md)); grounded in the research brief ([`2026-07-03-flow-interface-design-research-brief.md`](2026-07-03-flow-interface-design-research-brief.md)); companion mockups in [`2026-07-03-flow-interface-mockups-v1.1.html`](2026-07-03-flow-interface-mockups-v1.1.html).
+**Decider:** Sean. Every proposal carries a lean; the picks are his. Items that change a *locked* v1 decision are flagged **→ ratified** and consolidated at the end (all approved by Sean, 2026-07-03).
 
 ---
 
@@ -35,7 +35,7 @@ The organizing belief this addendum serves: **the app should feel like an instru
 
 **a11y.** Every new key has a visible button on the stage toolbar; the cheat-sheet (`?`) is the discoverability backstop; motion respects `prefers-reduced-motion` (rock collapses to a step, cel-flip to a crossfade); the diff wipe is also expressible as a labelled slider.
 
-**→ ratify (R1):** extends the locked eye-gate keyboard map (`Enter / R / Esc / ↑↓ / numbers`) with `Space`, `L`, `O`, `D`, `[`/`]`, `?`, and adds loop-playback / onion / diff as first-class eye-gate modes.
+**→ ratified (R1):** extends the locked eye-gate keyboard map (`Enter / R / Esc / ↑↓ / numbers`) with `Space`, `L`, `O`, `D`, `[`/`]`, `?`, and adds loop-playback / onion / diff as first-class eye-gate modes.
 
 ---
 
@@ -54,7 +54,7 @@ The organizing belief this addendum serves: **the app should feel like an instru
 
 **a11y.** The read-out is a labelled region announced to screen readers; the grease mark is decorative (`aria-hidden`) with the reasoning text carrying the meaning; the pre-filled clause is a real editable field.
 
-**→ ratify (R2 — the two reds):** onion-skin convention is "previous = red." To protect the grease-red critic signature, **onion "previous" renders as a desaturated cool tint and "next" as `--teal-bright`** — two reds never share the stage. (Lean: yes.)
+**→ ratified (R2 — the two reds):** onion-skin convention is "previous = red." To protect the grease-red critic signature, **onion "previous" renders as a desaturated cool tint and "next" as `--teal-bright`** — two reds never share the stage. (Lean: yes.)
 
 ---
 
@@ -103,7 +103,7 @@ The organizing belief this addendum serves: **the app should feel like an instru
 
 **a11y.** Standard editable list — labelled rows, real controls for edit/forget, `aria-live` on changes; plain Newsreader/JetBrains-Mono, no color-only meaning.
 
-**→ ratify (R3):** adds a **new surface** (the taste ledger) and a **new daemon delta D5**. Net-new, doesn't change an existing lock, but worth explicit sign-off given the delta and its "act" phase-2.
+**→ ratified (R3):** adds a **new surface** (the taste ledger) and a **new daemon delta D5**. Net-new, doesn't change an existing lock, but worth explicit sign-off given the delta and its "act" phase-2.
 
 ---
 
@@ -122,7 +122,7 @@ The organizing belief this addendum serves: **the app should feel like an instru
 
 **a11y.** All motion ≤260ms, `prefers-reduced-motion` collapses the cel-flip to a ≤1-opacity crossfade and the ship flourish to a static frame; sound is opt-in and never the sole signal.
 
-**→ ratify (R4):** the ship moment is a *milestone* delight, not a fourth signature — the locked signature trio (warm/dark seam · grease-pencil mark · cel-flip) stays three. Confirm it doesn't dilute the trio. (Lean: it's a milestone, keep the trio at three.)
+**→ ratified (R4):** the ship moment is a *milestone* delight, not a fourth signature — the locked signature trio (warm/dark seam · grease-pencil mark · cel-flip) stays three. Confirm it doesn't dilute the trio. (Lean: it's a milestone, keep the trio at three.)
 
 ---
 
@@ -140,7 +140,7 @@ The organizing belief this addendum serves: **the app should feel like an instru
 
 **a11y.** Chips in mono with `aria-label`s; the recipe strip is real text; plate badges carry text, not color-only status.
 
-**→ ratify (R5):** confirm **D6** joins the delta roadmap (v2, with D4).
+**→ ratified (R5):** confirm **D6** joins the delta roadmap (v2, with D4).
 
 ---
 
@@ -176,13 +176,13 @@ Mapped to Sean's stated split — **Fable 5 for the tough builds; Codex + Opus 4
 
 ---
 
-## Ratification asks (consolidated — your explicit yes)
+## Ratifications (approved by Sean, 2026-07-03)
 
-- **R1 — eye-gate keys + modes.** Extend the locked keyboard map with `Space` (rock), `L` (lights-out), `O` (onion), `D` (diff), `[`/`]` (wipe), `?` (cheat sheet); add loop/onion/diff as eye-gate modes. *(Lean: yes.)*
-- **R2 — the two reds.** Keep grease-red for Em (signature); render onion "previous" cool-desaturated, "next" `--teal-bright`. *(Lean: yes.)*
-- **R3 — the taste ledger + D5.** Add the new surface and the taste-memory delta; ship read-only reflect first, defer acting. *(Lean: yes — this is the special one.)*
-- **R4 — the ship moment.** Add it as a milestone delight; keep the signature trio at three. *(Lean: yes.)*
-- **R5 — D6.** Confirm `injected_plates` joins the v2 delta roadmap with D4. *(Lean: yes.)*
+- **R1 — eye-gate keys + modes.** Extend the locked keyboard map with `Space` (rock), `L` (lights-out), `O` (onion), `D` (diff), `[`/`]` (wipe), `?` (cheat sheet); add loop/onion/diff as eye-gate modes. **Approved.**
+- **R2 — the two reds.** Keep grease-red for Em (signature); render onion "previous" cool-desaturated, "next" `--teal-bright`. **Approved.**
+- **R3 — the taste ledger + D5.** Add the new surface and the taste-memory delta; ship read-only reflect first, defer acting. **Approved — the special one.**
+- **R4 — the ship moment.** Add it as a milestone delight; keep the signature trio at three. **Approved.**
+- **R5 — D6.** Confirm `injected_plates` joins the v2 delta roadmap with D4. **Approved.**
 
 None of R1–R5 touch Direction C's palette/type/signature, the anti-slop bans, or the a11y contract.
 
