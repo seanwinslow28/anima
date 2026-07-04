@@ -34,6 +34,17 @@ def next_action(state: dict) -> dict:
     return {"kind": "done", "hint": hint}
 
 
+def run_summary(state: dict) -> dict:
+    return {
+        "run_id": state["run_id"],
+        "stage": state["stage"],
+        "slug": state["slug"],
+        "stub": bool(state.get("stub")),
+        "updated_at": state.get("updated_at"),
+        "next_action": next_action(state),
+    }
+
+
 def status_view(state: dict) -> dict:
     frames = []
     for n in state.get("frame_order", []):
