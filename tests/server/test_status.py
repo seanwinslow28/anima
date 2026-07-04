@@ -1,4 +1,12 @@
+from pipeline.orchestration import state as st
+
 from server.runs import resolve_run_dir
+from server.state_view import next_action
+
+
+def _base():
+    return st.new_state(run_id="r", brief_dir="b", manifest_path="m",
+                        shots_path="s", slug="X", stub=True, cast=[])
 
 
 def test_health_ok(client):
@@ -19,3 +27,49 @@ def test_resolve_run_dir_missing(runs_root):
 def test_resolve_run_dir_rejects_traversal(runs_root):
     for bad in ["../etc", "a/b", "..", ".hidden", "", "a\\b"]:
         assert resolve_run_dir(runs_root, bad) is None
+
+
+def test_next_action_plan_planning_then_approve():
+    s = _base()
+    assert next_action(s)["kind"] == "planning"       # plan.status == "pending"
+    s["plan"]["status"] = "drafted"
+    na = next_action(s)
+    assert na["kind"] == "approve_plan"
+    assert "--approve-plan" in na["hint"]             # provenance from _next_hint
+
+
+def test_next_action_script_in_progress_then_approve():
+    s = _base(); s["stage"] = "SCRIPT"
+    assert next_action(s)["kind"] == "scripting"          # no script.status yet
+    s["script"] = {"status": "drafted"}
+    assert next_action(s)["kind"] == "approve_script"
+
+
+def test_next_action_storyboard_in_progress_then_approve():
+    s = _base(); s["stage"] = "STORYBOARD"
+    assert next_action(s)["kind"] == "storyboarding"      # no storyboard.status yet
+    s["storyboard"] = {"status": "drafted"}
+    assert next_action(s)["kind"] == "approve_storyboard"
+
+
+def test_next_action_animatic():
+    s = _base(); s["stage"] = "ANIMATIC"
+    assert next_action(s)["kind"] == "approve_animatic"
+
+
+def test_next_action_generate_generating_review_then_assemble():
+    s = _base(); s["stage"] = "GENERATE"; s["frame_order"] = [1]
+    st.set_frame(s, 1, {"status": "pending", "attempts": []})
+    assert next_action(s)["kind"] == "generating"         # frame not yet generated
+    st.get_frame(s, 1)["status"] = "generated"
+    na = next_action(s)
+    assert na["kind"] == "review_frame" and na["frame"] == 1
+    st.get_frame(s, 1)["status"] = "approved"
+    assert next_action(s)["kind"] == "assemble"           # current_frame is None
+
+
+def test_next_action_assemble_stage_and_done():
+    s = _base(); s["stage"] = "ASSEMBLE"
+    assert next_action(s)["kind"] == "assemble"
+    s["stage"] = "DONE"
+    assert next_action(s)["kind"] == "done"
