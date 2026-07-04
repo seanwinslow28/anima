@@ -1,0 +1,162 @@
+from pipeline.orchestration import state as st
+
+from server.runs import resolve_run_dir
+from server.state_view import next_action, status_view
+
+
+def _base():
+    return st.new_state(run_id="r", brief_dir="b", manifest_path="m",
+                        shots_path="s", slug="X", stub=True, cast=[])
+
+
+def test_health_ok(client):
+    r = client.get("/health")
+    assert r.status_code == 200
+    assert r.json() == {"status": "ok"}
+
+
+def test_resolve_run_dir_found(make_run, runs_root):
+    run_dir, _ = make_run("abc")
+    assert resolve_run_dir(runs_root, "abc") == run_dir
+
+
+def test_resolve_run_dir_missing(runs_root):
+    assert resolve_run_dir(runs_root, "nope") is None
+
+
+def test_resolve_run_dir_rejects_traversal(runs_root):
+    for bad in ["../etc", "a/b", "..", ".hidden", "", "a\\b"]:
+        assert resolve_run_dir(runs_root, bad) is None
+
+
+def test_next_action_plan_planning_then_approve():
+    s = _base()
+    assert next_action(s)["kind"] == "planning"       # plan.status == "pending"
+    s["plan"]["status"] = "drafted"
+    na = next_action(s)
+    assert na["kind"] == "approve_plan"
+    assert "--approve-plan" in na["hint"]             # provenance from _next_hint
+
+
+def test_next_action_script_in_progress_then_approve():
+    s = _base(); s["stage"] = "SCRIPT"
+    assert next_action(s)["kind"] == "scripting"          # no script.status yet
+    s["script"] = {"status": "drafted"}
+    assert next_action(s)["kind"] == "approve_script"
+
+
+def test_next_action_storyboard_in_progress_then_approve():
+    s = _base(); s["stage"] = "STORYBOARD"
+    assert next_action(s)["kind"] == "storyboarding"      # no storyboard.status yet
+    s["storyboard"] = {"status": "drafted"}
+    assert next_action(s)["kind"] == "approve_storyboard"
+
+
+def test_next_action_animatic():
+    s = _base(); s["stage"] = "ANIMATIC"
+    assert next_action(s)["kind"] == "approve_animatic"
+
+
+def test_next_action_generate_generating_review_then_assemble():
+    s = _base(); s["stage"] = "GENERATE"; s["frame_order"] = [1]
+    st.set_frame(s, 1, {"status": "pending", "attempts": []})
+    assert next_action(s)["kind"] == "generating"         # frame not yet generated
+    st.get_frame(s, 1)["status"] = "generated"
+    na = next_action(s)
+    assert na["kind"] == "review_frame" and na["frame"] == 1
+    st.get_frame(s, 1)["status"] = "approved"
+    assert next_action(s)["kind"] == "assemble"           # current_frame is None
+
+
+def test_next_action_assemble_stage_and_done():
+    s = _base(); s["stage"] = "ASSEMBLE"
+    assert next_action(s)["kind"] == "assemble"
+    s["stage"] = "DONE"
+    assert next_action(s)["kind"] == "done"
+
+
+def test_status_view_shape_plan_stage():
+    s = _base()
+    view = status_view(s)
+    assert view["run_id"] == "r"
+    assert view["stage"] == "PLAN"
+    assert view["stub"] is True
+    assert view["plan_status"] == "pending"
+    assert view["next_action"]["kind"] == "planning"
+    assert view["frames"] == []
+
+
+def test_status_happy_path_plan(client, make_run):
+    make_run("2026-07-02-demo-run")
+    r = client.get("/runs/2026-07-02-demo-run/status")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["run_id"] == "2026-07-02-demo-run"
+    assert body["stage"] == "PLAN"
+    assert body["next_action"]["kind"] == "planning"
+    assert body["frames"] == []
+
+
+def test_status_reflects_generate_progress(client, make_run, runs_root):
+    run_dir, s = make_run("gen-run")
+    s["stage"] = "GENERATE"; s["frame_order"] = [1, 2]
+    st.set_frame(s, 1, {"status": "approved", "attempts": [{"index": 1}]})
+    st.set_frame(s, 2, {"status": "generated", "attempts": [{"index": 1}]})
+    st.save_state(run_dir, s)
+    body = client.get("/runs/gen-run/status").json()
+    assert body["next_action"]["kind"] == "review_frame"
+    assert body["next_action"]["frame"] == 2
+    assert [f["n"] for f in body["frames"]] == [1, 2]
+
+
+def test_status_view_frames_projection():
+    s = _base(); s["stage"] = "GENERATE"; s["frame_order"] = [1, 2]
+    s["holds"] = {"1": 3}
+    st.set_frame(s, 1, {"status": "approved", "attempts": [{"index": 1}, {"index": 2}]})
+    st.set_frame(s, 2, {"status": "generated", "attempts": [{"index": 1}]})
+    frames = status_view(s)["frames"]
+    assert [f["n"] for f in frames] == [1, 2]
+    assert frames[0] == {"n": 1, "status": "approved", "attempts": 2, "hold": 3}
+    assert frames[1]["status"] == "generated" and frames[1]["hold"] == 2  # default hold
+
+
+def test_status_unknown_run_404(client):
+    assert client.get("/runs/does-not-exist/status").status_code == 404
+
+
+def test_status_traversal_404(client):
+    # Starlette normalizes many dot-segments; this asserts we never 200 on traversal.
+    assert client.get("/runs/..%2f..%2fetc/status").status_code == 404
+
+
+def test_status_corrupt_state_422(client, runs_root):
+    run_dir = runs_root / "corrupt"
+    run_dir.mkdir(parents=True)
+    (run_dir / "run_state.json").write_text("{ not json", encoding="utf-8")
+    r = client.get("/runs/corrupt/status")
+    assert r.status_code == 422
+    assert "run_state.json" in r.json()["detail"]
+
+
+def test_status_malformed_shape_is_422_not_500(client, runs_root):
+    # load_state accepts this (valid JSON + schema_version==1) but it lacks
+    # 'stage'/'plan'/'frames' — the projector must 422, never 500.
+    run_dir = runs_root / "malformed"
+    run_dir.mkdir(parents=True)
+    (run_dir / "run_state.json").write_text('{"schema_version": 1}', encoding="utf-8")
+    r = client.get("/runs/malformed/status")
+    assert r.status_code == 422
+    assert "malformed" in r.json()["detail"]
+
+
+def test_status_never_calls_a_gate(client, make_run, monkeypatch):
+    import pipeline.orchestration.generate_stage as gs
+    import pipeline.orchestration.plan_stage as ps
+
+    def _explode(*a, **k):
+        raise AssertionError("a gate function was called from the read path")
+
+    monkeypatch.setattr(gs, "run_frame_fan", _explode, raising=False)
+    monkeypatch.setattr(ps, "run_plan_stage", _explode, raising=False)
+    make_run("decoupled")
+    assert client.get("/runs/decoupled/status").status_code == 200
