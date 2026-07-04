@@ -4,17 +4,19 @@ This folder holds the register's **style exemplars** — the images the human
 eye ratifies the look against, and (only if a go/no-go escalates to a
 style-reference feed) the images fed to generation.
 
-**Status:** this register is a **CANDIDATE** — research + look-spike stage,
-**not yet authored** into `pipeline/registers.py`. It is gated on Sean liking
-a look-spike (his cross-engine test in the ChatGPT + Flow web apps), exactly
-like the `primal-sketch-grit` process. See [`../research.md`](../research.md).
+**Status:** this register is a **CANDIDATE** — the look is **CONFIRMED** (Sean's
+2026-07-04 cross-engine spike: appealing warm cel-cartoon *default* + a sparse
+grotesque gross-up punctuation; **NB2 GO**, no transport escalation — see
+[`../research.md`](../research.md) §0 + §4). It is **not yet authored** into
+`pipeline/registers.py`; the doctrine drill is the next step, on Sean's greenlight.
 
-**What lands here:**
-- The **look-spike frames** themselves, once generated (in a dated
-  `spike-<date>/` subfolder, mirroring `primal-sketch-grit/refs/spike-2026-07-04/`),
-  so the look-decision's evidence stays with the register.
-- Sean's confirmed **hero frame(s)** once a look is picked (the ai-guru
-  ART-VIZ target lives at `briefs/2026-07-02-ai-guru-pilot/` today).
+**What lands here (present now):**
+- The **6 confirmed look-spike exemplars** (2026-07-04, Sean-ratified) — Sean's
+  own generations in the genericized register, the look-decision's evidence:
+  `AI-Guru-ChatGPT-{1,2,3}.png` + `AI-Guru-NB-Pro-1.jpeg` (the appealing-base
+  initial generations) and `AI-Guru-NB2-{2,3}.jpeg` (NB2 edits, incl. the
+  grotesque gross-up closeup NB2 rendered best).
+- Sean's confirmed **hero frame(s)** once a Bible is authored.
 - Any future **self-authored** exemplars in this register.
 
 **What NEVER lands here:** third-party *Ren & Stimpy* stills, cels, or artbook
