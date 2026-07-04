@@ -60,3 +60,38 @@ def artifact_path(state: dict, runs_root: Path, kind: str) -> Path | None:
 
 def artifact_media_type(path: Path) -> str:
     return _TEXT_MEDIA.get(path.suffix.lower(), "text/plain")
+
+
+def candidates_view(state: dict, run_id: str, n: int) -> list[dict] | None:
+    """Project frame n's attempts for the eye-gate screen; None if n isn't a frame.
+
+    Verdict data (T1 + the Em records, incl. reasoning and proposed_patches)
+    rides through AS RECORDED — the daemon never re-derives a verdict. Status is
+    per-attempt: the frame's approved_attempt is "approved", a failed fan is
+    "errored", the rest are "generated".
+    """
+    if n not in state.get("frame_order", []):
+        return None
+    rec = state["frames"].get(str(n), {})
+    approved = rec.get("approved_attempt")
+    out: list[dict] = []
+    for a in rec.get("attempts", []):
+        idx = a.get("index")
+        if idx == approved:
+            status = "approved"
+        elif a.get("errored"):
+            status = "errored"
+        else:
+            status = "generated"
+        out.append({
+            "attempt": idx,
+            "image_url": (f"/runs/{run_id}/frames/{n}/image?attempt={idx}"
+                          if a.get("candidate") else None),
+            "status": status,
+            "t1": a.get("t1"),
+            "em": a.get("em", []),
+            "note": a.get("note"),
+            "errored": a.get("errored"),
+            "ts": a.get("ts"),
+        })
+    return out
