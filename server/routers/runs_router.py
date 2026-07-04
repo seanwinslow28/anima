@@ -3,7 +3,8 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException, Request, Response
 
 from pipeline.orchestration import state as st
-from server.artifacts import artifact_media_type, artifact_path, candidates_view
+from server.artifacts import (artifact_media_type, artifact_path,
+                              candidates_view, image_media_type, image_path)
 from server.runs import list_runs, resolve_run_dir
 from server.state_view import status_view
 
@@ -68,6 +69,26 @@ def get_frame_candidates(run_id: str, n: int, request: Request) -> list[dict]:
     if view is None:
         raise HTTPException(status_code=404, detail=f"no frame {n} in run {run_id!r}")
     return view
+
+
+@router.get("/{run_id}/frames/{n}/image")
+def get_frame_image(run_id: str, n: int, request: Request,
+                    attempt: int | None = None) -> Response:
+    runs_root = request.app.state.settings.runs_root
+    run_dir = resolve_run_dir(runs_root, run_id)
+    if run_dir is None:
+        raise HTTPException(status_code=404, detail=f"no run {run_id!r}")
+    state = _load_state_or_http_error(run_dir)
+    try:
+        path = image_path(state, runs_root, run_dir, n, attempt)
+    except (KeyError, TypeError) as e:
+        raise HTTPException(status_code=422, detail=f"malformed run_state.json: {e}")
+    if path is None:
+        # Missing frame/attempt/file AND a run-dir escape all land here — an
+        # escaping path is refused with the same 404, never served.
+        raise HTTPException(status_code=404,
+                            detail=f"no image for run {run_id!r} frame {n}")
+    return Response(content=path.read_bytes(), media_type=image_media_type(path))
 
 
 @router.get("/{run_id}/status")

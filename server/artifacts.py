@@ -10,6 +10,7 @@ writes: no save_state, no gate function, no model call.
 
 from __future__ import annotations
 
+import mimetypes
 from pathlib import Path
 
 # kind -> (state block, key of the exact recorded path, canonical brief_dir
@@ -95,3 +96,43 @@ def candidates_view(state: dict, run_id: str, n: int) -> list[dict] | None:
             "ts": a.get("ts"),
         })
     return out
+
+
+def image_path(state: dict, runs_root: Path, run_dir: Path,
+               n: int, attempt: int | None) -> Path | None:
+    """The on-disk image for frame n's attempt; None -> 404, never a 500.
+
+    attempt omitted -> the approved key if the frame has one, else the latest
+    attempt with a candidate. SECURITY: this feeds a byte-serving endpoint, so
+    the resolved path is CONFINED to run_dir — a recorded path that escapes
+    (absolute or via dot-segments) returns None and is never served.
+    """
+    if n not in state.get("frame_order", []):
+        return None
+    rec = state["frames"].get(str(n), {})
+    candidates = [a for a in rec.get("attempts", []) if a.get("candidate")]
+    recorded: str | None = None
+    if attempt is None:
+        if rec.get("approved_attempt") is not None:
+            chosen = next((a for a in candidates
+                           if a.get("index") == rec["approved_attempt"]), None)
+            recorded = rec.get("approved_path") or (chosen["candidate"] if chosen else None)
+        elif candidates:
+            recorded = max(candidates, key=lambda a: a["index"])["candidate"]
+    else:
+        chosen = next((a for a in candidates if a.get("index") == attempt), None)
+        recorded = chosen["candidate"] if chosen else None
+    if not recorded:
+        return None
+    try:
+        resolved = resolve_state_path(runs_root, recorded).resolve()
+        confined = resolved.is_relative_to(Path(run_dir).resolve())
+    except OSError:
+        return None
+    if not confined:
+        return None
+    return resolved if resolved.is_file() else None
+
+
+def image_media_type(path: Path) -> str:
+    return mimetypes.guess_type(path.name)[0] or "application/octet-stream"
