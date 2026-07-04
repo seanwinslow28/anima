@@ -1,7 +1,7 @@
 from pipeline.orchestration import state as st
 
 from server.runs import resolve_run_dir
-from server.state_view import next_action
+from server.state_view import next_action, status_view
 
 
 def _base():
@@ -73,3 +73,25 @@ def test_next_action_assemble_stage_and_done():
     assert next_action(s)["kind"] == "assemble"
     s["stage"] = "DONE"
     assert next_action(s)["kind"] == "done"
+
+
+def test_status_view_shape_plan_stage():
+    s = _base()
+    view = status_view(s)
+    assert view["run_id"] == "r"
+    assert view["stage"] == "PLAN"
+    assert view["stub"] is True
+    assert view["plan_status"] == "pending"
+    assert view["next_action"]["kind"] == "planning"
+    assert view["frames"] == []
+
+
+def test_status_view_frames_projection():
+    s = _base(); s["stage"] = "GENERATE"; s["frame_order"] = [1, 2]
+    s["holds"] = {"1": 3}
+    st.set_frame(s, 1, {"status": "approved", "attempts": [{"index": 1}, {"index": 2}]})
+    st.set_frame(s, 2, {"status": "generated", "attempts": [{"index": 1}]})
+    frames = status_view(s)["frames"]
+    assert [f["n"] for f in frames] == [1, 2]
+    assert frames[0] == {"n": 1, "status": "approved", "attempts": 2, "hold": 3}
+    assert frames[1]["status"] == "generated" and frames[1]["hold"] == 2  # default hold

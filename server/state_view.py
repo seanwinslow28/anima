@@ -32,3 +32,24 @@ def next_action(state: dict) -> dict:
     if stage == "ASSEMBLE":
         return {"kind": "assemble", "hint": hint}
     return {"kind": "done", "hint": hint}
+
+
+def status_view(state: dict) -> dict:
+    frames = []
+    for n in state.get("frame_order", []):
+        rec = state["frames"].get(str(n), {})
+        frames.append({
+            "n": n,
+            "status": rec.get("status", "pending"),
+            "attempts": len(rec.get("attempts", [])),
+            "hold": st.get_hold(state, n),
+        })
+    return {
+        "run_id": state["run_id"],
+        "stage": state["stage"],
+        "stub": bool(state.get("stub")),
+        "plan_status": state["plan"]["status"],
+        "next_action": next_action(state),
+        "frames": frames,
+        "updated_at": state.get("updated_at"),
+    }
