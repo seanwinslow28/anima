@@ -86,6 +86,29 @@ def test_status_view_shape_plan_stage():
     assert view["frames"] == []
 
 
+def test_status_happy_path_plan(client, make_run):
+    make_run("2026-07-02-demo-run")
+    r = client.get("/runs/2026-07-02-demo-run/status")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["run_id"] == "2026-07-02-demo-run"
+    assert body["stage"] == "PLAN"
+    assert body["next_action"]["kind"] == "planning"
+    assert body["frames"] == []
+
+
+def test_status_reflects_generate_progress(client, make_run, runs_root):
+    run_dir, s = make_run("gen-run")
+    s["stage"] = "GENERATE"; s["frame_order"] = [1, 2]
+    st.set_frame(s, 1, {"status": "approved", "attempts": [{"index": 1}]})
+    st.set_frame(s, 2, {"status": "generated", "attempts": [{"index": 1}]})
+    st.save_state(run_dir, s)
+    body = client.get("/runs/gen-run/status").json()
+    assert body["next_action"]["kind"] == "review_frame"
+    assert body["next_action"]["frame"] == 2
+    assert [f["n"] for f in body["frames"]] == [1, 2]
+
+
 def test_status_view_frames_projection():
     s = _base(); s["stage"] = "GENERATE"; s["frame_order"] = [1, 2]
     s["holds"] = {"1": 3}
