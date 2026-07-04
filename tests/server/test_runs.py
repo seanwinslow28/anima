@@ -84,6 +84,43 @@ def test_list_runs_surfaces_corrupt_run_as_error_item(make_run, runs_root):
     assert "run_state.json" in err["error"]
 
 
+def test_list_endpoint_empty(client):
+    r = client.get("/runs")
+    assert r.status_code == 200
+    assert r.json() == []
+
+
+def test_list_endpoint_two_runs_newest_first(client, make_run):
+    older, _ = make_run("older-run")
+    newer, _ = make_run("newer-run")
+    _stamp_updated_at(older, "2026-07-01T00:00:00")
+    _stamp_updated_at(newer, "2026-07-04T00:00:00")
+    r = client.get("/runs")
+    assert r.status_code == 200
+    body = r.json()
+    assert [i["run_id"] for i in body] == ["newer-run", "older-run"]
+    assert set(body[0]) == {"run_id", "stage", "slug", "stub", "updated_at", "next_action"}
+
+
+def test_list_endpoint_surfaces_corrupt_run_not_500(client, make_run, runs_root):
+    make_run("good-run")
+    corrupt = runs_root / "corrupt-run"
+    corrupt.mkdir()
+    (corrupt / st.STATE_FILENAME).write_text("{ not json", encoding="utf-8")
+    # A parseable-but-malformed state (valid JSON, missing 'stage'/'plan') must
+    # also surface as an error item, not blow up the whole list.
+    malformed = runs_root / "malformed-run"
+    malformed.mkdir()
+    (malformed / st.STATE_FILENAME).write_text('{"schema_version": 1}', encoding="utf-8")
+    r = client.get("/runs")
+    assert r.status_code == 200  # never a 500 — the list must always render
+    body = r.json()
+    assert {i["run_id"] for i in body} == {"good-run", "corrupt-run", "malformed-run"}
+    errors = {i["run_id"]: i for i in body if i["stage"] is None}
+    assert set(errors) == {"corrupt-run", "malformed-run"}
+    assert all("error" in i for i in errors.values())
+
+
 def test_get_run_unknown_404(client):
     assert client.get("/runs/does-not-exist").status_code == 404
 

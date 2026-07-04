@@ -3,10 +3,15 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException, Request
 
 from pipeline.orchestration import state as st
-from server.runs import resolve_run_dir
+from server.runs import list_runs, resolve_run_dir
 from server.state_view import status_view
 
 router = APIRouter(prefix="/runs", tags=["runs"])
+
+
+@router.get("")
+def get_runs(request: Request) -> list[dict]:
+    return list_runs(request.app.state.settings.runs_root)
 
 
 @router.get("/{run_id}")
