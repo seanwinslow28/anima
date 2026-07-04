@@ -1,0 +1,5 @@
+# ② Flow Interface daemon (server/) — NOT imported by pipeline/.
+# Install: python -m pip install -r requirements-server.txt
+fastapi
+uvicorn[standard]
+httpx
