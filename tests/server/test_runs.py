@@ -1,6 +1,17 @@
+import json
+
 from pipeline.orchestration import state as st
 
+from server.runs import list_runs
 from server.state_view import next_action, run_summary
+
+
+def _stamp_updated_at(run_dir, value: str) -> None:
+    """Write updated_at directly (save_state would restamp it with wall-clock)."""
+    path = run_dir / st.STATE_FILENAME
+    data = json.loads(path.read_text(encoding="utf-8"))
+    data["updated_at"] = value
+    path.write_text(json.dumps(data), encoding="utf-8")
 
 
 def test_run_summary_shape(make_run):
@@ -25,6 +36,52 @@ def test_get_run_returns_full_state(client, make_run):
     assert "stage" in body and "plan" in body and "frames" in body
     # Raw passthrough: the response IS the state on disk, no projection.
     assert body == st.load_state(run_dir)
+
+
+def test_list_runs_empty_root(runs_root):
+    assert list_runs(runs_root) == []
+
+
+def test_list_runs_two_runs_present(make_run, runs_root):
+    make_run("run-a")
+    make_run("run-b")
+    items = list_runs(runs_root)
+    assert {i["run_id"] for i in items} == {"run-a", "run-b"}
+    for item in items:
+        assert item["stage"] == "PLAN"
+        assert item["slug"] == "DEMO"
+        assert item["next_action"]["kind"] == "planning"
+
+
+def test_list_runs_skips_dir_without_state_file(make_run, runs_root):
+    make_run("real-run")
+    (runs_root / "not-a-run").mkdir()  # no run_state.json — not a run
+    items = list_runs(runs_root)
+    assert [i["run_id"] for i in items] == ["real-run"]
+
+
+def test_list_runs_sorted_by_updated_at_desc(make_run, runs_root):
+    # save_state stamps updated_at itself and two calls can collide; write two
+    # DISTINCT values directly into the state files, then assert order.
+    older, _ = make_run("older-run")
+    newer, _ = make_run("newer-run")
+    _stamp_updated_at(older, "2026-07-01T00:00:00")
+    _stamp_updated_at(newer, "2026-07-04T00:00:00")
+    items = list_runs(runs_root)
+    assert [i["run_id"] for i in items] == ["newer-run", "older-run"]
+
+
+def test_list_runs_surfaces_corrupt_run_as_error_item(make_run, runs_root):
+    good, _ = make_run("good-run")
+    _stamp_updated_at(good, "2026-07-04T00:00:00")
+    corrupt = runs_root / "corrupt-run"
+    corrupt.mkdir()
+    (corrupt / st.STATE_FILENAME).write_text("{ not json", encoding="utf-8")
+    items = list_runs(runs_root)
+    assert [i["run_id"] for i in items] == ["good-run", "corrupt-run"]  # error sorts last
+    err = items[1]
+    assert err["stage"] is None
+    assert "run_state.json" in err["error"]
 
 
 def test_get_run_unknown_404(client):
