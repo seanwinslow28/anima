@@ -2,6 +2,7 @@
 
 **Status:** LOCKED 2026-05-25 · implementation in progress (commit 1 of 9)
 **Supersedes:** the brainstorm + change-map dated 2026-05-24 are historical artifacts that *produced* this lock. This document is the canonical reference going forward.
+**Addendum (2026-07-03):** the Brainstorm Front Door (①) shipped as a new capability upstream of Phase 0 — see [Brainstorm Front Door](#brainstorm-front-door-①--the-creative-entry-point-to-phase-0) below. It was built outside the original 9-commit sequence, as the first "outward turn" workstream after Tier-2 (Em calibration) closed.
 
 A new session reading only this file should be able to act on the architecture without back-references. If something here turns out to be wrong, flag it — don't silently correct it. The architectural decisions below are locked.
 
@@ -21,6 +22,36 @@ The pipeline is where taste meets compute. The shape that follows is the simples
 
 ---
 
+## Brainstorm Front Door (①) — the creative entry point to Phase 0
+
+**Status: BUILT.** All four slices shipped 2026-07-02 → 2026-07-03; the five-stage chain is complete and validated against two live runs (the piñata/GRANDMASTER dry-run — its own spec + eval fixture — and the ai-guru-pilot run).
+
+**Purpose.** Phase 0 assumes `docs/brief.md` already exists. The front door is what produces one from nothing but a one-line spark — "what if we made X" — turning it into the exact bundle Phase 0 consumes: a museum-worthy `concept.md`, a Maya-ready `00_studio_brief.md`, `character_seeds.yaml` for Cy, and a `frontdoor.json` machine handoff. It is opt-in and strictly additive: a hand-written brief skips it entirely, and `python -m pipeline.run --brief <dir>` is the unchanged consumer either way.
+
+**Architecture — a user-invoked orchestrator + two model-invoked skills, over a thin code seam.** Two layers, cleanly separated:
+
+- **The skill layer** (`.claude/skills/`, human-facing, all markdown). [`brainstorm-front-door`](../../.claude/skills/brainstorm-front-door/SKILL.md) is the **user-invoked orchestrator** — it runs the room, owns every locked decision, and is the only thing that ever emits the final bundle. It reaches for two **model-invoked discipline skills**: `frontdoor-interrogate` (the relentless one-question-at-a-time grill, with a generic-answer detector that pushes toward named specifics, gated by the creative-director six-point North Star) and `frontdoor-synthesize` (writes the bundle from the running session sidecar — no new interviewing — self-checks it against an anti-pattern rubric, then calls the code seam to emit + validate).
+- **The code seam** (`pipeline/frontdoor/`), pure Python, credential-free, TDD-tested: `brief.py` (the `StudioBrief` schema — 7 exact H2 headers order-enforced, with a required nested `### What this is NOT` sub-block — plus parse/render/validate), `handoff.py` (the `frontdoor.json` descriptor: `slug` / `characters` / `stage_provenance` + a `mode: interactive|fixture` marker so a test fixture can never masquerade as a live session), `emit.py` (writes the 5-file bundle plus `manifest_gap_report.md`), `validate.py` (structural checks + a `register_warnings()` soft flag — an unregistered nonempty `style_register` warns, never blocks, because the front door is where a new register is *discovered*), `cli.py` (`python -m pipeline.frontdoor validate <dir>`). The skills produce prose; the code only validates structure and emits the handoff — CI stays green without API keys, and interview *quality* is judged by the golden-fixture eval (piñata + ai-guru), never a unit test.
+
+**The chain — five named stages, but three of them are inline orchestrator disciplines, not skills (a load-bearing reversal from the original plan).** The 2026-07-02 converged build plan specified five separate model-invoked skills (`frontdoor-expand`, `frontdoor-art-viz`, `frontdoor-stress-test`, alongside interrogate/synthesize) and five code modules. Live dry-runs proved that wrong — EXPAND, ART-VIZ, and STRESS-TEST all did their job *inside the room*, without ever stepping out to a sibling skill — and two rounds of Codex red-team agreed each time. What actually shipped:
+
+1. **MICRO-EXPAND** (always-on, inline, every session). Before any interviewing: 3 alternate premises, 3 style-tone routes, 3 risk questions — then one question, "deepen, or proceed to interrogate?"
+2. **The contested-axis workshop** (EXPAND, inline — no `frontdoor-expand` skill). Reached on "deepen," or whenever an axis turns contested mid-grill; the room never leaves itself. N≈3–5 mutually distinct options per axis, each a named specific with a stated tradeoff, converging on one recommendation. The original "≥8 avenues across ≥4 domains" volume metric is dead (gameable — eight semantic neighbors can hit the count and say nothing); a six-criterion live-review rubric replaced it.
+3. **INTERROGATE** — the one stage that stayed a skill call (`frontdoor-interrogate`). Grills one question at a time until the North Star is nailed down.
+4. **ART-VIZ** (Step 2.5, inline — no `frontdoor-art-viz` skill, no `genndy-tartakovsky` style skill built). One fixed hero frame, ≥3 mutually distinct Flow-ready route prompts rendering the *same composition* in different registers, so comparison stays apples-to-apples. **$0, prompt-only** — a live Higgsfield MCP render is deferred behind an explicit human-typed `SPEND OK: Higgsfield <model> <count> <max-credits>` phrase, never fired by a skill on its own. An un-buildable register is surfaced as an `open_question` against the closed style-register vocabulary ([`prompt-style-neutrality-doctrine.md`](prompt-style-neutrality-doctrine.md)), never silently extended.
+5. **STRESS-TEST** (Step 2.75, inline reflex → fresh-context authority — no `frontdoor-stress-test` skill). A cheap in-room pre-mortem warm-up first, then a **fresh-context sub-agent** — reading only the draft `concept.md` + `00_studio_brief.md`, blind to the session sidecar's "love story" — runs the authoritative pass: Tiger / Paper-Tiger / Elephant triage (default to Tiger when unsure) + steelman-then-attack red-team, each surviving risk written as "Fails if ___" with its cheapest test. Recommends `proceed` (with named residuals) or `revise`; the orchestrator locks the verdict. **A production-binding residual** — one that changes buildability, budget, or constraints — must land in the Studio Brief itself (under `### What this is NOT` or the non-negotiables), never left in `concept.md` alone, because Maya/Sam/Bea only ever read the brief.
+6. **SYNTHESIZE** — the second stage that stayed a skill call (`frontdoor-synthesize`). Writes the bundle from the locked decisions, self-checks against the anti-pattern rubric, and is the *only* stage that emits — always through the code seam.
+
+The chain-wide invariant, held since Slice 1: a stage skill may return only four kinds of content — `observations`, `options`, `recommendation`, `open_questions`. Only the orchestrator writes locked-decision fields (`chosen_route`, `skip_stage`, `locked_style`, `stress_verdict`, `stage_provenance`), and a lock is append-only — no later stage can rewrite an earlier one. This is the same "critics propose, humans decide" pattern as the T1/T2/T3 stack, one level upstream of it — Sean is the one decider throughout.
+
+**What was deliberately never built.** No `frontdoor-expand`, `frontdoor-art-viz`, or `frontdoor-stress-test` skill. No `seeds.py`, `spark.py`, `style_refs.py`, or `stress.py` modules — cut by red-team as schema theater before they were written. No `style_route` or `stress_verdict` field in `frontdoor.json` — nothing reads either one, so neither exists (style routes and the stress verdict are prose in `concept.md` plus a locked decision in the sidecar). `pipeline/frontdoor/` has stayed schema- and behavior-identical since Slice 1 across three subsequent slices of pure prose + rubric + a handful of characterization tests.
+
+**Downstream boundary.** The front door's output is **Maya-ready, not GENERATE-ready**, for any new character it seeds. Cy still has to author a Bible (Cy's node requires a non-empty `source-refs/` directory before it will start) and the character has to be registered in the manifest before Phase 5 can touch it. `manifest_gap_report.md` names exactly which seed characters still need that work; the front door never mutates `manifest.yaml` itself. In production this boundary already did real work once: the GRANDMASTER dry-run's STRESS-TEST flagged a style-register gap as a Launch-Blocking Tiger, which surfaced in its Studio Brief and gated the character's Bible pass until the animation-vocabulary-expansion workstream authored the missing register — the honest-boundary behavior working exactly as designed, not a hypothetical.
+
+**Provenance.** Design: [`docs/active/2026-06-29-brainstorm-front-door-design.md`](../active/2026-06-29-brainstorm-front-door-design.md). Build plan (Slice 1's *how*, superseded in shape by the Slice 2-4 inline reversal but kept as the *why*): [`docs/active/2026-07-02-frontdoor-build-plan-CONVERGED.md`](../active/2026-07-02-frontdoor-build-plan-CONVERGED.md). Per-slice converged specs: [Slice 2 EXPAND](../active/2026-07-02-frontdoor-slice2-expand-CONVERGED.md), [Slice 3 ART-VIZ](../active/2026-07-02-frontdoor-slice3-artviz-CONVERGED.md), [Slice 4 STRESS-TEST](../active/2026-07-03-frontdoor-slice4-stress-test-CONVERGED.md). Orchestrator skill: [`brainstorm-front-door/SKILL.md`](../../.claude/skills/brainstorm-front-door/SKILL.md).
+
+---
+
 ## The 10 Phases
 
 Phase numbering runs 0 through 9 plus an orthogonal Museum capture layer that runs in parallel with all other phases. Phases 1, 7, and 9 are cost-light or human-only and do not participate in draft → pro escalation. The remaining seven phases do.
@@ -29,16 +60,18 @@ Phase numbering runs 0 through 9 plus an orthogonal Museum capture layer that ru
 
 **Purpose.** Turn a free-text brief into a structured plan + cost estimate before any model call. Approval is a human gate; nothing burns compute until the plan is approved. This is anima's structural answer to the cost-surprise problem — the user signs off on intent and budget upfront, then argues with the plan rather than with the bill.
 
-**Inputs.** `docs/brief.md` (free-form markdown — the user describes the project in prose, not a structured form).
+**Inputs.** `docs/brief.md` (free-form markdown — the user describes the project in prose, not a structured form), **or**, since 2026-07-03, the `concept.md` + `00_studio_brief.md` bundle emitted by the [Brainstorm Front Door (①)](#brainstorm-front-door-①--the-creative-entry-point-to-phase-0) skill chain — Maya reads `00_studio_brief.md` as free-text context either way; the front door is what a spark passes through before it becomes that file.
 
 **Outputs.** `docs/plan.md` (structured): phase list, frame counts, character IDs to load, draft prompts, retry budget, estimated spend across NB2 + Seedance + Claude tokens. Optionally seeds the manifest.
 
 **Draft tier.** Haiku planner, rough cost band.
 **Pro tier.** Sonnet planner, fine cost estimate.
 
+*Flagged (2026-07-07): this Haiku-draft/Sonnet-pro split was the plan at lock time; it is not what shipped. The planner agent (Maya) runs as Opus 4.8 primary authoring + a Sonnet 4.6 adversarial validation pass, not a model-tier swap — see CLAUDE.md's `planner — Maya` row for the current, actively-maintained description. Left as a flag rather than silently rewritten, per this doc's own convention.*
+
 **Critic checkpoint.** None at phase exit — the human approval gate replaces it. The planner agent itself is the subject of an eval suite under `evals/planner/` from day one.
 
-**Status.** Pending — lands in commit 3.
+**Status.** **Built and shipping** (landed 2026-06-11 as the PLAN stage of the Slice-2 run orchestrator). CLI: `python -m pipeline.cli plan init/show/approve/mutate`; folded into `python -m pipeline.run --brief <dir>` as the first stage. Since 2026-07-03 it can also be fed by the [Brainstorm Front Door (①)](#brainstorm-front-door-①--the-creative-entry-point-to-phase-0)'s emitted brief bundle.
 
 ### Phase 1 — SCAFFOLD
 
@@ -224,7 +257,7 @@ Every expensive node declares a draft tier and a pro tier. Default behavior: run
 
 | Phase | Draft tier | Pro tier | Notes |
 |-------|------------|----------|-------|
-| 0 BRIEF & PLAN | Haiku planner, rough cost band | Sonnet planner, fine cost estimate | Optional — long briefs only |
+| 0 BRIEF & PLAN | Haiku planner, rough cost band | Sonnet planner, fine cost estimate | Plan-time-only sketch; shipped instead as Opus 4.8 authoring + Sonnet 4.6 adversarial validation (see Phase 0 above, flagged) |
 | 1 SCAFFOLD | n/a | n/a | File structure, no compute |
 | 2 CHARACTER BIBLE | 2-3 anchor angles, no expression sheet | Full 8-angle turnaround + 8-12 expressions + costume variants | Draft answers "does this character work?"; pro is the reusable artifact |
 | 3 STORYBOARD | Rough beat sketches (silhouettes) | Full storyboard panels (composition + camera) | Human often hand-authors draft; agent fills pro |
