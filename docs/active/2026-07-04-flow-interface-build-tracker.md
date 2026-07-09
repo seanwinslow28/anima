@@ -29,8 +29,8 @@ Legend: ✅ merged · 🟡 built-green, PR open (needs review/merge) · 🔷 kic
 |---|---|---|---|---|---|
 | Daemon Slice 1 — skeleton + `GET /runs/{id}/status` | daemon | ✅ | #73 | Fable | v1a |
 | Daemon Slice 2 — `GET /runs` + `GET /runs/{id}` | daemon | ✅ | #74 | Fable | v1a |
-| **UI v1a — Dashboard + Run overview** | ui | 🟡 | `worktree-flow-web-v1a` (commit 5b0e93a) | Opus/Codex | the first visible app |
-| Daemon Slice 3 — artifacts + frame images | daemon | ✅ | merged (Kickoff A) | Opus/Codex | v1b gate/eye-gate reads |
+| **UI v1a — Dashboard + Run overview** | ui | ✅ | #78 | Opus/Codex | the first visible app |
+| Daemon Slice 3 — artifacts + frame images | daemon | ✅ | #75 | Opus/Codex | v1b gate/eye-gate reads |
 | Daemon Slice 4 — the job layer (subprocess driver + lock + `202`/poll) | daemon | ⬜ | — | **Fable** | all writes |
 | Daemon Slice 5 — POST gate actions | daemon | ⬜ | — | Opus/Codex | v1b gates |
 | Daemon Slice 6 — run creation + brief upload | daemon | ⬜ | — | Opus/Codex | new-run from UI |
@@ -42,7 +42,7 @@ Legend: ✅ merged · 🟡 built-green, PR open (needs review/merge) · 🔷 kic
 | UI v2 — character builder / storyboard board / generate grid / motion | ui | ⬜ | — | mixed | the visual pages |
 | UI v3 — the timeline | ui | ⬜ | — | Opus/Codex | arrange/trim/export |
 
-**Right now:** Daemon Slices 1–3 (the full read API) are merged. UI v1a is built-green on its branch (typecheck clean, 17/17 Vitest, `npm run build` ok, daemon-smoke confirmed against real runs) — **open its PR + merge after Sean's browser eyeball.** After v1a lands, the next backend unit is **Slice 4 (the job layer — Fable 5)**, and the next UI milestone is **v1b (gates + eye-gate)**.
+**Right now (reconciled 2026-07-08):** Daemon Slices 1–3 (the full read API — #73/#74/#75) **and** UI v1a (Dashboard + Run overview — #78) are **all merged** to `main`. The read spine + the first visible app are live. Verified this session: `python -m pytest tests/` = **859 green**, `pipeline/tests/` = **10 green**, both md5 guards unmoved (`2af75906…`, `945af824…`). The next backend unit is **Slice 4 (the job layer — Fable 5, research-first)**; the next UI milestone is **v1b (gates + eye-gate)**. Interleave order puts **Slice 4 first** — every v1b write (gate approve/retry) depends on the `202 {job_id}` job layer.
 
 ---
 
@@ -51,8 +51,8 @@ Legend: ✅ merged · 🟡 built-green, PR open (needs review/merge) · 🔷 kic
 The principle: **build backend just-in-time for the UI milestone that consumes it — never backend ahead of its consumer** (the anti-drift lesson). UI + its backing daemon slices land together as demoable increments.
 
 ```
-[done] Slices 1–2 (read spine) ──▶ v1a UI  ‖  Slice 3 (artifacts+images)   ← WE ARE HERE
-   ──▶ Slice 4 (job layer, Fable) ──▶ Slices 5–6 (POST gates, run-create)
+[done] Slices 1–3 (read spine + artifacts+images) ──▶ v1a UI [done]
+   ──▶ Slice 4 (job layer, Fable) ──▶ Slices 5–6 (POST gates, run-create)   ← WE ARE HERE
    ──▶ v1b UI (gates + eye-gate; eye-gate engine = Fable)          ← "the terminal is dead"
    ──▶ D1–D3 ──▶ v1c UI (room + chat + pen)
    ──▶ D4/D6 ──▶ v2 UI (visual pages)  ·  D5 ──▶ taste ledger (Fable)
