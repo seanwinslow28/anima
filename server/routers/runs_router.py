@@ -98,7 +98,8 @@ def get_status(run_id: str, request: Request) -> dict:
         raise HTTPException(status_code=404, detail=f"no run {run_id!r}")
     try:
         state = st.load_state(run_dir)
-        return status_view(state)
+        return status_view(
+            state, active_job=request.app.state.jobs.active_for(run_id))
     except st.StateError as e:
         # missing file / unparseable JSON / bad schema_version
         raise HTTPException(status_code=422, detail=str(e))

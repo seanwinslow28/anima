@@ -285,6 +285,26 @@ def test_kill_proc_tree_terminates_a_real_child():
             proc.kill()
 
 
+def test_run_status_carries_active_job_while_a_job_owns_the_run(make_run, runs_root):
+    """The active-cascade overlay (Codex blocker-2): a GET mid-job must say a
+    job owns the run. Slice 4 only EXPOSES active_job — the next_action
+    suppression is Slice 5."""
+    run_dir, _ = make_run("status-run")
+    gated = GatedStubDriver()
+    client = make_client(runs_root, gated)
+    registry = client.app.state.jobs
+
+    job = registry.submit(run_dir, ["--approve-plan"])
+    assert gated.started.wait(10)
+    body = client.get("/runs/status-run/status").json()
+    assert body["active_job"] == {"job_id": job.job_id, "mutation_status": "running"}
+    assert body["next_action"]["kind"] == "planning"  # unchanged, no suppression
+
+    gated.release.set()
+    registry.wait_for_terminal(job.job_id, timeout=10)
+    assert client.get("/runs/status-run/status").json()["active_job"] is None
+
+
 def test_two_different_runs_run_concurrently(make_run, runs_root):
     dir_a, _ = make_run("run-a")
     dir_b, _ = make_run("run-b")
