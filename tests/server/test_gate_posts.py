@@ -73,3 +73,44 @@ def test_plan_approve_wrong_stage_409_and_no_job_created(make_run, runs_root):
 def test_plan_approve_unknown_run_404(runs_root):
     client = make_client(runs_root, RecordingStubDriver())
     assert client.post("/runs/does-not-exist/plan/approve").status_code == 404
+
+
+# -- Task 3: script / storyboard / animatic / assemble -----------------------
+
+# (name, required_stage, url_suffix, expected action-args). PLAN is the wrong
+# stage for all four, so the wrong-stage case uses a default (PLAN) run.
+STATIC_GATES = [
+    ("script", "SCRIPT", "script/approve", ["--approve-script"]),
+    ("storyboard", "STORYBOARD", "storyboard/approve", ["--approve-storyboard"]),
+    ("animatic", "ANIMATIC", "animatic/approve", ["--approve-animatic"]),
+    ("assemble", "ASSEMBLE", "assemble", ["--assemble"]),
+]
+
+
+@pytest.mark.parametrize("name,stage,suffix,args", STATIC_GATES)
+def test_static_gate_right_stage_202_dispatches_exact_args(
+        name, stage, suffix, args, make_run, runs_root):
+    driver = RecordingStubDriver()
+    client = make_client(runs_root, driver)
+    run_dir, _ = make_run(f"{name}-ok", stage=stage)
+
+    r = client.post(f"/runs/{name}-ok/{suffix}")
+    assert r.status_code == 202
+    job_id = r.json()["job_id"]
+    done = client.app.state.jobs.wait_for_terminal(job_id, timeout=10)
+    assert done.state == "succeeded"
+    assert driver.calls[-1] == (run_dir, args)
+
+
+@pytest.mark.parametrize("name,stage,suffix,args", STATIC_GATES)
+def test_static_gate_wrong_stage_409_and_no_job(
+        name, stage, suffix, args, make_run, runs_root):
+    driver = RecordingStubDriver()
+    client = make_client(runs_root, driver)
+    make_run(f"{name}-bad")  # default stage PLAN — wrong for all four
+
+    r = client.post(f"/runs/{name}-bad/{suffix}")
+    assert r.status_code == 409
+    assert driver.calls == []
+    assert client.app.state.jobs.jobs == {}
+    assert client.app.state.jobs.active_for(f"{name}-bad") is None

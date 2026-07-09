@@ -58,7 +58,34 @@ def _run_gate(run_id: str, request: Request,
     return _submit_or_409(request, run_dir, action_args)
 
 
+# -- the four static approves + assemble (fully-fixed action-args) -----------
+
+
 @router.post("/{run_id}/plan/approve", status_code=202)
 def approve_plan(run_id: str, request: Request) -> dict:
     stage, args = GATE_SPECS["plan"]
+    return _run_gate(run_id, request, stage, args)
+
+
+@router.post("/{run_id}/script/approve", status_code=202)
+def approve_script(run_id: str, request: Request) -> dict:
+    stage, args = GATE_SPECS["script"]
+    return _run_gate(run_id, request, stage, args)
+
+
+@router.post("/{run_id}/storyboard/approve", status_code=202)
+def approve_storyboard(run_id: str, request: Request) -> dict:
+    stage, args = GATE_SPECS["storyboard"]
+    return _run_gate(run_id, request, stage, args)
+
+
+@router.post("/{run_id}/animatic/approve", status_code=202)
+def approve_animatic(run_id: str, request: Request) -> dict:
+    stage, args = GATE_SPECS["animatic"]
+    return _run_gate(run_id, request, stage, args)
+
+
+@router.post("/{run_id}/assemble", status_code=202)
+def assemble(run_id: str, request: Request) -> dict:
+    stage, args = GATE_SPECS["assemble"]
     return _run_gate(run_id, request, stage, args)
