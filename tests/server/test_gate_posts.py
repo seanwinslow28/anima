@@ -114,3 +114,73 @@ def test_static_gate_wrong_stage_409_and_no_job(
     assert driver.calls == []
     assert client.app.state.jobs.jobs == {}
     assert client.app.state.jobs.active_for(f"{name}-bad") is None
+
+
+# -- Task 4: frame approve + retry (GENERATE stage) --------------------------
+
+
+def test_approve_frame_202_dispatches_approve_frame_n(make_generate_run, runs_root):
+    driver = RecordingStubDriver()
+    client = make_client(runs_root, driver)
+    run_dir, _ = make_generate_run("gen-approve")
+
+    r = client.post("/runs/gen-approve/frames/1/approve")
+    assert r.status_code == 202
+    done = client.app.state.jobs.wait_for_terminal(r.json()["job_id"], timeout=10)
+    assert done.state == "succeeded"
+    assert driver.calls[-1] == (run_dir, ["--approve-frame", "1"])
+
+
+def test_approve_frame_attempt_query_appends_attempt_arg(make_generate_run, runs_root):
+    driver = RecordingStubDriver()
+    client = make_client(runs_root, driver)
+    run_dir, _ = make_generate_run("gen-attempt")
+
+    r = client.post("/runs/gen-attempt/frames/1/approve?attempt=2")
+    assert r.status_code == 202
+    client.app.state.jobs.wait_for_terminal(r.json()["job_id"], timeout=10)
+    assert driver.calls[-1] == (run_dir, ["--approve-frame", "1", "--attempt", "2"])
+
+
+def test_retry_frame_202_dispatches_retry_with_note(make_generate_run, runs_root):
+    driver = RecordingStubDriver()
+    client = make_client(runs_root, driver)
+    run_dir, _ = make_generate_run("gen-retry")
+
+    r = client.post("/runs/gen-retry/frames/1/retry",
+                    json={"note": "hold the line weight"})
+    assert r.status_code == 202
+    client.app.state.jobs.wait_for_terminal(r.json()["job_id"], timeout=10)
+    assert driver.calls[-1] == (
+        run_dir, ["--retry-frame", "1", "--note", "hold the line weight"])
+
+
+def test_retry_frame_empty_note_422_and_no_job(make_generate_run, runs_root):
+    driver = RecordingStubDriver()
+    client = make_client(runs_root, driver)
+    make_generate_run("gen-empty")
+
+    r = client.post("/runs/gen-empty/frames/1/retry", json={"note": "   "})
+    assert r.status_code == 422
+    assert driver.calls == []
+    assert client.app.state.jobs.jobs == {}
+
+
+def test_retry_frame_missing_note_422(make_generate_run, runs_root):
+    client = make_client(runs_root, RecordingStubDriver())
+    make_generate_run("gen-missing")
+    r = client.post("/runs/gen-missing/frames/1/retry", json={})
+    assert r.status_code == 422
+
+
+def test_frame_gates_wrong_stage_409_before_note_check(make_run, runs_root):
+    driver = RecordingStubDriver()
+    client = make_client(runs_root, driver)
+    make_run("gen-wrong")  # default PLAN, not GENERATE
+
+    assert client.post("/runs/gen-wrong/frames/1/approve").status_code == 409
+    # A valid note still 409s on the (earlier) stage check:
+    assert client.post("/runs/gen-wrong/frames/1/retry",
+                       json={"note": "x"}).status_code == 409
+    assert driver.calls == []
+    assert client.app.state.jobs.jobs == {}

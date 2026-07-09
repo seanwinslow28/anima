@@ -10,13 +10,23 @@ writes run-state — the CLI subprocess the worker drives is the sole writer.
 from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException, Request
+from pydantic import BaseModel
 
 from pipeline.orchestration import state as st
-from server.gates import GATE_SPECS, StageMismatch, require_stage
+from server.gates import (GATE_SPECS, StageMismatch, approve_frame_args,
+                          require_stage, retry_frame_args)
 from server.jobs import RunBusyError
 from server.runs import resolve_run_dir
 
 router = APIRouter(prefix="/runs", tags=["gates"])
+
+
+class RetryBody(BaseModel):
+    """The retry ladder's correction note — required and non-empty (the CLI
+    returns rc 2 without it). A missing field is a Pydantic 422; an
+    empty/whitespace value is caught in the handler (also 422)."""
+
+    note: str
 
 
 def _resolve_and_load(run_id: str, request: Request) -> tuple:
@@ -89,3 +99,22 @@ def approve_animatic(run_id: str, request: Request) -> dict:
 def assemble(run_id: str, request: Request) -> dict:
     stage, args = GATE_SPECS["assemble"]
     return _run_gate(run_id, request, stage, args)
+
+
+# -- the two GENERATE-stage frame gates (parameterized action-args) ----------
+
+
+@router.post("/{run_id}/frames/{n}/approve", status_code=202)
+def approve_frame(run_id: str, n: int, request: Request,
+                  attempt: int | None = None) -> dict:
+    return _run_gate(run_id, request, "GENERATE", approve_frame_args(n, attempt))
+
+
+@router.post("/{run_id}/frames/{n}/retry", status_code=202)
+def retry_frame(run_id: str, n: int, body: RetryBody, request: Request) -> dict:
+    run_dir, state = _resolve_and_load(run_id, request)
+    _require_stage_or_409(state, "GENERATE")  # stage before the note check
+    if not body.note.strip():
+        raise HTTPException(status_code=422,
+                            detail="retry requires a non-empty note")
+    return _submit_or_409(request, run_dir, retry_frame_args(n, body.note))
