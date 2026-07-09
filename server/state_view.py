@@ -45,7 +45,15 @@ def run_summary(state: dict) -> dict:
     }
 
 
-def status_view(state: dict) -> dict:
+def status_view(state: dict, active_job: dict | None = None) -> dict:
+    """Project run-state for the status endpoint.
+
+    active_job (Slice 4) is the job-layer overlay — {job_id, mutation_status}
+    while a job owns the run, else None. The key is always present. Codex
+    blocker-2 context: a cascading gate saves an intermediate stage mid-job, so
+    a bare next_action can invite a duplicate action; suppressing it while a
+    job is active is Slice 5 — here next_action is unchanged.
+    """
     frames = []
     for n in state.get("frame_order", []):
         rec = state["frames"].get(str(n), {})
@@ -61,6 +69,7 @@ def status_view(state: dict) -> dict:
         "stub": bool(state.get("stub")),
         "plan_status": state["plan"]["status"],
         "next_action": next_action(state),
+        "active_job": active_job,
         "frames": frames,
         "updated_at": state.get("updated_at"),
     }

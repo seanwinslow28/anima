@@ -86,6 +86,16 @@ def test_status_view_shape_plan_stage():
     assert view["frames"] == []
 
 
+def test_status_view_active_job_none_when_idle():
+    # Slice 4: the key is ALWAYS present; None means no job owns the run.
+    assert status_view(_base())["active_job"] is None
+
+
+def test_status_view_active_job_passthrough():
+    aj = {"job_id": "j-1", "mutation_status": "running"}
+    assert status_view(_base(), active_job=aj)["active_job"] == aj
+
+
 def test_status_happy_path_plan(client, make_run):
     make_run("2026-07-02-demo-run")
     r = client.get("/runs/2026-07-02-demo-run/status")
