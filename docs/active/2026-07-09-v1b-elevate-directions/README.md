@@ -23,3 +23,14 @@ three genuinely distinct visual directions for the v1b gate screens + eye-gate, 
   (dailies tools / animation paperwork / museum UI) are summarized inside each dossier.
 - This is a **divergent direction pass** — no production code. The chosen direction (or blend)
   feeds the separate v1b TDD build kickoff.
+
+## Convergence (Sean, 2026-07-09)
+
+**Picked: B · REEL ONE** — the v1b build language. **C · ACCESSION is banked for the museum
+redesign** (pairs with the "museum auto-composes itself" idea parked in the v1.1 addendum).
+Standing critique carried into the build: the prototypes were **too busy** — the mandate is
+**show, don't tell**: default state is the art + the one decision; everything secondary
+(critic history, legends, chat, provenance) arrives on intent (hover / keypress / idle-wake),
+never permanently. The REEL ONE eye-gate got a first "quiet pass" reflecting this (one Em card,
+two-line header, retake note appears only on R); the v1b TDD kickoff should treat density as
+a design gate, not a preference.

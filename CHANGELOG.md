@@ -9,6 +9,7 @@
 - **C · ACCESSION (the gallery):** the museum layer brought forward — tombstone wall labels, Em as a conservator's condition report (controlled vocabulary, findings located by pin), approve = **accessioning** (red dot, accession number, credit line, the work glides to the salon wall). Names one optional daemon delta (D7: persist the accession record); A and B bind to Slices 1–5 with zero deltas.
 - **Real content everywhere:** the two-attempt Em story verbatim from `tests/server/conftest.py::make_generate_run`; the Spark board's 5 beats/shots incl. `chain_from: 1`; Sean's mascot motion plates as the loop. Mood imagery: 9 Higgsfield soul_2 renders. Grounding research (dailies tools, animation production paperwork, museum/label anatomy) summarized in the dossiers.
 - **Convergence:** Sean opens the three, picks one or blends; the winner re-skins v1a and becomes the whole app's language. The v1b TDD build kickoff is a separate session against the chosen direction.
+- **CONVERGED same-day (Sean):** **B · REEL ONE is the v1b direction**; C · ACCESSION is banked for the museum redesign. Standing critique for the build: the mockups were too busy — **"show, don't tell"** (default = the art + the one decision; secondary info on intent, never permanent). The REEL ONE eye-gate received a quiet pass reflecting this before the PR left draft review.
 
 ## 2026-07-08 — ② daemon Slice 4: the job layer ($0, TDD, all new code in server/)
 

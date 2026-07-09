@@ -186,6 +186,12 @@
 
   .keys{font-size:9.5px; letter-spacing:.14em; color:var(--mute)}
   .keys b{border:1px solid var(--line); border-radius:2px; padding:0 5px; font-weight:500; color:var(--text)}
+  .againrow{display:flex; gap:10px; align-items:center; border:1px solid var(--tungsten-dim);
+    background:rgba(232,179,106,.05); padding:8px 12px}
+  .againrow input{flex:1; background:var(--booth2); border:1px solid var(--line); color:var(--screenlight);
+    padding:7px 10px; font-size:12px; border-radius:2px}
+  .againrow button{font-weight:600; font-size:10.5px; letter-spacing:.22em; color:#101010;
+    background:var(--tungsten); padding:8px 14px 7px; border-radius:2px}
 
   @media (prefers-reduced-motion: reduce){
     .screen .img.lit img{animation:none}
@@ -199,9 +205,7 @@
 
 <header id="hud1" role="banner">
   <span class="wordmark">ANIMA<small>screening room</small></span>
-  <div class="cell"><span class="lbl">Now screening</span><b>the spark, shared — reel one</b></div>
-  <div class="cell"><span class="lbl">Shot</span><b>F03 · the notice</b></div>
-  <div class="cell"><span class="lbl">Camera</span><b>Flo · NB2 · standard</b></div>
+  <div class="cell"><span class="lbl">the spark, shared — reel one</span><b>F03 · the notice</b></div>
   <div class="tc"><span class="lbl">Timecode</span><div class="mono" id="tc">00:00:00+04</div></div>
 </header>
 
@@ -231,22 +235,21 @@
       </div>
     </figure>
 
-    <aside class="rail" id="rail" aria-label="Notes from the back row">
+    <aside class="rail" id="rail" aria-label="Note from the back row">
       <div class="note" aria-live="polite" id="note2">
-        <div class="head"><span class="lbl">EM · back row</span><span class="mono">@ 00:00:00+04 · T2</span></div>
+        <div class="head"><span class="lbl">EM · back row</span><span class="mono">@ 00:00:00+04</span></div>
         <div class="lamp print"><i></i><b>Print</b></div>
-        <p>Line weight holds from the anchor. Clean through the perk. Ship.</p>
-        <div class="cite">conf <b>1.0</b> · cites <b>—</b></div>
+        <p>Holds from the anchor. Ship.</p>
       </div>
-      <div class="note dim" id="note1">
-        <div class="head"><span class="lbl">EM · back row</span><span class="mono">@ 00:00:00+04 · T1</span></div>
+      <div class="note" id="note1" hidden>
+        <div class="head"><span class="lbl">EM · back row</span><span class="mono">@ 00:00:00+04</span></div>
         <div class="lamp hold"><i></i><b>Hold</b></div>
         <p>Line weight drifts on the arm.</p>
         <div class="fix"><span class="lbl">Proposed — your call, not hers</span>
           <q>hold the line weight from the anchor</q></div>
-        <div class="cite">conf <b>0.8</b> · cites <b>IR.claude-mascot.style.line-weight</b></div>
+        <div class="cite">cites <b>IR.claude-mascot.style.line-weight</b></div>
       </div>
-      <p class="bound">Em calls notes from the back row; <b>she never touches the projector.</b> Boundary: she reads stills, not motion — the loop is yours to judge.</p>
+      <p class="bound">She reads stills, not motion. The loop is yours.</p>
     </aside>
   </div>
 
@@ -275,10 +278,13 @@
       <div class="fcell" role="listitem"><div class="empty">FLO<br>DRAWING</div><div class="cap"><span>F04</span><span>—</span></div></div>
       <div class="fcell" role="listitem"><div class="empty">LOOP<br>RETURN ➔ F01</div><div class="cap"><span>F05</span><span>—</span></div></div>
     </div>
+    <div class="againrow" id="againRow" hidden>
+      <label class="lbl" for="againIn" style="font-size:9px; white-space:nowrap">Go again — the note rides the retake</label>
+      <input id="againIn" class="mono" value="hold the line weight from the anchor" aria-label="Retake note, prefilled from Em">
+      <button id="bSendAgain" aria-label="Send the retake">SEND</button>
+    </div>
     <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap">
-      <span class="keys"><b>⏎</b> print · <b>R</b> again · <b>SPACE</b> run · <b>O</b> ghost · <b>D</b> wipe · <b>[</b> <b>]</b> line · <b>L</b> house lights · <b>1 2</b> takes · idle 3 s and the booth goes dark</span>
-      <input id="talk" class="mono" placeholder="call to the booth…" aria-label="Message the crew"
-        style="margin-left:auto; flex:1; max-width:360px; background:var(--booth2); border:1px solid var(--line); color:var(--text); padding:6px 10px; font-size:11.5px; border-radius:2px">
+      <span class="keys"><b>⏎</b> print · <b>R</b> again · <b>SPACE</b> run · <b>O</b> ghost · <b>D</b> wipe · <b>L</b> lights · <b>1 2</b> takes</span>
     </div>
   </div>
 </main>
@@ -330,8 +336,8 @@
     setPressed($("t1"), t===1); setPressed($("t2"), t===2);
     $("mainImg").src = t===2 ? IMGS.alert03 : IMGS.alert01;
     $("burnTake").textContent = t;
-    $("note1").classList.toggle("dim", t!==1);
-    $("note2").classList.toggle("dim", t!==2);
+    $("note1").hidden = t!==1;
+    $("note2").hidden = t!==2;
   }
   $("t1").addEventListener("click", ()=>setTake(1));
   $("t2").addEventListener("click", ()=>setTake(2));
@@ -395,13 +401,15 @@
     }), reduced?100:800);
   }
   function again(){
-    const t=$("talk");
-    t.value = "again: hold the line weight from the anchor";
-    t.focus(); t.select();
-    toast("GO AGAIN — Em's note prefilled. Edit it or send it; it rides the retake as a correction.");
+    $("againRow").hidden = false;
+    $("againIn").focus(); $("againIn").select();
   }
   $("bPrint").addEventListener("click", print);
   $("bAgain").addEventListener("click", again);
+  $("bSendAgain").addEventListener("click", () => {
+    $("againRow").hidden = true;
+    toast("GO AGAIN — note sent as a correction. Flo re-shoots F03.");
+  });
 
   // ── summonable HUD: idle 3 s → the booth goes dark ──
   let idleT;
@@ -418,7 +426,7 @@
 
   // ── keys ──
   addEventListener("keydown", e=>{
-    if(e.target.tagName==="INPUT"){ if(e.key==="Escape") e.target.blur(); return; }
+    if(e.target.tagName==="INPUT"){ if(e.key==="Escape"){ e.target.blur(); $("againRow").hidden = true; } return; }
     switch(e.key){
       case "Enter": e.preventDefault(); print(); break;
       case "r": case "R": again(); break;
