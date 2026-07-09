@@ -152,6 +152,37 @@ def test_state_reload_failure_reports_load_error_not_exception(make_run, runs_ro
     assert done.load_error and "run_state.json" in done.load_error
 
 
+def test_flock_excludes_a_second_daemon_on_the_same_run(make_run, runs_root):
+    """Two registries over one run dir = two daemons. The second's
+    LOCK_EX|LOCK_NB must fail (EACCES/EAGAIN) into an honest failed job.
+
+    HONEST SCOPE: this covers daemon-vs-daemon ONLY. The pipeline CLI never
+    takes this flock, so CLI-vs-daemon on the same run is NOT protected here —
+    that stays the fleet-ops "one owner" operational rule (converged plan,
+    Fork 1 red-team correction).
+    """
+    run_dir, _ = make_run("locked-run")
+    gated = GatedStubDriver()
+    daemon_a = JobRegistry(runs_root=runs_root, driver=gated)
+    daemon_b = JobRegistry(runs_root=runs_root, driver=ApprovePlanStubDriver())
+
+    holder = daemon_a.submit(run_dir, ["--approve-plan"])
+    assert gated.started.wait(10)  # daemon A's worker holds the flock
+
+    contender = daemon_b.submit(run_dir, ["--approve-plan"])
+    done = daemon_b.wait_for_terminal(contender.job_id, timeout=10)
+    assert done.state == "failed"
+    assert done.rc is None                       # nothing ran — pure lock conflict
+    assert "another daemon job holds the run lock" in done.logs
+    assert daemon_b.active_for("locked-run") is None
+
+    gated.release.set()
+    assert daemon_a.wait_for_terminal(holder.job_id, timeout=10).state == "succeeded"
+    # Lock released with the fd -> a fresh job on daemon B now proceeds.
+    retry = daemon_b.submit(run_dir, ["--approve-plan"])
+    assert daemon_b.wait_for_terminal(retry.job_id, timeout=10).state == "succeeded"
+
+
 def test_two_different_runs_run_concurrently(make_run, runs_root):
     dir_a, _ = make_run("run-a")
     dir_b, _ = make_run("run-b")

@@ -13,6 +13,9 @@ never held around driver.run, so GET polls are never serialized behind a job.
 
 from __future__ import annotations
 
+import errno
+import fcntl
+import os
 import threading
 import uuid
 from dataclasses import dataclass, field
@@ -26,6 +29,11 @@ from server.state_view import next_action
 TERMINAL_STATES = frozenset({"succeeded", "failed", "cancelled"})
 
 JOB_LOG_TEMPLATE = "job-{job_id}.log"
+RUN_LOCK_FILENAME = ".daemon-job.lock"
+
+
+class _RunLockHeld(Exception):
+    """Another daemon's job holds this run's flock (EACCES/EAGAIN)."""
 
 
 class RunBusyError(Exception):
@@ -130,9 +138,54 @@ class JobRegistry:
 
     # -- worker ------------------------------------------------------------
 
+    def _acquire_run_lock(self, run_dir: Path, run_id: str) -> int:
+        """Per-run flock(LOCK_EX|LOCK_NB) — the daemon-vs-daemon writer guard.
+
+        HONEST SCOPE (converged plan, Fork 1 red-team correction): flock is
+        advisory and only excludes other lock-takers. The pipeline CLI never
+        takes this lock, so CLI-vs-daemon on the same run is NOT protected —
+        that remains the fleet-ops "one owner" operational rule. The fd is held
+        for the job's life and auto-releases if the daemon dies.
+        """
+        fd = os.open(run_dir / RUN_LOCK_FILENAME, os.O_RDWR | os.O_CREAT, 0o644)
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError as e:
+            os.close(fd)
+            if e.errno in (errno.EACCES, errno.EAGAIN):  # both, for portability
+                raise _RunLockHeld(
+                    f"another daemon job holds the run lock for {run_id!r} "
+                    f"({run_dir / RUN_LOCK_FILENAME}) — daemon-vs-daemon guard; "
+                    "CLI-vs-daemon is NOT covered (fleet-ops one-owner rule)"
+                ) from e
+            raise
+        return fd
+
     def _work(self, job: Job, run_dir: Path, action_args: list[str]) -> None:
         with self._lock:
             job.state = "running"
+        try:
+            try:
+                lock_fd = self._acquire_run_lock(run_dir, job.run_id)
+            except _RunLockHeld as e:
+                self._finalize_without_running(job, str(e))
+                return
+            try:
+                self._drive(job, run_dir, action_args)
+            finally:
+                os.close(lock_fd)  # releases the flock with the fd
+        except Exception as e:  # noqa: BLE001 — a stuck "running" job is worse
+            self._finalize_without_running(job, f"worker error: {e!r}")
+
+    def _finalize_without_running(self, job: Job, message: str) -> None:
+        """Terminal-fail a job whose driver never ran (lock conflict, worker
+        error) — state on disk is untouched, so there is nothing to re-read."""
+        with self._lock:
+            job.logs = message
+            job.state = "cancelled" if job._cancelled else "failed"
+            self.active_by_run.pop(job.run_id, None)
+
+    def _drive(self, job: Job, run_dir: Path, action_args: list[str]) -> None:
         rc: int | None = None
         driver_error: str | None = None
         try:
