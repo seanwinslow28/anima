@@ -31,7 +31,7 @@ Legend: ✅ merged · 🟡 built-green, PR open (needs review/merge) · 🔷 kic
 | Daemon Slice 2 — `GET /runs` + `GET /runs/{id}` | daemon | ✅ | #74 | Fable | v1a |
 | **UI v1a — Dashboard + Run overview** | ui | ✅ | #78 | Opus/Codex | the first visible app |
 | Daemon Slice 3 — artifacts + frame images | daemon | ✅ | #75 | Opus/Codex | v1b gate/eye-gate reads |
-| Daemon Slice 4 — the job layer (subprocess driver + lock + `202`/poll) | daemon | ⬜ | — | **Fable** | all writes |
+| Daemon Slice 4 — the job layer (subprocess driver + lock + `202`/poll + cancel) | daemon | ✅ | #82 | **Fable** | all writes |
 | Daemon Slice 5 — POST gate actions | daemon | ⬜ | — | Opus/Codex | v1b gates |
 | Daemon Slice 6 — run creation + brief upload | daemon | ⬜ | — | Opus/Codex | new-run from UI |
 | UI v1b — the gate screens + eye-gate | ui | ⬜ | — | mixed (eye-gate engine = **Fable**) | "the terminal is dead" |
@@ -42,7 +42,7 @@ Legend: ✅ merged · 🟡 built-green, PR open (needs review/merge) · 🔷 kic
 | UI v2 — character builder / storyboard board / generate grid / motion | ui | ⬜ | — | mixed | the visual pages |
 | UI v3 — the timeline | ui | ⬜ | — | Opus/Codex | arrange/trim/export |
 
-**Right now (reconciled 2026-07-08):** Daemon Slices 1–3 (the full read API — #73/#74/#75) **and** UI v1a (Dashboard + Run overview — #78) are **all merged** to `main`. The read spine + the first visible app are live. Verified this session: `python -m pytest tests/` = **859 green**, `pipeline/tests/` = **10 green**, both md5 guards unmoved (`2af75906…`, `945af824…`). The next backend unit is **Slice 4 (the job layer — Fable 5, research-first)**; the next UI milestone is **v1b (gates + eye-gate)**. Interleave order puts **Slice 4 first** — every v1b write (gate approve/retry) depends on the `202 {job_id}` job layer.
+**Right now (reconciled 2026-07-09):** Daemon Slices 1–4 **and** UI v1a are **all merged** to `main`. The full read API (#73/#74/#75), the first visible app (#78), and now **the job layer — Slice 4 (#82): the in-memory registry + injectable subprocess driver + per-run flock + `202`/poll + psutil cancel** — the spine every write rides on. Independently verified this session: `python -m pytest tests/` = **880 green** (was 859; +21 from Slice 4), `tests/server/` = **73 green**, `pipeline/tests/` = **10 green**; Slice 4 touched only `server/` + `tests/server/` (`pipeline/`+`evals/` byte-identical), both md5 guards unmoved. The next backend unit is **Slice 5 (the eight POST gate actions — Opus/Codex)**; the next UI milestone is **v1b (gates + eye-gate)**. Slice 5 is the JIT-correct next step — v1b's gate approve/retry POSTs bind directly to it, and it builds straight on Slice 4's `submit()` seam + `active_job`.
 
 ---
 
@@ -52,7 +52,7 @@ The principle: **build backend just-in-time for the UI milestone that consumes i
 
 ```
 [done] Slices 1–3 (read spine + artifacts+images) ──▶ v1a UI [done]
-   ──▶ Slice 4 (job layer, Fable) ──▶ Slices 5–6 (POST gates, run-create)   ← WE ARE HERE
+   ──▶ Slice 4 (job layer, Fable) [done]  ──▶ Slices 5–6 (POST gates, run-create)   ← WE ARE HERE
    ──▶ v1b UI (gates + eye-gate; eye-gate engine = Fable)          ← "the terminal is dead"
    ──▶ D1–D3 ──▶ v1c UI (room + chat + pen)
    ──▶ D4/D6 ──▶ v2 UI (visual pages)  ·  D5 ──▶ taste ledger (Fable)
