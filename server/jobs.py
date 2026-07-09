@@ -36,6 +36,39 @@ class _RunLockHeld(Exception):
     """Another daemon's job holds this run's flock (EACCES/EAGAIN)."""
 
 
+def kill_proc_tree(proc: Any, timeout: float = 5.0) -> None:
+    """SIGTERM the child + every descendant, grace, SIGKILL survivors.
+
+    The honest no-setsid answer (fleet-ops §5 keeps the CLI a reap-able child,
+    so there is no process group to killpg): a psutil snapshot walk. Inherent
+    tradeoff — a grandchild spawned between snapshot and kill can slip through;
+    we act on live handles and catch NoSuchProcess. SIGTERM-then-grace lets the
+    claude/agy SDK grandchildren flush before the hammer.
+    """
+    import psutil  # lazy: only a real cancel pays the import
+
+    try:
+        parent = psutil.Process(proc.pid)
+    except psutil.NoSuchProcess:
+        return
+    tree = [parent]
+    try:
+        tree += parent.children(recursive=True)
+    except psutil.NoSuchProcess:
+        pass
+    for p in tree:
+        try:
+            p.terminate()
+        except psutil.NoSuchProcess:
+            pass
+    _, alive = psutil.wait_procs(tree, timeout=timeout)
+    for p in alive:
+        try:
+            p.kill()
+        except psutil.NoSuchProcess:
+            pass
+
+
 class SubprocessDriver:
     """The real driver — Popens `python -m pipeline.run --resume <run_dir> …`
     under the fleet-ops env-strip. Implemented under task 8's tests."""
@@ -94,6 +127,7 @@ class JobRegistry:
                  killer: Callable[[Any], None] | None = None):
         self.runs_root = Path(runs_root)
         self.driver = driver
+        self.killer = killer or kill_proc_tree
         self._lock = threading.Lock()
         self.jobs: dict[str, Job] = {}
         self.active_by_run: dict[str, str] = {}
@@ -134,6 +168,23 @@ class JobRegistry:
             if job.terminal:
                 return None
             return {"job_id": job_id, "mutation_status": job.state}
+
+    def cancel(self, job_id: str) -> Job | None:
+        """Flag the job cancelled and kill its registered process tree.
+
+        Unknown -> None; already-terminal -> returned as-is (the router's 409);
+        else set _cancelled + grab the live handle under the lock, then invoke
+        the killer OUTSIDE the lock (it blocks up to the grace timeout).
+        """
+        with self._lock:
+            job = self.jobs.get(job_id)
+            if job is None or job.terminal:
+                return job
+            job._cancelled = True
+            proc = job._proc
+        if proc is not None:
+            self.killer(proc)
+        return job
 
     def wait_for_terminal(self, job_id: str, timeout: float = 10.0) -> Job:
         """Test/ops helper: join the worker thread — deterministic, no sleeps."""

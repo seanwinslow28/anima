@@ -223,6 +223,68 @@ def test_create_app_without_driver_defaults_to_the_real_subprocess_driver(runs_r
     assert app.state.jobs.runs_root == runs_root
 
 
+class FakeProc:
+    pid = 424242
+
+
+def test_cancel_running_job_invokes_the_killer_and_lands_cancelled(make_run, runs_root):
+    run_dir, _ = make_run("cancel-run")
+    fake = FakeProc()
+    gated = GatedStubDriver(rc=143, proc=fake)  # rc mimics a SIGTERM'd child
+    client = make_client(runs_root, gated)
+    registry = client.app.state.jobs
+
+    killed = []
+
+    def spy_killer(proc):
+        killed.append(proc)
+        gated.release.set()  # the "kill" is what unblocks the fake child
+
+    registry.killer = spy_killer
+    job = registry.submit(run_dir, ["--approve-frame", "1"])
+    assert gated.started.wait(10)
+
+    r = client.post(f"/jobs/{job.job_id}/cancel")
+    assert r.status_code == 200
+    assert r.json()["state"] == "cancelled"
+    assert killed == [fake]                     # the registered live handle
+    done = registry.wait_for_terminal(job.job_id, timeout=10)
+    assert done.state == "cancelled"            # _cancelled outranks the rc
+    assert registry.active_for("cancel-run") is None
+
+
+def test_cancel_unknown_job_is_404(runs_root):
+    client = make_client(runs_root, ApprovePlanStubDriver())
+    assert client.post("/jobs/no-such-job/cancel").status_code == 404
+
+
+def test_cancel_terminal_job_is_409(make_run, runs_root):
+    run_dir, _ = make_run("done-run")
+    client = make_client(runs_root, ApprovePlanStubDriver())
+    registry = client.app.state.jobs
+    job = registry.submit(run_dir, ["--approve-plan"])
+    registry.wait_for_terminal(job.job_id, timeout=10)
+    assert client.post(f"/jobs/{job.job_id}/cancel").status_code == 409
+
+
+def test_kill_proc_tree_terminates_a_real_child():
+    """The default psutil killer against a real (cheap, credential-free)
+    subprocess — SIGTERM-then-grace, no zombie left behind."""
+    import subprocess
+    import sys as _sys
+
+    from server.jobs import kill_proc_tree
+
+    proc = subprocess.Popen([_sys.executable, "-c",
+                             "import time; time.sleep(60)"])
+    try:
+        kill_proc_tree(proc)
+        assert proc.wait(timeout=10) is not None  # reaped, no zombie
+    finally:
+        if proc.poll() is None:
+            proc.kill()
+
+
 def test_two_different_runs_run_concurrently(make_run, runs_root):
     dir_a, _ = make_run("run-a")
     dir_b, _ = make_run("run-b")
