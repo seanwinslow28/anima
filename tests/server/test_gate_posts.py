@@ -232,3 +232,26 @@ def test_second_gate_post_to_busy_run_409_with_active_job_id(
     third = client.post("/runs/busy-run/frames/1/approve")
     assert third.status_code == 202
     assert registry.wait_for_terminal(third.json()["job_id"], timeout=10).state == "succeeded"
+
+
+# -- Task 6: next_action suppression, end to end -----------------------------
+
+
+def test_status_endpoint_blocks_next_action_while_a_gate_job_runs(
+        make_generate_run, runs_root):
+    gated = GatedStubDriver()
+    client = make_client(runs_root, gated)
+    make_generate_run("cascade-run")
+    registry = client.app.state.jobs
+
+    job_id = client.post("/runs/cascade-run/frames/1/approve").json()["job_id"]
+    assert gated.started.wait(10)
+    body = client.get("/runs/cascade-run/status").json()
+    assert body["active_job"] == {"job_id": job_id, "mutation_status": "running"}
+    assert body["next_action"]["blocked_by_job"] == job_id
+
+    gated.release.set()
+    registry.wait_for_terminal(job_id, timeout=10)
+    idle = client.get("/runs/cascade-run/status").json()
+    assert idle["active_job"] is None
+    assert "blocked_by_job" not in idle["next_action"]

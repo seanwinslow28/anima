@@ -96,6 +96,20 @@ def test_status_view_active_job_passthrough():
     assert status_view(_base(), active_job=aj)["active_job"] == aj
 
 
+def test_status_view_blocks_next_action_while_a_job_owns_the_run():
+    # Slice 5 active-cascade fix: a job owning the run annotates next_action as
+    # blocked, so a mid-cascade GET can't invite a duplicate mutating action.
+    aj = {"job_id": "j-9", "mutation_status": "running"}
+    na = status_view(_base(), active_job=aj)["next_action"]
+    assert na["blocked_by_job"] == "j-9"
+    assert na["kind"] == "planning"  # the kind is unchanged, only annotated
+
+
+def test_status_view_next_action_has_no_blocked_by_job_when_idle():
+    # Additive: the key is ABSENT (not None) when no job owns the run.
+    assert "blocked_by_job" not in status_view(_base())["next_action"]
+
+
 def test_status_happy_path_plan(client, make_run):
     make_run("2026-07-02-demo-run")
     r = client.get("/runs/2026-07-02-demo-run/status")
