@@ -32,8 +32,8 @@ Legend: ✅ merged · 🟡 built-green, PR open (needs review/merge) · 🔷 kic
 | **UI v1a — Dashboard + Run overview** | ui | ✅ | #78 | Opus/Codex | the first visible app |
 | Daemon Slice 3 — artifacts + frame images | daemon | ✅ | #75 | Opus/Codex | v1b gate/eye-gate reads |
 | Daemon Slice 4 — the job layer (subprocess driver + lock + `202`/poll + cancel) | daemon | ✅ | #82 | **Fable** | all writes |
-| Daemon Slice 5 — POST gate actions | daemon | ⬜ | — | Opus/Codex | v1b gates |
-| Daemon Slice 6 — run creation + brief upload | daemon | ⬜ | — | Opus/Codex | new-run from UI |
+| Daemon Slice 5 — POST gate actions (7 gates over the job layer) | daemon | ✅ | #83 | Opus/Codex | v1b gates |
+| Daemon Slice 6 — run creation + brief upload | daemon | ⬜ (JIT-deferred) | — | Opus/Codex | new-run from UI |
 | UI v1b — the gate screens + eye-gate | ui | ⬜ | — | mixed (eye-gate engine = **Fable**) | "the terminal is dead" |
 | Deltas D1 (retry annotations) / D2 (front-door surface) / D3 (chat) | daemon | ⬜ | — | Opus/Codex | v1c |
 | UI v1c — brainstorm room + chat bar + eye-gate annotation | ui | ⬜ | — | mixed | the anima differentiators |
@@ -42,7 +42,9 @@ Legend: ✅ merged · 🟡 built-green, PR open (needs review/merge) · 🔷 kic
 | UI v2 — character builder / storyboard board / generate grid / motion | ui | ⬜ | — | mixed | the visual pages |
 | UI v3 — the timeline | ui | ⬜ | — | Opus/Codex | arrange/trim/export |
 
-**Right now (reconciled 2026-07-09):** Daemon Slices 1–4 **and** UI v1a are **all merged** to `main`. The full read API (#73/#74/#75), the first visible app (#78), and now **the job layer — Slice 4 (#82): the in-memory registry + injectable subprocess driver + per-run flock + `202`/poll + psutil cancel** — the spine every write rides on. Independently verified this session: `python -m pytest tests/` = **880 green** (was 859; +21 from Slice 4), `tests/server/` = **73 green**, `pipeline/tests/` = **10 green**; Slice 4 touched only `server/` + `tests/server/` (`pipeline/`+`evals/` byte-identical), both md5 guards unmoved. The next backend unit is **Slice 5 (the eight POST gate actions — Opus/Codex)**; the next UI milestone is **v1b (gates + eye-gate)**. Slice 5 is the JIT-correct next step — v1b's gate approve/retry POSTs bind directly to it, and it builds straight on Slice 4's `submit()` seam + `active_job`.
+**Right now (updated 2026-07-09):** Daemon Slices 1–5 **and** UI v1a are all merged — **the entire core-gate-loop backend is done.** Read API (#73/#74/#75), the first visible app (#78), the job layer (#82: registry + injectable subprocess driver + flock + `202`/poll + psutil cancel), and now the **seven POST gate actions** (#83: plan/script/storyboard/animatic approve, frame approve/retry, assemble — each over the job layer with the single-writer 409 + the additive `blocked_by_job` suppression that closes the active-cascade catch). Independently verified this session: `python -m pytest tests/` = **910 green**, `tests/server/` = **103 green**, `pipeline/tests/` = **10 green**; scope clean (`server/` only, `jobs.py` frozen, `pipeline/`+`evals/` byte-identical, both md5 guards unmoved).
+
+**The JIT-correct next move is the UI — v1b (gates + eye-gate) — NOT Slice 6.** v1b's gate/eye-gate screens bind to Slices 1–5 exactly as they stand. **Slice 6 (run-create + brief upload + `GET /characters` + cost-estimate) is deferred JIT** — built right before/with the v1b screen that needs new-run-from-UI, decided during the v1b brainstorm (building it now would be backend ahead of its consumer — the anti-drift lesson). v1b enters a **creative brainstorm first** (Fable-5 build; loosen the guardrails; reference + generation tooling — Higgsfield CLI / Pinterest / Cosmos) before any kickoff — Sean's call, 2026-07-09.
 
 ---
 
@@ -52,8 +54,9 @@ The principle: **build backend just-in-time for the UI milestone that consumes i
 
 ```
 [done] Slices 1–3 (read spine + artifacts+images) ──▶ v1a UI [done]
-   ──▶ Slice 4 (job layer, Fable) [done]  ──▶ Slices 5–6 (POST gates, run-create)   ← WE ARE HERE
-   ──▶ v1b UI (gates + eye-gate; eye-gate engine = Fable)          ← "the terminal is dead"
+   ──▶ Slice 4 (job layer) [done]  ──▶ Slice 5 (POST gates) [done]
+   ──▶ v1b UI (gates + eye-gate; eye-gate engine = Fable)   ← WE ARE HERE ("the terminal is dead")
+        · Slice 6 (run-create) built JIT when v1b needs new-run-from-UI
    ──▶ D1–D3 ──▶ v1c UI (room + chat + pen)
    ──▶ D4/D6 ──▶ v2 UI (visual pages)  ·  D5 ──▶ taste ledger (Fable)
    ──▶ v3 UI (timeline)
