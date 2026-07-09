@@ -28,6 +28,17 @@ TERMINAL_STATES = frozenset({"succeeded", "failed", "cancelled"})
 JOB_LOG_TEMPLATE = "job-{job_id}.log"
 
 
+class RunBusyError(Exception):
+    """The run already has a non-terminal job — the single-writer guard.
+
+    Carries the active job_id so the (Slice 5) 409 response can point at it.
+    """
+
+    def __init__(self, active_job_id: str):
+        super().__init__(f"run is busy: job {active_job_id} owns it")
+        self.active_job_id = active_job_id
+
+
 class Driver(Protocol):
     """Runs one pipeline.run action; writes combined stdout+stderr to log_path,
     calls register(proc) once a live process handle exists, returns the rc."""
@@ -76,6 +87,9 @@ class JobRegistry:
         # Reserve the slot AND start the worker in ONE locked section — a
         # separate reserve-then-start reopens the TOCTOU race (research Q3).
         with self._lock:
+            active_id = self.active_by_run.get(run_id)
+            if active_id is not None and not self.jobs[active_id].terminal:
+                raise RunBusyError(active_id)
             job = Job(job_id=uuid.uuid4().hex, run_id=run_id)
             job.log_path = run_dir / JOB_LOG_TEMPLATE.format(job_id=job.job_id)
             self.jobs[job.job_id] = job

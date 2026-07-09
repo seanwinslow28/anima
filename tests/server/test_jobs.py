@@ -6,6 +6,8 @@ bottom. Lifecycle tests join the worker thread via wait_for_terminal — never
 time.sleep.
 """
 
+import threading
+
 import pytest
 
 pytest.importorskip("fastapi")
@@ -13,7 +15,7 @@ pytest.importorskip("httpx")
 
 from pipeline.orchestration import state as st
 
-from server.jobs import JobRegistry
+from server.jobs import JobRegistry, RunBusyError
 
 
 class ApprovePlanStubDriver:
@@ -61,3 +63,54 @@ def test_terminal_job_releases_the_run_slot(make_run, runs_root):
 def test_get_unknown_job_is_none(runs_root):
     reg = JobRegistry(runs_root=runs_root, driver=ApprovePlanStubDriver())
     assert reg.get("nope") is None
+
+
+class GatedStubDriver:
+    """Holds the run busy until the test releases it. Optionally registers a
+    fake process handle so cancel has something to kill."""
+
+    def __init__(self, rc: int = 0, proc=None):
+        self.rc = rc
+        self.proc = proc
+        self.started = threading.Event()
+        self.release = threading.Event()
+
+    def run(self, run_dir, action_args, *, log_path, cwd, register):
+        log_path.write_text("gated stub\n", encoding="utf-8")
+        if self.proc is not None:
+            register(self.proc)
+        self.started.set()
+        assert self.release.wait(10), "test never released the gated driver"
+        return self.rc
+
+
+def test_second_submit_to_busy_run_raises_with_active_job_id(make_run, runs_root):
+    run_dir, _ = make_run("busy-run")
+    gated = GatedStubDriver()
+    reg = JobRegistry(runs_root=runs_root, driver=gated)
+
+    first = reg.submit(run_dir, ["--approve-plan"])
+    assert gated.started.wait(10)
+    with pytest.raises(RunBusyError) as excinfo:
+        reg.submit(run_dir, ["--approve-plan"])
+    assert excinfo.value.active_job_id == first.job_id
+
+    gated.release.set()
+    done = reg.wait_for_terminal(first.job_id, timeout=10)
+    assert done.state == "succeeded"
+    # Slot released -> the run accepts a new job.
+    gated.release.set()  # let the second worker straight through
+    second = reg.submit(run_dir, ["--approve-plan"])
+    assert reg.wait_for_terminal(second.job_id, timeout=10).state == "succeeded"
+
+
+def test_two_different_runs_run_concurrently(make_run, runs_root):
+    dir_a, _ = make_run("run-a")
+    dir_b, _ = make_run("run-b")
+    gated = GatedStubDriver()
+    reg = JobRegistry(runs_root=runs_root, driver=gated)
+    job_a = reg.submit(dir_a, ["--approve-plan"])
+    job_b = reg.submit(dir_b, ["--approve-plan"])  # must NOT raise: other run
+    gated.release.set()
+    assert reg.wait_for_terminal(job_a.job_id, timeout=10).state == "succeeded"
+    assert reg.wait_for_terminal(job_b.job_id, timeout=10).state == "succeeded"
