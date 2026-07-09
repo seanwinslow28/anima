@@ -4,7 +4,7 @@ from fastapi import FastAPI
 
 from server.config import Settings, get_settings
 from server.jobs import Driver, JobRegistry, SubprocessDriver
-from server.routers import jobs_router, runs_router
+from server.routers import gates_router, jobs_router, runs_router
 
 
 def create_app(settings: Settings | None = None, *,
@@ -18,6 +18,8 @@ def create_app(settings: Settings | None = None, *,
                                  driver=driver or SubprocessDriver())
     app.include_router(runs_router.router)
     app.include_router(jobs_router.router)
+    # Slice 5: the POST gate-action endpoints (prefix /runs), each -> submit().
+    app.include_router(gates_router.router)
 
     @app.get("/health")
     def health() -> dict:
