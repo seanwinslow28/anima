@@ -6,7 +6,9 @@ bottom. Lifecycle tests join the worker thread via wait_for_terminal — never
 time.sleep.
 """
 
+import sys
 import threading
+from pathlib import Path
 
 import pytest
 
@@ -19,7 +21,10 @@ from pipeline.orchestration import state as st
 
 from server.app import create_app
 from server.config import Settings
-from server.jobs import JobRegistry, RunBusyError, SubprocessDriver
+from server.jobs import (ENV_STRIP_VARS, JobRegistry, RunBusyError,
+                         SubprocessDriver, build_argv, build_env)
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
 def make_client(runs_root, driver) -> TestClient:
@@ -303,6 +308,53 @@ def test_run_status_carries_active_job_while_a_job_owns_the_run(make_run, runs_r
     gated.release.set()
     registry.wait_for_terminal(job.job_id, timeout=10)
     assert client.get("/runs/status-run/status").json()["active_job"] is None
+
+
+# -- the real SubprocessDriver (task 8) -------------------------------------
+
+
+def test_build_argv_shape_and_no_api_key_override():
+    argv = build_argv(Path("runs/some-run"), ["--approve-frame", "3", "--attempt", "2"])
+    assert argv == [sys.executable, "-m", "pipeline.run",
+                    "--resume", "runs/some-run",
+                    "--approve-frame", "3", "--attempt", "2"]
+    # An API-billed daemon job must be IMPOSSIBLE, not merely defaulted-off:
+    assert "--allow-api-key" not in argv
+
+
+def test_build_env_strips_session_markers_keeps_execpath(monkeypatch):
+    # fleet-ops §6: the six nested-SDK throttle markers stripped,
+    # CLAUDE_CODE_EXECPATH preserved so shutil.which('claude') still resolves.
+    assert set(ENV_STRIP_VARS) == {
+        "CLAUDECODE", "CLAUDE_CODE_SESSION_ID", "CLAUDE_CODE_CHILD_SESSION",
+        "CLAUDE_CODE_ENTRYPOINT", "AI_AGENT", "CLAUDE_CODE_ENABLE_TASKS",
+    }
+    for var in ENV_STRIP_VARS:
+        monkeypatch.setenv(var, "1")
+    monkeypatch.setenv("CLAUDE_CODE_EXECPATH", "/usr/local/bin/claude")
+    monkeypatch.setenv("ANIMA_UNRELATED", "kept")
+    env = build_env()
+    for var in ENV_STRIP_VARS:
+        assert var not in env
+    assert env["CLAUDE_CODE_EXECPATH"] == "/usr/local/bin/claude"
+    assert env["ANIMA_UNRELATED"] == "kept"
+
+
+def test_real_subprocess_driver_status_smoke(make_run):
+    """The one real-subprocess proof, $0: `--status` reads state and prints —
+    no model call, no spend. Exercises argv + env-strip + cwd + log capture +
+    rc plumbing end to end against the worktree's pipeline.run."""
+    run_dir, _ = make_run("smoke-run")
+    log_path = run_dir / "smoke.log"
+    registered = []
+    rc = SubprocessDriver().run(
+        run_dir, ["--status"],
+        log_path=log_path, cwd=REPO_ROOT, register=registered.append,
+    )
+    assert rc == 0
+    assert registered and registered[0].pid > 0   # register() got the live handle
+    log = log_path.read_text(encoding="utf-8")
+    assert "stage:" in log                        # render_status output captured
 
 
 def test_two_different_runs_run_concurrently(make_run, runs_root):

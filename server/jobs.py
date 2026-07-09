@@ -16,6 +16,8 @@ from __future__ import annotations
 import errno
 import fcntl
 import os
+import subprocess
+import sys
 import threading
 import uuid
 from dataclasses import dataclass, field
@@ -34,6 +36,34 @@ RUN_LOCK_FILENAME = ".daemon-job.lock"
 
 class _RunLockHeld(Exception):
     """Another daemon's job holds this run's flock (EACCES/EAGAIN)."""
+
+
+# fleet-ops §6: the six session markers a nested `claude` child inherits — a
+# marked child runs throttled (~94s vs ~7s) and can return empty. Stripped from
+# every driver env; CLAUDE_CODE_EXECPATH is deliberately NOT here (it keeps
+# shutil.which('claude') resolving for subscription OAuth).
+ENV_STRIP_VARS = (
+    "CLAUDECODE",
+    "CLAUDE_CODE_SESSION_ID",
+    "CLAUDE_CODE_CHILD_SESSION",
+    "CLAUDE_CODE_ENTRYPOINT",
+    "AI_AGENT",
+    "CLAUDE_CODE_ENABLE_TASKS",
+)
+
+
+def build_argv(run_dir: Path, action_args: list[str]) -> list[str]:
+    """The exact CLI invocation. NEVER --allow-api-key: pipeline.run's
+    _api_key_guard then makes an API-billed daemon job impossible (fleet-ops §1)."""
+    return [sys.executable, "-m", "pipeline.run",
+            "--resume", str(run_dir), *action_args]
+
+
+def build_env() -> dict[str, str]:
+    env = os.environ.copy()
+    for var in ENV_STRIP_VARS:
+        env.pop(var, None)
+    return env
 
 
 def kill_proc_tree(proc: Any, timeout: float = 5.0) -> None:
@@ -71,12 +101,22 @@ def kill_proc_tree(proc: Any, timeout: float = 5.0) -> None:
 
 class SubprocessDriver:
     """The real driver — Popens `python -m pipeline.run --resume <run_dir> …`
-    under the fleet-ops env-strip. Implemented under task 8's tests."""
+    under the fleet-ops env-strip, cwd=<repo root> (manifest, assemble.sh, and
+    Em's context files resolve CWD-relative). stdout+stderr go to the logfile
+    (not PIPE) so wait() can never deadlock on a full pipe buffer and a poller
+    can tail live progress."""
 
     def run(self, run_dir: Path, action_args: list[str], *,
             log_path: Path, cwd: Path,
             register: Callable[[Any], None]) -> int:
-        raise NotImplementedError  # lands with the build_argv/build_env tests
+        with open(log_path, "w", encoding="utf-8") as log:
+            proc = subprocess.Popen(
+                build_argv(run_dir, action_args),
+                stdout=log, stderr=subprocess.STDOUT,
+                cwd=cwd, env=build_env(),
+            )
+            register(proc)
+            return proc.wait()
 
 
 class RunBusyError(Exception):
