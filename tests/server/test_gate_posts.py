@@ -6,6 +6,7 @@ registry.submit() carrying the exact action-args, then 202 {job_id}. Lifecycle
 is driven with wait_for_terminal (join the worker thread) — never time.sleep.
 """
 
+import threading
 from pathlib import Path
 
 import pytest
@@ -184,3 +185,50 @@ def test_frame_gates_wrong_stage_409_before_note_check(make_run, runs_root):
                        json={"note": "x"}).status_code == 409
     assert driver.calls == []
     assert client.app.state.jobs.jobs == {}
+
+
+# -- Task 5: the single-writer 409 -------------------------------------------
+
+
+class GatedStubDriver:
+    """Holds the run busy inside run() until the test releases the Event."""
+
+    def __init__(self, rc: int = 0):
+        self.rc = rc
+        self.started = threading.Event()
+        self.release = threading.Event()
+
+    def run(self, run_dir, action_args, *, log_path, cwd, register):
+        log_path.write_text("gated gate\n", encoding="utf-8")
+        self.started.set()
+        assert self.release.wait(10), "test never released the gated driver"
+        return self.rc
+
+
+def test_second_gate_post_to_busy_run_409_with_active_job_id(
+        make_generate_run, runs_root):
+    gated = GatedStubDriver()
+    client = make_client(runs_root, gated)
+    make_generate_run("busy-run")
+    registry = client.app.state.jobs
+
+    first = client.post("/runs/busy-run/frames/1/approve")
+    assert first.status_code == 202
+    first_job = first.json()["job_id"]
+    assert gated.started.wait(10)  # the worker is in the driver, holding the slot
+
+    # A second POST to the SAME run via a DIFFERENT gate is refused with the
+    # active job_id — the guard is per-run, not per-endpoint — and dispatches
+    # nothing new (still only the one job).
+    second = client.post("/runs/busy-run/frames/1/retry", json={"note": "again"})
+    assert second.status_code == 409
+    assert second.json()["detail"]["active_job_id"] == first_job
+    assert len(registry.jobs) == 1
+
+    gated.release.set()
+    assert registry.wait_for_terminal(first_job, timeout=10).state == "succeeded"
+
+    # Slot released with the terminal job -> the run accepts a fresh gate.
+    third = client.post("/runs/busy-run/frames/1/approve")
+    assert third.status_code == 202
+    assert registry.wait_for_terminal(third.json()["job_id"], timeout=10).state == "succeeded"
