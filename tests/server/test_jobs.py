@@ -13,9 +13,17 @@ import pytest
 pytest.importorskip("fastapi")
 pytest.importorskip("httpx")
 
+from fastapi.testclient import TestClient
+
 from pipeline.orchestration import state as st
 
-from server.jobs import JobRegistry, RunBusyError
+from server.app import create_app
+from server.config import Settings
+from server.jobs import JobRegistry, RunBusyError, SubprocessDriver
+
+
+def make_client(runs_root, driver) -> TestClient:
+    return TestClient(create_app(Settings(runs_root=runs_root), driver=driver))
 
 
 class ApprovePlanStubDriver:
@@ -181,6 +189,38 @@ def test_flock_excludes_a_second_daemon_on_the_same_run(make_run, runs_root):
     # Lock released with the fd -> a fresh job on daemon B now proceeds.
     retry = daemon_b.submit(run_dir, ["--approve-plan"])
     assert daemon_b.wait_for_terminal(retry.job_id, timeout=10).state == "succeeded"
+
+
+def test_get_job_endpoint_returns_the_projection(make_run, runs_root):
+    client = make_client(runs_root, ApprovePlanStubDriver())
+    run_dir, _ = make_run("api-run")
+    registry = client.app.state.jobs
+    job = registry.submit(run_dir, ["--approve-plan"])
+    registry.wait_for_terminal(job.job_id, timeout=10)
+
+    r = client.get(f"/jobs/{job.job_id}")
+    assert r.status_code == 200
+    body = r.json()
+    assert set(body) == {"job_id", "run_id", "state", "rc", "logs",
+                         "fresh_state", "load_error", "next_action"}
+    assert body["job_id"] == job.job_id
+    assert body["run_id"] == "api-run"
+    assert body["state"] == "succeeded"
+    assert body["rc"] == 0
+    assert body["fresh_state"]["stage"] == "GENERATE"
+    assert body["load_error"] is None
+    assert body["next_action"]["kind"] == "assemble"
+
+
+def test_get_unknown_job_is_404(runs_root):
+    client = make_client(runs_root, ApprovePlanStubDriver())
+    assert client.get("/jobs/no-such-job").status_code == 404
+
+
+def test_create_app_without_driver_defaults_to_the_real_subprocess_driver(runs_root):
+    app = create_app(Settings(runs_root=runs_root))
+    assert isinstance(app.state.jobs.driver, SubprocessDriver)
+    assert app.state.jobs.runs_root == runs_root
 
 
 def test_two_different_runs_run_concurrently(make_run, runs_root):

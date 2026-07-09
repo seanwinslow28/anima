@@ -36,6 +36,16 @@ class _RunLockHeld(Exception):
     """Another daemon's job holds this run's flock (EACCES/EAGAIN)."""
 
 
+class SubprocessDriver:
+    """The real driver — Popens `python -m pipeline.run --resume <run_dir> …`
+    under the fleet-ops env-strip. Implemented under task 8's tests."""
+
+    def run(self, run_dir: Path, action_args: list[str], *,
+            log_path: Path, cwd: Path,
+            register: Callable[[Any], None]) -> int:
+        raise NotImplementedError  # lands with the build_argv/build_env tests
+
+
 class RunBusyError(Exception):
     """The run already has a non-terminal job — the single-writer guard.
 
