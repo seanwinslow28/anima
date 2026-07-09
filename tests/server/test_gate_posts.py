@@ -255,3 +255,24 @@ def test_status_endpoint_blocks_next_action_while_a_gate_job_runs(
     idle = client.get("/runs/cascade-run/status").json()
     assert idle["active_job"] is None
     assert "blocked_by_job" not in idle["next_action"]
+
+
+# -- Task 7: wiring guard ----------------------------------------------------
+
+
+def test_create_app_registers_the_seven_gate_post_routes(runs_root):
+    # The default app (real subprocess driver) must expose every gate as a POST.
+    # Via the resolved OpenAPI schema (version-robust — this FastAPI lazily wraps
+    # included routers); breaks loudly if include_router(gates_router) is dropped.
+    app = create_app(Settings(runs_root=runs_root))
+    paths = app.openapi()["paths"]
+    for gate in (
+        "/runs/{run_id}/plan/approve",
+        "/runs/{run_id}/script/approve",
+        "/runs/{run_id}/storyboard/approve",
+        "/runs/{run_id}/animatic/approve",
+        "/runs/{run_id}/assemble",
+        "/runs/{run_id}/frames/{n}/approve",
+        "/runs/{run_id}/frames/{n}/retry",
+    ):
+        assert "post" in paths.get(gate, {}), f"gate route not registered: {gate}"
