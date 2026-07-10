@@ -78,6 +78,23 @@ describe("deriveStageReel", () => {
     expect(reel.find((s) => s.stage === "GENERATE")?.status).toBe("done");
   });
 
+  it("tolerates a pre-animatic run_state (no animatic_enabled key on disk)", () => {
+    // Real payload shape: runs/2026-06-17-spark-authored-run predates the
+    // 2026-06-18 animatic schema — the raw passthrough has NO animatic_enabled
+    // (and load_state does not backfill). Missing must read as opted-out.
+    // Typed WITHOUT a cast: RawRunState must admit the legacy shape.
+    const legacy: import("../api/types").RawRunState = {
+      run_id: "2026-06-17-spark-authored-run",
+      slug: "spark-authored",
+      stage: "DONE",
+      stub: false,
+      needs_storyboard: true,
+      plan: { status: "approved", cost_estimate: null },
+    };
+    const reel = deriveStageReel(legacy, { stage: "DONE", frames: [] });
+    expect(reel.find((s) => s.stage === "ANIMATIC")?.status).toBe("waived");
+  });
+
   it("a DONE run reads every segment as done", () => {
     const reel = deriveStageReel(rawAuthoring, {
       ...statusReviewFrame,

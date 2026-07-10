@@ -107,8 +107,15 @@ export interface RawRunState {
   slug: string;
   stage: string;
   stub: boolean;
-  needs_storyboard: boolean;
-  animatic_enabled: boolean;
+  /**
+   * The fork flags are OPTIONAL: the raw endpoint is a passthrough and
+   * load_state does not backfill, so a run authored before each flag's
+   * schema landed simply lacks the key (verified live: the 2026-06-17 run
+   * has no animatic_enabled). Missing reads as false — the back-compat /
+   * opted-out semantics those runs actually had.
+   */
+  needs_storyboard?: boolean;
+  animatic_enabled?: boolean;
   plan: {
     status: string;
     /** null until Maya drafts the plan ("estimate pending"). */
