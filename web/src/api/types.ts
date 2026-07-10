@@ -180,6 +180,52 @@ export interface ShotSheet {
   locked: boolean;
 }
 
+/*
+ * -- The eye-gate reads (U5a): GET /runs/{id}/frames/{n}/candidates ---------
+ * Shapes mirror server/artifacts.py candidates_view exactly: verdict data
+ * rides through AS RECORDED (the daemon never re-derives a verdict).
+ */
+
+/** One staged patch proposal inside an Em verdict (displayed in U5a;
+ *  prefilling the retry note is U5b). */
+export interface EmProposedPatch {
+  target: string;
+  path: string;
+  value: unknown;
+  rationale: string;
+}
+
+/**
+ * One Em (T2 vision critic) record — ONE per cast IR namespace, so an
+ * attempt over a two-character frame carries two of these.
+ */
+export interface EmVerdict {
+  frame: string;
+  /** The IR namespace (`sean`), not the Bible folder key. */
+  character: string;
+  /** "pass" | "flag" | "human_review…" — open vocabulary, rendered as-is. */
+  verdict: string;
+  confidence: number | null;
+  cites: string[];
+  patches: number;
+  proposed_patches: EmProposedPatch[];
+  reasoning: string;
+  notes: string;
+}
+
+/** One attempt of a frame, as /frames/{n}/candidates projects it. */
+export interface CandidateAttempt {
+  attempt: number;
+  /** null when the fan recorded no candidate image (an honest state, not a bug). */
+  image_url: string | null;
+  status: "approved" | "generated" | "errored";
+  t1: { verdict: string; fail_codes: string[] } | null;
+  em: EmVerdict[];
+  note: string | null;
+  errored: string | null;
+  ts: string | null;
+}
+
 /* -- the job layer (U3): POST gate -> 202 {job_id} -> poll GET /jobs/{id} -- */
 
 /** Job lifecycle (server/jobs.py). Terminal = succeeded | failed | cancelled. */

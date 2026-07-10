@@ -1,0 +1,471 @@
+/*
+ * The eye-gate (U5) — the screening room's stage. Values ported from the
+ * ratified REEL ONE mockup (docs/active/2026-07-09-v1b-elevate-directions/
+ * reelone-eyegate.html), over the .reelone token scope (reelone.tokens.css)
+ * and the motion primitives (reelone.motion.css). The stage is the ONLY
+ * bright object in the room; every functional string >=11px (a11y floor).
+ */
+
+.eg-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  padding: 0 20px 14px;
+}
+
+.eg-mono {
+  font-family: var(--tc-mono);
+}
+
+/* ── the header line: one quiet h1 + the timecode ── */
+.eg-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 2px 4px;
+}
+
+.eg-h1 {
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.eg-head .ro-tc {
+  font-size: 15px;
+  color: var(--tungsten);
+  letter-spacing: .1em;
+  text-shadow: none;
+}
+
+/* ── the auditorium: beam + lit stage ── */
+.eg-stagewrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 0;
+  padding: 12px 24px;
+}
+
+/* the beam: a faint cone above the screen */
+.eg-beam {
+  position: absolute;
+  left: 50%;
+  top: -40px;
+  width: 130%;
+  height: 130%;
+  transform: translateX(-50%);
+  background: radial-gradient(46% 42% at 50% 46%, rgba(232, 179, 106, .075), transparent 70%);
+  pointer-events: none;
+}
+
+.eg-stage {
+  position: relative;
+  height: 100%;
+  max-height: 74vh;
+  min-height: 220px;
+  aspect-ratio: 16 / 10;
+  max-width: 92%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0B080D;
+  box-shadow:
+    0 0 90px 8px rgba(255, 246, 228, .13),
+    0 0 22px 2px rgba(255, 246, 228, .1),
+    inset 0 0 0 1px #2B2333;
+}
+
+.eg-img {
+  position: absolute;
+  inset: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eg-img img {
+  max-width: 100%;
+  max-height: 100%;
+  box-shadow: 0 0 44px rgba(255, 246, 228, .28);
+}
+
+/* the lit print is never perfectly still (~1.5% flicker) */
+.eg-img--lit img {
+  animation: flicker 1.7s infinite;
+}
+
+/* gate weave while the loop runs (U5a rock/flip) */
+.eg-stage--running .eg-img--lit {
+  animation: weave .34s steps(2) infinite;
+}
+
+/* ── the honest state: a take that never developed ── */
+.eg-nodevelop {
+  max-width: 420px;
+  border: 1px dashed var(--line);
+  padding: 26px 28px;
+  text-align: center;
+}
+
+.eg-nodevelop-lead {
+  font-size: 13.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.eg-nodevelop-why {
+  margin-top: 10px;
+  font-size: 11.5px;
+  color: var(--bakelite);
+  word-break: break-word;
+}
+
+.eg-nodevelop-sub {
+  margin-top: 10px;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--mute);
+}
+
+/* ── the burn-ins on the print ── */
+.eg-burn {
+  position: absolute;
+  bottom: 14px;
+}
+
+.eg-burn--l { left: 18px; }
+.eg-burn--r { right: 18px; }
+
+/* ── the transport: takes ── */
+.eg-transport {
+  border-top: 1px solid var(--line);
+  padding: 12px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(20, 16, 24, .9);
+}
+
+.eg-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.eg-takes {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+  width: max-content;
+}
+
+.eg-takes button {
+  position: relative;
+  padding: 6px 14px 5px;
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--mute);
+  background: none;
+  border: none;
+  border-right: 1px solid var(--line);
+  cursor: pointer;
+}
+
+.eg-takes button:last-child {
+  border-right: none;
+}
+
+.eg-takes button[aria-pressed="true"] {
+  color: var(--screenlight);
+  background: rgba(255, 246, 228, .06);
+}
+
+.eg-takes button .eg-tv {
+  display: block;
+  font-size: 11px;
+  letter-spacing: .2em;
+  margin-top: 1px;
+}
+
+.eg-takes button .eg-tv--hold { color: var(--hold); }
+.eg-takes button .eg-tv--print { color: var(--print); }
+.eg-takes button .eg-tv--fail { color: var(--bakelite); }
+
+/* ── Em's margin rail (the back row) ── */
+.eg-rail {
+  position: absolute;
+  right: 22px;
+  top: 18px;
+  width: 270px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.eg-lbl {
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: var(--mute);
+}
+
+.eg-note {
+  border: 1px solid var(--line);
+  background: rgba(29, 23, 34, .94);
+  padding: 12px 14px;
+  backdrop-filter: blur(2px);
+}
+
+.eg-note-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+
+.eg-grease {
+  width: 46px;
+  height: 8px;
+  flex: none;
+  color: var(--tungsten-dim);
+}
+
+.eg-note-verdict {
+  margin-bottom: 7px;
+}
+
+.eg-note-reason {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.eg-fix {
+  margin-top: 8px;
+  border-top: 1px dashed var(--line);
+  padding-top: 8px;
+}
+
+.eg-fix .eg-lbl {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 11px;
+}
+
+.eg-fix-patch {
+  margin-top: 4px;
+}
+
+.eg-fix-patch q {
+  quotes: none;
+  display: block;
+  color: var(--screenlight);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.eg-fix-meta {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  color: var(--mute);
+  word-break: break-all;
+}
+
+.eg-fix-why {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--mute);
+}
+
+.eg-cite {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--mute);
+  word-break: break-all;
+}
+
+.eg-cite b {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.eg-nonote {
+  border: 1px dashed var(--line);
+  padding: 12px 14px;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--mute);
+}
+
+.eg-bound {
+  font-size: 11px;
+  color: var(--mute);
+  letter-spacing: .06em;
+  line-height: 1.6;
+  padding: 0 4px;
+}
+
+@media (max-width: 900px) {
+  .eg-rail {
+    position: static;
+    width: auto;
+    margin-top: 10px;
+  }
+}
+
+/* ── the transport switches (the visible keys) ── */
+.eg-tsw {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  border: 1px solid var(--line);
+  background: none;
+  padding: 6px 11px 5px;
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--mute);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.eg-tsw .eg-kx {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0 4px;
+  font-size: 11px;
+}
+
+.eg-tsw[aria-pressed="true"] {
+  color: var(--tungsten);
+  border-color: var(--tungsten-dim);
+  background: rgba(232, 179, 106, .07);
+}
+
+.eg-tsw:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+/* ── the provenance line + the reel strip ── */
+.eg-prov {
+  margin-left: auto;
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--mute);
+}
+
+.eg-strip {
+  overflow-x: auto;
+}
+
+/* ── the couldn't-screen notice ── */
+.eg-notice {
+  margin: auto;
+  max-width: 460px;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.eg-notice-lead {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  color: var(--text);
+}
+
+.eg-notice-sub {
+  margin-top: 10px;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--mute);
+  word-break: break-word;
+}
+
+.eg-retry {
+  margin-top: 18px;
+  font: inherit;
+  font-size: 11.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #101010;
+  background: var(--tungsten);
+  border: none;
+  border-radius: 2px;
+  padding: 9px 18px 8px;
+  cursor: pointer;
+}
+
+/* ── the working state: Flo is drawing ── */
+.eg-screen--working {
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.eg-working-lead {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.eg-working-leader {
+  position: relative;
+  width: min(46vh, 300px);
+  aspect-ratio: 1;
+}
+
+.eg-working-sub {
+  font-size: 11.5px;
+  letter-spacing: .12em;
+  color: var(--mute);
+}
+
+/* ── the loading skeleton: the lit frame's shape, dimmed ── */
+.eg-sk {
+  background: var(--booth2);
+  border: 1px solid var(--line);
+}
+
+.eg-sk--stage {
+  flex: 1;
+  margin: 20px auto 12px;
+  width: min(92%, 900px);
+  min-height: 220px;
+  box-shadow: 0 0 60px 4px rgba(255, 246, 228, .05);
+}
+
+.eg-sk--transport {
+  height: 56px;
+  margin: 0 0 4px;
+}
+
+/* the reduced-motion collapse (scoped to animations, like reelone.motion.css) */
+@media (prefers-reduced-motion: reduce) {
+  .eg-img--lit img,
+  .eg-stage--running .eg-img--lit {
+    animation: none;
+  }
+}
