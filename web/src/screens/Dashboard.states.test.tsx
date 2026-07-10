@@ -15,10 +15,13 @@ describe("Dashboard — states", () => {
     renderApp(<Dashboard />);
 
     expect(await screen.findByText(/no runs yet/i)).toBeInTheDocument();
+    // The invitation register — the booth notice, not an error.
+    const invite = screen.getByText(/bring a spark and the room opens/i);
+    expect(invite.closest(".mq-notice")).not.toHaveClass("mq-notice--error");
     // The inert new-project placeholder is present (brainstorm room is v1c).
-    expect(
-      screen.getByRole("button", { name: /new project/i }),
-    ).toBeInTheDocument();
+    const newCard = screen.getByRole("button", { name: /new project/i });
+    expect(newCard).toBeDisabled();
+    expect(newCard).toHaveClass("mq-new");
   });
 
   it("shows a skeleton of the gallery while loading", () => {
@@ -41,8 +44,12 @@ describe("Dashboard — states", () => {
 
     renderApp(<Dashboard />);
 
-    expect(await screen.findByText(/couldn't reach the daemon/i)).toBeInTheDocument();
+    // The booth notice: role=alert, error edge, and the projector-button retry.
+    const lead = await screen.findByText(/couldn't reach the daemon/i);
+    expect(lead.closest(".mq-notice")).toHaveClass("mq-notice--error");
+    expect(screen.getByRole("alert")).toBeInTheDocument();
     const retry = screen.getByRole("button", { name: /retry/i });
+    expect(retry).toHaveClass("mq-retry");
 
     await userEvent.click(retry);
 
@@ -60,15 +67,18 @@ describe("Dashboard — states", () => {
 
     // The good run still renders...
     expect(await screen.findByText("spark-forest")).toBeInTheDocument();
-    // ...and the broken one is surfaced with its id + the recovery hint.
-    expect(screen.getByText(/couldn't read this run/i)).toBeInTheDocument();
+    // ...and the broken one is surfaced as a booth errcard with its id.
+    expect(
+      screen.getByText(/couldn't read this run/i).closest(".mq-err"),
+    ).toBeInTheDocument();
     expect(screen.getByText(runErrorItem.run_id)).toBeInTheDocument();
   });
 
-  it("clears the skeleton once runs load", async () => {
+  it("clears the skeleton once runs load into the marquee grid", async () => {
     server.use(http.get("/runs", () => HttpResponse.json([runReviewFrame])));
     renderApp(<Dashboard />);
     await waitForElementToBeRemoved(() => screen.queryByTestId("dashboard-skeleton"));
-    expect(screen.getByText("spark-forest")).toBeInTheDocument();
+    const card = screen.getByText("spark-forest").closest(".mq-card")!;
+    expect(card.closest(".mq-grid")).toBeInTheDocument();
   });
 });

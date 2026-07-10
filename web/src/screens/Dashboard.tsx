@@ -1,3 +1,5 @@
+import "../styles/marquee.css";
+
 import { useState } from "react";
 
 import { fetchRuns } from "../api/client";
@@ -7,11 +9,13 @@ import { CardGridSkeleton } from "../components/Skeleton";
 import { useResource } from "../lib/useResource";
 
 /**
- * Screen 1 — the run gallery and the resume point. Answers one question per
- * run: what's my next move here? Reads GET /runs and leads each card with its
- * next_action verb. Every doctrine state is built: loading (a skeleton of the
- * grid), empty (an invitation), error (what happened + the one recovery), and
- * the ready grid — where an unreadable run is surfaced as a card, never dropped.
+ * Screen 1 — the marquee: the run list as the screening room's front of
+ * house. Answers one question per run: what's my next move here? Reads
+ * GET /runs and leads each booth card with its next_action verb. Every
+ * doctrine state is built: loading (a skeleton of the marquee), empty (an
+ * invitation), error (what happened + the one recovery), and the ready
+ * grid — where an unreadable run is surfaced as a card, never dropped.
+ * Renders inside BoothShell, which provides the `.reelone` token scope.
  */
 export function Dashboard() {
   // `nonce` bumps on retry to re-run the same fetch (useResource watches deps).
@@ -29,14 +33,14 @@ export function Dashboard() {
   if (runs.status === "error") {
     return (
       <Screen>
-        <div className="notice notice--error" role="alert">
-          <p className="notice-lead">Couldn't reach the daemon.</p>
-          <p className="notice-sub">
+        <div className="mq-notice mq-notice--error" role="alert">
+          <p className="mq-notice-lead">Couldn't reach the daemon.</p>
+          <p className="mq-notice-sub">
             Retry, or check that the daemon is running on 127.0.0.1:8000.
           </p>
           <button
             type="button"
-            className="retry-btn"
+            className="mq-retry"
             onClick={() => setNonce((n) => n + 1)}
           >
             Retry
@@ -49,11 +53,11 @@ export function Dashboard() {
   if (runs.data.length === 0) {
     return (
       <Screen>
-        <div className="notice">
-          <p className="notice-lead">No runs yet.</p>
-          <p className="notice-sub">Start a short and the room opens.</p>
+        <div className="mq-notice">
+          <p className="mq-notice-lead">No runs yet.</p>
+          <p className="mq-notice-sub">Bring a spark and the room opens.</p>
         </div>
-        <div className="grid grid--pad">
+        <div className="mq-grid mq-grid--pad">
           <NewProjectCard />
         </div>
       </Screen>
@@ -62,7 +66,7 @@ export function Dashboard() {
 
   return (
     <Screen>
-      <div className="grid">
+      <div className="mq-grid">
         {runs.data.map((item) =>
           isRunError(item) ? (
             <UnreadableRunCard key={item.run_id} run={item} />
@@ -78,20 +82,20 @@ export function Dashboard() {
 
 function Screen({ children }: { children: React.ReactNode }) {
   return (
-    <section className="screen">
-      <h1 className="screen-title">Runs</h1>
-      <p className="screen-sub">What's your next move?</p>
+    <section className="mq-screen">
+      <h1 className="mq-title">Runs</h1>
+      <p className="mq-sub">What's your next move?</p>
       {children}
     </section>
   );
 }
 
-/** An unreadable run — surfaced with its id + the recovery hint, never dropped. */
+/** An unreadable run — a booth errcard with its id, never dropped. */
 function UnreadableRunCard({ run }: { run: RunError }) {
   return (
-    <div className="errcard">
-      <div className="errcard-name">{run.run_id}</div>
-      <div className="errcard-msg">Couldn't read this run.</div>
+    <div className="mq-err">
+      <div className="mq-err-id">{run.run_id}</div>
+      <div className="mq-err-msg">Couldn't read this run.</div>
     </div>
   );
 }
@@ -101,16 +105,16 @@ function NewProjectCard() {
   return (
     <button
       type="button"
-      className="newcard"
+      className="mq-new"
       disabled
       aria-label="New project"
       title="The brainstorm room opens in v1c"
     >
-      <span className="newcard-plus" aria-hidden="true">
+      <span className="mq-new-plus" aria-hidden="true">
         ＋
       </span>
       <span>New project</span>
-      <span className="newcard-soon" aria-hidden="true">
+      <span className="mq-new-soon" aria-hidden="true">
         opens in v1c
       </span>
     </button>

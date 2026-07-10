@@ -36,7 +36,8 @@ Legend: ✅ merged · 🟡 built-green, PR open (needs review/merge) · 🔷 kic
 | Daemon Slice 6 — run creation + brief upload | daemon | ⬜ (JIT-deferred) | — | Opus/Codex | new-run from UI |
 | UI v1b — the gate screens + eye-gate | ui | 🔷 plan converged (11 slices) | `docs/v1b-build-plan` | mixed (eye-gate engine = **Fable**) | "the terminal is dead" |
 | **v1b U0 — REEL ONE design system** (tokens + motion + 7 primitives + `/dev/system`) | ui | ✅ | #86 | Fable | U1–U5 (everything downstream imports it) |
-| **v1b U1 — booth shell + routing + HUD host** (BoothShell/HudHost/⌘K + the URL scheme) | ui | 🟡 | `feat/v1b-u1-booth-shell` | Fable | U2a+ (every screen renders inside it) |
+| **v1b U1 — booth shell + routing + HUD host** (BoothShell/HudHost/⌘K + the URL scheme) | ui | ✅ | #87 | Fable | U2a+ (every screen renders inside it) |
+| **v1b U2a — Dashboard re-skin** (the booth marquee: run cards + all five doctrine states) | ui | 🟡 | `feat/v1b-u2a-dashboard` | Fable | U2b (the Run Overview build follows) |
 | Deltas D1 (retry annotations) / D2 (front-door surface) / D3 (chat) | daemon | ⬜ | — | Opus/Codex | v1c |
 | UI v1c — brainstorm room + chat bar + eye-gate annotation | ui | ⬜ | — | mixed | the anima differentiators |
 | D5 — studio taste-memory | daemon | ⬜ | — | **Fable** | the taste ledger |
