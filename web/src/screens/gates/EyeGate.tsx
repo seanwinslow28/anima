@@ -3,7 +3,7 @@ import "../../styles/eyegate.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
-import { fetchCandidates, frameImageUrl } from "../../api/client";
+import { fetchArtifact, fetchCandidates, frameImageUrl } from "../../api/client";
 import type {
   CandidateAttempt,
   FrameState,
@@ -12,6 +12,7 @@ import type {
 } from "../../api/types";
 import { framesToReel, nextActionUrl } from "../../lib/boothBoard";
 import { useImagePreload } from "../../lib/imagePreload";
+import { parseShots } from "../../lib/shots";
 import { useRun } from "../../lib/runContext";
 import { useGateAction, type GateFlow } from "../../lib/useGateAction";
 import { useResource } from "../../lib/useResource";
@@ -23,6 +24,7 @@ import { RitualLeader } from "../../reelone/RitualLeader";
 import { Timecode } from "../../reelone/Timecode";
 import { CheatSheet } from "./CheatSheet";
 import { EmReadout } from "./EmReadout";
+import { OnionSkin, type GhostSource } from "./OnionSkin";
 import { composeEmNote, RetryNoteRow } from "./RetryNoteRow";
 import { StageToolbar } from "./StageToolbar";
 
@@ -76,6 +78,21 @@ export function EyeGate({ pollIntervalMs }: { pollIntervalMs?: number } = {}) {
     refresh();
     setNonce((x) => x + 1);
   };
+
+  // The shots artifact — read ONLY for chain_from (the loop anchor, U5c
+  // onion). A soft read: an unreadable/absent board costs the loop-return
+  // ghost, never the screening (the .catch collapses it to null).
+  const shots = useResource(
+    () =>
+      fetchArtifact(runId, "shots")
+        .then(parseShots)
+        .catch(() => null),
+    [runId],
+  );
+  const chainFrom =
+    shots.status === "ready" && shots.data !== null
+      ? (shots.data.frames.find((f) => f.id === frameN)?.chain_from ?? null)
+      : null;
 
   // -- the decision layer (U5b): print/again through U3's job flow --------
   // One useGateAction serves both commits (the single-writer run allows one
@@ -226,6 +243,7 @@ export function EyeGate({ pollIntervalMs }: { pollIntervalMs?: number } = {}) {
       frameState={frameState}
       status={runStatus}
       attempts={candidates.data}
+      chainFrom={chainFrom}
       gate={gate}
     />
   );
@@ -238,6 +256,7 @@ function Screening({
   frameState,
   status,
   attempts,
+  chainFrom,
   gate,
 }: {
   runId: string;
@@ -245,6 +264,8 @@ function Screening({
   frameState: FrameState | null;
   status: RunStatus;
   attempts: CandidateAttempt[];
+  /** the loop anchor from the shots artifact (null: not a loop-return) */
+  chainFrom: number | null;
   gate: DecisionGate;
 }) {
   const label = frameLabel(frameN);
@@ -309,6 +330,37 @@ function Screening({
   // the cel on screen: the playhead while rocking, else the shown take
   const cel = loop.playhead;
   const celUrl = cel ? cel.url : showable ? attempt.image_url : null;
+
+  // -- onion-skin (U5c "O"): ghost the approved N-1 under the candidate,
+  //    plus the chain_from anchor on a loop-return (deduped when they
+  //    coincide). Sources exist only where a print actually exists — the
+  //    ghost is always a real approved frame, never the Bible anchor (G9). --
+  const [onion, setOnion] = useState(false);
+  const ghosts = useMemo(() => {
+    const out: GhostSource[] = [];
+    const priorApproved = status.frames
+      .filter((f) => f.status === "approved" && f.n < frameN)
+      .reduce<number | null>((best, f) => (best === null || f.n > best ? f.n : best), null);
+    if (priorApproved !== null) {
+      out.push({
+        n: priorApproved,
+        url: frameImageUrl(runId, priorApproved),
+        role: "N-1",
+      });
+    }
+    if (
+      chainFrom !== null &&
+      chainFrom !== priorApproved &&
+      status.frames.some((f) => f.n === chainFrom && f.status === "approved")
+    ) {
+      out.push({ n: chainFrom, url: frameImageUrl(runId, chainFrom), role: "LOOP" });
+    }
+    return out;
+  }, [status.frames, frameN, chainFrom, runId]);
+  const canGhost = showable && ghosts.length > 0;
+  const toggleOnion = () => {
+    if (canGhost) setOnion((o) => !o);
+  };
 
   // -- ↑/↓ walk frames: the adjacent REVIEWABLE stops (a pending frame has
   //    nothing to screen — the walk skips it) -----------------------------
@@ -406,6 +458,10 @@ function Screening({
       openAgain();
       return;
     }
+    if (e.key === "o" || e.key === "O") {
+      toggleOnion();
+      return;
+    }
     if (e.key === "ArrowUp") {
       e.preventDefault();
       walk(prevN);
@@ -499,6 +555,9 @@ function Screening({
               </p>
             </div>
           )}
+          {onion && canGhost && loop.playhead === null && (
+            <OnionSkin ghosts={ghosts} />
+          )}
           <span className="eg-burn eg-burn--l">
             <BurnIn segments={[label, `TAKE ${attempt.attempt}`, `HOLD ${hold}`]} />
           </span>
@@ -583,6 +642,9 @@ function Screening({
               prevN={prevN}
               nextN={nextN}
               onWalk={walk}
+              canGhost={canGhost}
+              onionOn={onion}
+              onToggleOnion={toggleOnion}
               cheatOpen={cheatOpen}
               onToggleCheat={() => setCheatOpen((o) => !o)}
             />

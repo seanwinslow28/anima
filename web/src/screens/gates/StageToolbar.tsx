@@ -20,6 +20,9 @@ export function StageToolbar({
   prevN,
   nextN,
   onWalk,
+  canGhost,
+  onionOn,
+  onToggleOnion,
   cheatOpen,
   onToggleCheat,
 }: {
@@ -31,6 +34,10 @@ export function StageToolbar({
   prevN: number | null;
   nextN: number | null;
   onWalk: (n: number | null) => void;
+  /** onion-skin (U5c): a ghost source exists (an approved prior / loop anchor) */
+  canGhost: boolean;
+  onionOn: boolean;
+  onToggleOnion: () => void;
   cheatOpen: boolean;
   onToggleCheat: () => void;
 }) {
@@ -72,6 +79,16 @@ export function StageToolbar({
           onClick={() => onWalk(nextN)}
         >
           ↓
+        </button>
+        <button
+          type="button"
+          className="eg-tsw"
+          aria-label="Ghost the prior print under the take (O)"
+          aria-pressed={onionOn}
+          disabled={!canGhost}
+          onClick={onToggleOnion}
+        >
+          Ghost <span className="eg-kx" aria-hidden="true">O</span>
         </button>
         <button
           type="button"

@@ -234,6 +234,49 @@
   color: var(--mute);
 }
 
+/* ── the onion-skin ghost layer (U5c "O") ── */
+.eg-onion {
+  position: absolute;
+  inset: 14px;
+  pointer-events: none;
+}
+
+.eg-ghostcell {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*
+ * THE TWO-REDS RULE: the ghost is cool/tungsten-dim — desaturated toward a
+ * cold cast, NEVER a lamp hue (print-green / hold-amber / bakelite stay
+ * reserved so the stage keeps one unambiguous warning color). Ported from
+ * the ratified mockup's .img.ghost treatment.
+ */
+.eg-ghost {
+  max-width: 100%;
+  max-height: 100%;
+  opacity: .32;
+  filter: saturate(.25) sepia(.5) hue-rotate(150deg) brightness(1.05);
+}
+
+.eg-ghost-tag {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  font-family: var(--tc-mono);
+  font-size: 11px;
+  letter-spacing: .18em;
+  color: var(--tungsten-dim);
+}
+
+/* a second ghost (the loop anchor) stacks its tag below the first */
+.eg-ghostcell:nth-child(2) .eg-ghost-tag {
+  top: 26px;
+}
+
 /* ── the burn-ins on the print ── */
 .eg-burn {
   position: absolute;
