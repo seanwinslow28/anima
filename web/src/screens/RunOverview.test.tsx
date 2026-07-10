@@ -8,6 +8,7 @@ import {
   rawBackCompat,
   statusAnimaticGate,
 } from "../test/fixtures";
+import { RunProvider } from "../lib/runContext";
 import { server } from "../test/handlers";
 import { renderApp } from "../test/render";
 import { RunOverview } from "./RunOverview";
@@ -17,6 +18,7 @@ import { RunOverview } from "./RunOverview";
  * revisitable), the now-screening hero (one h1 = the move, one primary
  * action on U1's URL scheme). Default handlers serve an authoring run
  * (rawAuthoring + statusReviewFrame: GENERATE, F03 waiting on the eye).
+ * Since U3 the board reads /status through the run scope (RunProvider).
  */
 
 const RUN_ID = "2026-07-04-spark-forest";
@@ -24,7 +26,14 @@ const RUN_ID = "2026-07-04-spark-forest";
 function renderOverview(id = RUN_ID) {
   return renderApp(
     <Routes>
-      <Route path="/runs/:id" element={<RunOverview />} />
+      <Route
+        path="/runs/:id"
+        element={
+          <RunProvider runId={id} pollIntervalMs={5}>
+            <RunOverview />
+          </RunProvider>
+        }
+      />
     </Routes>,
     { route: `/runs/${id}` },
   );

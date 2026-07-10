@@ -7,7 +7,7 @@ import { describe, expect, it } from "vitest";
 import { RunProvider, useRun } from "./runContext";
 import { server } from "../test/handlers";
 import { statusReviewFrame, statusWorking } from "../test/fixtures";
-import { jobLifecycle, succeededJob } from "../test/jobHandlers";
+import { succeededJob } from "../test/jobHandlers";
 
 const RUN = "2026-07-04-spark-forest";
 

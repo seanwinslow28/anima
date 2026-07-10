@@ -3,7 +3,7 @@ import "../styles/boothboard.css";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import { fetchRawState, fetchStatus } from "../api/client";
+import { fetchRawState } from "../api/client";
 import type { RawRunState, RunStatus } from "../api/types";
 import {
   CREW,
@@ -18,24 +18,33 @@ import {
   type StageSegment,
 } from "../lib/boothBoard";
 import { nextActionCta } from "../lib/nextAction";
+import { useRun } from "../lib/runContext";
 import { useResource } from "../lib/useResource";
 import { BurnIn } from "../reelone/BurnIn";
 import { Filmstrip } from "../reelone/Filmstrip";
+import { RitualLeader } from "../reelone/RitualLeader";
 
 /**
  * Screen 3 — the booth board: the run's home base as the projection booth
- * sees it. Two one-shot daemon reads (GET /runs/{id}/status + GET /runs/{id}
- * raw — for the cost estimate and the fork flags); NO live polling (U3) and
- * NO gate POSTs (U3). Loading is a skeleton of the board, an unreadable run
- * is the couldn't-read state + one retry. Renders inside BoothShell
+ * sees it. The /status read comes through the run scope (U3's runContext),
+ * which LIVE-POLLS the job that owns the run and re-reads /status when it
+ * goes terminal — the board advances on the real signal (U2b's static seam
+ * is closed). The raw read (GET /runs/{id} — cost estimate + fork flags)
+ * stays a local one-shot. Loading is a skeleton of the board, an unreadable
+ * run is the couldn't-read state + one retry. Renders inside BoothShell
  * (inherits the `.reelone` token scope).
  */
 export function RunOverview() {
   const { id = "" } = useParams();
-  // `nonce` bumps on retry/refresh to re-run both reads (useResource deps).
+  const { status, refresh } = useRun();
+  // `nonce` re-runs the raw read on retry; the status read rides refresh().
   const [nonce, setNonce] = useState(0);
-  const status = useResource(() => fetchStatus(id), [id, nonce]);
   const raw = useResource(() => fetchRawState(id), [id, nonce]);
+
+  const reread = () => {
+    refresh();
+    setNonce((n) => n + 1);
+  };
 
   if (status.status === "loading" || raw.status === "loading") {
     return <BoardSkeleton />;
@@ -50,11 +59,7 @@ export function RunOverview() {
             The booth couldn't project <span className="bb-mono">{id}</span> —
             it may have moved, or its state file is unreadable.
           </p>
-          <button
-            type="button"
-            className="bb-retry"
-            onClick={() => setNonce((n) => n + 1)}
-          >
+          <button type="button" className="bb-retry" onClick={reread}>
             Retry
           </button>
         </div>
@@ -67,7 +72,7 @@ export function RunOverview() {
       runId={id}
       status={status.data}
       raw={raw.data}
-      onReread={() => setNonce((n) => n + 1)}
+      onReread={reread}
     />
   );
 }
@@ -105,12 +110,11 @@ function BoothBoard({
 }
 
 /**
- * The Working doctrine state WITHOUT polling (red-team): a static, one-read
- * visual seeded from the single /status read. The leader is decorative — it
- * neither counts down nor advances the run (no timer exists here at all);
- * U3 replaces this with the live polled transition. A manual re-read is the
- * only way this board moves. No mutating affordance renders while the job
- * owns the run (blocked_by_job).
+ * The Working doctrine state, LIVE (U3): the run scope polls the owning
+ * job's /jobs/{id} and re-reads /status on its terminal, so this leader
+ * resolves on the real signal — the ritual timer, never a fake ETA. The
+ * manual re-read stays as an escape hatch. No mutating affordance renders
+ * while the job owns the run (blocked_by_job).
  */
 function CrewWorking({
   status,
@@ -129,40 +133,15 @@ function CrewWorking({
       <h1 className="bb-move" aria-live="polite">
         {line}…
       </h1>
-      <StaticLeader />
+      <RitualLeader caption="IN THE BOOTH" />
       <p className="bb-working-sub">
-        This board is a single read — job{" "}
-        <span className="bb-mono">{status.active_job?.job_id}</span> owns the
-        run until it wraps.
+        Job <span className="bb-mono">{status.active_job?.job_id}</span> owns
+        the run — the board advances when it wraps.
       </p>
       <button type="button" className="bb-retry" onClick={onReread}>
         Re-read the booth
       </button>
     </section>
-  );
-}
-
-/**
- * A decorative Academy-leader dial. Deliberately NOT the U0 <Leader> — that
- * one counts 3-2-1 and fires onDone; this one is pure booth light. The sweep
- * is a CSS loop (reduced-motion stills it) and there is no JS timer, so it
- * cannot self-advance regardless.
- */
-function StaticLeader() {
-  return (
-    <div
-      className="bb-leader"
-      data-testid="static-leader"
-      role="img"
-      aria-label="Projector leader, decorative — the board does not advance on its own"
-    >
-      <span className="bb-leader-cross-v" aria-hidden="true" />
-      <span className="bb-leader-cross-h" aria-hidden="true" />
-      <span className="bb-leader-hand" aria-hidden="true" />
-      <span className="bb-leader-n" aria-hidden="true">
-        3
-      </span>
-    </div>
   );
 }
 
