@@ -178,6 +178,56 @@
   margin: 18px 0;
 }
 
+/* ── the Script ⇄ Beats view toggle (U4a — a real control, client-side) ── */
+.reelone .gate-viewtoggle {
+  display: inline-flex;
+  border: 1px solid var(--page-rule);
+  margin-bottom: 18px;
+}
+.reelone .gate-viewbtn {
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--page-ink2);
+  background: none;
+  border: none;
+  padding: 7px 16px 6px;
+  cursor: pointer;
+}
+.reelone .gate-viewbtn + .gate-viewbtn {
+  border-left: 1px solid var(--page-rule);
+}
+.reelone .gate-viewbtn[aria-pressed="true"] {
+  background: var(--page-ink);
+  color: var(--page);
+}
+
+/*
+ * The screenplay register (U4a — Sam's script.md). Sam writes screenplay
+ * form in markdown: scene headings + action lines land as paragraphs
+ * (Georgia, the page serif); the indented character cue + dialogue lands as
+ * a code block, restyled here as the mono dialogue column — no gray slab,
+ * no scrollbox, just the courier center of the page.
+ */
+.reelone .gate-screenplay .gate-prose p {
+  margin: 0 0 15px;
+}
+.reelone .gate-screenplay .gate-prose pre {
+  background: none;
+  padding: 2px 0 2px 18%;
+  margin: 0 0 15px;
+  overflow-x: visible;
+  white-space: pre-wrap;
+}
+.reelone .gate-screenplay .gate-prose pre code {
+  font-family: var(--tc-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--page-ink);
+}
+
 /* ── the beats sheet (U4a — Sam's beats.json as the structured sheet) ── */
 .reelone .beats-logline {
   font-family: var(--page-serif);

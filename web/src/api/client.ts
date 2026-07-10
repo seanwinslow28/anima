@@ -61,6 +61,15 @@ export async function fetchArtifact(runId: string, kind: string): Promise<string
   return res.text();
 }
 
+/**
+ * A JSON artifact (beats.json today; shots.yaml is NOT this — YAML needs a
+ * client parser, U5c). Same read path as fetchArtifact; the parse failure
+ * surfaces as the read's error state like any other unreadable artifact.
+ */
+export async function fetchArtifactJson<T>(runId: string, kind: string): Promise<T> {
+  return JSON.parse(await fetchArtifact(runId, kind)) as T;
+}
+
 /** FastAPI error bodies are {detail}; detail may not be a string (Pydantic 422). */
 async function readDetail(res: Response): Promise<unknown> {
   try {
