@@ -62,7 +62,14 @@ export function RunOverview() {
     );
   }
 
-  return <BoothBoard runId={id} status={status.data} raw={raw.data} />;
+  return (
+    <BoothBoard
+      runId={id}
+      status={status.data}
+      raw={raw.data}
+      onReread={() => setNonce((n) => n + 1)}
+    />
+  );
 }
 
 /** The ready board: the reel of stages + the now-screening hero. */
@@ -70,17 +77,23 @@ function BoothBoard({
   runId,
   status,
   raw,
+  onReread,
 }: {
   runId: string;
   status: RunStatus;
   raw: RawRunState;
+  onReread: () => void;
 }) {
   const segments = deriveStageReel(raw, status);
   return (
     <section className="bb-screen" data-testid="booth-board">
       <StageReel runId={runId} segments={segments} />
       <div className="bb-marquee">
-        <NowScreening runId={runId} status={status} />
+        {status.active_job ? (
+          <CrewWorking status={status} onReread={onReread} />
+        ) : (
+          <NowScreening runId={runId} status={status} />
+        )}
         <BoxOffice status={status} raw={raw} />
       </div>
       <div className="bb-lower">
@@ -88,6 +101,68 @@ function BoothBoard({
         <CrewStations />
       </div>
     </section>
+  );
+}
+
+/**
+ * The Working doctrine state WITHOUT polling (red-team): a static, one-read
+ * visual seeded from the single /status read. The leader is decorative — it
+ * neither counts down nor advances the run (no timer exists here at all);
+ * U3 replaces this with the live polled transition. A manual re-read is the
+ * only way this board moves. No mutating affordance renders while the job
+ * owns the run (blocked_by_job).
+ */
+function CrewWorking({
+  status,
+  onReread,
+}: {
+  status: RunStatus;
+  onReread: () => void;
+}) {
+  const cta = nextActionCta(status.next_action);
+  const line = cta.tone === "wait" ? cta.label : "The crew is on it";
+  return (
+    <section className="bb-now bb-now--working" aria-label="The crew is working">
+      <span className="bb-eyebrow">
+        In the booth · next_action: {status.next_action.kind}
+      </span>
+      <h1 className="bb-move" aria-live="polite">
+        {line}…
+      </h1>
+      <StaticLeader />
+      <p className="bb-working-sub">
+        This board is a single read — job{" "}
+        <span className="bb-mono">{status.active_job?.job_id}</span> owns the
+        run until it wraps.
+      </p>
+      <button type="button" className="bb-retry" onClick={onReread}>
+        Re-read the booth
+      </button>
+    </section>
+  );
+}
+
+/**
+ * A decorative Academy-leader dial. Deliberately NOT the U0 <Leader> — that
+ * one counts 3-2-1 and fires onDone; this one is pure booth light. The sweep
+ * is a CSS loop (reduced-motion stills it) and there is no JS timer, so it
+ * cannot self-advance regardless.
+ */
+function StaticLeader() {
+  return (
+    <div
+      className="bb-leader"
+      data-testid="static-leader"
+      role="img"
+      aria-label="Projector leader, decorative — the board does not advance on its own"
+    >
+      <span className="bb-leader-cross-v" aria-hidden="true" />
+      <span className="bb-leader-cross-h" aria-hidden="true" />
+      <span className="bb-leader-hand" aria-hidden="true" />
+      <span className="bb-leader-n" aria-hidden="true">
+        3
+      </span>
+    </div>
   );
 }
 

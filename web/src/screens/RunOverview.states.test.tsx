@@ -4,6 +4,7 @@ import { delay, http, HttpResponse } from "msw";
 import { Route, Routes } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 
+import { statusReviewFrame, statusWorking } from "../test/fixtures";
 import { server } from "../test/handlers";
 import { renderApp } from "../test/render";
 import { RunOverview } from "./RunOverview";
@@ -73,6 +74,67 @@ describe("RunOverview states", () => {
     expect(
       await screen.findByText(/couldn't read this run/i),
     ).toBeInTheDocument();
+  });
+
+  it("renders the static Working state when a job owns the run — named agent, decorative leader, no action link", async () => {
+    server.use(
+      http.get(`/runs/:id/status`, () => HttpResponse.json(statusWorking)),
+    );
+    renderOverview();
+    await screen.findByTestId("booth-board");
+    // the one h1 is the working line, agent-named
+    const headings = screen.getAllByRole("heading", { level: 1 });
+    expect(headings).toHaveLength(1);
+    expect(headings[0]).toHaveTextContent(/Flo is drawing F04/i);
+    // the decorative leader — an image with an honest label, never a timer
+    const leader = screen.getByTestId("static-leader");
+    expect(leader).toHaveAttribute("role", "img");
+    expect(leader).toHaveAccessibleName(/does not advance/i);
+    // no mutating / stage affordance while the job owns the run
+    expect(
+      screen.queryByRole("link", { name: /to the screening/i }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("the working board is a single read — no polling, no self-advance", async () => {
+    let statusReads = 0;
+    server.use(
+      http.get(`/runs/:id/status`, () => {
+        statusReads += 1;
+        return HttpResponse.json(statusWorking);
+      }),
+    );
+    renderOverview();
+    await screen.findByTestId("booth-board");
+    expect(statusReads).toBe(1);
+    // give any rogue interval/timeout a chance to fire — nothing may change
+    await new Promise((r) => setTimeout(r, 120));
+    expect(statusReads).toBe(1);
+    expect(
+      screen.getByRole("heading", { level: 1 }),
+    ).toHaveTextContent(/Flo is drawing F04/i);
+    expect(screen.getByTestId("static-leader")).toBeInTheDocument();
+  });
+
+  it("a manual re-read fetches /status again and moves the board", async () => {
+    let calls = 0;
+    server.use(
+      http.get(`/runs/:id/status`, () => {
+        calls += 1;
+        return HttpResponse.json(calls === 1 ? statusWorking : statusReviewFrame);
+      }),
+    );
+    renderOverview();
+    await screen.findByTestId("booth-board");
+    const reread = screen.getByRole("button", { name: /re-read/i });
+    await userEvent.click(reread);
+    expect(
+      await screen.findByRole("heading", {
+        level: 1,
+        name: /F03 waiting on your eye/i,
+      }),
+    ).toBeInTheDocument();
+    expect(calls).toBe(2);
   });
 
   it("retry re-reads both endpoints and recovers", async () => {
