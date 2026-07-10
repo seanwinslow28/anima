@@ -9,6 +9,14 @@ import { RunProvider } from "../../lib/runContext";
 import { ROUTER_FUTURE } from "../../test/render";
 import { server } from "../../test/handlers";
 import { beatsFixture, scriptMd, statusApproveScript } from "../../test/fixtures";
+import {
+  failedJob,
+  gateAccepted,
+  gateBusy,
+  JOB_ID,
+  jobLifecycle,
+  succeededJob,
+} from "../../test/jobHandlers";
 
 /*
  * The Script gate (U4a) — Sam's script.md as the screenplay lit page, the
@@ -19,6 +27,15 @@ import { beatsFixture, scriptMd, statusApproveScript } from "../../test/fixtures
  */
 
 const RUN = "2026-07-03-spark-tidepool";
+const APPROVE = `/runs/${RUN}/script/approve`;
+
+/** The script gate's terminal: the run advances to the storyboard gate. */
+const scriptApproved = () =>
+  succeededJob({
+    logs: "script approved\n",
+    fresh_state: { stage: "STORYBOARD" },
+    next_action: { kind: "approve_storyboard", hint: "next: --approve-storyboard" },
+  });
 
 function artifactHandlers() {
   const hits = { script: 0, beats: 0 };
@@ -140,6 +157,32 @@ describe("ScriptGate — the read", () => {
     expect(screen.getByRole("button", { name: /retry/i })).toBeInTheDocument();
   });
 
+  it("blocked_by_job disables the approve control (single-writer made visible)", async () => {
+    server.use(
+      http.get("/jobs/job-owner", () =>
+        HttpResponse.json({
+          ...succeededJob({ job_id: "job-owner" }),
+          state: "running",
+          rc: null,
+        }),
+      ),
+    );
+    artifactHandlers();
+    mount({
+      ...statusApproveScript,
+      next_action: {
+        kind: "approve_script",
+        hint: "next: --approve-script",
+        blocked_by_job: "job-owner",
+      },
+      active_job: { job_id: "job-owner", mutation_status: "running" },
+    });
+    await seeTheScript();
+    expect(
+      screen.getByRole("button", { name: /approve — print it/i }),
+    ).toBeDisabled();
+  });
+
   it("a non-404 artifact failure is the generic honest error with Retry", async () => {
     server.use(
       http.get(`/runs/${RUN}/artifacts/script`, () =>
@@ -152,5 +195,69 @@ describe("ScriptGate — the read", () => {
       expect(screen.getByText(/couldn't read the script/i)).toBeInTheDocument(),
     );
     expect(screen.getByRole("button", { name: /retry/i })).toBeInTheDocument();
+  });
+});
+
+describe("ScriptGate — approve -> leader -> terminal (U3's hook, wired)", () => {
+  it("approve runs the leader, then ADVANCES on the inline next_action to the storyboard gate", async () => {
+    artifactHandlers();
+    mount();
+    server.use(gateAccepted(APPROVE), jobLifecycle(JOB_ID, scriptApproved(), 3));
+    await seeTheScript();
+    // the ONE decision (density gate: the script + one approve)
+    const approve = screen.getByRole("button", { name: /approve — print it/i });
+    expect(approve).toBeEnabled();
+    await userEvent.click(approve);
+    // the shared ritual leader is the working state
+    await waitFor(() => expect(screen.getByRole("status")).toBeInTheDocument());
+    // terminal (succeeded, next_action approve_storyboard) -> the storyboard route
+    await waitFor(() =>
+      expect(screen.getByTestId("storyboard-screen")).toBeInTheDocument(),
+    );
+  });
+
+  it("⌘⏎ approves (keyboard is a first-class hand)", async () => {
+    artifactHandlers();
+    mount();
+    server.use(gateAccepted(APPROVE), jobLifecycle(JOB_ID, scriptApproved(), 2));
+    await seeTheScript();
+    await userEvent.keyboard("{Meta>}{Enter}{/Meta}");
+    await waitFor(() =>
+      expect(screen.getByTestId("storyboard-screen")).toBeInTheDocument(),
+    );
+  });
+
+  it("failed (rc != 0) surfaces rc + the logs tail honestly, with Retry — no advance", async () => {
+    artifactHandlers();
+    mount();
+    server.use(
+      gateAccepted(APPROVE),
+      jobLifecycle(
+        JOB_ID,
+        failedJob({ rc: 2, logs: "beats.json failed the structural pass\n" }),
+        1,
+      ),
+    );
+    await seeTheScript();
+    await userEvent.click(screen.getByRole("button", { name: /approve — print it/i }));
+    await waitFor(() =>
+      expect(screen.getByText(/jammed in the gate/i)).toBeInTheDocument(),
+    );
+    expect(screen.getByText(/rc 2/)).toBeInTheDocument();
+    expect(screen.getByText(/structural pass/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /retry/i })).toBeInTheDocument();
+    expect(screen.queryByTestId("storyboard-screen")).toBeNull();
+  });
+
+  it("409-busy offers to watch the running job", async () => {
+    artifactHandlers();
+    mount();
+    server.use(gateBusy(APPROVE, "job-owner"));
+    await seeTheScript();
+    await userEvent.click(screen.getByRole("button", { name: /approve — print it/i }));
+    await waitFor(() => expect(screen.getByText(/booth is busy/i)).toBeInTheDocument());
+    expect(
+      screen.getByRole("link", { name: /watch the running job/i }),
+    ).toHaveAttribute("href", `/runs/${RUN}`);
   });
 });
