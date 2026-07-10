@@ -7,7 +7,9 @@ import {
   runApprovePlan,
   runReviewFrame,
   scriptMd,
+  shotsYaml,
   statusReviewFrame,
+  storyboardMd,
 } from "./fixtures";
 
 /*
@@ -33,6 +35,16 @@ export const handlers = [
     }),
   ),
   http.get("/runs/:id/artifacts/beats", () => HttpResponse.json(beatsFixture)),
+  http.get("/runs/:id/artifacts/storyboard", () =>
+    HttpResponse.text(storyboardMd, {
+      headers: { "Content-Type": "text/markdown; charset=utf-8" },
+    }),
+  ),
+  http.get("/runs/:id/artifacts/shots", () =>
+    HttpResponse.text(shotsYaml, {
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    }),
+  ),
   http.get("/runs/:id", () => HttpResponse.json(rawAuthoring)),
 ];
 
