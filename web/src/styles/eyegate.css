@@ -106,6 +106,105 @@
   animation: weave .34s steps(2) infinite;
 }
 
+/*
+ * The cel-flip arrival (U5b): after a print, the next picture comes up
+ * through black. Reduced motion keeps a SOFT opacity crossfade — the plan's
+ * hard rule is "never a dead cut", so --arrive-soft is a real (shorter,
+ * opacity-only) fade rather than an instant swap.
+ */
+.eg-stage--arrive {
+  animation: fade-through-black .45s ease-out;
+}
+
+.eg-stage--arrive-soft {
+  animation: fade-through-black .18s linear;
+}
+
+/* ── the job veil (U5b): the ritual leader over the stage while a commit
+      goes through the gate ── */
+.eg-jobveil {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(11, 8, 13, .82);
+}
+
+.eg-jobveil-dial {
+  position: relative;
+  width: min(40vh, 260px);
+  aspect-ratio: 1;
+}
+
+.eg-jobveil-sub {
+  font-size: 11.5px;
+  letter-spacing: .12em;
+  color: var(--mute);
+  text-align: center;
+  max-width: 480px;
+}
+
+/* ── the decision's non-happy terminals (honest, one recovery action) ── */
+.eg-flownote {
+  border: 1px solid var(--line);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.eg-flownote--failed { border-color: rgba(207, 106, 76, .55); }
+.eg-flownote--busy { border-color: var(--hold); }
+
+.eg-flownote-lead {
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.eg-flownote-sub {
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--mute);
+  word-break: break-word;
+}
+
+.eg-logs {
+  font-family: var(--tc-mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--mute);
+  background: rgba(11, 8, 13, .6);
+  border: 1px solid var(--line);
+  padding: 8px 10px;
+  max-height: 120px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  align-self: stretch;
+}
+
+.eg-flownote-act {
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #101010;
+  background: var(--tungsten);
+  border: none;
+  border-radius: 2px;
+  padding: 7px 14px 6px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
 /* ── the honest state: a take that never developed ── */
 .eg-nodevelop {
   max-width: 420px;
