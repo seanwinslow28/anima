@@ -1,4 +1,5 @@
 import type {
+  CandidateAttempt,
   GateAction,
   GateSubmitResult,
   JobView,
@@ -41,6 +42,29 @@ export function fetchStatus(id: string): Promise<RunStatus> {
  */
 export function fetchRawState(id: string): Promise<RawRunState> {
   return getJson<RawRunState>(`/runs/${encodeURIComponent(id)}`);
+}
+
+/** GET /runs/{id}/frames/{n}/candidates — frame n's attempts (U5a). 404 throws. */
+export function fetchCandidates(
+  runId: string,
+  n: number,
+): Promise<CandidateAttempt[]> {
+  return getJson<CandidateAttempt[]>(
+    `/runs/${encodeURIComponent(runId)}/frames/${n}/candidates`,
+  );
+}
+
+/**
+ * The frame-image URL (a src, not a fetch): attempt-scoped when given,
+ * otherwise the daemon serves the approved/latest candidate.
+ */
+export function frameImageUrl(
+  runId: string,
+  n: number,
+  attempt?: number,
+): string {
+  const base = `/runs/${encodeURIComponent(runId)}/frames/${n}/image`;
+  return attempt === undefined ? base : `${base}?attempt=${attempt}`;
 }
 
 /** GET /jobs/{job_id} — one poll of a job's lifecycle view. 404 throws. */

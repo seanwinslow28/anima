@@ -5,6 +5,7 @@ import { RunProvider } from "./lib/runContext";
 import { Dashboard } from "./screens/Dashboard";
 import { SystemSheet } from "./screens/dev/SystemSheet";
 import { AnimaticGate } from "./screens/gates/AnimaticGate";
+import { EyeGate } from "./screens/gates/EyeGate";
 import { PlanGate } from "./screens/gates/PlanGate";
 import { ScriptGate } from "./screens/gates/ScriptGate";
 import { StoryboardGate } from "./screens/gates/StoryboardGate";
@@ -42,6 +43,8 @@ export default function App() {
           <Route path="script" element={<ScriptGate />} />
           <Route path="storyboard" element={<StoryboardGate />} />
           <Route path="animatic" element={<AnimaticGate />} />
+          {/* U5: the eye-gate — the screening */}
+          <Route path="frames/:n" element={<EyeGate />} />
         </Route>
         {/* U0 dev-only reference: the REEL ONE living token sheet */}
         <Route path="/dev/system" element={<SystemSheet />} />

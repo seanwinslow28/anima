@@ -1,5 +1,6 @@
 import type {
   BeatSheet,
+  CandidateAttempt,
   RawRunState,
   RunError,
   RunStatus,
@@ -298,6 +299,140 @@ frames:
   beat_id: 4
   chain_from: 1
 `;
+
+/*
+ * The eye-gate's /frames/{n}/candidates fixtures (U5a). Shaped EXACTLY on
+ * server/artifacts.py candidates_view over tests/server/conftest.py's
+ * make_generate_run — the verbatim flag→pass two-attempt Em story (attempt 1
+ * flag "line weight drifts on the arm" cites IR.sean.style.line-weight →
+ * attempt 2 pass "Ship.", carrying the retry note). Frame 3 of the
+ * statusReviewFrame run, under review: neither attempt approved.
+ */
+
+const F3_IMG = "/runs/2026-07-04-spark-forest/frames/3/image";
+
+export const candidatesFlagPass: CandidateAttempt[] = [
+  {
+    attempt: 1,
+    image_url: `${F3_IMG}?attempt=1`,
+    status: "generated",
+    t1: { verdict: "needs_vision_review", fail_codes: [] },
+    em: [
+      {
+        frame: "SPARK_F03",
+        character: "sean",
+        verdict: "flag",
+        confidence: 0.8,
+        cites: ["IR.sean.style.line-weight"],
+        patches: 0,
+        proposed_patches: [],
+        reasoning: "line weight drifts on the arm",
+        notes: "em@phase_5_generate frame=SPARK_F03 (gemini)",
+      },
+    ],
+    note: null,
+    errored: null,
+    ts: "2026-07-04T00:00:00+00:00",
+  },
+  {
+    attempt: 2,
+    image_url: `${F3_IMG}?attempt=2`,
+    status: "generated",
+    t1: { verdict: "needs_vision_review", fail_codes: [] },
+    em: [
+      {
+        frame: "SPARK_F03",
+        character: "sean",
+        verdict: "pass",
+        confidence: 1.0,
+        cites: [],
+        patches: 0,
+        proposed_patches: [],
+        reasoning: "Ship.",
+        notes: "em@phase_5_generate frame=SPARK_F03 (gemini)",
+      },
+    ],
+    note: "hold the line weight from the anchor",
+    errored: null,
+    ts: "2026-07-04T00:05:00+00:00",
+  },
+];
+
+/**
+ * Two cast namespaces on one attempt (the >1 em record case — one verdict per
+ * IR namespace) + a real proposed_patches entry (the fix slot's data). The
+ * mascot flags with a proposed fix; sean passes.
+ */
+export const candidatesTwoCast: CandidateAttempt[] = [
+  {
+    attempt: 1,
+    image_url: `${F3_IMG}?attempt=1`,
+    status: "generated",
+    t1: { verdict: "needs_vision_review", fail_codes: [] },
+    em: [
+      {
+        frame: "SPARK_F03",
+        character: "sean",
+        verdict: "pass",
+        confidence: 0.95,
+        cites: [],
+        patches: 0,
+        proposed_patches: [],
+        reasoning: "Holds from the anchor.",
+        notes: "em@phase_5_generate frame=SPARK_F03 (gemini)",
+      },
+      {
+        frame: "SPARK_F03",
+        character: "claude-mascot",
+        verdict: "flag",
+        confidence: 0.7,
+        cites: ["IR.claude-mascot.anatomy.leg-count-4"],
+        patches: 1,
+        proposed_patches: [
+          {
+            target: "frame_prompt",
+            path: "prompt",
+            value: "the box-creature keeps exactly four legs",
+            rationale: "a fifth leg ghosts in on the near side",
+          },
+        ],
+        reasoning: "a fifth leg ghosts in on the near side",
+        notes: "em@phase_5_generate frame=SPARK_F03 (gemini)",
+      },
+    ],
+    note: null,
+    errored: null,
+    ts: "2026-07-04T00:00:00+00:00",
+  },
+];
+
+/**
+ * The honest-state edges: a take whose image never landed (image_url null)
+ * and an errored fan (status "errored" + the recorded error). Neither may
+ * render a broken <img>.
+ */
+export const candidatesEdge: CandidateAttempt[] = [
+  {
+    attempt: 1,
+    image_url: null,
+    status: "generated",
+    t1: null,
+    em: [],
+    note: null,
+    errored: null,
+    ts: "2026-07-04T00:00:00+00:00",
+  },
+  {
+    attempt: 2,
+    image_url: null,
+    status: "errored",
+    t1: null,
+    em: [],
+    note: null,
+    errored: "NB2 transport timed out",
+    ts: "2026-07-04T00:05:00+00:00",
+  },
+];
 
 /*
  * Raw run-state fixtures (GET /runs/{id} — the passthrough of run_state.json).
