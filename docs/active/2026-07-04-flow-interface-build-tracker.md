@@ -38,7 +38,8 @@ Legend: ✅ merged · 🟡 built-green, PR open (needs review/merge) · 🔷 kic
 | **v1b U0 — REEL ONE design system** (tokens + motion + 7 primitives + `/dev/system`) | ui | ✅ | #86 | Fable | U1–U5 (everything downstream imports it) |
 | **v1b U1 — booth shell + routing + HUD host** (BoothShell/HudHost/⌘K + the URL scheme) | ui | ✅ | #87 | Fable | U2a+ (every screen renders inside it) |
 | **v1b U2a — Dashboard re-skin** (the booth marquee: run cards + all five doctrine states) | ui | ✅ | #88 | Fable | U2b (the Run Overview build follows) |
-| **v1b U2b — Run Overview build** (the booth board: stage reel + hero + box office + crew + frame-reel, two reads, no polling) | ui | 🟡 | `feat/v1b-u2b-run-overview` | Fable | U3 (the job-poll pattern + gate shell) |
+| **v1b U2b — Run Overview build** (the booth board: stage reel + hero + box office + crew + frame-reel, two reads, no polling) | ui | ✅ | #89 | Fable | U3 (the job-poll pattern + gate shell) |
+| **v1b U3 — the shared job-poll pattern + gate shell, proven on the Plan gate** (useGateAction/usePolledResource/runContext + GateShell + PlanGate + the overview live-poll swap; the MSW job seam U4/U5 inherit) | ui | 🟡 | `feat/v1b-u3-job-poll-plan-gate` | Fable | U4a/b/c + U5 (every gate reuses the hook + shell) |
 | Deltas D1 (retry annotations) / D2 (front-door surface) / D3 (chat) | daemon | ⬜ | — | Opus/Codex | v1c |
 | UI v1c — brainstorm room + chat bar + eye-gate annotation | ui | ⬜ | — | mixed | the anima differentiators |
 | D5 — studio taste-memory | daemon | ⬜ | — | **Fable** | the taste ledger |
