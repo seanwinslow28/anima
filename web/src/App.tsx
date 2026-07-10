@@ -6,6 +6,7 @@ import { Dashboard } from "./screens/Dashboard";
 import { SystemSheet } from "./screens/dev/SystemSheet";
 import { PlanGate } from "./screens/gates/PlanGate";
 import { ScriptGate } from "./screens/gates/ScriptGate";
+import { StoryboardGate } from "./screens/gates/StoryboardGate";
 import { RunOverview } from "./screens/RunOverview";
 
 /**
@@ -38,6 +39,7 @@ export default function App() {
           <Route index element={<RunOverview />} />
           <Route path="plan" element={<PlanGate />} />
           <Route path="script" element={<ScriptGate />} />
+          <Route path="storyboard" element={<StoryboardGate />} />
         </Route>
         {/* U0 dev-only reference: the REEL ONE living token sheet */}
         <Route path="/dev/system" element={<SystemSheet />} />

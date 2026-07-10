@@ -52,6 +52,13 @@ describe("app shell", () => {
     ).toBeInTheDocument();
   });
 
+  it("routes /runs/:id/storyboard to the Storyboard gate inside the run scope", async () => {
+    renderApp(<App />, { route: "/runs/2026-07-03-spark-tidepool/storyboard" });
+    expect(
+      await screen.findByRole("heading", { level: 1, name: /the board/i }),
+    ).toBeInTheDocument();
+  });
+
   it("still routes /runs/:id to the booth board (now nested in the run scope)", async () => {
     renderApp(<App />, { route: "/runs/2026-07-04-spark-forest" });
     expect(await screen.findByTestId("booth-board")).toBeInTheDocument();

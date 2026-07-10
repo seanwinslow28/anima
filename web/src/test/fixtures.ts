@@ -209,6 +209,73 @@ export const beatsFixture: BeatSheet = {
   ],
 };
 
+/** An authoring run paused at the storyboard curation gate (U4b). */
+export const statusApproveStoryboard: RunStatus = {
+  run_id: "2026-07-03-spark-tidepool",
+  stage: "STORYBOARD",
+  stub: false,
+  plan_status: "approved",
+  next_action: {
+    kind: "approve_storyboard",
+    hint: "next: --approve-storyboard",
+  },
+  active_job: null,
+  frames: [],
+  updated_at: "2026-07-03T16:40:00.000000+00:00",
+};
+
+/*
+ * The storyboard/shots artifact fixture pair (U4b — the Storyboard gate's two
+ * reads). storyboardMd is Bea's continuity report the way she emits it (studio
+ * voice, read like a report); shotsYaml is her draft board shaped EXACTLY on
+ * pipeline/orchestration/shots.py — beat_id on every frame (the beat→shot
+ * link), the Slice-A prompt discipline (F01 full establishing, F02+ terse
+ * "Same … ONLY CHANGE:" edits), and the Slice-B loop anchor (chain_from: 1 on
+ * the closing frame).
+ */
+
+export const storyboardMd = `# The board, read aloud
+
+Five cuts, one fixed camera. The room does the acting for us.
+
+Sean never looks up. That's the spine of the piece — his attention is the
+still point, and everything that moves, moves on the shoulder.
+
+Cut five is not a near-match, it is a **match**: composition identical to cut
+one, chained from it, so when the reel loops there is no seam.
+`;
+
+export const shotsYaml = `slug: spark-tidepool
+frames:
+- id: 1
+  cast: [sean, claude-mascot]
+  beat: 'Establishing two-shot: Sean draws, the mascot perched on his shoulder, idle.'
+  prompt: Wide two-shot establishing frame. A young man seated three-quarter at a
+    drawing desk, stylus in his RIGHT hand; a terracotta box-creature perched on
+    his shoulder, idle. Pencil test key drawing on cream paper.
+  beat_id: 1
+  hold: 4
+- id: 2
+  cast: [sean, claude-mascot]
+  beat: 'The notice: the mascot turns its head to look down at the drawing.'
+  prompt: 'Same two-shot, same framing and identities. ONLY CHANGE: the mascot
+    turns its head to LOOK down at the drawing, curious.'
+  beat_id: 2
+- id: 3
+  cast: [sean, claude-mascot]
+  beat: 'The delight: the mascot reacts with small, genuine delight.'
+  prompt: 'Same two-shot. ONLY CHANGE: the mascot reacts with small, genuine
+    DELIGHT at the drawing — a quiet beat, not a gag.'
+  beat_id: 3
+- id: 4
+  cast: [sean, claude-mascot]
+  beat: 'The settle: composition identical to frame 1 so the loop closes.'
+  prompt: 'Composition identical to frame 1. The mascot eases back to its idle
+    perched pose; the drawing hand returns to its start position.'
+  beat_id: 4
+  chain_from: 1
+`;
+
 /*
  * Raw run-state fixtures (GET /runs/{id} — the passthrough of run_state.json).
  * Typed as the RawRunState partial; shapes captured from a real authored run

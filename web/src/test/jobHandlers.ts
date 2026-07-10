@@ -78,6 +78,25 @@ export function cancelledJob(overrides: Partial<JobView> = {}): JobView {
   return jobView({ state: "cancelled", rc: null, ...overrides });
 }
 
+/**
+ * The storyboard curation gate's REFUSAL (U4b's invalid-lock state): the
+ * approve job fails (rc!=0) because --approve-storyboard re-validated the
+ * board and refused to lock it — the named gap rides job.logs verbatim
+ * (wording from pipeline/cli/storyboard.py approve_storyboard +
+ * storyboard_validate's coverage message).
+ */
+export function validationFailedJob(overrides: Partial<JobView> = {}): JobView {
+  return jobView({
+    state: "failed",
+    rc: 2,
+    logs:
+      "error: curation gate failed — not locking brief/shots.yaml:\n" +
+      "  coverage gap: beat(s) [3] are boarded by no shot (no frame carries " +
+      "their beat_id) — every beat needs a shot\n",
+    ...overrides,
+  });
+}
+
 /* -- GET /jobs/:id ---------------------------------------------------- */
 
 /**
