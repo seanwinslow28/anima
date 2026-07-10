@@ -433,75 +433,15 @@
   }
 }
 
-/* ── the static working leader (decorative — no JS timer, no countdown).
-   The hand sweeps on a pure CSS loop; reduced-motion stills it. It cannot
-   self-advance regardless: nothing observes it. ── */
+/* ── the working leader (U3: the live ritual timer — U0's <Leader> looped by
+   RitualLeader; the reduced-motion still ships with the component). ── */
 .reelone .bb-now--working .bb-move {
   color: var(--text);
   text-shadow: none;
 }
 
-.reelone .bb-leader {
-  position: relative;
-  width: 96px;
-  height: 96px;
+.reelone .bb-now--working .ro-leader {
   margin: 4px 0 16px;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  background: #0e0b11;
-}
-
-.reelone .bb-leader-cross-v,
-.reelone .bb-leader-cross-h {
-  position: absolute;
-  background: var(--line);
-}
-
-.reelone .bb-leader-cross-v {
-  width: 1px;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-}
-
-.reelone .bb-leader-cross-h {
-  height: 1px;
-  left: 0;
-  right: 0;
-  top: 50%;
-}
-
-.reelone .bb-leader-hand {
-  position: absolute;
-  left: 50%;
-  bottom: 50%;
-  width: 2px;
-  height: 42px;
-  margin-left: -1px;
-  background: var(--tungsten);
-  transform-origin: 50% 100%;
-  animation: bb-sweep 2.8s linear infinite;
-}
-
-@keyframes bb-sweep {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.reelone .bb-leader-n {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--tc-mono);
-  font-size: 34px;
-  font-weight: 600;
-  color: var(--screenlight);
 }
 
 .reelone .bb-working-sub {
@@ -510,12 +450,6 @@
   line-height: 1.6;
   margin: 0 0 18px;
   max-width: 46ch;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reelone .bb-leader-hand {
-    animation: none;
-  }
 }
 
 /* ── the couldn't-read state (error doctrine: what happened + one recovery) ── */

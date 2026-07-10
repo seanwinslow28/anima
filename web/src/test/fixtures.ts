@@ -82,6 +82,32 @@ export const statusReviewFrame: RunStatus = {
   updated_at: "2026-07-04T18:20:00.000000+00:00",
 };
 
+/** An authoring run paused at the plan gate (U3 — the Plan gate's home state). */
+export const statusApprovePlan: RunStatus = {
+  run_id: "2026-07-03-spark-tidepool",
+  stage: "PLAN",
+  stub: false,
+  plan_status: "draft",
+  next_action: {
+    kind: "approve_plan",
+    hint: "next: --approve-plan",
+  },
+  active_job: null,
+  frames: [],
+  updated_at: "2026-07-03T14:02:00.000000+00:00",
+};
+
+/** The plan gate while a job owns the run — the mutating control disables. */
+export const statusApprovePlanBlocked: RunStatus = {
+  ...statusApprovePlan,
+  next_action: {
+    kind: "approve_plan",
+    hint: "next: --approve-plan",
+    blocked_by_job: "job-owner",
+  },
+  active_job: { job_id: "job-owner", mutation_status: "running" },
+};
+
 /** A GENERATE run mid-fan: a job owns the run, Flo is drawing F04 (Slice 4). */
 export const statusWorking: RunStatus = {
   run_id: "2026-07-04-spark-forest",

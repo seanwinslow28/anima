@@ -4,25 +4,45 @@ import { delay, http, HttpResponse } from "msw";
 import { Route, Routes } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 
+import { RunProvider } from "../lib/runContext";
 import { statusReviewFrame, statusWorking } from "../test/fixtures";
 import { server } from "../test/handlers";
+import { succeededJob } from "../test/jobHandlers";
 import { renderApp } from "../test/render";
 import { RunOverview } from "./RunOverview";
 
 /*
- * U2b Task 1 — the two-read wiring (GET /runs/{id}/status + GET /runs/{id})
- * and the doctrine states that apply to a read-only board: loading (a
- * skeleton of the BOARD, not a spinner), error ("couldn't read this run" +
- * the one retry), ready. Working (static leader) is Task 4; busy/409 is a
- * POST concern (U3).
+ * U2b Task 1 wired the two reads (GET /runs/{id}/status via the run scope +
+ * GET /runs/{id}) and the doctrine states: loading (a skeleton of the
+ * BOARD, not a spinner), error ("couldn't read this run" + the one retry),
+ * ready. U3 closed the static Working seam: the board now LIVE-POLLS the
+ * owning job through runContext and advances on the real terminal.
  */
 
 const RUN_ID = "2026-07-04-spark-forest";
 
+/** A job that stays running for the whole test (the provider polls it). */
+function runningJob(jobId: string) {
+  return http.get(`/jobs/${jobId}`, () =>
+    HttpResponse.json({
+      ...succeededJob({ job_id: jobId }),
+      state: "running",
+      rc: null,
+    }),
+  );
+}
+
 function renderOverview(id = RUN_ID) {
   return renderApp(
     <Routes>
-      <Route path="/runs/:id" element={<RunOverview />} />
+      <Route
+        path="/runs/:id"
+        element={
+          <RunProvider runId={id} pollIntervalMs={5}>
+            <RunOverview />
+          </RunProvider>
+        }
+      />
     </Routes>,
     { route: `/runs/${id}` },
   );
@@ -76,9 +96,10 @@ describe("RunOverview states", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders the static Working state when a job owns the run — named agent, decorative leader, no action link", async () => {
+  it("renders the Working state when a job owns the run — named agent, the ritual leader, no action link", async () => {
     server.use(
       http.get(`/runs/:id/status`, () => HttpResponse.json(statusWorking)),
+      runningJob("job-7f3a"),
     );
     renderOverview();
     await screen.findByTestId("booth-board");
@@ -86,43 +107,53 @@ describe("RunOverview states", () => {
     const headings = screen.getAllByRole("heading", { level: 1 });
     expect(headings).toHaveLength(1);
     expect(headings[0]).toHaveTextContent(/Flo is drawing F04/i);
-    // the decorative leader — an image with an honest label, never a timer
-    const leader = screen.getByTestId("static-leader");
-    expect(leader).toHaveAttribute("role", "img");
-    expect(leader).toHaveAccessibleName(/does not advance/i);
+    // the ritual leader — an announced working state, never a fake ETA
+    expect(screen.getByRole("status")).toBeInTheDocument();
     // no mutating / stage affordance while the job owns the run
     expect(
       screen.queryByRole("link", { name: /to the screening/i }),
     ).not.toBeInTheDocument();
   });
 
-  it("the working board is a single read — no polling, no self-advance", async () => {
+  it("the working board LIVE-POLLS the owning job and advances on the real terminal (the U2b static seam is closed)", async () => {
     let statusReads = 0;
+    let jobPolls = 0;
     server.use(
       http.get(`/runs/:id/status`, () => {
         statusReads += 1;
-        return HttpResponse.json(statusWorking);
+        return HttpResponse.json(statusReads === 1 ? statusWorking : statusReviewFrame);
+      }),
+      http.get(`/jobs/job-7f3a`, () => {
+        jobPolls += 1;
+        return HttpResponse.json(
+          jobPolls < 3
+            ? { ...succeededJob({ job_id: "job-7f3a" }), state: "running", rc: null }
+            : succeededJob({ job_id: "job-7f3a" }),
+        );
       }),
     );
     renderOverview();
     await screen.findByTestId("booth-board");
-    expect(statusReads).toBe(1);
-    // give any rogue interval/timeout a chance to fire — nothing may change
-    await new Promise((r) => setTimeout(r, 120));
-    expect(statusReads).toBe(1);
+    // NO clicks: the leader resolves on the job's real terminal and the
+    // board re-reads /status on its own.
     expect(
-      screen.getByRole("heading", { level: 1 }),
-    ).toHaveTextContent(/Flo is drawing F04/i);
-    expect(screen.getByTestId("static-leader")).toBeInTheDocument();
+      await screen.findByRole("heading", {
+        level: 1,
+        name: /F03 waiting on your eye/i,
+      }),
+    ).toBeInTheDocument();
+    expect(jobPolls).toBeGreaterThanOrEqual(3);
+    expect(statusReads).toBe(2);
   });
 
-  it("a manual re-read fetches /status again and moves the board", async () => {
+  it("a manual re-read still fetches /status again and moves the board", async () => {
     let calls = 0;
     server.use(
       http.get(`/runs/:id/status`, () => {
         calls += 1;
         return HttpResponse.json(calls === 1 ? statusWorking : statusReviewFrame);
       }),
+      runningJob("job-7f3a"),
     );
     renderOverview();
     await screen.findByTestId("booth-board");

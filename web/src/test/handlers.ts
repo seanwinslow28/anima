@@ -20,6 +20,11 @@ export const handlers = [
     HttpResponse.json([runReviewFrame, runApprovePlan]),
   ),
   http.get("/runs/:id/status", () => HttpResponse.json(statusReviewFrame)),
+  http.get("/runs/:id/artifacts/plan", () =>
+    HttpResponse.text("# The plan\n\nA default plan for the booth.", {
+      headers: { "Content-Type": "text/markdown; charset=utf-8" },
+    }),
+  ),
   http.get("/runs/:id", () => HttpResponse.json(rawAuthoring)),
 ];
 
