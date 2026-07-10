@@ -1,4 +1,4 @@
-import type { RunListItem, RunStatus } from "./types";
+import type { RawRunState, RunListItem, RunStatus } from "./types";
 
 /*
  * The daemon read client. Same-origin in dev (Vite proxies /runs -> the daemon
@@ -22,4 +22,13 @@ export function fetchRuns(): Promise<RunListItem[]> {
 /** GET /runs/{id}/status — one run's projected status. */
 export function fetchStatus(id: string): Promise<RunStatus> {
   return getJson<RunStatus>(`/runs/${encodeURIComponent(id)}/status`);
+}
+
+/**
+ * GET /runs/{id} — the raw run_state.json passthrough. U2b reads it for
+ * plan.cost_estimate + the fork flags (needs_storyboard / animatic_enabled)
+ * that shape the stage reel.
+ */
+export function fetchRawState(id: string): Promise<RawRunState> {
+  return getJson<RawRunState>(`/runs/${encodeURIComponent(id)}`);
 }

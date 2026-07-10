@@ -1,0 +1,594 @@
+/*
+ * U2b — the booth board (Run Overview). Scoped under `.reelone` so every
+ * color rides the U0 token sheet (contrast re-verified there, not here).
+ * Source of truth for the look: docs/active/2026-07-09-v1b-elevate-directions/
+ * reelone-overview.html. Type floor is 11px (a11y contract) — the mockup's
+ * sub-11px labels are clamped up.
+ */
+
+.reelone .bb-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 30px 30px 36px;
+}
+
+.reelone .bb-mono {
+  font-family: var(--tc-mono);
+}
+
+/* ── the leader strip: the pipeline as film leader (mockup .leaderstrip) ── */
+.reelone .bb-leaderstrip {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: #0e0b11;
+  overflow-x: auto;
+}
+
+.reelone .bb-seg {
+  flex: 1;
+  min-width: 120px;
+  position: relative;
+  border-right: 1px solid var(--line);
+}
+
+.reelone .bb-seg:last-child {
+  border-right: none;
+}
+
+/* sprocket holes top + bottom */
+.reelone .bb-seg::before,
+.reelone .bb-seg::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 7px;
+  background: radial-gradient(circle at 10px 3.5px, #241d2c 2.6px, transparent 2.8px)
+    repeat-x;
+  background-size: 20px 7px;
+  pointer-events: none;
+}
+
+.reelone .bb-seg::before {
+  top: 2px;
+}
+
+.reelone .bb-seg::after {
+  bottom: 2px;
+}
+
+.reelone .bb-seg-hit {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 14px 14px 12px;
+  text-align: left;
+  text-decoration: none;
+  color: inherit;
+}
+
+.reelone .bb-seg:hover {
+  background: rgba(255, 246, 228, 0.04);
+}
+
+.reelone .bb-seg-n {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--mute);
+  letter-spacing: 0.06em;
+}
+
+.reelone .bb-seg-nm {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-top: 2px;
+}
+
+.reelone .bb-seg-who {
+  display: block;
+  font-size: 11px;
+  color: var(--tungsten-dim);
+  margin-top: 4px;
+  letter-spacing: 0.06em;
+}
+
+.reelone .bb-seg-st {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--mute);
+}
+
+.reelone .bb-seg--done .bb-seg-n,
+.reelone .bb-seg--done .bb-seg-nm {
+  color: var(--text);
+}
+
+.reelone .bb-seg--done .bb-seg-st {
+  color: var(--print);
+}
+
+.reelone .bb-seg--waived {
+  opacity: 0.55;
+}
+
+.reelone .bb-seg--now {
+  background: rgba(232, 179, 106, 0.06);
+  box-shadow: inset 0 0 0 1.5px var(--tungsten);
+}
+
+.reelone .bb-seg--now .bb-seg-n {
+  color: var(--screenlight);
+}
+
+.reelone .bb-seg--now .bb-seg-nm,
+.reelone .bb-seg--now .bb-seg-st {
+  color: var(--tungsten);
+}
+
+/* ── NOW SCREENING: the hero decision (mockup .marquee/.now) ── */
+.reelone .bb-marquee {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 26px;
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .reelone .bb-marquee {
+    grid-template-columns: 1fr;
+  }
+}
+
+.reelone .bb-now {
+  position: relative;
+  border: 1px solid var(--line);
+  background: var(--booth2);
+  padding: 30px 34px 28px;
+  overflow: hidden;
+}
+
+.reelone .bb-now::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    70% 90% at 30% 0%,
+    rgba(232, 179, 106, 0.1),
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.reelone .bb-eyebrow {
+  display: block;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: var(--tungsten);
+  margin-bottom: 12px;
+}
+
+.reelone .bb-move {
+  font-weight: 600;
+  font-size: clamp(24px, 3.6vw, 38px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--screenlight);
+  line-height: 1.15;
+  max-width: 18ch;
+  text-shadow: 0 0 30px rgba(255, 246, 228, 0.25);
+  margin: 0 0 22px;
+}
+
+.reelone .bb-go {
+  display: inline-block;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #101010;
+  background: var(--tungsten);
+  padding: 13px 26px 12px;
+  border-radius: 2px;
+  position: relative;
+}
+
+.reelone .bb-go:hover {
+  background: #f2c284;
+}
+
+.reelone .bb-go small {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  font-weight: 500;
+}
+
+/* ── shared label chip ── */
+.reelone .bb-lbl {
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: var(--mute);
+}
+
+.reelone .bb-lbl--dim {
+  color: var(--tungsten-dim);
+}
+
+/* ── the box office (mockup .boxoffice/.stub — the torn ticket) ── */
+.reelone .bb-boxoffice {
+  border: 1px solid var(--line);
+  background: var(--booth2);
+  display: flex;
+  flex-direction: column;
+}
+
+.reelone .bb-boxoffice:focus-visible {
+  outline: 2px solid var(--tungsten);
+  outline-offset: 2px;
+}
+
+.reelone .bb-bo-head {
+  padding: 11px 15px 9px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.reelone .bb-stub {
+  margin: 16px 14px 12px;
+  border: 1px dashed var(--tungsten-dim);
+  padding: 14px 15px;
+  position: relative;
+}
+
+.reelone .bb-stub::before,
+.reelone .bb-stub::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--booth2);
+  border: 1px dashed var(--tungsten-dim);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.reelone .bb-stub::before {
+  left: -8px;
+  border-left-color: transparent;
+}
+
+.reelone .bb-stub::after {
+  right: -8px;
+  border-right-color: transparent;
+}
+
+.reelone .bb-bo-spent {
+  font-size: 13px;
+  color: var(--tungsten);
+  margin: 0;
+}
+
+.reelone .bb-bo-how {
+  font-size: 11px;
+  color: var(--mute);
+}
+
+.reelone .bb-bo-est {
+  font-size: 11.5px;
+  color: var(--text);
+  margin: 7px 0 0;
+  padding-top: 7px;
+  border-top: 1px solid var(--tungsten-dim);
+}
+
+.reelone .bb-bo-table {
+  width: calc(100% - 30px);
+  margin: 0 15px 10px;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.reelone .bb-bo-table td {
+  padding: 3px 0;
+  color: var(--mute);
+}
+
+.reelone .bb-bo-table td:last-child {
+  text-align: right;
+}
+
+.reelone .bb-bo-note {
+  padding: 0 15px 10px;
+  font-size: 11px;
+  color: var(--mute);
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.reelone .bb-bo-note b {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.reelone .bb-bo-detail .ro-burnin {
+  display: block;
+  padding: 0 15px 14px;
+}
+
+/* ── the lower row: the frame reel + the crew ── */
+.reelone .bb-lower {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 26px;
+}
+
+@media (max-width: 900px) {
+  .reelone .bb-lower {
+    grid-template-columns: 1fr;
+  }
+}
+
+.reelone .bb-reelbox .bb-lbl {
+  display: block;
+  margin-bottom: 9px;
+}
+
+.reelone .bb-reel-empty {
+  color: var(--mute);
+  font-size: 12.5px;
+  border: 1px dashed var(--line);
+  padding: 22px;
+  text-align: center;
+}
+
+.reelone .bb-crew {
+  border: 1px solid var(--line);
+  background: var(--booth2);
+  padding: 13px 15px;
+  align-self: start;
+}
+
+.reelone .bb-crew:focus-visible {
+  outline: 2px solid var(--tungsten);
+  outline-offset: 2px;
+}
+
+.reelone .bb-crew-list {
+  list-style: none;
+  margin: 9px 0 0;
+  padding: 0;
+}
+
+.reelone .bb-crew-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 12px;
+}
+
+.reelone .bb-crew-list li:last-child {
+  border-bottom: none;
+}
+
+.reelone .bb-crew-list b {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.reelone .bb-crew-list span {
+  font-size: 11px;
+  color: var(--mute);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── the density gate: secondary detail arrives on intent (hover / focus).
+   Content stays in the DOM (screen readers read it; tests see it) — the
+   reveal is purely visual, and reduced-motion users just get no fade. ── */
+.reelone [data-reveal] {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 160ms ease, max-height 200ms ease;
+}
+
+.reelone .bb-boxoffice:hover [data-reveal],
+.reelone .bb-boxoffice:focus-within [data-reveal],
+.reelone .bb-boxoffice:focus [data-reveal],
+.reelone .bb-crew:hover [data-reveal],
+.reelone .bb-crew:focus-within [data-reveal],
+.reelone .bb-crew:focus [data-reveal] {
+  opacity: 1;
+  max-height: 420px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reelone [data-reveal] {
+    transition: none;
+  }
+}
+
+/* ── the static working leader (decorative — no JS timer, no countdown).
+   The hand sweeps on a pure CSS loop; reduced-motion stills it. It cannot
+   self-advance regardless: nothing observes it. ── */
+.reelone .bb-now--working .bb-move {
+  color: var(--text);
+  text-shadow: none;
+}
+
+.reelone .bb-leader {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin: 4px 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #0e0b11;
+}
+
+.reelone .bb-leader-cross-v,
+.reelone .bb-leader-cross-h {
+  position: absolute;
+  background: var(--line);
+}
+
+.reelone .bb-leader-cross-v {
+  width: 1px;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+}
+
+.reelone .bb-leader-cross-h {
+  height: 1px;
+  left: 0;
+  right: 0;
+  top: 50%;
+}
+
+.reelone .bb-leader-hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  width: 2px;
+  height: 42px;
+  margin-left: -1px;
+  background: var(--tungsten);
+  transform-origin: 50% 100%;
+  animation: bb-sweep 2.8s linear infinite;
+}
+
+@keyframes bb-sweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.reelone .bb-leader-n {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--tc-mono);
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--screenlight);
+}
+
+.reelone .bb-working-sub {
+  color: var(--mute);
+  font-size: 12.5px;
+  line-height: 1.6;
+  margin: 0 0 18px;
+  max-width: 46ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reelone .bb-leader-hand {
+    animation: none;
+  }
+}
+
+/* ── the couldn't-read state (error doctrine: what happened + one recovery) ── */
+.reelone .bb-notice {
+  border: 1px solid var(--line);
+  background: var(--booth2);
+  padding: 28px 32px;
+  max-width: 520px;
+}
+
+.reelone .bb-notice-lead {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--screenlight);
+}
+
+.reelone .bb-notice-sub {
+  margin-top: 8px;
+  color: var(--mute);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.reelone .bb-retry {
+  margin-top: 18px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #101010;
+  background: var(--tungsten);
+  border: none;
+  border-radius: 2px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.reelone .bb-retry:hover {
+  background: #f2c284;
+}
+
+/* ── the board skeleton (loading doctrine: a skeleton of the target screen) ── */
+.reelone .bb-sk {
+  background: var(--booth2);
+  border: 1px solid var(--line);
+}
+
+.reelone .bb-sk-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 26px;
+}
+
+.reelone .bb-sk--reel {
+  height: 84px;
+}
+
+.reelone .bb-sk--hero {
+  height: 220px;
+}
+
+.reelone .bb-sk--aside {
+  height: 220px;
+}
+
+.reelone .bb-sk--strip {
+  height: 150px;
+}
+
+@media (max-width: 900px) {
+  .reelone .bb-sk-row {
+    grid-template-columns: 1fr;
+  }
+}

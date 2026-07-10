@@ -45,4 +45,30 @@ describe("Filmstrip", () => {
     expect(cell.querySelector("img")).toBeNull();
     expect(cell.querySelector(".ro-empty")).not.toBeNull();
   });
+
+  // U2b additive extension — the eye status (a generated take waiting on the
+  // director, tungsten, no pulse) and a per-frame mark override.
+  test("an eye frame reads ON SCREEN in tungsten without pulsing", () => {
+    render(
+      <Filmstrip
+        frames={[{ id: 3, label: "F03", status: "eye", src: "/f3.png", now: true }]}
+      />,
+    );
+    const cell = screen.getAllByRole("listitem")[0];
+    expect(cell.textContent).toContain("ON SCREEN");
+    expect(cell.querySelector(".ro-eye")).not.toBeNull();
+    expect(cell.querySelector(".ro-pulse")).toBeNull();
+  });
+
+  test("a mark override replaces the default status word", () => {
+    render(
+      <Filmstrip
+        frames={[{ id: 4, label: "F04", status: "working", mark: "FLO DRAWING" }]}
+      />,
+    );
+    const cell = screen.getAllByRole("listitem")[0];
+    expect(cell.textContent).toContain("FLO DRAWING");
+    expect(cell.textContent).not.toContain("● WORKING");
+    expect(cell.querySelector(".ro-pulse")).not.toBeNull();
+  });
 });
