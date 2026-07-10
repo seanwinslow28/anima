@@ -23,6 +23,11 @@ export function StageToolbar({
   canGhost,
   onionOn,
   onToggleOnion,
+  canDiff,
+  diffOn,
+  onToggleDiff,
+  lightsOn,
+  onToggleLights,
   cheatOpen,
   onToggleCheat,
 }: {
@@ -38,6 +43,13 @@ export function StageToolbar({
   canGhost: boolean;
   onionOn: boolean;
   onToggleOnion: () => void;
+  /** diff-wipe (U5c): a comparator exists (another take / the approved prior) */
+  canDiff: boolean;
+  diffOn: boolean;
+  onToggleDiff: () => void;
+  /** lights-out (U5c): the frame alone — the toolbar itself goes with it */
+  lightsOn: boolean;
+  onToggleLights: () => void;
   cheatOpen: boolean;
   onToggleCheat: () => void;
 }) {
@@ -89,6 +101,25 @@ export function StageToolbar({
           onClick={onToggleOnion}
         >
           Ghost <span className="eg-kx" aria-hidden="true">O</span>
+        </button>
+        <button
+          type="button"
+          className="eg-tsw"
+          aria-label="Compare takes with a wipe (D)"
+          aria-pressed={diffOn}
+          disabled={!canDiff}
+          onClick={onToggleDiff}
+        >
+          Wipe <span className="eg-kx" aria-hidden="true">D</span>
+        </button>
+        <button
+          type="button"
+          className="eg-tsw"
+          aria-label="House lights out, picture only (L)"
+          aria-pressed={lightsOn}
+          onClick={onToggleLights}
+        >
+          House lights <span className="eg-kx" aria-hidden="true">L</span>
         </button>
         <button
           type="button"

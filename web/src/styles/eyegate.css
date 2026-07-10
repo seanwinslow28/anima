@@ -277,6 +277,81 @@
   top: 26px;
 }
 
+/* ── the diff wipe (U5c "D") — comparator left of the line, the take right ── */
+.eg-wipe {
+  position: absolute;
+  inset: 14px;
+}
+
+.eg-wipe-under,
+.eg-wipe-over {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eg-wipe img {
+  max-width: 100%;
+  max-height: 100%;
+  box-shadow: 0 0 44px rgba(255, 246, 228, .28);
+}
+
+.eg-wipe-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: var(--tungsten);
+  box-shadow: 0 0 8px rgba(232, 179, 106, .8);
+  pointer-events: none;
+}
+
+.eg-wipe-tag {
+  position: absolute;
+  top: 6px;
+  left: 7px;
+  font-size: 10px;
+  letter-spacing: .18em;
+  color: var(--tungsten);
+  white-space: nowrap;
+}
+
+/* the wipe's transport row: the picker + the labelled slider */
+.eg-wiperow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.eg-wipe-pick {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.eg-wiperow input[type="range"] {
+  flex: 1;
+  min-width: 140px;
+  accent-color: var(--tungsten);
+}
+
+.eg-wiperow .eg-kx {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0 4px;
+  font-size: 11px;
+  color: var(--mute);
+}
+
+/* ── lights-out (U5c "L"): the frame alone — the stage glow lifts a touch ── */
+.eg-screen--lights .eg-stage {
+  box-shadow:
+    0 0 130px 16px rgba(255, 246, 228, .16),
+    inset 0 0 0 1px #2B2333;
+}
+
 /* ── the burn-ins on the print ── */
 .eg-burn {
   position: absolute;

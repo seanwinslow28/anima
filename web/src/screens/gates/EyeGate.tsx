@@ -24,6 +24,7 @@ import { RitualLeader } from "../../reelone/RitualLeader";
 import { Timecode } from "../../reelone/Timecode";
 import { CheatSheet } from "./CheatSheet";
 import { EmReadout } from "./EmReadout";
+import { DiffWipe, WipeControls, type WipeSource } from "./DiffWipe";
 import { OnionSkin, type GhostSource } from "./OnionSkin";
 import { composeEmNote, RetryNoteRow } from "./RetryNoteRow";
 import { StageToolbar } from "./StageToolbar";
@@ -327,9 +328,29 @@ function Screening({
   const loop = useRockLoop(loopEntries, Math.max(currentIndex, 0));
   const canRock = showable && currentIndex >= 0 && loopEntries.length >= 2;
 
-  // the cel on screen: the playhead while rocking, else the shown take
+  // -- hover-skim (U5c): a reel cell under the mouse PEEKS that frame on the
+  //    stage without moving the reviewed frame (the FCP skimmer; the
+  //    keyboard equivalent is the ↑↓ walk). Only a frame with a print to
+  //    serve peeks; leaving restores the take. ----------------------------
+  const [peekN, setPeekN] = useState<number | null>(null);
+  const peek = (id: string | number) => {
+    const f = status.frames.find((x) => x.n === Number(id));
+    if (
+      f &&
+      f.n !== frameN &&
+      (f.status === "approved" || f.status === "generated")
+    ) {
+      setPeekN(f.n);
+    }
+  };
+  const peekEnd = () => setPeekN(null);
+  const peekUrl = peekN !== null ? frameImageUrl(runId, peekN) : null;
+
+  // the cel on screen: the playhead while rocking, else the peek, else the
+  // shown take
   const cel = loop.playhead;
-  const celUrl = cel ? cel.url : showable ? attempt.image_url : null;
+  const celUrl =
+    cel?.url ?? peekUrl ?? (showable ? attempt.image_url : null);
 
   // -- onion-skin (U5c "O"): ghost the approved N-1 under the candidate,
   //    plus the chain_from anchor on a loop-return (deduped when they
@@ -361,6 +382,53 @@ function Screening({
   const toggleOnion = () => {
     if (canGhost) setOnion((o) => !o);
   };
+
+  // -- diff-wipe (U5c "D"): compare the shown take against another attempt
+  //    or the approved prior — the two comparators the daemon actually
+  //    serves. The Bible anchor is NOT one (G9): no anchor path exists. ----
+  const [diff, setDiff] = useState(false);
+  const [wipe, setWipe] = useState(50);
+  const [compareKey, setCompareKey] = useState<string | null>(null);
+  const compareOptions = useMemo(() => {
+    const opts: WipeSource[] = [];
+    for (const a of attempts) {
+      if (
+        a.attempt !== attempt.attempt &&
+        a.image_url !== null &&
+        a.status !== "errored" &&
+        !broken.has(a.attempt)
+      ) {
+        opts.push({
+          key: `take-${a.attempt}`,
+          label: `TAKE ${a.attempt}`,
+          url: a.image_url,
+        });
+      }
+    }
+    const prior = ghosts.find((g) => g.role === "N-1");
+    if (prior) {
+      opts.push({
+        key: "prior",
+        label: `${frameLabel(prior.n)} PRINT`,
+        url: prior.url,
+      });
+    }
+    return opts;
+  }, [attempts, attempt.attempt, broken, ghosts]);
+  const canDiff = showable && compareOptions.length > 0;
+  const compare =
+    compareOptions.find((o) => o.key === compareKey) ?? compareOptions[0] ?? null;
+  const toggleDiff = () => {
+    if (canDiff) setDiff((d) => !d);
+  };
+  const dragWipe = (delta: number) => {
+    if (diff && canDiff) setWipe((w) => Math.max(0, Math.min(100, w + delta)));
+  };
+
+  // -- lights-out (U5c "L"): ALL chrome drops — the frame (or the running
+  //    loop) alone on the dark stage; L again restores. A decision terminal
+  //    still surfaces (honesty beats ritual). -----------------------------
+  const [lights, setLights] = useState(false);
 
   // -- ↑/↓ walk frames: the adjacent REVIEWABLE stops (a pending frame has
   //    nothing to screen — the walk skips it) -----------------------------
@@ -462,6 +530,22 @@ function Screening({
       toggleOnion();
       return;
     }
+    if (e.key === "d" || e.key === "D") {
+      toggleDiff();
+      return;
+    }
+    if (e.key === "[") {
+      dragWipe(-4);
+      return;
+    }
+    if (e.key === "]") {
+      dragWipe(4);
+      return;
+    }
+    if (e.key === "l" || e.key === "L") {
+      setLights((v) => !v);
+      return;
+    }
     if (e.key === "ArrowUp") {
       e.preventDefault();
       walk(prevN);
@@ -490,9 +574,14 @@ function Screening({
     if (e.key === " ") loop.stop();
   };
 
+  // the diff wipe rides the stage only while the stage is at rest on the
+  // shown take (never over the rocking loop or a peek)
+  const diffOn =
+    diff && canDiff && compare !== null && cel === null && peekN === null;
+
   return (
     <section
-      className="eg-screen"
+      className={lights ? "eg-screen eg-screen--lights" : "eg-screen"}
       data-testid="eyegate"
       role="region"
       aria-label={`${label} — the stage. Hold Space to run the loop; number keys switch takes.`}
@@ -501,13 +590,15 @@ function Screening({
       onKeyDown={onKeyDown}
       onKeyUp={onKeyUp}
     >
-      <header className="eg-head">
-        <h1 className="eg-h1">{label} · the screening</h1>
-        <Timecode
-          frame={(cel?.n ?? frameN) - 1}
-          hold={cel ? (cel.hold ?? 2) : hold}
-        />
-      </header>
+      {!lights && (
+        <header className="eg-head">
+          <h1 className="eg-h1">{label} · the screening</h1>
+          <Timecode
+            frame={(cel?.n ?? frameN) - 1}
+            hold={cel ? (cel.hold ?? 2) : hold}
+          />
+        </header>
+      )}
 
       <div className="eg-stagewrap">
         <div className="eg-beam" aria-hidden="true" />
@@ -526,17 +617,29 @@ function Screening({
           data-testid="stage"
           aria-label={`${label} take ${attempt.attempt}, projected`}
         >
-          {celUrl !== null ? (
+          {diffOn && attempt.image_url !== null ? (
+            <DiffWipe
+              base={{
+                key: "base",
+                label: `TAKE ${attempt.attempt}`,
+                url: attempt.image_url,
+              }}
+              compare={compare}
+              wipe={wipe}
+            />
+          ) : celUrl !== null ? (
             <div className="eg-img eg-img--lit">
               <img
                 src={celUrl}
                 alt={
                   cel && cel.n !== frameN
                     ? `${frameLabel(cel.n)} — rocking the loop`
-                    : `${label} take ${attempt.attempt} — the candidate on screen`
+                    : peekN !== null
+                      ? `${frameLabel(peekN)} — peeking the reel`
+                      : `${label} take ${attempt.attempt} — the candidate on screen`
                 }
                 onError={
-                  cel
+                  cel || peekN !== null
                     ? undefined
                     : () =>
                         setBroken((prev) => new Set(prev).add(attempt.attempt))
@@ -555,7 +658,7 @@ function Screening({
               </p>
             </div>
           )}
-          {onion && canGhost && loop.playhead === null && (
+          {onion && canGhost && loop.playhead === null && peekN === null && (
             <OnionSkin ghosts={ghosts} />
           )}
           <span className="eg-burn eg-burn--l">
@@ -565,8 +668,8 @@ function Screening({
             <BurnIn segments={[FPS_LINE, MODEL_LINE, FRAME_COST_LINE]} />
           </span>
         </figure>
-        <EmReadout records={attempt.em} />
-        <CheatSheet open={cheatOpen} />
+        {!lights && <EmReadout records={attempt.em} />}
+        {!lights && <CheatSheet open={cheatOpen} />}
         {jobRunning && (
           <div className="eg-jobveil" data-testid="gate-working">
             <div className="eg-jobveil-dial">
@@ -589,7 +692,17 @@ function Screening({
         )}
       </div>
 
+      {(!lights || noticeUp) && (
       <div className="eg-transport">
+        {diffOn && (
+          <WipeControls
+            options={compareOptions}
+            selectedKey={compare.key}
+            onSelect={setCompareKey}
+            wipe={wipe}
+            onWipe={setWipe}
+          />
+        )}
         {againOpen && !noticeUp && !jobRunning && (
           <RetryNoteRow
             key={attempt.attempt}
@@ -645,6 +758,11 @@ function Screening({
               canGhost={canGhost}
               onionOn={onion}
               onToggleOnion={toggleOnion}
+              canDiff={canDiff}
+              diffOn={diff}
+              onToggleDiff={toggleDiff}
+              lightsOn={lights}
+              onToggleLights={() => setLights((v) => !v)}
               cheatOpen={cheatOpen}
               onToggleCheat={() => setCheatOpen((o) => !o)}
             />
@@ -657,9 +775,10 @@ function Screening({
           </div>
         )}
         <div className="eg-strip">
-          <Filmstrip frames={reelFrames} />
+          <Filmstrip frames={reelFrames} onPeek={peek} onPeekEnd={peekEnd} />
         </div>
       </div>
+      )}
     </section>
   );
 }

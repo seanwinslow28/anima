@@ -12,6 +12,9 @@ const KEYS: ReadonlyArray<{ k: string; does: string }> = [
   { k: "1 2", does: "Switch takes" },
   { k: "↑ ↓", does: "Walk frames (reviewable stops only)" },
   { k: "O", does: "Ghost the previous print (and the loop anchor) under the take" },
+  { k: "D", does: "Wipe-compare the take against another print" },
+  { k: "[ ]", does: "Drag the wipe line" },
+  { k: "L", does: "House lights — the frame alone; L brings them back" },
   { k: "?", does: "This sheet" },
   { k: "⌘K", does: "Command palette" },
 ];
