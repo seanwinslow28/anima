@@ -10,6 +10,7 @@ import type {
   GateAction,
   RunStatus,
 } from "../../api/types";
+import { useHudOptional } from "../../booth/HudHost";
 import { framesToReel, nextActionUrl } from "../../lib/boothBoard";
 import { useImagePreload } from "../../lib/imagePreload";
 import { parseShots } from "../../lib/shots";
@@ -430,6 +431,22 @@ function Screening({
   //    still surfaces (honesty beats ritual). -----------------------------
   const [lights, setLights] = useState(false);
 
+  // -- the summonable HUD (U5c — the signature): the eye-gate opts into
+  //    U1's "full" dim level; idle ~3s and the booth chrome fades to almost
+  //    nothing, any input wakes it. The frame and the decision are the only
+  //    permanent things. HudHost already honors reduced motion (no timed
+  //    fade); bare mounts (unit tests) have no HUD and never dim. ---------
+  const hud = useHudOptional();
+  const declareDim = hud?.declareDimLevel;
+  const releaseDim = hud?.releaseDimLevel;
+  useEffect(() => {
+    if (!declareDim || !releaseDim) return;
+    declareDim("full");
+    return releaseDim;
+  }, [declareDim, releaseDim]);
+  const boothDark =
+    (hud?.chromeHidden ?? false) && hud?.dimLevel === "full";
+
   // -- ↑/↓ walk frames: the adjacent REVIEWABLE stops (a pending frame has
   //    nothing to screen — the walk skips it) -----------------------------
   const navigate = useNavigate();
@@ -579,9 +596,18 @@ function Screening({
   const diffOn =
     diff && canDiff && compare !== null && cel === null && peekN === null;
 
+  // idle-dark never swallows a decision terminal — honesty beats ritual
+  const idleDark = boothDark && !noticeUp && !jobRunning;
+
   return (
     <section
-      className={lights ? "eg-screen eg-screen--lights" : "eg-screen"}
+      className={[
+        "eg-screen",
+        lights ? "eg-screen--lights" : "",
+        idleDark ? "eg-screen--idledark" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
       data-testid="eyegate"
       role="region"
       aria-label={`${label} — the stage. Hold Space to run the loop; number keys switch takes.`}

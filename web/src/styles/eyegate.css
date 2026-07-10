@@ -352,6 +352,33 @@
     inset 0 0 0 1px #2B2333;
 }
 
+/*
+ * ── the summonable HUD (U5c): idle ~3s → the booth goes dark ──
+ * The eye-gate's chrome fades to a trace; the lit frame stays. Driven by
+ * U1's HudHost (which never times out under prefers-reduced-motion), so the
+ * fade below only ever runs for motion-allowed rooms; the transition is
+ * belt-and-braces collapsed anyway.
+ */
+.eg-head,
+.eg-transport,
+.eg-rail {
+  transition: opacity .8s ease;
+}
+
+.eg-screen--idledark .eg-head,
+.eg-screen--idledark .eg-transport,
+.eg-screen--idledark .eg-rail {
+  opacity: .12;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eg-head,
+  .eg-transport,
+  .eg-rail {
+    transition: none;
+  }
+}
+
 /* ── the burn-ins on the print ── */
 .eg-burn {
   position: absolute;
