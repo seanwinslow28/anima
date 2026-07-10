@@ -1,4 +1,4 @@
-import type { RunError, RunStatus, RunSummary } from "../api/types";
+import type { RawRunState, RunError, RunStatus, RunSummary } from "../api/types";
 
 /*
  * Fixtures shaped on the live daemon projection of real runs (captured
@@ -71,6 +71,7 @@ export const statusReviewFrame: RunStatus = {
     frame: 3,
     hint: "next: review F03 candidate",
   },
+  active_job: null,
   frames: [
     { n: 1, status: "approved", attempts: 1, hold: 4 },
     { n: 2, status: "approved", attempts: 2, hold: 2 },
@@ -79,4 +80,107 @@ export const statusReviewFrame: RunStatus = {
     { n: 5, status: "pending", attempts: 0, hold: 2 },
   ],
   updated_at: "2026-07-04T18:20:00.000000+00:00",
+};
+
+/** A GENERATE run mid-fan: a job owns the run, Flo is drawing F04 (Slice 4). */
+export const statusWorking: RunStatus = {
+  run_id: "2026-07-04-spark-forest",
+  stage: "GENERATE",
+  stub: false,
+  plan_status: "approved",
+  next_action: {
+    kind: "generating",
+    frame: 4,
+    hint: "working: generating F04",
+    blocked_by_job: "job-7f3a",
+  },
+  active_job: { job_id: "job-7f3a", mutation_status: "running" },
+  frames: [
+    { n: 1, status: "approved", attempts: 1, hold: 4 },
+    { n: 2, status: "approved", attempts: 2, hold: 2 },
+    { n: 3, status: "approved", attempts: 1, hold: 2 },
+    { n: 4, status: "pending", attempts: 0, hold: 2 },
+    { n: 5, status: "pending", attempts: 0, hold: 2 },
+  ],
+  updated_at: "2026-07-04T18:25:00.000000+00:00",
+};
+
+/** An authoring run paused at the animatic placement gate. */
+export const statusAnimaticGate: RunStatus = {
+  run_id: "2026-06-21-spark-animatic-driven",
+  stage: "ANIMATIC",
+  stub: false,
+  plan_status: "approved",
+  next_action: {
+    kind: "approve_animatic",
+    hint: "next: place roughs, then --approve-animatic",
+  },
+  active_job: null,
+  frames: [],
+  updated_at: "2026-06-21T12:00:00.000000+00:00",
+};
+
+/*
+ * Raw run-state fixtures (GET /runs/{id} — the passthrough of run_state.json).
+ * Typed as the RawRunState partial; shapes captured from a real authored run
+ * (2026-06-21-spark-animatic-driven) — cost_estimate is Maya's real band.
+ */
+
+/** Authoring run (Sam→Bea), animatic waived, plan costed. */
+export const rawAuthoring: RawRunState = {
+  run_id: "2026-07-04-spark-forest",
+  slug: "spark-forest",
+  stage: "GENERATE",
+  stub: false,
+  needs_storyboard: true,
+  animatic_enabled: false,
+  plan: {
+    status: "approved",
+    cost_estimate: {
+      low_usd: 0.35,
+      median_usd: 0.93,
+      high_usd: 2.25,
+      by_phase: {
+        phase_2: { low_usd: 0, median_usd: 0, high_usd: 0 },
+        phase_5: { low_usd: 0.35, median_usd: 0.93, high_usd: 2.25, confidence: "full" },
+        phase_6: { low_usd: 0, median_usd: 0, high_usd: 0 },
+        phase_8: { low_usd: 0, median_usd: 0, high_usd: 0 },
+      },
+    },
+  },
+};
+
+/** Back-compat run (brief carried shots.yaml — no SCRIPT/STORYBOARD ever). */
+export const rawBackCompat: RawRunState = {
+  run_id: "2026-07-04-spark-forest",
+  slug: "spark-forest",
+  stage: "GENERATE",
+  stub: false,
+  needs_storyboard: false,
+  animatic_enabled: false,
+  plan: {
+    status: "approved",
+    cost_estimate: {
+      low_usd: 0.35,
+      median_usd: 0.93,
+      high_usd: 2.25,
+      by_phase: {
+        phase_5: { low_usd: 0.35, median_usd: 0.93, high_usd: 2.25, confidence: "full" },
+      },
+    },
+  },
+};
+
+/**
+ * Animatic-enabled authoring run. cost_estimate null exercises the
+ * pre-draft "estimate pending" path (the field is null until Maya drafts).
+ */
+export const rawAnimatic: RawRunState = {
+  run_id: "2026-06-21-spark-animatic-driven",
+  slug: "spark-animatic",
+  stage: "ANIMATIC",
+  stub: false,
+  needs_storyboard: true,
+  animatic_enabled: true,
+  plan: { status: "approved", cost_estimate: null },
 };

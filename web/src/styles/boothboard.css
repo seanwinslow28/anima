@@ -1,0 +1,96 @@
+/*
+ * U2b — the booth board (Run Overview). Scoped under `.reelone` so every
+ * color rides the U0 token sheet (contrast re-verified there, not here).
+ * Source of truth for the look: docs/active/2026-07-09-v1b-elevate-directions/
+ * reelone-overview.html. Type floor is 11px (a11y contract) — the mockup's
+ * sub-11px labels are clamped up.
+ */
+
+.reelone .bb-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 30px 30px 36px;
+}
+
+.reelone .bb-mono {
+  font-family: var(--tc-mono);
+}
+
+/* ── the couldn't-read state (error doctrine: what happened + one recovery) ── */
+.reelone .bb-notice {
+  border: 1px solid var(--line);
+  background: var(--booth2);
+  padding: 28px 32px;
+  max-width: 520px;
+}
+
+.reelone .bb-notice-lead {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--screenlight);
+}
+
+.reelone .bb-notice-sub {
+  margin-top: 8px;
+  color: var(--mute);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.reelone .bb-retry {
+  margin-top: 18px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #101010;
+  background: var(--tungsten);
+  border: none;
+  border-radius: 2px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.reelone .bb-retry:hover {
+  background: #f2c284;
+}
+
+/* ── the board skeleton (loading doctrine: a skeleton of the target screen) ── */
+.reelone .bb-sk {
+  background: var(--booth2);
+  border: 1px solid var(--line);
+}
+
+.reelone .bb-sk-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 26px;
+}
+
+.reelone .bb-sk--reel {
+  height: 84px;
+}
+
+.reelone .bb-sk--hero {
+  height: 220px;
+}
+
+.reelone .bb-sk--aside {
+  height: 220px;
+}
+
+.reelone .bb-sk--strip {
+  height: 150px;
+}
+
+@media (max-width: 900px) {
+  .reelone .bb-sk-row {
+    grid-template-columns: 1fr;
+  }
+}
