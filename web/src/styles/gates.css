@@ -584,3 +584,9 @@
   padding: 1px 6px;
   border-radius: 2px;
 }
+
+/* the invalid-lock state (U4b): a legitimate refusal, not a crash — the
+   hold amber, not the bakelite error red */
+.reelone .gate-notice--refused {
+  border-color: var(--hold);
+}

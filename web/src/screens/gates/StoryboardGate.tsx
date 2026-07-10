@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { GateShell } from "./GateShell";
 import { Markdown } from "./Markdown";
@@ -8,8 +8,9 @@ import { fetchArtifact } from "../../api/client";
 import { nextActionUrl } from "../../lib/boothBoard";
 import { useRun } from "../../lib/runContext";
 import { parseShots } from "../../lib/shots";
-import { useGateAction } from "../../lib/useGateAction";
+import { useGateAction, type GateFlow } from "../../lib/useGateAction";
 import { useResource } from "../../lib/useResource";
+import { RitualLeader } from "../../reelone/RitualLeader";
 
 /**
  * The Storyboard gate (/runs/:id/storyboard — U4b): Bea's storyboard.md as
@@ -23,7 +24,7 @@ import { useResource } from "../../lib/useResource";
  * no send-back (G7): both live on disk until their v1c deltas.
  */
 export function StoryboardGate({ pollIntervalMs }: { pollIntervalMs?: number }) {
-  const { runId, status } = useRun();
+  const { runId, status, refresh } = useRun();
   const navigate = useNavigate();
   const [nonce, setNonce] = useState(0);
 
@@ -127,18 +128,168 @@ export function StoryboardGate({ pollIntervalMs }: { pollIntervalMs?: number }) 
         />
       }
       actions={
-        <button
-          type="button"
-          className="gate-approve"
-          disabled={!canLock}
-          onClick={() => submit()}
-        >
-          Lock picture
-          <small>⌘⏎</small>
-        </button>
+        <StoryboardGateActions
+          runId={runId}
+          flow={flow}
+          canLock={canLock}
+          blockedBy={blockedBy}
+          submit={() => submit()}
+          refreshAndReset={() => {
+            refresh();
+            setNonce((n) => n + 1);
+            reset();
+          }}
+        />
       }
     >
       <Markdown text={board.data} />
     </GateShell>
   );
+}
+
+/**
+ * The action bar renders the gate's flow state — every branch honest. The
+ * U4b-specific branch is `failed`: on this gate a failed approve job is the
+ * daemon's curation gate REFUSING to lock a broken board (coverage / orphan /
+ * cast conflict — the reason rides job.logs), so it renders as the legitimate
+ * "the board won't lock yet" state — the named gap, then the fix — never as
+ * a crash. The POST-level `error` branch (404/422) stays the generic refusal.
+ */
+function StoryboardGateActions({
+  runId,
+  flow,
+  canLock,
+  blockedBy,
+  submit,
+  refreshAndReset,
+}: {
+  runId: string;
+  flow: GateFlow;
+  canLock: boolean;
+  blockedBy: string | null;
+  submit: () => void;
+  refreshAndReset: () => void;
+}) {
+  switch (flow.phase) {
+    case "submitting":
+    case "working":
+      return (
+        <div className="gate-working" data-testid="gate-working">
+          <RitualLeader caption="LOCKING PICTURE" />
+          <p className="gate-hint">
+            The gate is re-reading the board — coverage, orphans, cast
+            {flow.phase === "working" && (
+              <>
+                {" "}
+                · job <span className="gate-mono">{flow.jobId}</span>
+              </>
+            )}
+            . It locks only if the board holds.
+          </p>
+        </div>
+      );
+
+    case "busy":
+      return (
+        <div className="gate-notice gate-notice--busy" role="alert">
+          <h2>The booth is busy</h2>
+          <p>
+            {flow.reason} · job{" "}
+            <span className="gate-mono">{flow.activeJobId}</span> has the run.
+          </p>
+          <Link className="gate-notice-act" to={`/runs/${encodeURIComponent(runId)}`}>
+            Watch the running job
+          </Link>
+        </div>
+      );
+
+    case "stale":
+      return (
+        <div className="gate-notice" role="alert">
+          <h2>This run already moved on</h2>
+          <p>{flow.detail}</p>
+          <button type="button" className="gate-notice-act" onClick={refreshAndReset}>
+            Refresh the gate
+          </button>
+        </div>
+      );
+
+    // THE INVALID-LOCK STATE — the refused lock, framed as a state a
+    // director legitimately hits, calm and directive.
+    case "failed":
+      return (
+        <div className="gate-notice gate-notice--refused" role="alert">
+          <h2>The board won't lock yet</h2>
+          <p>The gate re-read the board and refused it. The gap, named:</p>
+          <pre className="gate-logs">{flow.job.logs || "(no log output)"}</pre>
+          <p>
+            The fix lives on disk — curate shots.yaml there (add the missing
+            shot, restore the dropped cast), then re-read and lock again.
+          </p>
+          <button type="button" className="gate-notice-act" onClick={refreshAndReset}>
+            Re-read the board
+          </button>
+        </div>
+      );
+
+    case "degraded":
+      return (
+        <div className="gate-notice gate-notice--error" role="alert">
+          <h2>The board locked, but the booth couldn't re-read the run</h2>
+          <p>
+            The job finished (rc 0) yet the run's state wouldn't load
+            {flow.job.load_error && (
+              <>
+                : <span className="gate-mono">{flow.job.load_error}</span>
+              </>
+            )}
+            . Refresh before touching anything.
+          </p>
+          <button type="button" className="gate-notice-act" onClick={refreshAndReset}>
+            Refresh
+          </button>
+        </div>
+      );
+
+    case "error":
+      return (
+        <div className="gate-notice gate-notice--error" role="alert">
+          <h2>The gate refused{flow.status ? ` (${flow.status})` : ""}</h2>
+          <p>{flow.detail}</p>
+          <button type="button" className="gate-notice-act" onClick={refreshAndReset}>
+            Back to the gate
+          </button>
+        </div>
+      );
+
+    // idle, advanced (navigating away), cancelled (resetting)
+    default:
+      return (
+        <>
+          <button
+            type="button"
+            className="gate-approve"
+            disabled={!canLock}
+            onClick={submit}
+          >
+            Lock picture
+            <small>⌘⏎</small>
+          </button>
+          <p className="gate-hint">
+            {blockedBy ? (
+              <>
+                Job <span className="gate-mono">{blockedBy}</span> owns this run —
+                the gate unlocks when it wraps.
+              </>
+            ) : (
+              <>
+                Locking re-validates the board and writes locked: true into
+                shots.yaml — then it's the camera's. Slates are the shot list;
+                curation happens on disk, not here.
+              </>
+            )}
+          </p>
+        </>
+      );
+  }
 }
