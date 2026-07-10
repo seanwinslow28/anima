@@ -564,6 +564,50 @@
   color: var(--mute);
 }
 
+/* ── the retake note row (AGAIN) ── */
+.eg-againrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--hold);
+  padding: 8px 10px;
+}
+
+.eg-againrow .eg-lbl {
+  flex: none;
+  white-space: nowrap;
+  color: var(--hold);
+}
+
+.eg-againrow input {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--tc-mono);
+  font-size: 12px;
+  color: var(--screenlight);
+  background: rgba(11, 8, 13, .6);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 6px 8px;
+}
+
+.eg-again-send {
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: .18em;
+  color: #101010;
+  background: var(--hold);
+  border: none;
+  border-radius: 2px;
+  padding: 7px 12px 6px;
+  cursor: pointer;
+}
+
+.eg-again-send:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
 /* ── the provenance line + the reel strip ── */
 .eg-prov {
   margin-left: auto;

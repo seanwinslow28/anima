@@ -23,6 +23,7 @@ import { RitualLeader } from "../../reelone/RitualLeader";
 import { Timecode } from "../../reelone/Timecode";
 import { CheatSheet } from "./CheatSheet";
 import { EmReadout } from "./EmReadout";
+import { composeEmNote, RetryNoteRow } from "./RetryNoteRow";
 import { StageToolbar } from "./StageToolbar";
 
 /*
@@ -333,9 +334,28 @@ function Screening({
   const blockedBy = status.next_action.blocked_by_job ?? null;
   const gateIdle = flow.phase === "idle";
   const canPrint = showable && gateIdle && blockedBy === null;
+  const canAgain = gateIdle && blockedBy === null;
   const print = () => {
     if (!canPrint) return;
     gate.printTake(attempt.attempt);
+  };
+
+  // AGAIN: the note row, prefilled from Em's read of the SHOWN take.
+  // Opening it pauses the loop — you write with the picture still.
+  const [againOpen, setAgainOpen] = useState(false);
+  const emNote = composeEmNote(attempt.em);
+  const openAgain = () => {
+    if (!canAgain) return;
+    loop.stop();
+    setAgainOpen(true);
+  };
+  const cancelAgain = () => {
+    setAgainOpen(false);
+    regionRef.current?.focus();
+  };
+  const sendAgain = (note: string) => {
+    setAgainOpen(false);
+    gate.againNote(note);
   };
 
   const jobRunning = flow.phase === "submitting" || flow.phase === "working";
@@ -380,6 +400,10 @@ function Screening({
     if (e.key === "Enter") {
       e.preventDefault();
       print();
+      return;
+    }
+    if (e.key === "r" || e.key === "R") {
+      openAgain();
       return;
     }
     if (e.key === "ArrowUp") {
@@ -507,6 +531,15 @@ function Screening({
       </div>
 
       <div className="eg-transport">
+        {againOpen && !noticeUp && !jobRunning && (
+          <RetryNoteRow
+            key={attempt.attempt}
+            prefill={emNote.note}
+            fromEm={emNote.fromEm}
+            onSend={sendAgain}
+            onCancel={cancelAgain}
+          />
+        )}
         {noticeUp ? (
           <DecisionNotice
             flow={flow}
@@ -545,8 +578,8 @@ function Screening({
             <StageToolbar
               canPrint={canPrint}
               onPrint={print}
-              canAgain={gateIdle && blockedBy === null}
-              onAgain={() => {}}
+              canAgain={canAgain}
+              onAgain={openAgain}
               prevN={prevN}
               nextN={nextN}
               onWalk={walk}
