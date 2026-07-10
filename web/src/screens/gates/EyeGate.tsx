@@ -4,12 +4,15 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { fetchCandidates } from "../../api/client";
-import type { CandidateAttempt, FrameState } from "../../api/types";
+import type { CandidateAttempt, FrameState, RunStatus } from "../../api/types";
+import { framesToReel } from "../../lib/boothBoard";
 import { useRun } from "../../lib/runContext";
 import { useResource } from "../../lib/useResource";
 import { BurnIn } from "../../reelone/BurnIn";
+import { Filmstrip } from "../../reelone/Filmstrip";
 import { RitualLeader } from "../../reelone/RitualLeader";
 import { Timecode } from "../../reelone/Timecode";
+import { EmReadout } from "./EmReadout";
 
 /*
  * The eye-gate (U5a) — the screening. The stage is the only bright object in
@@ -88,21 +91,27 @@ export function EyeGate() {
   return (
     <Screening
       key={frameN}
+      runId={runId}
       frameN={frameN}
       frameState={frameState}
+      status={status.data}
       attempts={candidates.data}
     />
   );
 }
 
-/** The ready state: the lit stage + takes. */
+/** The ready state: the lit stage + Em's margin + takes + the reel. */
 function Screening({
+  runId,
   frameN,
   frameState,
+  status,
   attempts,
 }: {
+  runId: string;
   frameN: number;
   frameState: FrameState | null;
+  status: RunStatus;
   attempts: CandidateAttempt[];
 }) {
   const label = frameLabel(frameN);
@@ -121,6 +130,12 @@ function Screening({
     attempt.image_url !== null &&
     attempt.status !== "errored" &&
     !broken.has(attempt.attempt);
+
+  // the reel ledger: the run's frames, ringed on the VIEWED frame
+  const reelFrames = framesToReel(runId, status).map((f) => ({
+    ...f,
+    now: f.id === frameN,
+  }));
 
   return (
     <section className="eg-screen" data-testid="eyegate">
@@ -165,20 +180,32 @@ function Screening({
             <BurnIn segments={[FPS_LINE, MODEL_LINE, FRAME_COST_LINE]} />
           </span>
         </figure>
+        <EmReadout records={attempt.em} />
       </div>
 
       <div className="eg-transport">
-        <div className="eg-takes" role="group" aria-label="Takes">
-          {attempts.map((a) => (
-            <button
-              key={a.attempt}
-              type="button"
-              aria-pressed={a.attempt === shown}
-              onClick={() => setShown(a.attempt)}
-            >
-              TAKE {a.attempt}
-            </button>
-          ))}
+        <div className="eg-row">
+          <div className="eg-takes" role="group" aria-label="Takes">
+            {attempts.map((a) => (
+              <button
+                key={a.attempt}
+                type="button"
+                aria-pressed={a.attempt === shown}
+                onClick={() => setShown(a.attempt)}
+              >
+                TAKE {a.attempt}
+              </button>
+            ))}
+          </div>
+          {/* the provenance line — composed from constants + the verdict (G8) */}
+          <p className="eg-prov">
+            {attempt.em.length > 0
+              ? "drawn by Flo (NB2) · read by Em · your call"
+              : "drawn by Flo (NB2) · your call"}
+          </p>
+        </div>
+        <div className="eg-strip">
+          <Filmstrip frames={reelFrames} />
         </div>
       </div>
     </section>

@@ -203,6 +203,146 @@
 .eg-takes button .eg-tv--print { color: var(--print); }
 .eg-takes button .eg-tv--fail { color: var(--bakelite); }
 
+/* ── Em's margin rail (the back row) ── */
+.eg-rail {
+  position: absolute;
+  right: 22px;
+  top: 18px;
+  width: 270px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.eg-lbl {
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: var(--mute);
+}
+
+.eg-note {
+  border: 1px solid var(--line);
+  background: rgba(29, 23, 34, .94);
+  padding: 12px 14px;
+  backdrop-filter: blur(2px);
+}
+
+.eg-note-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+
+.eg-grease {
+  width: 46px;
+  height: 8px;
+  flex: none;
+  color: var(--tungsten-dim);
+}
+
+.eg-note-verdict {
+  margin-bottom: 7px;
+}
+
+.eg-note-reason {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.eg-fix {
+  margin-top: 8px;
+  border-top: 1px dashed var(--line);
+  padding-top: 8px;
+}
+
+.eg-fix .eg-lbl {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 11px;
+}
+
+.eg-fix-patch {
+  margin-top: 4px;
+}
+
+.eg-fix-patch q {
+  quotes: none;
+  display: block;
+  color: var(--screenlight);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.eg-fix-meta {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  color: var(--mute);
+  word-break: break-all;
+}
+
+.eg-fix-why {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--mute);
+}
+
+.eg-cite {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--mute);
+  word-break: break-all;
+}
+
+.eg-cite b {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.eg-nonote {
+  border: 1px dashed var(--line);
+  padding: 12px 14px;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--mute);
+}
+
+.eg-bound {
+  font-size: 11px;
+  color: var(--mute);
+  letter-spacing: .06em;
+  line-height: 1.6;
+  padding: 0 4px;
+}
+
+@media (max-width: 900px) {
+  .eg-rail {
+    position: static;
+    width: auto;
+    margin-top: 10px;
+  }
+}
+
+/* ── the provenance line + the reel strip ── */
+.eg-prov {
+  margin-left: auto;
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--mute);
+}
+
+.eg-strip {
+  overflow-x: auto;
+}
+
 /* ── the couldn't-screen notice ── */
 .eg-notice {
   margin: auto;

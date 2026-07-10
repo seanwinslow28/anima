@@ -8,7 +8,11 @@ import { EyeGate } from "./EyeGate";
 import { RunProvider } from "../../lib/runContext";
 import { ROUTER_FUTURE } from "../../test/render";
 import { server } from "../../test/handlers";
-import { candidatesEdge, candidatesFlagPass } from "../../test/fixtures";
+import {
+  candidatesEdge,
+  candidatesFlagPass,
+  candidatesTwoCast,
+} from "../../test/fixtures";
 import type { CandidateAttempt, RunStatus } from "../../api/types";
 
 /*
@@ -162,6 +166,129 @@ describe("EyeGate — honest image states (never a broken <img>)", () => {
       within(stage).getByText(/this take didn't develop/i),
     ).toBeInTheDocument();
     expect(within(stage).queryByRole("img")).not.toBeInTheDocument();
+  });
+});
+
+describe("EyeGate — Em as a hand in the margin", () => {
+  it("reads the shown take's verdict as a lamp before the words, and swaps with the take", async () => {
+    const user = userEvent.setup();
+    mountEyeGate();
+    await seeTheStage();
+    const rail = screen.getByRole("complementary", { name: /back row/i });
+
+    // default take 2: Em passed — PRINT lamp, then the reasoning
+    expect(
+      within(rail).getByRole("img", { name: /verdict: print/i }),
+    ).toBeInTheDocument();
+    expect(within(rail).getByText("Ship.")).toBeInTheDocument();
+
+    // take 1: the flag — HOLD lamp, the reasoning, the cite
+    await user.click(screen.getByRole("button", { name: /take 1/i }));
+    expect(
+      within(rail).getByRole("img", { name: /verdict: hold/i }),
+    ).toBeInTheDocument();
+    expect(
+      within(rail).getByText("line weight drifts on the arm"),
+    ).toBeInTheDocument();
+    expect(
+      within(rail).getByText(/IR\.sean\.style\.line-weight/),
+    ).toBeInTheDocument();
+  });
+
+  it("renders one card per cast namespace, with the proposed fix displayed", async () => {
+    mountEyeGate({ candidates: candidatesTwoCast });
+    await seeTheStage();
+    const rail = screen.getByRole("complementary", { name: /back row/i });
+
+    // two cards, named by IR namespace
+    expect(
+      within(rail).getByText("EM · back row · sean"),
+    ).toBeInTheDocument();
+    expect(
+      within(rail).getByText("EM · back row · claude-mascot"),
+    ).toBeInTheDocument();
+    expect(
+      within(rail).getByRole("img", { name: /verdict: print/i }),
+    ).toBeInTheDocument();
+    expect(
+      within(rail).getByRole("img", { name: /verdict: hold/i }),
+    ).toBeInTheDocument();
+
+    // the proposed fix — displayed, attributed as hers to propose, yours to call
+    expect(
+      within(rail).getByText(/proposed — your call, not hers/i),
+    ).toBeInTheDocument();
+    expect(
+      within(rail).getByText("the box-creature keeps exactly four legs"),
+    ).toBeInTheDocument();
+    expect(
+      within(rail).getAllByText(/a fifth leg ghosts in on the near side/i).length,
+    ).toBeGreaterThan(0);
+    expect(
+      within(rail).getByText(/IR\.claude-mascot\.anatomy\.leg-count-4/),
+    ).toBeInTheDocument();
+  });
+
+  it("states her honest boundary in-context and announces the region; grease marks are decorative", async () => {
+    mountEyeGate();
+    await seeTheStage();
+    const rail = screen.getByRole("complementary", { name: /back row/i });
+
+    expect(rail).toHaveAttribute("aria-live", "polite");
+    expect(
+      within(rail).getByText(/she reads stills, not motion — the loop is yours/i),
+    ).toBeInTheDocument();
+    // every grease mark (the decorative margin strokes) is aria-hidden
+    const marks = rail.querySelectorAll(".eg-grease");
+    expect(marks.length).toBeGreaterThan(0);
+    marks.forEach((m) => expect(m).toHaveAttribute("aria-hidden", "true"));
+  });
+
+  it("a take with no Em note says so honestly", async () => {
+    mountEyeGate({ candidates: candidatesEdge });
+    await seeTheStage();
+    const rail = screen.getByRole("complementary", { name: /back row/i });
+    expect(
+      within(rail).getByText(/no note from the back row on this take/i),
+    ).toBeInTheDocument();
+  });
+});
+
+describe("EyeGate — the provenance line (client-composed, G8)", () => {
+  it("credits the chain when Em has read the take", async () => {
+    mountEyeGate();
+    await seeTheStage();
+    expect(
+      screen.getByText("drawn by Flo (NB2) · read by Em · your call"),
+    ).toBeInTheDocument();
+  });
+
+  it("drops 'read by Em' when the take carries no verdict — never invented", async () => {
+    mountEyeGate({ candidates: candidatesEdge });
+    await seeTheStage();
+    expect(
+      screen.getByText("drawn by Flo (NB2) · your call"),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/read by Em/)).not.toBeInTheDocument();
+  });
+});
+
+describe("EyeGate — the filmstrip ledger", () => {
+  it("shows the run's frames from /status: PRINT, ON SCREEN (ringed = the viewed frame), pending", async () => {
+    mountEyeGate();
+    await seeTheStage();
+    const reel = screen.getByRole("list", { name: /reel/i });
+    const cells = within(reel).getAllByRole("listitem");
+    expect(cells).toHaveLength(5);
+
+    expect(within(cells[0]).getByText("F01")).toBeInTheDocument();
+    expect(within(cells[0]).getByText(/PRINT/)).toBeInTheDocument();
+    expect(within(cells[1]).getByText(/PRINT/)).toBeInTheDocument();
+    expect(within(cells[2]).getByText("F03")).toBeInTheDocument();
+    expect(within(cells[2]).getByText(/ON SCREEN/)).toBeInTheDocument();
+    // the ring follows the VIEWED frame
+    expect(cells[2].className).toContain("ro-fcell--now");
+    expect(cells[3].className).not.toContain("ro-fcell--now");
   });
 });
 
