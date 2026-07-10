@@ -1,0 +1,216 @@
+/*
+ * The marquee — U2a's re-skin of the Dashboard into the booth (REEL ONE).
+ * Every rule sits under the `.reelone` scope (BoothShell provides it); v1a
+ * screens (RunOverview until U2b) keep app.css untouched. Treatment derived
+ * from the ratified reelone-overview.html: leader segments (sprocket-hole
+ * strips), booth2 panels, the tungsten screenlight wash, mono labels.
+ *
+ * Density gate: the default card says slug + stage + the one move; the meta
+ * row (id / stub / updated date) arrives on hover or focus — on intent.
+ * Contrast (booth surfaces, per the U0 token ledger): screenlight 17.5:1 ·
+ * text 13.1:1 · mute >=4.68:1 on every booth surface · tungsten 9.9:1 ·
+ * print ~6.5:1 on booth2. Bakelite/tungsten-dim stay accent-only (>=3:1).
+ */
+
+/* ── the screen header: marquee register ── */
+.reelone .mq-screen {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 26px 30px 36px;
+}
+
+.reelone .mq-eyebrow {
+  display: block;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--tungsten);
+  margin: 0 0 4px;
+}
+
+.reelone .mq-title {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 24px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--screenlight);
+  text-shadow: 0 0 30px rgba(255, 246, 228, 0.25);
+  margin: 0 0 22px;
+}
+
+/* ── the gallery grid ── */
+.reelone .mq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.reelone .mq-grid--pad {
+  margin-top: 18px;
+}
+
+/* ── the booth card: one run as a leader segment on the marquee ── */
+.reelone .mq-card {
+  position: relative;
+  display: block;
+  padding: 24px 18px 16px;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(70% 90% at 30% 0%, rgba(232, 179, 106, 0.08), transparent 60%),
+    var(--booth2);
+  color: var(--text);
+  text-decoration: none;
+  overflow: hidden;
+  transition:
+    border-color 0.15s,
+    background-color 0.15s;
+}
+
+/* sprocket holes top + bottom — the film-leader edge */
+.reelone .mq-card::before,
+.reelone .mq-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 7px;
+  background: radial-gradient(circle at 10px 3.5px, #241d2c 2.6px, transparent 2.8px)
+    repeat-x;
+  background-size: 20px 7px;
+  pointer-events: none;
+}
+.reelone .mq-card::before {
+  top: 2px;
+}
+.reelone .mq-card::after {
+  bottom: 2px;
+}
+
+.reelone .mq-card:hover {
+  border-color: var(--tungsten-dim);
+  background-color: var(--booth3);
+}
+
+.reelone .mq-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.reelone .mq-name {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--screenlight);
+  text-shadow: 0 0 22px rgba(255, 246, 228, 0.22);
+  overflow-wrap: anywhere;
+}
+
+.reelone .mq-stage {
+  flex: none;
+  font-family: var(--tc-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--mute);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 2px 7px;
+}
+
+/* ── the one move — tone mapped onto the booth's light ── */
+.reelone .mq-cta {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: 12.5px;
+  letter-spacing: 0.05em;
+}
+.reelone .mq-cta--act {
+  color: var(--tungsten);
+  font-weight: 500;
+}
+.reelone .mq-cta--wait {
+  color: var(--mute);
+}
+.reelone .mq-cta--done {
+  color: var(--print);
+}
+
+.reelone .mq-cta-mark {
+  flex: none;
+  display: inline-block;
+  transition: transform 0.15s ease-out;
+}
+.reelone .mq-cta-mark--print {
+  font-size: 9px;
+  align-self: center;
+}
+
+/* act = reach-for-it: the arrow leans in when the card is lit */
+.reelone .mq-card:hover .mq-cta--act .mq-cta-mark {
+  transform: translateX(3px);
+}
+
+/* ── the secondary layer: quiet, arrives on intent (density gate) ── */
+.reelone .mq-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+  font-family: var(--tc-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--mute);
+  overflow-wrap: anywhere;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.reelone .mq-card:hover .mq-meta,
+.reelone .mq-card:focus-visible .mq-meta {
+  opacity: 1;
+}
+.reelone .mq-meta-stub {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+/* ── the marquee skeleton — booth card shapes, never a spinner ── */
+.reelone .mq-card--skeleton {
+  pointer-events: none;
+}
+.reelone .mq-sk {
+  height: 12px;
+  border-radius: 2px;
+  background: var(--booth3);
+}
+.reelone .mq-sk--name {
+  width: 55%;
+  height: 16px;
+}
+.reelone .mq-sk--cta {
+  width: 42%;
+  margin-top: 16px;
+}
+.reelone .mq-sk--meta {
+  width: 70%;
+  margin-top: 14px;
+  opacity: 0.5;
+}
+
+/* hover/press feedback survives reduce; decorative motion does not */
+@media (prefers-reduced-motion: reduce) {
+  .reelone .mq-card,
+  .reelone .mq-cta-mark,
+  .reelone .mq-meta {
+    transition: none;
+  }
+  .reelone .mq-card:hover .mq-cta--act .mq-cta-mark {
+    transform: none;
+  }
+}
