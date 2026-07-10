@@ -1,11 +1,15 @@
 /*
- * The daemon read contract, as TypeScript. Mirrors server/state_view.py exactly
- * (verified against the live projection on real runs, 2026-07-04):
- *   GET /runs            -> RunListItem[]   (RunSummary | RunError)
- *   GET /runs/{id}/status -> RunStatus
- *   GET /runs/{id}       -> raw run_state.json (typed here as the RawRunState
- *                           partial — only the fields U2b reads)
- * All read-only; the POST/job types land with U3.
+ * The daemon contract, as TypeScript. Mirrors server/state_view.py +
+ * server/jobs.py + server/routers/{gates,jobs}_router.py exactly (reads
+ * verified against the live projection 2026-07-04; the job layer read from
+ * the routers 2026-07-10):
+ *   GET  /runs             -> RunListItem[]   (RunSummary | RunError)
+ *   GET  /runs/{id}/status -> RunStatus
+ *   GET  /runs/{id}        -> raw run_state.json (typed here as the
+ *                             RawRunState partial — only the fields U2b reads)
+ *   POST /runs/{id}/<gate> -> 202 {job_id} | 409 busy (dict detail) |
+ *                             409 stale (STRING detail) | 404 | 422
+ *   GET  /jobs/{job_id}    -> JobView
  */
 
 /** next_action.kind is the navigation spine (state_view.next_action). */
@@ -122,3 +126,67 @@ export interface RawRunState {
     cost_estimate: CostEstimate | null;
   };
 }
+
+/* -- the job layer (U3): POST gate -> 202 {job_id} -> poll GET /jobs/{id} -- */
+
+/** Job lifecycle (server/jobs.py). Terminal = succeeded | failed | cancelled. */
+export type JobState =
+  | "pending"
+  | "running"
+  | "succeeded"
+  | "failed"
+  | "cancelled";
+
+const TERMINAL_JOB_STATES: ReadonlySet<JobState> = new Set([
+  "succeeded",
+  "failed",
+  "cancelled",
+]);
+
+/** Has the job left the pending/running loop? (server TERMINAL_STATES) */
+export function isTerminalJobState(state: JobState): boolean {
+  return TERMINAL_JOB_STATES.has(state);
+}
+
+/**
+ * GET /jobs/{job_id} (jobs_router.job_view). succeeded ⇔ rc===0, but rc 0 can
+ * still carry load_error / null fresh_state (the post-job state re-read
+ * failed) — the DEGRADED success the hook must not auto-advance on.
+ */
+export interface JobView {
+  job_id: string;
+  run_id: string;
+  state: JobState;
+  rc: number | null;
+  logs: string;
+  /** The re-read run_state.json, handed back INLINE on terminal. */
+  fresh_state: Record<string, unknown> | null;
+  load_error: string | null;
+  /** The post-job next_action, inline — advance on this, no /status round-trip. */
+  next_action: NextAction | null;
+}
+
+/**
+ * A mutating gate action, as a plain descriptor so one hook serves every
+ * gate: U3 plan approve (no body), U4 script/storyboard/animatic approve
+ * (no body), U5 frame approve (?attempt=K in the path) + retry ({note} body).
+ */
+export interface GateAction {
+  method: "POST";
+  /** The daemon path, e.g. /runs/{id}/plan/approve. */
+  path: string;
+  /** JSON body when the gate takes one (U5 retry {note}); omitted otherwise. */
+  body?: unknown;
+}
+
+/**
+ * The POST outcome, discriminated. THE TWO 409s ARE DISTINCT (red-team
+ * blocker): busy carries a dict detail {active_job_id, reason} — offer to
+ * watch that job; stale carries a PLAIN-STRING detail (stage mismatch — the
+ * run already moved on) and there is NO job to watch.
+ */
+export type GateSubmitResult =
+  | { kind: "accepted"; jobId: string }
+  | { kind: "busy"; activeJobId: string; reason: string }
+  | { kind: "stale"; detail: string }
+  | { kind: "error"; status: number; detail: string };
