@@ -1,0 +1,358 @@
+/*
+ * The document gates (U3 GateShell + PlanGate; U4's three gates reuse this).
+ * The lit continuity page: a cream --page sheet under the tungsten lamp in
+ * the dark booth (reelone-reading.html is the visual reference). Scoped
+ * under .reelone like the other screen sheets. Contrast is carried by the
+ * token set (page-ink on page 13.41:1, page-ink2 on page 6.99:1); nothing
+ * here renders body text under 11px.
+ */
+
+.reelone .gate-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 26px 30px 30px;
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.reelone .gate-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) 340px;
+  gap: 26px;
+  align-items: start;
+}
+@media (max-width: 960px) {
+  .reelone .gate-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── the lamp + the page ── */
+.reelone .gate-lampwrap {
+  position: relative;
+}
+.reelone .gate-lampwrap::before {
+  content: "";
+  position: absolute;
+  inset: -40px -60px;
+  background: radial-gradient(
+    58% 52% at 50% 34%,
+    rgba(232, 179, 106, 0.14),
+    transparent 72%
+  );
+  pointer-events: none;
+}
+.reelone .gate-page {
+  position: relative;
+  background: var(--page);
+  color: var(--page-ink);
+  padding: 36px 40px 40px;
+  max-width: 66ch;
+  margin: 0 auto;
+  box-shadow:
+    0 0 60px rgba(232, 179, 106, 0.16),
+    0 8px 34px rgba(0, 0, 0, 0.5);
+}
+.reelone .gate-stamp {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 2px solid var(--page-ink);
+  padding-bottom: 9px;
+  margin-bottom: 20px;
+}
+.reelone .gate-stamp .gate-mono {
+  font-size: 11px;
+  color: var(--page-ink2);
+}
+.reelone .gate-title {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 17px;
+  margin: 0 0 4px;
+}
+.reelone .gate-byline {
+  font-size: 11.5px;
+  color: var(--page-ink2);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 18px;
+}
+.reelone .gate-mono {
+  font-family: var(--tc-mono);
+}
+
+/* the artifact prose — Georgia on cream, a report you read */
+.reelone .gate-prose {
+  font-family: var(--page-serif);
+  font-size: 15px;
+  line-height: 1.72;
+  color: var(--page-ink);
+}
+.reelone .gate-prose p,
+.reelone .gate-prose ul,
+.reelone .gate-prose ol {
+  margin: 0 0 13px;
+}
+.reelone .gate-prose ul,
+.reelone .gate-prose ol {
+  padding-left: 1.4em;
+}
+.reelone .gate-prose h2,
+.reelone .gate-prose h3,
+.reelone .gate-prose h4,
+.reelone .gate-prose h5,
+.reelone .gate-prose h6 {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 22px 0 8px;
+}
+.reelone .gate-prose h2 {
+  font-size: 14px;
+  border-bottom: 1px solid var(--page-rule);
+  padding-bottom: 5px;
+}
+.reelone .gate-prose h3 {
+  font-size: 12.5px;
+}
+.reelone .gate-prose h4,
+.reelone .gate-prose h5,
+.reelone .gate-prose h6 {
+  font-size: 11.5px;
+  color: var(--page-ink2);
+}
+.reelone .gate-prose table {
+  border-collapse: collapse;
+  margin: 0 0 13px;
+  font-size: 13px;
+  width: 100%;
+}
+.reelone .gate-prose th,
+.reelone .gate-prose td {
+  border: 1px solid var(--page-rule);
+  padding: 4px 8px;
+  text-align: left;
+}
+.reelone .gate-prose th {
+  font-family: var(--display);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.reelone .gate-prose code {
+  font-family: var(--tc-mono);
+  font-size: 12.5px;
+  background: rgba(43, 36, 23, 0.07);
+  padding: 0 3px;
+}
+.reelone .gate-prose pre {
+  background: rgba(43, 36, 23, 0.07);
+  padding: 10px 12px;
+  overflow-x: auto;
+  margin: 0 0 13px;
+}
+.reelone .gate-prose pre code {
+  background: none;
+  padding: 0;
+}
+.reelone .gate-prose blockquote {
+  border-left: 3px solid var(--page-rule);
+  margin: 0 0 13px;
+  padding: 2px 0 2px 14px;
+  color: var(--page-ink2);
+  font-style: italic;
+}
+.reelone .gate-prose a {
+  color: var(--page-ink);
+  text-decoration: underline;
+}
+.reelone .gate-prose hr {
+  border: none;
+  border-top: 1px solid var(--page-rule);
+  margin: 18px 0;
+}
+
+/* ── the secondary column ── */
+.reelone .gate-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+.reelone .gate-lbl {
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: var(--mute);
+}
+.reelone .gate-lbl--dim {
+  color: var(--tungsten-dim);
+}
+
+/* the box-office card (density gate: detail on intent) */
+.reelone .gate-cost {
+  border: 1px solid var(--line);
+  background: var(--booth2);
+  padding: 13px 14px;
+}
+.reelone .gate-cost-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.reelone .gate-cost-band {
+  font-size: 13px;
+  color: var(--text);
+  margin: 0;
+}
+.reelone .gate-cost-detail {
+  margin-top: 8px;
+}
+.reelone .gate-cost:hover [data-reveal],
+.reelone .gate-cost:focus-within [data-reveal],
+.reelone .gate-cost:focus [data-reveal] {
+  opacity: 1;
+  max-height: 420px;
+}
+.reelone .gate-cost-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+  margin-bottom: 8px;
+}
+.reelone .gate-cost-table td {
+  padding: 3.5px 0;
+  border-bottom: 1px dashed var(--line);
+  color: var(--text);
+}
+.reelone .gate-cost-table td:last-child {
+  text-align: right;
+}
+.reelone .gate-cost-note {
+  font-size: 11px;
+  color: var(--mute);
+  line-height: 1.6;
+  margin: 0;
+}
+.reelone .gate-cost-note b {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ── the action bar: the one decision ── */
+.reelone .gate-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+  flex-wrap: wrap;
+}
+.reelone .gate-approve {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #101010;
+  background: var(--tungsten);
+  padding: 13px 26px 11px;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.reelone .gate-approve:hover {
+  background: #f2c284;
+}
+.reelone .gate-approve:disabled {
+  background: var(--tungsten-dim);
+  cursor: not-allowed;
+}
+.reelone .gate-approve small {
+  display: block;
+  font-size: 8.5px;
+  letter-spacing: 0.2em;
+  font-weight: 500;
+}
+.reelone .gate-hint {
+  font-size: 11px;
+  color: var(--mute);
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+}
+
+/* gate flow states: the notice card (busy/stale/failed/degraded/error) */
+.reelone .gate-notice {
+  border: 1px solid var(--line);
+  background: var(--booth2);
+  padding: 14px 16px;
+  max-width: 66ch;
+}
+.reelone .gate-notice--failed,
+.reelone .gate-notice--error {
+  border-color: var(--bakelite);
+}
+.reelone .gate-notice--busy {
+  border-color: var(--hold);
+}
+.reelone .gate-notice h2 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 6px;
+  color: var(--text);
+}
+.reelone .gate-notice p {
+  font-size: 12.5px;
+  color: var(--mute);
+  margin: 0 0 10px;
+  line-height: 1.6;
+}
+.reelone .gate-logs {
+  font-family: var(--tc-mono);
+  font-size: 11.5px;
+  color: var(--text);
+  background: var(--booth);
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  max-height: 240px;
+  overflow: auto;
+  white-space: pre-wrap;
+  margin: 0 0 10px;
+}
+.reelone .gate-notice-act {
+  font-family: var(--display);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--tungsten);
+  border: 1px solid var(--line);
+  background: none;
+  padding: 7px 14px 6px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.reelone .gate-notice-act:hover {
+  border-color: var(--tungsten);
+}
+
+/* the working leader sits centered on the dark stage */
+.reelone .gate-working {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 30px 0 10px;
+}
+.reelone .gate-working .gate-hint {
+  text-align: center;
+}
