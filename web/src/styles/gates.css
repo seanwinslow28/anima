@@ -483,3 +483,104 @@
 .reelone .gate-working .gate-hint {
   text-align: center;
 }
+
+/* ── the slate stack (U4b: the shot list as display-only slates; curation
+   is G2 — deferred, it lives on disk). The clapper header is always lit;
+   the detail (intent line + cast) arrives on intent, sharing the shared
+   [data-reveal] collapse from boothboard.css. ── */
+.reelone .gate-slates {
+  border: 1px solid var(--line);
+  background: var(--booth2);
+  padding: 13px 14px;
+}
+.reelone .gate-slates-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.reelone .slate-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.reelone .slate {
+  border: 1px solid var(--line);
+  background: var(--booth);
+}
+.reelone .slate-top {
+  display: flex;
+  align-items: stretch;
+}
+.reelone .slate-clap {
+  width: 26px;
+  min-height: 40px;
+  border-right: 1px solid var(--line);
+  background: repeating-linear-gradient(
+    135deg,
+    var(--booth2) 0 6px,
+    var(--line) 6px 12px
+  );
+}
+.reelone .slate-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 6px 10px 5px;
+  border-right: 1px solid var(--line);
+}
+.reelone .slate-field:last-child {
+  border-right: none;
+}
+.reelone .slate-field b,
+.reelone .slate-beatlink {
+  font-size: 12px;
+  color: var(--text);
+  font-weight: 500;
+}
+.reelone .slate-beatlink {
+  color: var(--tungsten);
+  text-decoration: none;
+}
+.reelone .slate-beatlink:hover {
+  text-decoration: underline;
+}
+.reelone .slate-return {
+  margin: 0;
+  padding: 5px 10px;
+  font-size: 11px;
+  color: var(--hold);
+  border-top: 1px solid var(--line);
+}
+.reelone .slate-detail {
+  padding: 0 10px;
+}
+.reelone .gate-slates:hover [data-reveal],
+.reelone .gate-slates:focus-within [data-reveal],
+.reelone .gate-slates:focus [data-reveal] {
+  opacity: 1;
+  max-height: 280px;
+}
+.reelone .slate-intent {
+  font-size: 11.5px;
+  color: var(--text);
+  line-height: 1.55;
+  margin: 8px 0 6px;
+}
+.reelone .slate-cast {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding-bottom: 9px;
+}
+.reelone .slate-cast-tag {
+  font-size: 11px;
+  color: var(--mute);
+  border: 1px solid var(--line);
+  padding: 1px 6px;
+  border-radius: 2px;
+}

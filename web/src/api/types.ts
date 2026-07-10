@@ -149,6 +149,37 @@ export interface BeatSheet {
   beats: Beat[];
 }
 
+/*
+ * -- Bea's shot list (U4b): GET /runs/{id}/artifacts/shots ----------------
+ * shots.yaml served raw (text/plain) and parsed CLIENT-SIDE (lib/shots.ts —
+ * G4: beat_id/chain_from live only in the YAML). Shape mirrors
+ * pipeline/orchestration/shots.py (Shot/ShotList); display-only fields only —
+ * validation stays the daemon's job at --approve-storyboard.
+ */
+
+export interface ShotFrame {
+  id: number;
+  /** IR namespaces; first = primary (Flo's folder key). */
+  cast: string[];
+  /** Em beat_description + T1 pose_description. */
+  beat: string;
+  /** Flo's generation prompt. */
+  prompt: string;
+  /** On-twos default (2) when the board doesn't say. */
+  hold: number;
+  /** Bea's beat->shot link; null on a pre-Bea board (the Spark original). */
+  beat_id: number | null;
+  /** The loop anchor — an earlier frame this one chains off (loop-return → 1). */
+  chain_from: number | null;
+}
+
+export interface ShotSheet {
+  slug: string;
+  frames: ShotFrame[];
+  /** The curation flag storyboard-approve flips; false on a draft board. */
+  locked: boolean;
+}
+
 /* -- the job layer (U3): POST gate -> 202 {job_id} -> poll GET /jobs/{id} -- */
 
 /** Job lifecycle (server/jobs.py). Terminal = succeeded | failed | cancelled. */
