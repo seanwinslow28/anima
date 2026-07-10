@@ -37,4 +37,16 @@ describe("app shell", () => {
       screen.getByRole("heading", { level: 1, name: /reel one/i }),
     );
   });
+
+  it("routes /runs/:id/plan to the Plan gate inside the run scope", async () => {
+    renderApp(<App />, { route: "/runs/2026-07-03-spark-tidepool/plan" });
+    expect(
+      await screen.findByRole("heading", { level: 1, name: /the plan/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("still routes /runs/:id to the booth board (now nested in the run scope)", async () => {
+    renderApp(<App />, { route: "/runs/2026-07-04-spark-forest" });
+    expect(await screen.findByTestId("booth-board")).toBeInTheDocument();
+  });
 });
