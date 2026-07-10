@@ -1,4 +1,5 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it } from "vitest";
@@ -8,6 +9,13 @@ import { RunProvider } from "../../lib/runContext";
 import { ROUTER_FUTURE } from "../../test/render";
 import { server } from "../../test/handlers";
 import { statusAnimaticGate, statusAnimaticHolds } from "../../test/fixtures";
+import {
+  gateBusy,
+  JOB_ID,
+  jobLifecycle,
+  failedJob,
+  succeededJob,
+} from "../../test/jobHandlers";
 import type { RunStatus } from "../../api/types";
 
 /*
@@ -124,8 +132,174 @@ describe("AnimaticGate — the read (thin: /status is the only source)", () => {
     await waitFor(() =>
       expect(screen.getByText(/couldn't read the run/i)).toBeInTheDocument(),
     );
-    const { default: userEvent } = await import("@testing-library/user-event");
     await userEvent.click(screen.getByRole("button", { name: /retry/i }));
     await seeTheGate();
+  });
+});
+
+const APPROVE = `/runs/${RUN}/animatic/approve`;
+
+/** Ingest success: --approve-animatic ingested the roughs and fanned frame 1. */
+const ingested = () =>
+  succeededJob({
+    logs:
+      "animatic approved — ingested 4 placement rough(s) + 1 hold override(s); " +
+      "entering GENERATE\n",
+    fresh_state: { stage: "GENERATE" },
+    next_action: {
+      kind: "review_frame",
+      frame: 1,
+      hint: "next: review F01 candidate",
+    },
+  });
+
+/**
+ * The daemon's ingest REFUSAL (rc 2): a rough that names a frame not in the
+ * board — the named gap rides job.logs verbatim (wording from
+ * pipeline/orchestration/animatic_stage.py approve_animatic_gate).
+ */
+const ingestRefused = () =>
+  failedJob({
+    logs:
+      "error: animatic ingest failed: animatic rough F07.png names frame 7, " +
+      "which is not in the board (frames: [1, 2, 3, 4])\n" +
+      `  fix the roughs/sidecar in runs/${RUN}/animatic and re-run --approve-animatic.\n`,
+  });
+
+describe("AnimaticGate — ingest & skip (both roads through the SAME POST)", () => {
+  it("Ingest & generate runs the leader, then ADVANCES on the inline next_action to the eye-gate", async () => {
+    mountAnimaticGate();
+    server.use(
+      http.post(APPROVE, () =>
+        HttpResponse.json({ job_id: JOB_ID }, { status: 202 }),
+      ),
+      jobLifecycle(JOB_ID, ingested(), 3),
+    );
+    await seeTheGate();
+    await userEvent.click(
+      screen.getByRole("button", { name: /ingest & generate/i }),
+    );
+    // the shared ritual leader is the working state
+    await waitFor(() => expect(screen.getByRole("status")).toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.getByTestId("eyegate-screen")).toBeInTheDocument(),
+    );
+  });
+
+  it("Continue without roughs binds to the SAME POST — skip is approve-empty, never a second endpoint", async () => {
+    mountAnimaticGate(statusAnimaticGate);
+    let approvePosts = 0;
+    server.use(
+      http.post(APPROVE, () => {
+        approvePosts += 1;
+        return HttpResponse.json({ job_id: JOB_ID }, { status: 202 });
+      }),
+      jobLifecycle(
+        JOB_ID,
+        ingested(), // rc 0 either way — an empty dir proceeds with a warning
+        1,
+      ),
+    );
+    await seeTheGate();
+    await userEvent.click(
+      screen.getByRole("button", { name: /continue without roughs/i }),
+    );
+    await waitFor(() =>
+      expect(screen.getByTestId("eyegate-screen")).toBeInTheDocument(),
+    );
+    expect(approvePosts).toBe(1);
+  });
+
+  it("⌘⏎ ingests (keyboard is a first-class hand)", async () => {
+    mountAnimaticGate();
+    server.use(
+      http.post(APPROVE, () =>
+        HttpResponse.json({ job_id: JOB_ID }, { status: 202 }),
+      ),
+      jobLifecycle(JOB_ID, ingested(), 2),
+    );
+    await seeTheGate();
+    await userEvent.keyboard("{Meta>}{Enter}{/Meta}");
+    await waitFor(() =>
+      expect(screen.getByTestId("eyegate-screen")).toBeInTheDocument(),
+    );
+  });
+
+  it("a refused ingest names the gap AND the fix — calm, on-disk, no advance", async () => {
+    mountAnimaticGate();
+    server.use(
+      http.post(APPROVE, () =>
+        HttpResponse.json({ job_id: JOB_ID }, { status: 202 }),
+      ),
+      jobLifecycle(JOB_ID, ingestRefused(), 1),
+    );
+    await seeTheGate();
+    await userEvent.click(
+      screen.getByRole("button", { name: /ingest & generate/i }),
+    );
+    // a legitimate state, not a crash
+    await waitFor(() =>
+      expect(screen.getByText(/roughs won't ingest yet/i)).toBeInTheDocument(),
+    );
+    // the NAMED GAP — the daemon's refusal, verbatim from job.logs
+    expect(
+      screen.getByText(/F07\.png names frame 7/),
+    ).toBeInTheDocument();
+    // the FIX — directive: the pass lives on disk
+    expect(screen.getByText(/the fix lives on disk/i)).toBeInTheDocument();
+    expect(screen.queryByTestId("eyegate-screen")).toBeNull();
+
+    // the one recovery action re-arms the gate
+    await userEvent.click(
+      screen.getByRole("button", { name: /back to the placement gate/i }),
+    );
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: /ingest & generate/i }),
+      ).toBeInTheDocument(),
+    );
+  });
+
+  it("409-busy offers to watch the running job", async () => {
+    mountAnimaticGate();
+    server.use(gateBusy(APPROVE, "job-owner"));
+    await seeTheGate();
+    await userEvent.click(
+      screen.getByRole("button", { name: /ingest & generate/i }),
+    );
+    await waitFor(() =>
+      expect(screen.getByText(/booth is busy/i)).toBeInTheDocument(),
+    );
+    expect(
+      screen.getByRole("link", { name: /watch the running job/i }),
+    ).toHaveAttribute("href", `/runs/${RUN}`);
+  });
+
+  it("blocked_by_job disables BOTH roads (single-writer made visible)", async () => {
+    server.use(
+      http.get("/jobs/job-owner", () =>
+        HttpResponse.json({
+          ...succeededJob({ job_id: "job-owner" }),
+          state: "running",
+          rc: null,
+        }),
+      ),
+    );
+    mountAnimaticGate({
+      ...statusAnimaticGate,
+      next_action: {
+        kind: "approve_animatic",
+        hint: "next: place roughs, then --approve-animatic",
+        blocked_by_job: "job-owner",
+      },
+      active_job: { job_id: "job-owner", mutation_status: "running" },
+    });
+    await seeTheGate();
+    expect(
+      screen.getByRole("button", { name: /ingest & generate/i }),
+    ).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: /continue without roughs/i }),
+    ).toBeDisabled();
   });
 });

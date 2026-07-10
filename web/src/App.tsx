@@ -4,6 +4,7 @@ import { BoothShell } from "./booth/BoothShell";
 import { RunProvider } from "./lib/runContext";
 import { Dashboard } from "./screens/Dashboard";
 import { SystemSheet } from "./screens/dev/SystemSheet";
+import { AnimaticGate } from "./screens/gates/AnimaticGate";
 import { PlanGate } from "./screens/gates/PlanGate";
 import { ScriptGate } from "./screens/gates/ScriptGate";
 import { StoryboardGate } from "./screens/gates/StoryboardGate";
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="plan" element={<PlanGate />} />
           <Route path="script" element={<ScriptGate />} />
           <Route path="storyboard" element={<StoryboardGate />} />
+          <Route path="animatic" element={<AnimaticGate />} />
         </Route>
         {/* U0 dev-only reference: the REEL ONE living token sheet */}
         <Route path="/dev/system" element={<SystemSheet />} />

@@ -59,6 +59,13 @@ describe("app shell", () => {
     ).toBeInTheDocument();
   });
 
+  it("routes /runs/:id/animatic to the Animatic gate inside the run scope", async () => {
+    renderApp(<App />, { route: "/runs/2026-06-21-spark-animatic-driven/animatic" });
+    expect(
+      await screen.findByRole("heading", { level: 1, name: /the placement pass/i }),
+    ).toBeInTheDocument();
+  });
+
   it("still routes /runs/:id to the booth board (now nested in the run scope)", async () => {
     renderApp(<App />, { route: "/runs/2026-07-04-spark-forest" });
     expect(await screen.findByTestId("booth-board")).toBeInTheDocument();
