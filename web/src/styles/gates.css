@@ -590,3 +590,89 @@
 .reelone .gate-notice--refused {
   border-color: var(--hold);
 }
+
+/* ── the animatic placement gate (U4c: THIN — the page is an instruction,
+   not a drop zone (G3); the holds strip is the pacing ASSEMBLE cuts to,
+   read from /status.frames[].hold — empty is first-class, today's daemon
+   serves no frames at ANIMATIC) ── */
+.reelone .animatic-drop {
+  text-align: center;
+  border: 1px dashed var(--page-ink2);
+  padding: 12px 14px;
+  margin: 14px 0;
+}
+.reelone .animatic-drop .gate-mono {
+  font-size: 13px;
+  letter-spacing: 0.06em;
+}
+.reelone .gate-holds {
+  border: 1px solid var(--line);
+  background: var(--booth2);
+  padding: 13px 14px;
+}
+.reelone .gate-holds .gate-lbl {
+  margin-bottom: 10px;
+}
+.reelone .holds-strip {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.reelone .holds-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--line);
+  background: var(--booth);
+  padding: 7px 10px 6px;
+  min-width: 44px;
+}
+.reelone .holds-frame {
+  font-size: 11px;
+  color: var(--text);
+  letter-spacing: 0.08em;
+}
+.reelone .holds-count {
+  font-size: 12px;
+  color: var(--tungsten);
+  font-weight: 600;
+}
+.reelone .holds-note {
+  font-size: 11px;
+  color: var(--mute);
+  line-height: 1.6;
+  margin: 0;
+}
+.reelone .holds-note + .holds-note,
+.reelone .holds-strip + .holds-note {
+  margin-top: 6px;
+}
+
+/* the second road through the same gate: quiet next to the tungsten
+   primary, still a real button */
+.reelone .gate-secondary {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 13px 18px;
+  cursor: pointer;
+}
+.reelone .gate-secondary:hover {
+  border-color: var(--tungsten-dim);
+  color: var(--tungsten);
+}
+.reelone .gate-secondary:disabled {
+  color: var(--mute);
+  border-color: var(--line);
+  cursor: not-allowed;
+}

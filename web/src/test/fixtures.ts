@@ -152,7 +152,14 @@ export const statusWorking: RunStatus = {
   updated_at: "2026-07-04T18:25:00.000000+00:00",
 };
 
-/** An authoring run paused at the animatic placement gate. */
+/**
+ * An authoring run paused at the animatic placement gate. frames: [] is the
+ * DAEMON-TRUE shape at stage ANIMATIC today (verified against
+ * server/state_view.py + generate_stage.py 2026-07-10): frame_order/holds
+ * populate in enter_generate, which runs AFTER --approve-animatic — so the
+ * live projection carries no frames at this gate. The gate must treat the
+ * empty strip as first-class, not broken.
+ */
 export const statusAnimaticGate: RunStatus = {
   run_id: "2026-06-21-spark-animatic-driven",
   stage: "ANIMATIC",
@@ -165,6 +172,22 @@ export const statusAnimaticGate: RunStatus = {
   active_job: null,
   frames: [],
   updated_at: "2026-06-21T12:00:00.000000+00:00",
+};
+
+/**
+ * The animatic gate WITH the board's frames + holds on /status — the plan's
+ * intended binding (U4c: holds ride /status.frames[].hold). Forward-looking:
+ * the strip lights the moment the projection carries frames at ANIMATIC; the
+ * shape itself is exactly what /status serves from GENERATE onward.
+ */
+export const statusAnimaticHolds: RunStatus = {
+  ...statusAnimaticGate,
+  frames: [
+    { n: 1, status: "pending", attempts: 0, hold: 4 },
+    { n: 2, status: "pending", attempts: 0, hold: 2 },
+    { n: 3, status: "pending", attempts: 0, hold: 2 },
+    { n: 4, status: "pending", attempts: 0, hold: 5 },
+  ],
 };
 
 /*
