@@ -3,40 +3,9 @@
    Discipline: flat fills, one accent per surface, motion only on hover/press
    and route swaps (addendum Pick 7). */
 
-.app {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-}
+/* The app bar + main-stage frame moved to the booth shell (U1):
+   src/booth/booth.css owns .booth / .booth-appbar / .booth-stage. */
 
-/* ---- app bar ---- */
-.appbar {
-  display: flex;
-  align-items: baseline;
-  gap: 11px;
-  padding: 11px 18px;
-  background: var(--panel);
-  border-bottom: 1px solid var(--line);
-}
-.wordmark {
-  font-family: var(--serif);
-  font-size: 22px;
-  font-weight: 500;
-  letter-spacing: 0.4px;
-  color: var(--ink);
-}
-.studiotag {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--ink3);
-  letter-spacing: 0.3px;
-}
-
-/* ---- main stage ---- */
-.main {
-  flex: 1;
-  min-height: 0;
-}
 .screen {
   max-width: 1080px;
   margin: 0 auto;

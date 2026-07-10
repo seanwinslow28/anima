@@ -35,7 +35,8 @@ Legend: ✅ merged · 🟡 built-green, PR open (needs review/merge) · 🔷 kic
 | Daemon Slice 5 — POST gate actions (7 gates over the job layer) | daemon | ✅ | #83 | Opus/Codex | v1b gates |
 | Daemon Slice 6 — run creation + brief upload | daemon | ⬜ (JIT-deferred) | — | Opus/Codex | new-run from UI |
 | UI v1b — the gate screens + eye-gate | ui | 🔷 plan converged (11 slices) | `docs/v1b-build-plan` | mixed (eye-gate engine = **Fable**) | "the terminal is dead" |
-| **v1b U0 — REEL ONE design system** (tokens + motion + 7 primitives + `/dev/system`) | ui | 🟡 | `feat/v1b-u0-design-system` | Fable | U1–U5 (everything downstream imports it) |
+| **v1b U0 — REEL ONE design system** (tokens + motion + 7 primitives + `/dev/system`) | ui | ✅ | #86 | Fable | U1–U5 (everything downstream imports it) |
+| **v1b U1 — booth shell + routing + HUD host** (BoothShell/HudHost/⌘K + the URL scheme) | ui | 🟡 | `feat/v1b-u1-booth-shell` | Fable | U2a+ (every screen renders inside it) |
 | Deltas D1 (retry annotations) / D2 (front-door surface) / D3 (chat) | daemon | ⬜ | — | Opus/Codex | v1c |
 | UI v1c — brainstorm room + chat bar + eye-gate annotation | ui | ⬜ | — | mixed | the anima differentiators |
 | D5 — studio taste-memory | daemon | ⬜ | — | **Fable** | the taste ledger |
