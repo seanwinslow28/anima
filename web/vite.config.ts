@@ -14,7 +14,15 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/runs": DAEMON,
+      // U2b: /runs/:id is BOTH a daemon endpoint and an SPA route. A browser
+      // navigation (Accept: text/html) must get the app — hard-loading
+      // /runs/<id> used to return raw daemon JSON; fetch()es (Accept: json)
+      // still proxy through.
+      "/runs": {
+        target: DAEMON,
+        bypass: (req) =>
+          req.headers.accept?.includes("text/html") ? "/index.html" : undefined,
+      },
       "/health": DAEMON,
       "/jobs": DAEMON,
     },
