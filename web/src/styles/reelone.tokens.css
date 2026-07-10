@@ -1,0 +1,73 @@
+/*
+ * REEL ONE tokens — the booth palette + type scale, lifted verbatim from the
+ * ratified v1b mockups (docs/active/2026-07-09-v1b-elevate-directions/
+ * reelone-eyegate.html + reelone-reading.html :root blocks).
+ *
+ * Scoped to `.reelone`, NOT :root — deliberately. v1a's tokens.css defines a
+ * warm `--line` (#e4d8c0) on :root; a :root booth block would silently re-skin
+ * every v1a border. The booth is a *surface*: any screen (or, from U1 on, the
+ * BoothShell itself) opts in with class="reelone" and every token below
+ * inherits. Exact mockup names are preserved so mockup CSS ports verbatim.
+ *
+ * Doctrine (D-A, converged plan): the dark booth is the room; the ONE warm
+ * surface is the lit continuity page (the --page* set, reading gates only).
+ * The lamps are semantic and reserved: print = approve, hold = Em's amber,
+ * bakelite = the projector button / retry. One reserved warning hue —
+ * never spend a lamp color on decoration.
+ *
+ * Contrast (WCAG 2.1 AA, re-derived against the booth — not inherited from
+ * v1a's warm pairs; ratios recorded in the U0 PR):
+ *   text on booth 13.13:1 · screenlight on booth 17.51:1 · mute on booth
+ *   5.45:1 (and 4.68:1 on booth3 — body-text safe on every booth surface) ·
+ *   tungsten on booth 9.93:1 (focus ring, needs >=3) · page-ink on page
+ *   13.41:1 · page-ink2 on page 6.99:1.
+ *   tungsten-dim (3.99) and bakelite (3.83) are UI/accent hues (>=3 ok),
+ *   not body-text colors; page-rule is decorative.
+ */
+.reelone {
+  /* booth surfaces */
+  --booth: #141018;
+  --booth2: #1D1722;
+  --booth3: #251E2B;
+  --line: #332A3C;
+
+  /* light */
+  --tungsten: #E8B36A;
+  --tungsten-dim: #8A6F4D;
+  --screenlight: #FFF6E4;
+
+  /* lamps — semantic, reserved */
+  --print: #7FA96B;
+  --hold: #D9A441;
+  --bakelite: #C24838;
+
+  /* text */
+  --text: #DDD5E0;
+  --mute: #8F8798;
+
+  /* the lit continuity page (reading-gate surface only) */
+  --page: #F7EFDC;
+  --page-ink: #2B2417;
+  --page-ink2: #57503F;
+  --page-rule: #C9BB98;
+
+  /* type — three stacks, three jobs (dossier: Futura = the SMPTE leader's own
+     face; SF Mono = timecode + burn-ins; Georgia = the lit page only).
+     Fallback stacks ship — no licensed Futura webfont (U0 open detail). */
+  --display: "Futura", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  --tc-mono: "SF Mono", Menlo, Consolas, monospace;
+  --page-serif: Georgia, serif;
+
+  /* the booth surface itself */
+  background: var(--booth);
+  color: var(--text);
+  font-family: var(--display);
+}
+
+/* Palette-aware focus ring — tungsten on booth (9.93:1; the a11y contract's
+   >=3:1 for UI). Overrides v1a's teal ring inside the booth; never outline:none. */
+.reelone :focus-visible {
+  outline: 2px solid var(--tungsten);
+  outline-offset: 2px;
+  border-radius: 2px;
+}

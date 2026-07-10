@@ -1,0 +1,218 @@
+/*
+ * REEL ONE component styles — the signature primitives' own CSS, over the
+ * .reelone token scope (styles/reelone.tokens.css) and the motion primitives
+ * (styles/reelone.motion.css). Values lifted from the ratified mockups.
+ */
+
+/* ── FilmGrain — inline SVG turbulence, no external hosts ── */
+.ro-grain {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .05;
+  z-index: 1;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2"/></filter><rect width="140" height="140" filter="url(%23n)" opacity="0.9"/></svg>');
+}
+
+/* ── Lamp — the lit signal before the word ── */
+.ro-lamp {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+
+.ro-lamp .ro-lamp-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  align-self: center;
+  flex: none;
+}
+
+.ro-lamp--print { color: var(--print); }
+.ro-lamp--print .ro-lamp-dot { background: var(--print); box-shadow: 0 0 8px var(--print); }
+.ro-lamp--hold { color: var(--hold); }
+.ro-lamp--hold .ro-lamp-dot { background: var(--hold); box-shadow: 0 0 8px var(--hold); }
+.ro-lamp--fail { color: var(--bakelite); }
+.ro-lamp--fail .ro-lamp-dot { background: var(--bakelite); box-shadow: 0 0 8px var(--bakelite); }
+
+/* ── Leader — the 3-2-1 clock-sweep countdown ── */
+.ro-leader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0B080D;
+  z-index: 5;
+}
+
+.ro-leader .ro-dial {
+  position: relative;
+  width: min(52vh, 340px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: conic-gradient(rgba(255, 246, 228, .16) var(--sweep, 0deg), transparent 0);
+}
+
+.ro-leader .ro-dial::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid rgba(255, 246, 228, .4);
+  border-radius: 50%;
+}
+
+.ro-leader .ro-dial::after {
+  content: "";
+  position: absolute;
+  inset: 14%;
+  border: 1.5px solid rgba(255, 246, 228, .34);
+  border-radius: 50%;
+}
+
+.ro-leader .ro-n {
+  font-size: min(30vh, 190px);
+  font-weight: 500;
+  color: var(--screenlight);
+  letter-spacing: 0;
+}
+
+.ro-leader .ro-cross-v,
+.ro-leader .ro-cross-h {
+  position: absolute;
+  background: rgba(255, 246, 228, .28);
+}
+
+.ro-leader .ro-cross-v { width: 1px; top: 0; bottom: 0; left: 50%; }
+.ro-leader .ro-cross-h { height: 1px; left: 0; right: 0; top: 50%; }
+
+.ro-leader .ro-cap {
+  position: absolute;
+  bottom: 12%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: .34em;
+  color: var(--tungsten);
+}
+
+/* ── CircledTake — the grease-pencil approve flourish ── */
+.ro-circled {
+  position: absolute;
+  inset: -3px;
+  width: calc(100% + 6px);
+  height: calc(100% + 6px);
+  pointer-events: none;
+}
+
+.ro-circled ellipse {
+  fill: none;
+  stroke: var(--tungsten);
+  stroke-width: 1.6;
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+}
+
+.ro-circled.on ellipse {
+  animation: circledraw .5s ease-out forwards;
+}
+
+/* ── Timecode + BurnIn — the mono burn-in lines ── */
+.ro-tc,
+.ro-burnin {
+  font-family: var(--tc-mono);
+  font-size: 11px;
+  letter-spacing: .16em;
+  color: rgba(255, 246, 228, .62);
+  text-shadow: 0 0 6px rgba(0, 0, 0, .7);
+}
+
+.ro-burnin b {
+  color: var(--tungsten);
+  font-weight: 500;
+}
+
+/* ── Filmstrip — the reel ledger row ── */
+.ro-strip {
+  display: flex;
+  border: 1px solid var(--line);
+  background: #0E0B11;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ro-fcell {
+  position: relative;
+  width: 112px;
+  padding: 12px 7px 10px;
+  border-right: 1px solid var(--line);
+}
+
+.ro-fcell:last-child { border-right: none; }
+
+/* sprocket holes top + bottom */
+.ro-fcell::before,
+.ro-fcell::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 7px;
+  background: radial-gradient(circle at 10px 3.5px, #241D2C 2.6px, transparent 2.8px) repeat-x;
+  background-size: 20px 7px;
+}
+
+.ro-fcell::before { top: 2px; }
+.ro-fcell::after { bottom: 2px; }
+
+.ro-fcell img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  opacity: .85;
+  display: block;
+}
+
+.ro-fcell:hover img { opacity: 1; }
+
+.ro-fcell .ro-empty {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px dashed var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8.5px;
+  letter-spacing: .14em;
+  color: var(--mute);
+  text-align: center;
+  padding: 4px;
+  line-height: 1.7;
+}
+
+.ro-fcell .ro-cap {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 9.5px;
+  letter-spacing: .12em;
+  color: var(--mute);
+}
+
+.ro-fcell .ro-cap .ro-printed { color: var(--print); }
+.ro-fcell .ro-cap .ro-working { color: var(--tungsten); }
+.ro-fcell--now { box-shadow: inset 0 0 0 1.5px var(--tungsten); }

@@ -4,6 +4,10 @@ import "@fontsource/newsreader/400.css";
 import "@fontsource/newsreader/500.css";
 import "@fontsource/jetbrains-mono/400.css";
 import "./styles/tokens.css";
+// The REEL ONE layer (v1b) EXTENDS the warm tokens — booth palette scoped to
+// .reelone surfaces, so v1a screens are untouched until each re-skin slice.
+import "./styles/reelone.tokens.css";
+import "./styles/reelone.motion.css";
 import "./styles/app.css";
 
 import { StrictMode } from "react";
