@@ -366,6 +366,105 @@
   cursor: default;
 }
 
+/* ── the decision pair (U5b): Print it / Go again — the primary move ── */
+.eg-decide {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.eg-print,
+.eg-again {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  padding: 6px 12px 5px;
+  cursor: pointer;
+}
+
+.eg-print {
+  color: #101010;
+  background: var(--tungsten);
+  border: 1px solid var(--tungsten);
+}
+
+.eg-print .eg-kx {
+  border-color: rgba(16, 16, 16, .45);
+}
+
+.eg-again {
+  color: var(--text);
+  background: none;
+  border: 1px solid var(--line);
+}
+
+.eg-print:disabled,
+.eg-again:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+/* the quiet switches: walk / keys / palette */
+.eg-quiet {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* ── the ? cheat-sheet (the discoverability backstop) ── */
+.eg-cheat {
+  position: absolute;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  z-index: 6;
+  min-width: 340px;
+  border: 1px solid var(--line);
+  background: rgba(20, 16, 24, .96);
+  padding: 14px 16px;
+  backdrop-filter: blur(2px);
+}
+
+.eg-cheat-list {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.eg-cheat-row {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.eg-cheat-row dt {
+  flex: none;
+  width: 58px;
+  text-align: right;
+}
+
+.eg-cheat-row kbd {
+  font-family: var(--tc-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--tungsten);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0 4px;
+}
+
+.eg-cheat-row dd {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--mute);
+}
+
 /* ── the provenance line + the reel strip ── */
 .eg-prov {
   margin-left: auto;

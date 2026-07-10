@@ -1,7 +1,7 @@
 import "../../styles/eyegate.css";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { fetchCandidates, frameImageUrl } from "../../api/client";
 import type { CandidateAttempt, FrameState, RunStatus } from "../../api/types";
@@ -14,7 +14,9 @@ import { BurnIn } from "../../reelone/BurnIn";
 import { Filmstrip } from "../../reelone/Filmstrip";
 import { RitualLeader } from "../../reelone/RitualLeader";
 import { Timecode } from "../../reelone/Timecode";
+import { CheatSheet } from "./CheatSheet";
 import { EmReadout } from "./EmReadout";
+import { StageToolbar } from "./StageToolbar";
 
 /*
  * The eye-gate (U5a) — the screening. The stage is the only bright object in
@@ -179,8 +181,26 @@ function Screening({
   const cel = loop.playhead;
   const celUrl = cel ? cel.url : showable ? attempt.image_url : null;
 
-  // -- keyboard focus ownership: the stage region owns Space + the number
-  //    keys; typing targets are ignored (the infra U5b's note rides on) ----
+  // -- ↑/↓ walk frames: the adjacent REVIEWABLE stops (a pending frame has
+  //    nothing to screen — the walk skips it) -----------------------------
+  const navigate = useNavigate();
+  const reviewable = status.frames
+    .filter((f) => f.status === "approved" || f.status === "generated")
+    .map((f) => f.n)
+    .sort((a, b) => a - b);
+  const prevN = [...reviewable].reverse().find((m) => m < frameN) ?? null;
+  const nextN = reviewable.find((m) => m > frameN) ?? null;
+  const walk = (m: number | null) => {
+    if (m !== null) {
+      navigate(`/runs/${encodeURIComponent(runId)}/frames/${m}`);
+    }
+  };
+
+  // the ? cheat-sheet — the discoverability backstop
+  const [cheatOpen, setCheatOpen] = useState(false);
+
+  // -- keyboard focus ownership: the stage region owns the eye-gate keys;
+  //    typing targets are ignored (the retry note rides on this) ----------
   const regionRef = useRef<HTMLElement>(null);
   useEffect(() => {
     regionRef.current?.focus();
@@ -192,9 +212,28 @@ function Screening({
   };
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (isTypingTarget(e.target)) return;
+    if (e.metaKey || e.ctrlKey) return; // ⌘K etc. belong to the shell
     if (e.key === " ") {
       e.preventDefault();
       if (!e.repeat && canRock) loop.start();
+      return;
+    }
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      walk(prevN);
+      return;
+    }
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      walk(nextN);
+      return;
+    }
+    if (e.key === "?") {
+      setCheatOpen((o) => !o);
+      return;
+    }
+    if (e.key === "Escape") {
+      setCheatOpen(false);
       return;
     }
     if (/^[1-9]$/.test(e.key)) {
@@ -272,6 +311,7 @@ function Screening({
           </span>
         </figure>
         <EmReadout records={attempt.em} />
+        <CheatSheet open={cheatOpen} />
       </div>
 
       <div className="eg-transport">
@@ -301,6 +341,17 @@ function Screening({
               </button>
             ))}
           </div>
+          <StageToolbar
+            canPrint={showable}
+            onPrint={() => {}}
+            canAgain={true}
+            onAgain={() => {}}
+            prevN={prevN}
+            nextN={nextN}
+            onWalk={walk}
+            cheatOpen={cheatOpen}
+            onToggleCheat={() => setCheatOpen((o) => !o)}
+          />
           {/* the provenance line — composed from constants + the verdict (G8) */}
           <p className="eg-prov">
             {attempt.em.length > 0
