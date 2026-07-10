@@ -2,9 +2,11 @@ import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 
 import {
+  beatsFixture,
   rawAuthoring,
   runApprovePlan,
   runReviewFrame,
+  scriptMd,
   statusReviewFrame,
 } from "./fixtures";
 
@@ -25,6 +27,12 @@ export const handlers = [
       headers: { "Content-Type": "text/markdown; charset=utf-8" },
     }),
   ),
+  http.get("/runs/:id/artifacts/script", () =>
+    HttpResponse.text(scriptMd, {
+      headers: { "Content-Type": "text/markdown; charset=utf-8" },
+    }),
+  ),
+  http.get("/runs/:id/artifacts/beats", () => HttpResponse.json(beatsFixture)),
   http.get("/runs/:id", () => HttpResponse.json(rawAuthoring)),
 ];
 

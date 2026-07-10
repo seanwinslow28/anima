@@ -1,4 +1,10 @@
-import type { RawRunState, RunError, RunStatus, RunSummary } from "../api/types";
+import type {
+  BeatSheet,
+  RawRunState,
+  RunError,
+  RunStatus,
+  RunSummary,
+} from "../api/types";
 
 /*
  * Fixtures shaped on the live daemon projection of real runs (captured
@@ -97,6 +103,21 @@ export const statusApprovePlan: RunStatus = {
   updated_at: "2026-07-03T14:02:00.000000+00:00",
 };
 
+/** An authoring run paused at the script gate (U4a — the Script gate's home state). */
+export const statusApproveScript: RunStatus = {
+  run_id: "2026-07-03-spark-tidepool",
+  stage: "SCRIPT",
+  stub: false,
+  plan_status: "approved",
+  next_action: {
+    kind: "approve_script",
+    hint: "next: --approve-script",
+  },
+  active_job: null,
+  frames: [],
+  updated_at: "2026-07-03T15:10:00.000000+00:00",
+};
+
 /** The plan gate while a job owns the run — the mutating control disables. */
 export const statusApprovePlanBlocked: RunStatus = {
   ...statusApprovePlan,
@@ -144,6 +165,48 @@ export const statusAnimaticGate: RunStatus = {
   active_job: null,
   frames: [],
   updated_at: "2026-06-21T12:00:00.000000+00:00",
+};
+
+/*
+ * The script/beats artifact fixture pair (U4a — the Script gate's two reads).
+ * scriptMd is screenplay-register markdown the way Sam emits it (scene
+ * heading, action lines, indented dialogue — markdown renders the indent as
+ * a code block, which the screenplay CSS restyles as the dialogue column).
+ */
+
+export const scriptMd = `INT. THE STUDIO — NIGHT
+
+Sean draws. The mascot watches from his shoulder, box-head tilted.
+
+    SEAN
+    There you are.
+
+The line lands on the page and the little creature lights up.
+`;
+
+/** Sam's beat sheet, shaped on pipeline/orchestration/beats.py. */
+export const beatsFixture: BeatSheet = {
+  slug: "spark-tidepool",
+  logline:
+    "Sean draws; the mascot notices and delights; everything settles back to the start.",
+  beats: [
+    {
+      id: 1,
+      title: "Establishing two-shot",
+      intent: "Set the look, framing, and scale — the anchor the loop returns to.",
+      emotional_beat: "calm focus",
+      cast: ["sean", "claude-mascot"],
+      feel: "establishing — let it breathe",
+      notes: "the closing beat returns here",
+    },
+    {
+      id: 2,
+      title: "The notice",
+      intent: "The mascot perks up — the spark of catching the idea.",
+      emotional_beat: "spark",
+      cast: ["claude-mascot"],
+    },
+  ],
 };
 
 /*
