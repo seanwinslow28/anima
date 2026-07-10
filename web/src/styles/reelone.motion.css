@@ -1,0 +1,67 @@
+/*
+ * REEL ONE motion primitives — exact keyframes from the ratified mockups.
+ * Doctrine: "motion is projection, not transition" — everything arrives by
+ * fade-through-black; the print flickers ~1.5%; the gate weaves sub-pixel
+ * while the loop runs. The steps(1)@83ms loop cadence is JS-driven and
+ * belongs to the eye-gate (U5) — it is NOT a CSS animation here.
+ */
+
+/* the print flicker (~1.5%) — a lit frame is never perfectly still */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .986; }
+}
+
+/* gate weave — sub-pixel jitter while the loop runs */
+@keyframes weave {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(.6px, -.4px); }
+  60% { transform: translate(-.5px, .5px); }
+}
+
+/* the circled take — grease-pencil ellipse draws on approve */
+@keyframes circledraw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* the working indicator */
+@keyframes pulse {
+  0%, 100% { opacity: .5; }
+  50% { opacity: 1; }
+}
+
+/* the universal arrival — the next picture comes up through black */
+@keyframes fade-through-black {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* utility classes — one per primitive, composable */
+.ro-flicker { animation: flicker 1.7s infinite; }
+.ro-weave { animation: weave .34s steps(2) infinite; }
+.ro-pulse { animation: pulse 1.4s infinite; }
+.ro-arrive { animation: fade-through-black .45s ease-out; }
+
+/*
+ * Reduced-motion collapse (the a11y contract). Scoped to animations so
+ * hover/press feedback survives: flicker/weave/pulse off, arrival instant,
+ * circledraw jumps to drawn (duration ~0 + the `forwards` fill on the
+ * component keeps the ellipse visible). <Leader> handles its own skip-to-
+ * onDone in JS (it is rAF-driven, not a CSS animation).
+ */
+@media (prefers-reduced-motion: reduce) {
+  .ro-flicker,
+  .ro-weave,
+  .ro-pulse {
+    animation: none;
+  }
+
+  .ro-arrive {
+    animation-duration: 0.01ms;
+  }
+
+  .ro-circledraw,
+  .reelone svg ellipse {
+    animation-duration: 0.01ms !important;
+  }
+}
