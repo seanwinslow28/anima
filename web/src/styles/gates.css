@@ -178,6 +178,83 @@
   margin: 18px 0;
 }
 
+/* ── the beats sheet (U4a — Sam's beats.json as the structured sheet) ── */
+.reelone .beats-logline {
+  font-family: var(--page-serif);
+  font-size: 15px;
+  line-height: 1.6;
+  font-style: italic;
+  color: var(--page-ink);
+  margin: 0 0 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--page-rule);
+}
+.reelone .beats-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.reelone .beats-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.reelone .beats-id {
+  font-size: 12px;
+  color: var(--page-ink2);
+}
+.reelone .beats-title {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 13px;
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+.reelone .beats-emotion {
+  margin-left: auto;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--page-ink2);
+  white-space: nowrap;
+}
+.reelone .beats-intent {
+  font-family: var(--page-serif);
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--page-ink);
+  margin: 5px 0 7px;
+}
+.reelone .beats-detail {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  font-size: 11px;
+  color: var(--page-ink2);
+}
+.reelone .beats-cast {
+  display: inline-flex;
+  gap: 6px;
+}
+.reelone .beats-cast-tag {
+  font-size: 11px;
+  border: 1px solid var(--page-rule);
+  padding: 1px 6px;
+}
+.reelone .beats-feel {
+  font-style: italic;
+}
+.reelone .beats-notes::before {
+  content: "· ";
+}
+
 /* ── the secondary column ── */
 .reelone .gate-aside {
   display: flex;

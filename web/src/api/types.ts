@@ -127,6 +127,28 @@ export interface RawRunState {
   };
 }
 
+/*
+ * -- Sam's beat sheet (U4a): GET /runs/{id}/artifacts/beats --------------
+ * beats.json as pipeline/orchestration/beats.py emits it (Beat/BeatSheet).
+ * cast carries IR namespaces (`sean`, not the Bible folder key).
+ */
+
+export interface Beat {
+  id: number;
+  title: string;
+  intent: string;
+  emotional_beat: string;
+  cast: string[];
+  feel?: string | null;
+  notes?: string | null;
+}
+
+export interface BeatSheet {
+  slug: string;
+  logline: string;
+  beats: Beat[];
+}
+
 /* -- the job layer (U3): POST gate -> 202 {job_id} -> poll GET /jobs/{id} -- */
 
 /** Job lifecycle (server/jobs.py). Terminal = succeeded | failed | cancelled. */
