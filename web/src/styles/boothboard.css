@@ -20,6 +20,205 @@
   font-family: var(--tc-mono);
 }
 
+/* ── the leader strip: the pipeline as film leader (mockup .leaderstrip) ── */
+.reelone .bb-leaderstrip {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: #0e0b11;
+  overflow-x: auto;
+}
+
+.reelone .bb-seg {
+  flex: 1;
+  min-width: 120px;
+  position: relative;
+  border-right: 1px solid var(--line);
+}
+
+.reelone .bb-seg:last-child {
+  border-right: none;
+}
+
+/* sprocket holes top + bottom */
+.reelone .bb-seg::before,
+.reelone .bb-seg::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 7px;
+  background: radial-gradient(circle at 10px 3.5px, #241d2c 2.6px, transparent 2.8px)
+    repeat-x;
+  background-size: 20px 7px;
+  pointer-events: none;
+}
+
+.reelone .bb-seg::before {
+  top: 2px;
+}
+
+.reelone .bb-seg::after {
+  bottom: 2px;
+}
+
+.reelone .bb-seg-hit {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 14px 14px 12px;
+  text-align: left;
+  text-decoration: none;
+  color: inherit;
+}
+
+.reelone .bb-seg:hover {
+  background: rgba(255, 246, 228, 0.04);
+}
+
+.reelone .bb-seg-n {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--mute);
+  letter-spacing: 0.06em;
+}
+
+.reelone .bb-seg-nm {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-top: 2px;
+}
+
+.reelone .bb-seg-who {
+  display: block;
+  font-size: 11px;
+  color: var(--tungsten-dim);
+  margin-top: 4px;
+  letter-spacing: 0.06em;
+}
+
+.reelone .bb-seg-st {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--mute);
+}
+
+.reelone .bb-seg--done .bb-seg-n,
+.reelone .bb-seg--done .bb-seg-nm {
+  color: var(--text);
+}
+
+.reelone .bb-seg--done .bb-seg-st {
+  color: var(--print);
+}
+
+.reelone .bb-seg--waived {
+  opacity: 0.55;
+}
+
+.reelone .bb-seg--now {
+  background: rgba(232, 179, 106, 0.06);
+  box-shadow: inset 0 0 0 1.5px var(--tungsten);
+}
+
+.reelone .bb-seg--now .bb-seg-n {
+  color: var(--screenlight);
+}
+
+.reelone .bb-seg--now .bb-seg-nm,
+.reelone .bb-seg--now .bb-seg-st {
+  color: var(--tungsten);
+}
+
+/* ── NOW SCREENING: the hero decision (mockup .marquee/.now) ── */
+.reelone .bb-marquee {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 26px;
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .reelone .bb-marquee {
+    grid-template-columns: 1fr;
+  }
+}
+
+.reelone .bb-now {
+  position: relative;
+  border: 1px solid var(--line);
+  background: var(--booth2);
+  padding: 30px 34px 28px;
+  overflow: hidden;
+}
+
+.reelone .bb-now::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    70% 90% at 30% 0%,
+    rgba(232, 179, 106, 0.1),
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.reelone .bb-eyebrow {
+  display: block;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: var(--tungsten);
+  margin-bottom: 12px;
+}
+
+.reelone .bb-move {
+  font-weight: 600;
+  font-size: clamp(24px, 3.6vw, 38px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--screenlight);
+  line-height: 1.15;
+  max-width: 18ch;
+  text-shadow: 0 0 30px rgba(255, 246, 228, 0.25);
+  margin: 0 0 22px;
+}
+
+.reelone .bb-go {
+  display: inline-block;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #101010;
+  background: var(--tungsten);
+  padding: 13px 26px 12px;
+  border-radius: 2px;
+  position: relative;
+}
+
+.reelone .bb-go:hover {
+  background: #f2c284;
+}
+
+.reelone .bb-go small {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  font-weight: 500;
+}
+
 /* ── the couldn't-read state (error doctrine: what happened + one recovery) ── */
 .reelone .bb-notice {
   border: 1px solid var(--line);

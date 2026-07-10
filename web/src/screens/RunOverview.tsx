@@ -1,9 +1,18 @@
 import "../styles/boothboard.css";
 
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { fetchRawState, fetchStatus } from "../api/client";
+import type { RawRunState, RunStatus } from "../api/types";
+import {
+  deriveStageReel,
+  goLabel,
+  nextActionUrl,
+  stageRevisitUrl,
+  type StageSegment,
+} from "../lib/boothBoard";
+import { nextActionCta } from "../lib/nextAction";
 import { useResource } from "../lib/useResource";
 
 /**
@@ -46,9 +55,96 @@ export function RunOverview() {
     );
   }
 
+  return <BoothBoard runId={id} status={status.data} raw={raw.data} />;
+}
+
+/** The ready board: the reel of stages + the now-screening hero. */
+function BoothBoard({
+  runId,
+  status,
+  raw,
+}: {
+  runId: string;
+  status: RunStatus;
+  raw: RawRunState;
+}) {
+  const segments = deriveStageReel(raw, status);
   return (
     <section className="bb-screen" data-testid="booth-board">
-      <p className="bb-mono">{raw.data.slug}</p>
+      <StageReel runId={runId} segments={segments} />
+      <div className="bb-marquee">
+        <NowScreening runId={runId} status={status} />
+      </div>
+    </section>
+  );
+}
+
+/** The leader strip — one sprocketed segment per derived stage. */
+function StageReel({
+  runId,
+  segments,
+}: {
+  runId: string;
+  segments: StageSegment[];
+}) {
+  return (
+    <nav aria-label="pipeline stages">
+      <ol className="bb-leaderstrip">
+        {segments.map((seg) => {
+          const href =
+            seg.status === "done" ? stageRevisitUrl(runId, seg.stage) : null;
+          const inner = (
+            <>
+              <span className="bb-seg-n" aria-hidden="true">
+                {seg.n}
+              </span>
+              <span className="bb-seg-nm">{seg.label}</span>
+              <span className="bb-seg-who">{seg.who}</span>
+              <span className="bb-seg-st">{seg.mark}</span>
+            </>
+          );
+          return (
+            <li
+              key={seg.stage}
+              className={`bb-seg bb-seg--${seg.status}`}
+              aria-current={seg.status === "now" ? "step" : undefined}
+            >
+              {href ? (
+                // a printed stage is a revisit affordance — a real link
+                <Link className="bb-seg-hit" to={href}>
+                  {inner}
+                </Link>
+              ) : (
+                <div className="bb-seg-hit">{inner}</div>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
+/** The hero: the one move, front and centre (h1 = the CTA spine's words). */
+function NowScreening({ runId, status }: { runId: string; status: RunStatus }) {
+  const cta = nextActionCta(status.next_action);
+  const url = nextActionUrl(runId, status.next_action);
+  const verb = goLabel(status.next_action.kind);
+  const frame = status.next_action.frame;
+  return (
+    <section className="bb-now" aria-label="Your next move">
+      <span className="bb-eyebrow">
+        Now screening · next_action: {status.next_action.kind}
+      </span>
+      <h1 className="bb-move">{cta.label}</h1>
+      {url && verb && (
+        <Link className="bb-go" to={url}>
+          {verb}
+          {frame != null && (
+            <small>F{String(frame).padStart(2, "0")} · ⏎</small>
+          )}
+        </Link>
+      )}
     </section>
   );
 }
