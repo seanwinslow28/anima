@@ -35,6 +35,21 @@
   color: var(--tungsten-dim);
 }
 
+/* ---- the summonable HUD (chrome only — never a screen's content) ---- */
+.booth-hud {
+  transition: opacity 0.6s ease;
+}
+.booth-hud--idle {
+  opacity: 0.12;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Belt-and-braces with HudHost's JS guard (no timed fade under reduce):
+     if the class ever lands, it lands without a transition. */
+  .booth-hud {
+    transition: none;
+  }
+}
+
 /* ---- the stage ---- */
 .booth-stage {
   flex: 1;
