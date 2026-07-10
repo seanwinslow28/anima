@@ -1,28 +1,41 @@
 import "../../styles/eyegate.css";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { fetchCandidates, frameImageUrl } from "../../api/client";
-import type { CandidateAttempt, FrameState, RunStatus } from "../../api/types";
-import { framesToReel } from "../../lib/boothBoard";
+import type {
+  CandidateAttempt,
+  FrameState,
+  GateAction,
+  RunStatus,
+} from "../../api/types";
+import { framesToReel, nextActionUrl } from "../../lib/boothBoard";
 import { useImagePreload } from "../../lib/imagePreload";
 import { useRun } from "../../lib/runContext";
+import { useGateAction, type GateFlow } from "../../lib/useGateAction";
 import { useResource } from "../../lib/useResource";
 import { useRockLoop, type LoopEntry } from "../../lib/useRockLoop";
 import { BurnIn } from "../../reelone/BurnIn";
+import { CircledTake } from "../../reelone/CircledTake";
 import { Filmstrip } from "../../reelone/Filmstrip";
 import { RitualLeader } from "../../reelone/RitualLeader";
 import { Timecode } from "../../reelone/Timecode";
+import { CheatSheet } from "./CheatSheet";
 import { EmReadout } from "./EmReadout";
+import { composeEmNote, RetryNoteRow } from "./RetryNoteRow";
+import { StageToolbar } from "./StageToolbar";
 
 /*
- * The eye-gate (U5a) — the screening. The stage is the only bright object in
- * the room: the current frame's shown take, lit, alone; takes switch under
- * it; Em reads from the margin. All client-side over the daemon's reads
- * (D-E): /status through the run scope + GET /frames/{n}/candidates +
- * GET /frames/{n}/image?attempt=K as <img> srcs. Print/retry (the POSTs)
- * are U5b; onion/diff/lights are U5c.
+ * The eye-gate (U5a + U5b) — the screening AND the decision. The stage is
+ * the only bright object in the room: the current frame's shown take, lit,
+ * alone; takes switch under it; Em reads from the margin. U5b adds the two
+ * commits over U3's job flow: PRINT (⏎ — approve the shown take -> the
+ * circled take -> the ritual leader -> cel-flip advance on the inline
+ * next_action) and AGAIN (R — retry with Em's fix prefilled). Reads are all
+ * client-side (D-E): /status through the run scope + GET
+ * /frames/{n}/candidates + GET /frames/{n}/image?attempt=K as <img> srcs.
+ * Onion/diff/lights are U5c.
  */
 
 /** The G5 constants the burn-in + provenance lines are composed from. */
@@ -32,22 +45,135 @@ const FRAME_COST_LINE = "$0.07";
 
 const frameLabel = (n: number) => `F${String(n).padStart(2, "0")}`;
 
-export function EyeGate() {
+/** jsdom has no matchMedia; its absence reads as motion-allowed (U0 pattern). */
+const reducedMotion = () =>
+  typeof window.matchMedia === "function" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/** What Screening needs from the decision layer (owned by EyeGate — it must
+ *  survive the run-scope /status re-read that unmounts Screening). */
+interface DecisionGate {
+  flow: GateFlow;
+  decision: "print" | "again" | null;
+  printTake: (attempt: number) => void;
+  againNote: (note: string) => void;
+  retryLast: () => void;
+  backToGate: () => void;
+}
+
+export function EyeGate({ pollIntervalMs }: { pollIntervalMs?: number } = {}) {
   const { n = "" } = useParams();
   const frameN = Number(n);
   const { runId, status, refresh } = useRun();
+  const navigate = useNavigate();
   const [nonce, setNonce] = useState(0);
   const candidates = useResource(
     () => fetchCandidates(runId, frameN),
     [runId, frameN, nonce],
   );
 
-  const retry = () => {
+  const reload = () => {
     refresh();
     setNonce((x) => x + 1);
   };
 
-  if (status.status === "loading" || candidates.status === "loading") {
+  // -- the decision layer (U5b): print/again through U3's job flow --------
+  // One useGateAction serves both commits (the single-writer run allows one
+  // job at a time anyway); `decision` remembers which one is in flight for
+  // the veil caption and the terminal handling. It lives HERE, not in
+  // Screening: the hook's terminal refreshRun() flips the run-scope /status
+  // resource through loading, which swaps Screening for the skeleton — the
+  // flow must survive that unmount.
+  const frameBase = `/runs/${encodeURIComponent(runId)}/frames/${frameN}`;
+  const { flow, submit, reset } = useGateAction(
+    runId,
+    { method: "POST", path: `${frameBase}/approve` },
+    { pollIntervalMs },
+  );
+  const [decision, setDecision] = useState<"print" | "again" | null>(null);
+  const lastAction = useRef<GateAction | null>(null);
+  const lastStatus = useRef<RunStatus | null>(null);
+
+  const dispatch = (mode: "print" | "again", action: GateAction) => {
+    setDecision(mode);
+    lastAction.current = action;
+    submit(action);
+  };
+
+  // walking to another frame abandons this frame's decision state
+  useEffect(() => {
+    setDecision(null);
+    reset();
+  }, [frameN, reset]);
+
+  // ADVANCE only on the full success shape — the destination is the INLINE
+  // next_action. A re-shoot landing back on THIS frame re-reads the takes
+  // instead of navigating; assemble/done route to the overview. Consumed
+  // exactly once (the effect re-fires when frameN flips mid-advance).
+  const consumedAdvance = useRef(false);
+  useEffect(() => {
+    if (flow.phase !== "advanced") {
+      consumedAdvance.current = false;
+      return;
+    }
+    if (consumedAdvance.current) return;
+    consumedAdvance.current = true;
+    const na = flow.nextAction;
+    if (na.kind === "review_frame" && na.frame === frameN) {
+      setDecision(null);
+      reset();
+      setNonce((x) => x + 1);
+      return;
+    }
+    navigate(
+      nextActionUrl(runId, na) ?? `/runs/${encodeURIComponent(runId)}`,
+      { state: { celFlip: true } },
+    );
+  }, [flow, frameN, runId, navigate, reset]);
+
+  // cancelled -> back to the gate
+  useEffect(() => {
+    if (flow.phase === "cancelled") {
+      setDecision(null);
+      reset();
+    }
+  }, [flow, reset]);
+
+  const gate: DecisionGate = {
+    flow,
+    decision,
+    printTake: (attempt) =>
+      dispatch("print", {
+        method: "POST",
+        path: `${frameBase}/approve?attempt=${attempt}`,
+      }),
+    againNote: (note) =>
+      dispatch("again", {
+        method: "POST",
+        path: `${frameBase}/retry`,
+        body: { note },
+      }),
+    retryLast: () => {
+      if (lastAction.current) submit(lastAction.current);
+    },
+    backToGate: () => {
+      setDecision(null);
+      reset();
+      reload();
+    },
+  };
+
+  // Keep the last ready /status so the run-scope re-read (fired on every job
+  // terminal) never blanks the lit stage back to the skeleton mid-decision —
+  // the projection updates in place; the skeleton is for the FIRST read only.
+  if (status.status === "ready") lastStatus.current = status.data;
+  const statusData =
+    status.status === "ready" ? status.data : lastStatus.current;
+
+  if (
+    candidates.status === "loading" ||
+    (status.status === "loading" && statusData === null)
+  ) {
     return <StageSkeleton />;
   }
 
@@ -61,7 +187,7 @@ export function EyeGate() {
             <span className="eg-mono">{runId}</span> — it may not be on this
             reel, or its candidates are unreadable.
           </p>
-          <button type="button" className="eg-retry" onClick={retry}>
+          <button type="button" className="eg-retry" onClick={reload}>
             Retry
           </button>
         </div>
@@ -69,8 +195,10 @@ export function EyeGate() {
     );
   }
 
-  const frameState =
-    status.data.frames.find((f) => f.n === frameN) ?? null;
+  // statusData is non-null past the gates above (loading requires it null;
+  // error returned); the assertion keeps the narrowing local.
+  const runStatus = statusData as RunStatus;
+  const frameState = runStatus.frames.find((f) => f.n === frameN) ?? null;
   const stillDrawing =
     frameState !== null &&
     frameState.status !== "approved" &&
@@ -96,25 +224,28 @@ export function EyeGate() {
       runId={runId}
       frameN={frameN}
       frameState={frameState}
-      status={status.data}
+      status={runStatus}
       attempts={candidates.data}
+      gate={gate}
     />
   );
 }
 
-/** The ready state: the lit stage + Em's margin + takes + the reel. */
+/** The ready state: the lit stage + Em's margin + takes + the decision. */
 function Screening({
   runId,
   frameN,
   frameState,
   status,
   attempts,
+  gate,
 }: {
   runId: string;
   frameN: number;
   frameState: FrameState | null;
   status: RunStatus;
   attempts: CandidateAttempt[];
+  gate: DecisionGate;
 }) {
   const label = frameLabel(frameN);
   const hold = frameState?.hold ?? 2;
@@ -179,8 +310,76 @@ function Screening({
   const cel = loop.playhead;
   const celUrl = cel ? cel.url : showable ? attempt.image_url : null;
 
-  // -- keyboard focus ownership: the stage region owns Space + the number
-  //    keys; typing targets are ignored (the infra U5b's note rides on) ----
+  // -- ↑/↓ walk frames: the adjacent REVIEWABLE stops (a pending frame has
+  //    nothing to screen — the walk skips it) -----------------------------
+  const navigate = useNavigate();
+  const reviewable = status.frames
+    .filter((f) => f.status === "approved" || f.status === "generated")
+    .map((f) => f.n)
+    .sort((a, b) => a - b);
+  const prevN = [...reviewable].reverse().find((m) => m < frameN) ?? null;
+  const nextN = reviewable.find((m) => m > frameN) ?? null;
+  const walk = (m: number | null) => {
+    if (m !== null) {
+      navigate(`/runs/${encodeURIComponent(runId)}/frames/${m}`);
+    }
+  };
+
+  // the ? cheat-sheet — the discoverability backstop
+  const [cheatOpen, setCheatOpen] = useState(false);
+
+  // -- the decision layer's view of THIS screening ------------------------
+  const { flow, decision } = gate;
+  // the single-writer rule made visible: a job owns the run -> no commits
+  const blockedBy = status.next_action.blocked_by_job ?? null;
+  const gateIdle = flow.phase === "idle";
+  const canPrint = showable && gateIdle && blockedBy === null;
+  const canAgain = gateIdle && blockedBy === null;
+  const print = () => {
+    if (!canPrint) return;
+    gate.printTake(attempt.attempt);
+  };
+
+  // AGAIN: the note row, prefilled from Em's read of the SHOWN take.
+  // Opening it pauses the loop — you write with the picture still.
+  const [againOpen, setAgainOpen] = useState(false);
+  const emNote = composeEmNote(attempt.em);
+  const openAgain = () => {
+    if (!canAgain) return;
+    loop.stop();
+    setAgainOpen(true);
+  };
+  const cancelAgain = () => {
+    setAgainOpen(false);
+    regionRef.current?.focus();
+  };
+  const sendAgain = (note: string) => {
+    setAgainOpen(false);
+    gate.againNote(note);
+  };
+
+  const jobRunning = flow.phase === "submitting" || flow.phase === "working";
+  // the circled take: the grease-pencil flourish on the take being printed
+  const circledTake =
+    decision === "print" && (jobRunning || flow.phase === "advanced")
+      ? attempt.attempt
+      : null;
+  const noticeUp =
+    flow.phase === "failed" ||
+    flow.phase === "busy" ||
+    flow.phase === "stale" ||
+    flow.phase === "degraded" ||
+    flow.phase === "error";
+
+  // the cel-flip arrival: this screening was navigated to by a print — the
+  // next picture comes up through black (reduced motion: a soft crossfade,
+  // never a dead cut)
+  const location = useLocation();
+  const celFlip =
+    (location.state as { celFlip?: boolean } | null)?.celFlip === true;
+
+  // -- keyboard focus ownership: the stage region owns the eye-gate keys;
+  //    typing targets are ignored (the retry note rides on this) ----------
   const regionRef = useRef<HTMLElement>(null);
   useEffect(() => {
     regionRef.current?.focus();
@@ -192,9 +391,37 @@ function Screening({
   };
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (isTypingTarget(e.target)) return;
+    if (e.metaKey || e.ctrlKey) return; // ⌘K etc. belong to the shell
     if (e.key === " ") {
       e.preventDefault();
       if (!e.repeat && canRock) loop.start();
+      return;
+    }
+    if (e.key === "Enter") {
+      e.preventDefault();
+      print();
+      return;
+    }
+    if (e.key === "r" || e.key === "R") {
+      openAgain();
+      return;
+    }
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      walk(prevN);
+      return;
+    }
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      walk(nextN);
+      return;
+    }
+    if (e.key === "?") {
+      setCheatOpen((o) => !o);
+      return;
+    }
+    if (e.key === "Escape") {
+      setCheatOpen(false);
       return;
     }
     if (/^[1-9]$/.test(e.key)) {
@@ -229,9 +456,17 @@ function Screening({
       <div className="eg-stagewrap">
         <div className="eg-beam" aria-hidden="true" />
         <figure
-          className={
-            loop.running ? "eg-stage eg-stage--running" : "eg-stage"
-          }
+          className={[
+            "eg-stage",
+            loop.running ? "eg-stage--running" : "",
+            celFlip
+              ? reducedMotion()
+                ? "eg-stage--arrive-soft"
+                : "eg-stage--arrive"
+              : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
           data-testid="stage"
           aria-label={`${label} take ${attempt.attempt}, projected`}
         >
@@ -272,48 +507,195 @@ function Screening({
           </span>
         </figure>
         <EmReadout records={attempt.em} />
+        <CheatSheet open={cheatOpen} />
+        {jobRunning && (
+          <div className="eg-jobveil" data-testid="gate-working">
+            <div className="eg-jobveil-dial">
+              <RitualLeader
+                caption={decision === "again" ? "FLO RE-SHOOTS" : "PRINTING"}
+              />
+            </div>
+            <p className="eg-jobveil-sub">
+              {decision === "again"
+                ? `Flo re-shoots ${label} — the note rides the retake`
+                : `Printing ${label} take ${attempt.attempt} — the count holds until it's really through`}
+              {flow.phase === "working" && (
+                <>
+                  {" "}
+                  · job <span className="eg-mono">{flow.jobId}</span>
+                </>
+              )}
+            </p>
+          </div>
+        )}
       </div>
 
       <div className="eg-transport">
-        <div className="eg-row">
-          {/* the visible Space (a11y discoverability): hold to rock */}
-          <button
-            type="button"
-            className="eg-tsw"
-            aria-pressed={loop.running}
-            aria-label="Run the loop (hold Space)"
-            disabled={!canRock}
-            onMouseDown={() => canRock && loop.start()}
-            onMouseUp={loop.stop}
-            onMouseLeave={loop.stop}
-          >
-            Run <span className="eg-kx" aria-hidden="true">SPACE</span>
-          </button>
-          <div className="eg-takes" role="group" aria-label="Takes">
-            {attempts.map((a) => (
-              <button
-                key={a.attempt}
-                type="button"
-                aria-pressed={a.attempt === shown}
-                onClick={() => setShown(a.attempt)}
-              >
-                TAKE {a.attempt}
-              </button>
-            ))}
+        {againOpen && !noticeUp && !jobRunning && (
+          <RetryNoteRow
+            key={attempt.attempt}
+            prefill={emNote.note}
+            fromEm={emNote.fromEm}
+            onSend={sendAgain}
+            onCancel={cancelAgain}
+          />
+        )}
+        {noticeUp ? (
+          <DecisionNotice
+            flow={flow}
+            runId={runId}
+            onRetry={gate.retryLast}
+            onBack={gate.backToGate}
+          />
+        ) : (
+          <div className="eg-row">
+            {/* the visible Space (a11y discoverability): hold to rock */}
+            <button
+              type="button"
+              className="eg-tsw"
+              aria-pressed={loop.running}
+              aria-label="Run the loop (hold Space)"
+              disabled={!canRock}
+              onMouseDown={() => canRock && loop.start()}
+              onMouseUp={loop.stop}
+              onMouseLeave={loop.stop}
+            >
+              Run <span className="eg-kx" aria-hidden="true">SPACE</span>
+            </button>
+            <div className="eg-takes" role="group" aria-label="Takes">
+              {attempts.map((a) => (
+                <button
+                  key={a.attempt}
+                  type="button"
+                  aria-pressed={a.attempt === shown}
+                  onClick={() => setShown(a.attempt)}
+                >
+                  TAKE {a.attempt}
+                  <CircledTake on={circledTake === a.attempt} />
+                </button>
+              ))}
+            </div>
+            <StageToolbar
+              canPrint={canPrint}
+              onPrint={print}
+              canAgain={canAgain}
+              onAgain={openAgain}
+              prevN={prevN}
+              nextN={nextN}
+              onWalk={walk}
+              cheatOpen={cheatOpen}
+              onToggleCheat={() => setCheatOpen((o) => !o)}
+            />
+            {/* the provenance line — composed from constants + the verdict (G8) */}
+            <p className="eg-prov">
+              {attempt.em.length > 0
+                ? "drawn by Flo (NB2) · read by Em · your call"
+                : "drawn by Flo (NB2) · your call"}
+            </p>
           </div>
-          {/* the provenance line — composed from constants + the verdict (G8) */}
-          <p className="eg-prov">
-            {attempt.em.length > 0
-              ? "drawn by Flo (NB2) · read by Em · your call"
-              : "drawn by Flo (NB2) · your call"}
-          </p>
-        </div>
+        )}
         <div className="eg-strip">
           <Filmstrip frames={reelFrames} />
         </div>
       </div>
     </section>
   );
+}
+
+/**
+ * The decision's non-happy terminals, each honest with ONE recovery action
+ * (the states doctrine; branch semantics from U3's classified GateFlow).
+ */
+function DecisionNotice({
+  flow,
+  runId,
+  onRetry,
+  onBack,
+}: {
+  flow: GateFlow;
+  runId: string;
+  onRetry: () => void;
+  onBack: () => void;
+}) {
+  switch (flow.phase) {
+    case "failed":
+      return (
+        <div className="eg-flownote eg-flownote--failed" role="alert">
+          <p className="eg-flownote-lead">
+            The take jammed in the gate — rc {flow.job.rc}
+          </p>
+          <pre className="eg-logs">{flow.job.logs || "(no log output)"}</pre>
+          <button type="button" className="eg-flownote-act" onClick={onRetry}>
+            Retry
+          </button>
+        </div>
+      );
+
+    case "busy":
+      return (
+        <div className="eg-flownote eg-flownote--busy" role="alert">
+          <p className="eg-flownote-lead">The booth is busy</p>
+          <p className="eg-flownote-sub">
+            {flow.reason} · job{" "}
+            <span className="eg-mono">{flow.activeJobId}</span> has the run.
+          </p>
+          <Link
+            className="eg-flownote-act"
+            to={`/runs/${encodeURIComponent(runId)}`}
+          >
+            Watch the running job
+          </Link>
+        </div>
+      );
+
+    case "stale":
+      return (
+        <div className="eg-flownote" role="alert">
+          <p className="eg-flownote-lead">This run already moved on</p>
+          <p className="eg-flownote-sub">{flow.detail}</p>
+          <button type="button" className="eg-flownote-act" onClick={onBack}>
+            Refresh the screening
+          </button>
+        </div>
+      );
+
+    case "degraded":
+      return (
+        <div className="eg-flownote eg-flownote--failed" role="alert">
+          <p className="eg-flownote-lead">
+            The take went through, but the booth couldn't re-read the run
+          </p>
+          <p className="eg-flownote-sub">
+            The job finished (rc 0) yet the run's state wouldn't load
+            {flow.job.load_error && (
+              <>
+                : <span className="eg-mono">{flow.job.load_error}</span>
+              </>
+            )}
+            . Refresh before touching anything.
+          </p>
+          <button type="button" className="eg-flownote-act" onClick={onBack}>
+            Refresh
+          </button>
+        </div>
+      );
+
+    case "error":
+      return (
+        <div className="eg-flownote eg-flownote--failed" role="alert">
+          <p className="eg-flownote-lead">
+            The gate refused{flow.status ? ` (${flow.status})` : ""}
+          </p>
+          <p className="eg-flownote-sub">{flow.detail}</p>
+          <button type="button" className="eg-flownote-act" onClick={onBack}>
+            Back to the screening
+          </button>
+        </div>
+      );
+
+    default:
+      return null;
+  }
 }
 
 /** Loading is a skeleton of the stage — the lit frame's shape, dimmed. */
