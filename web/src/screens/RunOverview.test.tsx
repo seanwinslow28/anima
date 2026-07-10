@@ -114,6 +114,78 @@ describe("RunOverview — the now-screening hero", () => {
     );
   });
 
+  it("shows the estimate truthfully — the band, never a cap", async () => {
+    renderOverview();
+    await screen.findByTestId("booth-board");
+    const bo = screen.getByRole("complementary", { name: /box office/i });
+    expect(bo).toHaveTextContent(/estimate, not a cap/i);
+    expect(bo).toHaveTextContent("$0.35");
+    expect(bo).toHaveTextContent("$0.93");
+    expect(bo).toHaveTextContent("$2.25");
+  });
+
+  it("labels the spend as a derived running total (≈ … drawn), never a live meter", async () => {
+    renderOverview();
+    await screen.findByTestId("booth-board");
+    const spend = screen.getByTestId("derived-spend");
+    // 4 recorded attempts × $0.07
+    expect(spend).toHaveTextContent("≈");
+    expect(spend).toHaveTextContent("$0.28");
+    expect(spend).toHaveTextContent(/drawn/i);
+    expect(spend).toHaveTextContent(/derived/i);
+  });
+
+  it("a plan not yet costed reads estimate pending, not $0", async () => {
+    server.use(
+      http.get("/runs/:id", () => HttpResponse.json(rawAnimatic)),
+      http.get("/runs/:id/status", () =>
+        HttpResponse.json(statusAnimaticGate),
+      ),
+    );
+    renderOverview("2026-06-21-spark-animatic-driven");
+    await screen.findByTestId("booth-board");
+    const bo = screen.getByRole("complementary", { name: /box office/i });
+    expect(bo).toHaveTextContent(/estimate pending/i);
+  });
+
+  it("keeps the by-phase detail behind the density gate (on-intent reveal)", async () => {
+    renderOverview();
+    await screen.findByTestId("booth-board");
+    const bo = screen.getByRole("complementary", { name: /box office/i });
+    // keyboard-reachable reveal region; detail present in the DOM for AT
+    expect(bo).toHaveAttribute("tabindex", "0");
+    const detail = bo.querySelector("[data-reveal]");
+    expect(detail).not.toBeNull();
+    expect(detail).toHaveTextContent(/generate/i);
+  });
+
+  it("staffs the crew stations behind the same on-intent reveal", async () => {
+    renderOverview();
+    await screen.findByTestId("booth-board");
+    const crew = screen.getByRole("complementary", { name: /crew/i });
+    expect(crew).toHaveAttribute("tabindex", "0");
+    const list = crew.querySelector("[data-reveal]");
+    expect(list).not.toBeNull();
+    for (const agent of ["Maya", "Sam", "Bea", "Cy", "Flo", "Em", "Mo"]) {
+      expect(crew).toHaveTextContent(agent);
+    }
+  });
+
+  it("renders the mini frame-reel: printed takes, the take on screen, queued cuts", async () => {
+    renderOverview();
+    await screen.findByTestId("booth-board");
+    const strip = screen.getByRole("list", { name: "reel" });
+    const cells = within(strip).getAllByRole("listitem");
+    expect(cells).toHaveLength(5);
+    expect(cells[0].textContent).toContain("PRINT");
+    expect(cells[2].textContent).toContain("ON SCREEN");
+    expect(cells[2].querySelector("img")).toHaveAttribute(
+      "src",
+      `/runs/${RUN_ID}/frames/3/image`,
+    );
+    expect(cells[4].querySelector(".ro-empty")).not.toBeNull();
+  });
+
   it("an act kind with no screen yet (assemble) renders the move without a dead link", async () => {
     server.use(
       http.get("/runs/:id/status", () =>

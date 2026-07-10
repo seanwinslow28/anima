@@ -4,7 +4,10 @@ export type FilmstripFrame = {
   id: string | number;
   /** the cell caption, e.g. "F03" */
   label: string;
-  status: "printed" | "working" | "pending";
+  /** eye = a generated take waiting on the director (tungsten, no pulse) */
+  status: "printed" | "working" | "eye" | "pending";
+  /** override the default status word (e.g. "FLO DRAWING") — U2b additive */
+  mark?: string;
   /** thumbnail — absent renders the dashed empty slot */
   src?: string;
   /** the current frame (tungsten ring) */
@@ -14,13 +17,22 @@ export type FilmstripFrame = {
 const STATUS_MARK: Record<FilmstripFrame["status"], string> = {
   printed: "✓ PRINT",
   working: "● WORKING",
+  eye: "ON SCREEN",
+  pending: "",
+};
+
+const STATUS_CLASS: Record<FilmstripFrame["status"], string> = {
+  printed: "ro-printed",
+  working: "ro-working ro-pulse",
+  eye: "ro-eye",
   pending: "",
 };
 
 /**
  * The reel ledger — one sprocketed cell per frame, status as a colored mark
- * in the cap row (print-green check, pulsing tungsten working dot), the
- * current frame ringed. Presentational: the consumer supplies the frames.
+ * in the cap row (print-green check, pulsing tungsten working dot, steady
+ * tungsten eye), the current frame ringed. Presentational: the consumer
+ * supplies the frames.
  */
 export function Filmstrip({ frames }: { frames: FilmstripFrame[] }) {
   return (
@@ -37,13 +49,9 @@ export function Filmstrip({ frames }: { frames: FilmstripFrame[] }) {
           )}
           <div className="ro-cap">
             <span>{f.label}</span>
-            {f.status !== "pending" && (
-              <span
-                className={
-                  f.status === "printed" ? "ro-printed" : "ro-working ro-pulse"
-                }
-              >
-                {STATUS_MARK[f.status]}
+            {(f.status !== "pending" || f.mark) && (
+              <span className={STATUS_CLASS[f.status]}>
+                {f.mark ?? STATUS_MARK[f.status]}
               </span>
             )}
           </div>

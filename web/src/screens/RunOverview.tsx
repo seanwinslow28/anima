@@ -6,14 +6,21 @@ import { Link, useParams } from "react-router-dom";
 import { fetchRawState, fetchStatus } from "../api/client";
 import type { RawRunState, RunStatus } from "../api/types";
 import {
+  CREW,
+  deriveSpend,
   deriveStageReel,
+  FRAME_COST_USD,
+  framesToReel,
   goLabel,
   nextActionUrl,
+  phaseLabel,
   stageRevisitUrl,
   type StageSegment,
 } from "../lib/boothBoard";
 import { nextActionCta } from "../lib/nextAction";
 import { useResource } from "../lib/useResource";
+import { BurnIn } from "../reelone/BurnIn";
+import { Filmstrip } from "../reelone/Filmstrip";
 
 /**
  * Screen 3 — the booth board: the run's home base as the projection booth
@@ -74,8 +81,115 @@ function BoothBoard({
       <StageReel runId={runId} segments={segments} />
       <div className="bb-marquee">
         <NowScreening runId={runId} status={status} />
+        <BoxOffice status={status} raw={raw} />
+      </div>
+      <div className="bb-lower">
+        <FrameReel runId={runId} status={status} slug={raw.slug} />
+        <CrewStations />
       </div>
     </section>
+  );
+}
+
+/** The box office — estimate truthfully, spend as a labelled derivation (D-H). */
+function BoxOffice({ status, raw }: { status: RunStatus; raw: RawRunState }) {
+  const ce = raw.plan.cost_estimate;
+  const spend = deriveSpend(status.frames);
+  return (
+    <aside className="bb-boxoffice" aria-label="Box office — cost" tabIndex={0}>
+      <div className="bb-bo-head">
+        <span className="bb-lbl">Box office</span>
+        <span className="bb-lbl bb-lbl--dim">estimate, not a cap</span>
+      </div>
+      <div className="bb-stub">
+        <p className="bb-bo-spent bb-mono" data-testid="derived-spend">
+          ≈ ${spend.usd.toFixed(2)} drawn
+          <span className="bb-bo-how">
+            {" "}
+            · derived: {spend.attempts} take{spend.attempts === 1 ? "" : "s"} ×
+            ${FRAME_COST_USD.toFixed(2)}
+          </span>
+        </p>
+        {ce ? (
+          <p className="bb-bo-est bb-mono">
+            est ${ce.low_usd.toFixed(2)} – ${ce.high_usd.toFixed(2)} · median $
+            {ce.median_usd.toFixed(2)}
+          </p>
+        ) : (
+          <p className="bb-bo-est">
+            estimate pending — Maya hasn't costed this plan yet
+          </p>
+        )}
+      </div>
+      {/* density gate: the breakdown + house rules arrive on intent */}
+      <div className="bb-bo-detail" data-reveal>
+        {ce && (
+          <table className="bb-bo-table">
+            <tbody>
+              {Object.entries(ce.by_phase).map(([key, band]) => (
+                <tr key={key}>
+                  <td>{phaseLabel(key)}</td>
+                  <td className="bb-mono">
+                    ${band.low_usd.toFixed(2)} – ${band.high_usd.toFixed(2)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+        <p className="bb-bo-note">
+          <b>Nothing burns compute until you approve.</b> Draft tier is the
+          house default; pro screens only on your call or a critic pass.
+        </p>
+        <BurnIn segments={["12 FPS", "NB2", `$${FRAME_COST_USD.toFixed(2)} / frame`]} />
+      </div>
+    </aside>
+  );
+}
+
+/** The mini frame-reel — the run's cuts as a filmstrip ledger. */
+function FrameReel({
+  runId,
+  status,
+  slug,
+}: {
+  runId: string;
+  status: RunStatus;
+  slug: string;
+}) {
+  if (status.frames.length === 0) {
+    return (
+      <div className="bb-reelbox">
+        <span className="bb-lbl">Reel — {slug}</span>
+        <p className="bb-reel-empty">No cuts on the reel yet.</p>
+      </div>
+    );
+  }
+  return (
+    <div className="bb-reelbox">
+      <span className="bb-lbl">
+        Reel — {status.frames.length} cut{status.frames.length === 1 ? "" : "s"}{" "}
+        · {slug}
+      </span>
+      <Filmstrip frames={framesToReel(runId, status)} />
+    </div>
+  );
+}
+
+/** The crew stations — the constant map, revealed on intent. */
+function CrewStations() {
+  return (
+    <aside className="bb-crew" aria-label="The crew tonight" tabIndex={0}>
+      <span className="bb-lbl">The crew tonight</span>
+      <ul className="bb-crew-list" data-reveal>
+        {CREW.map((c) => (
+          <li key={c.agent}>
+            <b>{c.agent}</b>
+            <span>{c.station}</span>
+          </li>
+        ))}
+      </ul>
+    </aside>
   );
 }
 

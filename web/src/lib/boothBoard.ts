@@ -5,6 +5,7 @@ import type {
   RawRunState,
   RunStatus,
 } from "../api/types";
+import type { FilmstripFrame } from "../reelone/Filmstrip";
 
 /*
  * The booth board's pure derivations. The stage reel is RUN-SHAPE-DERIVED
@@ -151,6 +152,86 @@ export function stageRevisitUrl(runId: string, stage: string): string | null {
       return null;
   }
 }
+
+/** The G5 per-frame NB2 constant the derived spend rides on (USD). */
+export const FRAME_COST_USD = 0.07;
+
+/**
+ * The client-derived "spent so far": Σ recorded attempts × $0.07. A derived
+ * running total (D-H honesty) — the daemon keeps no spend accumulator, so
+ * this is labelled "≈ … drawn", never rendered as a live meter.
+ */
+export function deriveSpend(frames: FrameState[]): {
+  attempts: number;
+  usd: number;
+} {
+  const attempts = frames.reduce((sum, f) => sum + f.attempts, 0);
+  // integer cents — 4 × 0.07 must read 0.28, not 0.28000000000000004
+  return { attempts, usd: (attempts * 7) / 100 };
+}
+
+/** Human names for Maya's by_phase cost keys (fallback: prettified key). */
+export function phaseLabel(key: string): string {
+  const names: Record<string, string> = {
+    phase_0: "Plan",
+    phase_2: "Bible",
+    phase_5: "Generate",
+    phase_6: "Motion",
+    phase_8: "Assemble",
+  };
+  return names[key] ?? key.replace("phase_", "Phase ");
+}
+
+/**
+ * The mini frame-reel: status.frames -> <Filmstrip> cells. approved = PRINT
+ * (image served), generated = ON SCREEN (the take waiting on the director,
+ * ringed), the frame a live job is drawing = FLO DRAWING (pulse), the rest
+ * queue quietly. The loop-return arrow needs chain_from (G4) — omitted here,
+ * an eye-gate concern.
+ */
+export function framesToReel(
+  runId: string,
+  status: Pick<RunStatus, "frames" | "next_action" | "active_job">,
+): FilmstripFrame[] {
+  const na = status.next_action;
+  const base = `/runs/${encodeURIComponent(runId)}/frames`;
+  return status.frames.map((f) => {
+    const label = `F${String(f.n).padStart(2, "0")}`;
+    if (f.status === "approved") {
+      return { id: f.n, label, status: "printed" as const, src: `${base}/${f.n}/image` };
+    }
+    if (f.status === "generated") {
+      return {
+        id: f.n,
+        label,
+        status: "eye" as const,
+        src: `${base}/${f.n}/image`,
+        now: na.kind === "review_frame" && na.frame === f.n,
+      };
+    }
+    const drawing =
+      status.active_job != null &&
+      na.kind === "generating" &&
+      na.frame === f.n;
+    return drawing
+      ? { id: f.n, label, status: "working" as const, mark: "FLO DRAWING", now: true }
+      : { id: f.n, label, status: "pending" as const };
+  });
+}
+
+/**
+ * The crew stations — a client-side constant map (stage -> agent), the whole
+ * fleet on the board. Revealed on intent (hover/focus), never permanent.
+ */
+export const CREW: ReadonlyArray<{ agent: string; station: string }> = [
+  { agent: "Maya", station: "plan" },
+  { agent: "Sam", station: "script" },
+  { agent: "Bea", station: "board" },
+  { agent: "Cy", station: "bible" },
+  { agent: "Flo", station: "frames" },
+  { agent: "Em", station: "critic" },
+  { agent: "Mo", station: "docent" },
+];
 
 /** The go-button verb per next_action kind (null = no primary action). */
 export function goLabel(kind: NextActionKind | string): string | null {

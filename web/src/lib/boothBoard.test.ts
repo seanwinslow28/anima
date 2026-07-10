@@ -6,8 +6,17 @@ import {
   rawBackCompat,
   statusAnimaticGate,
   statusReviewFrame,
+  statusWorking,
 } from "../test/fixtures";
-import { deriveStageReel, goLabel, nextActionUrl, stageRevisitUrl } from "./boothBoard";
+import {
+  CREW,
+  deriveSpend,
+  deriveStageReel,
+  framesToReel,
+  goLabel,
+  nextActionUrl,
+  stageRevisitUrl,
+} from "./boothBoard";
 
 /*
  * U2b Task 2 — the run-shape-derived stage reel (red-team: never a fixed
@@ -111,6 +120,62 @@ describe("nextActionUrl", () => {
     ] as const) {
       expect(nextActionUrl("run-1", { kind, frame: 4, hint: "" })).toBeNull();
     }
+  });
+});
+
+describe("deriveSpend", () => {
+  it("sums recorded attempts × the $0.07 G5 constant — a derived total, never a meter", () => {
+    // 1 + 2 + 1 + 0 + 0 attempts
+    expect(deriveSpend(statusReviewFrame.frames)).toEqual({
+      attempts: 4,
+      usd: 0.28,
+    });
+  });
+
+  it("no attempts yet -> zero, not unknown", () => {
+    expect(deriveSpend([])).toEqual({ attempts: 0, usd: 0 });
+  });
+});
+
+describe("framesToReel", () => {
+  it("maps approved->printed (with image), generated->eye ON SCREEN (ringed)", () => {
+    const reel = framesToReel("run-1", statusReviewFrame);
+    expect(reel).toHaveLength(5);
+    expect(reel[0]).toMatchObject({
+      label: "F01",
+      status: "printed",
+      src: "/runs/run-1/frames/1/image",
+    });
+    expect(reel[2]).toMatchObject({ label: "F03", status: "eye", now: true });
+    // pending with no active job: queued, no image, no ring
+    expect(reel[3]).toMatchObject({ status: "pending" });
+    expect(reel[3].src).toBeUndefined();
+  });
+
+  it("the frame a live job is drawing pulses FLO DRAWING", () => {
+    const reel = framesToReel("run-1", statusWorking);
+    expect(reel[3]).toMatchObject({
+      label: "F04",
+      status: "working",
+      mark: "FLO DRAWING",
+      now: true,
+    });
+    // the other pending frame stays quietly queued
+    expect(reel[4]).toMatchObject({ status: "pending" });
+  });
+});
+
+describe("CREW", () => {
+  it("is the seven-station constant map (stage->agent, client-side)", () => {
+    expect(CREW.map((c) => c.agent)).toEqual([
+      "Maya",
+      "Sam",
+      "Bea",
+      "Cy",
+      "Flo",
+      "Em",
+      "Mo",
+    ]);
   });
 });
 

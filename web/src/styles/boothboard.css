@@ -219,6 +219,220 @@
   font-weight: 500;
 }
 
+/* ── shared label chip ── */
+.reelone .bb-lbl {
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: var(--mute);
+}
+
+.reelone .bb-lbl--dim {
+  color: var(--tungsten-dim);
+}
+
+/* ── the box office (mockup .boxoffice/.stub — the torn ticket) ── */
+.reelone .bb-boxoffice {
+  border: 1px solid var(--line);
+  background: var(--booth2);
+  display: flex;
+  flex-direction: column;
+}
+
+.reelone .bb-boxoffice:focus-visible {
+  outline: 2px solid var(--tungsten);
+  outline-offset: 2px;
+}
+
+.reelone .bb-bo-head {
+  padding: 11px 15px 9px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.reelone .bb-stub {
+  margin: 16px 14px 12px;
+  border: 1px dashed var(--tungsten-dim);
+  padding: 14px 15px;
+  position: relative;
+}
+
+.reelone .bb-stub::before,
+.reelone .bb-stub::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--booth2);
+  border: 1px dashed var(--tungsten-dim);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.reelone .bb-stub::before {
+  left: -8px;
+  border-left-color: transparent;
+}
+
+.reelone .bb-stub::after {
+  right: -8px;
+  border-right-color: transparent;
+}
+
+.reelone .bb-bo-spent {
+  font-size: 13px;
+  color: var(--tungsten);
+  margin: 0;
+}
+
+.reelone .bb-bo-how {
+  font-size: 11px;
+  color: var(--mute);
+}
+
+.reelone .bb-bo-est {
+  font-size: 11.5px;
+  color: var(--text);
+  margin: 7px 0 0;
+  padding-top: 7px;
+  border-top: 1px solid var(--tungsten-dim);
+}
+
+.reelone .bb-bo-table {
+  width: calc(100% - 30px);
+  margin: 0 15px 10px;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.reelone .bb-bo-table td {
+  padding: 3px 0;
+  color: var(--mute);
+}
+
+.reelone .bb-bo-table td:last-child {
+  text-align: right;
+}
+
+.reelone .bb-bo-note {
+  padding: 0 15px 10px;
+  font-size: 11px;
+  color: var(--mute);
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.reelone .bb-bo-note b {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.reelone .bb-bo-detail .ro-burnin {
+  display: block;
+  padding: 0 15px 14px;
+}
+
+/* ── the lower row: the frame reel + the crew ── */
+.reelone .bb-lower {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 26px;
+}
+
+@media (max-width: 900px) {
+  .reelone .bb-lower {
+    grid-template-columns: 1fr;
+  }
+}
+
+.reelone .bb-reelbox .bb-lbl {
+  display: block;
+  margin-bottom: 9px;
+}
+
+.reelone .bb-reel-empty {
+  color: var(--mute);
+  font-size: 12.5px;
+  border: 1px dashed var(--line);
+  padding: 22px;
+  text-align: center;
+}
+
+.reelone .bb-crew {
+  border: 1px solid var(--line);
+  background: var(--booth2);
+  padding: 13px 15px;
+  align-self: start;
+}
+
+.reelone .bb-crew:focus-visible {
+  outline: 2px solid var(--tungsten);
+  outline-offset: 2px;
+}
+
+.reelone .bb-crew-list {
+  list-style: none;
+  margin: 9px 0 0;
+  padding: 0;
+}
+
+.reelone .bb-crew-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 12px;
+}
+
+.reelone .bb-crew-list li:last-child {
+  border-bottom: none;
+}
+
+.reelone .bb-crew-list b {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.reelone .bb-crew-list span {
+  font-size: 11px;
+  color: var(--mute);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── the density gate: secondary detail arrives on intent (hover / focus).
+   Content stays in the DOM (screen readers read it; tests see it) — the
+   reveal is purely visual, and reduced-motion users just get no fade. ── */
+.reelone [data-reveal] {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 160ms ease, max-height 200ms ease;
+}
+
+.reelone .bb-boxoffice:hover [data-reveal],
+.reelone .bb-boxoffice:focus-within [data-reveal],
+.reelone .bb-boxoffice:focus [data-reveal],
+.reelone .bb-crew:hover [data-reveal],
+.reelone .bb-crew:focus-within [data-reveal],
+.reelone .bb-crew:focus [data-reveal] {
+  opacity: 1;
+  max-height: 420px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reelone [data-reveal] {
+    transition: none;
+  }
+}
+
 /* ── the couldn't-read state (error doctrine: what happened + one recovery) ── */
 .reelone .bb-notice {
   border: 1px solid var(--line);
