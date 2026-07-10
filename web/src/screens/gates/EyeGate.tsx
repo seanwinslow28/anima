@@ -1,13 +1,15 @@
 import "../../styles/eyegate.css";
 
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { fetchCandidates } from "../../api/client";
+import { fetchCandidates, frameImageUrl } from "../../api/client";
 import type { CandidateAttempt, FrameState, RunStatus } from "../../api/types";
 import { framesToReel } from "../../lib/boothBoard";
+import { useImagePreload } from "../../lib/imagePreload";
 import { useRun } from "../../lib/runContext";
 import { useResource } from "../../lib/useResource";
+import { useRockLoop, type LoopEntry } from "../../lib/useRockLoop";
 import { BurnIn } from "../../reelone/BurnIn";
 import { Filmstrip } from "../../reelone/Filmstrip";
 import { RitualLeader } from "../../reelone/RitualLeader";
@@ -137,27 +139,116 @@ function Screening({
     now: f.id === frameN,
   }));
 
+  // -- the cross-slice image DoD: prime every take + every loop neighbor,
+  //    so the rock swaps decoded images, never flicker-loads --------------
+  const preloadUrls = useMemo(() => {
+    const urls = attempts
+      .map((a) => a.image_url)
+      .filter((u): u is string => u !== null);
+    for (const f of status.frames) {
+      if (f.status === "approved" && f.n !== frameN) {
+        urls.push(frameImageUrl(runId, f.n));
+      }
+    }
+    return urls;
+  }, [attempts, status.frames, frameN, runId]);
+  const preload = useImagePreload(preloadUrls);
+
+  // -- the loop context: the approved neighbors in frame order, with the
+  //    SHOWN take riding the current frame's slot (judge THIS candidate in
+  //    motion). A neighbor whose image failed to load is skipped honestly. --
+  const loopEntries = useMemo(() => {
+    const out: LoopEntry[] = [];
+    for (const f of [...status.frames].sort((a, b) => a.n - b.n)) {
+      if (f.n === frameN) {
+        if (showable && attempt.image_url !== null) {
+          out.push({ n: f.n, hold: f.hold, url: attempt.image_url });
+        }
+      } else if (f.status === "approved") {
+        const url = frameImageUrl(runId, f.n);
+        if (preload[url] !== "error") out.push({ n: f.n, hold: f.hold, url });
+      }
+    }
+    return out;
+  }, [status.frames, frameN, showable, attempt.image_url, runId, preload]);
+  const currentIndex = loopEntries.findIndex((e) => e.n === frameN);
+  const loop = useRockLoop(loopEntries, Math.max(currentIndex, 0));
+  const canRock = showable && currentIndex >= 0 && loopEntries.length >= 2;
+
+  // the cel on screen: the playhead while rocking, else the shown take
+  const cel = loop.playhead;
+  const celUrl = cel ? cel.url : showable ? attempt.image_url : null;
+
+  // -- keyboard focus ownership: the stage region owns Space + the number
+  //    keys; typing targets are ignored (the infra U5b's note rides on) ----
+  const regionRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    regionRef.current?.focus();
+  }, []);
+
+  const isTypingTarget = (t: EventTarget | null) => {
+    const tag = (t as HTMLElement | null)?.tagName;
+    return tag === "INPUT" || tag === "TEXTAREA";
+  };
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (isTypingTarget(e.target)) return;
+    if (e.key === " ") {
+      e.preventDefault();
+      if (!e.repeat && canRock) loop.start();
+      return;
+    }
+    if (/^[1-9]$/.test(e.key)) {
+      const take = attempts.find((a) => a.attempt === Number(e.key));
+      if (take) setShown(take.attempt);
+    }
+  };
+  const onKeyUp = (e: React.KeyboardEvent) => {
+    if (isTypingTarget(e.target)) return;
+    if (e.key === " ") loop.stop();
+  };
+
   return (
-    <section className="eg-screen" data-testid="eyegate">
+    <section
+      className="eg-screen"
+      data-testid="eyegate"
+      role="region"
+      aria-label={`${label} — the stage. Hold Space to run the loop; number keys switch takes.`}
+      tabIndex={0}
+      ref={regionRef as React.RefObject<HTMLElement & HTMLDivElement>}
+      onKeyDown={onKeyDown}
+      onKeyUp={onKeyUp}
+    >
       <header className="eg-head">
         <h1 className="eg-h1">{label} · the screening</h1>
-        <Timecode frame={frameN - 1} hold={hold} />
+        <Timecode
+          frame={(cel?.n ?? frameN) - 1}
+          hold={cel ? (cel.hold ?? 2) : hold}
+        />
       </header>
 
       <div className="eg-stagewrap">
         <div className="eg-beam" aria-hidden="true" />
         <figure
-          className="eg-stage"
+          className={
+            loop.running ? "eg-stage eg-stage--running" : "eg-stage"
+          }
           data-testid="stage"
           aria-label={`${label} take ${attempt.attempt}, projected`}
         >
-          {showable ? (
+          {celUrl !== null ? (
             <div className="eg-img eg-img--lit">
               <img
-                src={attempt.image_url as string}
-                alt={`${label} take ${attempt.attempt} — the candidate on screen`}
-                onError={() =>
-                  setBroken((prev) => new Set(prev).add(attempt.attempt))
+                src={celUrl}
+                alt={
+                  cel && cel.n !== frameN
+                    ? `${frameLabel(cel.n)} — rocking the loop`
+                    : `${label} take ${attempt.attempt} — the candidate on screen`
+                }
+                onError={
+                  cel
+                    ? undefined
+                    : () =>
+                        setBroken((prev) => new Set(prev).add(attempt.attempt))
                 }
               />
             </div>
@@ -185,6 +276,19 @@ function Screening({
 
       <div className="eg-transport">
         <div className="eg-row">
+          {/* the visible Space (a11y discoverability): hold to rock */}
+          <button
+            type="button"
+            className="eg-tsw"
+            aria-pressed={loop.running}
+            aria-label="Run the loop (hold Space)"
+            disabled={!canRock}
+            onMouseDown={() => canRock && loop.start()}
+            onMouseUp={loop.stop}
+            onMouseLeave={loop.stop}
+          >
+            Run <span className="eg-kx" aria-hidden="true">SPACE</span>
+          </button>
           <div className="eg-takes" role="group" aria-label="Takes">
             {attempts.map((a) => (
               <button

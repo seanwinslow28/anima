@@ -331,6 +331,41 @@
   }
 }
 
+/* ── the transport switches (the visible keys) ── */
+.eg-tsw {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  border: 1px solid var(--line);
+  background: none;
+  padding: 6px 11px 5px;
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--mute);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.eg-tsw .eg-kx {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0 4px;
+  font-size: 11px;
+}
+
+.eg-tsw[aria-pressed="true"] {
+  color: var(--tungsten);
+  border-color: var(--tungsten-dim);
+  background: rgba(232, 179, 106, .07);
+}
+
+.eg-tsw:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
 /* ── the provenance line + the reel strip ── */
 .eg-prov {
   margin-left: auto;
