@@ -14,7 +14,7 @@ function rule(css: string, selector: string) {
   return css.slice(start, css.indexOf("}", start));
 }
 
-describe("EyeGate P1 structural layout contract", () => {
+describe("EyeGate structural layout contract", () => {
   it("completes the booth height chain with a flex-column stage", () => {
     const stage = rule(boothCss, ".booth-stage");
     expect(stage).toMatch(/display:\s*flex/);
