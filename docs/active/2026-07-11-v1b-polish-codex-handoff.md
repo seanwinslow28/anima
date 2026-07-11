@@ -38,6 +38,10 @@ All six of the plan's open decisions are **ratified as recommended**:
 
 ## Hard rules (from the plan's §Global constraints — violations fail review)
 
+- **Executors never merge a PR and never push to `main`.** `gh pr merge` is Sean's hand only.
+  An executor may push its feature branch and open/update the PR, then it stops for review. PR
+  #99 was merged by its executor; that boundary violation must not recur, regardless of code
+  quality.
 - **`web/` only.** `server/`, `pipeline/`, `evals/` byte-identical — verify per slice:
   `git diff origin/main -- server/ pipeline/ evals/` is empty, and both md5 guards hold:
   `md5 -q evals/vision_critic/traces/g6.1b-criteria-attached-2026-06-08.md` →
@@ -116,8 +120,8 @@ session is Sean's: daemon + vite up, a real run walked plan → gates → eye-ga
 |---|---|---|---|
 | P1 | The stage owns the room (eye-gate geometry + rail in flow) | Fable-grade care | ✅ merged (#98) |
 | P2 | Honest keys, honest labels (R-leak, D18 idle-dark, YOUR CALL, aria-valuetext) | — | ✅ merged (#99) |
-| P3a | Tokens, literals, and the type floor | — | 🟨 in review (#100) |
-| P3b | Button recipe + shared primitives + the living sheet | — | ⬜ |
+| P3a | Tokens, literals, and the type floor | — | ✅ merged (#100) |
+| P3b | Button recipe + shared primitives + the living sheet | — | 🟨 in progress |
 | P4 | The gates read like a room (archival state + hierarchy + lamp-pool retune) | — | ⬜ |
 | P5 | Deepen the ritual (intercom, whispers, bleed, warmth; ends with engine truth) | Fable-grade care | ⬜ |
 | P6 | One room, every screen (consistency + narrow sweep) | — | ⬜ |

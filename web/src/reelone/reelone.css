@@ -11,9 +11,91 @@
   inset: 0;
   pointer-events: none;
   opacity: .05;
-  z-index: 1;
+  z-index: var(--z-stage);
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2"/></filter><rect width="140" height="140" filter="url(%23n)" opacity="0.9"/></svg>');
 }
+
+/* ── Buttons — one equipment recipe, three semantic hues ── */
+.reelone .ro-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  transition:
+    background-color .18s ease-out,
+    border-color .18s ease-out,
+    color .18s ease-out;
+}
+
+.reelone .ro-button--primary {
+  color: var(--on-tungsten);
+  background: var(--tungsten);
+  border-color: var(--tungsten);
+}
+
+.reelone .ro-button--primary:hover:not(:disabled) {
+  background: var(--tungsten-bright);
+  border-color: var(--tungsten-bright);
+}
+
+.reelone .ro-button--quiet {
+  color: var(--text);
+  background: var(--booth2);
+  border-color: var(--line);
+}
+
+.reelone .ro-button--quiet:hover:not(:disabled) {
+  color: var(--screenlight);
+  background: var(--booth3);
+  border-color: var(--tungsten-dim);
+}
+
+.reelone .ro-button--danger {
+  color: var(--screenlight);
+  background: var(--bakelite);
+  border-color: var(--bakelite);
+}
+
+.reelone .ro-button--danger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--bakelite) 84%, var(--booth-deep));
+  border-color: color-mix(in srgb, var(--bakelite) 84%, var(--booth-deep));
+}
+
+.reelone .ro-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.reelone .ro-button:disabled,
+.reelone .ro-button[aria-disabled="true"] {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+/* ── Sprockets — the one film-edge primitive ── */
+.ro-sprocket::before,
+.ro-sprocket::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 7px;
+  background:
+    radial-gradient(circle at 10px 3.5px, var(--sprocket) 2.6px, transparent 2.8px)
+    repeat-x;
+  background-size: 20px 7px;
+  pointer-events: none;
+}
+
+.ro-sprocket::before { top: 2px; }
+.ro-sprocket::after { bottom: 2px; }
 
 /* ── Lamp — the lit signal before the word ── */
 .ro-lamp {
@@ -49,7 +131,7 @@
   align-items: center;
   justify-content: center;
   background: var(--booth-deep);
-  z-index: 5;
+  z-index: var(--z-overlay);
 }
 
 .ro-leader .ro-dial {
@@ -163,21 +245,6 @@
 }
 
 .ro-fcell:last-child { border-right: none; }
-
-/* sprocket holes top + bottom */
-.ro-fcell::before,
-.ro-fcell::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 7px;
-  background: radial-gradient(circle at 10px 3.5px, var(--sprocket) 2.6px, transparent 2.8px) repeat-x;
-  background-size: 20px 7px;
-}
-
-.ro-fcell::before { top: 2px; }
-.ro-fcell::after { bottom: 2px; }
 
 .ro-fcell img {
   width: 100%;

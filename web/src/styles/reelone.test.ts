@@ -18,6 +18,8 @@ const cssSources = new Map([
   ["styles/eyegate.css", read("./eyegate.css")],
   ["screens/dev/systemsheet.css", read("../screens/dev/systemsheet.css")],
 ]);
+const reelone = cssSources.get("reelone/reelone.css") ?? "";
+const eyeGate = cssSources.get("styles/eyegate.css") ?? "";
 
 describe("reelone.tokens.css", () => {
   test("carries the exact booth palette from the mockups", () => {
@@ -51,6 +53,20 @@ describe("reelone.tokens.css", () => {
     }
   });
 
+  test("names DESIGN §4's z-scale tiers on .reelone", () => {
+    for (const decl of [
+      "--z-stage: 1",
+      "--z-chrome: 2",
+      "--z-furniture: 4",
+      "--z-overlay: 5",
+      "--z-sheet: 6",
+      "--z-takeover: 8",
+      "--z-palette: 10",
+    ]) {
+      expect(tokens).toContain(decl);
+    }
+  });
+
   test("carries the lit continuity page set", () => {
     for (const decl of [
       "--page: #F7EFDC",
@@ -75,6 +91,22 @@ describe("reelone.tokens.css", () => {
 });
 
 describe("REEL ONE CSS discipline", () => {
+  test("owns one shared primary, quiet, and danger button recipe", () => {
+    expect(reelone).toContain(".ro-button");
+    expect(reelone).toContain(".ro-button--primary");
+    expect(reelone).toContain(".ro-button--quiet");
+    expect(reelone).toContain(".ro-button--danger");
+    expect(reelone).toContain("var(--tungsten-bright)");
+  });
+
+  test("owns one shared sprocket strip instead of screen copies", () => {
+    expect(reelone).toContain(".ro-sprocket::before");
+    expect(reelone).toContain(".ro-sprocket::after");
+    expect(cssSources.get("styles/marquee.css")).not.toContain("circle at 10px 3.5px");
+    expect(cssSources.get("styles/gates.css")).not.toContain("circle at 10px 3.5px");
+    expect(eyeGate).not.toContain("circle at 10px 3.5px");
+  });
+
   test("keeps the seven named interface selectors at the 11px floor", () => {
     const selectors = [
       ["styles/gates.css", ".gate-approve small"],
@@ -130,6 +162,16 @@ describe("reelone.motion.css", () => {
 
   test("collapses under prefers-reduced-motion", () => {
     expect(motion).toContain("@media (prefers-reduced-motion: reduce)");
+  });
+
+  test("eye-gate consumes shared flicker/weave while bespoke soft arrivals remain", () => {
+    expect(eyeGate).not.toContain("animation: flicker");
+    expect(eyeGate).not.toContain("animation: weave");
+    expect(eyeGate).toMatch(/\.eg-stage--arrive-soft[\s\S]*?\.18s linear/);
+    expect(eyeGate).not.toMatch(/\.eg-stage--arrive-soft\s*\{\s*animation:\s*none/);
+    expect(eyeGate).toMatch(
+      /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.eg-stage--arrive-soft\s*\{[\s\S]*?animation-duration:\s*\.18s !important/,
+    );
   });
 });
 

@@ -81,7 +81,7 @@ export function AnimaticGate({ pollIntervalMs }: { pollIntervalMs?: number }) {
             The booth couldn't pull this run's status — the daemon may be
             down, or the run unreadable.
           </p>
-          <button type="button" className="gate-notice-act" onClick={refresh}>
+          <button type="button" className="gate-notice-act ro-button ro-button--primary" onClick={refresh}>
             Retry
           </button>
         </div>
@@ -214,7 +214,7 @@ function AnimaticGateActions({
             {flow.reason} · job{" "}
             <span className="gate-mono">{flow.activeJobId}</span> has the run.
           </p>
-          <Link className="gate-notice-act" to={`/runs/${encodeURIComponent(runId)}`}>
+          <Link className="gate-notice-act ro-button ro-button--quiet" to={`/runs/${encodeURIComponent(runId)}`}>
             Watch the running job
           </Link>
         </div>
@@ -225,7 +225,7 @@ function AnimaticGateActions({
         <div className="gate-notice" role="alert">
           <h2>This run already moved on</h2>
           <p>{flow.detail}</p>
-          <button type="button" className="gate-notice-act" onClick={refreshAndReset}>
+          <button type="button" className="gate-notice-act ro-button ro-button--primary" onClick={refreshAndReset}>
             Refresh the gate
           </button>
         </div>
@@ -243,7 +243,7 @@ function AnimaticGateActions({
             repair holds.json, then ingest again. (No roughs at all is fine:
             that road proceeds with a warning.)
           </p>
-          <button type="button" className="gate-notice-act" onClick={refreshAndReset}>
+          <button type="button" className="gate-notice-act ro-button ro-button--primary" onClick={refreshAndReset}>
             Back to the placement gate
           </button>
         </div>
@@ -262,7 +262,7 @@ function AnimaticGateActions({
             )}
             . Refresh before touching anything.
           </p>
-          <button type="button" className="gate-notice-act" onClick={refreshAndReset}>
+          <button type="button" className="gate-notice-act ro-button ro-button--primary" onClick={refreshAndReset}>
             Refresh
           </button>
         </div>
@@ -273,7 +273,7 @@ function AnimaticGateActions({
         <div className="gate-notice gate-notice--error" role="alert">
           <h2>The gate refused{flow.status ? ` (${flow.status})` : ""}</h2>
           <p>{flow.detail}</p>
-          <button type="button" className="gate-notice-act" onClick={refreshAndReset}>
+          <button type="button" className="gate-notice-act ro-button ro-button--primary" onClick={refreshAndReset}>
             Back to the gate
           </button>
         </div>
@@ -285,7 +285,7 @@ function AnimaticGateActions({
         <>
           <button
             type="button"
-            className="gate-approve"
+            className="gate-approve ro-button ro-button--primary"
             disabled={!canAct}
             onClick={submit}
           >
@@ -294,7 +294,7 @@ function AnimaticGateActions({
           </button>
           <button
             type="button"
-            className="gate-secondary"
+            className="gate-secondary ro-button ro-button--quiet"
             disabled={!canAct}
             onClick={submit}
           >

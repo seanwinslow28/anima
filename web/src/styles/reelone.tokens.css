@@ -74,6 +74,15 @@
   --tc-mono: "SF Mono", Menlo, Consolas, monospace;
   --page-serif: Georgia, serif;
 
+  /* DESIGN §4 stacking tiers — nested veil + leader share overlay tier 5 */
+  --z-stage: 1;
+  --z-chrome: 2;
+  --z-furniture: 4;
+  --z-overlay: 5;
+  --z-sheet: 6;
+  --z-takeover: 8;
+  --z-palette: 10;
+
   /* the booth surface itself */
   background: var(--booth);
   color: var(--text);

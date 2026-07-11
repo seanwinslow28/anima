@@ -68,26 +68,6 @@
     background-color 0.15s;
 }
 
-/* sprocket holes top + bottom — the film-leader edge */
-.reelone .mq-card::before,
-.reelone .mq-card::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 7px;
-  background: radial-gradient(circle at 10px 3.5px, var(--sprocket) 2.6px, transparent 2.8px)
-    repeat-x;
-  background-size: 20px 7px;
-  pointer-events: none;
-}
-.reelone .mq-card::before {
-  top: 2px;
-}
-.reelone .mq-card::after {
-  bottom: 2px;
-}
-
 .reelone .mq-card:hover {
   border-color: var(--tungsten-dim);
   background-color: var(--booth3);
@@ -230,23 +210,11 @@
   line-height: 1.7;
 }
 
-/* the projector button — bakelite is the reserved retry hue */
+/* recovery follows the shared tungsten commit/recover grammar */
 .reelone .mq-retry {
   margin-top: 16px;
-  font-family: var(--display);
-  font-weight: 600;
   font-size: 12px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--screenlight);
-  background: var(--bakelite);
-  border: none;
-  border-radius: 2px;
   padding: 9px 18px 8px;
-  cursor: pointer;
-}
-.reelone .mq-retry:hover {
-  background: var(--bakelite);
 }
 
 /* ── an unreadable run: the grease-edged booth errcard, never dropped ── */

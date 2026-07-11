@@ -28,7 +28,7 @@
   padding: 12px 22px;
   border-bottom: 1px solid var(--line);
   position: relative;
-  z-index: 2;
+  z-index: var(--z-chrome);
 }
 .booth-wordmark {
   font-family: var(--display);
@@ -68,7 +68,7 @@
   flex-direction: column;
   min-height: 0;
   position: relative;
-  z-index: 1;
+  z-index: var(--z-stage);
 }
 
 /* A flex-column containing block completes the eye-gate's height chain, but
@@ -81,7 +81,7 @@
 .palette-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 10;
+  z-index: var(--z-palette);
   background: rgba(var(--booth-shadow-rgb), 0.55);
   display: flex;
   align-items: flex-start;

@@ -58,7 +58,7 @@ export function StageToolbar({
       <div className="eg-decide" role="group" aria-label="The decision">
         <button
           type="button"
-          className="eg-again"
+          className="eg-again ro-button ro-button--quiet"
           disabled={!canAgain}
           onClick={onAgain}
         >
@@ -66,7 +66,7 @@ export function StageToolbar({
         </button>
         <button
           type="button"
-          className="eg-print"
+          className="eg-print ro-button ro-button--primary"
           disabled={!canPrint}
           onClick={onPrint}
         >

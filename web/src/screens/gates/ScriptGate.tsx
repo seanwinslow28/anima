@@ -103,7 +103,7 @@ export function ScriptGate({ pollIntervalMs }: { pollIntervalMs?: number }) {
           </p>
           <button
             type="button"
-            className="gate-notice-act"
+            className="gate-notice-act ro-button ro-button--primary"
             onClick={() => setNonce((n) => n + 1)}
           >
             Retry
@@ -209,7 +209,7 @@ function ScriptGateActions({
             {flow.reason} · job{" "}
             <span className="gate-mono">{flow.activeJobId}</span> has the run.
           </p>
-          <Link className="gate-notice-act" to={`/runs/${encodeURIComponent(runId)}`}>
+          <Link className="gate-notice-act ro-button ro-button--quiet" to={`/runs/${encodeURIComponent(runId)}`}>
             Watch the running job
           </Link>
         </div>
@@ -220,7 +220,7 @@ function ScriptGateActions({
         <div className="gate-notice" role="alert">
           <h2>This run already moved on</h2>
           <p>{flow.detail}</p>
-          <button type="button" className="gate-notice-act" onClick={refreshAndReset}>
+          <button type="button" className="gate-notice-act ro-button ro-button--primary" onClick={refreshAndReset}>
             Refresh the gate
           </button>
         </div>
@@ -233,7 +233,7 @@ function ScriptGateActions({
           <pre className="gate-logs">{flow.job.logs || "(no log output)"}</pre>
           <button
             type="button"
-            className="gate-notice-act"
+            className="gate-notice-act ro-button ro-button--primary"
             onClick={() => {
               reset();
               submit();
@@ -257,7 +257,7 @@ function ScriptGateActions({
             )}
             . Refresh before touching anything.
           </p>
-          <button type="button" className="gate-notice-act" onClick={refreshAndReset}>
+          <button type="button" className="gate-notice-act ro-button ro-button--primary" onClick={refreshAndReset}>
             Refresh
           </button>
         </div>
@@ -268,7 +268,7 @@ function ScriptGateActions({
         <div className="gate-notice gate-notice--error" role="alert">
           <h2>The gate refused{flow.status ? ` (${flow.status})` : ""}</h2>
           <p>{flow.detail}</p>
-          <button type="button" className="gate-notice-act" onClick={refreshAndReset}>
+          <button type="button" className="gate-notice-act ro-button ro-button--primary" onClick={refreshAndReset}>
             Back to the gate
           </button>
         </div>
@@ -280,7 +280,7 @@ function ScriptGateActions({
         <>
           <button
             type="button"
-            className="gate-approve"
+            className="gate-approve ro-button ro-button--primary"
             disabled={!canApprove}
             onClick={submit}
           >
