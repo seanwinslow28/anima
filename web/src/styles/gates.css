@@ -383,27 +383,38 @@
 /* ── the action bar: the one decision ── */
 .reelone .gate-actions {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   gap: 14px;
-  border-top: 1px solid var(--line);
-  padding-top: 14px;
-  flex-wrap: wrap;
+  border: 1px solid var(--line);
+  background: var(--booth2);
+  padding: 14px;
 }
 .reelone .gate-approve {
   font-size: 13px;
   padding: 13px 26px 11px;
+  width: 100%;
+  white-space: normal;
+  line-height: 1.35;
 }
 .reelone .gate-approve small {
   display: block;
   font-size: 11px;
   letter-spacing: 0.2em;
   font-weight: 500;
+  line-height: 1.45;
+  margin-top: 3px;
+  white-space: normal;
+}
+.reelone .gate-secondary {
+  width: 100%;
 }
 .reelone .gate-hint {
   font-size: 11px;
   color: var(--mute);
   letter-spacing: 0.04em;
   line-height: 1.6;
+  margin: 0;
 }
 
 /* gate flow states: the notice card (busy/stale/failed/degraded/error) */

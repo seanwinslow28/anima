@@ -51,9 +51,13 @@ export function GateShell({
             <div className="gate-body">{children}</div>
           </article>
         </div>
-        {aside && <aside className="gate-aside">{aside}</aside>}
+        {(aside || actions) && (
+          <aside className="gate-aside">
+            {aside}
+            {actions && <footer className="gate-actions">{actions}</footer>}
+          </aside>
+        )}
       </div>
-      {actions && <footer className="gate-actions">{actions}</footer>}
     </section>
   );
 }

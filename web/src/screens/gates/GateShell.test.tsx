@@ -34,9 +34,28 @@ describe("GateShell — the reusable lit-page document-gate frame", () => {
     expect(screen.getByText(/authored by Maya/)).toBeInTheDocument();
     expect(screen.getByText("Maya's prose.")).toBeInTheDocument();
     expect(screen.getByTestId("aside-slot")).toBeInTheDocument();
-    expect(
+    const aside = screen.getByTestId("aside-slot").closest(".gate-aside");
+    expect(aside).not.toBeNull();
+    expect(aside).toContainElement(
       screen.getByRole("button", { name: /approve — print it/i }),
-    ).toBeInTheDocument();
+    );
+  });
+
+  it("creates an aside gate-card for the action when a gate has no secondary read", () => {
+    const { container } = render(
+      <GateShell
+        stamp="SCRIPT · REEL ONE"
+        title="The script"
+        actions={<button type="button">Approve — print it</button>}
+      >
+        <p>Sam's script.</p>
+      </GateShell>,
+    );
+    const aside = container.querySelector(".gate-aside");
+    expect(aside).not.toBeNull();
+    expect(aside).toContainElement(
+      screen.getByRole("button", { name: /approve — print it/i }),
+    );
   });
 
   it("the artifact is the page — the lit sheet is an article the body sits in", () => {
