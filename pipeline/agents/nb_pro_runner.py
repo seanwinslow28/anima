@@ -48,6 +48,39 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
+from pipeline.registers import NB2_FLASH, NB_PRO
+
+# The EXACT models this wrapper has a wired runner for — the skill script it
+# shells out to is a google-genai transport, so only the two Gemini slugs are
+# real here. An exact allowlist, NOT a "gemini-" prefix (Codex red-team fold,
+# 2026-07-11): a prefix would admit typo'd/unsupported gemini-shaped slugs
+# and defer the failure to Google's API instead of this boundary. Mirrors
+# Flo's _WIRED_TRANSPORTS pattern (frame_router.py) and fails closed until a
+# new model is actually validated against this edit script.
+SUPPORTED_IMAGE_MODELS = frozenset({NB2_FLASH, NB_PRO})
+
+
+class UnwiredTransportError(RuntimeError):
+    """Raised when invoke_image_edit is asked for a model it has no runner for.
+
+    The registry may honestly record such a model (primal-sketch-grit's
+    generation_model is gpt-image-2, fork #1 of the vocabulary expansion) —
+    the honest value must fail LOUD at the transport boundary, in all modes
+    (credential-free CI included; an unwired transport can't be stubbed,
+    nothing stands in for it), never silently fall back to Gemini/NB2.
+    """
+
+    def __init__(self, model: str):
+        self.model = model
+        supported = ", ".join(sorted(SUPPORTED_IMAGE_MODELS))
+        super().__init__(
+            f"no wired runner for model {model!r} — invoke_image_edit shells "
+            f"out to the google-genai skill script and supports exactly "
+            f"({supported}). Wiring gpt-image goes through the "
+            f"openai-image-gen skill (a deliberate transport build, gated on "
+            f"its across-edit identity validation), not a silent fallback."
+        )
+
 # Where the skill script lives. Same relative path commit 8's cli_runners
 # uses for agy — assume a project-root-relative lookup.
 _PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -133,6 +166,12 @@ def invoke_image_edit(
     plate count grows beyond ~30, a future commit can parallelize with a
     thread pool; today's spend is small enough that serial is fine.
     """
+    # Fail-loud transport guard — FIRST, before the cache and before the
+    # stub/no-key check, so it fires in every mode (a stub exemption would
+    # let an unwired-model run look structurally successful in CI).
+    if model not in SUPPORTED_IMAGE_MODELS:
+        raise UnwiredTransportError(model)
+
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     cache_dir.mkdir(parents=True, exist_ok=True)

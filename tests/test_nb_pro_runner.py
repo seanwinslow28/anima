@@ -211,14 +211,17 @@ def test_cache_key_stable_across_image_path_with_same_content(
 def test_model_parameter_changes_cache_key(
     monkeypatch, tmp_path, fake_reference_image, cache_dir
 ):
-    """Different model parameter → different cache key (so NB Pro / NB2 don't collide)."""
+    """Different model parameter → different cache key (so NB Pro / NB2 don't
+    collide). Uses the two VALID Gemini slugs — the transport guard (2026-07-11)
+    rejects anything outside SUPPORTED_IMAGE_MODELS before the cache, so the
+    old fake 'nano-banana-pro' slug can no longer reach key computation."""
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     response_pro = invoke_image_edit(
         prompt="same",
         reference_images=[fake_reference_image],
         output_path=tmp_path / "out_pro.png",
         cache_dir=cache_dir,
-        model="nano-banana-pro",
+        model="gemini-3-pro-image-preview",
     )
     response_flash = invoke_image_edit(
         prompt="same",
@@ -348,3 +351,96 @@ def test_response_envelope_carries_required_fields(
     # Cache key is a stable hex digest, not None.
     assert isinstance(response.cache_key, str)
     assert len(response.cache_key) >= 16  # at least 16 hex chars (SHA-256 truncated is fine)
+
+
+# ---------------------------------------------------------------------------
+# UnwiredTransportError — the exact supported-model allowlist (2026-07-11)
+# ---------------------------------------------------------------------------
+#
+# The registry may honestly record a model this edit script has no runner for
+# (primal-sketch-grit's generation_model is gpt-image-2 as of fork #1). The
+# guard at the TOP of invoke_image_edit — before the cache and before the
+# stub/no-key check — refuses any model outside the exact supported set
+# {NB2_FLASH, NB_PRO}, in ALL modes (credential-free CI included): an unwired
+# transport can't be stubbed, nothing stands in for it. Exact allowlist, not
+# a "gemini-" prefix (Codex red-team): a prefix would admit typo'd slugs and
+# defer the failure to Google's API instead of this boundary. Mirrors Flo's
+# _WIRED_TRANSPORTS pattern (frame_router.py).
+
+
+def test_unwired_transport_raises_for_gpt_image_2(
+    monkeypatch, tmp_path, fake_reference_image, cache_dir
+):
+    """gpt-image-2 is an honest registry value with no wired runner here —
+    invoke_image_edit must fail loud, even on the credential-free stub path
+    (a stub exemption would let a gpt-image-2 primal run look structurally
+    successful in CI)."""
+    from pipeline.agents.nb_pro_runner import UnwiredTransportError
+
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    with pytest.raises(UnwiredTransportError) as excinfo:
+        invoke_image_edit(
+            prompt="test plate",
+            reference_images=[fake_reference_image],
+            output_path=tmp_path / "out.png",
+            cache_dir=cache_dir,
+            model="gpt-image-2",
+        )
+    msg = str(excinfo.value)
+    assert "gpt-image-2" in msg
+    assert "openai-image-gen" in msg  # points at the runner to wire
+    # Nothing was generated or cached — the guard fired before both.
+    assert not (tmp_path / "out.png").exists()
+    assert not list(cache_dir.iterdir())
+
+
+def test_unwired_transport_raises_for_manifest_override_model(
+    monkeypatch, tmp_path, fake_reference_image, cache_dir
+):
+    """Behavior-contract change, asserted explicitly: a characters.{id}.
+    generation_model manifest override naming an unsupported model now raises
+    at generation time instead of shelling out a bogus slug to the skill
+    script (desirable — fails at the boundary, not inside Google's API)."""
+    from pipeline.agents.nb_pro_runner import UnwiredTransportError
+
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    with pytest.raises(UnwiredTransportError):
+        invoke_image_edit(
+            prompt="test plate",
+            reference_images=[fake_reference_image],
+            output_path=tmp_path / "out.png",
+            cache_dir=cache_dir,
+            model="nano-banana-pro",  # the old cache-key test's fake slug
+        )
+
+
+def test_supported_models_proceed_to_stub_path(
+    monkeypatch, tmp_path, fake_reference_image, cache_dir
+):
+    """Both supported Gemini slugs pass the guard and proceed to the existing
+    stub/placeholder path unchanged."""
+    from pipeline.registers import NB2_FLASH, NB_PRO
+
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    for i, model in enumerate((NB2_FLASH, NB_PRO)):
+        response = invoke_image_edit(
+            prompt="test plate",
+            reference_images=[fake_reference_image],
+            output_path=tmp_path / f"out_{i}.png",
+            cache_dir=cache_dir,
+            model=model,
+        )
+        assert response.stub_fallback is True
+        assert response.ok
+
+
+def test_supported_image_models_is_the_exact_gemini_pair():
+    """The allowlist is the exact set {NB2_FLASH, NB_PRO}, imported from the
+    registry constants — fails closed until a new model is actually validated
+    against this edit script."""
+    from pipeline.agents.nb_pro_runner import SUPPORTED_IMAGE_MODELS, UnwiredTransportError
+    from pipeline.registers import NB2_FLASH, NB_PRO
+
+    assert SUPPORTED_IMAGE_MODELS == frozenset({NB2_FLASH, NB_PRO})
+    # Mirrors Flo's RouteNotWiredError shape: a RuntimeError subclass.
+    assert issubclass(UnwiredTransportError, RuntimeError)
