@@ -32,15 +32,26 @@ const STATUS_CLASS: Record<FilmstripFrame["status"], string> = {
  * The reel ledger — one sprocketed cell per frame, status as a colored mark
  * in the cap row (print-green check, pulsing tungsten working dot, steady
  * tungsten eye), the current frame ringed. Presentational: the consumer
- * supplies the frames.
+ * supplies the frames. Optional hover-skim hooks (U5c): a cell under the
+ * mouse reports itself so the eye-gate can peek it on the stage.
  */
-export function Filmstrip({ frames }: { frames: FilmstripFrame[] }) {
+export function Filmstrip({
+  frames,
+  onPeek,
+  onPeekEnd,
+}: {
+  frames: FilmstripFrame[];
+  onPeek?: (id: FilmstripFrame["id"]) => void;
+  onPeekEnd?: () => void;
+}) {
   return (
     <ul className="ro-strip" aria-label="reel">
       {frames.map((f) => (
         <li
           key={f.id}
           className={f.now ? "ro-fcell ro-fcell--now" : "ro-fcell"}
+          onMouseEnter={onPeek ? () => onPeek(f.id) : undefined}
+          onMouseLeave={onPeekEnd}
         >
           {f.src ? (
             <img src={f.src} alt={`frame ${f.label}`} />

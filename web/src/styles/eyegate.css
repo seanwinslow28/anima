@@ -234,6 +234,168 @@
   color: var(--mute);
 }
 
+/* ── the onion-skin ghost layer (U5c "O") ── */
+.eg-onion {
+  position: absolute;
+  inset: 14px;
+  pointer-events: none;
+}
+
+.eg-ghostcell {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*
+ * THE TWO-REDS RULE: the ghost is cool/tungsten-dim — desaturated toward a
+ * cold cast, NEVER a lamp hue (print-green / hold-amber / bakelite stay
+ * reserved so the stage keeps one unambiguous warning color). Ported from
+ * the ratified mockup's .img.ghost treatment.
+ */
+.eg-ghost {
+  max-width: 100%;
+  max-height: 100%;
+  opacity: .32;
+  filter: saturate(.25) sepia(.5) hue-rotate(150deg) brightness(1.05);
+}
+
+.eg-ghost-tag {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  font-family: var(--tc-mono);
+  font-size: 11px;
+  letter-spacing: .18em;
+  color: var(--tungsten-dim);
+}
+
+/* a second ghost (the loop anchor) stacks its tag below the first */
+.eg-ghostcell:nth-child(2) .eg-ghost-tag {
+  top: 26px;
+}
+
+/* ── the diff wipe (U5c "D") — comparator left of the line, the take right ── */
+.eg-wipe {
+  position: absolute;
+  inset: 14px;
+}
+
+.eg-wipe-under,
+.eg-wipe-over {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eg-wipe img {
+  max-width: 100%;
+  max-height: 100%;
+  box-shadow: 0 0 44px rgba(255, 246, 228, .28);
+}
+
+.eg-wipe-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: var(--tungsten);
+  box-shadow: 0 0 8px rgba(232, 179, 106, .8);
+  pointer-events: none;
+}
+
+.eg-wipe-tag {
+  position: absolute;
+  top: 6px;
+  left: 7px;
+  font-size: 10px;
+  letter-spacing: .18em;
+  color: var(--tungsten);
+  white-space: nowrap;
+}
+
+/* the wipe's transport row: the picker + the labelled slider */
+.eg-wiperow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.eg-wipe-pick {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.eg-wiperow input[type="range"] {
+  flex: 1;
+  min-width: 140px;
+  accent-color: var(--tungsten);
+}
+
+.eg-wiperow .eg-kx {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0 4px;
+  font-size: 11px;
+  color: var(--mute);
+}
+
+/* ── lights-out (U5c "L"): the frame alone — the whole room goes dark ──
+   A fixed takeover: covers the shell app bar too (all chrome is chrome),
+   under the ⌘K palette (z 10). The stage glow lifts a touch. */
+.eg-screen--lights {
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  background: var(--booth);
+  padding: 0;
+}
+
+/* the shell app bar lives in a higher stacking context than <main> — put it
+   out with the rest of the house lights */
+.booth:has(.eg-screen--lights) .booth-hud {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.eg-screen--lights .eg-stage {
+  box-shadow:
+    0 0 130px 16px rgba(255, 246, 228, .16),
+    inset 0 0 0 1px #2B2333;
+}
+
+/*
+ * ── the summonable HUD (U5c): idle ~3s → the booth goes dark ──
+ * The eye-gate's chrome fades to a trace; the lit frame stays. Driven by
+ * U1's HudHost (which never times out under prefers-reduced-motion), so the
+ * fade below only ever runs for motion-allowed rooms; the transition is
+ * belt-and-braces collapsed anyway.
+ */
+.eg-head,
+.eg-transport,
+.eg-rail {
+  transition: opacity .8s ease;
+}
+
+.eg-screen--idledark .eg-head,
+.eg-screen--idledark .eg-transport,
+.eg-screen--idledark .eg-rail {
+  opacity: .12;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eg-head,
+  .eg-transport,
+  .eg-rail {
+    transition: none;
+  }
+}
+
 /* ── the burn-ins on the print ── */
 .eg-burn {
   position: absolute;

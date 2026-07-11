@@ -81,6 +81,15 @@ export function useHud(): HudContextValue {
 }
 
 /**
+ * The tolerant consumer (U5c): a screen that reacts to the HUD when the
+ * booth is around it but renders fine bare (unit tests mount screens without
+ * the shell). Null outside a <HudHost>.
+ */
+export function useHudOptional(): HudContextValue | null {
+  return useContext(HudContext);
+}
+
+/**
  * Screen-side declaration: `useDimLevel("full")` opts a screen into the
  * eye-gate's full idle-dark (U5); calling it with no argument just reads the
  * current level. The declaration releases back to "density" on unmount.
