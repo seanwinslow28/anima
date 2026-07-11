@@ -79,8 +79,8 @@
 
 .eg-stage {
   position: relative;
-  width: min(100%, calc(74vh * 16 / 10));
-  max-height: 74vh;
+  height: min(74vh, 100%);
+  max-width: 100%;
   aspect-ratio: 16 / 10;
   display: flex;
   align-items: center;
