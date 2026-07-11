@@ -65,6 +65,15 @@ export function WipeControls({
   wipe: number;
   onWipe: (value: number) => void;
 }) {
+  const selectedLabel =
+    options.find((option) => option.key === selectedKey)?.label ?? "comparison";
+  const wipeMeaning =
+    wipe === 50
+      ? "even split"
+      : wipe > 50
+        ? `mostly ${selectedLabel}`
+        : "mostly the shown take";
+
   return (
     <div className="eg-wiperow">
       <div className="eg-wipe-pick" role="group" aria-label="Compare against">
@@ -89,6 +98,7 @@ export function WipeControls({
         min={0}
         max={100}
         value={wipe}
+        aria-valuetext={`${wipe}% — ${wipeMeaning}`}
         onChange={(e) => onWipe(Number(e.target.value))}
       />
       <span className="eg-kx" aria-hidden="true">
