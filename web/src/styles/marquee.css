@@ -26,7 +26,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--screenlight);
-  text-shadow: 0 0 30px rgba(255, 246, 228, 0.25);
+  text-shadow: 0 0 30px rgba(var(--screenlight-rgb), 0.25);
   margin: 0 0 3px;
 }
 
@@ -58,7 +58,7 @@
   padding: 24px 18px 16px;
   border: 1px solid var(--line);
   background:
-    radial-gradient(70% 90% at 30% 0%, rgba(232, 179, 106, 0.08), transparent 60%),
+    radial-gradient(70% 90% at 30% 0%, rgba(var(--tungsten-rgb), 0.08), transparent 60%),
     var(--booth2);
   color: var(--text);
   text-decoration: none;
@@ -76,7 +76,7 @@
   left: 0;
   right: 0;
   height: 7px;
-  background: radial-gradient(circle at 10px 3.5px, #241d2c 2.6px, transparent 2.8px)
+  background: radial-gradient(circle at 10px 3.5px, var(--sprocket) 2.6px, transparent 2.8px)
     repeat-x;
   background-size: 20px 7px;
   pointer-events: none;
@@ -107,7 +107,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--screenlight);
-  text-shadow: 0 0 22px rgba(255, 246, 228, 0.22);
+  text-shadow: 0 0 22px rgba(var(--screenlight-rgb), 0.22);
   overflow-wrap: anywhere;
 }
 
@@ -148,7 +148,7 @@
   transition: transform 0.15s ease-out;
 }
 .reelone .mq-cta-mark--print {
-  font-size: 9px;
+  font-size: 11px;
   align-self: center;
 }
 
@@ -246,7 +246,7 @@
   cursor: pointer;
 }
 .reelone .mq-retry:hover {
-  background: #d3543f;
+  background: var(--bakelite);
 }
 
 /* ── an unreadable run: the grease-edged booth errcard, never dropped ── */
