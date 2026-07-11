@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-07-11 — ② Flow v1b polish P4: the gates read like a room
+
+- Closed D5 across Plan, Script, Storyboard, and Animatic: once the run has moved past a gate (or `shots.yaml` carries `locked: true`), the artifact remains readable with a quiet PRINTED/LOCKED stamp and no live primary. The stage-aware predicate fails open on unknown stages, preserving `useGateAction`'s 409-stale branch as the race-condition backstop.
+- Closed D15 by moving the shared gate action footer into the page's aside as a full-width gate-card; all four gates consume P3b's primary/quiet button recipe, and labels/sub-labels wrap inside the decision card instead of detaching at the viewport edge.
+- Closed D16 without adding a panel: the collapsed crew read now keeps one 11px mono whisper visible at rest, and the box-office derivation wraps as one unit so `× $0.07` cannot orphan.
+- Closed D17 by retuning the existing lamp pool rather than re-adding it: a broader tungsten wash and 90px page glow make the document the lit object while the booth remains dark furniture. No text color, contrast pair, motion rule, or permanent chrome changed.
+- Added the [P4 evidence pack](docs/anima-test-runs/2026-07-11-v1b-polish-p4-evidence/README.md): strict same-DONE-run before/after proof for all four gates at five viewports, four live action-placement captures, and the per-gate landmark/focus-order read. Updated the handoff table to record P3b merged as #101 and P4 in review.
+
 ## 2026-07-11 — ② Flow v1b polish P3b: one button recipe, shared film primitives, living proof
 
 - Added one REEL ONE equipment-button recipe with primary, quiet, and danger variants, then moved booth-board go/recovery, all document-gate commits/recoveries, eye-gate print/recovery, retake send, and the quiet "Go again" action onto it. Tungsten now means commit/recover, "Go again" uses the booth2/line quiet treatment, and bakelite is reserved for strike/destructive UI and the fail lamp; the shared hover closes D13 on `.eg-print`.
