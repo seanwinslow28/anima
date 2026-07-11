@@ -187,7 +187,7 @@ describe("RunOverview — the now-screening hero", () => {
     const cells = within(strip).getAllByRole("listitem");
     expect(cells).toHaveLength(5);
     expect(cells[0].textContent).toContain("PRINT");
-    expect(cells[2].textContent).toContain("ON SCREEN");
+    expect(cells[2].textContent).toContain("YOUR CALL");
     expect(cells[2].querySelector("img")).toHaveAttribute(
       "src",
       `/runs/${RUN_ID}/frames/3/image`,
