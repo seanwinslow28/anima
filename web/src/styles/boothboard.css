@@ -456,7 +456,7 @@
 
 /* ── the couldn't-read state (error doctrine: what happened + one recovery) ── */
 .reelone .bb-notice {
-  border: 1px solid var(--line);
+  border: 1px solid var(--bakelite);
   background: var(--booth2);
   padding: 28px 32px;
   max-width: 520px;

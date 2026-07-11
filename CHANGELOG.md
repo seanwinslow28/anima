@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-07-11 — ② Flow v1b polish P6: one room, every screen
+
+- Closed D10 by replacing both marquee error side-stripes with full `--bakelite` borders, then aligned the board and eye-gate error edges to DESIGN §7. Gate, eye-gate, and marquee log tails keep their per-screen class names but consume one shared treatment; unreadable-run cards now expose the daemon error and one working reread recovery. The inert `.mq-new` placeholder is a non-focusable, non-role `div`; P5's link-only leader/reel hover warmth remains contract-pinned.
+- Completed the DESIGN §5 sweep across all eight stations. A first 56-check browser pass exposed a real 70px document-lamp overflow below 900px; a narrow-only inset now contains the wash without flattening the desktop lamp pool. The repeated pass reports zero failures at 600×900, 899×900, 1280×600, and every station at 1024/1280/1440/1920×900.
+- Added the [P6 closing evidence pack](docs/anima-test-runs/2026-07-11-v1b-polish-p6-evidence/README.md), including reproducible grep/hash receipts and a controlled-browser proof of the final unreadable-run error/recovery state; recorded D1–D20's closing slice/PR in the converged plan, updated the execution handoff (P5 merged #103; P6 in review), and moved the tracker to the final human gate. This PR does **not** end the milestone: Sean's engine-truth session does.
+
 ## 2026-07-11 — ② Flow v1b polish P5: deepen the ritual
 
 - Added the shared REEL ONE booth intercom: successful print, again, and document-lock decisions now answer with a transient bottom-center production line, announced through a polite live region and dismissed after about 2.6 seconds. The line never takes focus or blocks a terminal; reduced motion removes its arrival animation.

@@ -1,0 +1,11 @@
+{
+  "source_commit": "1b1871e",
+  "error_tail": "unsupported schema_version 99",
+  "recovery": "Reread runs",
+  "borders": [
+    "rgb(194, 72, 56)",
+    "rgb(194, 72, 56)",
+    "rgb(194, 72, 56)",
+    "rgb(194, 72, 56)"
+  ]
+}

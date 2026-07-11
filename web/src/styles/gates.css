@@ -55,6 +55,11 @@
     0 0 90px rgba(var(--tungsten-rgb), 0.24),
     0 12px 42px rgba(var(--black-rgb), 0.64);
 }
+@media (max-width: 900px) {
+  .reelone .gate-lampwrap::before {
+    inset: -70px -30px;
+  }
+}
 .reelone .gate-stamp {
   display: flex;
   justify-content: space-between;
@@ -444,18 +449,6 @@
   color: var(--mute);
   margin: 0 0 10px;
   line-height: 1.6;
-}
-.reelone .gate-logs {
-  font-family: var(--tc-mono);
-  font-size: 11.5px;
-  color: var(--text);
-  background: var(--booth);
-  border: 1px solid var(--line);
-  padding: 10px 12px;
-  max-height: 240px;
-  overflow: auto;
-  white-space: pre-wrap;
-  margin: 0 0 10px;
 }
 .reelone .gate-notice-act {
   font-size: 11px;

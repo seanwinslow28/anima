@@ -191,7 +191,7 @@
   background: var(--booth2);
 }
 .reelone .mq-notice--error {
-  border-left: 3px solid var(--bakelite);
+  border-color: var(--bakelite);
 }
 .reelone .mq-notice-lead {
   font-family: var(--display);
@@ -221,8 +221,7 @@
 .reelone .mq-err {
   display: block;
   padding: 24px 18px 16px;
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--bakelite);
+  border: 1px solid var(--bakelite);
   background: var(--booth2);
 }
 .reelone .mq-err-id {

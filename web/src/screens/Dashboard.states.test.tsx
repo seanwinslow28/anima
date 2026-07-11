@@ -19,9 +19,12 @@ describe("Dashboard — states", () => {
     const invite = screen.getByText(/bring a spark and the room opens/i);
     expect(invite.closest(".mq-notice")).not.toHaveClass("mq-notice--error");
     // The inert new-project placeholder is present (brainstorm room is v1c).
-    const newCard = screen.getByRole("button", { name: /new project/i });
-    expect(newCard).toBeDisabled();
+    const newCard = screen.getByText(/^new project$/i).closest(".mq-new");
     expect(newCard).toHaveClass("mq-new");
+    expect(newCard?.tagName).toBe("DIV");
+    expect(newCard).not.toHaveAttribute("role");
+    expect(newCard).not.toHaveAttribute("tabindex");
+    expect(screen.queryByRole("button", { name: /new project/i })).not.toBeInTheDocument();
   });
 
   it("shows a skeleton of the gallery while loading", () => {
@@ -58,9 +61,13 @@ describe("Dashboard — states", () => {
     expect(screen.queryByText(/couldn't reach the daemon/i)).not.toBeInTheDocument();
   });
 
-  it("surfaces an unreadable run as a 'couldn't read this run' card, never dropped", async () => {
+  it("surfaces an unreadable run with its error tail and one working reread", async () => {
+    let hits = 0;
     server.use(
-      http.get("/runs", () => HttpResponse.json([runReviewFrame, runErrorItem])),
+      http.get("/runs", () => {
+        hits += 1;
+        return HttpResponse.json(hits === 1 ? [runReviewFrame, runErrorItem] : [runReviewFrame]);
+      }),
     );
 
     renderApp(<Dashboard />);
@@ -72,6 +79,12 @@ describe("Dashboard — states", () => {
       screen.getByText(/couldn't read this run/i).closest(".mq-err"),
     ).toBeInTheDocument();
     expect(screen.getByText(runErrorItem.run_id)).toBeInTheDocument();
+    expect(screen.getByText(runErrorItem.error)).toHaveClass("mq-logs");
+
+    await userEvent.click(screen.getByRole("button", { name: /reread runs/i }));
+
+    expect(await screen.findByText("spark-forest")).toBeInTheDocument();
+    expect(screen.queryByText(runErrorItem.run_id)).not.toBeInTheDocument();
   });
 
   it("clears the skeleton once runs load into the marquee grid", async () => {

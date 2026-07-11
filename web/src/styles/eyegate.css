@@ -179,21 +179,6 @@
   word-break: break-word;
 }
 
-.eg-logs {
-  font-family: var(--tc-mono);
-  font-size: 11px;
-  line-height: 1.6;
-  color: var(--mute);
-  background: rgba(var(--booth-deep-rgb), .6);
-  border: 1px solid var(--line);
-  padding: 8px 10px;
-  max-height: 120px;
-  overflow: auto;
-  white-space: pre-wrap;
-  word-break: break-word;
-  align-self: stretch;
-}
-
 .eg-flownote-act {
   font-size: 11px;
   padding: 7px 14px 6px;
@@ -799,6 +784,7 @@
   max-width: 460px;
   text-align: center;
   padding: 40px 20px;
+  border: 1px solid var(--bakelite);
 }
 
 .eg-notice-lead {
