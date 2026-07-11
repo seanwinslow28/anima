@@ -291,6 +291,91 @@ REGISTRY: dict[str, RegisterSpec] = {
             }),
             stub_keywords=("primal",),
         ),
+        # Register #2 of the vocabulary expansion (2026-07-11) — the ai-guru
+        # pilot's 90s-Nicktoon gross-out school, authored from the wire-ready
+        # research (registers/90s-nicktoon-grossout/research.md, Sean-ratified
+        # 2026-07-04 cross-engine spike). Two load-bearing corrections baked
+        # in: (a) the DEFAULT is the appealing, warm, clean cel-cartoon human
+        # (~90% of frames) — the hyper-rendered grotesque gross-out extreme
+        # close-up is SPARSE comedic punctuation (one or two beats), never the
+        # lead's resting state (research §0; the grotesque-forward first draft
+        # was rejected); (b) genericization is doubly load-bearing (research
+        # §7) — the register is a school of grotesque cel animation captured
+        # attribute-only, no show/artist/creator name in any clause, marker,
+        # or comment, and named-source negatives stay OUT of `preserve`
+        # (naming a neighbor look can evoke it in the image model; drift
+        # policing lives in the Cy example block + risk-bible review checks).
+        # Transport: NB2 GO (the spike found NB2 renders both poles — flat
+        # appealing base and the gross-up ECU, best of the engines tested), so
+        # no forced escalation, unlike primal-sketch-grit.
+        RegisterSpec(
+            name="90s-nicktoon-grossout",
+            summary=(
+                "90s-Nicktoon grotesque cel / gross-out register. Flat rubbery "
+                "cel figures on solid-then-broken construction over painted, "
+                "slightly-decaying backgrounds; a desaturated grimy ground "
+                "punctured by one lurid accent; the signature move is a hard "
+                "cut-in to a held, hyper-rendered painterly gross-out extreme "
+                "close-up."
+            ),
+            identity_lock=(
+                "Match the face, hair, color palette, proportions, and "
+                "silhouette of Image 1 exactly. The character is built from "
+                "solid wrapped 3D construction (rigid cranium sphere, hinged "
+                "elastic jaw/cheek/mouth mass, eye-spheres in sockets); all "
+                "distortion is a volume-preserving deformation of these "
+                "persistent forms and must never lose the character — the "
+                "cranium and identity features stay constant while the "
+                "jaw-balloon and eyes are pushed. If the character is not "
+                "recognizably itself at the peak of the distortion, the "
+                "construction was lost and the frame fails."
+            ),
+            preserve=(
+                "Keep the bold thick-and-thin hand-inked outline where every "
+                "line describes a form — heaviest on the outer silhouette and "
+                "the undersides of forms, detail lines thinnest and tapering "
+                "to points. Keep self-colored (darker-value-of-fill) interior "
+                "and organic edges; flat cel color body with hard-edged "
+                "cast-shadow shapes; hue-turned, saturation-lifted shadows, "
+                "never flat value-darkened. Keep painted, moody, "
+                "slightly-decaying backgrounds under flat figures, and a "
+                "desaturated grimy ground with exactly one lurid "
+                "over-saturated accent. Reserve full continuous-tone photoreal "
+                "rendering (wet specular highlights, pores, veins, drips) ONLY "
+                "for the isolated gross-out extreme close-up, held one beat "
+                "past a normal cut. No clean uniform vector or anime keyline; "
+                "no single flat rendering register (the gross-out close-up "
+                "must break register); no muted-earthy geometric abstraction "
+                "held on-model; no globally photoreal or rendered frame "
+                "(rendering stays quarantined to the insert); no flat "
+                "value-only shadows; no sanitized clean-glossy surface."
+            ),
+            style_token=(
+                "90s-Nicktoon appealing cel-cartoon animation still: an "
+                "expressive, warm, likable hand-inked human — bold "
+                "thick-and-thin outline with a logical line-weight hierarchy, "
+                "self-colored interior edges, a small round nose, big earnest "
+                "eyes, solid appealing construction and squash-and-stretch; "
+                "flat cel fills with hard-edged shadow shapes over a warm "
+                "harmonious palette (warm peach skin; golden-spotlight or cozy "
+                "lived-in grounds); optional hue-turned saturated shadows. For "
+                "occasional comedy beats only (never the default), a hard "
+                "cut-in to a held, hyper-rendered painterly grotesque "
+                "gross-out extreme close-up."
+            ),
+            generation_model=NB2_FLASH,
+            final_model=NB_PRO,
+            markers=frozenset({
+                "90s-nicktoon-grossout",
+                "hyper-rendered gross-out insert",
+                "flat cel hard shadow shapes",
+                "desaturated ground one lurid accent",
+                "hue-turned saturated shadow",
+                "solid-construction-then-broken",
+                "self-colored swelling ink line",
+            }),
+            stub_keywords=("nicktoon", "grossout"),
+        ),
     )
 }
 
