@@ -7,6 +7,7 @@ import { Markdown } from "./Markdown";
 import { fetchArtifact, fetchArtifactJson } from "../../api/client";
 import type { BeatSheet } from "../../api/types";
 import { nextActionUrl } from "../../lib/boothBoard";
+import { hasStageMovedPast } from "../../lib/gateStage";
 import { useRun } from "../../lib/runContext";
 import { useGateAction, type GateFlow } from "../../lib/useGateAction";
 import { useResource } from "../../lib/useResource";
@@ -44,7 +45,9 @@ export function ScriptGate({ pollIntervalMs }: { pollIntervalMs?: number }) {
     status.status === "ready"
       ? (status.data.next_action.blocked_by_job ?? null)
       : null;
-  const canApprove = flow.phase === "idle" && blockedBy === null;
+  const archived =
+    status.status === "ready" && hasStageMovedPast(status.data.stage, "SCRIPT");
+  const canApprove = flow.phase === "idle" && blockedBy === null && !archived;
 
   // ADVANCE only on the full success shape — the hook already classified it;
   // the destination is the INLINE next_action (U1's URL scheme).
@@ -119,7 +122,8 @@ export function ScriptGate({ pollIntervalMs }: { pollIntervalMs?: number }) {
       stamp={`SCRIPT · ${sheet.slug.toUpperCase()}`}
       title="The script"
       byline="authored by Sam · the scriptwriter"
-      actions={
+      archiveMark={archived ? "PRINTED" : undefined}
+      actions={archived ? undefined : (
         <ScriptGateActions
           runId={runId}
           flow={flow}
@@ -133,7 +137,7 @@ export function ScriptGate({ pollIntervalMs }: { pollIntervalMs?: number }) {
             reset();
           }}
         />
-      }
+      )}
     >
       <div className="gate-viewtoggle" aria-label="Script or beats view">
         <button

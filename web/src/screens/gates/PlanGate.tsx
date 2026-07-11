@@ -6,6 +6,7 @@ import { GateShell } from "./GateShell";
 import { Markdown } from "./Markdown";
 import { fetchArtifact, fetchRawState } from "../../api/client";
 import { nextActionUrl } from "../../lib/boothBoard";
+import { hasStageMovedPast } from "../../lib/gateStage";
 import { useRun } from "../../lib/runContext";
 import { useGateAction, type GateFlow } from "../../lib/useGateAction";
 import { useResource } from "../../lib/useResource";
@@ -38,7 +39,9 @@ export function PlanGate({ pollIntervalMs }: { pollIntervalMs?: number }) {
     status.status === "ready"
       ? (status.data.next_action.blocked_by_job ?? null)
       : null;
-  const canApprove = flow.phase === "idle" && blockedBy === null;
+  const archived =
+    status.status === "ready" && hasStageMovedPast(status.data.stage, "PLAN");
+  const canApprove = flow.phase === "idle" && blockedBy === null && !archived;
 
   // ADVANCE only on the full success shape — the hook already classified it;
   // the destination is the INLINE next_action (U1's URL scheme).
@@ -101,8 +104,9 @@ export function PlanGate({ pollIntervalMs }: { pollIntervalMs?: number }) {
       stamp={`PLAN · ${slug.toUpperCase()}`}
       title="The plan"
       byline="authored by Maya · the planner"
+      archiveMark={archived ? "PRINTED" : undefined}
       aside={<CostPreview estimate={raw.data.plan.cost_estimate} />}
-      actions={
+      actions={archived ? undefined : (
         <PlanGateActions
           runId={runId}
           flow={flow}
@@ -116,7 +120,7 @@ export function PlanGate({ pollIntervalMs }: { pollIntervalMs?: number }) {
             reset();
           }}
         />
-      }
+      )}
     >
       <Markdown text={plan.data} />
     </GateShell>

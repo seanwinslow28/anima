@@ -8,7 +8,11 @@ import { AnimaticGate } from "./AnimaticGate";
 import { RunProvider } from "../../lib/runContext";
 import { ROUTER_FUTURE } from "../../test/render";
 import { server } from "../../test/handlers";
-import { statusAnimaticGate, statusAnimaticHolds } from "../../test/fixtures";
+import {
+  statusAnimaticGate,
+  statusAnimaticHolds,
+  statusDone,
+} from "../../test/fixtures";
 import {
   gateBusy,
   JOB_ID,
@@ -134,6 +138,15 @@ describe("AnimaticGate — the read (thin: /status is the only source)", () => {
     );
     await userEvent.click(screen.getByRole("button", { name: /retry/i }));
     await seeTheGate();
+  });
+
+  it("a DONE run renders the placement pass as a LOCKED archival record with no live primary", async () => {
+    mountAnimaticGate(statusDone);
+    await seeTheGate();
+    expect(screen.getByText(/^locked$/i)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /ingest & generate/i })).toBeNull();
+    expect(screen.queryByRole("button", { name: /continue without roughs/i })).toBeNull();
+    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
   });
 });
 

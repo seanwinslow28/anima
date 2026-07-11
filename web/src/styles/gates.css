@@ -67,6 +67,12 @@
   font-size: 11px;
   color: var(--page-ink2);
 }
+.reelone .gate-archive-mark {
+  color: var(--page-ink2);
+  border: 1px solid var(--page-rule);
+  padding: 2px 6px;
+  letter-spacing: 0.18em;
+}
 .reelone .gate-title {
   font-family: var(--display);
   font-weight: 600;

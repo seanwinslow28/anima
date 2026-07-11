@@ -8,7 +8,12 @@ import { ScriptGate } from "./ScriptGate";
 import { RunProvider } from "../../lib/runContext";
 import { ROUTER_FUTURE } from "../../test/render";
 import { server } from "../../test/handlers";
-import { beatsFixture, scriptMd, statusApproveScript } from "../../test/fixtures";
+import {
+  beatsFixture,
+  scriptMd,
+  statusApproveScript,
+  statusDone,
+} from "../../test/fixtures";
 import {
   failedJob,
   gateAccepted,
@@ -195,6 +200,17 @@ describe("ScriptGate — the read", () => {
       expect(screen.getByText(/couldn't read the script/i)).toBeInTheDocument(),
     );
     expect(screen.getByRole("button", { name: /retry/i })).toBeInTheDocument();
+  });
+
+  it("a DONE run renders the script as a PRINTED archival record with no live primary", async () => {
+    artifactHandlers();
+    mount(statusDone);
+    await seeTheScript();
+    expect(screen.getByText(/^printed$/i)).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /approve — print it/i }),
+    ).toBeNull();
+    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
   });
 });
 

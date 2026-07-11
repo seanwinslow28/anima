@@ -18,6 +18,7 @@ export function GateShell({
   children,
   aside,
   actions,
+  archiveMark,
 }: {
   /** The mono corner stamp, e.g. "PLAN · REEL ONE". */
   stamp: string;
@@ -30,7 +31,9 @@ export function GateShell({
   /** Secondary column (cost preview, slates). Optional. */
   aside?: ReactNode;
   /** The action bar — the one decision lives here. */
-  actions: ReactNode;
+  actions?: ReactNode;
+  /** Quiet archival truth once the run has moved past this gate. */
+  archiveMark?: "PRINTED" | "LOCKED";
 }) {
   return (
     <section className="gate-screen" data-testid="gate-shell">
@@ -39,6 +42,9 @@ export function GateShell({
           <article className="gate-page">
             <div className="gate-stamp">
               <span className="gate-mono">{stamp}</span>
+              {archiveMark && (
+                <span className="gate-archive-mark gate-mono">{archiveMark}</span>
+              )}
             </div>
             <h1 className="gate-title">{title}</h1>
             {byline && <p className="gate-byline">{byline}</p>}
@@ -47,7 +53,7 @@ export function GateShell({
         </div>
         {aside && <aside className="gate-aside">{aside}</aside>}
       </div>
-      <footer className="gate-actions">{actions}</footer>
+      {actions && <footer className="gate-actions">{actions}</footer>}
     </section>
   );
 }
