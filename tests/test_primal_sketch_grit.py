@@ -52,13 +52,17 @@ def test_primal_plate_prompt_carries_the_register_clauses():
     assert "uniform outline" not in lower.replace("no clean uniform outlines", "")
 
 
-def test_primal_routing_is_nb2_generation():
-    """§3c: NB2-from-text is the recorded transport hypothesis; the go/no-go
-    spike judges it. Final render rides the painterly-final seam (NB Pro,
-    no consumer yet — same as watercolor/photoreal/3d-rendered)."""
+def test_primal_routing_is_gpt_image_generation():
+    """Fork #1 (2026-07-11, Sean-ratified): the NB2 hypothesis was judged by
+    the costed spike and RESOLVED to gpt-image — the registry records the
+    honest model, and invoke_image_edit's UnwiredTransportError guard makes
+    it fail LOUD (no gpt-image runner is wired yet) instead of silently
+    falling back to Gemini/NB2. Final render still rides the painterly-final
+    seam (NB Pro, no consumer yet — a documented dormant seam; fork #1
+    scopes only generation_model)."""
     from pipeline.agents.character_designer import _resolve_plate_model
 
-    assert _resolve_plate_model(_PRIMAL, {}) == "gemini-3.1-flash-image-preview"
+    assert _resolve_plate_model(_PRIMAL, {}) == "gpt-image-2"
     assert _resolve_plate_model(_PRIMAL, {}, final=True) == "gemini-3-pro-image-preview"
 
 

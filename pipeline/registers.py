@@ -42,11 +42,20 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 # Model ids match the pre-registry _REGISTER_MODELS table. NB2 is the
-# generation/editing default for every register (cheaper, faster, more
-# identity-stable across edits); NB Pro is reserved for painterly FINAL
-# renders — a documented seam with no consumer yet.
+# generation/editing default for most registers (cheaper, faster, more
+# identity-stable across edits) — primal-sketch-grit is the exception (its
+# costed spike resolved generation to gpt-image, fork #1, 2026-07-11); NB Pro
+# is reserved for painterly FINAL renders — a documented seam with no
+# consumer yet. The registry records the HONEST model per register; whether a
+# transport is actually wired is enforced at the boundary
+# (nb_pro_runner.SUPPORTED_IMAGE_MODELS raises UnwiredTransportError).
 NB2_FLASH = "gemini-3.1-flash-image-preview"
 NB_PRO = "gemini-3-pro-image-preview"
+# The GA flagship gpt-image id, pinned against the openai-image-gen skill
+# (.claude/skills/openai-image-gen/references/openai-image-capabilities.md).
+# No runner is wired for it yet — invoke_image_edit fails loud on it until
+# a gpt-image transport is built and validated for across-edit identity.
+GPT_IMAGE = "gpt-image-2"
 
 # The back-compat default. Empty/missing style_register still means the
 # pencil-test reference register; the constant lives here so callers spell
@@ -248,9 +257,13 @@ REGISTRY: dict[str, RegisterSpec] = {
         # pencil-test negative controls (no graphite/cream-paper vocabulary)
         # deliberately do NOT appear as prompt negatives here — naming them
         # can evoke them in the image model; drift policing lives in the Cy
-        # example block + risk-bible review checks instead. NB2 generation is
-        # the §3c transport HYPOTHESIS — the go/no-go spike judges it
-        # (briefs/2026-07-02-grandmaster/go-no-go.md).
+        # example block + risk-bible review checks instead. Transport
+        # RESOLVED (fork #1, 2026-07-11, Sean-ratified): the §3c NB2
+        # hypothesis was judged by the costed spike and generation batched to
+        # gpt-image — GPT_IMAGE is the honest recorded model, UNWIRED for
+        # now, so invoke_image_edit raises UnwiredTransportError rather than
+        # silently falling back to Gemini/NB2. final_model stays NB Pro (the
+        # dormant painterly-final seam; fork #1 scopes only generation).
         RegisterSpec(
             name="primal-sketch-grit",
             summary=(
@@ -279,7 +292,7 @@ REGISTRY: dict[str, RegisterSpec] = {
                 "tonal shading, warm earthy desaturated palette punctuated by "
                 "a single bold color statement."
             ),
-            generation_model=NB2_FLASH,
+            generation_model=GPT_IMAGE,
             final_model=NB_PRO,
             markers=frozenset({
                 "primal-sketch-grit",
