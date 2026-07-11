@@ -41,6 +41,8 @@ screenshots). The automated sweep asserts:
 The first pass failed the four narrow document gates: the lamp wash extended the page by 70px.
 The narrow `-30px` inline inset was written behind a red CSS contract; the repeated **56-check
 pass reports zero failures**. Machine-readable output is in `sweep-results.json`.
+The full sweep was repeated after the final visual implementation in commit `1b1871e`; its
+deterministic screenshots and result payload remained byte-identical.
 
 ## D10 and shared state proof
 
@@ -53,6 +55,10 @@ pass reports zero failures**. Machine-readable output is in `sweep-results.json`
 - `.mq-new` has no button/link role, no tab stop, and no enabled interactive control.
 - P5's existing `spends hover warmth only on leader segments and reel cells that navigate`
   contract remains green.
+
+`marquee-error-1280x900.png` is the final error-state browser proof, driven by a controlled
+daemon `RunError` response after commit `1b1871e`. `marquee-error-proof.json` records the served
+tail, the `Reread runs` action, and four identical `rgb(194, 72, 56)` bakelite border edges.
 
 ## Final verification ledger
 
@@ -79,9 +85,9 @@ $ md5 -q evals/vision_critic/traces/g6.1b-criteria-attached-2026-06-08.md
 $ md5 -q pipeline/agents/prompts/sean-screenwriting-voice.md
 945af824fa53b948a18ac6bf206d67ef
 
-$ unexpected-hex-after-token/test/system-sheet-allowlist
+$ rg -n '#[0-9A-Fa-f]{3,8}\b' web/src --glob '*.css' --glob '*.ts' --glob '*.tsx' | rg -v '^(web/src/styles/(reelone\.)?tokens\.css|web/src/styles/reelone\.test\.ts|web/src/screens/dev/SystemSheet(\.test)?\.tsx):' || true
 (empty)
-$ unexpected-rgb-or-rgba-after-token-triple/system-sheet-allowlist
+$ rg -n 'rgba?\(' web/src --glob '*.css' --glob '*.ts' --glob '*.tsx' | rg -v 'rgba\(var\(--[a-z0-9-]+-rgb\),' | rg -v '^web/src/screens/dev/SystemSheet\.tsx:' || true
 (empty)
 
 $ rg 'circle at 10px 3.5px' web/src --glob '*.css'
@@ -95,7 +101,7 @@ $ rg 'z-index:\s*[0-9]' web/src --glob '*.css'
 $ rg 'border-(left|right):\s*[2-9]px' web/src/styles/marquee.css
 (empty)
 
-$ jq sweep-results.json
+$ jq -c '{checks:length, failures:([.[] | select(.failures | length > 0)] | length)}' docs/anima-test-runs/2026-07-11-v1b-polish-p6-evidence/sweep-results.json
 {"checks":56,"failures":0}
 ```
 
