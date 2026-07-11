@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 
 import { AppHeader } from "../components/AppHeader";
 import { FilmGrain } from "../reelone/FilmGrain";
+import { Intercom } from "../reelone/Intercom";
 import { CommandPalette } from "./CommandPalette";
 import { HudHost, useHud } from "./HudHost";
 
@@ -34,6 +35,7 @@ export function BoothShell({ children }: { children: ReactNode }) {
       <HudHost>
         <BoothChrome />
         <main className="booth-stage">{children}</main>
+        <Intercom />
         {/* Summoned UI, not idle chrome — lives outside .booth-hud. */}
         <CommandPalette />
       </HudHost>

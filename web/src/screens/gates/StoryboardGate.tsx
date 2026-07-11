@@ -12,6 +12,7 @@ import { parseShots } from "../../lib/shots";
 import { useGateAction, type GateFlow } from "../../lib/useGateAction";
 import { useResource } from "../../lib/useResource";
 import { RitualLeader } from "../../reelone/RitualLeader";
+import { callIntercom } from "../../reelone/Intercom";
 
 /**
  * The Storyboard gate (/runs/:id/storyboard — U4b): Bea's storyboard.md as
@@ -56,6 +57,7 @@ export function StoryboardGate({ pollIntervalMs }: { pollIntervalMs?: number }) 
   // next_action (ANIMATIC when enabled, else GENERATE's eye-gate).
   useEffect(() => {
     if (flow.phase !== "advanced") return;
+    callIntercom("PICTURE LOCKED — re-validated. Now it's the camera's.");
     navigate(
       nextActionUrl(runId, flow.nextAction) ?? `/runs/${encodeURIComponent(runId)}`,
     );
@@ -274,12 +276,12 @@ function StoryboardGateActions({
         <>
           <button
             type="button"
-            className="gate-approve ro-button ro-button--primary"
+            className="gate-approve ro-button ro-button--primary ro-button--stack"
             disabled={!canLock}
             onClick={submit}
           >
-            Lock picture
-            <small>⌘⏎</small>
+            <span className="ro-button-label">Lock picture</span>
+            <small className="ro-whisper">re-validates · then it's the camera's</small>
           </button>
           <p className="gate-hint">
             {blockedBy ? (

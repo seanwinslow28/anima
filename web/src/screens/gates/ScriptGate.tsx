@@ -12,6 +12,7 @@ import { useRun } from "../../lib/runContext";
 import { useGateAction, type GateFlow } from "../../lib/useGateAction";
 import { useResource } from "../../lib/useResource";
 import { RitualLeader } from "../../reelone/RitualLeader";
+import { callIntercom } from "../../reelone/Intercom";
 
 /**
  * The Script gate (/runs/:id/script — U4a): Sam's script.md as the
@@ -53,6 +54,7 @@ export function ScriptGate({ pollIntervalMs }: { pollIntervalMs?: number }) {
   // the destination is the INLINE next_action (U1's URL scheme).
   useEffect(() => {
     if (flow.phase !== "advanced") return;
+    callIntercom("SCRIPT PRINTED — beats locked. Bea boards the next pass.");
     navigate(
       nextActionUrl(runId, flow.nextAction) ?? `/runs/${encodeURIComponent(runId)}`,
     );

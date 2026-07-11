@@ -52,7 +52,7 @@
   color: inherit;
 }
 
-.reelone .bb-seg:hover {
+.reelone .bb-seg--linked:hover {
   background: rgba(var(--screenlight-rgb), 0.04);
 }
 
@@ -148,6 +148,25 @@
     transparent 60%
   );
   pointer-events: none;
+}
+
+.reelone .bb-now > :not(.bb-hero-bleed) {
+  position: relative;
+  z-index: var(--z-stage);
+}
+
+.reelone .bb-hero-bleed {
+  position: absolute;
+  top: -34px;
+  right: -42px;
+  width: 240px;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  opacity: .16;
+  transform: rotate(-4deg);
+  transform-origin: center;
+  pointer-events: none;
+  filter: saturate(.65) contrast(.9);
 }
 
 .reelone .bb-eyebrow {
@@ -374,6 +393,13 @@
 .reelone .bb-crew-list b {
   font-weight: 500;
   color: var(--text);
+}
+
+.reelone .bb-crew-busy {
+  margin-left: 6px;
+  color: var(--tungsten);
+  font-style: normal;
+  text-shadow: 0 0 8px var(--tungsten);
 }
 
 .reelone .bb-crew-list span {

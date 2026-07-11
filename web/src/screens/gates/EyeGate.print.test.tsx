@@ -111,6 +111,36 @@ function stageRegion() {
 }
 
 describe("EyeGate — PRINT (⏎ approves the shown take, then the next picture comes up)", () => {
+  it("keeps the two primary decisions discoverable with their 11px whisper copy", async () => {
+    mountEyeGate();
+    await seeTheStage();
+
+    expect(screen.getByText("⏎ · circle the take")).toHaveClass("ro-whisper");
+    expect(screen.getByText("R · the note rides along")).toHaveClass("ro-whisper");
+  });
+
+  it("calls the booth intercom with the printed take and its ledger cost on success", async () => {
+    const calls: string[] = [];
+    const hear = (event: Event) =>
+      calls.push((event as CustomEvent<{ message: string }>).detail.message);
+    window.addEventListener("reelone:intercom", hear);
+    server.use(
+      captureApprove([]),
+      jobLifecycle(JOB_ID, succeededJob({ next_action: nextReviewF05 }), 2),
+    );
+    mountEyeGate();
+    await seeTheStage();
+
+    fireEvent.keyDown(stageRegion(), { key: "Enter" });
+
+    await waitFor(() =>
+      expect(calls).toContain(
+        "F03 TAKE 2 — PRINTED. $0.07 to the ledger.",
+      ),
+    );
+    window.removeEventListener("reelone:intercom", hear);
+  });
+
   it("⏎ POSTs approve?attempt=<shown>, circles the take, runs the leader, and cel-flip advances to the inline next_action (skipping the approved F04)", async () => {
     const posted: string[] = [];
     server.use(

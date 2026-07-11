@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-11 — ② Flow v1b polish P5: deepen the ritual
+
+- Added the shared REEL ONE booth intercom: successful print, again, and document-lock decisions now answer with a transient bottom-center production line, announced through a polite live region and dismissed after about 2.6 seconds. The line never takes focus or blocks a terminal; reduced motion removes its arrival animation.
+- Added the three ratified 11px mono decision whispers, a decorative current-frame bleed on the Now screening board, the active-crew tungsten dot, and the 1.2-second `Rolling…` handoff before the booth enters a screening. Reduced motion skips that navigation delay.
+- Made warmth honest: only leader segments and reel cells that actually navigate receive link semantics and hover warmth. Pending cuts and non-link stages remain visually inert. The eye-gate's idle-dark state now gives the existing frame halo a slight swell, with no swell under reduced motion.
+- Added the [P5 evidence pack](docs/anima-test-runs/2026-07-11-v1b-polish-p5-evidence/README.md): four booth-board widths, intercom and rolling interaction states, linked-only hover proof, and active/idle eye-gate pairs at 1280×680 and 1440×900. Updated the handoff table to record P4 merged as #102 and P5 in review.
+
 ## 2026-07-11 — ② Flow v1b polish P4: the gates read like a room
 
 - Closed D5 across Plan, Script, Storyboard, and Animatic: once the run has moved past a gate (or `shots.yaml` carries `locked: true`), the artifact remains readable with a quiet PRINTED/LOCKED stamp and no live primary. The stage-aware predicate fails open on unknown stages, preserving `useGateAction`'s 409-stale branch as the race-condition backstop.

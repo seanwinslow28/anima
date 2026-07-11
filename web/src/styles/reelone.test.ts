@@ -117,6 +117,34 @@ describe("REEL ONE CSS discipline", () => {
     expect(reelone).toContain("var(--tungsten-bright)");
   });
 
+  test("keeps the shared primary whisper at the 11px type floor", () => {
+    const rule =
+      reelone.match(/\.ro-whisper\s*\{([\s\S]*?)\}/)?.[1] ?? "";
+    const fontSize = Number(rule.match(/font-size:\s*([\d.]+)px/)?.[1]);
+    expect(fontSize).toBeGreaterThanOrEqual(11);
+    expect(rule).toContain("font-family: var(--tc-mono)");
+  });
+
+  test("spends hover warmth only on leader segments and reel cells that navigate", () => {
+    expect(boothBoard).toContain(".bb-seg--linked:hover");
+    expect(boothBoard).not.toMatch(/\.bb-seg:hover\s*\{/);
+    expect(reelone).toContain(".ro-fcell--linked:hover");
+    expect(reelone).not.toMatch(/\.ro-fcell:hover\s*\{/);
+  });
+
+  test("lets idle-dark swell the frame halo, but never under reduced motion", () => {
+    expect(eyeGate).toContain(".eg-screen--idledark");
+    expect(eyeGate).toMatch(
+      /\.eg-screen--idledark\s*\{[^}]*--eg-halo-wide:\s*\.18/s,
+    );
+    expect(eyeGate).toMatch(
+      /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.eg-screen--idledark\s*\{[^}]*--eg-halo-wide:\s*\.13/s,
+    );
+    expect(eyeGate).toMatch(
+      /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.eg-stage\s*\{[^}]*transition:\s*none/s,
+    );
+  });
+
   test("owns one shared sprocket strip instead of screen copies", () => {
     expect(reelone).toContain(".ro-sprocket::before");
     expect(reelone).toContain(".ro-sprocket::after");

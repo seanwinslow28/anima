@@ -11,6 +11,7 @@ import { useRun } from "../../lib/runContext";
 import { useGateAction, type GateFlow } from "../../lib/useGateAction";
 import { useResource } from "../../lib/useResource";
 import { RitualLeader } from "../../reelone/RitualLeader";
+import { callIntercom } from "../../reelone/Intercom";
 
 /**
  * The Plan gate (/runs/:id/plan) — the simplest document gate, proving the
@@ -47,6 +48,7 @@ export function PlanGate({ pollIntervalMs }: { pollIntervalMs?: number }) {
   // the destination is the INLINE next_action (U1's URL scheme).
   useEffect(() => {
     if (flow.phase !== "advanced") return;
+    callIntercom("PLAN PRINTED — criteria locked. Sam takes the next pass.");
     navigate(
       nextActionUrl(runId, flow.nextAction) ?? `/runs/${encodeURIComponent(runId)}`,
     );

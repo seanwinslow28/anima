@@ -30,7 +30,9 @@ describe("/dev/system", () => {
     expect(screen.getAllByRole("img", { name: "verdict: hold" })).toHaveLength(2);
     expect(screen.getByRole("img", { name: "verdict: fail" })).toBeInTheDocument();
     // the live leader (working state) + the reel
-    expect(screen.getByRole("status")).toHaveClass("ro-leader");
+    expect(
+      screen.getAllByRole("status").find((node) => node.classList.contains("ro-leader")),
+    ).toHaveClass("ro-leader");
     expect(screen.getByRole("list", { name: "reel" })).toBeInTheDocument();
     vi.unstubAllGlobals();
   });

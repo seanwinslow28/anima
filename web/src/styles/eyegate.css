@@ -7,6 +7,8 @@
  */
 
 .eg-screen {
+  --eg-halo-wide: .13;
+  --eg-halo-tight: .1;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -86,9 +88,10 @@
   align-items: center;
   justify-content: center;
   background: var(--booth-deep);
+  transition: box-shadow .8s ease-out;
   box-shadow:
-    0 0 90px 8px rgba(var(--screenlight-rgb), .13),
-    0 0 22px 2px rgba(var(--screenlight-rgb), .1),
+    0 0 90px 8px rgba(var(--screenlight-rgb), var(--eg-halo-wide)),
+    0 0 22px 2px rgba(var(--screenlight-rgb), var(--eg-halo-tight)),
     inset 0 0 0 1px var(--stage-edge);
 }
 
@@ -384,7 +387,21 @@
   opacity: .12;
 }
 
+.eg-screen--idledark {
+  --eg-halo-wide: .18;
+  --eg-halo-tight: .13;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .eg-screen--idledark {
+    --eg-halo-wide: .13;
+    --eg-halo-tight: .1;
+  }
+
+  .eg-stage {
+    transition: none;
+  }
+
   .eg-head,
   .eg-transport,
   .eg-rail {

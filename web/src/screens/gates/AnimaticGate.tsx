@@ -7,6 +7,7 @@ import { hasStageMovedPast } from "../../lib/gateStage";
 import { useRun } from "../../lib/runContext";
 import { useGateAction, type GateFlow } from "../../lib/useGateAction";
 import { RitualLeader } from "../../reelone/RitualLeader";
+import { callIntercom } from "../../reelone/Intercom";
 
 import type { FrameState } from "../../api/types";
 
@@ -45,6 +46,7 @@ export function AnimaticGate({ pollIntervalMs }: { pollIntervalMs?: number }) {
   // next_action (review_frame F1 — the eye-gate, U5's route).
   useEffect(() => {
     if (flow.phase !== "advanced") return;
+    callIntercom("PLACEMENT LOCKED — roughs ingested. Flo rolls camera.");
     navigate(
       nextActionUrl(runId, flow.nextAction) ?? `/runs/${encodeURIComponent(runId)}`,
     );
