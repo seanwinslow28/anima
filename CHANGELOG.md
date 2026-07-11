@@ -10,6 +10,10 @@
 - **Verification (independently re-run):** `python -m pytest tests/` **910 → 922** (+8 nicktoon, +4 guard), `pipeline/tests/` 10, zero regressions. Characterization (the six pre-registry registers byte-identical; the stub-keyword full-order snapshot extended tail-only per its own append-after rule), completeness, and neutrality all green. Both frozen md5 guards unchanged (`2af75906…`, `945af824…`). $0 — no live model/MCP/network call. **Powerhouse-pattern DoD is now PROVEN, not just designed** — the 2nd register rode the drill cheaply.
 - **Deferred/gated (unchanged):** wiring an actual gpt-image runner + across-edit identity validation (gated on Sean building GRANDMASTER); `samurai-jack-s5` + the register-family question; `warm-storybook-pencil`.
 
+## 2026-07-11 — VS Code Exclusions for Claude Code Worktrees
+
+- Configured `.vscode/settings.json` to exclude `**/.claude/worktrees` from file explorer, search, and file watcher. This prevents VS Code/Cursor's TypeScript language server from analyzing temporary git worktrees created during agent runs, resolving the "Cannot find type definition file" ghost errors that persist in the IDE's Problems panel after worktrees are cleaned up. (`.vscode/settings.json` is gitignored — local-only; this entry is the durable record.)
+
 ## 2026-07-11 — ② Flow v1b polish P6: one room, every screen
 
 - Closed D10 by replacing both marquee error side-stripes with full `--bakelite` borders, then aligned the board and eye-gate error edges to DESIGN §7. Gate, eye-gate, and marquee log tails keep their per-screen class names but consume one shared treatment; unreadable-run cards now expose the daemon error and one working reread recovery. The inert `.mq-new` placeholder is a non-focusable, non-role `div`; P5's link-only leader/reel hover warmth remains contract-pinned.
