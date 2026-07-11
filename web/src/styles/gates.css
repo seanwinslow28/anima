@@ -36,11 +36,11 @@
 .reelone .gate-lampwrap::before {
   content: "";
   position: absolute;
-  inset: -40px -60px;
+  inset: -70px -100px;
   background: radial-gradient(
-    58% 52% at 50% 34%,
-    rgba(var(--tungsten-rgb), 0.14),
-    transparent 72%
+    72% 64% at 50% 36%,
+    rgba(var(--tungsten-rgb), 0.22),
+    transparent 74%
   );
   pointer-events: none;
 }
@@ -52,8 +52,8 @@
   max-width: 66ch;
   margin: 0 auto;
   box-shadow:
-    0 0 60px rgba(var(--tungsten-rgb), 0.16),
-    0 8px 34px rgba(var(--black-rgb), 0.5);
+    0 0 90px rgba(var(--tungsten-rgb), 0.24),
+    0 12px 42px rgba(var(--black-rgb), 0.64);
 }
 .reelone .gate-stamp {
   display: flex;
