@@ -47,10 +47,57 @@ pass reports zero failures**. Machine-readable output is in `sweep-results.json`
 - Marquee fetch errors and unreadable-run cards now use a full `--bakelite` edge; no 2px+ left
   or right border remains in `marquee.css`.
 - Board and eye-gate read failures use the same full error edge as document-gate failures.
-- `.eg-logs` and `.gate-logs` carry byte-equal declaration bodies; class names remain local.
+- `.gate-logs`, `.eg-logs`, and `.mq-logs` keep their per-screen names but consume one shared
+  declaration in `reelone.css`; unreadable-run cards expose the daemon's error tail and one
+  working `Reread runs` recovery.
 - `.mq-new` has no button/link role, no tab stop, and no enabled interactive control.
 - P5's existing `spends hover warmth only on leader segments and reel cells that navigate`
   contract remains green.
+
+## Final verification ledger
+
+The closing commands were rerun after the last implementation change:
+
+```text
+web $ npx vitest run --reporter=dot   # pass 1
+Test Files  47 passed (47)
+Tests       349 passed (349)
+
+web $ npx vitest run --reporter=dot   # flake pass
+Test Files  47 passed (47)
+Tests       349 passed (349)
+
+web $ npm run build
+✓ 344 modules transformed.
+✓ built
+
+$ git diff --exit-code origin/main -- server/ pipeline/ evals/
+(empty)
+
+$ md5 -q evals/vision_critic/traces/g6.1b-criteria-attached-2026-06-08.md
+2af75906502f1caf8857e18828ceb2e4
+$ md5 -q pipeline/agents/prompts/sean-screenwriting-voice.md
+945af824fa53b948a18ac6bf206d67ef
+
+$ unexpected-hex-after-token/test/system-sheet-allowlist
+(empty)
+$ unexpected-rgb-or-rgba-after-token-triple/system-sheet-allowlist
+(empty)
+
+$ rg 'circle at 10px 3.5px' web/src --glob '*.css'
+web/src/reelone/reelone.css:164: radial-gradient(circle at 10px 3.5px, var(--sprocket) 2.6px, transparent 2.8px)
+$ rg 'animation:\s*(flicker|weave|pulse)' web/src --glob '*.css'
+web/src/styles/reelone.motion.css:40:.ro-flicker { animation: flicker 1.7s infinite; }
+web/src/styles/reelone.motion.css:41:.ro-weave { animation: weave .34s steps(2) infinite; }
+web/src/styles/reelone.motion.css:42:.ro-pulse { animation: pulse 1.4s infinite; }
+$ rg 'z-index:\s*[0-9]' web/src --glob '*.css'
+(empty)
+$ rg 'border-(left|right):\s*[2-9]px' web/src/styles/marquee.css
+(empty)
+
+$ jq sweep-results.json
+{"checks":56,"failures":0}
+```
 
 ## Scope and milestone boundary
 

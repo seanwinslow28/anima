@@ -407,8 +407,8 @@ corrections had to fold in first. **All are folded above.** P1's kickoff can be 
 
 ## What "done" means for the polish pass
 
-All seven slices merged; the audit's defect table cleared (D1–D18 each closed by its named slice
+All seven slices merged; the audit's defect table cleared (D1–D20 each closed by its named slice
 or explicitly re-triaged in a slice PR); DESIGN.md's rules hold against a final grep + the
-four-width evidence pack; the 305-test suite grown, never shrunk, green; backend byte-identical
+four-width evidence pack; the 305-test baseline grown to 349, never shrunk, green; backend byte-identical
 (md5 guards standing); and the milestone closes the way it started — **Sean in the screening
 room, running the loop, printing takes, no terminal in sight.**

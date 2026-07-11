@@ -114,6 +114,22 @@
   cursor: not-allowed;
 }
 
+/* DESIGN §7 — one honest log tail, with per-screen class names preserved. */
+.reelone .gate-logs,
+.reelone .eg-logs,
+.reelone .mq-logs {
+  font-family: var(--tc-mono);
+  font-size: 11.5px;
+  color: var(--text);
+  background: var(--booth);
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  max-height: 240px;
+  overflow: auto;
+  white-space: pre-wrap;
+  margin: 0 0 10px;
+}
+
 .reelone .ro-button--stack {
   flex-direction: column;
   gap: 1px;

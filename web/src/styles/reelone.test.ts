@@ -160,10 +160,16 @@ describe("REEL ONE CSS discipline", () => {
     );
   });
 
-  test("keeps gate and eye-gate log tails on the same DESIGN section 7 treatment", () => {
-    expect(ruleBody(eyeGate, ".eg-logs")).toBe(
-      ruleBody(gates, ".reelone .gate-logs"),
+  test("owns one shared DESIGN section 7 log-tail treatment across screens", () => {
+    const sharedLogs = ruleBody(
+      reelone,
+      ".reelone .gate-logs,\n.reelone .eg-logs,\n.reelone .mq-logs",
     );
+    expect(sharedLogs).toContain("font-family: var(--tc-mono)");
+    expect(sharedLogs).toContain("background: var(--booth)");
+    expect(sharedLogs).toContain("overflow: auto");
+    expect(gates).not.toMatch(/\.gate-logs\s*\{/);
+    expect(eyeGate).not.toMatch(/\.eg-logs\s*\{/);
   });
 
   test("lets idle-dark swell the frame halo, but never under reduced motion", () => {

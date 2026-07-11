@@ -61,9 +61,13 @@ describe("Dashboard — states", () => {
     expect(screen.queryByText(/couldn't reach the daemon/i)).not.toBeInTheDocument();
   });
 
-  it("surfaces an unreadable run as a 'couldn't read this run' card, never dropped", async () => {
+  it("surfaces an unreadable run with its error tail and one working reread", async () => {
+    let hits = 0;
     server.use(
-      http.get("/runs", () => HttpResponse.json([runReviewFrame, runErrorItem])),
+      http.get("/runs", () => {
+        hits += 1;
+        return HttpResponse.json(hits === 1 ? [runReviewFrame, runErrorItem] : [runReviewFrame]);
+      }),
     );
 
     renderApp(<Dashboard />);
@@ -75,6 +79,12 @@ describe("Dashboard — states", () => {
       screen.getByText(/couldn't read this run/i).closest(".mq-err"),
     ).toBeInTheDocument();
     expect(screen.getByText(runErrorItem.run_id)).toBeInTheDocument();
+    expect(screen.getByText(runErrorItem.error)).toHaveClass("mq-logs");
+
+    await userEvent.click(screen.getByRole("button", { name: /reread runs/i }));
+
+    expect(await screen.findByText("spark-forest")).toBeInTheDocument();
+    expect(screen.queryByText(runErrorItem.run_id)).not.toBeInTheDocument();
   });
 
   it("clears the skeleton once runs load into the marquee grid", async () => {

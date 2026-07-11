@@ -450,18 +450,6 @@
   margin: 0 0 10px;
   line-height: 1.6;
 }
-.reelone .gate-logs {
-  font-family: var(--tc-mono);
-  font-size: 11.5px;
-  color: var(--text);
-  background: var(--booth);
-  border: 1px solid var(--line);
-  padding: 10px 12px;
-  max-height: 240px;
-  overflow: auto;
-  white-space: pre-wrap;
-  margin: 0 0 10px;
-}
 .reelone .gate-notice-act {
   font-size: 11px;
   padding: 7px 14px 6px;

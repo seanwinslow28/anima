@@ -69,7 +69,11 @@ export function Dashboard() {
       <div className="mq-grid">
         {runs.data.map((item) =>
           isRunError(item) ? (
-            <UnreadableRunCard key={item.run_id} run={item} />
+            <UnreadableRunCard
+              key={item.run_id}
+              run={item}
+              onReread={() => setNonce((n) => n + 1)}
+            />
           ) : (
             <RunCard key={item.run_id} run={item} />
           ),
@@ -91,11 +95,25 @@ function Screen({ children }: { children: React.ReactNode }) {
 }
 
 /** An unreadable run — a booth errcard with its id, never dropped. */
-function UnreadableRunCard({ run }: { run: RunError }) {
+function UnreadableRunCard({
+  run,
+  onReread,
+}: {
+  run: RunError;
+  onReread: () => void;
+}) {
   return (
     <div className="mq-err">
       <div className="mq-err-id">{run.run_id}</div>
       <div className="mq-err-msg">Couldn't read this run.</div>
+      <pre className="mq-logs">{run.error}</pre>
+      <button
+        type="button"
+        className="mq-retry ro-button ro-button--primary"
+        onClick={onReread}
+      >
+        Reread runs
+      </button>
     </div>
   );
 }
