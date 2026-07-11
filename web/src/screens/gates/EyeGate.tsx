@@ -540,6 +540,7 @@ function Screening({
       return;
     }
     if (e.key === "r" || e.key === "R") {
+      e.preventDefault();
       openAgain();
       return;
     }
