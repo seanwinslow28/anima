@@ -243,6 +243,7 @@ function CrewStations() {
   return (
     <aside className="bb-crew" aria-label="The crew tonight" tabIndex={0}>
       <span className="bb-lbl">The crew tonight</span>
+      <p className="bb-crew-whisper bb-mono">seven stations · focus to call roll</p>
       <ul className="bb-crew-list" data-reveal>
         {CREW.map((c) => (
           <li key={c.agent}>

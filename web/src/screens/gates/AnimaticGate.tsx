@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { GateShell } from "./GateShell";
 import { nextActionUrl } from "../../lib/boothBoard";
+import { hasStageMovedPast } from "../../lib/gateStage";
 import { useRun } from "../../lib/runContext";
 import { useGateAction, type GateFlow } from "../../lib/useGateAction";
 import { RitualLeader } from "../../reelone/RitualLeader";
@@ -36,7 +37,9 @@ export function AnimaticGate({ pollIntervalMs }: { pollIntervalMs?: number }) {
     status.status === "ready"
       ? (status.data.next_action.blocked_by_job ?? null)
       : null;
-  const canAct = flow.phase === "idle" && blockedBy === null;
+  const archived =
+    status.status === "ready" && hasStageMovedPast(status.data.stage, "ANIMATIC");
+  const canAct = flow.phase === "idle" && blockedBy === null && !archived;
 
   // ADVANCE only on the full success shape — the destination is the INLINE
   // next_action (review_frame F1 — the eye-gate, U5's route).
@@ -94,8 +97,9 @@ export function AnimaticGate({ pollIntervalMs }: { pollIntervalMs?: number }) {
       stamp="ANIMATIC · PLACEMENT"
       title="The placement pass"
       byline="drawn by hand · the human owns placement + timing"
+      archiveMark={archived ? "LOCKED" : undefined}
       aside={<HoldsStrip frames={status.data.frames} />}
-      actions={
+      actions={archived ? undefined : (
         <AnimaticGateActions
           runId={runId}
           flow={flow}
@@ -107,7 +111,7 @@ export function AnimaticGate({ pollIntervalMs }: { pollIntervalMs?: number }) {
             reset();
           }}
         />
-      }
+      )}
     >
       <p>
         The board is locked. Before a frame is drawn, pin the staging

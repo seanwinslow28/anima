@@ -12,6 +12,7 @@ import {
   rawAuthoring,
   statusApprovePlan,
   statusApprovePlanBlocked,
+  statusDone,
 } from "../../test/fixtures";
 import {
   degradedJob,
@@ -135,6 +136,16 @@ describe("PlanGate — the read", () => {
     const approve = screen.getByRole("button", { name: /approve — print it/i });
     expect(approve).toBeDisabled();
     expect(screen.getByText(/job-owner/)).toBeInTheDocument();
+  });
+
+  it("a DONE run renders the plan as a PRINTED archival record with no live primary", async () => {
+    mount(statusDone);
+    await seeThePage();
+    expect(screen.getByText(/^printed$/i)).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /approve — print it/i }),
+    ).toBeNull();
+    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
   });
 });
 

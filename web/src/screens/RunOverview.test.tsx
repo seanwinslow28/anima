@@ -181,6 +181,14 @@ describe("RunOverview — the now-screening hero", () => {
     }
   });
 
+  it("leaves a quiet crew whisper at rest while the full roll stays on intent", async () => {
+    renderOverview();
+    await screen.findByTestId("booth-board");
+    const crew = screen.getByRole("complementary", { name: /crew/i });
+    const whisper = within(crew).getByText(/seven stations · focus to call roll/i);
+    expect(whisper.closest("[data-reveal]")).toBeNull();
+  });
+
   it("renders the mini frame-reel: printed takes, the take on screen, queued cuts", async () => {
     renderOverview();
     await screen.findByTestId("booth-board");

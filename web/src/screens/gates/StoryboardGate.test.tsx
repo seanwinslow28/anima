@@ -11,6 +11,7 @@ import { server } from "../../test/handlers";
 import {
   shotsYaml,
   statusApproveStoryboard,
+  statusDone,
   storyboardMd,
 } from "../../test/fixtures";
 import {
@@ -33,7 +34,7 @@ import {
 
 const RUN = "2026-07-03-spark-tidepool";
 
-function artifactHandlers() {
+function artifactHandlers(shots = shotsYaml) {
   const hits = { storyboard: 0, shots: 0 };
   server.use(
     http.get(`/runs/${RUN}/artifacts/storyboard`, () => {
@@ -44,7 +45,7 @@ function artifactHandlers() {
     }),
     http.get(`/runs/${RUN}/artifacts/shots`, () => {
       hits.shots += 1;
-      return HttpResponse.text(shotsYaml, {
+      return HttpResponse.text(shots, {
         headers: { "Content-Type": "text/plain; charset=utf-8" },
       });
     }),
@@ -192,6 +193,23 @@ describe("StoryboardGate — the read", () => {
       expect(screen.getByText(/couldn't read the board/i)).toBeInTheDocument(),
     );
     expect(screen.getByRole("button", { name: /retry/i })).toBeInTheDocument();
+  });
+
+  it("a DONE run renders the board as a LOCKED archival record with no live primary", async () => {
+    artifactHandlers();
+    mountStoryboardGate(statusDone);
+    await seeTheBoard();
+    expect(screen.getByText(/^locked$/i)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /lock picture/i })).toBeNull();
+    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+  });
+
+  it("locked: true is archival even while status still reads STORYBOARD", async () => {
+    artifactHandlers(shotsYaml.replace("frames:", "locked: true\nframes:"));
+    mountStoryboardGate(statusApproveStoryboard);
+    await seeTheBoard();
+    expect(screen.getByText(/^locked$/i)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /lock picture/i })).toBeNull();
   });
 });
 

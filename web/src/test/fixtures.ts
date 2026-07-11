@@ -191,6 +191,24 @@ export const statusAnimaticHolds: RunStatus = {
   ],
 };
 
+/** A completed authoring run revisited through any document-gate route. */
+export const statusDone: RunStatus = {
+  run_id: "2026-06-21-spark-animatic-driven",
+  stage: "DONE",
+  stub: false,
+  plan_status: "approved",
+  next_action: {
+    kind: "done",
+    hint: "done: {'gif': '.../spark-animatic.gif'}",
+  },
+  active_job: null,
+  frames: [
+    { n: 1, status: "approved", attempts: 1, hold: 4 },
+    { n: 2, status: "approved", attempts: 1, hold: 2 },
+  ],
+  updated_at: "2026-06-22T16:36:42.596295+00:00",
+};
+
 /*
  * The script/beats artifact fixture pair (U4a — the Script gate's two reads).
  * scriptMd is screenplay-register markdown the way Sam emits it (scene

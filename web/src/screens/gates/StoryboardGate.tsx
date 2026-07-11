@@ -6,6 +6,7 @@ import { Markdown } from "./Markdown";
 import { SlateStack } from "./SlateStack";
 import { fetchArtifact } from "../../api/client";
 import { nextActionUrl } from "../../lib/boothBoard";
+import { hasStageMovedPast } from "../../lib/gateStage";
 import { useRun } from "../../lib/runContext";
 import { parseShots } from "../../lib/shots";
 import { useGateAction, type GateFlow } from "../../lib/useGateAction";
@@ -45,7 +46,11 @@ export function StoryboardGate({ pollIntervalMs }: { pollIntervalMs?: number }) 
     status.status === "ready"
       ? (status.data.next_action.blocked_by_job ?? null)
       : null;
-  const canLock = flow.phase === "idle" && blockedBy === null;
+  const archived =
+    (shots.status === "ready" && shots.data.locked) ||
+    (status.status === "ready" &&
+      hasStageMovedPast(status.data.stage, "STORYBOARD"));
+  const canLock = flow.phase === "idle" && blockedBy === null && !archived;
 
   // ADVANCE only on the full success shape — the destination is the INLINE
   // next_action (ANIMATIC when enabled, else GENERATE's eye-gate).
@@ -121,13 +126,14 @@ export function StoryboardGate({ pollIntervalMs }: { pollIntervalMs?: number }) 
       stamp={`STORYBOARD · ${sheet.slug.toUpperCase()}`}
       title="The board"
       byline="boarded by Bea · the storyboard artist"
+      archiveMark={archived ? "LOCKED" : undefined}
       aside={
         <SlateStack
           sheet={sheet}
           scriptHref={`/runs/${encodeURIComponent(runId)}/script`}
         />
       }
-      actions={
+      actions={archived ? undefined : (
         <StoryboardGateActions
           runId={runId}
           flow={flow}
@@ -140,7 +146,7 @@ export function StoryboardGate({ pollIntervalMs }: { pollIntervalMs?: number }) 
             reset();
           }}
         />
-      }
+      )}
     >
       <Markdown text={board.data} />
     </GateShell>
