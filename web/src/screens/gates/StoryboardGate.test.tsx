@@ -98,6 +98,15 @@ export async function seeTheBoard() {
 }
 
 describe("StoryboardGate — the read", () => {
+  it("keeps picture lock's re-validation whisper directly under the primary", async () => {
+    mountStoryboardGate();
+    await seeTheBoard();
+
+    expect(
+      screen.getByText("re-validates · then it's the camera's"),
+    ).toHaveClass("ro-whisper");
+  });
+
   it("renders Bea's board as the lit continuity page, ONE h1, Bea's byline, the slug stamp", async () => {
     artifactHandlers();
     mountStoryboardGate();
@@ -239,6 +248,25 @@ const lockedToGenerate = () =>
   });
 
 describe("StoryboardGate — Lock picture -> leader -> terminal (U3's hook, wired)", () => {
+  it("calls the booth intercom when picture lock succeeds", async () => {
+    const calls: string[] = [];
+    const hear = (event: Event) =>
+      calls.push((event as CustomEvent<{ message: string }>).detail.message);
+    window.addEventListener("reelone:intercom", hear);
+    server.use(gateAccepted(APPROVE), jobLifecycle(JOB_ID, lockedToAnimatic(), 2));
+    mountStoryboardGate();
+    await seeTheBoard();
+
+    await userEvent.click(screen.getByRole("button", { name: /lock picture/i }));
+
+    await waitFor(() =>
+      expect(calls).toContain(
+        "PICTURE LOCKED — re-validated. Now it's the camera's.",
+      ),
+    );
+    window.removeEventListener("reelone:intercom", hear);
+  });
+
   it("lock runs the leader, then ADVANCES on the inline next_action to the animatic gate", async () => {
     artifactHandlers();
     mountStoryboardGate();

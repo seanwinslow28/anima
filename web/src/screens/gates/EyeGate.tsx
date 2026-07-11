@@ -21,6 +21,7 @@ import { useRockLoop, type LoopEntry } from "../../lib/useRockLoop";
 import { BurnIn } from "../../reelone/BurnIn";
 import { CircledTake } from "../../reelone/CircledTake";
 import { Filmstrip } from "../../reelone/Filmstrip";
+import { callIntercom } from "../../reelone/Intercom";
 import { RitualLeader } from "../../reelone/RitualLeader";
 import { Timecode } from "../../reelone/Timecode";
 import { CheatSheet } from "./CheatSheet";
@@ -111,6 +112,7 @@ export function EyeGate({ pollIntervalMs }: { pollIntervalMs?: number } = {}) {
   );
   const [decision, setDecision] = useState<"print" | "again" | null>(null);
   const lastAction = useRef<GateAction | null>(null);
+  const pendingIntercom = useRef<string | null>(null);
   const lastStatus = useRef<RunStatus | null>(null);
 
   const dispatch = (mode: "print" | "again", action: GateAction) => {
@@ -137,6 +139,10 @@ export function EyeGate({ pollIntervalMs }: { pollIntervalMs?: number } = {}) {
     }
     if (consumedAdvance.current) return;
     consumedAdvance.current = true;
+    if (pendingIntercom.current !== null) {
+      callIntercom(pendingIntercom.current);
+      pendingIntercom.current = null;
+    }
     const na = flow.nextAction;
     if (na.kind === "review_frame" && na.frame === frameN) {
       setDecision(null);
@@ -161,17 +167,21 @@ export function EyeGate({ pollIntervalMs }: { pollIntervalMs?: number } = {}) {
   const gate: DecisionGate = {
     flow,
     decision,
-    printTake: (attempt) =>
+    printTake: (attempt) => {
+      pendingIntercom.current = `${frameLabel(frameN)} TAKE ${attempt} — PRINTED. ${FRAME_COST_LINE} to the ledger.`;
       dispatch("print", {
         method: "POST",
         path: `${frameBase}/approve?attempt=${attempt}`,
-      }),
-    againNote: (note) =>
+      });
+    },
+    againNote: (note) => {
+      pendingIntercom.current = `GO AGAIN — note sent as a correction. Flo re-shoots ${frameLabel(frameN)}.`;
       dispatch("again", {
         method: "POST",
         path: `${frameBase}/retry`,
         body: { note },
-      }),
+      });
+    },
     retryLast: () => {
       if (lastAction.current) submit(lastAction.current);
     },

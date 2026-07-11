@@ -58,19 +58,21 @@ export function StageToolbar({
       <div className="eg-decide" role="group" aria-label="The decision">
         <button
           type="button"
-          className="eg-again ro-button ro-button--quiet"
+          className="eg-again ro-button ro-button--quiet ro-button--stack"
           disabled={!canAgain}
           onClick={onAgain}
         >
-          Go again <span className="eg-kx" aria-hidden="true">R</span>
+          <span className="ro-button-label">Go again</span>
+          <small className="ro-whisper">R · the note rides along</small>
         </button>
         <button
           type="button"
-          className="eg-print ro-button ro-button--primary"
+          className="eg-print ro-button ro-button--primary ro-button--stack"
           disabled={!canPrint}
           onClick={onPrint}
         >
-          Print it <span className="eg-kx" aria-hidden="true">⏎</span>
+          <span className="ro-button-label">Print it</span>
+          <small className="ro-whisper">⏎ · circle the take</small>
         </button>
       </div>
       <div className="eg-quiet" role="group" aria-label="Stage controls">

@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { act, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { renderApp } from "../test/render";
@@ -44,5 +44,27 @@ describe("BoothShell", () => {
     const home = screen.getByRole("link", { name: /anima/i });
     expect(home).toHaveAttribute("href", "/");
     expect(screen.getByText(/screening room/i)).toBeInTheDocument();
+  });
+
+  it("keeps a shared polite booth-intercom region outside routed stage content", () => {
+    renderApp(
+      <BoothShell>
+        <p>stage content</p>
+      </BoothShell>,
+    );
+
+    act(() => {
+      window.dispatchEvent(
+        new CustomEvent("reelone:intercom", {
+          detail: { message: "F03 TAKE 2 — PRINTED. $0.07 to the ledger." },
+        }),
+      );
+    });
+
+    const intercom = screen.getByRole("status");
+    expect(intercom).toHaveAttribute("aria-live", "polite");
+    expect(intercom).toHaveTextContent(
+      "F03 TAKE 2 — PRINTED. $0.07 to the ledger.",
+    );
   });
 });

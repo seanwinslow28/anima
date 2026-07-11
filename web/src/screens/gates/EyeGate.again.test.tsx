@@ -168,6 +168,37 @@ describe("EyeGate — AGAIN opens the note row, prefilled from Em", () => {
 });
 
 describe("EyeGate — AGAIN sends the retake through the job layer", () => {
+  it("calls the booth intercom after the correction lands", async () => {
+    const calls: string[] = [];
+    const hear = (event: Event) =>
+      calls.push((event as CustomEvent<{ message: string }>).detail.message);
+    window.addEventListener("reelone:intercom", hear);
+    server.use(
+      http.post("/runs/:id/frames/:n/retry", () =>
+        HttpResponse.json({ job_id: JOB_ID }, { status: 202 }),
+      ),
+      jobLifecycle(
+        JOB_ID,
+        succeededJob({
+          next_action: { kind: "review_frame", frame: 3, hint: "next: review F03" },
+        }),
+      ),
+    );
+    const user = userEvent.setup();
+    mountEyeGate({ candidates: candidatesTwoCast });
+    await seeTheStage();
+
+    await user.click(screen.getByRole("button", { name: /go again/i }));
+    await user.click(screen.getByRole("button", { name: /send the retake/i }));
+
+    await waitFor(() =>
+      expect(calls).toContain(
+        "GO AGAIN — note sent as a correction. Flo re-shoots F03.",
+      ),
+    );
+    window.removeEventListener("reelone:intercom", hear);
+  });
+
   it("⏎ in the row POSTs retry {note}, veils the stage with FLO RE-SHOOTS, and the re-shot take comes up", async () => {
     const posted: unknown[] = [];
     let retried = false;

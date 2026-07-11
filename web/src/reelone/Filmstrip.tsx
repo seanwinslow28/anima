@@ -1,5 +1,7 @@
 import "./reelone.css";
 
+import { Link } from "react-router-dom";
+
 export type FilmstripFrame = {
   id: string | number;
   /** the cell caption, e.g. "F03" */
@@ -12,6 +14,8 @@ export type FilmstripFrame = {
   src?: string;
   /** the current frame (tungsten ring) */
   now?: boolean;
+  /** optional navigation target; only these cells earn hover warmth */
+  href?: string;
 };
 
 const STATUS_MARK: Record<FilmstripFrame["status"], string> = {
@@ -46,32 +50,43 @@ export function Filmstrip({
 }) {
   return (
     <ul className="ro-strip" aria-label="reel">
-      {frames.map((f) => (
-        <li
-          key={f.id}
-          className={
-            f.now
-              ? "ro-fcell ro-sprocket ro-fcell--now"
-              : "ro-fcell ro-sprocket"
-          }
-          onMouseEnter={onPeek ? () => onPeek(f.id) : undefined}
-          onMouseLeave={onPeekEnd}
-        >
-          {f.src ? (
-            <img src={f.src} alt={`frame ${f.label}`} />
-          ) : (
-            <div className="ro-empty">{f.status === "working" ? "on the bench" : "not yet drawn"}</div>
-          )}
-          <div className="ro-cap">
-            <span>{f.label}</span>
-            {(f.status !== "pending" || f.mark) && (
-              <span className={STATUS_CLASS[f.status]}>
-                {f.mark ?? STATUS_MARK[f.status]}
-              </span>
+      {frames.map((f) => {
+        const content = (
+          <>
+            {f.src ? (
+              <img src={f.src} alt={`frame ${f.label}`} />
+            ) : (
+              <div className="ro-empty">{f.status === "working" ? "on the bench" : "not yet drawn"}</div>
             )}
-          </div>
-        </li>
-      ))}
+            <div className="ro-cap">
+              <span>{f.label}</span>
+              {(f.status !== "pending" || f.mark) && (
+                <span className={STATUS_CLASS[f.status]}>
+                  {f.mark ?? STATUS_MARK[f.status]}
+                </span>
+              )}
+            </div>
+          </>
+        );
+        return (
+          <li
+            key={f.id}
+            className={[
+              "ro-fcell ro-sprocket",
+              f.now ? "ro-fcell--now" : "",
+              f.href ? "ro-fcell--linked" : "",
+            ].filter(Boolean).join(" ")}
+            onMouseEnter={onPeek ? () => onPeek(f.id) : undefined}
+            onMouseLeave={onPeekEnd}
+          >
+            {f.href ? (
+              <Link className="ro-fcell-hit" to={f.href}>{content}</Link>
+            ) : (
+              <div className="ro-fcell-hit">{content}</div>
+            )}
+          </li>
+        );
+      })}
     </ul>
   );
 }

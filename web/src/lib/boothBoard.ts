@@ -198,7 +198,13 @@ export function framesToReel(
   return status.frames.map((f) => {
     const label = `F${String(f.n).padStart(2, "0")}`;
     if (f.status === "approved") {
-      return { id: f.n, label, status: "printed" as const, src: `${base}/${f.n}/image` };
+      return {
+        id: f.n,
+        label,
+        status: "printed" as const,
+        src: `${base}/${f.n}/image`,
+        href: `${base}/${f.n}`,
+      };
     }
     if (f.status === "generated") {
       return {
@@ -206,6 +212,7 @@ export function framesToReel(
         label,
         status: "eye" as const,
         src: `${base}/${f.n}/image`,
+        href: `${base}/${f.n}`,
         now: na.kind === "review_frame" && na.frame === f.n,
       };
     }

@@ -1,9 +1,9 @@
 import "../styles/boothboard.css";
 
-import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { fetchRawState } from "../api/client";
+import { fetchRawState, frameImageUrl } from "../api/client";
 import type { RawRunState, RunStatus } from "../api/types";
 import {
   CREW,
@@ -94,6 +94,9 @@ function BoothBoard({
   onReread: () => void;
 }) {
   const segments = deriveStageReel(raw, status);
+  const busyAgent = status.active_job
+    ? crewAgentFor(status.next_action.kind)
+    : null;
   return (
     <section className="bb-screen" data-testid="booth-board">
       <StageReel runId={runId} segments={segments} />
@@ -107,7 +110,7 @@ function BoothBoard({
       </div>
       <div className="bb-lower">
         <FrameReel runId={runId} status={status} slug={raw.slug} />
-        <CrewStations />
+        <CrewStations busyAgent={busyAgent} />
       </div>
     </section>
   );
@@ -239,7 +242,7 @@ function FrameReel({
 }
 
 /** The crew stations — the constant map, revealed on intent. */
-function CrewStations() {
+function CrewStations({ busyAgent }: { busyAgent: string | null }) {
   return (
     <aside className="bb-crew" aria-label="The crew tonight" tabIndex={0}>
       <span className="bb-lbl">The crew tonight</span>
@@ -247,13 +250,33 @@ function CrewStations() {
       <ul className="bb-crew-list" data-reveal>
         {CREW.map((c) => (
           <li key={c.agent}>
-            <b>{c.agent}</b>
+            <b>
+              {c.agent}
+              {c.agent === busyAgent && (
+                <i className="bb-crew-busy ro-pulse" aria-hidden="true">●</i>
+              )}
+            </b>
             <span>{c.station}</span>
           </li>
         ))}
       </ul>
     </aside>
   );
+}
+
+function crewAgentFor(kind: string): string | null {
+  switch (kind) {
+    case "planning":
+      return "Maya";
+    case "scripting":
+      return "Sam";
+    case "storyboarding":
+      return "Bea";
+    case "generating":
+      return "Flo";
+    default:
+      return null;
+  }
 }
 
 /** The leader strip — one sprocketed segment per derived stage. */
@@ -283,7 +306,7 @@ function StageReel({
           return (
             <li
               key={seg.stage}
-              className={`bb-seg ro-sprocket bb-seg--${seg.status}`}
+              className={`bb-seg ro-sprocket bb-seg--${seg.status}${href ? " bb-seg--linked" : ""}`}
               aria-current={seg.status === "now" ? "step" : undefined}
             >
               {href ? (
@@ -304,21 +327,63 @@ function StageReel({
 
 /** The hero: the one move, front and centre (h1 = the CTA spine's words). */
 function NowScreening({ runId, status }: { runId: string; status: RunStatus }) {
+  const navigate = useNavigate();
+  const [rolling, setRolling] = useState(false);
+  const rollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cta = nextActionCta(status.next_action);
   const url = nextActionUrl(runId, status.next_action);
   const verb = goLabel(status.next_action.kind);
   const frame = status.next_action.frame;
+  useEffect(
+    () => () => {
+      if (rollTimer.current !== null) clearTimeout(rollTimer.current);
+    },
+    [],
+  );
+  const roll = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!url || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+    const reduce =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+    event.preventDefault();
+    if (rolling) return;
+    setRolling(true);
+    rollTimer.current = setTimeout(() => navigate(url), 1200);
+  };
   return (
     <section className="bb-now" aria-label="Your next move">
+      {frame != null && (
+        <img
+          className="bb-hero-bleed"
+          src={frameImageUrl(runId, frame)}
+          alt=""
+          aria-hidden="true"
+        />
+      )}
       <span className="bb-eyebrow">
         Now screening · next_action: {status.next_action.kind}
       </span>
       <h1 className="bb-move">{cta.label}</h1>
       {url && verb && (
-        <Link className="bb-go ro-button ro-button--primary" to={url}>
-          {verb}
-          {frame != null && (
-            <small>F{String(frame).padStart(2, "0")} · ⏎</small>
+        <Link
+          className="bb-go ro-button ro-button--primary"
+          to={url}
+          onClick={roll}
+          aria-live="polite"
+          aria-disabled={rolling || undefined}
+        >
+          {rolling ? (
+            "Rolling…"
+          ) : (
+            <>
+              {verb}
+              {frame != null && (
+                <small>F{String(frame).padStart(2, "0")} · ⏎</small>
+              )}
+            </>
           )}
         </Link>
       )}

@@ -1,7 +1,7 @@
-import { screen, within } from "@testing-library/react";
+import { act, fireEvent, screen, within } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
 import { Route, Routes } from "react-router-dom";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   rawAnimatic,
@@ -34,10 +34,16 @@ function renderOverview(id = RUN_ID) {
           </RunProvider>
         }
       />
+      <Route path="/runs/:id/frames/:n" element={<div data-testid="screening-route" />} />
     </Routes>,
     { route: `/runs/${id}` },
   );
 }
+
+afterEach(() => {
+  vi.useRealTimers();
+  vi.unstubAllGlobals();
+});
 
 describe("RunOverview — the reel of stages", () => {
   it("renders the pipeline-stages landmark with the authoring run's six segments", async () => {
@@ -105,6 +111,18 @@ describe("RunOverview — the reel of stages", () => {
 });
 
 describe("RunOverview — the now-screening hero", () => {
+  it("ghosts the already-served current frame through the hero corner as decoration", async () => {
+    renderOverview();
+    const board = await screen.findByTestId("booth-board");
+
+    const bleed = board.querySelector(".bb-hero-bleed");
+    expect(bleed).toHaveAttribute("aria-hidden", "true");
+    expect(bleed).toHaveAttribute(
+      "src",
+      `/runs/${RUN_ID}/frames/3/image`,
+    );
+  });
+
   it("leads with one h1 = the move, and one primary action to the gate URL", async () => {
     renderOverview();
     await screen.findByTestId("booth-board");
@@ -114,6 +132,36 @@ describe("RunOverview — the now-screening hero", () => {
     const go = screen.getByRole("link", { name: /to the screening/i });
     expect(go).toHaveAttribute("href", `/runs/${RUN_ID}/frames/3`);
     expect(go).toHaveClass("bb-go", "ro-button", "ro-button--primary");
+  });
+
+  it("calls Rolling for 1.2 seconds before the screening route takes the stage", async () => {
+    renderOverview();
+    await screen.findByTestId("booth-board");
+    vi.useFakeTimers();
+
+    fireEvent.click(screen.getByRole("link", { name: /to the screening/i }));
+    expect(screen.getByRole("link", { name: /rolling/i })).toHaveAttribute(
+      "aria-live",
+      "polite",
+    );
+
+    act(() => vi.advanceTimersByTime(1199));
+    expect(screen.queryByTestId("screening-route")).toBeNull();
+    act(() => vi.advanceTimersByTime(1));
+    expect(screen.getByTestId("screening-route")).toBeInTheDocument();
+  });
+
+  it("reduced motion skips the Rolling hold and navigates immediately", async () => {
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn().mockReturnValue({ matches: true }),
+    );
+    renderOverview();
+    await screen.findByTestId("booth-board");
+
+    fireEvent.click(screen.getByRole("link", { name: /to the screening/i }));
+
+    expect(screen.getByTestId("screening-route")).toBeInTheDocument();
   });
 
   it("names the machine token in the eyebrow (now screening · next_action)", async () => {
@@ -202,6 +250,8 @@ describe("RunOverview — the now-screening hero", () => {
       `/runs/${RUN_ID}/frames/3/image`,
     );
     expect(cells[4].querySelector(".ro-empty")).not.toBeNull();
+    expect(within(strip).getAllByRole("link")).toHaveLength(3);
+    expect(cells[4].querySelector("a")).toBeNull();
   });
 
   it("an act kind with no screen yet (assemble) renders the move without a dead link", async () => {

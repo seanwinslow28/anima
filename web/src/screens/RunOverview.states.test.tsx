@@ -107,6 +107,11 @@ describe("RunOverview states", () => {
     const headings = screen.getAllByRole("heading", { level: 1 });
     expect(headings).toHaveLength(1);
     expect(headings[0]).toHaveTextContent(/Flo is drawing F04/i);
+    const flo = screen.getByText("Flo").closest("b");
+    expect(flo?.querySelector(".bb-crew-busy")).toHaveAttribute(
+      "aria-hidden",
+      "true",
+    );
     // the ritual leader — an announced working state, never a fake ETA
     expect(screen.getByRole("status")).toBeInTheDocument();
     // no mutating / stage affordance while the job owns the run
