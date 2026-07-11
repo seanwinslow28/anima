@@ -121,7 +121,7 @@ session is Sean's: daemon + vite up, a real run walked plan → gates → eye-ga
 | P1 | The stage owns the room (eye-gate geometry + rail in flow) | Fable-grade care | ✅ merged (#98) |
 | P2 | Honest keys, honest labels (R-leak, D18 idle-dark, YOUR CALL, aria-valuetext) | — | ✅ merged (#99) |
 | P3a | Tokens, literals, and the type floor | — | ✅ merged (#100) |
-| P3b | Button recipe + shared primitives + the living sheet | — | 🟨 in progress |
+| P3b | Button recipe + shared primitives + the living sheet | — | 🟨 in review (#101) |
 | P4 | The gates read like a room (archival state + hierarchy + lamp-pool retune) | — | ⬜ |
 | P5 | Deepen the ritual (intercom, whispers, bleed, warmth; ends with engine truth) | Fable-grade care | ⬜ |
 | P6 | One room, every screen (consistency + narrow sweep) | — | ⬜ |

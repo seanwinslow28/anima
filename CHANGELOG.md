@@ -6,7 +6,7 @@
 - Replaced the three copied sprocket implementations with one `.ro-sprocket` primitive; moved eye-gate flicker and weave onto the shared motion utilities while leaving the bespoke 180ms soft-arrival path intact; and named every DESIGN §4 stacking tier with scoped `--z-*` tokens. The nested job veil and leader intentionally share overlay tier 5.
 - Extended `/dev/system` with the P3a palette additions, the `--*-rgb` channel mechanism, and live primary/quiet/danger/disabled button states. The sheet remains reference-only and adds no production chrome.
 - The real-browser reduced-motion sweep exposed v1a's global 0.01ms wildcard overriding the eye-gate's nominal 180ms soft arrival. A narrow eye-gate override now preserves the ratified opacity crossfade while flicker/weave/pulse still stop, closing the dead-cut gap without broadening motion consolidation.
-- Codified the owner boundary in the execution handoff: executors may push feature branches and open/update PRs, but never merge a PR or push `main`; `gh pr merge` is Sean-only. Updated P3a to merged (#100) and marked P3b in progress.
+- Codified the owner boundary in the execution handoff: executors may push feature branches and open/update PRs, but never merge a PR or push `main`; `gh pr merge` is Sean-only. Updated P3a to merged (#100) and marked P3b in review (#101).
 
 ## 2026-07-11 — P3b D20: make the eye-gate HUD declaration deterministic
 
