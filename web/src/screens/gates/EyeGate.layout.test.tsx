@@ -69,4 +69,11 @@ describe("EyeGate P1 structural layout contract", () => {
       /max-width:\s*calc\(100vw\s*-\s*40px\)/,
     );
   });
+
+  it("keeps the wipe tag above the type floor and legible over frame art", () => {
+    const wipeTag = rule(eyeGateCss, ".eg-wipe-tag");
+
+    expect(wipeTag).toMatch(/font-size:\s*11px/);
+    expect(wipeTag).toMatch(/text-shadow:/);
+  });
 });
