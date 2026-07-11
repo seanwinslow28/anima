@@ -11,6 +11,13 @@ const read = (rel: string) =>
 const tokens = read("./reelone.tokens.css");
 const motion = read("./reelone.motion.css");
 const main = read("../main.tsx");
+const cssSources = new Map([
+  ["styles/gates.css", read("./gates.css")],
+  ["reelone/reelone.css", read("../reelone/reelone.css")],
+  ["styles/marquee.css", read("./marquee.css")],
+  ["styles/eyegate.css", read("./eyegate.css")],
+  ["screens/dev/systemsheet.css", read("../screens/dev/systemsheet.css")],
+]);
 
 describe("reelone.tokens.css", () => {
   test("carries the exact booth palette from the mockups", () => {
@@ -29,6 +36,18 @@ describe("reelone.tokens.css", () => {
       "--text: #DDD5E0",
     ]) {
       expect(tokens).toContain(decl);
+    }
+  });
+
+  test("names the lockdown palette additions on .reelone", () => {
+    const reeloneBlock = tokens.match(/\.reelone\s*\{([\s\S]*?)\n\}/)?.[1] ?? "";
+    for (const decl of [
+      "--booth-deep: #0B080D",
+      "--sprocket: #241D2C",
+      "--on-tungsten: #101010",
+      "--tungsten-bright: #F2C284",
+    ]) {
+      expect(reeloneBlock).toContain(decl);
     }
   });
 
@@ -52,6 +71,42 @@ describe("reelone.tokens.css", () => {
   test("scopes the booth to .reelone — never :root (v1a's --line stays warm)", () => {
     expect(tokens).toContain(".reelone");
     expect(tokens).not.toMatch(/:root\s*\{/);
+  });
+});
+
+describe("REEL ONE CSS discipline", () => {
+  test("keeps the seven named interface selectors at the 11px floor", () => {
+    const selectors = [
+      ["styles/gates.css", ".gate-approve small"],
+      ["reelone/reelone.css", ".ro-fcell .ro-empty"],
+      ["styles/marquee.css", ".mq-cta-mark--print"],
+      ["reelone/reelone.css", ".ro-fcell .ro-cap"],
+      ["styles/eyegate.css", ".eg-wipe-tag"],
+      ["screens/dev/systemsheet.css", ".syssheet-sw"],
+      ["screens/dev/systemsheet.css", ".syssheet button"],
+    ] as const;
+
+    for (const [file, selector] of selectors) {
+      const source = cssSources.get(file) ?? "";
+      const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const rule =
+        source.match(new RegExp(`${escaped}\\s*\\{([\\s\\S]*?)\\}`))?.[1] ?? "";
+      const fontSize = Number(rule.match(/font-size:\s*([\d.]+)px/)?.[1]);
+      expect(fontSize, `${file} ${selector}`).toBeGreaterThanOrEqual(11);
+    }
+  });
+
+  test("uses the 900px responsive contract for gate columns", () => {
+    const gates = cssSources.get("styles/gates.css") ?? "";
+    expect(gates).toContain("@media (max-width: 900px)");
+    expect(gates).not.toContain("@media (max-width: 960px)");
+  });
+
+  test("uses the reserved bakelite token for the failed flow-note border", () => {
+    const eyeGate = cssSources.get("styles/eyegate.css") ?? "";
+    expect(eyeGate).toMatch(
+      /\.eg-flownote--failed\s*\{\s*border-color:\s*var\(--bakelite\);\s*\}/,
+    );
   });
 });
 

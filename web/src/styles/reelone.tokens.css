@@ -29,11 +29,15 @@
   --booth: #141018;
   --booth2: #1D1722;
   --booth3: #251E2B;
+  --booth-deep: #0B080D;
+  --sprocket: #241D2C;
+  --stage-edge: #2B2333;
   --line: #332A3C;
 
   /* light */
   --tungsten: #E8B36A;
   --tungsten-dim: #8A6F4D;
+  --tungsten-bright: #F2C284;
   --screenlight: #FFF6E4;
 
   /* lamps — semantic, reserved */
@@ -44,6 +48,18 @@
   /* text */
   --text: #DDD5E0;
   --mute: #8F8798;
+  --on-tungsten: #101010;
+
+  /* channel forms preserve the shipped translucent washes exactly */
+  --black-rgb: 0, 0, 0;
+  --booth-shadow-rgb: 10, 8, 12;
+  --booth-deep-rgb: 11, 8, 13;
+  --on-tungsten-rgb: 16, 16, 16;
+  --booth-rgb: 20, 16, 24;
+  --booth2-rgb: 29, 23, 34;
+  --page-ink-rgb: 43, 36, 23;
+  --tungsten-rgb: 232, 179, 106;
+  --screenlight-rgb: 255, 246, 228;
 
   /* the lit continuity page (reading-gate surface only) */
   --page: #F7EFDC;

@@ -27,7 +27,7 @@
   margin: 0;
   padding: 0;
   border: 1px solid var(--line);
-  background: #0e0b11;
+  background: var(--booth-deep);
   overflow-x: auto;
 }
 
@@ -50,7 +50,7 @@
   left: 0;
   right: 0;
   height: 7px;
-  background: radial-gradient(circle at 10px 3.5px, #241d2c 2.6px, transparent 2.8px)
+  background: radial-gradient(circle at 10px 3.5px, var(--sprocket) 2.6px, transparent 2.8px)
     repeat-x;
   background-size: 20px 7px;
   pointer-events: none;
@@ -75,7 +75,7 @@
 }
 
 .reelone .bb-seg:hover {
-  background: rgba(255, 246, 228, 0.04);
+  background: rgba(var(--screenlight-rgb), 0.04);
 }
 
 .reelone .bb-seg-n {
@@ -125,7 +125,7 @@
 }
 
 .reelone .bb-seg--now {
-  background: rgba(232, 179, 106, 0.06);
+  background: rgba(var(--tungsten-rgb), 0.06);
   box-shadow: inset 0 0 0 1.5px var(--tungsten);
 }
 
@@ -166,7 +166,7 @@
   inset: 0;
   background: radial-gradient(
     70% 90% at 30% 0%,
-    rgba(232, 179, 106, 0.1),
+    rgba(var(--tungsten-rgb), 0.1),
     transparent 60%
   );
   pointer-events: none;
@@ -190,7 +190,7 @@
   color: var(--screenlight);
   line-height: 1.15;
   max-width: 18ch;
-  text-shadow: 0 0 30px rgba(255, 246, 228, 0.25);
+  text-shadow: 0 0 30px rgba(var(--screenlight-rgb), 0.25);
   margin: 0 0 22px;
 }
 
@@ -201,7 +201,7 @@
   letter-spacing: 0.26em;
   text-transform: uppercase;
   text-decoration: none;
-  color: #101010;
+  color: var(--on-tungsten);
   background: var(--tungsten);
   padding: 13px 26px 12px;
   border-radius: 2px;
@@ -209,7 +209,7 @@
 }
 
 .reelone .bb-go:hover {
-  background: #f2c284;
+  background: var(--tungsten-bright);
 }
 
 .reelone .bb-go small {
@@ -481,7 +481,7 @@
   font-size: 12px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #101010;
+  color: var(--on-tungsten);
   background: var(--tungsten);
   border: none;
   border-radius: 2px;
@@ -490,7 +490,7 @@
 }
 
 .reelone .bb-retry:hover {
-  background: #f2c284;
+  background: var(--tungsten-bright);
 }
 
 /* ── the board skeleton (loading doctrine: a skeleton of the target screen) ── */

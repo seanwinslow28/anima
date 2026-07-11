@@ -23,7 +23,7 @@
   gap: 26px;
   align-items: start;
 }
-@media (max-width: 960px) {
+@media (max-width: 900px) {
   .reelone .gate-columns {
     grid-template-columns: 1fr;
   }
@@ -39,7 +39,7 @@
   inset: -40px -60px;
   background: radial-gradient(
     58% 52% at 50% 34%,
-    rgba(232, 179, 106, 0.14),
+    rgba(var(--tungsten-rgb), 0.14),
     transparent 72%
   );
   pointer-events: none;
@@ -52,8 +52,8 @@
   max-width: 66ch;
   margin: 0 auto;
   box-shadow:
-    0 0 60px rgba(232, 179, 106, 0.16),
-    0 8px 34px rgba(0, 0, 0, 0.5);
+    0 0 60px rgba(var(--tungsten-rgb), 0.16),
+    0 8px 34px rgba(var(--black-rgb), 0.5);
 }
 .reelone .gate-stamp {
   display: flex;
@@ -148,11 +148,11 @@
 .reelone .gate-prose code {
   font-family: var(--tc-mono);
   font-size: 12.5px;
-  background: rgba(43, 36, 23, 0.07);
+  background: rgba(var(--page-ink-rgb), 0.07);
   padding: 0 3px;
 }
 .reelone .gate-prose pre {
-  background: rgba(43, 36, 23, 0.07);
+  background: rgba(var(--page-ink-rgb), 0.07);
   padding: 10px 12px;
   overflow-x: auto;
   margin: 0 0 13px;
@@ -389,7 +389,7 @@
   font-size: 13px;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: #101010;
+  color: var(--on-tungsten);
   background: var(--tungsten);
   padding: 13px 26px 11px;
   border: none;
@@ -397,7 +397,7 @@
   cursor: pointer;
 }
 .reelone .gate-approve:hover {
-  background: #f2c284;
+  background: var(--tungsten-bright);
 }
 .reelone .gate-approve:disabled {
   background: var(--tungsten-dim);
@@ -405,7 +405,7 @@
 }
 .reelone .gate-approve small {
   display: block;
-  font-size: 8.5px;
+  font-size: 11px;
   letter-spacing: 0.2em;
   font-weight: 500;
 }
