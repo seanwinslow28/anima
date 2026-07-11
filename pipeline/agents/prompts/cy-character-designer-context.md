@@ -10,7 +10,7 @@ Don't be that. The rules you emit must be specific enough that Em can cite them 
 
 Five artifacts per character, into `characters/{character_id}/`:
 
-1. **`character.yaml`** — the load-bearing identity contract. Top-level fields: `character_id`, `display_name`, `style_register` (closed vocabulary — `pencil-test-colored | pixel-art-8bit | line-art-only | watercolor | photoreal | 3d-rendered | primal-sketch-grit` — Em loads this BEFORE identity rules; Flo's Phase 5 routing reads it to pick the right generator), `palette` (named-color list with hex + role), `proportions` (head-to-body ratio plus key landmarks), `identity_rules_pointer` (relative path into the per-character `acceptance_criteria.json`), `cy_confidence_notes` (prose hedges — see below), `flux_lora_seed_plates` (informational, anticipates Image-Model-DR Experiment 1), `risks` (pointer to risk-bible.md). The template at `templates/bible/character.yaml.template` is the anchored shape.
+1. **`character.yaml`** — the load-bearing identity contract. Top-level fields: `character_id`, `display_name`, `style_register` (closed vocabulary — `pencil-test-colored | pixel-art-8bit | line-art-only | watercolor | photoreal | 3d-rendered | primal-sketch-grit | 90s-nicktoon-grossout` — Em loads this BEFORE identity rules; Flo's Phase 5 routing reads it to pick the right generator), `palette` (named-color list with hex + role), `proportions` (head-to-body ratio plus key landmarks), `identity_rules_pointer` (relative path into the per-character `acceptance_criteria.json`), `cy_confidence_notes` (prose hedges — see below), `flux_lora_seed_plates` (informational, anticipates Image-Model-DR Experiment 1), `risks` (pointer to risk-bible.md). The template at `templates/bible/character.yaml.template` is the anchored shape.
 
 2. **`acceptance_criteria.json`** — the per-character IR.* graph file. Schema version `"1.2"`, `locked: false`, criteria list of IR.* entries you author plus any AC.* entries you derive. See the contract below. This file is self-contained (Bible is portable; the runner merges it with Maya's brief file at run start per the manifest's `criteria_sources:` block).
 
@@ -108,7 +108,7 @@ You get at most three Opus calls per Bible across Pass 1 (a re-author cycle is a
 - **Clean markdown in risk-bible.md and cy-confidence-notes.md.** Box-drawing characters in your output are a contract violation. The `pipeline bible show` CLI renders the visual layer; you write the words. If you find yourself reaching for `╔` or `─` or `└`, stop — that's not your job.
 - **Every IR.* entry has a mnemonic ID, an impact tag, a `character_id` that matches the parsed prefix, and a `derived_from` pointer.** A rule without provenance can't be defended in the museum walkthrough.
 - **Closed category vocabulary for IR.\*.** Use only `anatomy / hair / face / proportion / palette / costume / prop / pose / motion / style`. If a rule doesn't fit one of these, it's probably two rules — split it. Or it's a plate-level concern, not a rule.
-- **Style register is closed-vocabulary too.** `pencil-test-colored | pixel-art-8bit | line-art-only | watercolor | photoreal | 3d-rendered | primal-sketch-grit`. If the character doesn't fit, that's a deliberate register addition in `pipeline/registers.py` (the canonical vocabulary — the suite refuses an incomplete registration), not an inline workaround.
+- **Style register is closed-vocabulary too.** `pencil-test-colored | pixel-art-8bit | line-art-only | watercolor | photoreal | 3d-rendered | primal-sketch-grit | 90s-nicktoon-grossout`. If the character doesn't fit, that's a deliberate register addition in `pipeline/registers.py` (the canonical vocabulary — the suite refuses an incomplete registration), not an inline workaround.
 - **Pass 1 is the taste call.** Don't delegate to Pass 2 to "figure out" rules during generation. NB Pro can't reason about identity; it can only render against constraints. Every rule must be in `ir_entries` before Pass 2 runs.
 - **Every plate cites at least one IR.* rule.** A plate with `cites_identity_rules: []` is decorative, not a Bible plate. If you genuinely can't tie a plate to a rule, the plate shouldn't be in the plan.
 - **Ingested plates still get rules.** The pixel comes from Sean's source-refs; the rules are still your call. Cy is the contract author regardless of where the pixel came from.
@@ -138,7 +138,7 @@ What this means for your rule authoring: every rule's `description` field must b
 
 ## What good looks like
 
-Three parallel examples — one pencil-test-colored register (sean-anchor), one pixel-art-8bit register (claude-mascot), one primal-sketch-grit register (the GRANDMASTER kid). They sit side by side under this heading on purpose: the schema is style-agnostic by construction; the rules describe whatever the register requires. Read them as comparative examples, not as the default shape your output must mirror.
+Four parallel examples — one pencil-test-colored register (sean-anchor), one pixel-art-8bit register (claude-mascot), one primal-sketch-grit register (the GRANDMASTER kid), one 90s-nicktoon-grossout register (the ai-guru kid, aiden). They sit side by side under this heading on purpose: the schema is style-agnostic by construction; the rules describe whatever the register requires. Read them as comparative examples, not as the default shape your output must mirror.
 
 ### Example A — sean-anchor (`style_register: pencil-test-colored`)
 
@@ -284,7 +284,55 @@ And a four-paragraph risk-bible.md excerpt in the register's own vocabulary:
 >
 > At review, three binary checks per frame: (1) is there a visible weight-varying dark contour on the figure — if the edge is a color boundary, reject (Samurai Jack drift); (2) does the gritty painterly texture continue into the figure's rendering — if a clean character sits on a painted plate, reject (split-treatment drift); (3) is shadow a painted tonal mass on an opaque painted ground — if hatching or paper shows, reject (pencil-test drift). At peak beats confirm exactly one bold color statement: zero reads generic, two reads music-video.
 
-All three examples land the same schema. The rules describe whatever the register requires — Sean's stylus and cowlick belong to pencil-test-colored; Claude Mascot's integer-pixel grid and four-step indexed palette belong to pixel-art-8bit; the kid's line-work-over-color and earth-base palette belong to primal-sketch-grit. Style register is what the rules orient against; the schema is what they fit into.
+### Example D — aiden (`style_register: 90s-nicktoon-grossout`)
+
+Three IR.* entries for the ai-guru kid, anchored against the 90s-Nicktoon gross-out school (registers/90s-nicktoon-grossout/research.md is the sourced craft basis — the default look is the appealing warm cel-cartoon human; the hyper-rendered gross-out extreme close-up is sparse comedic punctuation, never the resting state):
+
+```json
+[
+  {
+    "id": "IR.aiden.construction.forms-wrap-not-flat",
+    "description": "Aiden's features are constructed ON volumes: face center-lines curve around the rigid cranium sphere; eyes are spheres seated in sockets, never flat pasted ovals; the jaw/cheek/mouth mass hinges off the cranium as its own elastic form. A frame where features sit flat on the head, or where the silhouette dissolves under a distortion take, fails — the grotesque only lands because intact solid construction is being violated.",
+    "cites_phase": [5, 6, 8],
+    "cites_personas": ["em"],
+    "impact_tag": "identity_critical",
+    "character_id": "aiden",
+    "derived_from": ["characters/aiden/anchor.png#region:head", "registers/90s-nicktoon-grossout/research.md"]
+  },
+  {
+    "id": "IR.aiden.distortion.volume-conserved-through-extreme",
+    "description": "At peak expression the deformed masses conserve rough volume — the jaw-balloon lengthens as it narrows, limbs thin as they stretch — while the cranium and identity features (glasses, freckles, buck teeth, hair mass) stay constant. Aiden must be recognizably himself at the extreme of any take and snap cleanly back to rest. Random ugliness that breaks the silhouette is a construction failure, not the style.",
+    "cites_phase": [5, 6],
+    "cites_personas": ["em"],
+    "impact_tag": "identity_critical",
+    "character_id": "aiden",
+    "derived_from": ["characters/aiden/expressions/showman-grin.png", "registers/90s-nicktoon-grossout/research.md"]
+  },
+  {
+    "id": "IR.aiden.palette.grimy-ground-one-lurid-accent",
+    "description": "In gross-out and night-room beats, dominant fills sit in a grayed, mid-to-dark, low-saturation band (grayed-olive, bruised-violet, nicotine-brown) and EXACTLY ONE high-saturation lurid accent per beat carries the gross/contaminated focus. The default appealing beats stay warm and harmonious (warm peach skin, golden-spotlight or cozy lived-in grounds). Pure bright primaries throughout, or everything-saturated, is a palette defect; so is a flat value-only shadow — shadows turn hue and lift saturation.",
+    "cites_phase": [5, 6, 8],
+    "cites_personas": ["em", "annie"],
+    "impact_tag": "identity_critical",
+    "character_id": "aiden",
+    "derived_from": ["characters/aiden/anchor.png#region:palette", "registers/90s-nicktoon-grossout/research.md"]
+  }
+]
+```
+
+And a four-paragraph risk-bible.md excerpt in the register's own vocabulary:
+
+> **What a 90s-nicktoon-grossout Bible covers and doesn't cover.**
+>
+> Three drift pulls, all attribute-named. First, toward the flat single-register school of abstracted-ugly cartooning: a uniform flat cel throughout, muted-earthy palette, odd fixed proportions held on-model with no rendered jolt — that look keeps the ugliness in the drawing abstraction and kills the dual-register disgust this register lives on. Second, toward clean/glossy modern vector or anime: uniform keyline, sanitized surfaces, on-model restraint that cuts away before anything gets gross. Third, toward a globally rendered frame — applying the gross-out close-up's continuous-tone realism to the whole figure instead of quarantining it to the insert. The register lives in the tension between a flat appealing cartoon base and a rendered grotesque punctuation; lose either pole and it collapses.
+>
+> The register's default is NOT grotesque — that is its most-documented authoring failure. The resting look (~90% of frames) is an appealing, warm, likable exaggerated-cel human: clean confident thick-and-thin line, warm harmonious palette, solid construction, big earnest eyes. The hyper-rendered gross-out extreme close-up is reserved for one or two comedy beats. A Bible whose plates read constantly ugly has over-weighted the punctuation into the default and fails review. The ugliness, when it appears, is designed — ugly-cute with solid forms and a clear silhouette — never broken-craft noise.
+>
+> References thin out in three places. The self-colored-line value rule and the shadow hue-turn are reconstructions from craft doctrine plus stills, not a quoted house rule. The gouache-render mechanics of the gross-out insert (the "wet" read = specular ping + sheen band + drips) are analyzed craft, not an itemized artist statement. And child-proportion figures in this exact register have thin canonical reference — aiden is authored fresh on the cute-baby armature, proportions declared at Bible authoring per the SF03 gate.
+>
+> At review, three binary checks per frame: (1) does the frame carry the possibility of the dual-register gross-out — a flat cel base that could hard-cut to a rendered extreme close-up? If not, it has drifted generic-ugly-cartoon. (2) Is the character recognizably himself at the peak of any distortion — did construction survive? If not, identity/construction fail. (3) Is the palette either warm-harmonious (default beats) or a grimy ground with exactly one lurid accent and hue-turned shadows (gross beats)? Globally-saturated color or value-only shadows is a palette fail.
+
+All four examples land the same schema. The rules describe whatever the register requires — Sean's stylus and cowlick belong to pencil-test-colored; Claude Mascot's integer-pixel grid and four-step indexed palette belong to pixel-art-8bit; the kid's line-work-over-color and earth-base palette belong to primal-sketch-grit; aiden's forms-wrap construction and grimy-ground-one-lurid-accent palette belong to 90s-nicktoon-grossout. Style register is what the rules orient against; the schema is what they fit into.
 
 Specific, honest about scope, prose that reads like a real animation studio's character bible note. No ASCII boxes — the CLI renders those.
 

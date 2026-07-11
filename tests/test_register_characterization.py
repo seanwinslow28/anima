@@ -199,6 +199,8 @@ def test_stub_keyword_map_full_order_snapshot():
         ("3d", "3d-rendered"),
         # — post-registry registers append below, never above.
         ("primal", "primal-sketch-grit"),
+        ("nicktoon", "90s-nicktoon-grossout"),
+        ("grossout", "90s-nicktoon-grossout"),
     ]
 
 

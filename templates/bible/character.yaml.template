@@ -45,6 +45,12 @@ display_name: ""                          # How Sean talks about this character
 #                            ink kept over the color, gritty painterly figure
 #                            and background, warm earthy desaturated base, one
 #                            bold color statement per scene.
+#   - 90s-nicktoon-grossout  90s-Nicktoon grotesque cel / gross-out register.
+#                            Appealing warm cel-cartoon default (thick-and-thin
+#                            hand-inked line, flat cel fills, painted decaying
+#                            backgrounds); the reserved signature move is a hard
+#                            cut-in to a held, hyper-rendered painterly
+#                            gross-out extreme close-up.
 #
 # If a new character needs a register that isn't in this list, that's a
 # deliberate commit, not an inline edit: add a RegisterSpec to

@@ -79,3 +79,7 @@ images/Sprite-reference/
 images/claude-mascot-dataset/
 # Timestamped backup of the mascot turnaround source-ref (auto-archive, not curated).
 characters/claude-mascot/source-refs/old/
+# npm cruft from an accidental `npm install` in a repo with no package.json —
+# node_modules is empty and package-lock.json is an empty stub; never version them.
+node_modules/
+package-lock.json

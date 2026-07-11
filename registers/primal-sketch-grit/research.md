@@ -1,6 +1,6 @@
 # `primal-sketch-grit` — register research
 
-**Date:** 2026-07-03 · **Consumer:** GRANDMASTER (greenlit; its STRESS-TEST returned `revise` on this register's absence) · **Status:** authored into `pipeline/registers.py`; transport verdict `PENDING SPIKE` (see `briefs/2026-07-02-grandmaster/go-no-go.md`)
+**Date:** 2026-07-03 · **Consumer:** GRANDMASTER (greenlit; its STRESS-TEST returned `revise` on this register's absence) · **Status:** authored into `pipeline/registers.py`; transport verdict `RESOLVED — gpt-image` (2026-07-11, fork #1: unwired, fails loud until a runner is wired — see §4; spike history in `briefs/2026-07-02-grandmaster/go-no-go.md`)
 
 **Method:** four parallel deep-research subagents (line/ink/paint-process · palette/staging · form/timing · tells/negative-controls), synthesized here into the four wire-ready outputs the [animation-vocabulary-expansion plan](../../docs/active/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md) §2a requires. Research answers *"what makes the look the look,"* grounded in primary sources (Tartakovsky and crew interviews), never surface pastiche.
 
@@ -27,7 +27,7 @@ Also sharpened, not a reversal: **"sketchy" overstates the line.** The final str
 | `identity_lock` | Match face/hair/palette/proportions/silhouette of Image 1 exactly; **the heavy ink contour is surface treatment and must never alter the anatomy.** | The line-is-treatment finding (§5.1) + silhouette-first doctrine (§5.4) |
 | `preserve` | Drawn ink line visible over every color area — thick, near-black, weight varying with mass and silhouette, deliberately imperfect; gritty hand-painted texture on BOTH figure and background; warm earthy desaturated base. Negatives: no clean uniform outlines (line-art-only drift), no outline-free color-field flatness (Samurai Jack drift), no smooth gradients/airbrush polish (over-cleaning drift). | §5.1, §5.5, §6 |
 | `style_token` | "Raw seventies-pulp 2D animation still: heavy weight-varying ink line kept over the color, gritty painterly brushwork shared by figure and background, flat earthy fills with drawn tonal shading, warm earthy desaturated palette punctuated by a single bold color statement." | §§5.1–5.3; the '70s-pulp stack (Leone/Kurosawa/Bakshi/Frazetta/Heavy Metal) Tartakovsky names |
-| `generation_model` | NB2 (`gemini-3.1-flash-image-preview`) — **hypothesis**, judged by the go/no-go spike | §4 |
+| `generation_model` | **RESOLVED — gpt-image (`gpt-image-2`), 2026-07-11 fork #1** (unwired; fails loud via `UnwiredTransportError` until a runner is wired). The NB2 hypothesis was judged by the costed spike and batched to gpt-image. | §4 |
 | `final_model` | NB Pro — rides the painterly-final seam (no consumer yet, same as watercolor/photoreal/3d) | Registry convention |
 | `markers` | `weight-varying ink` · `gritty painterly texture` · `warm earthy desaturated` · `line-work kept over the color` · `dead-stop hold` · the name | §5 tells; verified collision-free against all other registers' markers |
 | `stub_keywords` | `("primal",)` — appended AFTER the legacy six (precedence oracle-pinned) | Task 2.5 |
@@ -61,7 +61,9 @@ Shipped as **Example C** in [`pipeline/agents/prompts/cy-character-designer-cont
 
 ## 4. Output 4 — transport recommendation
 
-**Author clauses → spike ONE hero frame on NB2 from text alone → Sean's eye** (the §3c default; the register's `generation_model` records the NB2 hypothesis). Evidence is circumstantial both ways and the spike is the only real instrument: the SD community trained dedicated Primal LoRAs (text prompting under-delivered there — [Civitai](https://civitai.com/models/502844/genndy-tartakovsky-style-series-for-pony)), while Gemini-family guidance favors explicit attribute language and supports style-reference feeds if text alone reads generic ([Gemini API docs](https://ai.google.dev/gemini-api/docs/interactions/image-generation)). **Predicted NB2 miss:** the retained-hand-mark grit — watch for uniform line + grain-filter-over-clean-render. Escalation ladder (pre-agreed in `go-no-go.md`): NB2-from-text → NB2 + `refs/` style-image feed (watch the Flo-B identity-morph) → **NO-GO → Route C** (`pencil-test-colored`, already buildable); never a new transport mid-Bible-pass.
+**Transport verdict: RESOLVED — gpt-image (2026-07-11, fork #1, Sean-ratified; unwired — the register's `generation_model` records `gpt-image-2` and `invoke_image_edit` fails loud with `UnwiredTransportError` until a gpt-image runner is wired via the `openai-image-gen` skill and validated for across-edit identity; `final_model` stays NB Pro, the dormant painterly-final seam).** The paragraph below is the original recommendation that the costed spike judged — kept as the record of the §3c hypothesis:
+
+**Author clauses → spike ONE hero frame on NB2 from text alone → Sean's eye** (the §3c default; the register's `generation_model` recorded the NB2 hypothesis at authoring). Evidence is circumstantial both ways and the spike is the only real instrument: the SD community trained dedicated Primal LoRAs (text prompting under-delivered there — [Civitai](https://civitai.com/models/502844/genndy-tartakovsky-style-series-for-pony)), while Gemini-family guidance favors explicit attribute language and supports style-reference feeds if text alone reads generic ([Gemini API docs](https://ai.google.dev/gemini-api/docs/interactions/image-generation)). **Predicted NB2 miss:** the retained-hand-mark grit — watch for uniform line + grain-filter-over-clean-render. Escalation ladder (pre-agreed in `go-no-go.md`): NB2-from-text → NB2 + `refs/` style-image feed (watch the Flo-B identity-morph) → **NO-GO → Route C** (`pencil-test-colored`, already buildable); never a new transport mid-Bible-pass.
 
 ---
 
@@ -109,6 +111,6 @@ At 24fps — halve for the 12fps pipeline. *Frame values are register rules deri
 
 - The line-weight *rule* and shadow-hue logic are reconstructions from stills + critic language, not quoted studio doctrine.
 - No published exposure sheets or smear breakdowns exist for Primal — frame-step the refs at the spike before hard-coding timing numbers.
-- No public evidence on Gemini-family models reproducing this register from text — the go/no-go spike is the only real instrument.
+- No public evidence on Gemini-family models reproducing this register from text — the go/no-go spike was the only real instrument. *(Transport since RESOLVED — gpt-image, unwired; fails loud until a runner is wired. See §4.)*
 - Child-proportion figures in this register have effectively zero canonical reference; the kid's proportions are authored, not matched.
 - Several quotes trace to paywalled/403 pages via search snippets (AWN, IndieWire, Deadline, Collider) — attributed but not re-verified against full page text.

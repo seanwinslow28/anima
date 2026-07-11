@@ -17,6 +17,7 @@ The closed `style_register` vocabulary on `character.yaml` is the structural com
   - `photoreal`
   - `3d-rendered`
   - `primal-sketch-grit`
+  - `90s-nicktoon-grossout`
 
 Every prompt that drives an agent's behavior must work for every register in this vocabulary. The engine truth — *"if the loop plays smoothly and the character is recognizably itself in its intended medium, it ships"* — is style-agnostic by design. The medium is whatever the Studio Brief declared, not pencil-test by default.
 
