@@ -42,28 +42,6 @@
   border-right: none;
 }
 
-/* sprocket holes top + bottom */
-.reelone .bb-seg::before,
-.reelone .bb-seg::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 7px;
-  background: radial-gradient(circle at 10px 3.5px, var(--sprocket) 2.6px, transparent 2.8px)
-    repeat-x;
-  background-size: 20px 7px;
-  pointer-events: none;
-}
-
-.reelone .bb-seg::before {
-  top: 2px;
-}
-
-.reelone .bb-seg::after {
-  bottom: 2px;
-}
-
 .reelone .bb-seg-hit {
   display: block;
   width: 100%;
@@ -195,21 +173,9 @@
 }
 
 .reelone .bb-go {
-  display: inline-block;
-  font-weight: 600;
   font-size: 14px;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--on-tungsten);
-  background: var(--tungsten);
   padding: 13px 26px 12px;
-  border-radius: 2px;
   position: relative;
-}
-
-.reelone .bb-go:hover {
-  background: var(--tungsten-bright);
 }
 
 .reelone .bb-go small {
@@ -476,21 +442,8 @@
 
 .reelone .bb-retry {
   margin-top: 18px;
-  font: inherit;
-  font-weight: 600;
   font-size: 12px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--on-tungsten);
-  background: var(--tungsten);
-  border: none;
-  border-radius: 2px;
   padding: 10px 20px;
-  cursor: pointer;
-}
-
-.reelone .bb-retry:hover {
-  background: var(--tungsten-bright);
 }
 
 /* ── the board skeleton (loading doctrine: a skeleton of the target screen) ── */

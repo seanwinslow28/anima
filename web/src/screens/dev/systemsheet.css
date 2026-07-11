@@ -105,16 +105,8 @@
 }
 
 .syssheet button {
-  font: inherit;
   font-size: 11px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--tungsten);
-  background: none;
-  border: 1px solid var(--tungsten-dim);
-  border-radius: 2px;
   padding: 6px 12px;
-  cursor: pointer;
 }
 
 .syssheet-take {

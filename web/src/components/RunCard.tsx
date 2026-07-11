@@ -18,7 +18,7 @@ export function RunCard({ run }: { run: RunSummary }) {
   return (
     <Link
       to={`/runs/${run.run_id}`}
-      className="mq-card"
+      className="mq-card ro-sprocket"
       aria-label={`Open run ${run.slug}`}
     >
       <div className="mq-head">

@@ -49,7 +49,11 @@ export function Filmstrip({
       {frames.map((f) => (
         <li
           key={f.id}
-          className={f.now ? "ro-fcell ro-fcell--now" : "ro-fcell"}
+          className={
+            f.now
+              ? "ro-fcell ro-sprocket ro-fcell--now"
+              : "ro-fcell ro-sprocket"
+          }
           onMouseEnter={onPeek ? () => onPeek(f.id) : undefined}
           onMouseLeave={onPeekEnd}
         >

@@ -92,6 +92,7 @@ describe("PlanGate — the read", () => {
     // the one decision
     const approve = screen.getByRole("button", { name: /approve — print it/i });
     expect(approve).toBeEnabled();
+    expect(approve).toHaveClass("gate-approve", "ro-button", "ro-button--primary");
   });
 
   it("an unreadable plan artifact is an honest error state with a retry", async () => {

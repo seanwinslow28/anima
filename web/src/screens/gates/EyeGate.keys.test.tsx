@@ -83,6 +83,15 @@ describe("EyeGate — every key has a visible stage-toolbar button (a11y)", () =
       const btn = screen.getByRole("button", { name });
       expect(btn.tagName).toBe("BUTTON");
     }
+
+    expect(screen.getByRole("button", { name: /print it/i })).toHaveClass(
+      "ro-button",
+      "ro-button--primary",
+    );
+    expect(screen.getByRole("button", { name: /go again/i })).toHaveClass(
+      "ro-button",
+      "ro-button--quiet",
+    );
   });
 });
 

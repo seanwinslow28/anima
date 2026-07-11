@@ -13,19 +13,25 @@ import { Timecode } from "../../reelone/Timecode";
 const THUMB =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNka2r6DwAEXgH+2xBS9AAAAABJRU5ErkJggg==";
 
-const SWATCHES: Array<[name: string, hex: string, note: string]> = [
+const SWATCHES: Array<[name: string, value: string, note: string, swatch?: string]> = [
   ["--booth", "#141018", "the room"],
   ["--booth2", "#1D1722", "raised surface"],
   ["--booth3", "#251E2B", "highest surface"],
+  ["--booth-deep", "#0B080D", "stage + leader well"],
+  ["--sprocket", "#241D2C", "film perforations"],
+  ["--stage-edge", "#2B2333", "projector aperture"],
   ["--line", "#332A3C", "rules + borders"],
   ["--tungsten", "#E8B36A", "the practical / focus"],
   ["--tungsten-dim", "#8A6F4D", "dimmed practical"],
+  ["--tungsten-bright", "#F2C284", "primary hover"],
   ["--screenlight", "#FFF6E4", "the lit frame"],
   ["--print", "#7FA96B", "lamp: approve"],
   ["--hold", "#D9A441", "lamp: Em holds"],
-  ["--bakelite", "#C24838", "lamp: retry / fail"],
+  ["--bakelite", "#C24838", "strike / fail only"],
   ["--text", "#DDD5E0", "body text"],
   ["--mute", "#8F8798", "secondary text"],
+  ["--on-tungsten", "#101010", "text on the practical"],
+  ["--tungsten-rgb", "232, 179, 106", "token-channel wash", "rgba(var(--tungsten-rgb), .35)"],
   ["--page", "#F7EFDC", "the lit page"],
   ["--page-ink", "#2B2417", "page body"],
   ["--page-ink2", "#57503F", "page secondary"],
@@ -58,15 +64,33 @@ export function SystemSheet() {
       <section>
         <h2>Palette</h2>
         <div className="syssheet-swatches">
-          {SWATCHES.map(([name, hex, note]) => (
+          {SWATCHES.map(([name, value, note, swatch]) => (
             <div key={name} className="syssheet-sw">
-              <i style={{ background: hex }} />
+              <i style={{ background: swatch ?? value }} />
               <span>
-                {name} {hex}
+                {name} {value}
               </span>
               <small>{note}</small>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section>
+        <h2>Button recipe</h2>
+        <div className="syssheet-row">
+          <button type="button" className="ro-button ro-button--primary">
+            Primary action
+          </button>
+          <button type="button" className="ro-button ro-button--quiet">
+            Quiet action
+          </button>
+          <button type="button" className="ro-button ro-button--danger">
+            Danger action
+          </button>
+          <button type="button" className="ro-button ro-button--primary" disabled>
+            Disabled
+          </button>
         </div>
       </section>
 
@@ -108,6 +132,7 @@ export function SystemSheet() {
           </span>
           <button
             type="button"
+            className="ro-button ro-button--quiet"
             onClick={() => {
               setLeaderDone(false);
               setLeaderRun((n) => n + 1);

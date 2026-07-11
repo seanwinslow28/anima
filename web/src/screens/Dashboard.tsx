@@ -40,7 +40,7 @@ export function Dashboard() {
           </p>
           <button
             type="button"
-            className="mq-retry"
+            className="mq-retry ro-button ro-button--primary"
             onClick={() => setNonce((n) => n + 1)}
           >
             Retry

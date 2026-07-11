@@ -15,7 +15,9 @@ describe("Filmstrip", () => {
     render(<Filmstrip frames={FRAMES} />);
     const strip = screen.getByRole("list", { name: "reel" });
     expect(strip).toHaveClass("ro-strip");
-    expect(screen.getAllByRole("listitem")).toHaveLength(4);
+    const cells = screen.getAllByRole("listitem");
+    expect(cells).toHaveLength(4);
+    cells.forEach((cell) => expect(cell).toHaveClass("ro-sprocket"));
   });
 
   test("a printed frame shows its image and the print mark", () => {

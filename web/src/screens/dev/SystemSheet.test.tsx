@@ -34,4 +34,32 @@ describe("/dev/system", () => {
     expect(screen.getByRole("list", { name: "reel" })).toBeInTheDocument();
     vi.unstubAllGlobals();
   });
+
+  test("renders the P3a token additions, rgb mechanism, and button recipe", () => {
+    renderApp(<App />, { route: "/dev/system" });
+
+    for (const token of [
+      "--booth-deep #0B080D",
+      "--sprocket #241D2C",
+      "--on-tungsten #101010",
+      "--tungsten-bright #F2C284",
+      "--stage-edge #2B2333",
+      "--tungsten-rgb 232, 179, 106",
+    ]) {
+      expect(screen.getByText(new RegExp(token))).toBeInTheDocument();
+    }
+
+    expect(screen.getByRole("button", { name: "Primary action" })).toHaveClass(
+      "ro-button",
+      "ro-button--primary",
+    );
+    expect(screen.getByRole("button", { name: "Quiet action" })).toHaveClass(
+      "ro-button",
+      "ro-button--quiet",
+    );
+    expect(screen.getByRole("button", { name: "Danger action" })).toHaveClass(
+      "ro-button",
+      "ro-button--danger",
+    );
+  });
 });

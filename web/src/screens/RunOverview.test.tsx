@@ -113,6 +113,7 @@ describe("RunOverview — the now-screening hero", () => {
     expect(headings[0]).toHaveTextContent(/F03 waiting on your eye/i);
     const go = screen.getByRole("link", { name: /to the screening/i });
     expect(go).toHaveAttribute("href", `/runs/${RUN_ID}/frames/3`);
+    expect(go).toHaveClass("bb-go", "ro-button", "ro-button--primary");
   });
 
   it("names the machine token in the eyebrow (now screening · next_action)", async () => {

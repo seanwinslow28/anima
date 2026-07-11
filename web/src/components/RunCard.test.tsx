@@ -19,7 +19,7 @@ describe("RunCard — the marquee card", () => {
 
     const card = screen.getByRole("link", { name: /open run spark-forest/i });
     expect(card).toHaveAttribute("href", "/runs/2026-07-04-spark-forest");
-    expect(card).toHaveClass("mq-card");
+    expect(card).toHaveClass("mq-card", "ro-sprocket");
   });
 
   it("leads with slug (display) + stage (mono chip) + the one move", () => {

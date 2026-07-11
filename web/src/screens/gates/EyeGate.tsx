@@ -1,6 +1,6 @@
 import "../../styles/eyegate.css";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { fetchArtifact, fetchCandidates, frameImageUrl } from "../../api/client";
@@ -206,7 +206,7 @@ export function EyeGate({ pollIntervalMs }: { pollIntervalMs?: number } = {}) {
             <span className="eg-mono">{runId}</span> — it may not be on this
             reel, or its candidates are unreadable.
           </p>
-          <button type="button" className="eg-retry" onClick={reload}>
+          <button type="button" className="eg-retry ro-button ro-button--primary" onClick={reload}>
             Retry
           </button>
         </div>
@@ -439,7 +439,7 @@ function Screening({
   const hud = useHudOptional();
   const declareDim = hud?.declareDimLevel;
   const releaseDim = hud?.releaseDimLevel;
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!declareDim || !releaseDim) return;
     declareDim("full");
     return releaseDim;
@@ -656,8 +656,9 @@ function Screening({
                 wipe={wipe}
               />
             ) : celUrl !== null ? (
-              <div className="eg-img eg-img--lit">
+              <div className={loop.running ? "eg-img eg-img--lit ro-weave" : "eg-img eg-img--lit"}>
                 <img
+                  className="ro-flicker"
                   src={celUrl}
                   alt={
                     cel && cel.n !== frameN
@@ -837,7 +838,7 @@ function DecisionNotice({
             The take jammed in the gate — rc {flow.job.rc}
           </p>
           <pre className="eg-logs">{flow.job.logs || "(no log output)"}</pre>
-          <button type="button" className="eg-flownote-act" onClick={onRetry}>
+          <button type="button" className="eg-flownote-act ro-button ro-button--primary" onClick={onRetry}>
             Retry
           </button>
         </div>
@@ -852,7 +853,7 @@ function DecisionNotice({
             <span className="eg-mono">{flow.activeJobId}</span> has the run.
           </p>
           <Link
-            className="eg-flownote-act"
+            className="eg-flownote-act ro-button ro-button--quiet"
             to={`/runs/${encodeURIComponent(runId)}`}
           >
             Watch the running job
@@ -865,7 +866,7 @@ function DecisionNotice({
         <div className="eg-flownote" role="alert">
           <p className="eg-flownote-lead">This run already moved on</p>
           <p className="eg-flownote-sub">{flow.detail}</p>
-          <button type="button" className="eg-flownote-act" onClick={onBack}>
+          <button type="button" className="eg-flownote-act ro-button ro-button--primary" onClick={onBack}>
             Refresh the screening
           </button>
         </div>
@@ -886,7 +887,7 @@ function DecisionNotice({
             )}
             . Refresh before touching anything.
           </p>
-          <button type="button" className="eg-flownote-act" onClick={onBack}>
+          <button type="button" className="eg-flownote-act ro-button ro-button--primary" onClick={onBack}>
             Refresh
           </button>
         </div>
@@ -899,7 +900,7 @@ function DecisionNotice({
             The gate refused{flow.status ? ` (${flow.status})` : ""}
           </p>
           <p className="eg-flownote-sub">{flow.detail}</p>
-          <button type="button" className="eg-flownote-act" onClick={onBack}>
+          <button type="button" className="eg-flownote-act ro-button ro-button--primary" onClick={onBack}>
             Back to the screening
           </button>
         </div>

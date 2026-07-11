@@ -384,24 +384,8 @@
   flex-wrap: wrap;
 }
 .reelone .gate-approve {
-  font-family: var(--display);
-  font-weight: 600;
   font-size: 13px;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  color: var(--on-tungsten);
-  background: var(--tungsten);
   padding: 13px 26px 11px;
-  border: none;
-  border-radius: 2px;
-  cursor: pointer;
-}
-.reelone .gate-approve:hover {
-  background: var(--tungsten-bright);
-}
-.reelone .gate-approve:disabled {
-  background: var(--tungsten-dim);
-  cursor: not-allowed;
 }
 .reelone .gate-approve small {
   display: block;
@@ -457,19 +441,8 @@
   margin: 0 0 10px;
 }
 .reelone .gate-notice-act {
-  font-family: var(--display);
   font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--tungsten);
-  border: 1px solid var(--line);
-  background: none;
   padding: 7px 14px 6px;
-  border-radius: 2px;
-  cursor: pointer;
-}
-.reelone .gate-notice-act:hover {
-  border-color: var(--tungsten);
 }
 
 /* the working leader sits centered on the dark stage */
@@ -655,24 +628,6 @@
 /* the second road through the same gate: quiet next to the tungsten
    primary, still a real button */
 .reelone .gate-secondary {
-  font-family: var(--display);
-  font-weight: 500;
   font-size: 12px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text);
-  background: transparent;
-  border: 1px solid var(--line);
-  border-radius: 2px;
   padding: 13px 18px;
-  cursor: pointer;
-}
-.reelone .gate-secondary:hover {
-  border-color: var(--tungsten-dim);
-  color: var(--tungsten);
-}
-.reelone .gate-secondary:disabled {
-  color: var(--mute);
-  border-color: var(--line);
-  cursor: not-allowed;
 }

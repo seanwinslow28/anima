@@ -82,7 +82,7 @@ export function RetryNoteRow({
       />
       <button
         type="button"
-        className="eg-again-send"
+        className="eg-again-send ro-button ro-button--primary"
         aria-label="Send the retake"
         disabled={!canSend}
         onClick={send}

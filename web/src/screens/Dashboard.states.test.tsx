@@ -49,7 +49,7 @@ describe("Dashboard — states", () => {
     expect(lead.closest(".mq-notice")).toHaveClass("mq-notice--error");
     expect(screen.getByRole("alert")).toBeInTheDocument();
     const retry = screen.getByRole("button", { name: /retry/i });
-    expect(retry).toHaveClass("mq-retry");
+    expect(retry).toHaveClass("mq-retry", "ro-button", "ro-button--primary");
 
     await userEvent.click(retry);
 

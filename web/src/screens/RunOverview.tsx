@@ -59,7 +59,11 @@ export function RunOverview() {
             The booth couldn't project <span className="bb-mono">{id}</span> —
             it may have moved, or its state file is unreadable.
           </p>
-          <button type="button" className="bb-retry" onClick={reread}>
+          <button
+            type="button"
+            className="bb-retry ro-button ro-button--primary"
+            onClick={reread}
+          >
             Retry
           </button>
         </div>
@@ -138,7 +142,11 @@ function CrewWorking({
         Job <span className="bb-mono">{status.active_job?.job_id}</span> owns
         the run — the board advances when it wraps.
       </p>
-      <button type="button" className="bb-retry" onClick={onReread}>
+      <button
+        type="button"
+        className="bb-retry ro-button ro-button--primary"
+        onClick={onReread}
+      >
         Re-read the booth
       </button>
     </section>
@@ -274,7 +282,7 @@ function StageReel({
           return (
             <li
               key={seg.stage}
-              className={`bb-seg bb-seg--${seg.status}`}
+              className={`bb-seg ro-sprocket bb-seg--${seg.status}`}
               aria-current={seg.status === "now" ? "step" : undefined}
             >
               {href ? (
@@ -306,7 +314,7 @@ function NowScreening({ runId, status }: { runId: string; status: RunStatus }) {
       </span>
       <h1 className="bb-move">{cta.label}</h1>
       {url && verb && (
-        <Link className="bb-go" to={url}>
+        <Link className="bb-go ro-button ro-button--primary" to={url}>
           {verb}
           {frame != null && (
             <small>F{String(frame).padStart(2, "0")} · ⏎</small>
