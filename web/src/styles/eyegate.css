@@ -345,7 +345,24 @@
   color: var(--mute);
 }
 
-/* ── lights-out (U5c "L"): the frame alone — the stage glow lifts a touch ── */
+/* ── lights-out (U5c "L"): the frame alone — the whole room goes dark ──
+   A fixed takeover: covers the shell app bar too (all chrome is chrome),
+   under the ⌘K palette (z 10). The stage glow lifts a touch. */
+.eg-screen--lights {
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  background: var(--booth);
+  padding: 0;
+}
+
+/* the shell app bar lives in a higher stacking context than <main> — put it
+   out with the rest of the house lights */
+.booth:has(.eg-screen--lights) .booth-hud {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .eg-screen--lights .eg-stage {
   box-shadow:
     0 0 130px 16px rgba(255, 246, 228, .16),
