@@ -7,6 +7,7 @@
  */
 
 .eg-screen {
+  flex: 1;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -45,12 +46,22 @@
 /* ── the auditorium: beam + lit stage ── */
 .eg-stagewrap {
   flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 16px;
+  align-items: stretch;
   position: relative;
   min-height: 0;
   padding: 12px 24px;
+}
+
+.eg-stagecol {
+  position: relative;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* the beam: a faint cone above the screen */
@@ -59,6 +70,7 @@
   left: 50%;
   top: -40px;
   width: 130%;
+  max-width: calc(100vw - 40px);
   height: 130%;
   transform: translateX(-50%);
   background: radial-gradient(46% 42% at 50% 46%, rgba(232, 179, 106, .075), transparent 70%);
@@ -67,11 +79,9 @@
 
 .eg-stage {
   position: relative;
-  height: 100%;
+  width: min(100%, calc(74vh * 16 / 10));
   max-height: 74vh;
-  min-height: 220px;
   aspect-ratio: 16 / 10;
-  max-width: 92%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -369,6 +379,10 @@
     inset 0 0 0 1px #2B2333;
 }
 
+.eg-screen--lights .eg-stagewrap {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 /*
  * ── the summonable HUD (U5c): idle ~3s → the booth goes dark ──
  * The eye-gate's chrome fades to a trace; the lit frame stays. Driven by
@@ -396,14 +410,34 @@
   }
 }
 
-/* ── the burn-ins on the print ── */
-.eg-burn {
+/* ── the burn-ins on the print — one row, ellipsis before collision ── */
+.eg-burns {
   position: absolute;
+  left: 18px;
+  right: 18px;
   bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  pointer-events: none;
 }
 
-.eg-burn--l { left: 18px; }
-.eg-burn--r { right: 18px; }
+.eg-burn {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.eg-burn:last-child {
+  text-align: right;
+}
+
+.eg-burn .ro-burnin {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* ── the transport: takes ── */
 .eg-transport {
@@ -466,14 +500,12 @@
 
 /* ── Em's margin rail (the back row) ── */
 .eg-rail {
-  position: absolute;
-  right: 22px;
-  top: 18px;
-  width: 270px;
   z-index: 4;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width: 0;
+  overflow-y: auto;
 }
 
 .eg-lbl {
@@ -585,10 +617,22 @@
 }
 
 @media (max-width: 900px) {
+  .eg-screen {
+    height: auto;
+    min-height: 100%;
+  }
+
+  .eg-stagewrap {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .eg-stagecol {
+    min-height: min(58vh, 520px);
+  }
+
   .eg-rail {
-    position: static;
-    width: auto;
     margin-top: 10px;
+    overflow-y: visible;
   }
 }
 
@@ -684,7 +728,7 @@
   bottom: 26px;
   transform: translateX(-50%);
   z-index: 6;
-  min-width: 340px;
+  width: min(340px, 92vw);
   border: 1px solid var(--line);
   background: rgba(20, 16, 24, .96);
   padding: 14px 16px;

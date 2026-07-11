@@ -627,95 +627,99 @@ function Screening({
       )}
 
       <div className="eg-stagewrap">
-        <div className="eg-beam" aria-hidden="true" />
-        <figure
-          className={[
-            "eg-stage",
-            loop.running ? "eg-stage--running" : "",
-            celFlip
-              ? reducedMotion()
-                ? "eg-stage--arrive-soft"
-                : "eg-stage--arrive"
-              : "",
-          ]
-            .filter(Boolean)
-            .join(" ")}
-          data-testid="stage"
-          aria-label={`${label} take ${attempt.attempt}, projected`}
-        >
-          {diffOn && attempt.image_url !== null ? (
-            <DiffWipe
-              base={{
-                key: "base",
-                label: `TAKE ${attempt.attempt}`,
-                url: attempt.image_url,
-              }}
-              compare={compare}
-              wipe={wipe}
-            />
-          ) : celUrl !== null ? (
-            <div className="eg-img eg-img--lit">
-              <img
-                src={celUrl}
-                alt={
-                  cel && cel.n !== frameN
-                    ? `${frameLabel(cel.n)} — rocking the loop`
-                    : peekN !== null
-                      ? `${frameLabel(peekN)} — peeking the reel`
-                      : `${label} take ${attempt.attempt} — the candidate on screen`
-                }
-                onError={
-                  cel || peekN !== null
-                    ? undefined
-                    : () =>
-                        setBroken((prev) => new Set(prev).add(attempt.attempt))
-                }
+        <div className="eg-stagecol">
+          <div className="eg-beam" aria-hidden="true" />
+          <figure
+            className={[
+              "eg-stage",
+              loop.running ? "eg-stage--running" : "",
+              celFlip
+                ? reducedMotion()
+                  ? "eg-stage--arrive-soft"
+                  : "eg-stage--arrive"
+                : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+            data-testid="stage"
+            aria-label={`${label} take ${attempt.attempt}, projected`}
+          >
+            {diffOn && attempt.image_url !== null ? (
+              <DiffWipe
+                base={{
+                  key: "base",
+                  label: `TAKE ${attempt.attempt}`,
+                  url: attempt.image_url,
+                }}
+                compare={compare}
+                wipe={wipe}
               />
+            ) : celUrl !== null ? (
+              <div className="eg-img eg-img--lit">
+                <img
+                  src={celUrl}
+                  alt={
+                    cel && cel.n !== frameN
+                      ? `${frameLabel(cel.n)} — rocking the loop`
+                      : peekN !== null
+                        ? `${frameLabel(peekN)} — peeking the reel`
+                        : `${label} take ${attempt.attempt} — the candidate on screen`
+                  }
+                  onError={
+                    cel || peekN !== null
+                      ? undefined
+                      : () =>
+                          setBroken((prev) => new Set(prev).add(attempt.attempt))
+                  }
+                />
+              </div>
+            ) : (
+              <div className="eg-nodevelop">
+                <p className="eg-nodevelop-lead">This take didn't develop.</p>
+                {attempt.errored && (
+                  <p className="eg-nodevelop-why eg-mono">{attempt.errored}</p>
+                )}
+                <p className="eg-nodevelop-sub">
+                  No image landed for take {attempt.attempt} — pick another take,
+                  or send it again once the retake gate lands.
+                </p>
+              </div>
+            )}
+            {onion && canGhost && loop.playhead === null && peekN === null && (
+              <OnionSkin ghosts={ghosts} />
+            )}
+            <div className="eg-burns">
+              <span className="eg-burn">
+                <BurnIn segments={[label, `TAKE ${attempt.attempt}`, `HOLD ${hold}`]} />
+              </span>
+              <span className="eg-burn">
+                <BurnIn segments={[FPS_LINE, MODEL_LINE, FRAME_COST_LINE]} />
+              </span>
             </div>
-          ) : (
-            <div className="eg-nodevelop">
-              <p className="eg-nodevelop-lead">This take didn't develop.</p>
-              {attempt.errored && (
-                <p className="eg-nodevelop-why eg-mono">{attempt.errored}</p>
-              )}
-              <p className="eg-nodevelop-sub">
-                No image landed for take {attempt.attempt} — pick another take,
-                or send it again once the retake gate lands.
+          </figure>
+          {!lights && <CheatSheet open={cheatOpen} />}
+          {jobRunning && (
+            <div className="eg-jobveil" data-testid="gate-working">
+              <div className="eg-jobveil-dial">
+                <RitualLeader
+                  caption={decision === "again" ? "FLO RE-SHOOTS" : "PRINTING"}
+                />
+              </div>
+              <p className="eg-jobveil-sub">
+                {decision === "again"
+                  ? `Flo re-shoots ${label} — the note rides the retake`
+                  : `Printing ${label} take ${attempt.attempt} — the count holds until it's really through`}
+                {flow.phase === "working" && (
+                  <>
+                    {" "}
+                    · job <span className="eg-mono">{flow.jobId}</span>
+                  </>
+                )}
               </p>
             </div>
           )}
-          {onion && canGhost && loop.playhead === null && peekN === null && (
-            <OnionSkin ghosts={ghosts} />
-          )}
-          <span className="eg-burn eg-burn--l">
-            <BurnIn segments={[label, `TAKE ${attempt.attempt}`, `HOLD ${hold}`]} />
-          </span>
-          <span className="eg-burn eg-burn--r">
-            <BurnIn segments={[FPS_LINE, MODEL_LINE, FRAME_COST_LINE]} />
-          </span>
-        </figure>
+        </div>
         {!lights && <EmReadout records={attempt.em} />}
-        {!lights && <CheatSheet open={cheatOpen} />}
-        {jobRunning && (
-          <div className="eg-jobveil" data-testid="gate-working">
-            <div className="eg-jobveil-dial">
-              <RitualLeader
-                caption={decision === "again" ? "FLO RE-SHOOTS" : "PRINTING"}
-              />
-            </div>
-            <p className="eg-jobveil-sub">
-              {decision === "again"
-                ? `Flo re-shoots ${label} — the note rides the retake`
-                : `Printing ${label} take ${attempt.attempt} — the count holds until it's really through`}
-              {flow.phase === "working" && (
-                <>
-                  {" "}
-                  · job <span className="eg-mono">{flow.jobId}</span>
-                </>
-              )}
-            </p>
-          </div>
-        )}
       </div>
 
       {(!lights || noticeUp) && (
