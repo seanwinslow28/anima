@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-07-11 — P3b D20: make the eye-gate HUD declaration deterministic
+
+- Moved the ready eye-gate's `full` dim-level declaration from a passive effect to a layout effect. The stage DOM could previously become observable before the passive declaration committed, making `EyeGate.hud.test.tsx` intermittently read the provider's default `density` value under suite load and allowing a one-frame dim-mode flash in the browser.
+- Recorded D20 in the converged polish plan with the merged-main reproduction evidence and P3b ownership so the stop-green repair remains part of the slice record.
+
 ## 2026-07-11 — ② Flow v1b polish P3a: token lockdown + the 11px floor ($0, TDD, web-only production change)
 
 **What & why.** P3a closes D7/D8 and the document-gate half of D9. Four ratified REEL ONE tokens now own the shipped near-black, sprocket, on-tungsten, and tungsten-hover colors; every free screen literal and translucent wash routes through a named token or token-channel triple; failed borders and the marquee retry hover return to the one `--bakelite` warning hue. The remaining six sub-11px declarations rise to the 11px accessibility floor (P2 had already raised the seventh wipe tag), and document gates now share the system's 900px collapse boundary instead of drifting at 960px.

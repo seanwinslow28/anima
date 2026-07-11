@@ -1,6 +1,6 @@
 import "../../styles/eyegate.css";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { fetchArtifact, fetchCandidates, frameImageUrl } from "../../api/client";
@@ -439,7 +439,7 @@ function Screening({
   const hud = useHudOptional();
   const declareDim = hud?.declareDimLevel;
   const releaseDim = hud?.releaseDimLevel;
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!declareDim || !releaseDim) return;
     declareDim("full");
     return releaseDim;
