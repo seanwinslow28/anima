@@ -1,7 +1,9 @@
 # P6 closing evidence — one room, every screen
 
-**Date:** 2026-07-11  
-**Branch:** `polish/p6-one-room`  
+**Date:** 2026-07-11
+
+**Branch:** `polish/p6-one-room`
+
 **Live seam:** Vite `:5173` over the real daemon `:8000`, read-only against the existing `runs/` tree.
 
 ## Closing four-width pack
