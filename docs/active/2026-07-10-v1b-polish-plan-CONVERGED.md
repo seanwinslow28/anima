@@ -277,6 +277,10 @@ reverse (geometry doesn't ride a nit slice).
 
 ## Open decisions surfaced for Sean
 
+> **RATIFIED 2026-07-11 — all six as recommended** (Sean's call at the Codex handoff). The
+> execution contract is [`2026-07-11-v1b-polish-codex-handoff.md`](2026-07-11-v1b-polish-codex-handoff.md):
+> Codex 5.6 builds per-slice PRs, Claude reviews each before the next kickoff.
+
 Each with a recommendation (the first option). None block P1.
 
 1. **The action-hue grammar (D8's retry split).** → **Recommended:** tungsten = commit/recover
