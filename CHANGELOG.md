@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-07-11 — ② Flow v1b polish P3a: token lockdown + the 11px floor ($0, TDD, web-only production change)
+
+**What & why.** P3a closes D7/D8 and the document-gate half of D9. Four ratified REEL ONE tokens now own the shipped near-black, sprocket, on-tungsten, and tungsten-hover colors; every free screen literal and translucent wash routes through a named token or token-channel triple; failed borders and the marquee retry hover return to the one `--bakelite` warning hue. The remaining six sub-11px declarations rise to the 11px accessibility floor (P2 had already raised the seventh wipe tag), and document gates now share the system's 900px collapse boundary instead of drifting at 960px.
+
+- **TDD:** four focused contract tests were added after being observed red: exact named tokens inside `.reelone`, the seven named selectors numerically at `>=11`, the 900px gate boundary, and the failed-border's semantic `--bakelite` token. The literal grep remains manual PR evidence by design, not a CI-wide filesystem rule.
+- **Visual proof:** the committed [P3a evidence pack](docs/anima-test-runs/2026-07-11-v1b-polish-p3a-evidence/README.md) carries 100 before/after screenshots across all eight stations, five required viewports, four extra 920px breakpoint pairs, and six eye-gate interaction states. The exhaustive intended delta is the six remaining type raises, three specified hue unifications, and the 960→900 boundary; no other layout, density, or motion shift was observed.
+- **Contracts:** all free washes preserve their exact channels + alpha through named triples; recomputed changed pairs clear their AA/non-text bars; reduced-motion behavior is untouched. `server/`, `pipeline/`, and `evals/` remain byte-identical and both md5 guards remain pinned.
+
 ## 2026-07-11 — ② Flow v1b polish P2: honest keys, honest labels, honest room ($0, TDD, web-only production change)
 
 **What & why.** P2 closes D4/D6/D11/D12/D18 plus Claude's P1-review defect D19. The `R` key now cancels its browser default before opening Em's selected prefill, idle-dark cannot swallow a retry note while the director is composing, waiting takes say `YOUR CALL` instead of falsely claiming `ON SCREEN`, the wipe tag clears the 11px floor with the established burn-in shadow, and the wipe slider names which side dominates. The short-height eye-gate is now honestly a fixed desktop screening room: at ≥900px wide the booth is constrained to `100vh`, and the 16:10 frame sizes from the vertical room left by the app bar, transport, and filmstrip instead of forcing the document taller; below 900px the in-flow single-column screen retains its scroll behavior.
