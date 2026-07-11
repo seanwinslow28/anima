@@ -123,7 +123,7 @@ session is Sean's: daemon + vite up, a real run walked plan → gates → eye-ga
 | P3a | Tokens, literals, and the type floor | — | ✅ merged (#100) |
 | P3b | Button recipe + shared primitives + the living sheet | — | ✅ merged (#101) |
 | P4 | The gates read like a room (archival state + hierarchy + lamp-pool retune) | — | ✅ merged (#102) |
-| P5 | Deepen the ritual (intercom, whispers, bleed, warmth; ends with engine truth) | Fable-grade care | 🟨 in review |
-| P6 | One room, every screen (consistency + narrow sweep) | — | ⬜ |
+| P5 | Deepen the ritual (intercom, whispers, bleed, warmth; ends with engine truth) | Fable-grade care | ✅ merged (#103) |
+| P6 | One room, every screen (consistency + narrow sweep) | — | 🟨 in review |
 
 Update this table's status column in each slice PR.
