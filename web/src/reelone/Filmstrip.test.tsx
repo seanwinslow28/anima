@@ -48,14 +48,14 @@ describe("Filmstrip", () => {
 
   // U2b additive extension — the eye status (a generated take waiting on the
   // director, tungsten, no pulse) and a per-frame mark override.
-  test("an eye frame reads ON SCREEN in tungsten without pulsing", () => {
+  test("an eye frame reads YOUR CALL in tungsten without pulsing", () => {
     render(
       <Filmstrip
         frames={[{ id: 3, label: "F03", status: "eye", src: "/f3.png", now: true }]}
       />,
     );
     const cell = screen.getAllByRole("listitem")[0];
-    expect(cell.textContent).toContain("ON SCREEN");
+    expect(cell.textContent).toContain("YOUR CALL");
     expect(cell.querySelector(".ro-eye")).not.toBeNull();
     expect(cell.querySelector(".ro-pulse")).toBeNull();
   });

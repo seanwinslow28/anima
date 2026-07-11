@@ -9,6 +9,17 @@
   flex-direction: column;
 }
 
+/* The desktop eye-gate is a fixed screening room, so its stage yields to the
+   app bar and transport instead of growing the page. Below 900px the rail
+   moves in-flow and the graceful single-column screen may scroll. */
+@media (min-width: 900px) {
+  .booth:has(.eg-screen) {
+    height: 100vh;
+    min-height: 0;
+    overflow: hidden;
+  }
+}
+
 /* ---- app bar (shell chrome — fades under the HUD's idle) ---- */
 .booth-appbar {
   display: flex;

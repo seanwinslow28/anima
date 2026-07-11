@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -97,6 +97,22 @@ describe("EyeGate — the summonable HUD (idle → the booth goes dark)", () => 
     const section = screen.getByTestId("eyegate");
 
     await new Promise((r) => setTimeout(r, 200));
+    expect(section.className).not.toContain("eg-screen--idledark");
+  });
+
+  it("keeps the transport awake while the retry note is open", async () => {
+    mountInHud({ idleMs: 40 });
+    await seeTheStage();
+    const section = screen.getByTestId("eyegate");
+    const region = screen.getByRole("region", { name: /the stage/i });
+    region.focus();
+
+    fireEvent.keyDown(region, { key: "r" });
+    expect(screen.getByRole("textbox", { name: /retake note/i })).toHaveFocus();
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    });
     expect(section.className).not.toContain("eg-screen--idledark");
   });
 });

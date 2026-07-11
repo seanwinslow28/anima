@@ -274,7 +274,7 @@ describe("EyeGate — the provenance line (client-composed, G8)", () => {
 });
 
 describe("EyeGate — the filmstrip ledger", () => {
-  it("shows the run's frames from /status: PRINT, ON SCREEN (ringed = the viewed frame), pending", async () => {
+  it("shows the run's frames from /status: PRINT, YOUR CALL (ringed = the viewed frame), pending", async () => {
     mountEyeGate();
     await seeTheStage();
     const reel = screen.getByRole("list", { name: /reel/i });
@@ -285,7 +285,7 @@ describe("EyeGate — the filmstrip ledger", () => {
     expect(within(cells[0]).getByText(/PRINT/)).toBeInTheDocument();
     expect(within(cells[1]).getByText(/PRINT/)).toBeInTheDocument();
     expect(within(cells[2]).getByText("F03")).toBeInTheDocument();
-    expect(within(cells[2]).getByText(/ON SCREEN/)).toBeInTheDocument();
+    expect(within(cells[2]).getByText(/YOUR CALL/)).toBeInTheDocument();
     // the ring follows the VIEWED frame
     expect(cells[2].className).toContain("ro-fcell--now");
     expect(cells[3].className).not.toContain("ro-fcell--now");

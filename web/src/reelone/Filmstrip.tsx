@@ -17,7 +17,7 @@ export type FilmstripFrame = {
 const STATUS_MARK: Record<FilmstripFrame["status"], string> = {
   printed: "✓ PRINT",
   working: "● WORKING",
-  eye: "ON SCREEN",
+  eye: "YOUR CALL",
   pending: "",
 };
 

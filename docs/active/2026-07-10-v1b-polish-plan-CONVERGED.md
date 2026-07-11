@@ -86,6 +86,7 @@ stub artifact; real Em verdicts differ per cast namespace, MSW-tested).
 | **D16** | The collapsed "THE CREW TONIGHT" intent-reveal renders as a bare header on a void (reads broken, not quiet); the box-office derived line wraps mid-phrase ("× $0.07" orphaned). | `overview-plan/generate--w1440.png` | Board · DESIGN §7 (collapsed panels look intentional) | **P4** |
 | **D17** | **The lit page reads flat — a tuning defect, not an absence** (red-team correction: the mockup's lamp-pool CSS ships *verbatim* — `gates.css:36-46` radial wash + `:54-56` paper glow — yet the live gates read flat at 1440, so the shipped values/geometry are visually swamped in situ). The work is a **retune** (wash intensity/extent, glow radius, page-vs-booth contrast), judged by eye against `reelone-reading.html` — not re-adding CSS that exists. | Gate screenshots vs `reelone-reading.html`; `gates.css:36-56` verified shipped | Gates · "the page is the lit object" | **P4** |
 | **D18** | **Idle-dark fades the retry note mid-composition** (red-team discovery). `idleDark = boothDark && !noticeUp && !jobRunning` (`EyeGate.tsx:600`) never checks `againOpen`; the note row renders inside `.eg-transport`, which fades to 12% after 3s of no input — pause to think about a correction and the input you're focused in disappears. Direct violation of DESIGN §9 ("never timed-fade content someone is reading"). The hud test suite never covers `againOpen`. | Code-verified `EyeGate.tsx:600` + `eyegate.css:386-389` + `HudHost.tsx:28,52-58` | Eye-gate · the summonable-HUD doctrine | **P2** |
+| **D19** | **The eye-gate scrolls at short desktop heights instead of yielding to the room.** After P1, `.eg-stage` is still width-driven by `calc(74vh * 16 / 10)` while `.booth` supplies only an indefinite `min-height:100vh`; at 1440×900 the fixed screening room grows to 998px (98px scroll), and at 1280×680 it grows to 966px. The stage must size from the vertical room left by the app bar + transport + filmstrip, with lights-out as the geometry reference. | Claude's P1 review; reproduced against merged PR #98 at 1440×900 and 1280×680 | Eye-gate · the fixed single-screen contract; DESIGN §5 | **P2** |
 
 **Dismissed (audited, not defects):** stub Em cards near-identical across namespaces (stub
 artifact — real verdicts differ, MSW-tested; known item 3). The leader-strip numerals counting
@@ -150,22 +151,28 @@ every slice is independently demoable and PR'd.
   the room" is the work; the CSS is easy, the taste isn't.
 
 ### P2 — Honest keys, honest labels (eye-gate behavior nits) · **Opus 4.8 / Codex**
-- **Surface:** `EyeGate.tsx`, `Filmstrip.tsx`, `DiffWipe.tsx`, `eyegate.css` (tag styling),
+- **Surface:** `EyeGate.tsx`, `Filmstrip.tsx`, `DiffWipe.tsx`, `eyegate.css` (tag styling +
+  stage sizing), `booth.css` (fixed eye-gate height chain),
   their tests.
 - **Work:** D4 — `preventDefault()` on the `R` branch **only** (not sprayed across branches —
   see D4's note); D18 — `againOpen` (and by review, any focused composition surface) suppresses
   idle-dark, per DESIGN §9; D6 — the `eye` caption becomes `YOUR CALL` (DESIGN §10; `ON SCREEN`
   reserved for the staged frame — the ring's cell; the `mark` prop is the clean seam); D11 —
   the wipe tag ≥11px with a burn-in-style text shadow so it reads over any art; D12 —
-  `aria-valuetext` on the wipe slider ("62% — mostly TAKE 2").
+  `aria-valuetext` on the wipe slider ("62% — mostly TAKE 2"); D19 — make the desktop
+  eye-gate booth a fixed `100vh` room and size the 16:10 stage from the remaining vertical
+  space (still capped at 74vh), preserving scroll below the 900px single-column breakpoint.
 - **DoD:** red → green per fix; the keyboard SM + hud suites green. **Test-framing honesty
   (red-team):** jsdom's `fireEvent.keyDown` cannot reproduce browser text insertion — the D4
   red test asserts `defaultPrevented` on the `r` keydown (plus prefill integrity), not "no
   leaked character." The D18 red test drives the idle timer with `againOpen` true and asserts
-  the transport never enters idledark.
-- **Test impact:** ~6 new tests; **3 existing assertions updated across 3 files** (the "ON
+  the transport never enters idledark. D19 has a structural regression test plus before/after
+  Playwright evidence at 1440×900 and 1280×680 proving zero page scroll; lights-out remains
+  the picture-only reference.
+- **Test impact:** 5 new tests; **3 existing assertions updated across 3 files** (the "ON
   SCREEN" pins: `Filmstrip.test.tsx:58`, `EyeGate.test.tsx:288`, `RunOverview.test.tsx:190` —
-  a deliberate pinned-behavior change, enumerated here so it's not discovered mid-slice).
+  a deliberate pinned-behavior change, enumerated here so it's not discovered mid-slice), plus
+  D19's structural height-chain assertion.
 
 ### P3 — The token lockdown (design-system hardening) · **Opus 4.8 / Codex** · **pre-split into two build slices** (red-team: the merged form touched every CSS file + tokens + the button recipe + `/dev/system` in one session — two sessions' worth)
 

@@ -540,6 +540,7 @@ function Screening({
       return;
     }
     if (e.key === "r" || e.key === "R") {
+      e.preventDefault();
       openAgain();
       return;
     }
@@ -597,7 +598,7 @@ function Screening({
     diff && canDiff && compare !== null && cel === null && peekN === null;
 
   // idle-dark never swallows a decision terminal — honesty beats ritual
-  const idleDark = boothDark && !noticeUp && !jobRunning;
+  const idleDark = boothDark && !noticeUp && !jobRunning && !againOpen;
 
   return (
     <section

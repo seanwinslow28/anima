@@ -14,7 +14,7 @@ function rule(css: string, selector: string) {
   return css.slice(start, css.indexOf("}", start));
 }
 
-describe("EyeGate P1 structural layout contract", () => {
+describe("EyeGate structural layout contract", () => {
   it("completes the booth height chain with a flex-column stage", () => {
     const stage = rule(boothCss, ".booth-stage");
     expect(stage).toMatch(/display:\s*flex/);
@@ -68,5 +68,23 @@ describe("EyeGate P1 structural layout contract", () => {
     expect(rule(eyeGateCss, ".eg-beam")).toMatch(
       /max-width:\s*calc\(100vw\s*-\s*40px\)/,
     );
+  });
+
+  it("keeps the wipe tag above the type floor and legible over frame art", () => {
+    const wipeTag = rule(eyeGateCss, ".eg-wipe-tag");
+
+    expect(wipeTag).toMatch(/font-size:\s*11px/);
+    expect(wipeTag).toMatch(/text-shadow:/);
+  });
+
+  it("sizes the stage from the remaining vertical room at short viewports", () => {
+    const eyeGateBooth = rule(boothCss, ".booth:has(.eg-screen)");
+    const stage = rule(eyeGateCss, ".eg-stage");
+
+    expect(eyeGateBooth).toMatch(/height:\s*100vh/);
+    expect(eyeGateBooth).toMatch(/overflow:\s*hidden/);
+    expect(stage).toMatch(/height:\s*min\(74vh,\s*100%\)/);
+    expect(stage).toMatch(/max-width:\s*100%/);
+    expect(stage).not.toMatch(/width:[^;]*74vh/);
   });
 });

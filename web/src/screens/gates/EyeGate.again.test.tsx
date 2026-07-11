@@ -64,6 +64,25 @@ function noteInput() {
 }
 
 describe("EyeGate — AGAIN opens the note row, prefilled from Em", () => {
+  it("cancels the R keydown before opening the prefilled note", async () => {
+    mountEyeGate({ candidates: candidatesTwoCast });
+    await seeTheStage();
+    const region = stageRegion();
+    region.focus();
+    const event = new KeyboardEvent("keydown", {
+      key: "r",
+      bubbles: true,
+      cancelable: true,
+    });
+
+    fireEvent(region, event);
+
+    expect(event.defaultPrevented).toBe(true);
+    expect(noteInput()).toHaveValue(
+      "the box-creature keeps exactly four legs — a fifth leg ghosts in on the near side",
+    );
+  });
+
   it("R opens the row with Em's proposed fix composed into the note, attributed, focused", async () => {
     mountEyeGate({ candidates: candidatesTwoCast });
     await seeTheStage();

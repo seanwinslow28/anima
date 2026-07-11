@@ -79,8 +79,8 @@
 
 .eg-stage {
   position: relative;
-  width: min(100%, calc(74vh * 16 / 10));
-  max-height: 74vh;
+  height: min(74vh, 100%);
+  max-width: 100%;
   aspect-ratio: 16 / 10;
   display: flex;
   align-items: center;
@@ -322,9 +322,10 @@
   position: absolute;
   top: 6px;
   left: 7px;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: .18em;
   color: var(--tungsten);
+  text-shadow: 0 0 6px rgba(0, 0, 0, .7);
   white-space: nowrap;
 }
 
