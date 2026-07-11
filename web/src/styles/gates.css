@@ -55,6 +55,11 @@
     0 0 90px rgba(var(--tungsten-rgb), 0.24),
     0 12px 42px rgba(var(--black-rgb), 0.64);
 }
+@media (max-width: 900px) {
+  .reelone .gate-lampwrap::before {
+    inset: -70px -30px;
+  }
+}
 .reelone .gate-stamp {
   display: flex;
   justify-content: space-between;

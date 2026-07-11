@@ -212,6 +212,9 @@ describe("REEL ONE CSS discipline", () => {
     const gates = cssSources.get("styles/gates.css") ?? "";
     expect(gates).toContain("@media (max-width: 900px)");
     expect(gates).not.toContain("@media (max-width: 960px)");
+    expect(gates).toMatch(
+      /@media \(max-width: 900px\)[\s\S]*?\.reelone \.gate-lampwrap::before\s*\{[\s\S]*?inset:\s*-70px -30px/,
+    );
   });
 
   test("uses the reserved bakelite token for the failed flow-note border", () => {
