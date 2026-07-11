@@ -22,6 +22,12 @@ const reelone = cssSources.get("reelone/reelone.css") ?? "";
 const eyeGate = cssSources.get("styles/eyegate.css") ?? "";
 const boothBoard = read("./boothboard.css");
 const gates = cssSources.get("styles/gates.css") ?? "";
+const marquee = cssSources.get("styles/marquee.css") ?? "";
+
+const ruleBody = (source: string, selector: string) => {
+  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return source.match(new RegExp(`${escaped}\\s*\\{([\\s\\S]*?)\\}`))?.[1].trim() ?? "";
+};
 
 describe("reelone.tokens.css", () => {
   test("carries the exact booth palette from the mockups", () => {
@@ -130,6 +136,34 @@ describe("REEL ONE CSS discipline", () => {
     expect(boothBoard).not.toMatch(/\.bb-seg:hover\s*\{/);
     expect(reelone).toContain(".ro-fcell--linked:hover");
     expect(reelone).not.toMatch(/\.ro-fcell:hover\s*\{/);
+  });
+
+  test("uses one full-bakelite error edge across marquee, board, gates, and eye-gate", () => {
+    expect(marquee).not.toMatch(/border-(?:left|right):\s*[2-9]px/);
+    expect(ruleBody(marquee, ".reelone .mq-notice--error")).toContain(
+      "border-color: var(--bakelite)",
+    );
+    expect(ruleBody(marquee, ".reelone .mq-err")).toContain(
+      "border: 1px solid var(--bakelite)",
+    );
+    expect(ruleBody(boothBoard, ".reelone .bb-notice")).toContain(
+      "border: 1px solid var(--bakelite)",
+    );
+    expect(ruleBody(gates, ".reelone .gate-notice--failed,\n.reelone .gate-notice--error")).toContain(
+      "border-color: var(--bakelite)",
+    );
+    expect(ruleBody(eyeGate, ".eg-flownote--failed")).toContain(
+      "border-color: var(--bakelite)",
+    );
+    expect(ruleBody(eyeGate, ".eg-notice")).toContain(
+      "border: 1px solid var(--bakelite)",
+    );
+  });
+
+  test("keeps gate and eye-gate log tails on the same DESIGN section 7 treatment", () => {
+    expect(ruleBody(eyeGate, ".eg-logs")).toBe(
+      ruleBody(gates, ".reelone .gate-logs"),
+    );
   });
 
   test("lets idle-dark swell the frame halo, but never under reduced motion", () => {

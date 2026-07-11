@@ -103,13 +103,7 @@ function UnreadableRunCard({ run }: { run: RunError }) {
 /** Inert placeholder — the brainstorm room lands in v1c. */
 function NewProjectCard() {
   return (
-    <button
-      type="button"
-      className="mq-new"
-      disabled
-      aria-label="New project"
-      title="The brainstorm room opens in v1c"
-    >
+    <div className="mq-new" title="The brainstorm room opens in v1c">
       <span className="mq-new-plus" aria-hidden="true">
         ＋
       </span>
@@ -117,6 +111,6 @@ function NewProjectCard() {
       <span className="mq-new-soon" aria-hidden="true">
         opens in v1c
       </span>
-    </button>
+    </div>
   );
 }
