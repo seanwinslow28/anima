@@ -72,6 +72,34 @@ on-tungsten/tungsten-bright **11.62:1**; bakelite/booth **3.83:1**;
 bakelite/booth-deep **4.06:1**; screenlight/booth-deep **18.54:1**;
 text/booth-deep **13.91:1**. Body pairs remain AA; semantic borders/focus accents remain ≥3:1.
 
+## TDD trace
+
+The focused guard was written before production CSS changed and run with:
+
+```text
+$ cd web && npx vitest run src/styles/reelone.test.ts
+Test Files  1 failed (1)
+Tests  5 failed | 8 passed (13)
+```
+
+Those REDs were the absent named tokens, 20 non-token hex occurrences, 39 free RGBA triples,
+the first sub-floor selector, and the 960px breakpoint. The failed-border semantic assertion
+was then observed red against `rgba(207, 106, 76, .55)` alongside the literal guard:
+
+```text
+Test Files  1 failed (1)
+Tests  2 failed | 12 passed (14)
+```
+
+After implementation—and after review removed the intentionally manual whole-tree grep from
+Vitest—the final focused GREEN was:
+
+```text
+$ cd web && npx vitest run src/styles/reelone.test.ts
+Test Files  1 passed (1)
+Tests  12 passed (12)
+```
+
 ## Contract re-check
 
 - **Density:** no panel, control, permanent chrome, or copy was added.
