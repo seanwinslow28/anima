@@ -20,6 +20,7 @@ const cssSources = new Map([
 ]);
 const reelone = cssSources.get("reelone/reelone.css") ?? "";
 const eyeGate = cssSources.get("styles/eyegate.css") ?? "";
+const boothBoard = read("./boothboard.css");
 
 describe("reelone.tokens.css", () => {
   test("carries the exact booth palette from the mockups", () => {
@@ -91,6 +92,12 @@ describe("reelone.tokens.css", () => {
 });
 
 describe("REEL ONE CSS discipline", () => {
+  test("keeps the box-office derivation together when it wraps", () => {
+    const block = boothBoard.match(/\.reelone \.bb-bo-how\s*\{([\s\S]*?)\}/)?.[1] ?? "";
+    expect(block).toContain("display: inline-block");
+    expect(block).toContain("white-space: nowrap");
+  });
+
   test("owns one shared primary, quiet, and danger button recipe", () => {
     expect(reelone).toContain(".ro-button");
     expect(reelone).toContain(".ro-button--primary");
