@@ -48,7 +48,7 @@ The test deliberately allows single-register content inside `## What good looks 
 
 *(Corrected 2026-07-03: this section previously said step 1 was "extend the vocabulary in `pipeline/criteria.py`" — that was wrong against the codebase. `criteria.py` carries the IR/AC/impact-tag vocabularies and never carried a `style_register` vocabulary; before the registry existed, nothing anywhere validated a register against a closed set, and an unknown register silently coerced to pencil-test-colored. The canonical vocabulary now lives in `pipeline/registers.py`, and the registration is enforced by `tests/test_register_registry.py`.)*
 
-The closed vocabulary is extended deliberately, not inline. The five-step drill (`primal-sketch-grit`, 2026-07-03, is the worked example):
+The closed vocabulary is extended deliberately, not inline. The full operational runbook — the R→S→B arc (deep research → Sean-run look-spike + hero lock → the $0 TDD authoring drill), the two human checkpoints, the complete touch-point list, the transport ladder, and the verification gate — is the **[style-register authoring playbook](style-register-authoring-playbook.md)** (read it before authoring a register). The condensed five-step drill below is the summary (`primal-sketch-grit`, 2026-07-03, is the worked example):
 
   1. **Research the style** — the per-style research agenda in the [animation-vocabulary-expansion plan](../active/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md) §2, grounded against the register's `registers/{name}/refs/` exemplars and written up in `registers/{name}/research.md`. Never surface pastiche: the research fills the spec's fields.
 
