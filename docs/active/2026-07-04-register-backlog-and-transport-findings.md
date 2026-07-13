@@ -66,7 +66,9 @@ Two Tartakovsky registers are now authored (`primal-sketch-grit` + `samurai-jack
 | `primal-sketch-grit` | **authored**; transport-escalated | **gpt-image** (NB2 no) | GRANDMASTER (pending gpt-image edit-identity validation) |
 | `samurai-jack-s5` | **authored 2026-07-13**; transport unwired | **gpt-image** (fails loud) | GRANDMASTER fallback (pending gpt-image edit-identity validation); a future flat-cinematic piece |
 | `warm-storybook-pencil` | candidate (prompt + frame kept) | NB2 (pencil-family) | a future project; maybe ai-guru fallback |
-| `90s-nicktoon-grossout` | scoped; **look-spike first** | TBD (spike) | ai-guru (if Sean likes the look) |
+| `90s-nicktoon-grossout` | **authored** (register #8, PR #106) | NB2 (GO) | ai-guru pilot |
+| **FUSION** (`flat-cast-painted-world`, working slug) | **NEXT to author** — eye-ratified + motion-tested 2026-07-13 | gpt-image (spike NB2 first) | signature look; ai-guru "trash cat" episode (potential). [Kickoff](2026-07-13-fusion-register-authoring-kickoff.md) |
+| Gritty Storybook · Collage Real · Riso + 6 taste candidates | **banked** (taste brainstorm 2026-07-13) | per-register spike | [taste brainstorm](2026-07-13-signature-style-taste-and-blend-brainstorm.md) §2/§6/§7 |
 | roster remainder (§2c) | sketched backlog | per-register spike | post-front-door-DoD sidequest |
 
 ---
@@ -78,3 +80,5 @@ Two Tartakovsky registers are now authored (`primal-sketch-grit` + `samurai-jack
 - **[deferred, gated on GRANDMASTER build]** gpt-image transport wiring + across-edit identity validation (or the hand-authored-plates path).
 - **[DONE 2026-07-13]** ~~author `samurai-jack-s5` (drill) + revisit the register-family question.~~ Authored (register #9, §3); the family question is answered **FOLD** (§5).
 - **[optional]** ROADMAP note that the register pilot DoD is met and the outward-turn now has a live register-authoring capability + this backlog.
+- **[NEXT, Sean-greenlit 2026-07-13]** author the **FUSION** register (flat cartoon cast on a hand-painted gritty world) — eye-ratified + Seedance-motion-tested; run the [kickoff](2026-07-13-fusion-register-authoring-kickoff.md) through the [playbook](../architecture/style-register-authoring-playbook.md).
+- **[banked, revisit]** the taste-brainstorm roster — Gritty Storybook (Sean wants it researched later), Collage Real, Riso, + Cartoon Saloon / UPA / Gorillaz-ink / cutout / charcoal-woodcut; and the un-dug **Adult Swim experimental** lane. See [taste brainstorm](2026-07-13-signature-style-taste-and-blend-brainstorm.md) §7.
