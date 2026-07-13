@@ -460,6 +460,91 @@ REGISTRY: dict[str, RegisterSpec] = {
             # reference_images left default () — no code reads it (red-team
             # fold); the locked hero + provenance live in refs/README.md.
         ),
+        # Register #4 of the vocabulary expansion (2026-07-13) — the mixed-media
+        # "fusion" register Sean selected by eye (costed Higgsfield image spike +
+        # Seedance 2.0 motion test; his eye the sole arbiter). Authored from the
+        # wire-ready research (registers/flat-cast-painted-world/research.md, LOOK
+        # RATIFIED — HERO LOCKED 2026-07-13). Its identity IS the deliberate
+        # TWO-MEDIA SPLIT: a flat, boldly hand-inked cel CAST (living boiling
+        # outline, flat cel color, NO rendered volume) that POPS against a richly
+        # hand-PAINTED gritty children's-storybook WORLD (dry-brush weathered
+        # urban surfaces, muted earthy palette, folk-decorative flourishes,
+        # gouache washes, golden-hour grime) — two media in one frame, unified
+        # only by the shared warm light + a faint grain. Mutually exclusive from
+        # its neighbors on that split: vs Collage Real (painted world, not
+        # photographic), vs Gritty Storybook (two media, not one unified paint),
+        # vs primal-sketch-grit (grit stays OFF the flat-cel figure vs ink kept
+        # OVER the color everywhere), vs samurai-jack-s5 (bold boiling outline +
+        # gritty painted world vs near-no-outline + clean flats + negative space).
+        # Two load-bearing facts: (a) genericization is doubly load-bearing
+        # (research §7) — a school of mixed-media 2D craft captured attribute-only,
+        # no show/creator/character/studio name in any clause, marker, or comment;
+        # named-source negatives stay OUT of `preserve` (naming a neighbor can
+        # evoke it) — in particular the world's real cross-hatched texture is
+        # written as "dry-brush / hatched" so pencil-test's `cross-hatch` never
+        # leaks. (b) transport = gpt-image (GPT_IMAGE, "gpt-image-2") — UNWIRED,
+        # fails loud: the Step-S NB2 confirmation spike came back NO-GO (NB2
+        # collapsed the two-media split into one unified medium and dropped the
+        # boiling line), so GPT_IMAGE is the honest recorded model. The existing
+        # SUPPORTED_IMAGE_MODELS guard already covers it — no new code;
+        # invoke_image_edit raises UnwiredTransportError rather than silently
+        # falling back to Gemini/NB2. final_model stays NB Pro (the dormant
+        # painterly-final seam). This is the THIRD gpt-image register; wiring the
+        # runner + across-edit identity validation is DEFERRED and gated on a
+        # separate, costed, Sean-greenlit build.
+        RegisterSpec(
+            name="flat-cast-painted-world",
+            summary=(
+                "Mixed-media register: a flat, boldly hand-inked cel cast with a "
+                "living boiling outline and no rendered volume, popping against a "
+                "richly hand-painted gritty children's-storybook world — muted "
+                "earthy palette, weathered urban surfaces, folk-decorative "
+                "flourishes, golden-hour warmth. Two media, one frame."
+            ),
+            identity_lock=(
+                "Match the face, hair, color palette, proportions, and silhouette "
+                "of Image 1 exactly. The character is a flat graphic shape read by "
+                "its bold outline and silhouette; the boiling line is surface "
+                "treatment on the contour only and must never swim the "
+                "proportions, features, or flat colors off-model."
+            ),
+            preserve=(
+                "Keep the cast flat: a bold thick-to-thin hand-inked outline "
+                "heaviest on the outer silhouette, a living boiling wobble on the "
+                "contour, flat unmodulated cel color inside, and no rendered "
+                "volume on the figures. Keep the world a separate hand-painted "
+                "medium: dry-brush, scumbled, hatched, weathered urban surfaces, "
+                "soft gouache washes, folk-decorative flourishes, and a muted "
+                "earthy palette under one warm golden-hour key. Keep the two media "
+                "legibly distinct — the flat graphic cast reads against the "
+                "painterly world, unified only by the shared warm light and a "
+                "faint overall grain. No airbrushed or volumetric modeling on the "
+                "figures; no photographic or rendered world; no clean "
+                "vector-smooth outline."
+            ),
+            style_token=(
+                "Mixed-media 2D animation still — two media in one frame: a flat, "
+                "boldly hand-inked cartoon cast with a living boiling outline, "
+                "flat cel color, and no rendered volume, popping against a richly "
+                "hand-painted gritty children's-storybook world of dry-brush "
+                "weathered urban surfaces, folk-decorative flourishes, soft "
+                "gouache washes, and a muted earthy palette (ochre, brick-red, "
+                "sage, cream) under warm golden-hour light."
+            ),
+            generation_model=GPT_IMAGE,
+            final_model=NB_PRO,
+            markers=frozenset({
+                "flat-cast-painted-world",
+                "boiling hand-inked cast outline",
+                "flat cel cast no rendered volume",
+                "hand-painted gritty storybook world",
+                "two-media split",
+                "muted earthy ochre-brick-sage-cream",
+            }),
+            stub_keywords=("fusion",),
+            # reference_images left default () — no code reads it (red-team
+            # fold); the locked hero + provenance live in refs/README.md.
+        ),
     )
 }
 

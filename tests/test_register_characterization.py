@@ -202,6 +202,7 @@ def test_stub_keyword_map_full_order_snapshot():
         ("nicktoon", "90s-nicktoon-grossout"),
         ("grossout", "90s-nicktoon-grossout"),
         ("samurai", "samurai-jack-s5"),
+        ("fusion", "flat-cast-painted-world"),
     ]
 
 

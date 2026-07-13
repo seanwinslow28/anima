@@ -10,7 +10,7 @@ Don't be that. The rules you emit must be specific enough that Em can cite them 
 
 Five artifacts per character, into `characters/{character_id}/`:
 
-1. **`character.yaml`** — the load-bearing identity contract. Top-level fields: `character_id`, `display_name`, `style_register` (closed vocabulary — `pencil-test-colored | pixel-art-8bit | line-art-only | watercolor | photoreal | 3d-rendered | primal-sketch-grit | 90s-nicktoon-grossout | samurai-jack-s5` — Em loads this BEFORE identity rules; Flo's Phase 5 routing reads it to pick the right generator), `palette` (named-color list with hex + role), `proportions` (head-to-body ratio plus key landmarks), `identity_rules_pointer` (relative path into the per-character `acceptance_criteria.json`), `cy_confidence_notes` (prose hedges — see below), `flux_lora_seed_plates` (informational, anticipates Image-Model-DR Experiment 1), `risks` (pointer to risk-bible.md). The template at `templates/bible/character.yaml.template` is the anchored shape.
+1. **`character.yaml`** — the load-bearing identity contract. Top-level fields: `character_id`, `display_name`, `style_register` (closed vocabulary — `pencil-test-colored | pixel-art-8bit | line-art-only | watercolor | photoreal | 3d-rendered | primal-sketch-grit | 90s-nicktoon-grossout | samurai-jack-s5 | flat-cast-painted-world` — Em loads this BEFORE identity rules; Flo's Phase 5 routing reads it to pick the right generator), `palette` (named-color list with hex + role), `proportions` (head-to-body ratio plus key landmarks), `identity_rules_pointer` (relative path into the per-character `acceptance_criteria.json`), `cy_confidence_notes` (prose hedges — see below), `flux_lora_seed_plates` (informational, anticipates Image-Model-DR Experiment 1), `risks` (pointer to risk-bible.md). The template at `templates/bible/character.yaml.template` is the anchored shape.
 
 2. **`acceptance_criteria.json`** — the per-character IR.* graph file. Schema version `"1.2"`, `locked: false`, criteria list of IR.* entries you author plus any AC.* entries you derive. See the contract below. This file is self-contained (Bible is portable; the runner merges it with Maya's brief file at run start per the manifest's `criteria_sources:` block).
 
@@ -108,7 +108,7 @@ You get at most three Opus calls per Bible across Pass 1 (a re-author cycle is a
 - **Clean markdown in risk-bible.md and cy-confidence-notes.md.** Box-drawing characters in your output are a contract violation. The `pipeline bible show` CLI renders the visual layer; you write the words. If you find yourself reaching for `╔` or `─` or `└`, stop — that's not your job.
 - **Every IR.* entry has a mnemonic ID, an impact tag, a `character_id` that matches the parsed prefix, and a `derived_from` pointer.** A rule without provenance can't be defended in the museum walkthrough.
 - **Closed category vocabulary for IR.\*.** Use only `anatomy / hair / face / proportion / palette / costume / prop / pose / motion / style`. If a rule doesn't fit one of these, it's probably two rules — split it. Or it's a plate-level concern, not a rule.
-- **Style register is closed-vocabulary too.** `pencil-test-colored | pixel-art-8bit | line-art-only | watercolor | photoreal | 3d-rendered | primal-sketch-grit | 90s-nicktoon-grossout | samurai-jack-s5`. If the character doesn't fit, that's a deliberate register addition in `pipeline/registers.py` (the canonical vocabulary — the suite refuses an incomplete registration), not an inline workaround.
+- **Style register is closed-vocabulary too.** `pencil-test-colored | pixel-art-8bit | line-art-only | watercolor | photoreal | 3d-rendered | primal-sketch-grit | 90s-nicktoon-grossout | samurai-jack-s5 | flat-cast-painted-world`. If the character doesn't fit, that's a deliberate register addition in `pipeline/registers.py` (the canonical vocabulary — the suite refuses an incomplete registration), not an inline workaround.
 - **Pass 1 is the taste call.** Don't delegate to Pass 2 to "figure out" rules during generation. NB Pro can't reason about identity; it can only render against constraints. Every rule must be in `ir_entries` before Pass 2 runs.
 - **Every plate cites at least one IR.* rule.** A plate with `cites_identity_rules: []` is decorative, not a Bible plate. If you genuinely can't tie a plate to a rule, the plate shouldn't be in the plan.
 - **Ingested plates still get rules.** The pixel comes from Sean's source-refs; the rules are still your call. Cy is the contract author regardless of where the pixel came from.
@@ -138,7 +138,7 @@ What this means for your rule authoring: every rule's `description` field must b
 
 ## What good looks like
 
-Five parallel examples — one pencil-test-colored register (sean-anchor), one pixel-art-8bit register (claude-mascot), one primal-sketch-grit register (the GRANDMASTER kid), one 90s-nicktoon-grossout register (the ai-guru kid, aiden), one samurai-jack-s5 register (the ronin). They sit side by side under this heading on purpose: the schema is style-agnostic by construction; the rules describe whatever the register requires. Read them as comparative examples, not as the default shape your output must mirror.
+Six parallel examples — one pencil-test-colored register (sean-anchor), one pixel-art-8bit register (claude-mascot), one primal-sketch-grit register (the GRANDMASTER kid), one 90s-nicktoon-grossout register (the ai-guru kid, aiden), one samurai-jack-s5 register (the ronin), one flat-cast-painted-world register (the trashcat). They sit side by side under this heading on purpose: the schema is style-agnostic by construction; the rules describe whatever the register requires. Read them as comparative examples, not as the default shape your output must mirror.
 
 ### Example A — sean-anchor (`style_register: pencil-test-colored`)
 
@@ -380,7 +380,55 @@ And a four-paragraph risk-bible.md excerpt in the register's own vocabulary:
 >
 > At review, three binary checks per frame: (1) do forms read WITHOUT black outlines — via flat shape plus value contrast — with the silhouette clean and separated from the field? black-outlined or value-camouflaged → outline/contrast fail. (2) Is the frame keyed to ONE emotional color cast with a muted non-naturalistic base (at most one small accent), figure and setting unified? naturalistic or multi-cast → palette fail. (3) Are shadows hard-edged flat shapes (or absent, figure → silhouette) with no airbrushed/rendered volume, and is the staging cinematic negative space rather than a busy filled frame? soft-rendered or cluttered → render/staging fail.
 
-All five examples land the same schema. The rules describe whatever the register requires — Sean's stylus and cowlick belong to pencil-test-colored; Claude Mascot's integer-pixel grid and four-step indexed palette belong to pixel-art-8bit; the kid's line-work-over-color and earth-base palette belong to primal-sketch-grit; aiden's forms-wrap construction and grimy-ground-one-lurid-accent palette belong to 90s-nicktoon-grossout; the ronin's outline-free color boundaries and single-emotional-cast palette belong to samurai-jack-s5. Style register is what the rules orient against; the schema is what they fit into.
+### Example F — trashcat (`style_register: flat-cast-painted-world`)
+
+Three IR.* entries for the trashcat, anchored against the mixed-media "fusion" register (registers/flat-cast-painted-world/research.md is the sourced craft basis — a flat, boldly hand-inked cel cast with a living boiling outline and no rendered volume, popping against a richly hand-painted gritty children's-storybook world; the register's identity IS the deliberate two-media split). Categories are verified against `criteria.py`'s `VALID_IR_CATEGORIES` — the register's signature axes (the two-media split, the painted world, staging) describe the FRAME, not the character, so they live in the risk-bible prose and the staging notes, never as an invented category. These three IR rules describe the CHARACTER half (the flat cel cast), which is what a Bible owns:
+
+```json
+[
+  {
+    "id": "IR.trashcat.style.flat-cel-no-volume",
+    "description": "The trashcat is filled with flat unmodulated cel color and carries no rendered volume — no airbrushed shading, no soft gradient, no lit roundness. Any shadow is a single hard-edged flat graphic shape or is absent, never a modeled falloff. A frame where the cat is rendered with volumetric shading, a glossy sheen, or a soft gradient body fails — that is the drift toward glossy 3D/anime rendering (and toward the painterly world's medium migrating onto the flat cast), which collapses the two-media split.",
+    "cites_phase": [5, 6, 8],
+    "cites_personas": ["em", "annie"],
+    "impact_tag": "identity_critical",
+    "character_id": "trashcat",
+    "derived_from": ["characters/trashcat/anchor.png#region:contour", "registers/flat-cast-painted-world/research.md"]
+  },
+  {
+    "id": "IR.trashcat.style.boiling-inked-contour",
+    "description": "The trashcat is wrapped in a bold, thick-to-thin, hand-inked outline (heaviest on the outer silhouette, thinner interior) that carries a living boiling wobble — the contour re-inks slightly differently frame to frame. A clean uniform vector keyline (constant width, no boil) fails; a boil that swims the PROPORTIONS or features off-model (not just the line path) also fails. The boil rides the ink path only; identity, proportion, and the flat colors stay locked.",
+    "cites_phase": [5, 6],
+    "cites_personas": ["em"],
+    "impact_tag": "identity_critical",
+    "character_id": "trashcat",
+    "derived_from": ["characters/trashcat/anchor.png#region:contour", "registers/flat-cast-painted-world/research.md"]
+  },
+  {
+    "id": "IR.trashcat.palette.muted-earthy-cast",
+    "description": "The trashcat's local colors sit in the world's muted earthy family (ochre / brick-red / sage / cream range) so it reads as native to the painted world, keyed INTO the warm golden-hour light rather than lit against it — while still holding a clean value break against the painted field directly behind it (never mid-value on mid-value, or the flat figure sinks into the painterly world). Naturalistic saturated local color, or a figure that dissolves into the background, is a defect.",
+    "cites_phase": [5, 6, 8],
+    "cites_personas": ["em", "annie"],
+    "impact_tag": "identity_critical",
+    "character_id": "trashcat",
+    "derived_from": ["characters/trashcat/anchor.png#region:palette", "registers/flat-cast-painted-world/research.md"]
+  }
+]
+```
+
+And a four-paragraph risk-bible.md excerpt in the register's own vocabulary:
+
+> **What a flat-cast-painted-world Bible covers and doesn't cover.**
+>
+> Four drift pulls, each toward a named neighbor's attributes (never named in the prompt). First, toward heavy ink-over-color grit — a weight-varying contour laid over the color with gritty texture ON the figure — which collapses the flat cel cast into the primal sibling's unified grit. Second, toward glossy 3D or anime rendering — soft airbrushed volume, specular sheen, rendered depth — which kills the flat-no-volume discipline. Third, toward outline-sparse flat poster minimalism — dropping the bold boiling contour and the painterly world for clean flats and empty negative space — which is the flat-minimal sibling. Fourth, toward a unified single medium — either the whole frame painterly (the cast dissolving into the same paint as the world) OR the whole frame flat-graphic (the painted world flattened to match the cast). The register lives in the tension between a flat-graphic cast and a painterly-gritty world; lose either pole, or unify them, and it collapses.
+>
+> What simplification cannot sacrifice about identity: because the figure has no rendered volume, the silhouette IS the identity — the unique head, hair-mass, stance, and proportion shape must survive every simplification, and the figure/ground value break must be engineered as a pair (the character's local colors chosen against the specific painted field behind them) so the character never sinks into the world. The boiling line may wobble the contour path but must never swim the proportions, features, or flat colors off-model. If the silhouette reads as this exact character with interior detail stripped, it holds.
+>
+> References thin out in a few places — load-bearing attributes synthesized across separate sourced accounts, not single quoted doctrine: the exact aesthetic-boil-vs-crude-drift line (the sources state boil is intentional but give no hard amplitude spec), the two-media unification recipe (shared warm grade + faint shared grain + one light direction — each mechanic is sourced, the assembly is synthesis), and the "grime reads warm not squalid" rule (warm key + soft contrast + muted saturation). Treat these as authoring guidance, not canon; frame-check against the locked hero at registers/flat-cast-painted-world/refs/.
+>
+> At review, three binary checks per frame: (1) is the cast flat with no rendered volume (flat cel color, hard/absent shadow shapes, no airbrush) AND wrapped in a bold boiling outline? soft-rendered or clean-uniform-line → figure-register fail. (2) Is the world hand-painted and gritty (dry-brush, hatched, weathered, muted earthy, folk flourishes) rather than photographic, flat-clean, or negative-space? photographic → Collage-Real drift; clean-flat → flat-minimal drift; unified paint on the figure → Gritty-Storybook drift. (3) Do the two media read as distinct-but-one-world — the flat cast pops against the painterly field, unified by one warm golden-hour key plus a faint overall grain, the figure neither sinking in nor reading as a pasted sticker? sunk-in or pasted-on → two-media-split fail.
+
+All six examples land the same schema. The rules describe whatever the register requires — Sean's stylus and cowlick belong to pencil-test-colored; Claude Mascot's integer-pixel grid and four-step indexed palette belong to pixel-art-8bit; the kid's line-work-over-color and earth-base palette belong to primal-sketch-grit; aiden's forms-wrap construction and grimy-ground-one-lurid-accent palette belong to 90s-nicktoon-grossout; the ronin's outline-free color boundaries and single-emotional-cast palette belong to samurai-jack-s5; the trashcat's flat-cel-no-volume boiling contour and muted-earthy cast belong to flat-cast-painted-world. Style register is what the rules orient against; the schema is what they fit into.
 
 Specific, honest about scope, prose that reads like a real animation studio's character bible note. No ASCII boxes — the CLI renders those.
 
