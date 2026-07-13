@@ -51,6 +51,11 @@ display_name: ""                          # How Sean talks about this character
 #                            backgrounds); the reserved signature move is a hard
 #                            cut-in to a held, hyper-rendered painterly
 #                            gross-out extreme close-up.
+#   - samurai-jack-s5        Flat cinematic poster-art register (the flat sibling
+#                            of primal-sketch-grit). Clean outline-sparse color
+#                            shapes, hard-edged flat shadow masses, dramatic
+#                            negative space, one emotional color cast, silent-film
+#                            staging.
 #
 # If a new character needs a register that isn't in this list, that's a
 # deliberate commit, not an inline edit: add a RegisterSpec to

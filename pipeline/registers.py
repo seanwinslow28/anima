@@ -389,6 +389,77 @@ REGISTRY: dict[str, RegisterSpec] = {
             }),
             stub_keywords=("nicktoon", "grossout"),
         ),
+        # Register #3 of the vocabulary expansion (2026-07-11) — the
+        # flat-cinematic Tartakovsky sibling, GRANDMASTER's revised
+        # style/identity-hold fallback and one of Sean's two committed go-to
+        # registers. Authored from the wire-ready research
+        # (registers/samurai-jack-s5/research.md, LOOK RATIFIED — HERO LOCKED
+        # 2026-07-13; a live composition-phrase A/B kept all five money-phrases
+        # in the injected clause). It is the mutually-exclusive FLAT sibling of
+        # primal-sketch-grit: every still-frame axis inverts — where primal
+        # keeps a heavy weight-varying ink line OVER the color and paints gritty
+        # texture everywhere, samurai-jack-s5 has almost no visible outline
+        # (form reads by adjacent color and value contrast), clean flat
+        # poster-graphic color shapes, and hard-edged flat shadow masses. Two
+        # load-bearing facts: (a) genericization is doubly load-bearing
+        # (research §7) — the register is a school of flat cinematic 2D
+        # poster-art captured attribute-only, no show/creator/character/studio
+        # name in any clause, marker, or comment; named-source negatives stay
+        # OUT of `preserve` (naming a neighbor look can evoke it in the image
+        # model; drift policing lives in the Cy example block + risk-bible
+        # checks); (b) transport = gpt-image (GPT_IMAGE, "gpt-image-2") —
+        # UNWIRED and honest, so invoke_image_edit's existing
+        # SUPPORTED_IMAGE_MODELS guard raises UnwiredTransportError rather than
+        # silently falling back to Gemini/NB2 (no new guard code — the guard
+        # already covers gpt-image). final_model stays NB Pro (the dormant
+        # painterly-final seam; no consumer yet). Wiring the gpt-image runner +
+        # across-edit identity validation is DEFERRED and gated on the costed,
+        # Sean-greenlit GRANDMASTER build.
+        RegisterSpec(
+            name="samurai-jack-s5",
+            summary=(
+                "Flat cinematic poster-art register. Clean outline-sparse color "
+                "shapes, hard-edged flat shadow masses, dramatic negative "
+                "space, and one emotional color cast staged with silent-film "
+                "clarity."
+            ),
+            identity_lock=(
+                "Match the face, hair, color palette, proportions, and "
+                "silhouette of Image 1 exactly. Simplification may remove "
+                "interior detail but must preserve the character's unique "
+                "silhouette, facial landmarks, and long-axis proportions as "
+                "readable flat shapes."
+            ),
+            preserve=(
+                "Keep clean flat color shapes with almost no visible outlines; "
+                "define edges through adjacent color and value contrast. Keep "
+                "hard-edged flat shadow shapes, restrained facial detail, "
+                "dramatic cinematic negative space, and one dominant emotional "
+                "color cast across figure and setting. No soft airbrushed "
+                "modeling, no rendered volumetric shading, and no busy interior "
+                "detail that weakens the silhouette."
+            ),
+            style_token=(
+                "Dark minimalist cinematic 2D poster-art still: clean flat "
+                "color shapes, almost no visible outlines, sharp angular "
+                "silhouette, long elegant proportions, hard-edged flat shadow "
+                "shapes, bold value blocking, dramatic negative space, a single "
+                "emotional color cast, and silent-samurai-film staging."
+            ),
+            generation_model=GPT_IMAGE,
+            final_model=NB_PRO,
+            markers=frozenset({
+                "samurai-jack-s5",
+                "outline-sparse flat color shapes",
+                "hard-edged flat shadow masses",
+                "single emotional color cast",
+                "dramatic cinematic negative space",
+                "silent-samurai-film staging",
+            }),
+            stub_keywords=("samurai",),
+            # reference_images left default () — no code reads it (red-team
+            # fold); the locked hero + provenance live in refs/README.md.
+        ),
     )
 }
 

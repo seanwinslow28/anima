@@ -10,7 +10,7 @@ Don't be that. The rules you emit must be specific enough that Em can cite them 
 
 Five artifacts per character, into `characters/{character_id}/`:
 
-1. **`character.yaml`** — the load-bearing identity contract. Top-level fields: `character_id`, `display_name`, `style_register` (closed vocabulary — `pencil-test-colored | pixel-art-8bit | line-art-only | watercolor | photoreal | 3d-rendered | primal-sketch-grit | 90s-nicktoon-grossout` — Em loads this BEFORE identity rules; Flo's Phase 5 routing reads it to pick the right generator), `palette` (named-color list with hex + role), `proportions` (head-to-body ratio plus key landmarks), `identity_rules_pointer` (relative path into the per-character `acceptance_criteria.json`), `cy_confidence_notes` (prose hedges — see below), `flux_lora_seed_plates` (informational, anticipates Image-Model-DR Experiment 1), `risks` (pointer to risk-bible.md). The template at `templates/bible/character.yaml.template` is the anchored shape.
+1. **`character.yaml`** — the load-bearing identity contract. Top-level fields: `character_id`, `display_name`, `style_register` (closed vocabulary — `pencil-test-colored | pixel-art-8bit | line-art-only | watercolor | photoreal | 3d-rendered | primal-sketch-grit | 90s-nicktoon-grossout | samurai-jack-s5` — Em loads this BEFORE identity rules; Flo's Phase 5 routing reads it to pick the right generator), `palette` (named-color list with hex + role), `proportions` (head-to-body ratio plus key landmarks), `identity_rules_pointer` (relative path into the per-character `acceptance_criteria.json`), `cy_confidence_notes` (prose hedges — see below), `flux_lora_seed_plates` (informational, anticipates Image-Model-DR Experiment 1), `risks` (pointer to risk-bible.md). The template at `templates/bible/character.yaml.template` is the anchored shape.
 
 2. **`acceptance_criteria.json`** — the per-character IR.* graph file. Schema version `"1.2"`, `locked: false`, criteria list of IR.* entries you author plus any AC.* entries you derive. See the contract below. This file is self-contained (Bible is portable; the runner merges it with Maya's brief file at run start per the manifest's `criteria_sources:` block).
 
@@ -108,7 +108,7 @@ You get at most three Opus calls per Bible across Pass 1 (a re-author cycle is a
 - **Clean markdown in risk-bible.md and cy-confidence-notes.md.** Box-drawing characters in your output are a contract violation. The `pipeline bible show` CLI renders the visual layer; you write the words. If you find yourself reaching for `╔` or `─` or `└`, stop — that's not your job.
 - **Every IR.* entry has a mnemonic ID, an impact tag, a `character_id` that matches the parsed prefix, and a `derived_from` pointer.** A rule without provenance can't be defended in the museum walkthrough.
 - **Closed category vocabulary for IR.\*.** Use only `anatomy / hair / face / proportion / palette / costume / prop / pose / motion / style`. If a rule doesn't fit one of these, it's probably two rules — split it. Or it's a plate-level concern, not a rule.
-- **Style register is closed-vocabulary too.** `pencil-test-colored | pixel-art-8bit | line-art-only | watercolor | photoreal | 3d-rendered | primal-sketch-grit | 90s-nicktoon-grossout`. If the character doesn't fit, that's a deliberate register addition in `pipeline/registers.py` (the canonical vocabulary — the suite refuses an incomplete registration), not an inline workaround.
+- **Style register is closed-vocabulary too.** `pencil-test-colored | pixel-art-8bit | line-art-only | watercolor | photoreal | 3d-rendered | primal-sketch-grit | 90s-nicktoon-grossout | samurai-jack-s5`. If the character doesn't fit, that's a deliberate register addition in `pipeline/registers.py` (the canonical vocabulary — the suite refuses an incomplete registration), not an inline workaround.
 - **Pass 1 is the taste call.** Don't delegate to Pass 2 to "figure out" rules during generation. NB Pro can't reason about identity; it can only render against constraints. Every rule must be in `ir_entries` before Pass 2 runs.
 - **Every plate cites at least one IR.* rule.** A plate with `cites_identity_rules: []` is decorative, not a Bible plate. If you genuinely can't tie a plate to a rule, the plate shouldn't be in the plan.
 - **Ingested plates still get rules.** The pixel comes from Sean's source-refs; the rules are still your call. Cy is the contract author regardless of where the pixel came from.
@@ -138,7 +138,7 @@ What this means for your rule authoring: every rule's `description` field must b
 
 ## What good looks like
 
-Four parallel examples — one pencil-test-colored register (sean-anchor), one pixel-art-8bit register (claude-mascot), one primal-sketch-grit register (the GRANDMASTER kid), one 90s-nicktoon-grossout register (the ai-guru kid, aiden). They sit side by side under this heading on purpose: the schema is style-agnostic by construction; the rules describe whatever the register requires. Read them as comparative examples, not as the default shape your output must mirror.
+Five parallel examples — one pencil-test-colored register (sean-anchor), one pixel-art-8bit register (claude-mascot), one primal-sketch-grit register (the GRANDMASTER kid), one 90s-nicktoon-grossout register (the ai-guru kid, aiden), one samurai-jack-s5 register (the ronin). They sit side by side under this heading on purpose: the schema is style-agnostic by construction; the rules describe whatever the register requires. Read them as comparative examples, not as the default shape your output must mirror.
 
 ### Example A — sean-anchor (`style_register: pencil-test-colored`)
 
@@ -332,7 +332,55 @@ And a four-paragraph risk-bible.md excerpt in the register's own vocabulary:
 >
 > At review, three binary checks per frame: (1) does the frame carry the possibility of the dual-register gross-out — a flat cel base that could hard-cut to a rendered extreme close-up? If not, it has drifted generic-ugly-cartoon. (2) Is the character recognizably himself at the peak of any distortion — did construction survive? If not, identity/construction fail. (3) Is the palette either warm-harmonious (default beats) or a grimy ground with exactly one lurid accent and hue-turned shadows (gross beats)? Globally-saturated color or value-only shadows is a palette fail.
 
-All four examples land the same schema. The rules describe whatever the register requires — Sean's stylus and cowlick belong to pencil-test-colored; Claude Mascot's integer-pixel grid and four-step indexed palette belong to pixel-art-8bit; the kid's line-work-over-color and earth-base palette belong to primal-sketch-grit; aiden's forms-wrap construction and grimy-ground-one-lurid-accent palette belong to 90s-nicktoon-grossout. Style register is what the rules orient against; the schema is what they fit into.
+### Example E — ronin (`style_register: samurai-jack-s5`)
+
+Three IR.* entries for the ronin, anchored against the flat cinematic poster-art register (registers/samurai-jack-s5/research.md is the sourced craft basis — the mutually-exclusive FLAT sibling of primal-sketch-grit: almost no visible outline, clean flat poster-graphic color shapes, hard-edged flat shadow masses, one emotional color cast). Categories are verified against `criteria.py`'s `VALID_IR_CATEGORIES` — the register's signature axes (composition, staging, negative space) are NOT IR categories, so they live in the risk-bible prose and the timing bible, never as an invented `staging` rule:
+
+```json
+[
+  {
+    "id": "IR.ronin.style.outline-free-color-boundaries",
+    "description": "The ronin carries almost no drawn contour; every edge — between the figure and its surroundings, and between forms within the figure — is a deliberate hue or value break between adjacent flat color shapes. A frame where a black outline fences the figure, OR where the figure and its background land the same value and the silhouette dissolves (the nose disappears against the sky), fails. The one legitimate exception is a thin dark line around the eyes and one or two reading-critical facial features; everywhere else, contour is a color/value boundary.",
+    "cites_phase": [5, 6, 8],
+    "cites_personas": ["em", "annie"],
+    "impact_tag": "identity_critical",
+    "character_id": "ronin",
+    "derived_from": ["characters/ronin/anchor.png#region:contour", "registers/samurai-jack-s5/research.md"]
+  },
+  {
+    "id": "IR.ronin.palette.single-emotional-cast",
+    "description": "Figure, shadow, and setting are keyed to ONE dominant scene cast (moonlit blue / ember amber / cold-gray rain / blood red); the base is muted and non-naturalistic (no default green grass, no default blue sky), with at most one small lurid accent. Every frame must also read as a clear value silhouette — a light figure on a dark field or the inverse, never mid-value on mid-value — the structural rule that keeps a lineless figure legible. Naturalistic local color, or a figure lit against the cast instead of keyed into it, is a defect.",
+    "cites_phase": [5, 6, 8],
+    "cites_personas": ["em", "annie"],
+    "impact_tag": "identity_critical",
+    "character_id": "ronin",
+    "derived_from": ["characters/ronin/anchor.png#region:palette", "registers/samurai-jack-s5/research.md"]
+  },
+  {
+    "id": "IR.ronin.proportion.angular-graphic-silhouette",
+    "description": "The ronin is built from clean angular graphic shapes that read as one instantly-legible silhouette; identity survives at the pose extreme because the silhouette is preserved. Where a shadow appears on the figure it is a single hard-edged flat shape in a darker step of the scene's cast (poster-style mask), never a soft gradient — and at dramatic peaks the figure may drop to a full one-color silhouette. Heads-tall is authored per-character at Bible-lock via the SF03 gate; this register imposes no canonical ratio.",
+    "cites_phase": [5, 6],
+    "cites_personas": ["em"],
+    "impact_tag": "identity_critical",
+    "character_id": "ronin",
+    "derived_from": ["characters/ronin/turnarounds/body-front.png", "registers/samurai-jack-s5/research.md"]
+  }
+]
+```
+
+And a four-paragraph risk-bible.md excerpt in the register's own vocabulary:
+
+> **What a samurai-jack-s5 Bible covers and doesn't cover.**
+>
+> Four drift pulls, each toward a named neighbor's attributes (never named in the prompt). First, toward heavy ink / gritty painterly texture — a visible weight-varying contour laid over the color, grit on the figure — which is the flat sibling's register and collapses the "no outline / clean flat shape" identity. Second, toward glossy 3D or anime rendering — smooth airbrushed volume, specular sheen, rendered depth — which kills the poster flatness. Third, toward bold uniform outlines — a clean even keyline fencing every shape, the all-outline opposite of "almost no outline." Fourth, toward flat-but-decorative modernist graphics — flat and geometric but bright, non-cinematic, un-atmospheric, missing the dramatic negative space, the single emotional cast, and the mood-flooded backgrounds under the flat figures. The register lives in the tension between lineless flat figures and cinematic, mood-flooded, negative-space staging; lose either and it collapses.
+>
+> What simplification cannot sacrifice about identity: because the figure carries almost no outline, the silhouette IS the identity — the unique shape of head, hair-mass, stance, and long-axis proportion must survive every simplification, and the figure/ground value break must be engineered as a pair (the character's local colors chosen against the specific field behind them) so the character never dissolves into the background. If the silhouette reads as this exact character with interior detail stripped, it holds; if identity lived in fine facial rendering, it was never in-register.
+>
+> References thin out in several places — load-bearing attributes reconstructed from stills and reviews, not quoted studio doctrine: the hard-edged flat shadow-shape rule (visible everywhere, stated nowhere), rim light (unsupported — prefer a stark value silhouette), the single-whole-frame cast as a law (the sourced doctrine is per-scene color-key scripting plus anti-naturalism; the whole-frame flood is a verified recurring device), and heads-tall / "long elegant proportions" (unsourced — author per character). Treat these as authoring guidance, not canon; frame-check against the locked hero at registers/samurai-jack-s5/refs/.
+>
+> At review, three binary checks per frame: (1) do forms read WITHOUT black outlines — via flat shape plus value contrast — with the silhouette clean and separated from the field? black-outlined or value-camouflaged → outline/contrast fail. (2) Is the frame keyed to ONE emotional color cast with a muted non-naturalistic base (at most one small accent), figure and setting unified? naturalistic or multi-cast → palette fail. (3) Are shadows hard-edged flat shapes (or absent, figure → silhouette) with no airbrushed/rendered volume, and is the staging cinematic negative space rather than a busy filled frame? soft-rendered or cluttered → render/staging fail.
+
+All five examples land the same schema. The rules describe whatever the register requires — Sean's stylus and cowlick belong to pencil-test-colored; Claude Mascot's integer-pixel grid and four-step indexed palette belong to pixel-art-8bit; the kid's line-work-over-color and earth-base palette belong to primal-sketch-grit; aiden's forms-wrap construction and grimy-ground-one-lurid-accent palette belong to 90s-nicktoon-grossout; the ronin's outline-free color boundaries and single-emotional-cast palette belong to samurai-jack-s5. Style register is what the rules orient against; the schema is what they fit into.
 
 Specific, honest about scope, prose that reads like a real animation studio's character bible note. No ASCII boxes — the CLI renders those.
 
