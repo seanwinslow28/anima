@@ -30,9 +30,9 @@ The `primal-sketch-grit` go/no-go spike (2026-07-04) established, with Sean's fo
 
 ---
 
-## 3. Candidate register — `samurai-jack-s5` (Tartakovsky final-season "poster art")
+## 3. Register — `samurai-jack-s5` (Tartakovsky final-season "poster art") — **AUTHORED 2026-07-13**
 
-**Greenlight status:** candidate. **Role:** GRANDMASTER's **revised fallback** (see go-no-go.md) — if gpt-image's across-edit identity hold fails for `primal-sketch-grit`, GRANDMASTER pivots here (same samurai-cinema world, mood preserved) rather than to pencil-test.
+**Greenlight status:** ~~candidate~~ **AUTHORED + committed 2026-07-13** (Step B, the pure doctrine drill; ratified plan [`docs/active/2026-07-11-samurai-jack-s5-register-design.md`](2026-07-11-samurai-jack-s5-register-design.md); Step R research + Step S hero both Sean-ratified). The register is live in `pipeline/registers.py` (register #9), with its Cy Example E, markers, doctrine line, template comment, and per-register test (`tests/test_samurai_jack_s5.py`). Transport = gpt-image (`gpt-image-2`), **unwired, fails loud** via the existing `UnwiredTransportError` guard (no new guard code). **Role:** GRANDMASTER's **revised style/identity-hold fallback** (a committed future style, one of Sean's two go-to registers) — if primal's gritty look doesn't land, GRANDMASTER pivots to this clean-flat sibling. **Still deferred + gated:** wiring the gpt-image runner + across-edit identity validation rides the costed, Sean-greenlit GRANDMASTER build.
 
 **Evidence in hand (strong):**
 - Research: [`docs/research/samurai-jack-season-5-art-style-description.md`](../research/samurai-jack-season-5-art-style-description.md) — ChatGPT's craft description + a reusable prompt template + the magic phrase.
@@ -52,9 +52,9 @@ Sean's call (2026-07-04): **research and test the `90s-nicktoon-grossout` (Ren &
 
 ---
 
-## 5. Register-family trigger — approaching, held
+## 5. Register-family trigger — **answered FOLD (2026-07-13)**
 
-Two Tartakovsky registers are now in play (`primal-sketch-grit` authored; `samurai-jack-s5` candidate). That is the **≥2-Tartakovsky trigger** the plan (§3b) set for reconsidering (a) an optional `family: tartakovsky` metadata field and (b) a standalone `tartakovsky` style skill. **Held** until Sean actually greenlights authoring `samurai-jack-s5` — a family field with one member is still a reader-less speculative add. **Revisit at that authoring session**, with both registers' real content in hand to see if any structure is genuinely shared (the honest test, not the count alone).
+Two Tartakovsky registers are now authored (`primal-sketch-grit` + `samurai-jack-s5`). The **≥2-Tartakovsky trigger** the plan (§3b) set for reconsidering (a) an optional `family: tartakovsky` metadata field and (b) a standalone `tartakovsky` style skill is now **RESOLVED FOLD** (ratified plan §2A, Sean's call 2026-07-11): with both registers' real content in hand, the honest test found the only shared structure is *timing & staging grammar* (which already lives in the primal `research.md` §8 "for Bea/Mo, not the still register" section) — the `RegisterSpec` still-frame fields **invert on every axis** (line/fill/texture/shadow). A `family` field would have **no reader** in v1 (the front-door red-teams' exact anti-pattern), and the `tartakovsky` skill fails the §3a promotion bar (needs ≥2 real consumers AND standalone reusable structure; there is one named consumer). Sean's **product ceiling** seals it: Samurai Jack + Primal are his only two Tartakovsky styles and Clone Wars collapses into `samurai-jack-s5` — the family caps at two and never grows. The relationship lives as **documentation** (the reciprocal primal↔samurai `research.md` cross-link), not code.
 
 ---
 
@@ -64,7 +64,7 @@ Two Tartakovsky registers are now in play (`primal-sketch-grit` authored; `samur
 |---|---|---|---|
 | `pencil-test-colored` + 5 legacy | shipped | NB2 | pencil-test reference implementation |
 | `primal-sketch-grit` | **authored**; transport-escalated | **gpt-image** (NB2 no) | GRANDMASTER (pending gpt-image edit-identity validation) |
-| `samurai-jack-s5` | candidate (strong evidence) | gpt-image (spike to confirm) | GRANDMASTER fallback; a future samurai piece |
+| `samurai-jack-s5` | **authored 2026-07-13**; transport unwired | **gpt-image** (fails loud) | GRANDMASTER fallback (pending gpt-image edit-identity validation); a future flat-cinematic piece |
 | `warm-storybook-pencil` | candidate (prompt + frame kept) | NB2 (pencil-family) | a future project; maybe ai-guru fallback |
 | `90s-nicktoon-grossout` | scoped; **look-spike first** | TBD (spike) | ai-guru (if Sean likes the look) |
 | roster remainder (§2c) | sketched backlog | per-register spike | post-front-door-DoD sidequest |
@@ -76,5 +76,5 @@ Two Tartakovsky registers are now in play (`primal-sketch-grit` authored; `samur
 - **[code, next build]** `primal-sketch-grit.generation_model` → gpt-image in `registers.py` + test + `research.md` §4 update.
 - **[decision, Sean-paced]** the `90s-nicktoon-grossout` look-spike (across engines) before authoring register #2.
 - **[deferred, gated on GRANDMASTER build]** gpt-image transport wiring + across-edit identity validation (or the hand-authored-plates path).
-- **[when greenlit]** author `samurai-jack-s5` (drill) + revisit the register-family question.
+- **[DONE 2026-07-13]** ~~author `samurai-jack-s5` (drill) + revisit the register-family question.~~ Authored (register #9, §3); the family question is answered **FOLD** (§5).
 - **[optional]** ROADMAP note that the register pilot DoD is met and the outward-turn now has a live register-authoring capability + this backlog.
