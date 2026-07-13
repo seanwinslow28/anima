@@ -1,6 +1,6 @@
 # Design — Higgsfield prompt-testing harness (image gen / image edit / video)
 
-**Date:** 2026-07-11 · **Status:** DESIGN (awaiting Sean's spec review) · **Operating model:** Claude runs every generation; Sean makes every taste call (the runbook's Engine Truth). · **Billing:** Higgsfield subscription credits (image + video share one pool); no `ANTHROPIC_API_KEY`, no paid Gemini/OpenAI API. · **Budget:** ~300 credits, block-gated.
+**Date:** 2026-07-11 · **Status:** DESIGN (Sean-approved; refined) · **Execution surface:** run inside **Claude Code**, all generation through the **Higgsfield CLI** (not the MCP) — this Cowork session writes the spec + plan; a Claude Code session executes them. · **Operating model:** Claude runs every generation; Sean makes every taste call (the runbook's Engine Truth). · **Billing:** Higgsfield subscription credits (image + video share one pool); no `ANTHROPIC_API_KEY`, no paid Gemini/OpenAI API. · **Budget:** ~300 credits, block-gated.
 
 ---
 
@@ -56,7 +56,7 @@ Run **one block at a time**. After each, Sean reviews the contact sheet + scorin
 |---|---|---|---|---|---|
 | **A** | Image gen (scratch) | Does more detail build the character cleaner? | 2 (terse vs detailed) × 2 subjects | ~15–25 | Register look-spike / candidate hero |
 | **B** | Image edit (identity) | Terse vs verbose on a pose/expression change | 4 | ~15–30 | The core over-prompting proof |
-| **C** | Image edit (**compositing**) | Character → pre-made background/frame | 4 (+ re-rolls of the winner) | ~40–80 | anima's first compositing doctrine |
+| **C** | Image edit (**compositing**) | Character → pre-made background/frame, identical + true-to-framing | base 4 + sub-tests C1–C4 | ~60–110 | anima's first compositing doctrine |
 | **D** | Video (Seedance) | Word-count band + motion-only vs re-describe | 2 short ladders (~4 clips) | ~60–90 | Video doctrine confirmation |
 
 Indicative totals land ~150–225 credits with headroom to re-roll winners inside 300. Image edits are cheap; video dominates the spend (~14 cr/Fast-720p-4s clip per the runbook).
@@ -65,18 +65,27 @@ Indicative totals land ~150–225 credits with headroom to re-roll winners insid
 
 - **A — generation.** Same original character brief, two rungs: a terse attribute line vs a full descriptive prompt, each × two poses/expressions. Style vocabulary drawn from `registers/samurai-jack-s5/research.md` money axes (outline-sparse flat color, hard-edged flat shadow, single emotional cast, dramatic negative space). Genericized — no franchise name in any prompt (style-neutrality doctrine). Winners are candidate hero frames.
 - **B — identity edit.** Feed one character anchor (`kid-samurai-chatgpt-*.png`); target change = a single pose or expression delta; run all four rungs. Anti-text clause on every rung. Expect Rung 4 to drift face/palette.
-- **C — compositing.** Feed a character anchor (Image 1 = identity) + a `scene-before` frame (Image 2 = background/target). Target = the character rendered into that frame at the right scale/light, matching the `scene-after` intent. Ladder tests how much text the composite needs and how role-tagging quarantines background-vs-identity. This is the deliverable-generating block.
+- **C — compositing (the prize block).** The core question: can the model keep the character **identical** while placing him in the **right area** at **true-to-framing size** (a close-up fills the frame; an extreme-wide makes him tiny in vast negative space — the `samurai-jack-s5` signature). Beyond the base verbosity ladder, four compositing-specific sub-tests, each cheap and decisive:
+  - **C1 — source of the character.** Anchor-as-source vs **turnaround-sheet-as-source**: feed the multi-view turnaround sheet and ask the model to lift a specific view of the character into the frame. Sean's observed workflow (anchor → turnaround → separate background → place). Tests whether a turnaround gives the model a cleaner grab than a single anchor.
+  - **C2 — scale-by-framing.** Same character + same background, target framing varied: close-up / medium / wide / extreme-wide. Tests whether the prompt can drive true-to-size placement, or whether the model defaults to one scale regardless.
+  - **C3 — the colored-shape placeholder.** Put a colored circle/shape in the background at the exact spot + size the character should occupy; instruct "place the character where the shape is, matching its size and position, and remove the shape." Tests placement precision against a concrete visual target. **Then** the precision probe: can the model hit the mark on its own from a text description of location, or does it need the shape?
+  - **C4 — manual-placeholder fallback.** If C3's model-drawn/auto placement misses, Sean draws the placeholder shape manually on his iPad at the exact mark and re-runs C3's placement step. Tests whether a human-authored placeholder closes the gap — the practical escape hatch if the model can't self-place.
+  This block generates anima's first documented **compositing doctrine**; the budget concentrates here.
 - **D — video.** Two anchor frames (start+end) from the character; two short ladders: (i) word count 30 / 80 / 130 words, (ii) motion-only vs re-describe-the-subject. Via the Higgsfield CLI runbook (Seedance 2.0 Fast 720p). Claude reads extracted stills for identity/aesthetic; **Sean watches the .mp4 for the motion verdict** (Claude can't watch video).
 
 ---
 
-## 4. Mechanics — how Claude runs it
+## 4. Mechanics — how Claude runs it (all via the Higgsfield CLI, in Claude Code)
 
-- **Engine (image A/B/C):** Higgsfield-hosted Nano-Banana-class edit model via the **Higgsfield MCP** (`generate_image`, already connected — no `auth login` needed). `models_explore(action:'recommend')` confirms the right model before the first spend.
-- **Reference upload:** local GRANDMASTER frames are uploaded once via `media_upload` / `media_import_url` to get Higgsfield media IDs the ladders reference. (MCP can't read chat attachments or arbitrary local paths without this step.)
-- **Engine (video D):** the Higgsfield **CLI** per `docs/anima-test-runs/2026-06-22-higgsfield-seedance-generation-runbook.md` (`higgsfield generate create seedance_2_0 … --mode fast`). One-time `higgsfield auth login` is human-only — the single command Sean runs; Claude runs everything after.
-- **Output tree (the harness convention):** `runs/2026-07-11-prompt-ladder-grandmaster/` (gitignored/local per Sean's convention), one subfolder per block with the rung prompts (`.txt`), outputs, a contact sheet, and `scoring.md`.
-- **Cost safety:** read-only cost check before each block; block gate before proceeding; rejected/too-short requests cost 0.
+Everything runs through the `higgsfield` CLI in a Claude Code session — one tool, one credit pool, image + video.
+
+- **Preflight (blocking, do first):** `higgsfield account status` (auth + credits) and `higgsfield model list` / `higgsfield model get <model> --json` to find the CLI's **image / edit model** and its exact params (the runbook only documented Seedance video; the image model's name, reference-image flags, and cost are an unknown to resolve before spending). **Contingency:** if the CLI exposes no usable Nano-Banana-class image-edit model, that is itself a finding — record it, and the image blocks fall back to the connected Higgsfield MCP (`generate_image`); video is unaffected. This is the one branch the plan must carry.
+- **Auth:** one-time `higgsfield auth login` is human-only (interactive OAuth) — the single command Sean runs; Claude runs everything after.
+- **References:** the CLI auto-uploads local PNGs passed as image args (as it does for `--start-image` / `--end-image` in the video runbook); the GRANDMASTER frames are referenced by local path from the run folder.
+- **Prompts to files:** every rung prompt is written to a `.txt` and passed as `--prompt "$(cat p.txt)"` — pencil/samurai prompts carry apostrophes and quotes that break inline `--prompt` (runbook §8).
+- **Engine (video D):** `higgsfield generate create seedance_2_0 … --mode fast --resolution 720p --duration N --generate_audio false --aspect_ratio 16:9 --wait` per the runbook. 4s minimum; Claude reads extracted stills, Sean watches the .mp4.
+- **Output tree (the harness convention):** `runs/2026-07-11-prompt-ladder-grandmaster/` (gitignored/local per Sean's convention), one subfolder per block (`A_generation/`, `B_identity_edit/`, `C_compositing/{C1..C4}/`, `D_video/`), each with the rung prompts (`.txt`), outputs, a contact sheet, and `scoring.md`.
+- **Cost safety:** read-only `higgsfield generate cost …` before each block; block gate before proceeding; rejected/too-short requests cost 0.
 
 ---
 
