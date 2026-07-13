@@ -19,6 +19,7 @@ The closed `style_register` vocabulary on `character.yaml` is the structural com
   - `primal-sketch-grit`
   - `90s-nicktoon-grossout`
   - `samurai-jack-s5`
+  - `flat-cast-painted-world`
 
 Every prompt that drives an agent's behavior must work for every register in this vocabulary. The engine truth — *"if the loop plays smoothly and the character is recognizably itself in its intended medium, it ships"* — is style-agnostic by design. The medium is whatever the Studio Brief declared, not pencil-test by default.
 
@@ -68,7 +69,7 @@ Commit with a message naming the new register and the rationale (which downstrea
 
 Before commit, re-read every load-bearing section (the "what you must not do" / "the lens you bring" / non-negotiables blocks) with this question:
 
-> Would this prompt make sense to a pixel-art Bible author? A watercolor Bible author? A 3d-rendered Bible author? A photoreal Bible author? A line-art-only Bible author? A primal-sketch-grit Bible author? A 90s-nicktoon-grossout Bible author? A samurai-jack-s5 Bible author?
+> Would this prompt make sense to a pixel-art Bible author? A watercolor Bible author? A 3d-rendered Bible author? A photoreal Bible author? A line-art-only Bible author? A primal-sketch-grit Bible author? A 90s-nicktoon-grossout Bible author? A samurai-jack-s5 Bible author? A flat-cast-painted-world Bible author?
 
 If the answer is no for any register in the vocabulary, the prompt carries default-register bias — generalize it. Cite the registers comparatively, not as exceptions to a default.
 

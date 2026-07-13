@@ -56,6 +56,13 @@ display_name: ""                          # How Sean talks about this character
 #                            shapes, hard-edged flat shadow masses, dramatic
 #                            negative space, one emotional color cast, silent-film
 #                            staging.
+#   - flat-cast-painted-world  Mixed-media "fusion" register. A flat, boldly
+#                            hand-inked cel cast (living boiling outline, flat
+#                            cel color, no rendered volume) popping against a
+#                            richly hand-painted gritty children's-storybook
+#                            world (dry-brush weathered urban surfaces, muted
+#                            earthy palette, folk flourishes, golden-hour grime).
+#                            Two media, one frame.
 #
 # If a new character needs a register that isn't in this list, that's a
 # deliberate commit, not an inline edit: add a RegisterSpec to
