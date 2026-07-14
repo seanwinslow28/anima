@@ -7,7 +7,7 @@ description: Universal image generator using Google Gemini's Nano Banana 2 API. 
 
 ## Purpose
 
-Generate any type of image by automatically optimizing the user's prompt using the 7-Layer Prompt Framework from the `image-generator-prompt-science` skill and sending it to Gemini's Nano Banana 2 model (`gemini-3.1-flash-image-preview`). This is the general-purpose catch-all for image generation requests that don't fit the `gemini-pixel-image-gen` (pixel art) or `gemini-pencil-animation-image-gen` (pencil animation) specialized skills.
+Generate any type of image by automatically optimizing the user's prompt using the 7-Layer Prompt Framework from the `image-generator-prompt-science` skill and sending it to Gemini's Nano Banana 2 model (`gemini-3.1-flash-image`). This is the general-purpose catch-all for image generation requests that don't fit the `gemini-pixel-image-gen` (pixel art) or `gemini-pencil-animation-image-gen` (pencil animation) specialized skills.
 
 ## When to Use
 
@@ -170,7 +170,7 @@ python3 scripts/generate_image.py "Portrait of this person in a fantasy setting.
 | `prompt` | Yes | — | The image generation prompt (positional) |
 | `--output` / `-o` | No | `./generated.png` | Output file path |
 | `--aspect-ratio` | No | `1:1` | Aspect ratio (1:1, 16:9, 9:16, 3:2, 4:3, etc.) |
-| `--model` | No | `gemini-3.1-flash-image-preview` | Gemini model name |
+| `--model` | No | `gemini-3.1-flash-image` | Gemini model name |
 | `--env-file` | No | `.env` | Path to .env file containing GEMINI_API_KEY |
 | `-r` / `--reference` | No | — | Reference image path(s) for identity locking |
 

@@ -13,13 +13,13 @@ aspect-ratio handling. We shell out to it rather than duplicate that code.
 
 # A note on model IDs
 
-The default is `gemini-3.1-flash-image-preview` (NB2 Flash) — the editing /
+The default is `gemini-3.1-flash-image` (NB2 Flash) — the editing /
 consistency tier. Per the 2026-05-30 research (NB2 holds identity better across
 edits, ~1/2 cost, ~4x faster, and avoids NB Pro's documented multi-reference
 downsampling regression since the 3.1 launch — Google AI dev forum, Mar 2026),
 NB2 is the right default for the identity-preserving editing that is Cy's entire
 job. The skill script also defaults to this slug, so they agree. An NB-Pro
-painterly final (`model="gemini-3-pro-image-preview"`) is an explicit opt-in,
+painterly final (`model="gemini-3-pro-image"`) is an explicit opt-in,
 not the default. The entry point is `invoke_image_edit` (renamed from
 `invoke_nb_pro`, which survives as a deprecation alias — the model is a
 parameter, so the name should not assert Pro); per-register routing lives in
@@ -155,7 +155,7 @@ def invoke_image_edit(
     cache_dir: Path,
     cites_identity_rules: tuple[str, ...] = (),
     reject_reason: str | None = None,
-    model: str = "gemini-3.1-flash-image-preview",
+    model: str = "gemini-3.1-flash-image",
     aspect_ratio: str | None = None,
     timeout_s: int = 180,
 ) -> NBProResponse | HiggsfieldResponse:

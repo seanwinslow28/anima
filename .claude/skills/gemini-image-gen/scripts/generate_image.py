@@ -47,7 +47,7 @@ def generate_image(
     prompt: str,
     output_path: str = "./generated.png",
     aspect_ratio: str = "1:1",
-    model: str = "gemini-3.1-flash-image-preview",
+    model: str = "gemini-3.1-flash-image",
     env_file: str = ".env",
     reference_images: list = None,
 ) -> str:
@@ -190,8 +190,8 @@ Examples:
     )
     parser.add_argument(
         "--model",
-        default="gemini-3.1-flash-image-preview",
-        help="Gemini model name (default: gemini-3.1-flash-image-preview)",
+        default="gemini-3.1-flash-image",
+        help="Gemini model name (default: gemini-3.1-flash-image)",
     )
     parser.add_argument(
         "--env-file",

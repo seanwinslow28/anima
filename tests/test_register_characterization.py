@@ -61,22 +61,24 @@ _EXPECTED_PROMPT = {
 
 _EXPECTED_PROP_PROMPT = 'Render ONLY the isolated object described below, centered on a warm cream paper background. Do NOT draw any person, character, hand, body, or figure. Do NOT render any text, caption, label, handwriting, or annotation anywhere in the image. Render: neutral standing pose.'
 
+# GA repin 2026-07-13 (decision D3 rider) — deliberate routing + cache-key
+# oracle update; _SIX and clauses untouched.
 _EXPECTED_ROUTING = {
-    'pencil-test-colored': (('gemini-3.1-flash-image-preview', 'gemini-3.1-flash-image-preview'), ('X', 'Y')),
-    'pixel-art-8bit': (('gemini-3.1-flash-image-preview', 'gemini-3.1-flash-image-preview'), ('X', 'Y')),
-    'line-art-only': (('gemini-3.1-flash-image-preview', 'gemini-3.1-flash-image-preview'), ('X', 'Y')),
-    'watercolor': (('gemini-3.1-flash-image-preview', 'gemini-3-pro-image-preview'), ('X', 'Y')),
-    'photoreal': (('gemini-3.1-flash-image-preview', 'gemini-3-pro-image-preview'), ('X', 'Y')),
-    '3d-rendered': (('gemini-3.1-flash-image-preview', 'gemini-3-pro-image-preview'), ('X', 'Y')),
+    'pencil-test-colored': (('gemini-3.1-flash-image', 'gemini-3.1-flash-image'), ('X', 'Y')),
+    'pixel-art-8bit': (('gemini-3.1-flash-image', 'gemini-3.1-flash-image'), ('X', 'Y')),
+    'line-art-only': (('gemini-3.1-flash-image', 'gemini-3.1-flash-image'), ('X', 'Y')),
+    'watercolor': (('gemini-3.1-flash-image', 'gemini-3-pro-image'), ('X', 'Y')),
+    'photoreal': (('gemini-3.1-flash-image', 'gemini-3-pro-image'), ('X', 'Y')),
+    '3d-rendered': (('gemini-3.1-flash-image', 'gemini-3-pro-image'), ('X', 'Y')),
 }
 
 _EXPECTED_CACHE_KEY = {
-    'pencil-test-colored': ('b24bf927e64d3d937f7b108e835b81b00c550ef7f2df4c63d55a294765ac8d3f', '91cab1debe1bc226be17ad0a059406a72177bee3d3fdc6f0d4d02516066fbc09'),
-    'pixel-art-8bit': ('4205cb357a809cc0ceac360675eb642ca5dc4120c1d72cadfdc96eb82d84fbfc', '6ab7702a3c3b4022eb9e075ad32be12b9879df4d604c476cc4afc7157d85f0b4'),
-    'line-art-only': ('cf9caafe70752290ec244bbfd9a3d5d1ea9e08f85965450ce787f85fd6ad244b', '3eeece40430a12cc90e98a0b746739742106d61714076a8b644f6f40d56730ee'),
-    'watercolor': ('4032bc8283588dbfda07500fdab08716bf2085d9c67eff7926fc3c59b8f22a55', '5329fb460bd291e8d57fa7ca6f5e468332d67c0358990a8f860da4480da11c6f'),
-    'photoreal': ('207baeb4c348e18de3fb40182241ffe8a1c119327673119878fc81c66e9ae854', '7e65a13b9fdb08b792a6a3813ed07e64b25a111dd7ae13adeeb89704d0b5139c'),
-    '3d-rendered': ('be2aa04d9ad8b218a1585f9c7dc93aacd5d574dc9380b071eaf862ccf1c797a5', '6da91a011d4c3a9470e318c4c6c48b142bceaf9669fb1e2297dd5b1ebb9192ce'),
+    'pencil-test-colored': ('fc0904ed51a476fc7a0f74d1f8b9a2cc286735988a680258fb751d8d1488b015', '9dc9d79d90d5f6b58d28112475b337a74862be7ebd6314984329fc57138cbc82'),
+    'pixel-art-8bit': ('335055bc2edbba7504136be57dd65132e28ab53135662fd4f16b9eadf68b1f1c', '0b8687c28ff72fa2da09079216b307487ddaa7b74ae4cf333984ea0f50f40e44'),
+    'line-art-only': ('0541f7901f977372a5050d1a50ede918eec12c77bccdc31d824a9da004b071f3', 'cca69989a514ce43fbced936c02007acdd91c9dc7875837fdb55d27457058034'),
+    'watercolor': ('22d96a0982486b4c6f74fce9a7dfe2e6c59e41f35217daa14839a28cf9366561', 'cc4e89c72fbbec31a40d3fa5f7d1e85ed8e726f07768b562c15d00efc39bfa2f'),
+    'photoreal': ('5ccf3f46b6279636cec3a486197303fa19a65d1464b101c359857e37a2e2a78f', 'f89fc3657cc2f719bb57ebaa82466e65b17cb29afe44ce6a2ae0f32bf2152d8b'),
+    '3d-rendered': ('38246cf7742d5a9d2581c2208b25968d9134232089d94345fb2614644bf31119', '0eef683b772bc5d827e42b244fa7584a2c924e52fe3d7d64ff39d44a0d539367'),
 }
 
 

@@ -8,7 +8,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Model ID** | `gemini-3.1-flash-image-preview` |
+| **Model ID** | `gemini-3.1-flash-image` |
 | **Nickname** | Nano Banana 2 (NB2) |
 | **Internal Codename** | GEMPIX2 |
 | **Base Architecture** | Gemini 3.1 Flash |
@@ -29,7 +29,7 @@
 | Feature | Nano Banana 2 (Flash) | Nano Banana Pro |
 |---------|----------------------|-----------------|
 | Base Model | Gemini 3.1 Flash | Gemini 3 Pro |
-| Model ID | `gemini-3.1-flash-image-preview` | `gemini-3-pro-image-preview` |
+| Model ID | `gemini-3.1-flash-image` | `gemini-3-pro-image` |
 | Speed (1K) | 4–6 seconds | 10–20 seconds |
 | Speed (4K) | 15–30 seconds | 30–60 seconds |
 | Max Resolution | 4096px (4K) | 4096px (4K) |
@@ -133,7 +133,7 @@ from google.genai import types
 client = genai.Client(api_key="YOUR_KEY")
 
 response = client.models.generate_content(
-    model="gemini-3.1-flash-image-preview",
+    model="gemini-3.1-flash-image",
     contents=["Your prompt here"],
     config=types.GenerateContentConfig(
         response_modalities=["IMAGE"],       # Use ["TEXT", "IMAGE"] for mixed output
@@ -170,7 +170,7 @@ contents = [
 ]
 
 response = client.models.generate_content(
-    model="gemini-3.1-flash-image-preview",
+    model="gemini-3.1-flash-image",
     contents=contents,
     config=types.GenerateContentConfig(
         response_modalities=["IMAGE"],

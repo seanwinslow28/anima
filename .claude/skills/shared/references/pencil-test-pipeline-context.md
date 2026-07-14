@@ -6,7 +6,7 @@ Shared reference for all pipeline skills. Read this when you need project-specif
 
 | Phase | Tool | Role |
 |-------|------|------|
-| B. Generate (keyframes) | Google Gemini Nano Banana 2 (`gemini-3.1-flash-image-preview`) | Primary keyframe generator via `generate_image.py` |
+| B. Generate (keyframes) | Google Gemini Nano Banana 2 (`gemini-3.1-flash-image`) | Primary keyframe generator via `generate_image.py` |
 | B. Generate (in-betweens) | ComfyUI + OpenPose ControlNet | Pose-guided in-between frame generation |
 | B. Generate (interpolation) | Veo 3.1 / Wan 2.2 / Kling 3.0 | Start-frame/end-frame video interpolation |
 | C. Audit (automated) | Python PIL | HF01 aspect ratio check (16:9, 2% tolerance) |
@@ -94,7 +94,7 @@ line_weight: 1-3px (thick contour, thin interior)
 color_palette: limited desaturated flat fills
 resolution: 1920x1080
 aspect_ratio: 16:9
-generator: gemini-3.1-flash-image-preview
+generator: gemini-3.1-flash-image
 anchor: images/2D-Character-Sketch-Sean-v1.png
 ```
 

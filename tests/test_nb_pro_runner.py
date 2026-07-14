@@ -36,7 +36,7 @@ from pipeline.agents.nb_pro_runner import (
 # guard that keeps Cy's locked-Bible plate generation (which passes no
 # aspect_ratio) cache-stable across the HF01 fix.
 _GOLDEN_KEY_ASPECT_NONE = (
-    "7a84b9130f7bb71ff37bbdcf95bc45cbdf951ca05fa0031e828a7c3281d4258d"
+    "96f02723a6216d48134be194dbd05532dd43f27d53d50f5ef4fff06a010a3bc9"
 )
 
 
@@ -221,14 +221,14 @@ def test_model_parameter_changes_cache_key(
         reference_images=[fake_reference_image],
         output_path=tmp_path / "out_pro.png",
         cache_dir=cache_dir,
-        model="gemini-3-pro-image-preview",
+        model="gemini-3-pro-image",
     )
     response_flash = invoke_image_edit(
         prompt="same",
         reference_images=[fake_reference_image],
         output_path=tmp_path / "out_flash.png",
         cache_dir=cache_dir,
-        model="gemini-3.1-flash-image-preview",
+        model="gemini-3.1-flash-image",
     )
     assert response_pro.cache_key != response_flash.cache_key
 
@@ -250,14 +250,14 @@ def test_default_model_is_nb2_flash(monkeypatch, tmp_path, fake_reference_image,
         reference_images=[fake_reference_image],
         output_path=tmp_path / "out_nb2.png",
         cache_dir=cache_dir,
-        model="gemini-3.1-flash-image-preview",
+        model="gemini-3.1-flash-image",
     )
     explicit_pro = invoke_image_edit(
         prompt="same",
         reference_images=[fake_reference_image],
         output_path=tmp_path / "out_pro.png",
         cache_dir=cache_dir,
-        model="gemini-3-pro-image-preview",
+        model="gemini-3-pro-image",
     )
     assert default_resp.cache_key == explicit_nb2.cache_key
     assert default_resp.cache_key != explicit_pro.cache_key
@@ -275,7 +275,7 @@ def test_build_skill_cmd_omits_aspect_ratio_when_none(tmp_path):
         prompt="p",
         reference_images=[],
         output_path=tmp_path / "o.png",
-        model="gemini-3.1-flash-image-preview",
+        model="gemini-3.1-flash-image",
     )
     assert "--aspect-ratio" not in cmd
 
@@ -286,7 +286,7 @@ def test_build_skill_cmd_includes_aspect_ratio_when_set(tmp_path):
         prompt="p",
         reference_images=[],
         output_path=tmp_path / "o.png",
-        model="gemini-3.1-flash-image-preview",
+        model="gemini-3.1-flash-image",
         aspect_ratio="16:9",
     )
     assert "--aspect-ratio" in cmd
@@ -295,14 +295,15 @@ def test_build_skill_cmd_includes_aspect_ratio_when_set(tmp_path):
 
 def test_cache_key_byte_identical_when_aspect_ratio_none():
     """aspect_ratio=None (and omitted) must leave the cache key byte-identical
-    to the pre-Flo-C digest — Cy's locked-Bible plates stay cache-stable."""
+    to the post-GA-repin digest — only the deliberate model-ID change rotates
+    Cy's plate cache, not an omitted aspect ratio."""
     omitted = _compute_cache_key(
         prompt="lock", reference_images=[], cites_identity_rules=(),
-        reject_reason=None, model="gemini-3.1-flash-image-preview",
+        reject_reason=None, model="gemini-3.1-flash-image",
     )
     explicit_none = _compute_cache_key(
         prompt="lock", reference_images=[], cites_identity_rules=(),
-        reject_reason=None, model="gemini-3.1-flash-image-preview",
+        reject_reason=None, model="gemini-3.1-flash-image",
         aspect_ratio=None,
     )
     assert omitted == _GOLDEN_KEY_ASPECT_NONE
@@ -314,12 +315,12 @@ def test_aspect_ratio_changes_cache_key_when_set():
     square plate from otherwise-identical inputs don't collide)."""
     none_key = _compute_cache_key(
         prompt="lock", reference_images=[], cites_identity_rules=(),
-        reject_reason=None, model="gemini-3.1-flash-image-preview",
+        reject_reason=None, model="gemini-3.1-flash-image",
         aspect_ratio=None,
     )
     set_key = _compute_cache_key(
         prompt="lock", reference_images=[], cites_identity_rules=(),
-        reject_reason=None, model="gemini-3.1-flash-image-preview",
+        reject_reason=None, model="gemini-3.1-flash-image",
         aspect_ratio="16:9",
     )
     assert none_key != set_key

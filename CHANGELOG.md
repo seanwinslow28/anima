@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-07-13 — Gemini image IDs repinned preview → GA (transport decision D3 rider)
+
+**What & why.** Repinned the two direct google-genai image routes from the deprecated preview IDs to the GA IDs (`gemini-3.1-flash-image` and `gemini-3-pro-image`) across the central register constants, exact runner allowlist, live configuration, current skill defaults/references, examples, and tests. `SUPPORTED_IMAGE_MODELS` remains exactly the two constants. The deliberate model-string change rotates every `invoke_image_edit` cache key, so previously cached plates miss once on a future `iterate`/`add`; locked Bibles are unaffected because their approved plates already live on disk. The characterization oracle therefore updates only its routing and derived cache-key tables; `_SIX`, prompt/prop snapshots, clause bytes, and stub order remain unchanged.
+
+**Cost-comment correction.** Corrected the fal Seedream edit engine's published per-image estimate from the stale `$0.02` to `$0.03`, re-verified against the fal model page on 2026-07-13. No live model call was made; verification stayed forced-stub.
+
 ## 2026-07-13 — Higgsfield image transport Task 3: shared-dispatch wiring and force-stub closure
 
 **What & why.** Wired the three honest `gpt-image-2` register routes through the completed Higgsfield transport at the existing `invoke_image_edit` seam, so Cy, Flo, the bake-offs, and other duck-typed consumers need no production changes. The google-genai `SUPPORTED_IMAGE_MODELS` allowlist remains exactly the two Gemini IDs; Higgsfield keeps its separate exact mapping, and a model in neither map still raises before cache or stub work. The dispatch uses a lazy import to preserve the existing module relationship, and the public return annotation now honestly names both compatible response envelopes. Updated the three register tests and comments from stale "unwired" expectations to credential-free Higgsfield dispatch, including the previously missing primal transport case.

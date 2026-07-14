@@ -41,7 +41,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-# Model ids match the pre-registry _REGISTER_MODELS table. NB2 is the
+# Google GA image ids replace the -preview ids deprecated 2026-06-25; repinned
+# 2026-07-13 per the transport decision D3 rider. NB2 is the
 # generation/editing default for most registers (cheaper, faster, more
 # identity-stable across edits) — primal-sketch-grit is the exception (its
 # costed spike resolved generation to gpt-image, fork #1, 2026-07-11); NB Pro
@@ -49,8 +50,8 @@ from dataclasses import dataclass
 # consumer yet. The registry records the HONEST model per register; transport
 # ownership stays separate (the Gemini-only SUPPORTED_IMAGE_MODELS allowlist
 # plus the Higgsfield model map), and an unknown model fails at the boundary.
-NB2_FLASH = "gemini-3.1-flash-image-preview"
-NB_PRO = "gemini-3-pro-image-preview"
+NB2_FLASH = "gemini-3.1-flash-image"
+NB_PRO = "gemini-3-pro-image"
 # The GA flagship gpt-image id, pinned against the openai-image-gen skill
 # (.claude/skills/openai-image-gen/references/openai-image-capabilities.md).
 # invoke_image_edit dispatches this exact id through Higgsfield; it deliberately

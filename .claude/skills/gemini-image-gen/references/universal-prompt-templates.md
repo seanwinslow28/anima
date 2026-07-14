@@ -1,6 +1,6 @@
 # Universal Prompt Templates
 
-> **When to read:** Use these templates when generating any image type. Each template follows the 7-Layer Prompt Framework from the `image-generator-prompt-science` skill, optimized for Nano Banana 2 (`gemini-3.1-flash-image-preview`). Copy the template, fill in the bracketed placeholders, and remove any layers that don't apply to your specific request.
+> **When to read:** Use these templates when generating any image type. Each template follows the 7-Layer Prompt Framework from the `image-generator-prompt-science` skill, optimized for Nano Banana 2 (`gemini-3.1-flash-image`). Copy the template, fill in the bracketed placeholders, and remove any layers that don't apply to your specific request.
 
 ---
 

@@ -61,7 +61,7 @@ def test_primal_routing_is_gpt_image_generation():
     from pipeline.agents.character_designer import _resolve_plate_model
 
     assert _resolve_plate_model(_PRIMAL, {}) == "gpt-image-2"
-    assert _resolve_plate_model(_PRIMAL, {}, final=True) == "gemini-3-pro-image-preview"
+    assert _resolve_plate_model(_PRIMAL, {}, final=True) == "gemini-3-pro-image"
 
 
 def test_primal_transport_is_wired_via_higgsfield(tmp_path, monkeypatch):

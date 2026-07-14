@@ -1223,7 +1223,7 @@ def test_iterate_reject_reason_reaches_emitted_prompt(tmp_path, monkeypatch):
 
     def capturing_nb_pro(*, prompt, reference_images, output_path, cache_dir,
                          cites_identity_rules=(), reject_reason=None,
-                         model="gemini-3.1-flash-image-preview", timeout_s=180):
+                         model="gemini-3.1-flash-image", timeout_s=180):
         captured["prompt"] = prompt
         captured["reject_reason"] = reject_reason
         _real_png(output_path, color=(170, 130, 80))
@@ -1274,8 +1274,8 @@ def test_iterate_reject_reason_reaches_emitted_prompt(tmp_path, monkeypatch):
 
 def test_resolve_plate_model_routes_by_register():
     from pipeline.agents.character_designer import _resolve_plate_model
-    NB2 = "gemini-3.1-flash-image-preview"
-    PRO = "gemini-3-pro-image-preview"
+    NB2 = "gemini-3.1-flash-image"
+    PRO = "gemini-3-pro-image"
     # editing/generation defaults to NB2 for every register
     assert _resolve_plate_model("pencil-test-colored", {}) == NB2
     assert _resolve_plate_model("pixel-art-8bit", {}) == NB2
