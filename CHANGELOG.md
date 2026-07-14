@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-07-13 — Higgsfield final-review pre-create intent hardening, wave 3 ($0)
+
+**What changed.** Closed the third contained final re-review without Task 7 or live generation. Before the pinned Higgsfield CLI can invoke the combined `generate create ... --wait` command, the runner now atomically publishes and fsyncs a per-cache-key `*.create_in_flight.json` intent inside the existing `flock`. A publication failure returns non-ok before create; an output-less or otherwise identity-ambiguous timeout retains the intent, and every identical retry fails closed with an actionable operator error instead of creating again. Once job metadata appears, the runner publishes the canonical pending receipt (or its durable quarantine fallback) before removing the intent. If both post-create receipt paths fail, the identity-bearing response returns exit 78 and the durable intent remains the duplicate-spend barrier. A valid successful path proves the full publication order and clears both intent and pending only after their respective safe successors exist.
+
+**Same-job validation.** Every `generate wait` response now validates any non-null returned job ID against the requested ID before merging metadata. A mismatch retains the original receipt byte-for-byte, returns the original job identity with an actionable exit-78 error, and performs no download or cache publication. The intent, receipt, wait, download, and publication paths remain inside the single existing per-key lock; no nested lock or new lock-order edge was introduced.
+
+**Review disposition.** COMPLETE: ambiguous pre-create window, pre-intent write failure, dual post-create receipt failure, same-ID wait validation, and stale final-report cleanup semantics. Standing costed T2 and Task 7 gates remain unchanged and unrun.
+
 ## 2026-07-13 — Higgsfield final-review receipt hardening, wave 2 ($0)
 
 **What changed.** Closed the second final re-review without Task 7 or live generation. A `TimeoutExpired` from the pinned CLI's combined create/wait command now parses both captured stdout/output and stderr, retains any emitted job ID/result URL/display name, atomically publishes the receipt, and returns a non-ok identity-bearing response; an identical retry resumes/downloads that same charged job before any create. If canonical pending-receipt publication itself raises `OSError` after create, the runner writes the known identity through an independent low-level, fsynced `*.quarantine.json` path and returns exit 78 with an explicit operator action. Identical retries see that quarantine first and cannot create automatically.

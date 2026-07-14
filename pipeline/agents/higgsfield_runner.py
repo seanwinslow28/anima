@@ -75,6 +75,16 @@ class PendingReceiptQuarantined(RuntimeError):
         )
 
 
+class MismatchedHiggsfieldJobIdentity(RuntimeError):
+    def __init__(self, requested: str, observed: str):
+        self.requested = requested
+        self.observed = observed
+        super().__init__(
+            f"Higgsfield wait job ID mismatch: requested {requested}, "
+            f"received {observed}"
+        )
+
+
 @contextmanager
 def _cache_key_lock(lock_path: Path) -> Iterator[None]:
     """Serialize charged work and cache publication for one content key."""
@@ -240,15 +250,43 @@ def _read_valid_pending(
     return payload
 
 
+def _fsync_directory(path: Path) -> None:
+    directory_fd = os.open(path, os.O_RDONLY)
+    try:
+        os.fsync(directory_fd)
+    finally:
+        os.close(directory_fd)
+
+
 def _atomic_write_json(path: Path, payload: dict) -> None:
     fd, staged_name = tempfile.mkstemp(
         dir=path.parent, prefix=f".{path.stem}.", suffix=".json.tmp"
     )
-    os.close(fd)
     staged = Path(staged_name)
     try:
-        staged.write_text(json.dumps(payload, indent=2))
+        with os.fdopen(fd, "w") as handle:
+            json.dump(payload, handle, indent=2)
+            handle.flush()
+            os.fsync(handle.fileno())
         os.replace(staged, path)
+        _fsync_directory(path.parent)
+    finally:
+        staged.unlink(missing_ok=True)
+
+
+def _publish_create_intent(path: Path, payload: dict) -> None:
+    """Durably publish the pre-charge marker before invoking create --wait."""
+    fd, staged_name = tempfile.mkstemp(
+        dir=path.parent, prefix=f".{path.stem}.", suffix=".json.tmp"
+    )
+    staged = Path(staged_name)
+    try:
+        with os.fdopen(fd, "w") as handle:
+            json.dump(payload, handle, indent=2)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(staged, path)
+        _fsync_directory(path.parent)
     finally:
         staged.unlink(missing_ok=True)
 
@@ -270,6 +308,7 @@ def _durable_write_quarantine(path: Path, payload: dict, reason: str) -> None:
             handle.flush()
             os.fsync(handle.fileno())
         os.replace(staged, path)
+        _fsync_directory(path.parent)
     finally:
         os.close(fd)
         staged.unlink(missing_ok=True)
@@ -428,6 +467,7 @@ def invoke_higgsfield_image_edit(
     sidecar = cache_dir / f"{cache_key}.provenance.json"
     pending = cache_dir / f"{cache_key}.pending.json"
     quarantine = cache_dir / f"{cache_key}.quarantine.json"
+    intent = cache_dir / f"{cache_key}.create_in_flight.json"
     lock_path = cache_dir / f"{cache_key}.lock"
     # Forced stub is absolute and never reads or writes the real cache.
     if os.environ.get("ANIMA_FORCE_STUB"):
@@ -435,7 +475,7 @@ def invoke_higgsfield_image_edit(
         return HiggsfieldResponse(
             output_path, cache_key, False, stub_fallback=True
         )
-    if not pending.exists() and not quarantine.exists():
+    if not pending.exists() and not quarantine.exists() and not intent.exists():
         hit = _load_cache_response(
             cached=cached, sidecar=sidecar, output_path=output_path,
             cache_key=cache_key, model=model, job_type=job_type,
@@ -461,6 +501,9 @@ def invoke_higgsfield_image_edit(
             aspect_ratio=aspect_ratio,
         )
         if pending_payload is not None:
+            # A durable pending receipt is the safe successor to a pre-create
+            # intent. A crash between those two publications may leave both.
+            intent.unlink(missing_ok=True)
             return _recover_pending_job(
                 pending_payload=pending_payload, pending=pending,
                 output_path=output_path, cached=cached, sidecar=sidecar,
@@ -474,6 +517,12 @@ def invoke_higgsfield_image_edit(
                 receipt=pending, output_path=output_path,
                 cache_key=cache_key,
                 reason="Invalid or version-stale pending receipt",
+            )
+        if intent.exists():
+            return _blocked_receipt_response(
+                receipt=intent, output_path=output_path,
+                cache_key=cache_key,
+                reason="Unresolved create-in-flight intent",
             )
 
         hit = _load_cache_response(
@@ -499,6 +548,7 @@ def invoke_higgsfield_image_edit(
             model=model, job_type=job_type, resolution=resolution,
             quality=quality, aspect_ratio=aspect_ratio, timeout_s=timeout_s,
             sidecar=sidecar, pending=pending, quarantine=quarantine,
+            intent=intent,
         )
 
 
@@ -638,7 +688,11 @@ def _resume_existing_job(
             result = subprocess.CompletedProcess(
                 cmd, 124, stdout="", stderr="wait timed out"
             )
-        metadata = _merge_cli_metadata(metadata, _parse_cli_output(result.stdout))
+        parsed = _parse_cli_output(result.stdout)
+        observed_job_id = parsed[1]
+        if observed_job_id is not None and observed_job_id != job_id:
+            raise MismatchedHiggsfieldJobIdentity(job_id, observed_job_id)
+        metadata = _merge_cli_metadata(metadata, parsed)
         transient = result.returncode == 124 or _is_transient_failure(result)
         if not transient or attempt == _MAX_ATTEMPTS:
             return result, metadata
@@ -680,6 +734,26 @@ def _blocked_receipt_response(
             f"{reason}: {receipt}. Operator resolution required: inspect the "
             f"receipt and restore/remove it only after resolving the known or "
             f"possible charged job; automatic create is blocked."
+        ),
+    )
+
+
+def _mismatched_wait_response(
+    *,
+    exc: MismatchedHiggsfieldJobIdentity,
+    output_path: Path,
+    cache_key: str,
+    metadata: tuple[str | None, str | None, str | None],
+    cli_version: str,
+) -> HiggsfieldResponse:
+    return _response_for_failure(
+        output_path=output_path, cache_key=cache_key, exit_code=78,
+        metadata=metadata, cli_version=cli_version,
+        error=(
+            f"Higgsfield wait job ID mismatch: requested {exc.requested}, "
+            f"received {exc.observed}. The original receipt was retained; "
+            "operator resolution is required and automatic download/cache "
+            "publication is blocked."
         ),
     )
 
@@ -732,6 +806,17 @@ def _persist_pending_or_failure(
         return _quarantined_write_response(
             exc=exc, output_path=output_path, cache_key=cache_key,
         )
+    except OSError as exc:
+        return _response_for_failure(
+            output_path=output_path, cache_key=cache_key, exit_code=78,
+            metadata=metadata, cli_version=cli_version,
+            error=(
+                "Neither canonical nor quarantine charged-job receipt could "
+                f"be published: {exc}. The pre-existing pending receipt or "
+                "pre-create intent remains the fail-closed recovery marker; "
+                "operator resolution is required."
+            ),
+        )
     return None
 
 
@@ -775,7 +860,13 @@ def _finish_known_job(
                     "refreshed because the Higgsfield CLI is unavailable."
                 ),
             )
-        result, wait_metadata = _resume_existing_job(job_id, timeout_s)
+        try:
+            result, wait_metadata = _resume_existing_job(job_id, timeout_s)
+        except MismatchedHiggsfieldJobIdentity as exc:
+            return _mismatched_wait_response(
+                exc=exc, output_path=output_path, cache_key=cache_key,
+                metadata=metadata, cli_version=cli_version,
+            )
         metadata = _merge_cli_metadata(metadata, wait_metadata)
         blocked = _persist_pending_or_failure(
             pending=pending, quarantine=quarantine, output_path=output_path,
@@ -864,7 +955,13 @@ def _recover_pending_job(
                 output_path=output_path, cache_key=cache_key, exit_code=127,
                 metadata=metadata, cli_version=cli_version,
             )
-        result, wait_metadata = _resume_existing_job(job_id, timeout_s)
+        try:
+            result, wait_metadata = _resume_existing_job(job_id, timeout_s)
+        except MismatchedHiggsfieldJobIdentity as exc:
+            return _mismatched_wait_response(
+                exc=exc, output_path=output_path, cache_key=cache_key,
+                metadata=metadata, cli_version=cli_version,
+            )
         metadata = _merge_cli_metadata(metadata, wait_metadata)
         blocked = _persist_pending_or_failure(
             pending=pending, quarantine=quarantine, output_path=output_path,
@@ -908,6 +1005,7 @@ def _invoke_real(
     sidecar: Path,
     pending: Path,
     quarantine: Path,
+    intent: Path,
 ) -> HiggsfieldResponse:
     cli_version = _read_cli_version()  # fail closed before any generation
     cmd = [
@@ -921,6 +1019,33 @@ def _invoke_real(
         cmd.extend(["--aspect_ratio", aspect_ratio])
     for ref in reference_images:
         cmd.extend(["--image", str(ref)])
+
+    intent_payload = {
+        "cache_key": cache_key,
+        "transport": "higgsfield",
+        "vendor_model": model,
+        "job_type": job_type,
+        "quality": quality,
+        "resolution": resolution,
+        "aspect_ratio": aspect_ratio,
+        "cli_version": cli_version,
+        "state": "create_in_flight",
+        "operator_action": (
+            "Resolve whether the combined create/wait charged a job before "
+            "removing this marker. Automatic create is blocked."
+        ),
+    }
+    try:
+        _publish_create_intent(intent, intent_payload)
+    except OSError as exc:
+        return _response_for_failure(
+            output_path=output_path, cache_key=cache_key, exit_code=78,
+            metadata=(None, None, None), cli_version=cli_version,
+            error=(
+                f"Could not durably publish pre-create intent at {intent}: "
+                f"{exc}. Higgsfield create was not invoked."
+            ),
+        )
 
     result = None
     metadata = (None, None, None)
@@ -941,7 +1066,11 @@ def _invoke_real(
                 cli_version=cli_version,
             )
             if blocked is not None:
+                if pending.exists() or quarantine.exists():
+                    intent.unlink(missing_ok=True)
                 return blocked
+            if pending.exists():
+                intent.unlink(missing_ok=True)
             return _response_for_failure(
                 output_path=output_path, cache_key=cache_key, exit_code=124,
                 metadata=metadata, cli_version=cli_version,
@@ -961,11 +1090,21 @@ def _invoke_real(
             cli_version=cli_version,
         )
         if blocked is not None:
+            if pending.exists() or quarantine.exists():
+                intent.unlink(missing_ok=True)
             return blocked
+        if pending.exists():
+            intent.unlink(missing_ok=True)
         if result.returncode != 0 and job_id:
             # The job exists: resume it before classifying the create failure.
             # A second create could duplicate a charged generation.
-            result, wait_metadata = _resume_existing_job(job_id, timeout_s)
+            try:
+                result, wait_metadata = _resume_existing_job(job_id, timeout_s)
+            except MismatchedHiggsfieldJobIdentity as exc:
+                return _mismatched_wait_response(
+                    exc=exc, output_path=output_path, cache_key=cache_key,
+                    metadata=metadata, cli_version=cli_version,
+                )
             metadata = _merge_cli_metadata(metadata, wait_metadata)
             blocked = _persist_pending_or_failure(
                 pending=pending, quarantine=quarantine,
@@ -975,7 +1114,11 @@ def _invoke_real(
                 cli_version=cli_version,
             )
             if blocked is not None:
+                if pending.exists() or quarantine.exists():
+                    intent.unlink(missing_ok=True)
                 return blocked
+            if pending.exists():
+                intent.unlink(missing_ok=True)
             break
         transient = _is_transient_failure(result)
         if not transient:

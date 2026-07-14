@@ -446,7 +446,9 @@ def test_cache_publishes_valid_provenance_before_image(tmp_path, monkeypatch):
     )
     monkeypatch.setattr(hr, "_download", lambda u, d, t: Path(d).write_bytes(b"png"))
     real_replace = hr.os.replace
+    real_fsync = hr.os.fsync
     publications = []
+    fsyncs = []
 
     def observe_replace(src, dst):
         src_path, dst_path = Path(src), Path(dst)
@@ -458,7 +460,12 @@ def test_cache_publishes_valid_provenance_before_image(tmp_path, monkeypatch):
         publications.append((src_path, dst_path))
         real_replace(src, dst)
 
+    def observe_fsync(fd):
+        fsyncs.append(fd)
+        real_fsync(fd)
+
     monkeypatch.setattr(hr.os, "replace", observe_replace)
+    monkeypatch.setattr(hr.os, "fsync", observe_fsync)
     resp = invoke_higgsfield_image_edit(
         prompt="p", reference_images=[_mk_ref(tmp_path)],
         output_path=tmp_path / "o.png", cache_dir=tmp_path / "c",
@@ -466,12 +473,18 @@ def test_cache_publishes_valid_provenance_before_image(tmp_path, monkeypatch):
 
     assert resp.ok
     assert [dest.name for _, dest in publications] == [
+        f"{resp.cache_key}.create_in_flight.json",
         f"{resp.cache_key}.pending.json",
         f"{resp.cache_key}.provenance.json",
         f"{resp.cache_key}.png",
     ]
     assert all(source != dest for source, dest in publications)
     assert not (tmp_path / "c" / f"{resp.cache_key}.pending.json").exists()
+    assert not (
+        tmp_path / "c" / f"{resp.cache_key}.create_in_flight.json"
+    ).exists()
+    # Intent and pending each fsync their staged file and parent directory.
+    assert len(fsyncs) >= 4
 
 
 def test_unverified_cli_version_fails_before_generation(tmp_path, monkeypatch):
@@ -682,6 +695,72 @@ def test_create_timeout_receipt_prevents_duplicate_create(tmp_path, monkeypatch)
     assert calls == {"create": 1, "download": 1}
 
 
+def test_outputless_create_timeout_intent_blocks_duplicate_create(
+    tmp_path, monkeypatch
+):
+    """An ambiguous combined create/wait timeout has no recoverable job ID,
+    so its pre-create intent must block every identical automatic retry."""
+    _no_stub(monkeypatch)
+    calls = {"create": 0}
+
+    def fake_run(cmd, timeout_s):
+        if cmd == ["higgsfield", "--version"]:
+            return _sp.CompletedProcess(
+                cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
+            )
+        assert cmd[1:3] == ["generate", "create"]
+        calls["create"] += 1
+        raise _sp.TimeoutExpired(cmd, timeout_s)
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    kwargs = dict(
+        prompt="ambiguous timeout",
+        reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png",
+        cache_dir=tmp_path / "c",
+    )
+
+    first = invoke_higgsfield_image_edit(**kwargs)
+    second = invoke_higgsfield_image_edit(**kwargs)
+
+    intent = tmp_path / "c" / f"{first.cache_key}.create_in_flight.json"
+    assert not first.ok and first.exit_code == 124
+    assert not second.ok and second.exit_code == 78
+    assert second.error and "operator" in second.error.lower()
+    assert intent.exists()
+    assert calls == {"create": 1}
+
+
+def test_pre_create_intent_write_failure_prevents_create(tmp_path, monkeypatch):
+    """Create is never invoked unless the pre-charge intent is durable."""
+    _no_stub(monkeypatch)
+    calls = {"create": 0}
+
+    def fake_run(cmd, timeout_s):
+        if cmd == ["higgsfield", "--version"]:
+            return _sp.CompletedProcess(
+                cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
+            )
+        calls["create"] += 1
+        raise AssertionError("create ran without a durable intent")
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    monkeypatch.setattr(
+        hr, "_publish_create_intent",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(OSError("disk full")),
+    )
+    resp = invoke_higgsfield_image_edit(
+        prompt="intent publication failure",
+        reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png",
+        cache_dir=tmp_path / "c",
+    )
+
+    assert not resp.ok and resp.exit_code == 78
+    assert resp.error and "not invoked" in resp.error.lower()
+    assert calls == {"create": 0}
+
+
 def test_pending_write_failure_quarantines_job_and_blocks_recreate(
     tmp_path, monkeypatch
 ):
@@ -729,6 +808,59 @@ def test_pending_write_failure_quarantines_job_and_blocks_recreate(
     second = invoke_higgsfield_image_edit(**kwargs)
     assert not second.ok and second.job_id == first.job_id
     assert second.error and "operator" in second.error.lower()
+    assert calls == {"create": 1}
+
+
+def test_pending_and_quarantine_write_failure_retains_create_intent(
+    tmp_path, monkeypatch
+):
+    """If neither post-create receipt can publish, the durable pre-create
+    intent remains the last-resort duplicate-spend barrier across retries."""
+    _no_stub(monkeypatch)
+    calls = {"create": 0}
+
+    def fake_run(cmd, timeout_s):
+        if cmd == ["higgsfield", "--version"]:
+            return _sp.CompletedProcess(
+                cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
+            )
+        calls["create"] += 1
+        return _sp.CompletedProcess(
+            cmd,
+            0,
+            stdout=json.dumps({
+                "id": "job-unpublished-receipt",
+                "result_url": "https://cdn.example/unpublished.png",
+                "display_name": "GPT Image 2",
+            }),
+            stderr="",
+        )
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    monkeypatch.setattr(
+        hr, "_atomic_write_json",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(OSError("disk full")),
+    )
+    monkeypatch.setattr(
+        hr, "_durable_write_quarantine",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(OSError("read only")),
+    )
+    kwargs = dict(
+        prompt="both receipts fail",
+        reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png",
+        cache_dir=tmp_path / "c",
+    )
+
+    first = invoke_higgsfield_image_edit(**kwargs)
+    second = invoke_higgsfield_image_edit(**kwargs)
+
+    intent = tmp_path / "c" / f"{first.cache_key}.create_in_flight.json"
+    assert not first.ok and first.exit_code == 78
+    assert first.job_id == "job-unpublished-receipt"
+    assert first.error and "intent" in first.error.lower()
+    assert not second.ok and second.exit_code == 78
+    assert intent.exists()
     assert calls == {"create": 1}
 
 
@@ -857,3 +989,68 @@ def test_expired_pending_url_refreshes_same_job_before_download_retry(
         (tmp_path / "c" / f"{resp.cache_key}.provenance.json").read_text()
     )
     assert provenance["result_url"] == resp.result_url
+
+
+def test_wait_job_id_mismatch_preserves_original_receipt_and_fails_closed(
+    tmp_path, monkeypatch
+):
+    """A wait response for another job can never overwrite, download, or
+    publish against the requested charged-job receipt."""
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    kwargs = dict(
+        prompt="wait identity mismatch",
+        reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png",
+        cache_dir=tmp_path / "c",
+    )
+    probe = invoke_higgsfield_image_edit(**kwargs)
+    pending = tmp_path / "c" / f"{probe.cache_key}.pending.json"
+    original = json.dumps({
+        "cache_key": probe.cache_key,
+        "transport": "higgsfield",
+        "vendor_model": GPT_IMAGE,
+        "job_type": "gpt_image_2",
+        "quality": "high",
+        "resolution": "1k",
+        "aspect_ratio": None,
+        "job_id": "job-original",
+        "result_url": None,
+        "display_name": "GPT Image 2",
+        "cli_version": "0.2.3",
+    })
+    pending.write_text(original)
+
+    _no_stub(monkeypatch)
+    calls = {"create": 0, "wait": 0, "download": 0}
+
+    def fake_run(cmd, timeout_s):
+        if cmd[1:3] == ["generate", "create"]:
+            calls["create"] += 1
+            raise AssertionError("recovery must not create")
+        assert cmd[1:3] == ["generate", "wait"]
+        calls["wait"] += 1
+        return _sp.CompletedProcess(
+            cmd,
+            0,
+            stdout=json.dumps({
+                "id": "job-other",
+                "result_url": "https://cdn.example/wrong-job.png",
+                "display_name": "GPT Image 2",
+            }),
+            stderr="",
+        )
+
+    def fail_download(*_args):
+        calls["download"] += 1
+        raise AssertionError("mismatched job output must not download")
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    monkeypatch.setattr(hr, "_download", fail_download)
+    resp = invoke_higgsfield_image_edit(**kwargs)
+
+    assert not resp.ok and resp.exit_code == 78
+    assert resp.job_id == "job-original"
+    assert resp.error and "job ID mismatch" in resp.error
+    assert pending.read_text() == original
+    assert not list((tmp_path / "c").glob("*.png"))
+    assert calls == {"create": 0, "wait": 1, "download": 0}
