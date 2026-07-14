@@ -24,6 +24,8 @@ from pipeline.agents.higgsfield_runner import (
 from pipeline.agents.nb_pro_runner import UnwiredTransportError
 from pipeline.registers import GPT_IMAGE
 
+_HIGGSFIELD_FIXTURES = Path(__file__).parent / "fixtures" / "higgsfield"
+
 
 def _mk_ref(tmp_path: Path, name: str = "ref.png") -> Path:
     p = tmp_path / name
@@ -160,14 +162,15 @@ def _no_stub(monkeypatch):
 
 def test_real_path_builds_argv_and_downloads(tmp_path, monkeypatch):
     _no_stub(monkeypatch)
-    seen = {}
+    seen = {"create": None, "wait": None}
 
     def fake_run(cmd, timeout_s):
         if cmd == ["higgsfield", "--version"]:
             return _sp.CompletedProcess(
                 cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
             )
-        seen["cmd"] = cmd
+        operation = cmd[2]
+        seen[operation] = cmd
         return _sp.CompletedProcess(
             cmd, 0, stdout=json.dumps({
                 "id": "job-123",
@@ -189,15 +192,18 @@ def test_real_path_builds_argv_and_downloads(tmp_path, monkeypatch):
     assert resp.job_id == "job-123"
     assert resp.display_name == "GPT Image 2"
     assert resp.cli_version == "0.2.3"
-    cmd = seen["cmd"]
+    cmd = seen["create"]
     assert cmd[:4] == ["higgsfield", "generate", "create", "gpt_image_2"]
     # D5: explicit params, never surface defaults.
     for flag, val in (("--quality", "medium"), ("--resolution", "1k"),
                       ("--aspect_ratio", "16:9")):
         assert val == cmd[cmd.index(flag) + 1]
     assert cmd[cmd.index("--image") + 1] == str(ref)
-    assert "--wait" in cmd
+    assert "--wait" not in cmd
     assert "--json" in cmd
+    assert seen["wait"][:4] == [
+        "higgsfield", "generate", "wait", "job-123",
+    ]
     # Provenance sidecar written next to the cache entry.
     sidecar = tmp_path / "c" / f"{resp.cache_key}.provenance.json"
     provenance = json.loads(sidecar.read_text())
@@ -208,17 +214,141 @@ def test_real_path_builds_argv_and_downloads(tmp_path, monkeypatch):
     assert provenance["vendor_model"] == GPT_IMAGE
 
 
+def test_create_ack_is_persisted_before_wait_and_identical_retry_does_not_create(
+    tmp_path, monkeypatch
+):
+    """The charged create returns identity before the standalone wait; a
+    successful identical retry is a cache hit and never creates again."""
+    _no_stub(monkeypatch)
+    calls = {"create": 0, "wait": 0}
+    create_ack = (
+        _HIGGSFIELD_FIXTURES / "create-ack-v0.2.3.json"
+    ).read_text()
+    wait_complete = (
+        _HIGGSFIELD_FIXTURES / "wait-complete-v0.2.3.json"
+    ).read_text()
+
+    def fake_run(cmd, timeout_s):
+        if cmd == ["higgsfield", "--version"]:
+            return _sp.CompletedProcess(
+                cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
+            )
+        if cmd[1:3] == ["generate", "create"]:
+            calls["create"] += 1
+            assert "--wait" not in cmd
+            assert "--wait-timeout" not in cmd
+            return _sp.CompletedProcess(
+                cmd,
+                0,
+                stdout=create_ack,
+                stderr="",
+            )
+        assert cmd[1:4] == ["generate", "wait", "job-create-ack"]
+        calls["wait"] += 1
+        receipts = list((tmp_path / "c").glob("*.pending.json"))
+        assert len(receipts) == 1
+        receipt = json.loads(receipts[0].read_text())
+        assert receipt["job_id"] == "job-create-ack"
+        assert receipt["result_url"] is None
+        return _sp.CompletedProcess(
+            cmd,
+            0,
+            stdout=wait_complete,
+            stderr="",
+        )
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    monkeypatch.setattr(
+        hr, "_download", lambda _url, dest, _timeout: Path(dest).write_bytes(b"png")
+    )
+    kwargs = dict(
+        prompt="split create and wait",
+        reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png",
+        cache_dir=tmp_path / "c",
+    )
+
+    first = invoke_higgsfield_image_edit(**kwargs)
+    second = invoke_higgsfield_image_edit(**kwargs)
+
+    assert first.ok and not first.cache_hit
+    assert first.job_id == "job-create-ack"
+    assert first.result_url == "https://cdn.example/create-wait.png"
+    assert second.ok and second.cache_hit
+    assert second.job_id == first.job_id
+    assert second.result_url == first.result_url
+    assert calls == {"create": 1, "wait": 1}
+    provenance = json.loads(
+        (tmp_path / "c" / f"{first.cache_key}.provenance.json").read_text()
+    )
+    assert provenance["job_id"] == first.job_id
+    assert provenance["result_url"] == first.result_url
+
+
+def test_parse_cli_output_fallback_strips_json_quotes_and_commas():
+    stdout = 'unparseable prefix\n  "https://cdn.example/quoted.png",\n'
+
+    url, job_id, display_name = hr._parse_cli_output(stdout)
+
+    assert url == "https://cdn.example/quoted.png"
+    assert job_id is None
+    assert display_name is None
+
+
+def test_parse_create_ack_accepts_one_id_and_rejects_multiple_ids():
+    create_ack = (
+        _HIGGSFIELD_FIXTURES / "create-ack-v0.2.3.json"
+    ).read_text()
+    wait_complete = (
+        _HIGGSFIELD_FIXTURES / "wait-complete-v0.2.3.json"
+    ).read_text()
+
+    assert hr._parse_create_ack(create_ack) == "job-create-ack"
+    assert hr._parse_create_ack(wait_complete) is None
+    with pytest.raises(ValueError, match="exactly one job ID"):
+        hr._parse_create_ack(json.dumps(["job-one", "job-two"]))
+
+
+def test_multi_job_create_ack_fails_loud_and_retains_intent(tmp_path, monkeypatch):
+    _no_stub(monkeypatch)
+    calls = {"create": 0, "wait": 0}
+
+    def fake_run(cmd, timeout_s):
+        if cmd == ["higgsfield", "--version"]:
+            return _sp.CompletedProcess(
+                cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
+            )
+        calls[cmd[2]] += 1
+        return _sp.CompletedProcess(
+            cmd, 0, stdout=json.dumps(["job-one", "job-two"]), stderr=""
+        )
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    with pytest.raises(ValueError, match="exactly one job ID"):
+        invoke_higgsfield_image_edit(
+            prompt="ambiguous batch",
+            reference_images=[_mk_ref(tmp_path)],
+            output_path=tmp_path / "o.png",
+            cache_dir=tmp_path / "c",
+        )
+
+    assert len(list((tmp_path / "c").glob("*.create_in_flight.json"))) == 1
+    assert not list((tmp_path / "c").glob("*.pending.json"))
+    assert calls == {"create": 1, "wait": 0}
+
+
 def test_transient_failure_retries_then_succeeds(tmp_path, monkeypatch):
     _no_stub(monkeypatch)
-    calls = {"n": 0}
+    calls = {"create": 0, "wait": 0}
 
     def flaky(cmd, timeout_s):
         if cmd == ["higgsfield", "--version"]:
             return _sp.CompletedProcess(
                 cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
             )
-        calls["n"] += 1
-        if calls["n"] == 1:
+        operation = cmd[2]
+        calls[operation] += 1
+        if operation == "create" and calls["create"] == 1:
             return _sp.CompletedProcess(cmd, 1, stdout="", stderr="HTTP 598")
         return _sp.CompletedProcess(cmd, 0, stdout=json.dumps({
             "id": "job-2", "result_url": "https://cdn.example/r.png",
@@ -232,7 +362,7 @@ def test_transient_failure_retries_then_succeeds(tmp_path, monkeypatch):
         prompt="p", reference_images=[_mk_ref(tmp_path)],
         output_path=tmp_path / "o.png", cache_dir=tmp_path / "c",
     )
-    assert resp.ok and calls["n"] == 2
+    assert resp.ok and calls == {"create": 2, "wait": 1}
 
 
 def test_transient_wait_with_job_id_resumes_without_duplicate_create(tmp_path, monkeypatch):
@@ -376,14 +506,14 @@ def test_resume_accumulates_create_metadata_when_wait_returns_bare_url(
 
 def test_real_cache_hit_rehydrates_provenance_without_cli_call(tmp_path, monkeypatch):
     _no_stub(monkeypatch)
-    generation_calls = {"n": 0}
+    generation_calls = {"create": 0, "wait": 0}
 
     def fake_run(cmd, timeout_s):
         if cmd == ["higgsfield", "--version"]:
             return _sp.CompletedProcess(
                 cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
             )
-        generation_calls["n"] += 1
+        generation_calls[cmd[2]] += 1
         return _sp.CompletedProcess(cmd, 0, stdout=json.dumps({
             "id": "job-cache", "result_url": "https://cdn.example/cache.png",
             "display_name": "GPT Image 2",
@@ -399,7 +529,7 @@ def test_real_cache_hit_rehydrates_provenance_without_cli_call(tmp_path, monkeyp
     second = invoke_higgsfield_image_edit(**kwargs)
     assert first.ok and second.ok and second.cache_hit
     assert second.job_id == "job-cache" and second.display_name == "GPT Image 2"
-    assert generation_calls["n"] == 1
+    assert generation_calls == {"create": 1, "wait": 1}
 
 
 @pytest.mark.parametrize(
@@ -482,6 +612,7 @@ def test_cache_publishes_valid_provenance_before_image(tmp_path, monkeypatch):
     assert [dest.name for _, dest in publications] == [
         f"{resp.cache_key}.create_in_flight.json",
         f"{resp.cache_key}.pending.json",
+        f"{resp.cache_key}.pending.json",
         f"{resp.cache_key}.provenance.json",
         f"{resp.cache_key}.png",
     ]
@@ -495,9 +626,9 @@ def test_cache_publishes_valid_provenance_before_image(tmp_path, monkeypatch):
         f"{resp.cache_key}.pending.json",
     ]
     assert removals[0][1:] == (2, 4)  # after durable pending publication
-    assert removals[1][1:] == (4, 8)  # after durable cache-pair publication
-    # Four staged files + five parent-directory transitions.
-    assert len(fsyncs) == 9
+    assert removals[1][1:] == (5, 10)  # after durable cache-pair publication
+    # Five staged writes + six parent-directory transitions.
+    assert len(fsyncs) == 11
 
 
 def test_cache_directory_fsync_failure_retains_pending_receipt(
@@ -506,14 +637,14 @@ def test_cache_directory_fsync_failure_retains_pending_receipt(
     """Visible cache renames cannot supersede the pending receipt until the
     cache directory fsync confirms the pair durably."""
     _no_stub(monkeypatch)
-    calls = {"create": 0, "directory_fsync": 0}
+    calls = {"create": 0, "wait": 0, "directory_fsync": 0}
 
     def fake_run(cmd, timeout_s):
         if cmd == ["higgsfield", "--version"]:
             return _sp.CompletedProcess(
                 cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
             )
-        calls["create"] += 1
+        calls[cmd[2]] += 1
         return _sp.CompletedProcess(
             cmd,
             0,
@@ -529,7 +660,7 @@ def test_cache_directory_fsync_failure_retains_pending_receipt(
 
     def fail_cache_directory_fsync(path):
         calls["directory_fsync"] += 1
-        if calls["directory_fsync"] == 4:
+        if calls["directory_fsync"] == 5:
             raise OSError("cache directory fsync failed")
         real_fsync_directory(path)
 
@@ -549,7 +680,7 @@ def test_cache_directory_fsync_failure_retains_pending_receipt(
     assert not resp.ok and resp.exit_code == 1
     assert resp.job_id == "job-cache-not-durable"
     assert pending.exists()
-    assert calls == {"create": 1, "directory_fsync": 4}
+    assert calls == {"create": 1, "wait": 1, "directory_fsync": 5}
 
 
 def test_intent_unlink_fsync_failure_returns_non_ok_with_durable_pending(
@@ -607,14 +738,14 @@ def test_pending_unlink_fsync_failure_cannot_report_success(tmp_path, monkeypatc
     """The durable cache pair is safe, but success waits for durable pending
     removal rather than treating a visible unlink as confirmation."""
     _no_stub(monkeypatch)
-    calls = {"create": 0, "directory_fsync": 0}
+    calls = {"create": 0, "wait": 0, "directory_fsync": 0}
 
     def fake_run(cmd, timeout_s):
         if cmd == ["higgsfield", "--version"]:
             return _sp.CompletedProcess(
                 cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
             )
-        calls["create"] += 1
+        calls[cmd[2]] += 1
         return _sp.CompletedProcess(
             cmd, 0, stdout=json.dumps({
                 "id": "job-pending-unlink-fsync",
@@ -627,7 +758,7 @@ def test_pending_unlink_fsync_failure_cannot_report_success(tmp_path, monkeypatc
 
     def fail_pending_unlink_fsync(path):
         calls["directory_fsync"] += 1
-        if calls["directory_fsync"] == 5:
+        if calls["directory_fsync"] == 6:
             raise OSError("pending unlink fsync failed")
         real_fsync_directory(path)
 
@@ -648,7 +779,7 @@ def test_pending_unlink_fsync_failure_cannot_report_success(tmp_path, monkeypatc
     assert not resp.ok and resp.exit_code == 78
     assert resp.error and "pending-receipt removal" in resp.error
     assert cached.exists() and sidecar.exists()
-    assert calls == {"create": 1, "directory_fsync": 5}
+    assert calls == {"create": 1, "wait": 1, "directory_fsync": 6}
 
 
 def test_unverified_cli_version_fails_before_generation(tmp_path, monkeypatch):
@@ -688,15 +819,14 @@ def test_completed_job_download_failure_resumes_without_duplicate_create(
     """A completed charged job survives a terminal download failure and the
     identical retry re-downloads that same receipt before any new create."""
     _no_stub(monkeypatch)
-    calls = {"create": 0, "download": 0}
+    calls = {"create": 0, "wait": 0, "download": 0}
 
     def fake_run(cmd, timeout_s):
         if cmd == ["higgsfield", "--version"]:
             return _sp.CompletedProcess(
                 cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
             )
-        assert cmd[1:3] == ["generate", "create"]
-        calls["create"] += 1
+        calls[cmd[2]] += 1
         return _sp.CompletedProcess(
             cmd,
             0,
@@ -741,7 +871,11 @@ def test_completed_job_download_failure_resumes_without_duplicate_create(
     second = invoke_higgsfield_image_edit(**kwargs)
     assert second.ok and not second.cache_hit
     assert second.job_id == first.job_id
-    assert calls == {"create": 1, "download": hr._MAX_ATTEMPTS + 1}
+    assert calls == {
+        "create": 1,
+        "wait": 1,
+        "download": hr._MAX_ATTEMPTS + 1,
+    }
     assert not pending.exists()
 
 

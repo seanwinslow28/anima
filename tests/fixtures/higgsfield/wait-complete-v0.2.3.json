@@ -1,0 +1,19 @@
+{
+  "id": "job-create-ack",
+  "status": "completed",
+  "display_name": "GPT Image 2",
+  "job_set_type": "gpt_image_2",
+  "result_url": "https://cdn.example/create-wait.png",
+  "created_at": 1784040000.0,
+  "params": {
+    "width": 1024,
+    "height": 1024,
+    "prompt": "fixture prompt",
+    "medias": [],
+    "aspect_ratio": "1:1",
+    "quality": "high",
+    "resolution": "1k",
+    "model": "videotape-alpha",
+    "reference_elements": []
+  }
+}

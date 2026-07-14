@@ -68,7 +68,7 @@ ULTRA = 3,000 cr/mo at $99/mo annual ($129 monthly); top-ups ≈ $0.0475–0.052
 
 | Phase | What | Gate |
 |---|---|---|
-| **T1** | `higgsfield_runner.py` (D5 spec) + transport map + `gpt_image_2` route + TDD suite (stub-green; live smoke is a small Sean-gated spend) | Sean greenlights the build session |
+| **T1 — BUILT + LIVE-VERIFIED 2026-07-14** | `higgsfield_runner.py` (D5 spec) + transport map + `gpt_image_2` route + TDD suite + production smoke: create-array ack → durable identity → same-ID wait → download/provenance; identical rerun proved a zero-spend cache hit | **DONE** — Sean-gated 4-credit smoke passed; balance moved exactly once |
 | **T2** | The **real GRANDMASTER production gate**: in-register (primal-sketch-grit) Bible-pass-shaped edit-identity validation via Higgsfield `gpt_image_2`, Sean-eyed — this probe was pencil-register; the gritty register is the actual consumer | rides the costed, Sean-greenlit GRANDMASTER build (unchanged gate, now with a chosen transport) |
 | **T3** | Gemini GA repin (D3 rider): `registers.py` constants + skill-script default + tests | next Fable build; batch with the standing `primal-sketch-grit.generation_model` code note if not already landed |
 | **T4** | Phase 6 Motion wiring targets Higgsfield Seedance (D2); fal path kept verified | when Motion enters the orchestrator (its own workstream slice) |
