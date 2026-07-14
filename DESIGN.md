@@ -66,6 +66,12 @@ re-checks its pair.**
   bakelite = strike/destructive and the *fail* lamp; "go again" is a **quiet control**
   (booth2 + line, like the toolbar), not a filled primary — sending work back is routine, not
   alarming. *(Open decision 1 in the polish plan; this line records the recommendation.)*
+- **Typographic exemption (ratified, P6):** a `border-left: 3px var(--page-rule)` bar on a
+  blockquote *inside rendered lit-page prose* is **document typography** — the printed-page
+  convention for a pull-quote — and is **not** the banned UI accent side-stripe. The ban is on
+  spending an accent hue as a decorative left-edge stripe on *chrome* (cards, rails, panels); a
+  serif blockquote on the lit page reads as a document, so its rule bar is in-register, not a
+  token violation.
 
 ## 3. Typography — three stacks, three jobs
 
