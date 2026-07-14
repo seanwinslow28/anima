@@ -296,7 +296,7 @@ def _atomic_write_json(path: Path, payload: dict) -> None:
 
 
 def _publish_create_intent(path: Path, payload: dict) -> None:
-    """Durably publish the pre-charge marker before invoking create --wait."""
+    """Durably publish the pre-charge marker before invoking create."""
     fd, staged_name = tempfile.mkstemp(
         dir=path.parent, prefix=f".{path.stem}.", suffix=".json.tmp"
     )
@@ -611,10 +611,34 @@ def _parse_cli_output(
         pass
     if url is None:
         for tok in stdout.split():
-            if tok.startswith("https://"):
-                url = tok.strip()
+            candidate = tok.strip('\",')
+            if candidate.startswith("https://"):
+                url = candidate
                 break
     return url, job_id, display_name
+
+
+def _parse_create_ack(stdout: str) -> str | None:
+    """Return the sole job ID from CLI 0.2.3's create-only array shape.
+
+    This parser is called only on `generate create` stdout. Wait/get continue
+    through `_parse_cli_output`'s flat-dict contract.
+    """
+    try:
+        payload = json.loads(stdout)
+    except (json.JSONDecodeError, ValueError):
+        return None
+    if not isinstance(payload, list):
+        return None
+    if (
+        len(payload) != 1
+        or not isinstance(payload[0], str)
+        or not payload[0].strip()
+    ):
+        raise ValueError(
+            "Higgsfield create acknowledgment must contain exactly one job ID"
+        )
+    return payload[0]
 
 
 def _as_text(value: str | bytes | None) -> str:
@@ -1082,7 +1106,7 @@ def _invoke_real(
         "--prompt", prompt,
         "--quality", quality,
         "--resolution", resolution,
-        "--wait", "--wait-timeout", "9m", "--json",
+        "--json",
     ]
     if aspect_ratio is not None:
         cmd.extend(["--aspect_ratio", aspect_ratio])
@@ -1100,7 +1124,7 @@ def _invoke_real(
         "cli_version": cli_version,
         "state": "create_in_flight",
         "operator_action": (
-            "Resolve whether the combined create/wait charged a job before "
+            "Resolve whether create charged a job before "
             "removing this marker. Automatic create is blocked."
         ),
     }
@@ -1122,7 +1146,13 @@ def _invoke_real(
         try:
             result = _run_cli(cmd, timeout_s)
         except subprocess.TimeoutExpired as exc:
-            timeout_metadata = _parse_cli_output(_as_text(exc.output))
+            timeout_stdout = _as_text(exc.output)
+            timeout_metadata = _parse_cli_output(timeout_stdout)
+            timeout_job_id = _parse_create_ack(timeout_stdout)
+            if timeout_job_id is not None:
+                timeout_metadata = _merge_cli_metadata(
+                    timeout_metadata, (None, timeout_job_id, None)
+                )
             timeout_metadata = _merge_cli_metadata(
                 timeout_metadata, _parse_cli_output(_as_text(exc.stderr))
             )
@@ -1150,6 +1180,9 @@ def _invoke_real(
                 ),
             )
         parsed = _parse_cli_output(result.stdout)
+        create_job_id = _parse_create_ack(result.stdout)
+        if create_job_id is not None:
+            parsed = _merge_cli_metadata(parsed, (None, create_job_id, None))
         metadata = _merge_cli_metadata(metadata, parsed)
         url, job_id, _ = parsed
         persistence = _persist_pending_or_failure(
@@ -1166,9 +1199,9 @@ def _invoke_real(
         )
         if blocked is not None:
             return blocked
-        if result.returncode != 0 and job_id:
-            # The job exists: resume it before classifying the create failure.
-            # A second create could duplicate a charged generation.
+        if job_id:
+            # Create has acknowledged a charged job. Its identity is durable;
+            # wait on that exact job before classifying completion or failure.
             try:
                 result, wait_metadata = _resume_existing_job(job_id, timeout_s)
             except MismatchedHiggsfieldJobIdentity as exc:
@@ -1184,13 +1217,8 @@ def _invoke_real(
                 aspect_ratio=aspect_ratio, metadata=metadata,
                 cli_version=cli_version,
             )
-            blocked = _finish_create_receipt_transition(
-                persistence=persistence, intent=intent,
-                output_path=output_path, cache_key=cache_key,
-                metadata=metadata, cli_version=cli_version,
-            )
-            if blocked is not None:
-                return blocked
+            if persistence.response is not None:
+                return persistence.response
             break
         transient = _is_transient_failure(result)
         if not transient:
