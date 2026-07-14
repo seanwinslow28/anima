@@ -26,7 +26,7 @@ registry makes closedness enforced rather than conventional:
   ``get_register(value or DEFAULT_REGISTER)``.
 
 Adding a register is the five-step drill in
-docs/active/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md
+docs/COMPLETED/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md
 §1.3: research → one RegisterSpec entry here → the Cy example block → the
 template-comment line → run the suite (the completeness tests refuse to
 pass until all of them exist).

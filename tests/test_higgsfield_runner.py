@@ -631,3 +631,229 @@ def test_cache_key_lock_is_exclusive_across_processes(tmp_path):
             process.terminate()
             process.join(5)
     assert process.exitcode == 0
+
+
+def test_create_timeout_receipt_prevents_duplicate_create(tmp_path, monkeypatch):
+    """TimeoutExpired may still carry the charged job's JSON envelope; persist
+    it and let an identical retry recover that job before any second create."""
+    _no_stub(monkeypatch)
+    calls = {"create": 0, "download": 0}
+
+    def fake_run(cmd, timeout_s):
+        if cmd == ["higgsfield", "--version"]:
+            return _sp.CompletedProcess(
+                cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
+            )
+        assert cmd[1:3] == ["generate", "create"]
+        calls["create"] += 1
+        raise _sp.TimeoutExpired(
+            cmd,
+            timeout_s,
+            output=json.dumps({
+                "id": "job-create-timeout",
+                "display_name": "GPT Image 2",
+            }).encode(),
+            stderr=json.dumps({
+                "result_url": "https://cdn.example/create-timeout.png",
+            }).encode(),
+        )
+
+    def fake_download(url, dest, timeout_s):
+        calls["download"] += 1
+        Path(dest).write_bytes(b"recovered-timeout-job")
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    monkeypatch.setattr(hr, "_download", fake_download)
+    kwargs = dict(
+        prompt="timeout charged plate",
+        reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png",
+        cache_dir=tmp_path / "c",
+    )
+
+    first = invoke_higgsfield_image_edit(**kwargs)
+    assert not first.ok and first.exit_code == 124
+    assert first.job_id == "job-create-timeout"
+    assert first.result_url == "https://cdn.example/create-timeout.png"
+    assert (tmp_path / "c" / f"{first.cache_key}.pending.json").exists()
+
+    second = invoke_higgsfield_image_edit(**kwargs)
+    assert second.ok and second.job_id == first.job_id
+    assert calls == {"create": 1, "download": 1}
+
+
+def test_pending_write_failure_quarantines_job_and_blocks_recreate(
+    tmp_path, monkeypatch
+):
+    """If the canonical receipt cannot publish after create, retain identity in
+    a durable quarantine marker and fail closed on every identical retry."""
+    _no_stub(monkeypatch)
+    calls = {"create": 0}
+
+    def fake_run(cmd, timeout_s):
+        if cmd == ["higgsfield", "--version"]:
+            return _sp.CompletedProcess(
+                cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
+            )
+        calls["create"] += 1
+        return _sp.CompletedProcess(
+            cmd,
+            0,
+            stdout=json.dumps({
+                "id": "job-receipt-write-failed",
+                "result_url": "https://cdn.example/quarantined.png",
+                "display_name": "GPT Image 2",
+            }),
+            stderr="",
+        )
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    monkeypatch.setattr(
+        hr, "_atomic_write_json",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(OSError("disk hiccup")),
+    )
+    kwargs = dict(
+        prompt="receipt failure",
+        reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png",
+        cache_dir=tmp_path / "c",
+    )
+
+    first = invoke_higgsfield_image_edit(**kwargs)
+    assert not first.ok and first.job_id == "job-receipt-write-failed"
+    assert first.error and "quarantine" in first.error.lower()
+    quarantine = tmp_path / "c" / f"{first.cache_key}.quarantine.json"
+    assert quarantine.exists()
+    assert json.loads(quarantine.read_text())["job_id"] == first.job_id
+
+    second = invoke_higgsfield_image_edit(**kwargs)
+    assert not second.ok and second.job_id == first.job_id
+    assert second.error and "operator" in second.error.lower()
+    assert calls == {"create": 1}
+
+
+@pytest.mark.parametrize("receipt_kind", ["malformed", "stale-version"])
+def test_invalid_pending_receipt_is_preserved_and_blocks_create(
+    tmp_path, monkeypatch, receipt_kind
+):
+    """An existing unreadable or version-stale receipt is evidence of a
+    possible charged job, never permission to unlink it and create again."""
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    kwargs = dict(
+        prompt=f"invalid receipt {receipt_kind}",
+        reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png",
+        cache_dir=tmp_path / "c",
+    )
+    probe = invoke_higgsfield_image_edit(**kwargs)
+    pending = tmp_path / "c" / f"{probe.cache_key}.pending.json"
+    if receipt_kind == "malformed":
+        original = "not-json"
+    else:
+        original = json.dumps({
+            "cache_key": probe.cache_key,
+            "transport": "higgsfield",
+            "vendor_model": GPT_IMAGE,
+            "job_type": "gpt_image_2",
+            "quality": "high",
+            "resolution": "1k",
+            "aspect_ratio": None,
+            "job_id": "job-stale-version",
+            "result_url": "https://cdn.example/stale.png",
+            "display_name": "GPT Image 2",
+            "cli_version": "0.2.2",
+        })
+    pending.write_text(original)
+
+    _no_stub(monkeypatch)
+    calls = {"create": 0}
+
+    def fake_run(cmd, timeout_s):
+        if cmd == ["higgsfield", "--version"]:
+            return _sp.CompletedProcess(
+                cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
+            )
+        calls["create"] += 1
+        return _sp.CompletedProcess(cmd, 1, stdout="", stderr="blocked")
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    resp = invoke_higgsfield_image_edit(**kwargs)
+
+    assert not resp.ok and resp.exit_code == 78
+    assert resp.error and "operator" in resp.error.lower()
+    assert pending.read_text() == original
+    assert calls == {"create": 0}
+
+
+def test_expired_pending_url_refreshes_same_job_before_download_retry(
+    tmp_path, monkeypatch
+):
+    """A stale retained URL with a valid job ID is refreshed by waiting on the
+    same job; it never creates, and the replacement URL is persisted."""
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    kwargs = dict(
+        prompt="expired result url",
+        reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png",
+        cache_dir=tmp_path / "c",
+    )
+    probe = invoke_higgsfield_image_edit(**kwargs)
+    pending = tmp_path / "c" / f"{probe.cache_key}.pending.json"
+    pending.write_text(json.dumps({
+        "cache_key": probe.cache_key,
+        "transport": "higgsfield",
+        "vendor_model": GPT_IMAGE,
+        "job_type": "gpt_image_2",
+        "quality": "high",
+        "resolution": "1k",
+        "aspect_ratio": None,
+        "job_id": "job-expired-url",
+        "result_url": "https://cdn.example/expired.png",
+        "display_name": "GPT Image 2",
+        "cli_version": "0.2.3",
+    }))
+
+    _no_stub(monkeypatch)
+    calls = {"create": 0, "wait": 0, "old_download": 0, "new_download": 0}
+
+    def fake_run(cmd, timeout_s):
+        if cmd[1:3] == ["generate", "create"]:
+            calls["create"] += 1
+            raise AssertionError("a pending job must never be recreated")
+        assert cmd[1:3] == ["generate", "wait"]
+        calls["wait"] += 1
+        return _sp.CompletedProcess(
+            cmd,
+            0,
+            stdout=json.dumps({
+                "id": "job-expired-url",
+                "result_url": "https://cdn.example/refreshed.png",
+                "display_name": "GPT Image 2",
+            }),
+            stderr="",
+        )
+
+    def fake_download(url, dest, timeout_s):
+        if url.endswith("expired.png"):
+            calls["old_download"] += 1
+            raise OSError("HTTP 403 expired")
+        calls["new_download"] += 1
+        Path(dest).write_bytes(b"refreshed-result")
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    monkeypatch.setattr(hr, "_download", fake_download)
+    monkeypatch.setattr(hr.time, "sleep", lambda _: None)
+    resp = invoke_higgsfield_image_edit(**kwargs)
+
+    assert resp.ok and resp.job_id == "job-expired-url"
+    assert resp.result_url == "https://cdn.example/refreshed.png"
+    assert calls == {
+        "create": 0,
+        "wait": 1,
+        "old_download": hr._MAX_ATTEMPTS,
+        "new_download": 1,
+    }
+    provenance = json.loads(
+        (tmp_path / "c" / f"{resp.cache_key}.provenance.json").read_text()
+    )
+    assert provenance["result_url"] == resp.result_url

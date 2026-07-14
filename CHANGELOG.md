@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-07-13 — Higgsfield final-review receipt hardening, wave 2 ($0)
+
+**What changed.** Closed the second final re-review without Task 7 or live generation. A `TimeoutExpired` from the pinned CLI's combined create/wait command now parses both captured stdout/output and stderr, retains any emitted job ID/result URL/display name, atomically publishes the receipt, and returns a non-ok identity-bearing response; an identical retry resumes/downloads that same charged job before any create. If canonical pending-receipt publication itself raises `OSError` after create, the runner writes the known identity through an independent low-level, fsynced `*.quarantine.json` path and returns exit 78 with an explicit operator action. Identical retries see that quarantine first and cannot create automatically.
+
+**Fail-closed receipt recovery.** Existing malformed, incomplete, wrong-input, or CLI-version-stale pending receipts are now distinguished from absence: they remain byte-preserved and block create with an actionable exit-78 response rather than being deleted. When a valid pending receipt carries an expired result URL plus a job ID, the runner exhausts bounded download retries, runs bounded `generate wait` on the same ID, atomically replaces the pending receipt with the refreshed URL, and retries download without creating. All paths remain inside the existing per-key `flock`; quarantine writes do not acquire a nested lock, so the critical section has no new lock-order edge.
+
+**Review disposition.** COMPLETE: create-timeout identity loss, pending-write duplicate-spend risk, invalid/stale receipt recreation, and expired-URL recovery. MINOR COMPLETE: `pipeline/registers.py` now points its authoring-drill docstring at the archived `docs/COMPLETED/` plan. Standing costed gates remain unchanged and unrun.
+
 ## 2026-07-13 — Higgsfield final-review hardening + register-doc reconciliation ($0)
 
 **What changed.** Closed the consolidated final-review wave without running Task 7 or any live generation. The Higgsfield runner now writes an atomic, input-validated `*.pending.json` receipt as soon as a charged job ID or result URL is known; identical retries recover that receipt and wait on or re-download the same job before any create. CDN downloads and same-ID waits are bounded, `TimeoutExpired` is contained, and terminal failures return a non-ok `HiggsfieldResponse` that retains every known job/provenance field. A per-cache-key `fcntl.flock` spans the second cache/pending check through generation, download, and atomic image/provenance publication, preventing concurrent duplicate spend and mismatched cache pairs. The pending receipt is removed only after the complete cache pair publishes successfully.

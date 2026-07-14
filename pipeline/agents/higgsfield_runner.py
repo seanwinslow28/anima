@@ -64,6 +64,17 @@ class UnsupportedHiggsfieldCLIVersion(RuntimeError):
     pass
 
 
+class PendingReceiptQuarantined(RuntimeError):
+    def __init__(self, quarantine: Path, payload: dict, cause: OSError):
+        self.quarantine = quarantine
+        self.payload = payload
+        self.cause = cause
+        super().__init__(
+            f"pending receipt write failed; charged job quarantined at "
+            f"{quarantine}: {cause}"
+        )
+
+
 @contextmanager
 def _cache_key_lock(lock_path: Path) -> Iterator[None]:
     """Serialize charged work and cache publication for one content key."""
@@ -92,6 +103,7 @@ class HiggsfieldResponse:
     result_url: str | None = None
     display_name: str | None = None
     cli_version: str | None = None
+    error: str | None = None
 
     @property
     def ok(self) -> bool:
@@ -241,6 +253,28 @@ def _atomic_write_json(path: Path, payload: dict) -> None:
         staged.unlink(missing_ok=True)
 
 
+def _durable_write_quarantine(path: Path, payload: dict, reason: str) -> None:
+    """Independent low-level fallback when canonical atomic publication fails."""
+    quarantined = dict(payload)
+    quarantined["quarantine_reason"] = reason
+    quarantined["operator_action"] = (
+        "Inspect this charged-job receipt; restore it to .pending.json or "
+        "remove it only after explicitly resolving the job."
+    )
+    staged = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    data = json.dumps(quarantined, indent=2).encode("utf-8")
+    fd = os.open(staged, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    try:
+        with os.fdopen(fd, "wb", closefd=False) as handle:
+            handle.write(data)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(staged, path)
+    finally:
+        os.close(fd)
+        staged.unlink(missing_ok=True)
+
+
 def _pending_payload(
     *,
     cache_key: str,
@@ -271,6 +305,7 @@ def _pending_payload(
 def _persist_pending(
     pending: Path,
     *,
+    quarantine: Path,
     cache_key: str,
     model: str,
     job_type: str,
@@ -288,7 +323,11 @@ def _persist_pending(
         resolution=resolution, quality=quality, aspect_ratio=aspect_ratio,
         metadata=metadata, cli_version=cli_version,
     )
-    _atomic_write_json(pending, payload)
+    try:
+        _atomic_write_json(pending, payload)
+    except OSError as exc:
+        _durable_write_quarantine(quarantine, payload, str(exc))
+        raise PendingReceiptQuarantined(quarantine, payload, exc) from exc
     return payload
 
 
@@ -388,6 +427,7 @@ def invoke_higgsfield_image_edit(
     cached = cache_dir / f"{cache_key}.png"
     sidecar = cache_dir / f"{cache_key}.provenance.json"
     pending = cache_dir / f"{cache_key}.pending.json"
+    quarantine = cache_dir / f"{cache_key}.quarantine.json"
     lock_path = cache_dir / f"{cache_key}.lock"
     # Forced stub is absolute and never reads or writes the real cache.
     if os.environ.get("ANIMA_FORCE_STUB"):
@@ -395,27 +435,26 @@ def invoke_higgsfield_image_edit(
         return HiggsfieldResponse(
             output_path, cache_key, False, stub_fallback=True
         )
-    hit = _load_cache_response(
-        cached=cached, sidecar=sidecar, output_path=output_path,
-        cache_key=cache_key, model=model, job_type=job_type,
-        resolution=resolution, quality=quality, aspect_ratio=aspect_ratio,
-    )
-    if hit is not None:
-        return hit
+    if not pending.exists() and not quarantine.exists():
+        hit = _load_cache_response(
+            cached=cached, sidecar=sidecar, output_path=output_path,
+            cache_key=cache_key, model=model, job_type=job_type,
+            resolution=resolution, quality=quality, aspect_ratio=aspect_ratio,
+        )
+        if hit is not None:
+            return hit
 
     # The second cache/pending check and all charged work/publication are one
     # per-key critical section. Concurrent processes cannot double-spend or
     # pair one writer's image with another writer's provenance.
     with _cache_key_lock(lock_path):
-        hit = _load_cache_response(
-            cached=cached, sidecar=sidecar, output_path=output_path,
-            cache_key=cache_key, model=model, job_type=job_type,
-            resolution=resolution, quality=quality, aspect_ratio=aspect_ratio,
-            remove_invalid=True,
-        )
-        if hit is not None:
-            return hit
+        if quarantine.exists():
+            return _blocked_receipt_response(
+                receipt=quarantine, output_path=output_path,
+                cache_key=cache_key, reason="Quarantined charged-job receipt",
+            )
 
+        pending_exists = pending.exists()
         pending_payload = _read_valid_pending(
             pending, cache_key=cache_key, model=model, job_type=job_type,
             resolution=resolution, quality=quality,
@@ -428,9 +467,23 @@ def invoke_higgsfield_image_edit(
                 cache_key=cache_key, model=model, job_type=job_type,
                 resolution=resolution, quality=quality,
                 aspect_ratio=aspect_ratio, timeout_s=timeout_s,
+                quarantine=quarantine,
             )
-        if pending.exists():
-            pending.unlink(missing_ok=True)
+        if pending_exists:
+            return _blocked_receipt_response(
+                receipt=pending, output_path=output_path,
+                cache_key=cache_key,
+                reason="Invalid or version-stale pending receipt",
+            )
+
+        hit = _load_cache_response(
+            cached=cached, sidecar=sidecar, output_path=output_path,
+            cache_key=cache_key, model=model, job_type=job_type,
+            resolution=resolution, quality=quality, aspect_ratio=aspect_ratio,
+            remove_invalid=True,
+        )
+        if hit is not None:
+            return hit
 
         # No CLI on PATH (CI): return an honest placeholder, but never put
         # stub bytes into the real cache.
@@ -445,7 +498,7 @@ def invoke_higgsfield_image_edit(
             output_path=output_path, cached=cached, cache_key=cache_key,
             model=model, job_type=job_type, resolution=resolution,
             quality=quality, aspect_ratio=aspect_ratio, timeout_s=timeout_s,
-            sidecar=sidecar, pending=pending,
+            sidecar=sidecar, pending=pending, quarantine=quarantine,
         )
 
 
@@ -489,6 +542,39 @@ def _parse_cli_output(
                 url = tok.strip()
                 break
     return url, job_id, display_name
+
+
+def _as_text(value: str | bytes | None) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, bytes):
+        return value.decode("utf-8", errors="replace")
+    return value
+
+
+def _read_receipt_identity(
+    receipt: Path,
+) -> tuple[
+    tuple[str | None, str | None, str | None],
+    str | None,
+]:
+    """Best-effort identity for an invalid receipt; never authorizes recovery."""
+    try:
+        payload = json.loads(receipt.read_text())
+    except (OSError, json.JSONDecodeError, ValueError):
+        return (None, None, None), None
+    if not isinstance(payload, dict):
+        return (None, None, None), None
+
+    def text_or_none(key: str) -> str | None:
+        value = payload.get(key)
+        return value if isinstance(value, str) else None
+
+    return (
+        text_or_none("result_url"),
+        text_or_none("job_id"),
+        text_or_none("display_name"),
+    ), text_or_none("cli_version")
 
 
 def _merge_cli_metadata(
@@ -568,19 +654,92 @@ def _response_for_failure(
     exit_code: int,
     metadata: tuple[str | None, str | None, str | None],
     cli_version: str,
+    error: str | None = None,
 ) -> HiggsfieldResponse:
     url, job_id, display_name = metadata
     return HiggsfieldResponse(
         output_path, cache_key, False, exit_code=exit_code or 1,
         job_id=job_id, result_url=url, display_name=display_name,
-        cli_version=cli_version,
+        cli_version=cli_version, error=error,
     )
+
+
+def _blocked_receipt_response(
+    *,
+    receipt: Path,
+    output_path: Path,
+    cache_key: str,
+    reason: str,
+) -> HiggsfieldResponse:
+    metadata, cli_version = _read_receipt_identity(receipt)
+    return _response_for_failure(
+        output_path=output_path, cache_key=cache_key, exit_code=78,
+        metadata=metadata,
+        cli_version=cli_version or PINNED_HIGGSFIELD_CLI_VERSION,
+        error=(
+            f"{reason}: {receipt}. Operator resolution required: inspect the "
+            f"receipt and restore/remove it only after resolving the known or "
+            f"possible charged job; automatic create is blocked."
+        ),
+    )
+
+
+def _quarantined_write_response(
+    *,
+    exc: PendingReceiptQuarantined,
+    output_path: Path,
+    cache_key: str,
+) -> HiggsfieldResponse:
+    payload = exc.payload
+    metadata = (
+        payload.get("result_url"),
+        payload.get("job_id"),
+        payload.get("display_name"),
+    )
+    return _response_for_failure(
+        output_path=output_path, cache_key=cache_key, exit_code=78,
+        metadata=metadata,
+        cli_version=payload.get("cli_version") or PINNED_HIGGSFIELD_CLI_VERSION,
+        error=(
+            f"Charged job receipt write failed and identity was quarantined at "
+            f"{exc.quarantine}. Operator resolution required before retry."
+        ),
+    )
+
+
+def _persist_pending_or_failure(
+    *,
+    pending: Path,
+    quarantine: Path,
+    output_path: Path,
+    cache_key: str,
+    model: str,
+    job_type: str,
+    resolution: str,
+    quality: str,
+    aspect_ratio: str | None,
+    metadata: tuple[str | None, str | None, str | None],
+    cli_version: str,
+) -> HiggsfieldResponse | None:
+    try:
+        _persist_pending(
+            pending, quarantine=quarantine, cache_key=cache_key, model=model,
+            job_type=job_type, resolution=resolution, quality=quality,
+            aspect_ratio=aspect_ratio, metadata=metadata,
+            cli_version=cli_version,
+        )
+    except PendingReceiptQuarantined as exc:
+        return _quarantined_write_response(
+            exc=exc, output_path=output_path, cache_key=cache_key,
+        )
+    return None
 
 
 def _finish_known_job(
     *,
     metadata: tuple[str | None, str | None, str | None],
     pending: Path,
+    quarantine: Path,
     output_path: Path,
     cached: Path,
     sidecar: Path,
@@ -592,6 +751,7 @@ def _finish_known_job(
     aspect_ratio: str | None,
     cli_version: str,
     timeout_s: int,
+    refresh_on_download_failure: bool = False,
 ) -> HiggsfieldResponse:
     url, job_id, display_name = metadata
     if not url:
@@ -600,10 +760,49 @@ def _finish_known_job(
             metadata=metadata, cli_version=cli_version,
         )
     if not _download_with_retries(url, output_path, timeout_s):
-        return _response_for_failure(
-            output_path=output_path, cache_key=cache_key, exit_code=1,
-            metadata=metadata, cli_version=cli_version,
+        if not refresh_on_download_failure or job_id is None:
+            return _response_for_failure(
+                output_path=output_path, cache_key=cache_key, exit_code=1,
+                metadata=metadata, cli_version=cli_version,
+                error="Higgsfield result download failed after bounded retries.",
+            )
+        if shutil.which(_HIGGSFIELD_BIN) is None:
+            return _response_for_failure(
+                output_path=output_path, cache_key=cache_key, exit_code=127,
+                metadata=metadata, cli_version=cli_version,
+                error=(
+                    "Stored result URL failed and the known job ID cannot be "
+                    "refreshed because the Higgsfield CLI is unavailable."
+                ),
+            )
+        result, wait_metadata = _resume_existing_job(job_id, timeout_s)
+        metadata = _merge_cli_metadata(metadata, wait_metadata)
+        blocked = _persist_pending_or_failure(
+            pending=pending, quarantine=quarantine, output_path=output_path,
+            cache_key=cache_key, model=model, job_type=job_type,
+            resolution=resolution, quality=quality,
+            aspect_ratio=aspect_ratio, metadata=metadata,
+            cli_version=cli_version,
         )
+        if blocked is not None:
+            return blocked
+        if result.returncode != 0:
+            return _response_for_failure(
+                output_path=output_path, cache_key=cache_key,
+                exit_code=result.returncode, metadata=metadata,
+                cli_version=cli_version,
+                error="Known Higgsfield job URL refresh failed.",
+            )
+        url, job_id, display_name = metadata
+        if not url or not _download_with_retries(url, output_path, timeout_s):
+            return _response_for_failure(
+                output_path=output_path, cache_key=cache_key, exit_code=1,
+                metadata=metadata, cli_version=cli_version,
+                error=(
+                    "Refreshed Higgsfield result download failed after "
+                    "bounded retries."
+                ),
+            )
 
     provenance = {
         "transport": "higgsfield",
@@ -640,6 +839,7 @@ def _recover_pending_job(
     *,
     pending_payload: dict,
     pending: Path,
+    quarantine: Path,
     output_path: Path,
     cached: Path,
     sidecar: Path,
@@ -666,12 +866,15 @@ def _recover_pending_job(
             )
         result, wait_metadata = _resume_existing_job(job_id, timeout_s)
         metadata = _merge_cli_metadata(metadata, wait_metadata)
-        _persist_pending(
-            pending, cache_key=cache_key, model=model, job_type=job_type,
+        blocked = _persist_pending_or_failure(
+            pending=pending, quarantine=quarantine, output_path=output_path,
+            cache_key=cache_key, model=model, job_type=job_type,
             resolution=resolution, quality=quality,
             aspect_ratio=aspect_ratio, metadata=metadata,
             cli_version=cli_version,
         )
+        if blocked is not None:
+            return blocked
         if result.returncode != 0:
             return _response_for_failure(
                 output_path=output_path, cache_key=cache_key,
@@ -679,11 +882,13 @@ def _recover_pending_job(
                 cli_version=cli_version,
             )
     return _finish_known_job(
-        metadata=metadata, pending=pending, output_path=output_path,
+        metadata=metadata, pending=pending, quarantine=quarantine,
+        output_path=output_path,
         cached=cached, sidecar=sidecar, cache_key=cache_key, model=model,
         job_type=job_type, resolution=resolution, quality=quality,
         aspect_ratio=aspect_ratio, cli_version=cli_version,
         timeout_s=timeout_s,
+        refresh_on_download_failure=job_id is not None,
     )
 
 
@@ -702,6 +907,7 @@ def _invoke_real(
     timeout_s: int,
     sidecar: Path,
     pending: Path,
+    quarantine: Path,
 ) -> HiggsfieldResponse:
     cli_version = _read_cli_version()  # fail closed before any generation
     cmd = [
@@ -721,28 +927,55 @@ def _invoke_real(
     for attempt in range(1, _MAX_ATTEMPTS + 1):
         try:
             result = _run_cli(cmd, timeout_s)
-        except subprocess.TimeoutExpired:
-            return HiggsfieldResponse(output_path, cache_key, False, exit_code=124)
+        except subprocess.TimeoutExpired as exc:
+            timeout_metadata = _parse_cli_output(_as_text(exc.output))
+            timeout_metadata = _merge_cli_metadata(
+                timeout_metadata, _parse_cli_output(_as_text(exc.stderr))
+            )
+            metadata = _merge_cli_metadata(metadata, timeout_metadata)
+            blocked = _persist_pending_or_failure(
+                pending=pending, quarantine=quarantine,
+                output_path=output_path, cache_key=cache_key, model=model,
+                job_type=job_type, resolution=resolution, quality=quality,
+                aspect_ratio=aspect_ratio, metadata=metadata,
+                cli_version=cli_version,
+            )
+            if blocked is not None:
+                return blocked
+            return _response_for_failure(
+                output_path=output_path, cache_key=cache_key, exit_code=124,
+                metadata=metadata, cli_version=cli_version,
+                error=(
+                    "Higgsfield create/wait timed out; any emitted charged-job "
+                    "identity was retained for identical-retry recovery."
+                ),
+            )
         parsed = _parse_cli_output(result.stdout)
         metadata = _merge_cli_metadata(metadata, parsed)
         url, job_id, _ = parsed
-        _persist_pending(
-            pending, cache_key=cache_key, model=model, job_type=job_type,
+        blocked = _persist_pending_or_failure(
+            pending=pending, quarantine=quarantine, output_path=output_path,
+            cache_key=cache_key, model=model, job_type=job_type,
             resolution=resolution, quality=quality,
             aspect_ratio=aspect_ratio, metadata=metadata,
             cli_version=cli_version,
         )
+        if blocked is not None:
+            return blocked
         if result.returncode != 0 and job_id:
             # The job exists: resume it before classifying the create failure.
             # A second create could duplicate a charged generation.
             result, wait_metadata = _resume_existing_job(job_id, timeout_s)
             metadata = _merge_cli_metadata(metadata, wait_metadata)
-            _persist_pending(
-                pending, cache_key=cache_key, model=model, job_type=job_type,
-                resolution=resolution, quality=quality,
+            blocked = _persist_pending_or_failure(
+                pending=pending, quarantine=quarantine,
+                output_path=output_path, cache_key=cache_key, model=model,
+                job_type=job_type, resolution=resolution, quality=quality,
                 aspect_ratio=aspect_ratio, metadata=metadata,
                 cli_version=cli_version,
             )
+            if blocked is not None:
+                return blocked
             break
         transient = _is_transient_failure(result)
         if not transient:
@@ -773,7 +1006,8 @@ def _invoke_real(
         )
 
     return _finish_known_job(
-        metadata=metadata, pending=pending, output_path=output_path,
+        metadata=metadata, pending=pending, quarantine=quarantine,
+        output_path=output_path,
         cached=cached, sidecar=sidecar, cache_key=cache_key, model=model,
         job_type=job_type, resolution=resolution, quality=quality,
         aspect_ratio=aspect_ratio, cli_version=cli_version,
