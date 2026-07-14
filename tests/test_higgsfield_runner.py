@@ -117,8 +117,16 @@ def _fake_cli(stdout: str, returncode: int = 0, stderr: str = ""):
 
 
 def _no_stub(monkeypatch):
+    def fail_cli(*_):
+        raise AssertionError("test reached unmocked Higgsfield CLI")
+
+    def fail_download(*_):
+        raise AssertionError("test reached unmocked Higgsfield download")
+
     monkeypatch.delenv("ANIMA_FORCE_STUB", raising=False)
     monkeypatch.setattr(hr.shutil, "which", lambda _: "/fake/bin/higgsfield")
+    monkeypatch.setattr(hr, "_run_cli", fail_cli)
+    monkeypatch.setattr(hr, "_download", fail_download)
 
 
 def test_real_path_builds_argv_and_downloads(tmp_path, monkeypatch):
@@ -182,7 +190,7 @@ def test_transient_failure_retries_then_succeeds(tmp_path, monkeypatch):
             )
         calls["n"] += 1
         if calls["n"] == 1:
-            return _sp.CompletedProcess(cmd, 1, stdout="", stderr="HTTP 502")
+            return _sp.CompletedProcess(cmd, 1, stdout="", stderr="HTTP 598")
         return _sp.CompletedProcess(cmd, 0, stdout=json.dumps({
             "id": "job-2", "result_url": "https://cdn.example/r.png",
             "display_name": "GPT Image 2",
@@ -214,7 +222,7 @@ def test_transient_wait_with_job_id_resumes_without_duplicate_create(tmp_path, m
             )
         calls["wait"] += 1
         if calls["wait"] == 1:
-            return _sp.CompletedProcess(cmd, 1, stdout="", stderr="HTTP 502")
+            return _sp.CompletedProcess(cmd, 1, stdout="", stderr="HTTP 599")
         return _sp.CompletedProcess(cmd, 0, stdout=json.dumps({
             "id": "existing-job", "result_url": "https://cdn.example/existing.png",
             "display_name": "GPT Image 2",
@@ -229,6 +237,112 @@ def test_transient_wait_with_job_id_resumes_without_duplicate_create(tmp_path, m
     )
     assert resp.ok
     assert calls == {"create": 1, "wait": 2}
+
+
+@pytest.mark.parametrize(
+    ("returncode", "message", "expected"),
+    [
+        (1, "HTTP 500", True),
+        (1, "HTTP 599", True),
+        (1, "HTTP 400", False),
+        (1, "HTTP 600", False),
+        (1, "request timeout", True),
+        (1, "temporarily unavailable", True),
+        (0, "HTTP 599", False),
+    ],
+)
+def test_transient_classifier_covers_all_5xx_and_retry_signals(
+    returncode, message, expected
+):
+    result = _sp.CompletedProcess(
+        ["higgsfield"], returncode, stdout="", stderr=message
+    )
+    assert hr._is_transient_failure(result) is expected
+
+
+def test_failed_create_with_job_id_resumes_before_transient_classification(
+    tmp_path, monkeypatch
+):
+    _no_stub(monkeypatch)
+    calls = {"create": 0, "wait": 0}
+
+    def fake_run(cmd, timeout_s):
+        if cmd == ["higgsfield", "--version"]:
+            return _sp.CompletedProcess(
+                cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
+            )
+        if cmd[1:3] == ["generate", "create"]:
+            calls["create"] += 1
+            return _sp.CompletedProcess(
+                cmd,
+                1,
+                stdout=json.dumps({"id": "existing-hard-failure"}),
+                stderr="unexpected provider response",
+            )
+        calls["wait"] += 1
+        return _sp.CompletedProcess(
+            cmd,
+            0,
+            stdout=json.dumps({
+                "id": "existing-hard-failure",
+                "result_url": "https://cdn.example/resumed.png",
+            }),
+            stderr="",
+        )
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    monkeypatch.setattr(hr, "_download", lambda u, d, t: Path(d).write_bytes(b"png"))
+    resp = invoke_higgsfield_image_edit(
+        prompt="p", reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png", cache_dir=tmp_path / "c",
+    )
+    assert resp.ok
+    assert calls == {"create": 1, "wait": 1}
+
+
+def test_resume_accumulates_create_metadata_when_wait_returns_bare_url(
+    tmp_path, monkeypatch
+):
+    _no_stub(monkeypatch)
+    calls = {"create": 0, "wait": 0}
+
+    def fake_run(cmd, timeout_s):
+        if cmd == ["higgsfield", "--version"]:
+            return _sp.CompletedProcess(
+                cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
+            )
+        if cmd[1:3] == ["generate", "create"]:
+            calls["create"] += 1
+            return _sp.CompletedProcess(
+                cmd,
+                1,
+                stdout=json.dumps({
+                    "id": "existing-bare-url",
+                    "display_name": "GPT Image 2",
+                }),
+                stderr="HTTP 502",
+            )
+        calls["wait"] += 1
+        return _sp.CompletedProcess(
+            cmd, 0, stdout="https://cdn.example/bare-result.png\n", stderr=""
+        )
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    monkeypatch.setattr(hr, "_download", lambda u, d, t: Path(d).write_bytes(b"png"))
+    resp = invoke_higgsfield_image_edit(
+        prompt="p", reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png", cache_dir=tmp_path / "c",
+    )
+    assert resp.ok
+    assert calls == {"create": 1, "wait": 1}
+    assert resp.job_id == "existing-bare-url"
+    assert resp.result_url == "https://cdn.example/bare-result.png"
+    assert resp.display_name == "GPT Image 2"
+    sidecar = tmp_path / "c" / f"{resp.cache_key}.provenance.json"
+    provenance = json.loads(sidecar.read_text())
+    assert provenance["job_id"] == resp.job_id
+    assert provenance["result_url"] == resp.result_url
+    assert provenance["display_name"] == resp.display_name
 
 
 def test_real_cache_hit_rehydrates_provenance_without_cli_call(tmp_path, monkeypatch):
@@ -257,6 +371,72 @@ def test_real_cache_hit_rehydrates_provenance_without_cli_call(tmp_path, monkeyp
     assert first.ok and second.ok and second.cache_hit
     assert second.job_id == "job-cache" and second.display_name == "GPT Image 2"
     assert generation_calls["n"] == 1
+
+
+@pytest.mark.parametrize(
+    "sidecar_text",
+    [None, "not-json", "{}"],
+    ids=["missing", "malformed", "incomplete"],
+)
+def test_cache_requires_valid_provenance(tmp_path, monkeypatch, sidecar_text):
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    ref = _mk_ref(tmp_path)
+    kwargs = dict(
+        prompt="p", reference_images=[ref],
+        output_path=tmp_path / "o.png", cache_dir=tmp_path / "c",
+    )
+    probe = invoke_higgsfield_image_edit(**kwargs)
+    cached = tmp_path / "c" / f"{probe.cache_key}.png"
+    sidecar = tmp_path / "c" / f"{probe.cache_key}.provenance.json"
+    cached.write_bytes(b"untrusted-cache-bytes")
+    if sidecar_text is not None:
+        sidecar.write_text(sidecar_text)
+
+    monkeypatch.delenv("ANIMA_FORCE_STUB")
+    monkeypatch.setattr(hr.shutil, "which", lambda _: None)
+    try:
+        resp = invoke_higgsfield_image_edit(**kwargs)
+    except (json.JSONDecodeError, OSError) as exc:
+        pytest.fail(f"invalid provenance must be a cache miss, not an error: {exc}")
+
+    assert not resp.cache_hit
+    assert resp.stub_fallback
+    assert not cached.exists()
+
+
+def test_cache_publishes_valid_provenance_before_image(tmp_path, monkeypatch):
+    _no_stub(monkeypatch)
+    monkeypatch.setattr(
+        hr,
+        "_run_cli",
+        _fake_cli(json.dumps({
+            "id": "job-atomic",
+            "result_url": "https://cdn.example/atomic.png",
+            "display_name": "GPT Image 2",
+        })),
+    )
+    monkeypatch.setattr(hr, "_download", lambda u, d, t: Path(d).write_bytes(b"png"))
+    real_replace = hr.os.replace
+    publications = []
+
+    def observe_replace(src, dst):
+        src_path, dst_path = Path(src), Path(dst)
+        if dst_path.suffix == ".png":
+            sidecar = dst_path.with_suffix(".provenance.json")
+            provenance = json.loads(sidecar.read_text())
+            assert provenance["job_id"] == "job-atomic"
+        publications.append((src_path, dst_path))
+        real_replace(src, dst)
+
+    monkeypatch.setattr(hr.os, "replace", observe_replace)
+    resp = invoke_higgsfield_image_edit(
+        prompt="p", reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png", cache_dir=tmp_path / "c",
+    )
+
+    assert resp.ok
+    assert [dest.suffix for _, dest in publications] == [".json", ".png"]
+    assert all(source != dest for source, dest in publications)
 
 
 def test_unverified_cli_version_fails_before_generation(tmp_path, monkeypatch):
