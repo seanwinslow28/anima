@@ -210,6 +210,18 @@ def invoke_image_edit(
     )
     cached_file = cache_dir / f"{cache_key}.png"
 
+    # Forced stub is absolute: never read a real result while the caller asks
+    # for a placeholder, and never publish placeholder bytes into real cache.
+    if os.environ.get("ANIMA_FORCE_STUB"):
+        _write_placeholder_png(output_path)
+        return NBProResponse(
+            output_path=output_path,
+            cache_key=cache_key,
+            cache_hit=False,
+            stub_fallback=True,
+            exit_code=0,
+        )
+
     # Cache hit short-circuits everything else.
     if cached_file.exists():
         shutil.copy2(cached_file, output_path)
@@ -224,11 +236,8 @@ def invoke_image_edit(
     # Stub fallback when the env isn't set up for real calls. Tests run here.
     # The check honors both live env and .env file — the skill script reads
     # .env via --env-file, so the runner's gate respects the same source.
-    if os.environ.get("ANIMA_FORCE_STUB") or not _has_gemini_api_key():
+    if not _has_gemini_api_key():
         _write_placeholder_png(output_path)
-        # Also cache the placeholder so the cache-hit test on a second call
-        # behaves the same as it would with a real generation.
-        shutil.copy2(output_path, cached_file)
         return NBProResponse(
             output_path=output_path,
             cache_key=cache_key,
@@ -243,7 +252,6 @@ def invoke_image_edit(
         # the pipeline doesn't crash; caller will see stub_fallback=True and
         # can decide how to surface this.
         _write_placeholder_png(output_path)
-        shutil.copy2(output_path, cached_file)
         return NBProResponse(
             output_path=output_path,
             cache_key=cache_key,

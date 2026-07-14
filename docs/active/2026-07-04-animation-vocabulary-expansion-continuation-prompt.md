@@ -31,7 +31,7 @@ You are continuing anima's **animation-vocabulary-expansion** workstream: turnin
 ## Immediate next actions (ordered)
 
 1. **Commit the uncommitted work.** Branch from local main; commit the go-no-go.md resolution, the backlog doc, this continuation prompt, and the spike frames; add a dated CHANGELOG entry (what changed + why). Open a PR or merge per Sean's preference.
-2. **Deep-research the `90s-nicktoon-grossout` (Ren & Stimpy) look** — per the research-brief template in the plan (`docs/active/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md` §2a) WITH its depth requirements (frame-by-frame still analysis, staging grammar, the line/wet-edge logic, negative controls vs Rugrats, the genericization rule). Grounded, not surface pastiche. The consumer + its craft bible are in `briefs/2026-07-02-ai-guru-pilot/concept.md` (§style bible).
+2. **Deep-research the `90s-nicktoon-grossout` (Ren & Stimpy) look** — per the research-brief template in the plan (`docs/COMPLETED/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md` §2a) WITH its depth requirements (frame-by-frame still analysis, staging grammar, the line/wet-edge logic, negative controls vs Rugrats, the genericization rule). Grounded, not surface pastiche. The consumer + its craft bible are in `briefs/2026-07-02-ai-guru-pilot/concept.md` (§style bible).
 3. **Produce the look-spike.** Give Sean Flow-ready + ChatGPT-ready prompts in the corrected `90s-nicktoon-grossout` vocabulary (genericized, attribute-only, no named source in production prompts), and/or run an NB2 spike — so Sean can test across the ChatGPT and Flow web apps and pick the look. Record the transport verdict (which engine renders it).
 4. **On Sean's pick →** author register #2 via the drill (batching the primal `generation_model` change), OR pivot to `warm-storybook-pencil` if that's what Sean prefers for ai-guru.
 
@@ -44,7 +44,7 @@ You are continuing anima's **animation-vocabulary-expansion** workstream: turnin
 ## Read first (source of truth)
 
 - `docs/active/2026-07-04-register-backlog-and-transport-findings.md` — the immediate state + backlog + pending actions.
-- `docs/active/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md` — the plan (extension pattern §1, research agenda §2a, fold/family/transport §3, TDD tasks §5).
+- `docs/COMPLETED/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md` — the plan (extension pattern §1, research agenda §2a, fold/family/transport §3, TDD tasks §5).
 - `briefs/2026-07-02-grandmaster/go-no-go.md` — the resolved go/no-go + the gpt-image edit-identity gate.
 - `pipeline/registers.py` + `registers/primal-sketch-grit/research.md` — the registry + the model for how a register is researched/authored.
 - `docs/architecture/prompt-style-neutrality-doctrine.md` — the doctrine (corrected).

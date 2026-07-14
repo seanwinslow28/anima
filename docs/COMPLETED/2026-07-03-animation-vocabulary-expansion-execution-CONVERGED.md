@@ -1,10 +1,12 @@
 # Animation vocabulary expansion — the register registry + the powerhouse pattern — Converged Execution Plan (Opus + Codex + red-team)
 
 **Date:** 2026-07-03
-**Status:** Converged execution plan (design ratified by Sean across four brainstorm sections + two live addenda). **Not yet built.** The first build session runs under Fable 5 (kickoff at the end of this doc).
-**Predecessor:** [`docs/active/2026-07-03-animation-vocabulary-expansion-scope.md`](2026-07-03-animation-vocabulary-expansion-scope.md) — the scope + prior decisions. This doc turns that scope into an execution plan.
+**Completed / historical (archived 2026-07-13).** This is the ratified execution plan that produced the register registry and the first four authored expansion registers. Its body, including then-current preview model IDs and pending-state language, is preserved as historical execution evidence; current runtime truth lives in `pipeline/registers.py`, ROADMAP, and the style-register authoring playbook.
+
+**Status:** Completed historical execution plan (design ratified by Sean across four brainstorm sections + two live addenda).
+**Predecessor:** [`docs/active/2026-07-03-animation-vocabulary-expansion-scope.md`](../active/2026-07-03-animation-vocabulary-expansion-scope.md) — the scope + prior decisions. This doc turns that scope into an execution plan.
 **Relation to ROADMAP:** within the active **outward-turn workstream** ("the tool + more characters/styles"). A **production unblock** for a greenlit piece (GRANDMASTER), *not* a new workstream. The full powerhouse roster is deferred to the post-front-door-DoD sidequest.
-**Method model:** mirrors [`2026-07-03-frontdoor-slice4-stress-test-CONVERGED.md`](2026-07-03-frontdoor-slice4-stress-test-CONVERGED.md) — position → TDD tasks with real test code → verification → checkpoints → risks → Codex reconciliation → red-team fold. Right-sizing honesty throughout.
+**Method model:** mirrors [`2026-07-03-frontdoor-slice4-stress-test-CONVERGED.md`](../active/2026-07-03-frontdoor-slice4-stress-test-CONVERGED.md) — position → TDD tasks with real test code → verification → checkpoints → risks → Codex reconciliation → red-team fold. Right-sizing honesty throughout.
 
 ---
 

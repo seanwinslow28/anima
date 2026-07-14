@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-04
 **Status:** Living backlog. Captures decisions + candidate registers surfaced during the `primal-sketch-grit` go/no-go spike. **Not a build list** — each candidate gets the doctrine drill (research → `RegisterSpec` → Cy block → markers → refs) only when Sean greenlights it.
-**Relation:** extends the [animation-vocabulary-expansion plan](2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md) §2c roster with real candidates, evidence, and the transport rule the spike proved.
+**Relation:** extends the [completed animation-vocabulary-expansion plan](../COMPLETED/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md) §2c roster with real candidates, evidence, and the transport rule the spike proved.
 
 ---
 
@@ -40,15 +40,15 @@ The `primal-sketch-grit` go/no-go spike (2026-07-04) established, with Sean's fo
 
 **The look, in one line (for the eventual `style_token`):** dark minimalist cinematic 2D — clean flat color shapes, **almost no visible outlines**, sharp angular silhouettes, long elegant proportions, hard-edged flat shadow shapes, bold color blocking, dramatic negative space, a single emotional color cast, silent-samurai-film staging. **The negative-control axis vs `primal-sketch-grit`:** *less thick ink, less gritty brushwork, more clean shape design, more silence, more negative space* — the two are **mutually exclusive Tartakovsky registers** (already contrasted in `registers/primal-sketch-grit/research.md` §6).
 
-**Transport:** gpt-image (the ChatGPT example proves it); NB2 likely can't (flat-no-outline is hard, same family of miss). Spike to confirm at authoring.
+**Transport:** **gpt-image via Higgsfield, wired 2026-07-13.** The Step-S cross-engine spike selected the locked Higgsfield `gpt_image_2` hero; `RegisterSpec.generation_model` records `gpt-image-2`, and the exact transport map dispatches it through `pipeline/agents/higgsfield_runner.py`.
 
-**When authored, it runs the standard drill** (research → `RegisterSpec` → Cy `## What good looks like — samurai-jack-s5` block → markers → `registers/samurai-jack-s5/refs/` + move the research doc in). The ChatGPT research is the *seed*, not the finished register — the doctrine's depth requirements (§2a) still apply.
+**Authoring completed 2026-07-13 via the standard drill:** research → `RegisterSpec` → Cy `## What good looks like — samurai-jack-s5` block → markers → `registers/samurai-jack-s5/refs/`. The thin ChatGPT research was only the seed; the authored register is grounded in the full research artifact and locked hero.
 
 ---
 
-## 4. `90s-nicktoon-grossout` (ai-guru) — research/test BEFORE authoring
+## 4. `90s-nicktoon-grossout` (ai-guru) — **AUTHORED 2026-07-11**
 
-Sean's call (2026-07-04): **research and test the `90s-nicktoon-grossout` (Ren & Stimpy) look before deciding** whether ai-guru uses it — the `warm-storybook-pencil` (§2) is a possible alternative if the grossout output disappoints. So register #2 is **not** "author now"; the next step for it is a **look spike** (like Primal's), across engines, then the authoring decision. This stays the 2nd instance that proves the powerhouse pattern — just gated on Sean liking the look first.
+Sean's 2026-07-04 research-first gate was completed: the corrected appealing-human default passed the cross-engine look spike on NB2, Sean ratified it, and the register shipped as expansion register #2 / registry register #8 in PR #106. It is live in `pipeline/registers.py`, has its Cy worked example, markers, doctrine/template touchpoints, and `tests/test_90s_nicktoon_grossout.py`. Transport remains the direct Gemini NB2 default; ai-guru is its named consumer. `warm-storybook-pencil` (§2) remains a separate candidate, not an unresolved fallback decision for this authored register.
 
 ---
 
@@ -76,7 +76,7 @@ Two Tartakovsky registers are now authored (`primal-sketch-grit` + `samurai-jack
 ## 7. Pending actions (so nothing's lost)
 
 - **[DONE 2026-07-11]** `primal-sketch-grit.generation_model` records `gpt-image-2`; its registry/test/research record is current.
-- **[decision, Sean-paced]** the `90s-nicktoon-grossout` look-spike (across engines) before authoring register #2.
+- **[DONE 2026-07-11]** `90s-nicktoon-grossout` look-spike + authoring completed; NB2 selected, register #8 shipped in PR #106.
 - **[DONE — T1 built 2026-07-13]** gpt-image transport wiring: `gpt-image-2` now dispatches through Higgsfield `gpt_image_2` in [`pipeline/agents/higgsfield_runner.py`](../../pipeline/agents/higgsfield_runner.py), executing T1 of the [Higgsfield switchover plan](2026-07-13-higgsfield-switchover-build-kickoff.md) and decisions D4/D5 in the [ratified transport strategy](2026-07-13-transport-strategy-decision.md). Unknown mappings still fail loud. **T2 remains standing:** the in-register across-edit identity validation still rides the costed, Sean-greenlit GRANDMASTER build — the probe was pencil-register only. Task 7's live production-path smoke is also still gated and unrun.
 - **[DONE 2026-07-13]** ~~author `samurai-jack-s5` (drill) + revisit the register-family question.~~ Authored (register #9, §3); the family question is answered **FOLD** (§5).
 - **[optional]** ROADMAP note that the register pilot DoD is met and the outward-turn now has a live register-authoring capability + this backlog.

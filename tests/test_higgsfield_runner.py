@@ -7,7 +7,9 @@ SPEND CREDITS — never let one escape this file.
 """
 from __future__ import annotations
 
+import fcntl
 import json
+import multiprocessing
 import subprocess as _sp
 from pathlib import Path
 
@@ -27,6 +29,13 @@ def _mk_ref(tmp_path: Path, name: str = "ref.png") -> Path:
     p = tmp_path / name
     p.write_bytes(b"\x89PNG\r\n\x1a\nfakebytes")
     return p
+
+
+def _hold_cache_lock(lock_path: str, held, release) -> None:
+    """Child-process probe for the real interprocess lock contract."""
+    with hr._cache_key_lock(Path(lock_path)):
+        held.set()
+        release.wait(5)
 
 
 def test_transport_map_carries_gpt_image():
@@ -445,6 +454,7 @@ def test_cache_publishes_valid_provenance_before_image(tmp_path, monkeypatch):
             sidecar = dst_path.with_suffix(".provenance.json")
             provenance = json.loads(sidecar.read_text())
             assert provenance["job_id"] == "job-atomic"
+            assert dst_path.with_suffix(".pending.json").exists()
         publications.append((src_path, dst_path))
         real_replace(src, dst)
 
@@ -455,8 +465,13 @@ def test_cache_publishes_valid_provenance_before_image(tmp_path, monkeypatch):
     )
 
     assert resp.ok
-    assert [dest.suffix for _, dest in publications] == [".json", ".png"]
+    assert [dest.name for _, dest in publications] == [
+        f"{resp.cache_key}.pending.json",
+        f"{resp.cache_key}.provenance.json",
+        f"{resp.cache_key}.png",
+    ]
     assert all(source != dest for source, dest in publications)
+    assert not (tmp_path / "c" / f"{resp.cache_key}.pending.json").exists()
 
 
 def test_unverified_cli_version_fails_before_generation(tmp_path, monkeypatch):
@@ -488,3 +503,131 @@ def test_hard_failure_is_errored_not_stub(tmp_path, monkeypatch):
         output_path=tmp_path / "o.png", cache_dir=tmp_path / "c",
     )
     assert not resp.ok and not resp.stub_fallback and resp.exit_code == 1
+
+
+def test_completed_job_download_failure_resumes_without_duplicate_create(
+    tmp_path, monkeypatch
+):
+    """A completed charged job survives a terminal download failure and the
+    identical retry re-downloads that same receipt before any new create."""
+    _no_stub(monkeypatch)
+    calls = {"create": 0, "download": 0}
+
+    def fake_run(cmd, timeout_s):
+        if cmd == ["higgsfield", "--version"]:
+            return _sp.CompletedProcess(
+                cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
+            )
+        assert cmd[1:3] == ["generate", "create"]
+        calls["create"] += 1
+        return _sp.CompletedProcess(
+            cmd,
+            0,
+            stdout=json.dumps({
+                "id": "job-download-retry",
+                "result_url": "https://cdn.example/retry.png",
+                "display_name": "GPT Image 2",
+            }),
+            stderr="",
+        )
+
+    def flaky_download(url, dest, timeout_s):
+        calls["download"] += 1
+        receipts = list((tmp_path / "c").glob("*.pending.json"))
+        assert len(receipts) == 1
+        receipt = json.loads(receipts[0].read_text())
+        assert receipt["job_id"] == "job-download-retry"
+        assert receipt["result_url"] == url
+        if calls["download"] <= hr._MAX_ATTEMPTS:
+            raise TimeoutError("cdn timed out")
+        Path(dest).write_bytes(b"recovered-png")
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    monkeypatch.setattr(hr, "_download", flaky_download)
+    monkeypatch.setattr(hr.time, "sleep", lambda _: None)
+    kwargs = dict(
+        prompt="same charged plate",
+        reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png",
+        cache_dir=tmp_path / "c",
+    )
+
+    first = invoke_higgsfield_image_edit(**kwargs)
+    assert not first.ok and first.exit_code != 0
+    assert first.job_id == "job-download-retry"
+    assert first.result_url == "https://cdn.example/retry.png"
+    assert first.display_name == "GPT Image 2"
+    assert first.cli_version == "0.2.3"
+    pending = tmp_path / "c" / f"{first.cache_key}.pending.json"
+    assert pending.exists()
+
+    second = invoke_higgsfield_image_edit(**kwargs)
+    assert second.ok and not second.cache_hit
+    assert second.job_id == first.job_id
+    assert calls == {"create": 1, "download": hr._MAX_ATTEMPTS + 1}
+    assert not pending.exists()
+
+
+def test_resume_timeout_returns_known_job_identity(tmp_path, monkeypatch):
+    """TimeoutExpired while waiting on a known job is bounded and honest."""
+    _no_stub(monkeypatch)
+    calls = {"create": 0, "wait": 0}
+
+    def fake_run(cmd, timeout_s):
+        if cmd == ["higgsfield", "--version"]:
+            return _sp.CompletedProcess(
+                cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
+            )
+        if cmd[1:3] == ["generate", "create"]:
+            calls["create"] += 1
+            return _sp.CompletedProcess(
+                cmd,
+                1,
+                stdout=json.dumps({
+                    "id": "job-wait-timeout",
+                    "display_name": "GPT Image 2",
+                }),
+                stderr="HTTP 502",
+            )
+        calls["wait"] += 1
+        raise _sp.TimeoutExpired(cmd, timeout_s)
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    monkeypatch.setattr(hr.time, "sleep", lambda _: None)
+    resp = invoke_higgsfield_image_edit(
+        prompt="p",
+        reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png",
+        cache_dir=tmp_path / "c",
+    )
+
+    assert not resp.ok and resp.exit_code == 124
+    assert resp.job_id == "job-wait-timeout"
+    assert resp.display_name == "GPT Image 2"
+    assert resp.cli_version == "0.2.3"
+    assert calls == {"create": 1, "wait": hr._MAX_ATTEMPTS}
+
+
+def test_cache_key_lock_is_exclusive_across_processes(tmp_path):
+    """The same cache key cannot be held by two OS processes at once."""
+    ctx = multiprocessing.get_context("spawn")
+    held = ctx.Event()
+    release = ctx.Event()
+    lock_path = tmp_path / "same-key.lock"
+    process = ctx.Process(
+        target=_hold_cache_lock,
+        args=(str(lock_path), held, release),
+    )
+    process.start()
+    try:
+        assert held.wait(5), "child never acquired the cache-key lock"
+        with lock_path.open("a+") as contender:
+            with pytest.raises(BlockingIOError):
+                fcntl.flock(contender.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+    finally:
+        release.set()
+        process.join(5)
+        if process.is_alive():
+            process.terminate()
+            process.join(5)
+    assert process.exitcode == 0

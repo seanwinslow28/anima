@@ -17,11 +17,8 @@ from pipeline.agents.gemini_api_runner import (
 )
 
 
-def _force_real(monkeypatch, *, generate=None):
-    if generate is None:
-        def generate(*_args, **_kwargs):
-            raise AssertionError("mocked-real helper requires a fake _generate")
-
+def _force_real(monkeypatch, *, generate):
+    """Require the fake transport explicitly before clearing force-stub."""
     monkeypatch.setattr(gar, "_genai_available", lambda: True)
     monkeypatch.setattr(gar, "_has_gemini_api_key", lambda: True)
     monkeypatch.setattr(gar, "_generate", generate)
@@ -38,7 +35,10 @@ def test_force_real_clears_force_stub_only_after_generate_is_safe(monkeypatch):
         real_delenv(name, raising=raising)
 
     monkeypatch.setattr(monkeypatch, "delenv", guarded_delenv)
-    _force_real(monkeypatch)
+    _force_real(
+        monkeypatch,
+        generate=lambda *_args, **_kwargs: ("{}", GEMINI_VISION_MODEL),
+    )
 
 
 def test_stub_fallback_when_genai_absent(monkeypatch):

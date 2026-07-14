@@ -11,7 +11,7 @@ Wire the already-researched, already-look-ratified `90s-nicktoon-grossout` regis
 - The register is **CANDIDATE** — `registers/90s-nicktoon-grossout/research.md` is wire-ready (§1 draft `RegisterSpec`, §2 Cy block, §4 transport **NB2 GO**, §7 genericization), 6 confirmed exemplars in `refs/`, but `pipeline/registers.py` has 7 registers and no `90s-nicktoon-grossout`.
 - `primal-sketch-grit.generation_model` is still `NB2_FLASH`; fork #1 (batch → gpt-image) is unbuilt.
 - Both decisions are Sean-ratified: **NB2 GO** for nicktoon; **batch primal → gpt-image** as its own tiny TDD change in this build.
-- Process weight (Sean's call): **lean** — the register-authoring is a mechanical, already-converged drill (converged plan `docs/active/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md` was Opus→Codex→red-team); skip re-running full converged machinery, but send **only the new fail-loud guard** to a Codex adversarial pass before finalizing it.
+- Process weight (Sean's call): **lean** — the register-authoring is a mechanical, already-converged drill (converged plan `docs/COMPLETED/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md` was Opus→Codex→red-team); skip re-running full converged machinery, but send **only the new fail-loud guard** to a Codex adversarial pass before finalizing it.
 
 ## Section A — Register #2 authoring (the mechanical drill, §1.3 of the converged plan)
 
@@ -77,7 +77,7 @@ Sourced entirely from `registers/90s-nicktoon-grossout/research.md` §§0–2, �
 ## References
 
 - `registers/90s-nicktoon-grossout/research.md` — the wire-ready source of truth for Section A.
-- `docs/active/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md` §1.3 (drill), §5 Checkpoint 2 (the template these tasks mirror), §8 (verification).
+- `docs/COMPLETED/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md` §1.3 (drill), §5 Checkpoint 2 (the template these tasks mirror), §8 (verification).
 - `docs/active/2026-07-04-register-backlog-and-transport-findings.md` §1, §7 (the pending primal change + roster).
 - `tests/test_primal_sketch_grit.py` — the per-register test template.
 - `docs/architecture/prompt-style-neutrality-doctrine.md` — the drill (already corrected to point at `registers.py`).

@@ -18,12 +18,12 @@ ratio. The wrapper layers in:
 
 from __future__ import annotations
 
-import os
+import subprocess as _sp
 from pathlib import Path
-from unittest.mock import patch
 
 import pytest
 
+from pipeline.agents import nb_pro_runner as nbpr
 from pipeline.agents.nb_pro_runner import (
     NBProResponse,
     _build_skill_cmd,
@@ -81,6 +81,25 @@ def cache_dir(tmp_path):
     return d
 
 
+def _force_mocked_real(monkeypatch, tmp_path, *, image_bytes: bytes):
+    """Contain the subprocess before opening a mocked-real Gemini window."""
+    calls = {"n": 0}
+
+    def fake_run(cmd, **kwargs):
+        calls["n"] += 1
+        output = Path(cmd[cmd.index("--output") + 1])
+        output.write_bytes(image_bytes)
+        return _sp.CompletedProcess(cmd, 0, stdout="", stderr="")
+
+    monkeypatch.setattr(nbpr.subprocess, "run", fake_run)
+    fake_script = tmp_path / "generate_image.py"
+    fake_script.write_text("# mocked subprocess target\n")
+    monkeypatch.setattr(nbpr, "_SKILL_SCRIPT", fake_script)
+    monkeypatch.setenv("GEMINI_API_KEY", "test-only")
+    monkeypatch.delenv("ANIMA_FORCE_STUB", raising=False)
+    return calls
+
+
 # ---------------------------------------------------------------------------
 # Stub fallback behavior — what every test below relies on
 # ---------------------------------------------------------------------------
@@ -106,6 +125,40 @@ def test_missing_api_key_returns_stub_placeholder(
     assert response.output_path.stat().st_size > 0
 
 
+def test_force_stub_placeholder_never_poisoned_real_cache(
+    monkeypatch, tmp_path, fake_reference_image, cache_dir
+):
+    """A forced placeholder followed by the same mocked-live request must run
+    the subprocess; it must not rehydrate placeholder bytes as a cache hit."""
+    prompt = "same prompt across stub and real"
+    stub_output = tmp_path / "stub.png"
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    stub = invoke_image_edit(
+        prompt=prompt,
+        reference_images=[fake_reference_image],
+        output_path=stub_output,
+        cache_dir=cache_dir,
+    )
+    placeholder_bytes = stub_output.read_bytes()
+    assert stub.stub_fallback and not stub.cache_hit
+
+    calls = _force_mocked_real(
+        monkeypatch, tmp_path, image_bytes=b"mocked-live-image"
+    )
+
+    live_output = tmp_path / "live.png"
+    live = invoke_image_edit(
+        prompt=prompt,
+        reference_images=[fake_reference_image],
+        output_path=live_output,
+        cache_dir=cache_dir,
+    )
+    assert calls["n"] == 1
+    assert not live.cache_hit and not live.stub_fallback
+    assert live_output.read_bytes() == b"mocked-live-image"
+    assert live_output.read_bytes() != placeholder_bytes
+
+
 # ---------------------------------------------------------------------------
 # Content-addressed cache key
 # ---------------------------------------------------------------------------
@@ -115,7 +168,9 @@ def test_cache_hit_skips_subprocess(
     monkeypatch, tmp_path, fake_reference_image, cache_dir
 ):
     """Second call with identical inputs hits cache; subprocess not invoked."""
-    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    calls = _force_mocked_real(
+        monkeypatch, tmp_path, image_bytes=b"real-cacheable-image"
+    )
     output_1 = tmp_path / "out1.png"
     response_1 = invoke_image_edit(
         prompt="same prompt",
@@ -134,6 +189,7 @@ def test_cache_hit_skips_subprocess(
         cache_dir=cache_dir,
     )
     assert response_2.cache_hit is True
+    assert calls["n"] == 1
     assert response_2.output_path.exists()
     # Content is preserved from cache.
     assert response_1.output_path.read_bytes() == response_2.output_path.read_bytes()

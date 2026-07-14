@@ -2,7 +2,7 @@
 
 *The canonical, repeatable workflow for adding a new closed `style_register` to anima — so the pipeline is never limited to the styles it happens to have today. Read this before authoring any new register.*
 
-**Status:** canonical runbook (2026-07-13). Distilled from three worked examples — `primal-sketch-grit` (2026-07-03/11), `90s-nicktoon-grossout` (2026-07-11), `samurai-jack-s5` (2026-07-13) — plus the [prompt style-neutrality doctrine](prompt-style-neutrality-doctrine.md) (the *why*) and the [animation-vocabulary-expansion converged plan](../active/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md) (the mechanism's origin). Where the doctrine's five-step drill and this playbook differ, **this playbook is authoritative** — it carries the full R→S→B arc and the current touch-point list; the doctrine's list predates the later touch-points.
+**Status:** canonical runbook (2026-07-13). Distilled from three worked examples — `primal-sketch-grit` (2026-07-03/11), `90s-nicktoon-grossout` (2026-07-11), `samurai-jack-s5` (2026-07-13) — plus the [prompt style-neutrality doctrine](prompt-style-neutrality-doctrine.md) (the *why*) and the [animation-vocabulary-expansion converged plan](../COMPLETED/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md) (the mechanism's origin). Where the doctrine's five-step drill and this playbook differ, **this playbook is authoritative** — it carries the full R→S→B arc and the current touch-point list; the doctrine's list predates the later touch-points.
 
 ---
 
@@ -130,7 +130,7 @@ Stop for Sean's review; **only Sean merges.**
 
 ## Transport (the recorded model + escalation ladder)
 
-The `RegisterSpec` records the **honest** generation model. The decision procedure ([converged plan](../active/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md) §3c):
+The `RegisterSpec` records the **honest** generation model. The decision procedure ([converged plan](../COMPLETED/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md) §3c):
 
 1. **NB2 default** (`gemini-3.1-flash-image`) — author clauses → spike the hero via NB2 from text → Sean's eye. Reads as the register → done (e.g. `90s-nicktoon-grossout`, NB2 GO).
 2. Close-but-not-there → spike NB2 **with a `refs/` style image fed in** (watch for the Flo-B identity-morph).
