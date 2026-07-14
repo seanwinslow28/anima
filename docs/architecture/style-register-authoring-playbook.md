@@ -88,7 +88,7 @@ The pure doctrine drill in an **isolated git worktree** (per [fleet-ops](fleet-o
 - **stub envelope, no pencil coercion** — `CharacterDesignerNode()._build_stub_envelope(char_dir)` returns `style_register == {name}` for a `{name}`-named char dir.
 - **markers exact + no collision** — assert the exact marker set AND loop `REGISTRY` asserting no overlap with any other register's markers.
 - **genericization, attribute-only** — scan `summary + identity_lock + preserve + style_token + stub_keywords + [markers except the slug]`, lowercased; assert no franchise/creator/character/studio name leaks. If the slug itself is a franchise name (e.g. `samurai-jack-s5`), **normalize hyphens to spaces** so both `foo bar` and `foo-bar` are caught, and exempt **only** the slug/name-marker.
-- **transport honest + unwired** (only when the generation model has no wired runner) — assert `spec.generation_model == <MODEL>` and `<MODEL> not in SUPPORTED_IMAGE_MODELS`, and one light `pytest.raises(UnwiredTransportError)` on `invoke_image_edit(..., model=spec.generation_model)`. Do **not** re-assert the filesystem side-effects already covered in [`tests/test_nb_pro_runner.py`](../../tests/test_nb_pro_runner.py).
+- **transport honest + dual-map** — always assert `spec.generation_model == <MODEL>` and keep the direct-Gemini boundary exact with `SUPPORTED_IMAGE_MODELS == frozenset({NB2_FLASH, NB_PRO})`. For a Higgsfield-backed register, import `HIGGSFIELD_IMAGE_MODELS`, assert `<MODEL> not in SUPPORTED_IMAGE_MODELS` **and** `<MODEL> in HIGGSFIELD_IMAGE_MODELS`, force `ANIMA_FORCE_STUB=1`, call `invoke_image_edit(..., model=spec.generation_model)`, and assert `resp.ok and resp.stub_fallback` — outside the google-genai allowlist does **not** mean unwired when the Higgsfield map owns the model. Only when `<MODEL>` is absent from **both** `SUPPORTED_IMAGE_MODELS` and `HIGGSFIELD_IMAGE_MODELS` should the test expect `pytest.raises(UnwiredTransportError)`. Do **not** re-assert the filesystem side-effects already covered in [`tests/test_nb_pro_runner.py`](../../tests/test_nb_pro_runner.py).
 
 Run it. **Verify RED** — every case must fail on the missing feature (`UnknownRegisterError`), not a typo.
 
@@ -119,7 +119,7 @@ Run the per-register test. **Verify GREEN.**
 - completeness green (an incomplete registration goes red) · neutrality green (auto-audits the new markers; the doctrine names every register);
 - every sibling per-register test file green;
 - **both frozen md5 guards unchanged by hash** (§Standing guards);
-- transport boundary intact — `SUPPORTED_IMAGE_MODELS` still exactly `{NB2_FLASH, NB_PRO}`; any unwired model raises;
+- transport boundary intact — `SUPPORTED_IMAGE_MODELS` is still exactly `{NB2_FLASH, NB_PRO}`; Higgsfield-backed models are present in `HIGGSFIELD_IMAGE_MODELS`; only a model absent from **both** maps raises;
 - stub-green Cy smoke ($0, no keys) — a `{name}`-named char authors a coherent stub Bible in the register, never silent pencil;
 - `git diff --check` + `git diff --name-only` show only the planned files;
 - run `superpowers:verification-before-completion`.
