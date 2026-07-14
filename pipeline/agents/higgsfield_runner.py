@@ -36,6 +36,7 @@ import time
 import urllib.request
 from contextlib import contextmanager
 from dataclasses import dataclass
+from enum import Enum
 from pathlib import Path
 from typing import Iterator
 
@@ -85,6 +86,12 @@ class MismatchedHiggsfieldJobIdentity(RuntimeError):
         )
 
 
+class PendingDurability(Enum):
+    DURABLE_PENDING = "durable_pending"
+    DURABLE_QUARANTINE = "durable_quarantine"
+    NOT_DURABLE = "not_durable"
+
+
 @contextmanager
 def _cache_key_lock(lock_path: Path) -> Iterator[None]:
     """Serialize charged work and cache publication for one content key."""
@@ -118,6 +125,12 @@ class HiggsfieldResponse:
     @property
     def ok(self) -> bool:
         return self.exit_code == 0 and Path(self.output_path).exists()
+
+
+@dataclass(frozen=True)
+class PendingPersistenceResult:
+    outcome: PendingDurability
+    response: HiggsfieldResponse | None = None
 
 
 def _compute_cache_key(
@@ -258,6 +271,14 @@ def _fsync_directory(path: Path) -> None:
         os.close(directory_fd)
 
 
+def _durable_unlink(path: Path) -> None:
+    try:
+        path.unlink()
+    except FileNotFoundError:
+        return
+    _fsync_directory(path.parent)
+
+
 def _atomic_write_json(path: Path, payload: dict) -> None:
     fd, staged_name = tempfile.mkstemp(
         dir=path.parent, prefix=f".{path.stem}.", suffix=".json.tmp"
@@ -390,9 +411,15 @@ def _publish_cache_entry(
     staged_sidecar = Path(sidecar_name)
     try:
         shutil.copy2(output_path, staged_image)
-        staged_sidecar.write_text(json.dumps(provenance, indent=2))
+        with staged_image.open("rb") as image_handle:
+            os.fsync(image_handle.fileno())
+        with staged_sidecar.open("w") as sidecar_handle:
+            json.dump(provenance, sidecar_handle, indent=2)
+            sidecar_handle.flush()
+            os.fsync(sidecar_handle.fileno())
         os.replace(staged_sidecar, sidecar)
         os.replace(staged_image, cached)
+        _fsync_directory(cached.parent)
     finally:
         staged_image.unlink(missing_ok=True)
         staged_sidecar.unlink(missing_ok=True)
@@ -488,6 +515,12 @@ def invoke_higgsfield_image_edit(
     # per-key critical section. Concurrent processes cannot double-spend or
     # pair one writer's image with another writer's provenance.
     with _cache_key_lock(lock_path):
+        if intent.exists():
+            return _blocked_receipt_response(
+                receipt=intent, output_path=output_path,
+                cache_key=cache_key,
+                reason="Unresolved create-in-flight intent",
+            )
         if quarantine.exists():
             return _blocked_receipt_response(
                 receipt=quarantine, output_path=output_path,
@@ -501,9 +534,6 @@ def invoke_higgsfield_image_edit(
             aspect_ratio=aspect_ratio,
         )
         if pending_payload is not None:
-            # A durable pending receipt is the safe successor to a pre-create
-            # intent. A crash between those two publications may leave both.
-            intent.unlink(missing_ok=True)
             return _recover_pending_job(
                 pending_payload=pending_payload, pending=pending,
                 output_path=output_path, cached=cached, sidecar=sidecar,
@@ -518,13 +548,6 @@ def invoke_higgsfield_image_edit(
                 cache_key=cache_key,
                 reason="Invalid or version-stale pending receipt",
             )
-        if intent.exists():
-            return _blocked_receipt_response(
-                receipt=intent, output_path=output_path,
-                cache_key=cache_key,
-                reason="Unresolved create-in-flight intent",
-            )
-
         hit = _load_cache_response(
             cached=cached, sidecar=sidecar, output_path=output_path,
             cache_key=cache_key, model=model, job_type=job_type,
@@ -794,30 +817,65 @@ def _persist_pending_or_failure(
     aspect_ratio: str | None,
     metadata: tuple[str | None, str | None, str | None],
     cli_version: str,
-) -> HiggsfieldResponse | None:
+) -> PendingPersistenceResult:
     try:
-        _persist_pending(
+        payload = _persist_pending(
             pending, quarantine=quarantine, cache_key=cache_key, model=model,
             job_type=job_type, resolution=resolution, quality=quality,
             aspect_ratio=aspect_ratio, metadata=metadata,
             cli_version=cli_version,
         )
     except PendingReceiptQuarantined as exc:
-        return _quarantined_write_response(
-            exc=exc, output_path=output_path, cache_key=cache_key,
-        )
-    except OSError as exc:
-        return _response_for_failure(
-            output_path=output_path, cache_key=cache_key, exit_code=78,
-            metadata=metadata, cli_version=cli_version,
-            error=(
-                "Neither canonical nor quarantine charged-job receipt could "
-                f"be published: {exc}. The pre-existing pending receipt or "
-                "pre-create intent remains the fail-closed recovery marker; "
-                "operator resolution is required."
+        return PendingPersistenceResult(
+            PendingDurability.DURABLE_QUARANTINE,
+            _quarantined_write_response(
+                exc=exc, output_path=output_path, cache_key=cache_key,
             ),
         )
-    return None
+    except OSError as exc:
+        return PendingPersistenceResult(
+            PendingDurability.NOT_DURABLE,
+            _response_for_failure(
+                output_path=output_path, cache_key=cache_key, exit_code=78,
+                metadata=metadata, cli_version=cli_version,
+                error=(
+                    "Neither canonical nor quarantine charged-job receipt "
+                    f"could be published durably: {exc}. The pre-existing "
+                    "pending receipt or pre-create intent remains the "
+                    "fail-closed recovery marker; operator resolution is "
+                    "required."
+                ),
+            ),
+        )
+    return PendingPersistenceResult(
+        PendingDurability.DURABLE_PENDING
+        if payload is not None else PendingDurability.NOT_DURABLE
+    )
+
+
+def _finish_create_receipt_transition(
+    *,
+    persistence: PendingPersistenceResult,
+    intent: Path,
+    output_path: Path,
+    cache_key: str,
+    metadata: tuple[str | None, str | None, str | None],
+    cli_version: str,
+) -> HiggsfieldResponse | None:
+    if persistence.outcome is not PendingDurability.NOT_DURABLE:
+        try:
+            _durable_unlink(intent)
+        except OSError as exc:
+            return _response_for_failure(
+                output_path=output_path, cache_key=cache_key, exit_code=78,
+                metadata=metadata, cli_version=cli_version,
+                error=(
+                    "Charged-job successor is durable, but pre-create intent "
+                    f"removal was not durably confirmed: {exc}. Automatic "
+                    "create remains blocked by the successor receipt."
+                ),
+            )
+    return persistence.response
 
 
 def _finish_known_job(
@@ -868,15 +926,15 @@ def _finish_known_job(
                 metadata=metadata, cli_version=cli_version,
             )
         metadata = _merge_cli_metadata(metadata, wait_metadata)
-        blocked = _persist_pending_or_failure(
+        persistence = _persist_pending_or_failure(
             pending=pending, quarantine=quarantine, output_path=output_path,
             cache_key=cache_key, model=model, job_type=job_type,
             resolution=resolution, quality=quality,
             aspect_ratio=aspect_ratio, metadata=metadata,
             cli_version=cli_version,
         )
-        if blocked is not None:
-            return blocked
+        if persistence.response is not None:
+            return persistence.response
         if result.returncode != 0:
             return _response_for_failure(
                 output_path=output_path, cache_key=cache_key,
@@ -918,7 +976,18 @@ def _finish_known_job(
             output_path=output_path, cache_key=cache_key, exit_code=1,
             metadata=metadata, cli_version=cli_version,
         )
-    pending.unlink(missing_ok=True)
+    try:
+        _durable_unlink(pending)
+    except OSError as exc:
+        return _response_for_failure(
+            output_path=output_path, cache_key=cache_key, exit_code=78,
+            metadata=metadata, cli_version=cli_version,
+            error=(
+                "Cache pair is durable, but pending-receipt removal was not "
+                f"durably confirmed: {exc}. Automatic create remains blocked "
+                "by the durable cache or receipt."
+            ),
+        )
     _LOG.info("higgsfield %s ok: url=%s job_id=%s", job_type, url, job_id)
     return HiggsfieldResponse(
         output_path, cache_key, False, job_id=job_id, result_url=url,
@@ -963,15 +1032,15 @@ def _recover_pending_job(
                 metadata=metadata, cli_version=cli_version,
             )
         metadata = _merge_cli_metadata(metadata, wait_metadata)
-        blocked = _persist_pending_or_failure(
+        persistence = _persist_pending_or_failure(
             pending=pending, quarantine=quarantine, output_path=output_path,
             cache_key=cache_key, model=model, job_type=job_type,
             resolution=resolution, quality=quality,
             aspect_ratio=aspect_ratio, metadata=metadata,
             cli_version=cli_version,
         )
-        if blocked is not None:
-            return blocked
+        if persistence.response is not None:
+            return persistence.response
         if result.returncode != 0:
             return _response_for_failure(
                 output_path=output_path, cache_key=cache_key,
@@ -1058,19 +1127,20 @@ def _invoke_real(
                 timeout_metadata, _parse_cli_output(_as_text(exc.stderr))
             )
             metadata = _merge_cli_metadata(metadata, timeout_metadata)
-            blocked = _persist_pending_or_failure(
+            persistence = _persist_pending_or_failure(
                 pending=pending, quarantine=quarantine,
                 output_path=output_path, cache_key=cache_key, model=model,
                 job_type=job_type, resolution=resolution, quality=quality,
                 aspect_ratio=aspect_ratio, metadata=metadata,
                 cli_version=cli_version,
             )
+            blocked = _finish_create_receipt_transition(
+                persistence=persistence, intent=intent,
+                output_path=output_path, cache_key=cache_key,
+                metadata=metadata, cli_version=cli_version,
+            )
             if blocked is not None:
-                if pending.exists() or quarantine.exists():
-                    intent.unlink(missing_ok=True)
                 return blocked
-            if pending.exists():
-                intent.unlink(missing_ok=True)
             return _response_for_failure(
                 output_path=output_path, cache_key=cache_key, exit_code=124,
                 metadata=metadata, cli_version=cli_version,
@@ -1082,19 +1152,20 @@ def _invoke_real(
         parsed = _parse_cli_output(result.stdout)
         metadata = _merge_cli_metadata(metadata, parsed)
         url, job_id, _ = parsed
-        blocked = _persist_pending_or_failure(
+        persistence = _persist_pending_or_failure(
             pending=pending, quarantine=quarantine, output_path=output_path,
             cache_key=cache_key, model=model, job_type=job_type,
             resolution=resolution, quality=quality,
             aspect_ratio=aspect_ratio, metadata=metadata,
             cli_version=cli_version,
         )
+        blocked = _finish_create_receipt_transition(
+            persistence=persistence, intent=intent,
+            output_path=output_path, cache_key=cache_key,
+            metadata=metadata, cli_version=cli_version,
+        )
         if blocked is not None:
-            if pending.exists() or quarantine.exists():
-                intent.unlink(missing_ok=True)
             return blocked
-        if pending.exists():
-            intent.unlink(missing_ok=True)
         if result.returncode != 0 and job_id:
             # The job exists: resume it before classifying the create failure.
             # A second create could duplicate a charged generation.
@@ -1106,19 +1177,20 @@ def _invoke_real(
                     metadata=metadata, cli_version=cli_version,
                 )
             metadata = _merge_cli_metadata(metadata, wait_metadata)
-            blocked = _persist_pending_or_failure(
+            persistence = _persist_pending_or_failure(
                 pending=pending, quarantine=quarantine,
                 output_path=output_path, cache_key=cache_key, model=model,
                 job_type=job_type, resolution=resolution, quality=quality,
                 aspect_ratio=aspect_ratio, metadata=metadata,
                 cli_version=cli_version,
             )
+            blocked = _finish_create_receipt_transition(
+                persistence=persistence, intent=intent,
+                output_path=output_path, cache_key=cache_key,
+                metadata=metadata, cli_version=cli_version,
+            )
             if blocked is not None:
-                if pending.exists() or quarantine.exists():
-                    intent.unlink(missing_ok=True)
                 return blocked
-            if pending.exists():
-                intent.unlink(missing_ok=True)
             break
         transient = _is_transient_failure(result)
         if not transient:

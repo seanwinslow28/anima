@@ -447,8 +447,10 @@ def test_cache_publishes_valid_provenance_before_image(tmp_path, monkeypatch):
     monkeypatch.setattr(hr, "_download", lambda u, d, t: Path(d).write_bytes(b"png"))
     real_replace = hr.os.replace
     real_fsync = hr.os.fsync
+    real_durable_unlink = hr._durable_unlink
     publications = []
     fsyncs = []
+    removals = []
 
     def observe_replace(src, dst):
         src_path, dst_path = Path(src), Path(dst)
@@ -464,8 +466,13 @@ def test_cache_publishes_valid_provenance_before_image(tmp_path, monkeypatch):
         fsyncs.append(fd)
         real_fsync(fd)
 
+    def observe_durable_unlink(path):
+        removals.append((Path(path).name, len(publications), len(fsyncs)))
+        real_durable_unlink(path)
+
     monkeypatch.setattr(hr.os, "replace", observe_replace)
     monkeypatch.setattr(hr.os, "fsync", observe_fsync)
+    monkeypatch.setattr(hr, "_durable_unlink", observe_durable_unlink)
     resp = invoke_higgsfield_image_edit(
         prompt="p", reference_images=[_mk_ref(tmp_path)],
         output_path=tmp_path / "o.png", cache_dir=tmp_path / "c",
@@ -483,8 +490,165 @@ def test_cache_publishes_valid_provenance_before_image(tmp_path, monkeypatch):
     assert not (
         tmp_path / "c" / f"{resp.cache_key}.create_in_flight.json"
     ).exists()
-    # Intent and pending each fsync their staged file and parent directory.
-    assert len(fsyncs) >= 4
+    assert [name for name, _, _ in removals] == [
+        f"{resp.cache_key}.create_in_flight.json",
+        f"{resp.cache_key}.pending.json",
+    ]
+    assert removals[0][1:] == (2, 4)  # after durable pending publication
+    assert removals[1][1:] == (4, 8)  # after durable cache-pair publication
+    # Four staged files + five parent-directory transitions.
+    assert len(fsyncs) == 9
+
+
+def test_cache_directory_fsync_failure_retains_pending_receipt(
+    tmp_path, monkeypatch
+):
+    """Visible cache renames cannot supersede the pending receipt until the
+    cache directory fsync confirms the pair durably."""
+    _no_stub(monkeypatch)
+    calls = {"create": 0, "directory_fsync": 0}
+
+    def fake_run(cmd, timeout_s):
+        if cmd == ["higgsfield", "--version"]:
+            return _sp.CompletedProcess(
+                cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
+            )
+        calls["create"] += 1
+        return _sp.CompletedProcess(
+            cmd,
+            0,
+            stdout=json.dumps({
+                "id": "job-cache-not-durable",
+                "result_url": "https://cdn.example/cache-not-durable.png",
+                "display_name": "GPT Image 2",
+            }),
+            stderr="",
+        )
+
+    real_fsync_directory = hr._fsync_directory
+
+    def fail_cache_directory_fsync(path):
+        calls["directory_fsync"] += 1
+        if calls["directory_fsync"] == 4:
+            raise OSError("cache directory fsync failed")
+        real_fsync_directory(path)
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    monkeypatch.setattr(
+        hr, "_download", lambda _url, dest, _timeout: Path(dest).write_bytes(b"png")
+    )
+    monkeypatch.setattr(hr, "_fsync_directory", fail_cache_directory_fsync)
+    resp = invoke_higgsfield_image_edit(
+        prompt="cache durability fault",
+        reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png",
+        cache_dir=tmp_path / "c",
+    )
+
+    pending = tmp_path / "c" / f"{resp.cache_key}.pending.json"
+    assert not resp.ok and resp.exit_code == 1
+    assert resp.job_id == "job-cache-not-durable"
+    assert pending.exists()
+    assert calls == {"create": 1, "directory_fsync": 4}
+
+
+def test_intent_unlink_fsync_failure_returns_non_ok_with_durable_pending(
+    tmp_path, monkeypatch
+):
+    """A durable pending receipt makes the transition safe, but the caller
+    cannot receive success when intent removal durability is unconfirmed."""
+    _no_stub(monkeypatch)
+    calls = {"create": 0, "download": 0, "directory_fsync": 0}
+
+    def fake_run(cmd, timeout_s):
+        if cmd == ["higgsfield", "--version"]:
+            return _sp.CompletedProcess(
+                cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
+            )
+        calls["create"] += 1
+        return _sp.CompletedProcess(
+            cmd, 0, stdout=json.dumps({
+                "id": "job-intent-unlink-fsync",
+                "result_url": "https://cdn.example/intent-unlink.png",
+                "display_name": "GPT Image 2",
+            }), stderr="",
+        )
+
+    real_fsync_directory = hr._fsync_directory
+
+    def fail_intent_unlink_fsync(path):
+        calls["directory_fsync"] += 1
+        if calls["directory_fsync"] == 3:
+            raise OSError("intent unlink fsync failed")
+        real_fsync_directory(path)
+
+    def fail_download(*_args):
+        calls["download"] += 1
+        raise AssertionError("cache work must wait for intent transition")
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    monkeypatch.setattr(hr, "_download", fail_download)
+    monkeypatch.setattr(hr, "_fsync_directory", fail_intent_unlink_fsync)
+    resp = invoke_higgsfield_image_edit(
+        prompt="intent unlink durability",
+        reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png",
+        cache_dir=tmp_path / "c",
+    )
+
+    pending = tmp_path / "c" / f"{resp.cache_key}.pending.json"
+    assert not resp.ok and resp.exit_code == 78
+    assert resp.error and "intent removal" in resp.error
+    assert pending.exists()
+    assert calls == {"create": 1, "download": 0, "directory_fsync": 3}
+
+
+def test_pending_unlink_fsync_failure_cannot_report_success(tmp_path, monkeypatch):
+    """The durable cache pair is safe, but success waits for durable pending
+    removal rather than treating a visible unlink as confirmation."""
+    _no_stub(monkeypatch)
+    calls = {"create": 0, "directory_fsync": 0}
+
+    def fake_run(cmd, timeout_s):
+        if cmd == ["higgsfield", "--version"]:
+            return _sp.CompletedProcess(
+                cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
+            )
+        calls["create"] += 1
+        return _sp.CompletedProcess(
+            cmd, 0, stdout=json.dumps({
+                "id": "job-pending-unlink-fsync",
+                "result_url": "https://cdn.example/pending-unlink.png",
+                "display_name": "GPT Image 2",
+            }), stderr="",
+        )
+
+    real_fsync_directory = hr._fsync_directory
+
+    def fail_pending_unlink_fsync(path):
+        calls["directory_fsync"] += 1
+        if calls["directory_fsync"] == 5:
+            raise OSError("pending unlink fsync failed")
+        real_fsync_directory(path)
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    monkeypatch.setattr(
+        hr, "_download", lambda _url, dest, _timeout: Path(dest).write_bytes(b"png")
+    )
+    monkeypatch.setattr(hr, "_fsync_directory", fail_pending_unlink_fsync)
+    resp = invoke_higgsfield_image_edit(
+        prompt="pending unlink durability",
+        reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png",
+        cache_dir=tmp_path / "c",
+    )
+
+    cached = tmp_path / "c" / f"{resp.cache_key}.png"
+    sidecar = tmp_path / "c" / f"{resp.cache_key}.provenance.json"
+    assert not resp.ok and resp.exit_code == 78
+    assert resp.error and "pending-receipt removal" in resp.error
+    assert cached.exists() and sidecar.exists()
+    assert calls == {"create": 1, "directory_fsync": 5}
 
 
 def test_unverified_cli_version_fails_before_generation(tmp_path, monkeypatch):
@@ -862,6 +1026,63 @@ def test_pending_and_quarantine_write_failure_retains_create_intent(
     assert not second.ok and second.exit_code == 78
     assert intent.exists()
     assert calls == {"create": 1}
+
+
+def test_visible_receipts_without_directory_fsync_retain_create_intent(
+    tmp_path, monkeypatch
+):
+    """Visible pending/quarantine renames are not durable successors when
+    their directory fsyncs fail, so they cannot authorize intent removal."""
+    _no_stub(monkeypatch)
+    calls = {"create": 0, "directory_fsync": 0}
+
+    def fake_run(cmd, timeout_s):
+        if cmd == ["higgsfield", "--version"]:
+            return _sp.CompletedProcess(
+                cmd, 0, stdout="higgsfield 0.2.3 (test) built test\n", stderr=""
+            )
+        assert cmd[1:3] == ["generate", "create"]
+        calls["create"] += 1
+        return _sp.CompletedProcess(
+            cmd,
+            0,
+            stdout=json.dumps({
+                "id": "job-visible-not-durable",
+                "result_url": "https://cdn.example/not-durable.png",
+                "display_name": "GPT Image 2",
+            }),
+            stderr="",
+        )
+
+    real_fsync_directory = hr._fsync_directory
+
+    def fail_receipt_directory_fsync(path):
+        calls["directory_fsync"] += 1
+        if calls["directory_fsync"] in {2, 3}:
+            raise OSError("directory fsync failed")
+        real_fsync_directory(path)
+
+    monkeypatch.setattr(hr, "_run_cli", fake_run)
+    monkeypatch.setattr(hr, "_fsync_directory", fail_receipt_directory_fsync)
+    kwargs = dict(
+        prompt="visible is not durable",
+        reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png",
+        cache_dir=tmp_path / "c",
+    )
+
+    first = invoke_higgsfield_image_edit(**kwargs)
+    second = invoke_higgsfield_image_edit(**kwargs)
+
+    intent = tmp_path / "c" / f"{first.cache_key}.create_in_flight.json"
+    pending = tmp_path / "c" / f"{first.cache_key}.pending.json"
+    quarantine = tmp_path / "c" / f"{first.cache_key}.quarantine.json"
+    assert not first.ok and first.exit_code == 78
+    assert first.job_id == "job-visible-not-durable"
+    assert not second.ok and second.exit_code == 78
+    assert pending.exists() and quarantine.exists()
+    assert intent.exists()
+    assert calls["create"] == 1
 
 
 @pytest.mark.parametrize("receipt_kind", ["malformed", "stale-version"])

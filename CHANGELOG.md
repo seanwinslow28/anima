@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-07-13 — Higgsfield crash-transition durability, wave 4 ($0)
+
+**What changed.** Closed the narrow durability audit without Task 7 or live generation. Pending publication no longer communicates safety through a nullable response plus `Path.exists()`: `_persist_pending_or_failure` now returns an explicit `PendingPersistenceResult` with `DURABLE_PENDING`, `DURABLE_QUARANTINE`, or `NOT_DURABLE`. Create callers durably unlink the pre-create intent only for the two confirmed-durable outcomes. If pending and quarantine renames are both visible but either parent-directory fsync fails, the outcome remains `NOT_DURABLE`, the response is identity-bearing exit 78, the intent remains operator-visible, and identical retry cannot create.
+
+**Crash-transition ordering.** Cache publication now fsyncs both staged image and provenance, replaces provenance then image, and fsyncs the parent directory before the cache pair may supersede pending. Intent and pending removal both use unlink + parent-directory fsync; removal-fsync failures return non-ok instead of claiming success. The tested order is now intent → durable pending/quarantine → durable cache pair → durable receipt removal, all under the one existing per-key `flock` and with no nested lock. Fault injection proves an unconfirmed cache-directory fsync retains pending, an unconfirmed intent removal stops before download, and an unconfirmed pending removal cannot report success.
+
+**Review disposition.** COMPLETE: successor durability outcome, visible-but-not-durable receipt handling, cache-pair durability, and durable intent/pending removal. The standing costed T2 and Task 7 gates remain unchanged and unrun.
+
 ## 2026-07-13 — Higgsfield final-review pre-create intent hardening, wave 3 ($0)
 
 **What changed.** Closed the third contained final re-review without Task 7 or live generation. Before the pinned Higgsfield CLI can invoke the combined `generate create ... --wait` command, the runner now atomically publishes and fsyncs a per-cache-key `*.create_in_flight.json` intent inside the existing `flock`. A publication failure returns non-ok before create; an output-less or otherwise identity-ambiguous timeout retains the intent, and every identical retry fails closed with an actionable operator error instead of creating again. Once job metadata appears, the runner publishes the canonical pending receipt (or its durable quarantine fallback) before removing the intent. If both post-create receipt paths fail, the identity-bearing response returns exit 78 and the durable intent remains the duplicate-spend barrier. A valid successful path proves the full publication order and clears both intent and pending only after their respective safe successors exist.
