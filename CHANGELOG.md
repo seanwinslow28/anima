@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-07-13 — Higgsfield image transport Task 2: real CLI path, bounded resume, immediate capture, and provenance
+
+**What & why.** Replaced Task 1's explicit real-path placeholder with the ratified D5 Higgsfield CLI contract: every create call pins the verified `0.2.3` CLI and sends explicit quality/resolution/aspect parameters, transient failures retry at most three times, and any returned job ID switches retries to `generate wait` so a charged create is never duplicated. Successful outputs download immediately, populate the content-addressed cache, and write a provenance sidecar carrying the vendor model, job type, request parameters, job ID, result URL, display name, and CLI version; cache hits rehydrate that provenance. Auth/parameter failures stay non-ok and never silently stub. Added six network-free tests covering argv, download/provenance, retry, existing-job resume, cache rehydration, version drift, and hard-failure behavior. All real-path tests replaced both subprocess and download seams before clearing forced-stub mode; no live Higgsfield generation or credit spend occurred.
+
 ## 2026-07-13 — Higgsfield image transport Task 1: fail-closed skeleton, cache identity, and safe stub ladder
 
 **What & why.** Began the ratified D5 transport switchover with the credential-free `higgsfield_runner` foundation only: an exact `gpt-image-2` → `gpt_image_2` transport map, a field-compatible response/provenance envelope, a content-addressed cache key that preserves anchor-first reference order and includes every explicit generation parameter, and forced-stub / missing-CLI fallbacks that never contaminate the real cache. Unknown models fail loud through the existing `UnwiredTransportError`. The real Higgsfield CLI invocation remains an explicit `NotImplementedError` seam for Task 2; no live generation or credit spend occurred. Added a seven-case network-free unit suite and recorded the required missing-module RED before GREEN.

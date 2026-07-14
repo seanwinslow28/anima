@@ -188,5 +188,151 @@ def invoke_higgsfield_image_edit(
     )
 
 
-def _invoke_real(**kwargs) -> HiggsfieldResponse:  # implemented in Task 2
-    raise NotImplementedError("real path lands in Task 2")
+def _run_cli(cmd: list[str], timeout_s: int) -> subprocess.CompletedProcess:
+    """The subprocess seam — monkeypatched by every unit test (an unmocked
+    call on a machine with an authenticated CLI SPENDS CREDITS)."""
+    return subprocess.run(cmd, capture_output=True, text=True, timeout=timeout_s)
+
+
+def _read_cli_version() -> str:
+    result = _run_cli([_HIGGSFIELD_BIN, "--version"], 10)
+    match = re.search(r"\bhiggsfield\s+(\d+\.\d+\.\d+)\b", result.stdout)
+    if result.returncode != 0 or match is None:
+        raise UnsupportedHiggsfieldCLIVersion(result.stdout or result.stderr)
+    version = match.group(1)
+    if version != PINNED_HIGGSFIELD_CLI_VERSION:
+        raise UnsupportedHiggsfieldCLIVersion(
+            f"higgsfield CLI {version} is unverified; pinned "
+            f"{PINNED_HIGGSFIELD_CLI_VERSION}"
+        )
+    return version
+
+
+def _parse_cli_output(
+    stdout: str,
+) -> tuple[str | None, str | None, str | None]:
+    """(result_url, job_id, display_name). JSON is primary; the bare URL
+    printed by v0.2.3 without --json is a compatibility fallback only."""
+    url, job_id, display_name = None, None, None
+    try:
+        payload = json.loads(stdout)
+        if isinstance(payload, dict):
+            job_id = payload.get("id") or payload.get("job_id")
+            url = payload.get("result_url") or payload.get("url")
+            display_name = payload.get("display_name")
+    except (json.JSONDecodeError, ValueError):
+        pass
+    if url is None:
+        for tok in stdout.split():
+            if tok.startswith("https://"):
+                url = tok.strip()
+                break
+    return url, job_id, display_name
+
+
+def _download(url: str, dest: Path, timeout_s: int) -> None:
+    with urllib.request.urlopen(url, timeout=timeout_s) as resp:  # noqa: S310
+        Path(dest).write_bytes(resp.read())
+
+
+def _resume_existing_job(job_id: str, timeout_s: int) -> subprocess.CompletedProcess:
+    """Resume an existing job with bounded 5xx retries on the same id."""
+    cmd = [
+        _HIGGSFIELD_BIN, "generate", "wait", job_id,
+        "--quiet", "--json", "--timeout", "9m",
+    ]
+    result = None
+    for attempt in range(1, _MAX_ATTEMPTS + 1):
+        result = _run_cli(cmd, timeout_s)
+        blob = (result.stdout + result.stderr).lower()
+        transient = result.returncode != 0 and any(
+            s in blob for s in _TRANSIENT_SIGNALS
+        )
+        if not transient or attempt == _MAX_ATTEMPTS:
+            return result
+        time.sleep(2 * attempt)
+    assert result is not None  # loop is non-empty; narrows for type checkers
+    return result
+
+
+def _invoke_real(
+    *,
+    prompt: str,
+    reference_images: list[Path],
+    output_path: Path,
+    cached: Path,
+    cache_key: str,
+    model: str,
+    job_type: str,
+    resolution: str,
+    quality: str,
+    aspect_ratio: str | None,
+    timeout_s: int,
+    cache_dir: Path,
+) -> HiggsfieldResponse:
+    cli_version = _read_cli_version()  # fail closed before any generation
+    cmd = [
+        _HIGGSFIELD_BIN, "generate", "create", job_type,
+        "--prompt", prompt,
+        "--quality", quality,
+        "--resolution", resolution,
+        "--wait", "--wait-timeout", "9m", "--json",
+    ]
+    if aspect_ratio is not None:
+        cmd.extend(["--aspect_ratio", aspect_ratio])
+    for ref in reference_images:
+        cmd.extend(["--image", str(ref)])
+
+    result = None
+    for attempt in range(1, _MAX_ATTEMPTS + 1):
+        try:
+            result = _run_cli(cmd, timeout_s)
+        except subprocess.TimeoutExpired:
+            return HiggsfieldResponse(output_path, cache_key, False, exit_code=124)
+        url, job_id, _ = _parse_cli_output(result.stdout)
+        blob = (result.stdout + result.stderr).lower()
+        transient = result.returncode != 0 and any(
+            s in blob for s in _TRANSIENT_SIGNALS
+        )
+        if not transient:
+            break
+        if job_id or url:
+            # The job exists: resume it; never issue another charged create.
+            result = _resume_existing_job(job_id, timeout_s) if job_id else result
+            break
+        _LOG.warning(
+            "higgsfield %s transient failure (attempt %d/%d): %s",
+            job_type, attempt, _MAX_ATTEMPTS, result.stderr.strip()[:200],
+        )
+        if attempt < _MAX_ATTEMPTS:
+            time.sleep(2 * attempt)
+
+    if result.returncode != 0:
+        return HiggsfieldResponse(
+            output_path, cache_key, False, exit_code=result.returncode or 1)
+
+    url, job_id, display_name = _parse_cli_output(result.stdout)
+    if not url:
+        return HiggsfieldResponse(output_path, cache_key, False, exit_code=1)
+
+    # Immediate download — Higgsfield retains outputs ~7 days (D5).
+    _download(url, output_path, timeout_s)
+    shutil.copy2(output_path, cached)
+
+    # Provenance sidecar: the honest substitute for served-model read-back.
+    (cache_dir / f"{cache_key}.provenance.json").write_text(json.dumps({
+        "transport": "higgsfield",
+        "vendor_model": model,
+        "job_type": job_type,
+        "quality": quality,
+        "resolution": resolution,
+        "aspect_ratio": aspect_ratio,
+        "job_id": job_id,
+        "result_url": url,
+        "display_name": display_name,
+        "cli_version": cli_version,
+    }, indent=2))
+    _LOG.info("higgsfield %s ok: url=%s job_id=%s", job_type, url, job_id)
+    return HiggsfieldResponse(
+        output_path, cache_key, False, job_id=job_id, result_url=url,
+        display_name=display_name, cli_version=cli_version)
