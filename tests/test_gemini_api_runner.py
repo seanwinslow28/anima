@@ -17,10 +17,28 @@ from pipeline.agents.gemini_api_runner import (
 )
 
 
-def _force_real(monkeypatch):
-    monkeypatch.delenv("ANIMA_FORCE_STUB", raising=False)
+def _force_real(monkeypatch, *, generate=None):
+    if generate is None:
+        def generate(*_args, **_kwargs):
+            raise AssertionError("mocked-real helper requires a fake _generate")
+
     monkeypatch.setattr(gar, "_genai_available", lambda: True)
     monkeypatch.setattr(gar, "_has_gemini_api_key", lambda: True)
+    monkeypatch.setattr(gar, "_generate", generate)
+    monkeypatch.delenv("ANIMA_FORCE_STUB", raising=False)
+
+
+def test_force_real_clears_force_stub_only_after_generate_is_safe(monkeypatch):
+    """No enabled Gemini API window exists before _generate is contained."""
+    real_generate = gar._generate
+    real_delenv = monkeypatch.delenv
+
+    def guarded_delenv(name, raising=True):
+        assert gar._generate is not real_generate
+        real_delenv(name, raising=raising)
+
+    monkeypatch.setattr(monkeypatch, "delenv", guarded_delenv)
+    _force_real(monkeypatch)
 
 
 def test_stub_fallback_when_genai_absent(monkeypatch):
@@ -39,40 +57,39 @@ def test_stub_fallback_when_key_absent(monkeypatch):
 
 
 def test_empty_response_raises_ratecap(monkeypatch):
-    _force_real(monkeypatch)
     # _generate returns (text, served_model) — A2 read-back contract.
-    monkeypatch.setattr(gar, "_generate", lambda prompt, image_paths: ("   \n", GEMINI_VISION_MODEL))
+    _force_real(
+        monkeypatch,
+        generate=lambda prompt, image_paths: ("   \n", GEMINI_VISION_MODEL),
+    )
     with pytest.raises(RateCapExhausted):
         asyncio.run(run_gemini_api_with_image(prompt="p", image_paths=[]))
 
 
 def test_quota_exception_raises_ratecap(monkeypatch):
-    _force_real(monkeypatch)
-
     def boom(prompt, image_paths):
         raise RuntimeError("429 RESOURCE_EXHAUSTED: quota exceeded")
 
-    monkeypatch.setattr(gar, "_generate", boom)
+    _force_real(monkeypatch, generate=boom)
     with pytest.raises(RateCapExhausted):
         asyncio.run(run_gemini_api_with_image(prompt="p", image_paths=[]))
 
 
 def test_non_quota_error_returns_errored_not_raise(monkeypatch):
-    _force_real(monkeypatch)
-
     def boom(prompt, image_paths):
         raise RuntimeError("transient network blip")
 
-    monkeypatch.setattr(gar, "_generate", boom)
+    _force_real(monkeypatch, generate=boom)
     resp = asyncio.run(run_gemini_api_with_image(prompt="p", image_paths=[]))
     assert not resp.ok and resp.error and not resp.text.strip()
 
 
 def test_valid_text_passthrough(monkeypatch):
-    _force_real(monkeypatch)
-    monkeypatch.setattr(
-        gar, "_generate",
-        lambda prompt, image_paths: ('{"verdict":"pass","confidence":0.9}', GEMINI_VISION_MODEL),
+    _force_real(
+        monkeypatch,
+        generate=lambda prompt, image_paths: (
+            '{"verdict":"pass","confidence":0.9}', GEMINI_VISION_MODEL
+        ),
     )
     resp = asyncio.run(run_gemini_api_with_image(prompt="p", image_paths=[]))
     assert resp.ok and "pass" in resp.text and resp.model == GEMINI_VISION_MODEL

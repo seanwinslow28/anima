@@ -23,7 +23,6 @@ class _FakeProc:
 def _patch_agy(monkeypatch, *, stdout: bytes, stderr: bytes = b"",
                returncode: int = 0, log_text: str = ""):
     """Make agy 'present' and return a controlled process result + log tail."""
-    monkeypatch.delenv("ANIMA_FORCE_STUB", raising=False)
     monkeypatch.setattr(cli_runners.shutil, "which", lambda _b: "/usr/local/bin/agy")
     monkeypatch.setattr(cli_runners, "_read_agy_log", lambda: log_text)
 
@@ -31,6 +30,26 @@ def _patch_agy(monkeypatch, *, stdout: bytes, stderr: bytes = b"",
         return _FakeProc(stdout, stderr, returncode)
 
     monkeypatch.setattr(cli_runners.asyncio, "create_subprocess_exec", fake_exec)
+    monkeypatch.delenv("ANIMA_FORCE_STUB", raising=False)
+
+
+def test_patch_agy_clears_force_stub_only_after_external_seams_are_fake(
+    monkeypatch,
+):
+    """The mocked-real window opens only after every agy boundary is fake."""
+    real_which = cli_runners.shutil.which
+    real_read_log = cli_runners._read_agy_log
+    real_exec = cli_runners.asyncio.create_subprocess_exec
+    real_delenv = monkeypatch.delenv
+
+    def guarded_delenv(name, raising=True):
+        assert cli_runners.shutil.which is not real_which
+        assert cli_runners._read_agy_log is not real_read_log
+        assert cli_runners.asyncio.create_subprocess_exec is not real_exec
+        real_delenv(name, raising=raising)
+
+    monkeypatch.setattr(monkeypatch, "delenv", guarded_delenv)
+    _patch_agy(monkeypatch, stdout=b'{"verdict":"pass"}')
 
 
 def test_empty_stdout_exit_zero_raises(monkeypatch):
