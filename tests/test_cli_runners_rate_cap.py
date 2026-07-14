@@ -23,6 +23,7 @@ class _FakeProc:
 def _patch_agy(monkeypatch, *, stdout: bytes, stderr: bytes = b"",
                returncode: int = 0, log_text: str = ""):
     """Make agy 'present' and return a controlled process result + log tail."""
+    monkeypatch.delenv("ANIMA_FORCE_STUB", raising=False)
     monkeypatch.setattr(cli_runners.shutil, "which", lambda _b: "/usr/local/bin/agy")
     monkeypatch.setattr(cli_runners, "_read_agy_log", lambda: log_text)
 

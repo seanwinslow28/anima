@@ -354,43 +354,32 @@ def test_response_envelope_carries_required_fields(
 
 
 # ---------------------------------------------------------------------------
-# UnwiredTransportError — the exact supported-model allowlist (2026-07-11)
+# Model dispatch + exact supported-model allowlist (2026-07-13)
 # ---------------------------------------------------------------------------
 #
-# The registry may honestly record a model this edit script has no runner for
-# (primal-sketch-grit's generation_model is gpt-image-2 as of fork #1). The
-# guard at the TOP of invoke_image_edit — before the cache and before the
-# stub/no-key check — refuses any model outside the exact supported set
-# {NB2_FLASH, NB_PRO}, in ALL modes (credential-free CI included): an unwired
-# transport can't be stubbed, nothing stands in for it. Exact allowlist, not
-# a "gemini-" prefix (Codex red-team): a prefix would admit typo'd slugs and
-# defer the failure to Google's API instead of this boundary. Mirrors Flo's
-# _WIRED_TRANSPORTS pattern (frame_router.py).
+# The google-genai path retains the exact {NB2_FLASH, NB_PRO} allowlist while
+# gpt-image-2 dispatches through the separate Higgsfield mapping. Any model in
+# neither exact map still fails before cache or stub work. Exact allowlists,
+# not prefixes, keep typo'd/vendor-shaped slugs from reaching a live API.
 
 
-def test_unwired_transport_raises_for_gpt_image_2(
+def test_gpt_image_2_dispatches_to_higgsfield_stub(
     monkeypatch, tmp_path, fake_reference_image, cache_dir
 ):
-    """gpt-image-2 is an honest registry value with no wired runner here —
-    invoke_image_edit must fail loud, even on the credential-free stub path
-    (a stub exemption would let a gpt-image-2 primal run look structurally
-    successful in CI)."""
-    from pipeline.agents.nb_pro_runner import UnwiredTransportError
+    """gpt-image-2 dispatches through Higgsfield with no caller changes."""
+    from pipeline.agents.higgsfield_runner import HiggsfieldResponse
 
-    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
-    with pytest.raises(UnwiredTransportError) as excinfo:
-        invoke_image_edit(
-            prompt="test plate",
-            reference_images=[fake_reference_image],
-            output_path=tmp_path / "out.png",
-            cache_dir=cache_dir,
-            model="gpt-image-2",
-        )
-    msg = str(excinfo.value)
-    assert "gpt-image-2" in msg
-    assert "openai-image-gen" in msg  # points at the runner to wire
-    # Nothing was generated or cached — the guard fired before both.
-    assert not (tmp_path / "out.png").exists()
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    response = invoke_image_edit(
+        prompt="test plate",
+        reference_images=[fake_reference_image],
+        output_path=tmp_path / "out.png",
+        cache_dir=cache_dir,
+        model="gpt-image-2",
+    )
+    assert isinstance(response, HiggsfieldResponse)
+    assert response.ok and response.stub_fallback
+    # Higgsfield placeholders never contaminate the real cache namespace.
     assert not list(cache_dir.iterdir())
 
 

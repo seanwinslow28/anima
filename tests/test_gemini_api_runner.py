@@ -18,6 +18,7 @@ from pipeline.agents.gemini_api_runner import (
 
 
 def _force_real(monkeypatch):
+    monkeypatch.delenv("ANIMA_FORCE_STUB", raising=False)
     monkeypatch.setattr(gar, "_genai_available", lambda: True)
     monkeypatch.setattr(gar, "_has_gemini_api_key", lambda: True)
 

@@ -30,6 +30,7 @@ from pipeline.agents.gemini_api_runner import GEMINI_VISION_MODEL, run_gemini_ap
 # --------------------------------------------------------------------------- #
 
 def _force_real_api(monkeypatch):
+    monkeypatch.delenv("ANIMA_FORCE_STUB", raising=False)
     monkeypatch.setattr(gar, "_genai_available", lambda: True)
     monkeypatch.setattr(gar, "_has_gemini_api_key", lambda: True)
 
@@ -80,6 +81,7 @@ def test_costed_api_success_always_records_a_model(monkeypatch):
 # --------------------------------------------------------------------------- #
 
 def _agy_present(monkeypatch, *, stdout=b'{"verdict":"pass"}', capture=None):
+    monkeypatch.delenv("ANIMA_FORCE_STUB", raising=False)
     monkeypatch.setattr(cli_runners.shutil, "which", lambda _b: "/usr/local/bin/agy")
     monkeypatch.setattr(cli_runners, "_read_agy_log", lambda: "")
 

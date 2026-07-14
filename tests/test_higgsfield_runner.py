@@ -33,6 +33,26 @@ def test_transport_map_carries_gpt_image():
     assert HIGGSFIELD_IMAGE_MODELS == {GPT_IMAGE: "gpt_image_2"}
 
 
+def test_invoke_image_edit_dispatches_gpt_image_to_higgsfield(
+    tmp_path, monkeypatch
+):
+    """D4: the register's honest gpt-image-2 record now routes through the
+    Higgsfield transport instead of raising UnwiredTransportError. Cy's and
+    Flo's call sites reach this without modification."""
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    from pipeline.agents.nb_pro_runner import invoke_image_edit
+
+    resp = invoke_image_edit(
+        prompt="primal plate",
+        reference_images=[_mk_ref(tmp_path)],
+        output_path=tmp_path / "o.png",
+        cache_dir=tmp_path / "c",
+        model=GPT_IMAGE,
+    )
+    assert resp.ok and resp.stub_fallback
+    assert isinstance(resp, HiggsfieldResponse)
+
+
 def test_unmapped_model_raises_unwired(tmp_path):
     with pytest.raises(UnwiredTransportError):
         invoke_higgsfield_image_edit(

@@ -20,7 +20,7 @@ coercion, $0, no keys.
 
 from __future__ import annotations
 
-from pipeline.registers import ALL_REGISTERS, get_register
+from pipeline.registers import ALL_REGISTERS, GPT_IMAGE, get_register
 
 _PRIMAL = "primal-sketch-grit"
 
@@ -55,15 +55,34 @@ def test_primal_plate_prompt_carries_the_register_clauses():
 def test_primal_routing_is_gpt_image_generation():
     """Fork #1 (2026-07-11, Sean-ratified): the NB2 hypothesis was judged by
     the costed spike and RESOLVED to gpt-image — the registry records the
-    honest model, and invoke_image_edit's UnwiredTransportError guard makes
-    it fail LOUD (no gpt-image runner is wired yet) instead of silently
-    falling back to Gemini/NB2. Final render still rides the painterly-final
-    seam (NB Pro, no consumer yet — a documented dormant seam; fork #1
-    scopes only generation_model)."""
+    honest model, now dispatched through the Higgsfield transport. Final render
+    still rides the painterly-final seam (NB Pro, no consumer yet — a documented
+    dormant seam; fork #1 scopes only generation_model)."""
     from pipeline.agents.character_designer import _resolve_plate_model
 
     assert _resolve_plate_model(_PRIMAL, {}) == "gpt-image-2"
     assert _resolve_plate_model(_PRIMAL, {}, final=True) == "gemini-3-pro-image-preview"
+
+
+def test_primal_transport_is_wired_via_higgsfield(tmp_path, monkeypatch):
+    """The honest gpt-image-2 model routes through the $0 Higgsfield stub."""
+    from pipeline.agents.higgsfield_runner import HIGGSFIELD_IMAGE_MODELS
+    from pipeline.agents.nb_pro_runner import SUPPORTED_IMAGE_MODELS, invoke_image_edit
+
+    spec = get_register(_PRIMAL)
+    assert spec.generation_model == GPT_IMAGE
+    assert GPT_IMAGE not in SUPPORTED_IMAGE_MODELS
+    assert GPT_IMAGE in HIGGSFIELD_IMAGE_MODELS
+
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    resp = invoke_image_edit(
+        prompt="primal-sketch-grit plate",
+        reference_images=[],
+        output_path=tmp_path / "out.png",
+        cache_dir=tmp_path,
+        model=spec.generation_model,
+    )
+    assert resp.ok and resp.stub_fallback
 
 
 def test_primal_stub_keyword_inference():
