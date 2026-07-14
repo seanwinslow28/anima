@@ -220,7 +220,7 @@ RegisterSpec(
 
 - `docs/research/samurai-jack-season-5-art-style-description.md` — the thin seed (research INPUT).
 - `images/samuria-first-pose-chatgpt.png` — the gpt-image proof frame.
-- `docs/active/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md` §1.3 (drill), §2a (research depth), §3a (fold-vs-skill), §3b (family), §3c (transport), §4.4 (register-as-folder + refs), §5 (Checkpoint template), §8 (verification).
+- `docs/COMPLETED/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md` §1.3 (drill), §2a (research depth), §3a (fold-vs-skill), §3b (family), §3c (transport), §4.4 (register-as-folder + refs), §5 (Checkpoint template), §8 (verification).
 - `docs/superpowers/specs/2026-07-11-register-2-nicktoon-grossout-design.md` — the most recent worked example of the drill.
 - `docs/active/2026-07-04-register-backlog-and-transport-findings.md` §3 (samurai candidate), §5 (family trigger), §6 (roster), §7 (pending actions).
 - `tests/test_primal_sketch_grit.py`, `tests/test_90s_nicktoon_grossout.py` — per-register test templates.

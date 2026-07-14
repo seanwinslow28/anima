@@ -57,7 +57,7 @@ maintains the pencil-on-paper aesthetic throughout, runs the script.
 
 The skill uses a single Python script that:
 1. Reads your `GEMINI_API_KEY` from environment variables (or `.env` file)
-2. Sends your prompt to `gemini-3.1-flash-image-preview` (Nano Banana 2) via the `google-genai` SDK
+2. Sends your prompt to `gemini-3.1-flash-image` (Nano Banana 2) via the `google-genai` SDK
 3. Optionally includes reference image(s) for identity locking (e.g., a photo of the person)
 4. Decodes the image response and saves it as a PNG
 
@@ -90,7 +90,7 @@ python3 scripts/generate_image.py "your prompt here" \
 | `prompt` | Yes | — | The image generation prompt (positional) |
 | `--output` / `-o` | No | `./generated.png` | Output file path |
 | `--aspect-ratio` | No | `1:1` | Aspect ratio (1:1, 16:9, 9:16, 3:2, 4:3, etc.) |
-| `--model` | No | `gemini-3.1-flash-image-preview` | Gemini model name (Nano Banana 2) |
+| `--model` | No | `gemini-3.1-flash-image` | Gemini model name (Nano Banana 2) |
 | `--env-file` | No | `.env` | Path to .env file containing GEMINI_API_KEY |
 | `-r` / `--reference` | No | — | Reference image path(s) for identity locking |
 

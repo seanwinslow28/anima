@@ -236,7 +236,7 @@ exposure: twos
 paper_color: "#FAF5E8"
 line_color: warm graphite gray (HB-2B)
 resolution: 1920x1080
-generator: gemini-3.1-flash-image-preview
+generator: gemini-3.1-flash-image
 anchor: images/2D-Character-Sketch-Sean-v1.png
 ```
 

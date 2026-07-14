@@ -13,13 +13,13 @@ aspect-ratio handling. We shell out to it rather than duplicate that code.
 
 # A note on model IDs
 
-The default is `gemini-3.1-flash-image-preview` (NB2 Flash) — the editing /
+The default is `gemini-3.1-flash-image` (NB2 Flash) — the editing /
 consistency tier. Per the 2026-05-30 research (NB2 holds identity better across
 edits, ~1/2 cost, ~4x faster, and avoids NB Pro's documented multi-reference
 downsampling regression since the 3.1 launch — Google AI dev forum, Mar 2026),
 NB2 is the right default for the identity-preserving editing that is Cy's entire
 job. The skill script also defaults to this slug, so they agree. An NB-Pro
-painterly final (`model="gemini-3-pro-image-preview"`) is an explicit opt-in,
+painterly final (`model="gemini-3-pro-image"`) is an explicit opt-in,
 not the default. The entry point is `invoke_image_edit` (renamed from
 `invoke_nb_pro`, which survives as a deprecation alias — the model is a
 parameter, so the name should not assert Pro); per-register routing lives in
@@ -47,8 +47,12 @@ import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from pipeline.registers import NB2_FLASH, NB_PRO
+
+if TYPE_CHECKING:
+    from pipeline.agents.higgsfield_runner import HiggsfieldResponse
 
 # The EXACT models this wrapper has a wired runner for — the skill script it
 # shells out to is a google-genai transport, so only the two Gemini slugs are
@@ -63,11 +67,9 @@ SUPPORTED_IMAGE_MODELS = frozenset({NB2_FLASH, NB_PRO})
 class UnwiredTransportError(RuntimeError):
     """Raised when invoke_image_edit is asked for a model it has no runner for.
 
-    The registry may honestly record such a model (primal-sketch-grit's
-    generation_model is gpt-image-2, fork #1 of the vocabulary expansion) —
-    the honest value must fail LOUD at the transport boundary, in all modes
-    (credential-free CI included; an unwired transport can't be stubbed,
-    nothing stands in for it), never silently fall back to Gemini/NB2.
+    The registry may honestly record a model that is routed by another exact
+    transport map. Any model with no such route must fail LOUD at the
+    transport boundary in all modes, never silently fall back to Gemini/NB2.
     """
 
     def __init__(self, model: str):
@@ -76,9 +78,10 @@ class UnwiredTransportError(RuntimeError):
         super().__init__(
             f"no wired runner for model {model!r} — invoke_image_edit shells "
             f"out to the google-genai skill script and supports exactly "
-            f"({supported}). Wiring gpt-image goes through the "
-            f"openai-image-gen skill (a deliberate transport build, gated on "
-            f"its across-edit identity validation), not a silent fallback."
+            f"({supported}) plus the Higgsfield-mapped models "
+            f"(pipeline/agents/higgsfield_runner.py HIGGSFIELD_IMAGE_MODELS). "
+            f"Wiring a new model is a deliberate transport build, never a "
+            f"silent fallback."
         )
 
 # Where the skill script lives. Same relative path commit 8's cli_runners
@@ -152,10 +155,10 @@ def invoke_image_edit(
     cache_dir: Path,
     cites_identity_rules: tuple[str, ...] = (),
     reject_reason: str | None = None,
-    model: str = "gemini-3.1-flash-image-preview",
+    model: str = "gemini-3.1-flash-image",
     aspect_ratio: str | None = None,
     timeout_s: int = 180,
-) -> NBProResponse:
+) -> NBProResponse | HiggsfieldResponse:
     """Generate (or fetch from cache) one image-edit plate.
 
     The model is a PARAMETER (default NB2 Flash, the editing/consistency tier);
@@ -166,9 +169,30 @@ def invoke_image_edit(
     plate count grows beyond ~30, a future commit can parallelize with a
     thread pool; today's spend is small enough that serial is fine.
     """
-    # Fail-loud transport guard — FIRST, before the cache and before the
-    # stub/no-key check, so it fires in every mode (a stub exemption would
-    # let an unwired-model run look structurally successful in CI).
+    # Higgsfield dispatch (decision D4/D5, 2026-07-13): models with a
+    # Higgsfield job-type mapping route to the higgsfield_runner. Lazy
+    # import (higgsfield_runner imports this module's exception at module
+    # level — a top-level import here would cycle). The google-genai
+    # allowlist below is untouched: an unmapped model still fails loud.
+    from pipeline.agents.higgsfield_runner import (
+        HIGGSFIELD_IMAGE_MODELS,
+        invoke_higgsfield_image_edit,
+    )
+    if model in HIGGSFIELD_IMAGE_MODELS:
+        return invoke_higgsfield_image_edit(
+            prompt=prompt,
+            reference_images=reference_images,
+            output_path=output_path,
+            cache_dir=cache_dir,
+            cites_identity_rules=cites_identity_rules,
+            reject_reason=reject_reason,
+            model=model,
+            aspect_ratio=aspect_ratio,
+            timeout_s=max(timeout_s, 600),
+        )
+
+    # Fail-loud transport guard — before the cache and before the stub/no-key
+    # check, so an unmapped model still fails in every mode.
     if model not in SUPPORTED_IMAGE_MODELS:
         raise UnwiredTransportError(model)
 
@@ -186,6 +210,18 @@ def invoke_image_edit(
     )
     cached_file = cache_dir / f"{cache_key}.png"
 
+    # Forced stub is absolute: never read a real result while the caller asks
+    # for a placeholder, and never publish placeholder bytes into real cache.
+    if os.environ.get("ANIMA_FORCE_STUB"):
+        _write_placeholder_png(output_path)
+        return NBProResponse(
+            output_path=output_path,
+            cache_key=cache_key,
+            cache_hit=False,
+            stub_fallback=True,
+            exit_code=0,
+        )
+
     # Cache hit short-circuits everything else.
     if cached_file.exists():
         shutil.copy2(cached_file, output_path)
@@ -202,9 +238,6 @@ def invoke_image_edit(
     # .env via --env-file, so the runner's gate respects the same source.
     if not _has_gemini_api_key():
         _write_placeholder_png(output_path)
-        # Also cache the placeholder so the cache-hit test on a second call
-        # behaves the same as it would with a real generation.
-        shutil.copy2(output_path, cached_file)
         return NBProResponse(
             output_path=output_path,
             cache_key=cache_key,
@@ -219,7 +252,6 @@ def invoke_image_edit(
         # the pipeline doesn't crash; caller will see stub_fallback=True and
         # can decide how to surface this.
         _write_placeholder_png(output_path)
-        shutil.copy2(output_path, cached_file)
         return NBProResponse(
             output_path=output_path,
             cache_key=cache_key,

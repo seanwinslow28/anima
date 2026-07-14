@@ -46,9 +46,10 @@ _REQUEST_TIMEOUT_S = 180
 _FAL_ENGINES: dict[str, dict] = {
     "seedream": {
         # VERIFIED 2026-06-10 (B0) against the live fal OpenAPI.
+        # $0.03/image per fal model page (re-verified 2026-07-13; the 0.02 was stale).
         "endpoint": "fal-ai/bytedance/seedream/v4/edit",
         "verified": True,
-        "cost_usd": 0.02,
+        "cost_usd": 0.03,
     },
     "qwen": {
         # VERIFIED 2026-06-10 (B0): the `-plus` MULTI-IMAGE variant (base qwen-image-edit takes a

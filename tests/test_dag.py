@@ -297,14 +297,14 @@ def test_flo_phase5_graph_dispatches_via_dag(tmp_path, monkeypatch):
             "routing": {
                 "hero_keyframe": {
                     "transport": "nb_pro",
-                    "model": "gemini-3-pro-image-preview",
+                    "model": "gemini-3-pro-image",
                     "usd_per_frame": 0.15,
                     "tier": "pro",
                     "status": "wired",
                 },
                 "standard_keyframe": {
                     "transport": "nb2",
-                    "model": "gemini-3.1-flash-image-preview",
+                    "model": "gemini-3.1-flash-image",
                     "usd_per_frame": 0.07,
                     "tier": "draft",
                     "status": "wired",

@@ -26,7 +26,7 @@ registry makes closedness enforced rather than conventional:
   ``get_register(value or DEFAULT_REGISTER)``.
 
 Adding a register is the five-step drill in
-docs/active/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md
+docs/COMPLETED/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md
 §1.3: research → one RegisterSpec entry here → the Cy example block → the
 template-comment line → run the suite (the completeness tests refuse to
 pass until all of them exist).
@@ -41,20 +41,21 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-# Model ids match the pre-registry _REGISTER_MODELS table. NB2 is the
+# Google GA image ids replace the -preview ids deprecated 2026-06-25; repinned
+# 2026-07-13 per the transport decision D3 rider. NB2 is the
 # generation/editing default for most registers (cheaper, faster, more
 # identity-stable across edits) — primal-sketch-grit is the exception (its
 # costed spike resolved generation to gpt-image, fork #1, 2026-07-11); NB Pro
 # is reserved for painterly FINAL renders — a documented seam with no
-# consumer yet. The registry records the HONEST model per register; whether a
-# transport is actually wired is enforced at the boundary
-# (nb_pro_runner.SUPPORTED_IMAGE_MODELS raises UnwiredTransportError).
-NB2_FLASH = "gemini-3.1-flash-image-preview"
-NB_PRO = "gemini-3-pro-image-preview"
+# consumer yet. The registry records the HONEST model per register; transport
+# ownership stays separate (the Gemini-only SUPPORTED_IMAGE_MODELS allowlist
+# plus the Higgsfield model map), and an unknown model fails at the boundary.
+NB2_FLASH = "gemini-3.1-flash-image"
+NB_PRO = "gemini-3-pro-image"
 # The GA flagship gpt-image id, pinned against the openai-image-gen skill
 # (.claude/skills/openai-image-gen/references/openai-image-capabilities.md).
-# No runner is wired for it yet — invoke_image_edit fails loud on it until
-# a gpt-image transport is built and validated for across-edit identity.
+# invoke_image_edit dispatches this exact id through Higgsfield; it deliberately
+# remains outside the Gemini-only SUPPORTED_IMAGE_MODELS allowlist.
 GPT_IMAGE = "gpt-image-2"
 
 # The back-compat default. Empty/missing style_register still means the
@@ -260,10 +261,10 @@ REGISTRY: dict[str, RegisterSpec] = {
         # example block + risk-bible review checks instead. Transport
         # RESOLVED (fork #1, 2026-07-11, Sean-ratified): the §3c NB2
         # hypothesis was judged by the costed spike and generation batched to
-        # gpt-image — GPT_IMAGE is the honest recorded model, UNWIRED for
-        # now, so invoke_image_edit raises UnwiredTransportError rather than
-        # silently falling back to Gemini/NB2. final_model stays NB Pro (the
-        # dormant painterly-final seam; fork #1 scopes only generation).
+        # gpt-image — GPT_IMAGE is the honest recorded model, wired through
+        # the separate Higgsfield mapping (SUPPORTED_IMAGE_MODELS remains the
+        # exact Gemini-only google-genai allowlist). final_model stays NB Pro
+        # (the dormant painterly-final seam; fork #1 scopes only generation).
         RegisterSpec(
             name="primal-sketch-grit",
             summary=(
@@ -408,13 +409,10 @@ REGISTRY: dict[str, RegisterSpec] = {
         # OUT of `preserve` (naming a neighbor look can evoke it in the image
         # model; drift policing lives in the Cy example block + risk-bible
         # checks); (b) transport = gpt-image (GPT_IMAGE, "gpt-image-2") —
-        # UNWIRED and honest, so invoke_image_edit's existing
-        # SUPPORTED_IMAGE_MODELS guard raises UnwiredTransportError rather than
-        # silently falling back to Gemini/NB2 (no new guard code — the guard
-        # already covers gpt-image). final_model stays NB Pro (the dormant
-        # painterly-final seam; no consumer yet). Wiring the gpt-image runner +
-        # across-edit identity validation is DEFERRED and gated on the costed,
-        # Sean-greenlit GRANDMASTER build.
+        # wired through the separate Higgsfield mapping while
+        # SUPPORTED_IMAGE_MODELS stays the exact Gemini-only google-genai
+        # allowlist. final_model stays NB Pro (the dormant painterly-final
+        # seam; no consumer yet).
         RegisterSpec(
             name="samurai-jack-s5",
             summary=(
@@ -482,16 +480,13 @@ REGISTRY: dict[str, RegisterSpec] = {
         # named-source negatives stay OUT of `preserve` (naming a neighbor can
         # evoke it) — in particular the world's real cross-hatched texture is
         # written as "dry-brush / hatched" so pencil-test's `cross-hatch` never
-        # leaks. (b) transport = gpt-image (GPT_IMAGE, "gpt-image-2") — UNWIRED,
-        # fails loud: the Step-S NB2 confirmation spike came back NO-GO (NB2
+        # leaks. (b) transport = gpt-image (GPT_IMAGE, "gpt-image-2") — wired
+        # through the separate Higgsfield mapping: the Step-S NB2 confirmation
+        # spike came back NO-GO (NB2
         # collapsed the two-media split into one unified medium and dropped the
-        # boiling line), so GPT_IMAGE is the honest recorded model. The existing
-        # SUPPORTED_IMAGE_MODELS guard already covers it — no new code;
-        # invoke_image_edit raises UnwiredTransportError rather than silently
-        # falling back to Gemini/NB2. final_model stays NB Pro (the dormant
-        # painterly-final seam). This is the THIRD gpt-image register; wiring the
-        # runner + across-edit identity validation is DEFERRED and gated on a
-        # separate, costed, Sean-greenlit build.
+        # boiling line), so GPT_IMAGE is the honest recorded model.
+        # SUPPORTED_IMAGE_MODELS stays the exact Gemini-only google-genai
+        # allowlist. final_model stays NB Pro (the dormant painterly-final seam).
         RegisterSpec(
             name="flat-cast-painted-world",
             summary=(

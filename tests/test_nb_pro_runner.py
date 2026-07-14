@@ -18,12 +18,12 @@ ratio. The wrapper layers in:
 
 from __future__ import annotations
 
-import os
+import subprocess as _sp
 from pathlib import Path
-from unittest.mock import patch
 
 import pytest
 
+from pipeline.agents import nb_pro_runner as nbpr
 from pipeline.agents.nb_pro_runner import (
     NBProResponse,
     _build_skill_cmd,
@@ -36,7 +36,7 @@ from pipeline.agents.nb_pro_runner import (
 # guard that keeps Cy's locked-Bible plate generation (which passes no
 # aspect_ratio) cache-stable across the HF01 fix.
 _GOLDEN_KEY_ASPECT_NONE = (
-    "7a84b9130f7bb71ff37bbdcf95bc45cbdf951ca05fa0031e828a7c3281d4258d"
+    "96f02723a6216d48134be194dbd05532dd43f27d53d50f5ef4fff06a010a3bc9"
 )
 
 
@@ -81,6 +81,25 @@ def cache_dir(tmp_path):
     return d
 
 
+def _force_mocked_real(monkeypatch, tmp_path, *, image_bytes: bytes):
+    """Contain the subprocess before opening a mocked-real Gemini window."""
+    calls = {"n": 0}
+
+    def fake_run(cmd, **kwargs):
+        calls["n"] += 1
+        output = Path(cmd[cmd.index("--output") + 1])
+        output.write_bytes(image_bytes)
+        return _sp.CompletedProcess(cmd, 0, stdout="", stderr="")
+
+    monkeypatch.setattr(nbpr.subprocess, "run", fake_run)
+    fake_script = tmp_path / "generate_image.py"
+    fake_script.write_text("# mocked subprocess target\n")
+    monkeypatch.setattr(nbpr, "_SKILL_SCRIPT", fake_script)
+    monkeypatch.setenv("GEMINI_API_KEY", "test-only")
+    monkeypatch.delenv("ANIMA_FORCE_STUB", raising=False)
+    return calls
+
+
 # ---------------------------------------------------------------------------
 # Stub fallback behavior — what every test below relies on
 # ---------------------------------------------------------------------------
@@ -106,6 +125,40 @@ def test_missing_api_key_returns_stub_placeholder(
     assert response.output_path.stat().st_size > 0
 
 
+def test_force_stub_placeholder_never_poisoned_real_cache(
+    monkeypatch, tmp_path, fake_reference_image, cache_dir
+):
+    """A forced placeholder followed by the same mocked-live request must run
+    the subprocess; it must not rehydrate placeholder bytes as a cache hit."""
+    prompt = "same prompt across stub and real"
+    stub_output = tmp_path / "stub.png"
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    stub = invoke_image_edit(
+        prompt=prompt,
+        reference_images=[fake_reference_image],
+        output_path=stub_output,
+        cache_dir=cache_dir,
+    )
+    placeholder_bytes = stub_output.read_bytes()
+    assert stub.stub_fallback and not stub.cache_hit
+
+    calls = _force_mocked_real(
+        monkeypatch, tmp_path, image_bytes=b"mocked-live-image"
+    )
+
+    live_output = tmp_path / "live.png"
+    live = invoke_image_edit(
+        prompt=prompt,
+        reference_images=[fake_reference_image],
+        output_path=live_output,
+        cache_dir=cache_dir,
+    )
+    assert calls["n"] == 1
+    assert not live.cache_hit and not live.stub_fallback
+    assert live_output.read_bytes() == b"mocked-live-image"
+    assert live_output.read_bytes() != placeholder_bytes
+
+
 # ---------------------------------------------------------------------------
 # Content-addressed cache key
 # ---------------------------------------------------------------------------
@@ -115,7 +168,9 @@ def test_cache_hit_skips_subprocess(
     monkeypatch, tmp_path, fake_reference_image, cache_dir
 ):
     """Second call with identical inputs hits cache; subprocess not invoked."""
-    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    calls = _force_mocked_real(
+        monkeypatch, tmp_path, image_bytes=b"real-cacheable-image"
+    )
     output_1 = tmp_path / "out1.png"
     response_1 = invoke_image_edit(
         prompt="same prompt",
@@ -134,6 +189,7 @@ def test_cache_hit_skips_subprocess(
         cache_dir=cache_dir,
     )
     assert response_2.cache_hit is True
+    assert calls["n"] == 1
     assert response_2.output_path.exists()
     # Content is preserved from cache.
     assert response_1.output_path.read_bytes() == response_2.output_path.read_bytes()
@@ -221,14 +277,14 @@ def test_model_parameter_changes_cache_key(
         reference_images=[fake_reference_image],
         output_path=tmp_path / "out_pro.png",
         cache_dir=cache_dir,
-        model="gemini-3-pro-image-preview",
+        model="gemini-3-pro-image",
     )
     response_flash = invoke_image_edit(
         prompt="same",
         reference_images=[fake_reference_image],
         output_path=tmp_path / "out_flash.png",
         cache_dir=cache_dir,
-        model="gemini-3.1-flash-image-preview",
+        model="gemini-3.1-flash-image",
     )
     assert response_pro.cache_key != response_flash.cache_key
 
@@ -250,14 +306,14 @@ def test_default_model_is_nb2_flash(monkeypatch, tmp_path, fake_reference_image,
         reference_images=[fake_reference_image],
         output_path=tmp_path / "out_nb2.png",
         cache_dir=cache_dir,
-        model="gemini-3.1-flash-image-preview",
+        model="gemini-3.1-flash-image",
     )
     explicit_pro = invoke_image_edit(
         prompt="same",
         reference_images=[fake_reference_image],
         output_path=tmp_path / "out_pro.png",
         cache_dir=cache_dir,
-        model="gemini-3-pro-image-preview",
+        model="gemini-3-pro-image",
     )
     assert default_resp.cache_key == explicit_nb2.cache_key
     assert default_resp.cache_key != explicit_pro.cache_key
@@ -275,7 +331,7 @@ def test_build_skill_cmd_omits_aspect_ratio_when_none(tmp_path):
         prompt="p",
         reference_images=[],
         output_path=tmp_path / "o.png",
-        model="gemini-3.1-flash-image-preview",
+        model="gemini-3.1-flash-image",
     )
     assert "--aspect-ratio" not in cmd
 
@@ -286,7 +342,7 @@ def test_build_skill_cmd_includes_aspect_ratio_when_set(tmp_path):
         prompt="p",
         reference_images=[],
         output_path=tmp_path / "o.png",
-        model="gemini-3.1-flash-image-preview",
+        model="gemini-3.1-flash-image",
         aspect_ratio="16:9",
     )
     assert "--aspect-ratio" in cmd
@@ -295,14 +351,15 @@ def test_build_skill_cmd_includes_aspect_ratio_when_set(tmp_path):
 
 def test_cache_key_byte_identical_when_aspect_ratio_none():
     """aspect_ratio=None (and omitted) must leave the cache key byte-identical
-    to the pre-Flo-C digest — Cy's locked-Bible plates stay cache-stable."""
+    to the post-GA-repin digest — only the deliberate model-ID change rotates
+    Cy's plate cache, not an omitted aspect ratio."""
     omitted = _compute_cache_key(
         prompt="lock", reference_images=[], cites_identity_rules=(),
-        reject_reason=None, model="gemini-3.1-flash-image-preview",
+        reject_reason=None, model="gemini-3.1-flash-image",
     )
     explicit_none = _compute_cache_key(
         prompt="lock", reference_images=[], cites_identity_rules=(),
-        reject_reason=None, model="gemini-3.1-flash-image-preview",
+        reject_reason=None, model="gemini-3.1-flash-image",
         aspect_ratio=None,
     )
     assert omitted == _GOLDEN_KEY_ASPECT_NONE
@@ -314,12 +371,12 @@ def test_aspect_ratio_changes_cache_key_when_set():
     square plate from otherwise-identical inputs don't collide)."""
     none_key = _compute_cache_key(
         prompt="lock", reference_images=[], cites_identity_rules=(),
-        reject_reason=None, model="gemini-3.1-flash-image-preview",
+        reject_reason=None, model="gemini-3.1-flash-image",
         aspect_ratio=None,
     )
     set_key = _compute_cache_key(
         prompt="lock", reference_images=[], cites_identity_rules=(),
-        reject_reason=None, model="gemini-3.1-flash-image-preview",
+        reject_reason=None, model="gemini-3.1-flash-image",
         aspect_ratio="16:9",
     )
     assert none_key != set_key
@@ -354,43 +411,32 @@ def test_response_envelope_carries_required_fields(
 
 
 # ---------------------------------------------------------------------------
-# UnwiredTransportError — the exact supported-model allowlist (2026-07-11)
+# Model dispatch + exact supported-model allowlist (2026-07-13)
 # ---------------------------------------------------------------------------
 #
-# The registry may honestly record a model this edit script has no runner for
-# (primal-sketch-grit's generation_model is gpt-image-2 as of fork #1). The
-# guard at the TOP of invoke_image_edit — before the cache and before the
-# stub/no-key check — refuses any model outside the exact supported set
-# {NB2_FLASH, NB_PRO}, in ALL modes (credential-free CI included): an unwired
-# transport can't be stubbed, nothing stands in for it. Exact allowlist, not
-# a "gemini-" prefix (Codex red-team): a prefix would admit typo'd slugs and
-# defer the failure to Google's API instead of this boundary. Mirrors Flo's
-# _WIRED_TRANSPORTS pattern (frame_router.py).
+# The google-genai path retains the exact {NB2_FLASH, NB_PRO} allowlist while
+# gpt-image-2 dispatches through the separate Higgsfield mapping. Any model in
+# neither exact map still fails before cache or stub work. Exact allowlists,
+# not prefixes, keep typo'd/vendor-shaped slugs from reaching a live API.
 
 
-def test_unwired_transport_raises_for_gpt_image_2(
+def test_gpt_image_2_dispatches_to_higgsfield_stub(
     monkeypatch, tmp_path, fake_reference_image, cache_dir
 ):
-    """gpt-image-2 is an honest registry value with no wired runner here —
-    invoke_image_edit must fail loud, even on the credential-free stub path
-    (a stub exemption would let a gpt-image-2 primal run look structurally
-    successful in CI)."""
-    from pipeline.agents.nb_pro_runner import UnwiredTransportError
+    """gpt-image-2 dispatches through Higgsfield with no caller changes."""
+    from pipeline.agents.higgsfield_runner import HiggsfieldResponse
 
-    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
-    with pytest.raises(UnwiredTransportError) as excinfo:
-        invoke_image_edit(
-            prompt="test plate",
-            reference_images=[fake_reference_image],
-            output_path=tmp_path / "out.png",
-            cache_dir=cache_dir,
-            model="gpt-image-2",
-        )
-    msg = str(excinfo.value)
-    assert "gpt-image-2" in msg
-    assert "openai-image-gen" in msg  # points at the runner to wire
-    # Nothing was generated or cached — the guard fired before both.
-    assert not (tmp_path / "out.png").exists()
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    response = invoke_image_edit(
+        prompt="test plate",
+        reference_images=[fake_reference_image],
+        output_path=tmp_path / "out.png",
+        cache_dir=cache_dir,
+        model="gpt-image-2",
+    )
+    assert isinstance(response, HiggsfieldResponse)
+    assert response.ok and response.stub_fallback
+    # Higgsfield placeholders never contaminate the real cache namespace.
     assert not list(cache_dir.iterdir())
 
 

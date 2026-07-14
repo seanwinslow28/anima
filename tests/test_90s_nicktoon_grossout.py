@@ -72,8 +72,8 @@ def test_nicktoon_routing_is_nb2_generation():
     (NB Pro, no consumer yet — same as watercolor/photoreal/3d-rendered)."""
     from pipeline.agents.character_designer import _resolve_plate_model
 
-    assert _resolve_plate_model(_NICKTOON, {}) == "gemini-3.1-flash-image-preview"
-    assert _resolve_plate_model(_NICKTOON, {}, final=True) == "gemini-3-pro-image-preview"
+    assert _resolve_plate_model(_NICKTOON, {}) == "gemini-3.1-flash-image"
+    assert _resolve_plate_model(_NICKTOON, {}, final=True) == "gemini-3-pro-image"
 
 
 def test_nicktoon_stub_keyword_inference():

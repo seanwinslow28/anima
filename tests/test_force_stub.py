@@ -45,6 +45,26 @@ def test_gemini_api_transport_stubs_under_force_stub(monkeypatch):
     assert resp.stub_fallback is True
 
 
+def test_gemini_image_edit_stubs_under_force_stub(monkeypatch, tmp_path):
+    """The direct Gemini image-edit transport cannot spend under --stub."""
+    from pipeline.agents import nb_pro_runner as nbr
+
+    monkeypatch.setattr(nbr, "_has_gemini_api_key", lambda: True)
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+
+    def fail_if_called(*_args, **_kwargs):
+        raise AssertionError("Gemini subprocess must not run under force-stub")
+
+    monkeypatch.setattr(nbr.subprocess, "run", fail_if_called)
+    resp = nbr.invoke_image_edit(
+        prompt="p",
+        reference_images=[],
+        output_path=tmp_path / "out.png",
+        cache_dir=tmp_path / "cache",
+    )
+    assert resp.ok and resp.stub_fallback
+
+
 def test_agy_transport_stubs_under_force_stub(monkeypatch):
     import shutil
 

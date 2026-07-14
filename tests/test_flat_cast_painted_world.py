@@ -31,20 +31,16 @@ Two load-bearing facts baked into the spec:
   model); in particular the world's real cross-hatched texture is written as
   "dry-brush / hatched" so the exact compound `cross-hatch` (pencil-test's
   signature) never leaks in.
-- Transport = gpt-image (`gpt-image-2`), UNWIRED, fails loud (research §4): the
+- Transport = gpt-image (`gpt-image-2`), wired through Higgsfield (research §4): the
   Step-S NB2 confirmation spike came back NO-GO (NB2 collapsed the two-media
   split into one unified medium and dropped the boiling line), so the honest
-  recorded model is GPT_IMAGE. The existing SUPPORTED_IMAGE_MODELS allowlist
-  guard already covers it — no new code; invoke_image_edit raises
-  UnwiredTransportError rather than silently falling back to Gemini/NB2.
+  recorded model is GPT_IMAGE. The google-genai SUPPORTED_IMAGE_MODELS allowlist
+  remains Gemini-only; the separate Higgsfield mapping owns this route.
   final_model rides the dormant painterly-final seam (NB Pro, no consumer yet —
-  same as watercolor/photoreal/3d/primal/samurai). This is the third gpt-image
-  register; wiring the runner stays deferred + gated on a separate costed build.
+  same as watercolor/photoreal/3d/primal/samurai).
 """
 
 from __future__ import annotations
-
-import pytest
 
 from pipeline.registers import (
     ALL_REGISTERS,
@@ -98,11 +94,9 @@ def test_fusion_plate_prompt_carries_the_register_clauses():
 
 def test_fusion_routing_is_gpt_image_generation():
     """Research §4: transport RESOLVED to gpt-image (the NB2 spike NO-GO'd) — the
-    registry records the honest model, and invoke_image_edit's
-    UnwiredTransportError guard makes it fail LOUD (no gpt-image runner is wired
-    yet) instead of silently falling back to Gemini/NB2. Final render rides the
-    painterly-final seam (NB Pro, no consumer yet). Imports the constants, not
-    raw strings."""
+    registry records the honest model and invoke_image_edit dispatches it through
+    Higgsfield. Final render rides the painterly-final seam (NB Pro, no consumer
+    yet). Imports the constants, not raw strings."""
     from pipeline.agents.character_designer import _resolve_plate_model
 
     assert _resolve_plate_model(_FUSION, {}) == GPT_IMAGE
@@ -196,27 +190,23 @@ def test_fusion_spec_is_genericized_attribute_only():
         assert name not in joined, f"franchise identifier {name!r} leaked into the spec"
 
 
-def test_fusion_transport_is_honest_and_unwired(tmp_path):
+def test_fusion_transport_is_wired_via_higgsfield(tmp_path, monkeypatch):
     """Research §4: the spec records the honest generation model (gpt-image-2),
-    which is NOT in the wired allowlist, so invoke_image_edit fails loud. Binds
-    the register's model to the existing boundary; the no-output / no-cache
-    filesystem side-effects are already covered at tests/test_nb_pro_runner.py
-    (red-team fold — don't duplicate the transport suite)."""
-    from pipeline.agents.nb_pro_runner import (
-        SUPPORTED_IMAGE_MODELS,
-        UnwiredTransportError,
-        invoke_image_edit,
-    )
+    which is not a google-genai model but is mapped to Higgsfield."""
+    from pipeline.agents.higgsfield_runner import HIGGSFIELD_IMAGE_MODELS
+    from pipeline.agents.nb_pro_runner import SUPPORTED_IMAGE_MODELS, invoke_image_edit
 
     spec = get_register(_FUSION)
     assert spec.generation_model == GPT_IMAGE
     assert GPT_IMAGE not in SUPPORTED_IMAGE_MODELS
+    assert GPT_IMAGE in HIGGSFIELD_IMAGE_MODELS
 
-    with pytest.raises(UnwiredTransportError):
-        invoke_image_edit(
-            prompt="flat-cast-painted-world plate",
-            reference_images=[],
-            output_path=tmp_path / "out.png",
-            cache_dir=tmp_path,
-            model=spec.generation_model,
-        )
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    resp = invoke_image_edit(
+        prompt="flat-cast-painted-world plate",
+        reference_images=[],
+        output_path=tmp_path / "out.png",
+        cache_dir=tmp_path,
+        model=spec.generation_model,
+    )
+    assert resp.ok and resp.stub_fallback

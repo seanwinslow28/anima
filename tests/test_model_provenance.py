@@ -29,9 +29,30 @@ from pipeline.agents.gemini_api_runner import GEMINI_VISION_MODEL, run_gemini_ap
 # Gemini API transport: read the SERVED model back from the response.
 # --------------------------------------------------------------------------- #
 
-def _force_real_api(monkeypatch):
+def _force_real_api(monkeypatch, *, generate=None):
+    if generate is None:
+        def generate(*_args, **_kwargs):
+            raise AssertionError("mocked-real helper requires a safe _generate")
+
     monkeypatch.setattr(gar, "_genai_available", lambda: True)
     monkeypatch.setattr(gar, "_has_gemini_api_key", lambda: True)
+    monkeypatch.setattr(gar, "_generate", generate)
+    monkeypatch.delenv("ANIMA_FORCE_STUB", raising=False)
+
+
+def test_force_real_api_clears_force_stub_only_after_generate_is_safe(
+    monkeypatch,
+):
+    """The API helper contains _generate before enabling mocked-real mode."""
+    real_generate = gar._generate
+    real_delenv = monkeypatch.delenv
+
+    def guarded_delenv(name, raising=True):
+        assert gar._generate is not real_generate
+        real_delenv(name, raising=raising)
+
+    monkeypatch.setattr(monkeypatch, "delenv", guarded_delenv)
+    _force_real_api(monkeypatch)
 
 
 def test_gemini_api_records_served_model_from_response(monkeypatch):
@@ -48,7 +69,7 @@ def test_gemini_api_records_served_model_from_response(monkeypatch):
 
     monkeypatch.setattr(genai, "Client", lambda *a, **k: type("C", (), {"models": _FakeModels()})())
     monkeypatch.setattr(gar, "_resolve_gemini_key", lambda: "fake-key")
-    _force_real_api(monkeypatch)
+    _force_real_api(monkeypatch, generate=gar._generate)
 
     resp = asyncio.run(run_gemini_api_with_image(prompt="p", image_paths=[]))
     assert resp.ok and not resp.stub_fallback
@@ -58,8 +79,10 @@ def test_gemini_api_records_served_model_from_response(monkeypatch):
 def test_gemini_api_logs_the_model_that_fired(monkeypatch, caplog):
     """The model is logged so the provenance lives in the run logs, not just source."""
     served = "gemini-3.5-flash-002"
-    _force_real_api(monkeypatch)
-    monkeypatch.setattr(gar, "_generate", lambda prompt, image_paths: ('{"verdict":"pass"}', served))
+    _force_real_api(
+        monkeypatch,
+        generate=lambda prompt, image_paths: ('{"verdict":"pass"}', served),
+    )
     with caplog.at_level(logging.INFO):
         asyncio.run(run_gemini_api_with_image(prompt="p", image_paths=[]))
     assert any(served in r.getMessage() for r in caplog.records)
@@ -68,8 +91,12 @@ def test_gemini_api_logs_the_model_that_fired(monkeypatch, caplog):
 def test_costed_api_success_always_records_a_model(monkeypatch):
     """The headline guard: a successful, non-stub costed response MUST carry a
     non-empty model id (gemini_api is Cy's Pass-3 transport and Em's default)."""
-    _force_real_api(monkeypatch)
-    monkeypatch.setattr(gar, "_generate", lambda prompt, image_paths: ('{"verdict":"pass"}', "gemini-3.5-flash"))
+    _force_real_api(
+        monkeypatch,
+        generate=lambda prompt, image_paths: (
+            '{"verdict":"pass"}', "gemini-3.5-flash"
+        ),
+    )
     resp = asyncio.run(run_gemini_api_with_image(prompt="p", image_paths=[]))
     assert resp.ok and not resp.stub_fallback
     assert resp.model  # never empty/None on a costed success
@@ -94,6 +121,26 @@ def _agy_present(monkeypatch, *, stdout=b'{"verdict":"pass"}', capture=None):
         return _FakeProc()
 
     monkeypatch.setattr(cli_runners.asyncio, "create_subprocess_exec", fake_exec)
+    monkeypatch.delenv("ANIMA_FORCE_STUB", raising=False)
+
+
+def test_agy_present_clears_force_stub_only_after_external_seams_are_fake(
+    monkeypatch,
+):
+    """The mocked-real window opens only after every agy boundary is fake."""
+    real_which = cli_runners.shutil.which
+    real_read_log = cli_runners._read_agy_log
+    real_exec = cli_runners.asyncio.create_subprocess_exec
+    real_delenv = monkeypatch.delenv
+
+    def guarded_delenv(name, raising=True):
+        assert cli_runners.shutil.which is not real_which
+        assert cli_runners._read_agy_log is not real_read_log
+        assert cli_runners.asyncio.create_subprocess_exec is not real_exec
+        real_delenv(name, raising=raising)
+
+    monkeypatch.setattr(monkeypatch, "delenv", guarded_delenv)
+    _agy_present(monkeypatch)
 
 
 def test_agy_real_call_without_model_raises(monkeypatch):

@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-03 · **Consumer:** GRANDMASTER (greenlit; its STRESS-TEST returned `revise` on this register's absence) · **Status:** authored into `pipeline/registers.py`; transport verdict `RESOLVED — gpt-image` (2026-07-11, fork #1: unwired, fails loud until a runner is wired — see §4; spike history in `briefs/2026-07-02-grandmaster/go-no-go.md`)
 
-**Method:** four parallel deep-research subagents (line/ink/paint-process · palette/staging · form/timing · tells/negative-controls), synthesized here into the four wire-ready outputs the [animation-vocabulary-expansion plan](../../docs/active/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md) §2a requires. Research answers *"what makes the look the look,"* grounded in primary sources (Tartakovsky and crew interviews), never surface pastiche.
+**Method:** four parallel deep-research subagents (line/ink/paint-process · palette/staging · form/timing · tells/negative-controls), synthesized here into the four wire-ready outputs the [animation-vocabulary-expansion plan](../../docs/COMPLETED/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md) §2a requires. Research answers *"what makes the look the look,"* grounded in primary sources (Tartakovsky and crew interviews), never surface pastiche.
 
 ---
 

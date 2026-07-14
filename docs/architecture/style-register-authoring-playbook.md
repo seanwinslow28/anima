@@ -2,7 +2,7 @@
 
 *The canonical, repeatable workflow for adding a new closed `style_register` to anima — so the pipeline is never limited to the styles it happens to have today. Read this before authoring any new register.*
 
-**Status:** canonical runbook (2026-07-13). Distilled from three worked examples — `primal-sketch-grit` (2026-07-03/11), `90s-nicktoon-grossout` (2026-07-11), `samurai-jack-s5` (2026-07-13) — plus the [prompt style-neutrality doctrine](prompt-style-neutrality-doctrine.md) (the *why*) and the [animation-vocabulary-expansion converged plan](../active/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md) (the mechanism's origin). Where the doctrine's five-step drill and this playbook differ, **this playbook is authoritative** — it carries the full R→S→B arc and the current touch-point list; the doctrine's list predates the later touch-points.
+**Status:** canonical runbook (2026-07-13). Distilled from three worked examples — `primal-sketch-grit` (2026-07-03/11), `90s-nicktoon-grossout` (2026-07-11), `samurai-jack-s5` (2026-07-13) — plus the [prompt style-neutrality doctrine](prompt-style-neutrality-doctrine.md) (the *why*) and the [animation-vocabulary-expansion converged plan](../COMPLETED/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md) (the mechanism's origin). Where the doctrine's five-step drill and this playbook differ, **this playbook is authoritative** — it carries the full R→S→B arc and the current touch-point list; the doctrine's list predates the later touch-points.
 
 ---
 
@@ -37,7 +37,7 @@ Step S  LOOK-SPIKE (COSTED, Sean-run — his eye is the SOLE arbiter, no LLM aes
         -> HUMAN CHECKPOINT 2: Sean confirms the hero reads as the register, cold
 Step B  AUTHORING BUILD ($0, TDD, stub-green — the doctrine drill)
         -> the RegisterSpec + Cy example + markers + tests + docs, all green
-[DEFERRED + GATED] wire any unwired transport (gpt-image / fal / self-hosted) -> a separate, costed, Sean-greenlit run
+[DEFERRED + GATED] wire any still-unmapped transport (fal / self-hosted) -> a separate, costed, Sean-greenlit run
 ```
 
 The two checkpoints are load-bearing: **you do not spike a look the research hasn't grounded, and you do not author a register whose look Sean hasn't confirmed by eye.** Each phase is Sean-paced; a phase can be a separate session.
@@ -66,7 +66,7 @@ Ends at `RESEARCH COMPLETE — HUMAN CHECKPOINT 1 PENDING`.
 
 ## Step S — the look-spike (costed, Sean-run)
 
-Sean runs the spike manually in the image web apps (ChatGPT / Google Flow / Higgsfield), **not** through `invoke_image_edit` (its guard correctly refuses an unwired transport, and the spike is a human web task anyway). **No LLM aesthetic judge — Sean's eye is the sole arbiter** (the eval handbook bars an LLM aesthetic judge on creative quality). Use the same research-ratified prompt / original character / original environment / aspect ratio across engines so the comparison varies **engine**, not art direction. Candidates land under `registers/{name}/refs/spike-YYYY-MM-DD/` with per-candidate provenance (product, date, exact prompt, dimensions).
+Sean runs the spike manually in the image web apps (ChatGPT / Google Flow / Higgsfield), **not** through `invoke_image_edit` — the spike is a human web task, independent of whether that model's production transport is already wired. **No LLM aesthetic judge — Sean's eye is the sole arbiter** (the eval handbook bars an LLM aesthetic judge on creative quality). Use the same research-ratified prompt / original character / original environment / aspect ratio across engines so the comparison varies **engine**, not art direction. Candidates land under `registers/{name}/refs/spike-YYYY-MM-DD/` with per-candidate provenance (product, date, exact prompt, dimensions).
 
 **Locking the hero:** select **exactly one** candidate by eye; copy its bytes unchanged to `registers/{name}/refs/{name}-hero.png`; record in `refs/README.md` the chosen path, engine, date, exact prompt, dimensions, and Sean's one-line reason keyed to the money axes; note rejected candidates with one-line reasons. **Commit no third-party show stills** — only original spike outputs + provenance.
 
@@ -88,7 +88,7 @@ The pure doctrine drill in an **isolated git worktree** (per [fleet-ops](fleet-o
 - **stub envelope, no pencil coercion** — `CharacterDesignerNode()._build_stub_envelope(char_dir)` returns `style_register == {name}` for a `{name}`-named char dir.
 - **markers exact + no collision** — assert the exact marker set AND loop `REGISTRY` asserting no overlap with any other register's markers.
 - **genericization, attribute-only** — scan `summary + identity_lock + preserve + style_token + stub_keywords + [markers except the slug]`, lowercased; assert no franchise/creator/character/studio name leaks. If the slug itself is a franchise name (e.g. `samurai-jack-s5`), **normalize hyphens to spaces** so both `foo bar` and `foo-bar` are caught, and exempt **only** the slug/name-marker.
-- **transport honest + unwired** (only when the generation model has no wired runner) — assert `spec.generation_model == <MODEL>` and `<MODEL> not in SUPPORTED_IMAGE_MODELS`, and one light `pytest.raises(UnwiredTransportError)` on `invoke_image_edit(..., model=spec.generation_model)`. Do **not** re-assert the filesystem side-effects already covered in [`tests/test_nb_pro_runner.py`](../../tests/test_nb_pro_runner.py).
+- **transport honest + dual-map** — always assert `spec.generation_model == <MODEL>` and keep the direct-Gemini boundary exact with `SUPPORTED_IMAGE_MODELS == frozenset({NB2_FLASH, NB_PRO})`. For a Higgsfield-backed register, import `HIGGSFIELD_IMAGE_MODELS`, assert `<MODEL> not in SUPPORTED_IMAGE_MODELS` **and** `<MODEL> in HIGGSFIELD_IMAGE_MODELS`, force `ANIMA_FORCE_STUB=1`, call `invoke_image_edit(..., model=spec.generation_model)`, and assert `resp.ok and resp.stub_fallback` — outside the google-genai allowlist does **not** mean unwired when the Higgsfield map owns the model. Only when `<MODEL>` is absent from **both** `SUPPORTED_IMAGE_MODELS` and `HIGGSFIELD_IMAGE_MODELS` should the test expect `pytest.raises(UnwiredTransportError)`. Do **not** re-assert the filesystem side-effects already covered in [`tests/test_nb_pro_runner.py`](../../tests/test_nb_pro_runner.py).
 
 Run it. **Verify RED** — every case must fail on the missing feature (`UnknownRegisterError`), not a typo.
 
@@ -119,7 +119,7 @@ Run the per-register test. **Verify GREEN.**
 - completeness green (an incomplete registration goes red) · neutrality green (auto-audits the new markers; the doctrine names every register);
 - every sibling per-register test file green;
 - **both frozen md5 guards unchanged by hash** (§Standing guards);
-- transport boundary intact — `SUPPORTED_IMAGE_MODELS` still exactly `{NB2_FLASH, NB_PRO}`; any unwired model raises;
+- transport boundary intact — `SUPPORTED_IMAGE_MODELS` is still exactly `{NB2_FLASH, NB_PRO}`; Higgsfield-backed models are present in `HIGGSFIELD_IMAGE_MODELS`; only a model absent from **both** maps raises;
 - stub-green Cy smoke ($0, no keys) — a `{name}`-named char authors a coherent stub Bible in the register, never silent pencil;
 - `git diff --check` + `git diff --name-only` show only the planned files;
 - run `superpowers:verification-before-completion`.
@@ -130,13 +130,13 @@ Stop for Sean's review; **only Sean merges.**
 
 ## Transport (the recorded model + escalation ladder)
 
-The `RegisterSpec` records the **honest** generation model. The decision procedure ([converged plan](../active/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md) §3c):
+The `RegisterSpec` records the **honest** generation model. The decision procedure ([converged plan](../COMPLETED/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md) §3c):
 
-1. **NB2 default** (`gemini-3.1-flash-image-preview`) — author clauses → spike the hero via NB2 from text → Sean's eye. Reads as the register → done (e.g. `90s-nicktoon-grossout`, NB2 GO).
+1. **NB2 default** (`gemini-3.1-flash-image`) — author clauses → spike the hero via NB2 from text → Sean's eye. Reads as the register → done (e.g. `90s-nicktoon-grossout`, NB2 GO).
 2. Close-but-not-there → spike NB2 **with a `refs/` style image fed in** (watch for the Flo-B identity-morph).
-3. NB2 fundamentally can't render it → **record a different model** (`gpt-image-2` for `primal-sketch-grit` + `samurai-jack-s5`; NB Pro for painterly finals; the ticketed fal / self-hosted-FLUX-LoRA path). `final_model = NB_PRO` is the dormant painterly-final seam convention.
+3. NB2 fundamentally can't render it → **record a different model** (`gpt-image-2` for `primal-sketch-grit` + `samurai-jack-s5` + `flat-cast-painted-world`; NB Pro for painterly finals; the ticketed fal / self-hosted-FLUX-LoRA path). `final_model = NB_PRO` is the dormant painterly-final seam convention.
 
-**If the recorded model has no wired runner**, the register is authored honestly and **fails loud**: `invoke_image_edit` raises `UnwiredTransportError` for any model outside `SUPPORTED_IMAGE_MODELS = {NB2_FLASH, NB_PRO}` — never a silent fallback. **Wiring a new transport runner + its across-edit identity validation is a separate, costed, Sean-greenlit build** (e.g. the deferred gpt-image runner, gated on GRANDMASTER). The $0 authoring build never wires it; a green unit suite proves registration/prompt/routing/stub/docs/neutrality/expected-refusal — **not** real generation.
+**If the recorded model has no wired runner**, the register is authored honestly and **fails loud**: `invoke_image_edit` raises `UnwiredTransportError` when the model has neither a google-genai mapping in `SUPPORTED_IMAGE_MODELS = {NB2_FLASH, NB_PRO}` nor a Higgsfield mapping — never a silent fallback. Since 2026-07-13 the gpt-image transport **IS wired** — via Higgsfield ([`pipeline/agents/higgsfield_runner.py`](../../pipeline/agents/higgsfield_runner.py), decision D4/D5 in [`docs/active/2026-07-13-transport-strategy-decision.md`](../active/2026-07-13-transport-strategy-decision.md)); a register recording `gpt-image-2` generates through it. The fail-loud rule still governs any model with neither a google-genai nor a Higgsfield mapping. Wiring any other transport runner plus its across-edit identity validation remains a separate, costed, Sean-greenlit build. A green $0 authoring suite proves registration/prompt/routing/stub/docs/neutrality and the expected transport behavior — **not** live generation.
 
 ---
 
@@ -169,6 +169,7 @@ Also do not touch (unless real behavior contradicts them): `pipeline/agents/nb_p
 
 | Register | Transport | Notable | Design doc |
 |---|---|---|---|
-| `primal-sketch-grit` | gpt-image (unwired) | first post-registry register; GRANDMASTER's gritty register; fork #1 transport pivot | `registers/primal-sketch-grit/research.md` |
+| `primal-sketch-grit` | gpt-image (Higgsfield-wired) | first post-registry register; GRANDMASTER's gritty register; fork #1 transport pivot; **T2 in-register GRANDMASTER validation pending** | `registers/primal-sketch-grit/research.md` |
 | `90s-nicktoon-grossout` | NB2 (wired) | the appealing-default correction; ai-guru pilot consumer | `registers/90s-nicktoon-grossout/research.md` |
-| `samurai-jack-s5` | gpt-image (unwired) | the flat Tartakovsky sibling; the lightest drill (guard already covered gpt-image); the hyphen-normalized genericization carve-out | [`docs/active/2026-07-11-samurai-jack-s5-register-design.md`](../active/2026-07-11-samurai-jack-s5-register-design.md) |
+| `samurai-jack-s5` | gpt-image (Higgsfield-wired) | the flat Tartakovsky sibling; the lightest drill at authoring time; the hyphen-normalized genericization carve-out; T2 validation pending with GRANDMASTER | [`docs/active/2026-07-11-samurai-jack-s5-register-design.md`](../active/2026-07-11-samurai-jack-s5-register-design.md) |
+| `flat-cast-painted-world` | gpt-image (Higgsfield-wired) | the mixed-media fusion register; NB2 confirmation NO-GO; T2 validation pending before its first production Bible pass | [`registers/flat-cast-painted-world/research.md`](../../registers/flat-cast-painted-world/research.md) |

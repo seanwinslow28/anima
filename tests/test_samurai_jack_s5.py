@@ -18,11 +18,10 @@ Two load-bearing facts baked into the spec:
   IS a franchise name the genericization scan is stronger than the siblings':
   it normalizes hyphens to spaces (catching both "samurai jack" and
   "samurai-jack") and exempts ONLY that slug.
-- Transport = gpt-image (`gpt-image-2`), UNWIRED, fails loud (plan §2B): the
-  existing SUPPORTED_IMAGE_MODELS allowlist guard already covers it — no new
-  code. invoke_image_edit raises UnwiredTransportError rather than silently
-  falling back to Gemini/NB2. final_model rides the dormant painterly-final seam
-  (NB Pro, no consumer yet — same as watercolor/photoreal/3d/primal/nicktoon).
+- Transport = gpt-image (`gpt-image-2`), wired through Higgsfield (plan §2B):
+  the google-genai SUPPORTED_IMAGE_MODELS allowlist remains Gemini-only while
+  the separate Higgsfield mapping owns this route. final_model rides the dormant
+  painterly-final seam (NB Pro, no consumer yet — same as the sibling registers).
 
 The stub smoke mirrors the two siblings' Task 2.5: driving Cy's stub path with a
 samurai-named character produces a coherent stubbed Bible with NO silent pencil
@@ -30,8 +29,6 @@ coercion, $0, no keys.
 """
 
 from __future__ import annotations
-
-import pytest
 
 from pipeline.registers import (
     ALL_REGISTERS,
@@ -80,10 +77,9 @@ def test_samurai_plate_prompt_carries_the_register_clauses():
 
 def test_samurai_routing_is_gpt_image_generation():
     """Plan §2B: transport RESOLVED to gpt-image — the registry records the
-    honest model, and invoke_image_edit's UnwiredTransportError guard makes it
-    fail LOUD (no gpt-image runner is wired yet) instead of silently falling
-    back to Gemini/NB2. Final render rides the painterly-final seam (NB Pro, no
-    consumer yet). Imports the constants, not raw strings (plan Task 1)."""
+    honest model, dispatched through Higgsfield rather than the Gemini runner.
+    Final render rides the painterly-final seam (NB Pro, no consumer yet).
+    Imports the constants, not raw strings (plan Task 1)."""
     from pipeline.agents.character_designer import _resolve_plate_model
 
     assert _resolve_plate_model(_SAMURAI, {}) == GPT_IMAGE
@@ -176,27 +172,23 @@ def test_samurai_spec_is_genericized_attribute_only():
         assert name not in joined, f"franchise identifier {name!r} leaked into the spec"
 
 
-def test_samurai_transport_is_honest_and_unwired(tmp_path):
+def test_samurai_transport_is_wired_via_higgsfield(tmp_path, monkeypatch):
     """Plan §2B: the spec records the honest generation model (gpt-image-2),
-    which is NOT in the wired allowlist, so invoke_image_edit fails loud. Binds
-    the register's model to the existing boundary; the no-output / no-cache
-    filesystem side-effects are already covered at tests/test_nb_pro_runner.py
-    (red-team fold — don't duplicate the transport suite)."""
-    from pipeline.agents.nb_pro_runner import (
-        SUPPORTED_IMAGE_MODELS,
-        UnwiredTransportError,
-        invoke_image_edit,
-    )
+    which is not a google-genai model but is mapped to Higgsfield."""
+    from pipeline.agents.higgsfield_runner import HIGGSFIELD_IMAGE_MODELS
+    from pipeline.agents.nb_pro_runner import SUPPORTED_IMAGE_MODELS, invoke_image_edit
 
     spec = get_register(_SAMURAI)
     assert spec.generation_model == GPT_IMAGE
     assert GPT_IMAGE not in SUPPORTED_IMAGE_MODELS
+    assert GPT_IMAGE in HIGGSFIELD_IMAGE_MODELS
 
-    with pytest.raises(UnwiredTransportError):
-        invoke_image_edit(
-            prompt="samurai-jack-s5 plate",
-            reference_images=[],
-            output_path=tmp_path / "out.png",
-            cache_dir=tmp_path,
-            model=spec.generation_model,
-        )
+    monkeypatch.setenv("ANIMA_FORCE_STUB", "1")
+    resp = invoke_image_edit(
+        prompt="samurai-jack-s5 plate",
+        reference_images=[],
+        output_path=tmp_path / "out.png",
+        cache_dir=tmp_path,
+        model=spec.generation_model,
+    )
+    assert resp.ok and resp.stub_fallback

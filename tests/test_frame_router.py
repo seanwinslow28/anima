@@ -39,28 +39,28 @@ import pipeline.nodes  # noqa: F401,E402
 ROUTING_BLOCK = {
     "hero_keyframe": {
         "transport": "nb_pro",
-        "model": "gemini-3-pro-image-preview",
+        "model": "gemini-3-pro-image",
         "usd_per_frame": 0.15,
         "tier": "pro",
         "status": "wired",
     },
     "standard_keyframe": {
         "transport": "nb2",
-        "model": "gemini-3.1-flash-image-preview",
+        "model": "gemini-3.1-flash-image",
         "usd_per_frame": 0.07,
         "tier": "draft",
         "status": "wired",
     },
     "in_between_cheap": {
         "transport": "nb2",
-        "model": "gemini-3.1-flash-image-preview",
+        "model": "gemini-3.1-flash-image",
         "usd_per_frame": 0.07,
         "tier": "draft",
         "status": "wired",
     },
     "in_between_mid": {
         "transport": "nb_pro",
-        "model": "gemini-3-pro-image-preview",
+        "model": "gemini-3-pro-image",
         "usd_per_frame": 0.15,
         "tier": "pro",
         "status": "wired",
@@ -75,7 +75,7 @@ ROUTING_BLOCK = {
 
 def _manifest(*, routing=True):
     gen = {
-        "model": "gemini-3.1-flash-image-preview",
+        "model": "gemini-3.1-flash-image",
         "aspect_ratio": "16:9",
         "script": "scripts/generate_image.py",
         "env_file": ".env",
@@ -113,7 +113,7 @@ def test_resolve_route_hero_keyframe_routes_to_nb_pro():
     route = resolve_route({"shot_type": "hero_keyframe"}, _manifest())
     assert isinstance(route, Route)
     assert route.transport == "nb_pro"
-    assert route.model == "gemini-3-pro-image-preview"
+    assert route.model == "gemini-3-pro-image"
     assert route.usd_per_frame == 0.15
     assert route.status == "wired"
 

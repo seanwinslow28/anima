@@ -66,7 +66,7 @@ piece's locked register (`primal-sketch-grit`, ART-VIZ Route B) had no home
 in the pipeline and the extension decision had no owner or fallback. Both
 halves are now resolved-but-unspiked: the register is **authored and
 registered** (`pipeline/registers.py`, Checkpoint 2 of the
-[animation-vocabulary-expansion plan](../../docs/active/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md);
+[animation-vocabulary-expansion plan](../../docs/COMPLETED/2026-07-03-animation-vocabulary-expansion-execution-CONVERGED.md);
 craft basis: [`registers/primal-sketch-grit/research.md`](../../registers/primal-sketch-grit/research.md)),
 and this artifact records the decision rule + pre-agreed fallback. What
 remains is the single costed spike + Sean's eye.
