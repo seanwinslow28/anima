@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-07-13 — Higgsfield image transport Task 1: fail-closed skeleton, cache identity, and safe stub ladder
+
+**What & why.** Began the ratified D5 transport switchover with the credential-free `higgsfield_runner` foundation only: an exact `gpt-image-2` → `gpt_image_2` transport map, a field-compatible response/provenance envelope, a content-addressed cache key that preserves anchor-first reference order and includes every explicit generation parameter, and forced-stub / missing-CLI fallbacks that never contaminate the real cache. Unknown models fail loud through the existing `UnwiredTransportError`. The real Higgsfield CLI invocation remains an explicit `NotImplementedError` seam for Task 2; no live generation or credit spend occurred. Added a seven-case network-free unit suite and recorded the required missing-module RED before GREEN.
+
 ## 2026-07-13 — Transport strategy RATIFIED: Higgsfield-first for volume, direct APIs as the pinned spine (decision session — no production code)
 
 **What & why.** The whole-pipeline transport decision (direct native APIs vs. Higgsfield-as-universal-transport) — the session the [kickoff](docs/active/2026-07-13-transport-strategy-decision-kickoff.md) commissioned, run brainstorm → Checkpoint 1 (frame + probes greenlit) → costed research/probes → Checkpoint 2 (Sean ratified). **Output is a decision doc + field report; a later Sean-greenlit session builds.** Ratified doc: [`docs/active/2026-07-13-transport-strategy-decision.md`](docs/active/2026-07-13-transport-strategy-decision.md); evidence: [`docs/anima-test-runs/2026-07-13-transport-probes-and-pricing-field-report.md`](docs/anima-test-runs/2026-07-13-transport-probes-and-pricing-field-report.md) (+ local probe artifacts `runs/2026-07-13-transport-probes/`).
