@@ -1,0 +1,21 @@
+designed:
+  - character_id: kid
+    display_name: The Kid
+    tier: principal
+    style_register: primal-sketch-grit
+    anchors:
+      - refs/kid-anchor.png
+  - character_id: grandma
+    display_name: Grandma
+    tier: principal
+    style_register: primal-sketch-grit
+    anchors:
+      - refs/grandma-anchor.png
+world:
+  - id: backyard-party
+    display_name: The backyard party
+    refs: []
+extras_guidance: >
+  Background kids aged about eight to ten — varied heights, hair and skin
+  tones, casual summer party clothes, one or two in paper party hats —
+  laughing and playing together. Never individually designed.
