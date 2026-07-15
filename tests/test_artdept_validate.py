@@ -108,3 +108,10 @@ def test_malformed_yaml_reports_not_crashes(tmp_path):
     problems = validate_artdept_dir(d)
     assert any("cast_list.yaml invalid YAML" in p for p in problems)
     assert register_warnings(d) == []          # degrades quietly, never crashes
+
+
+def test_empty_cast_list_is_not_a_mapping(tmp_path):
+    d = make_bundle(tmp_path)
+    (d / "cast_list.yaml").write_text("# just a comment\n")
+    problems = validate_artdept_dir(d)
+    assert any("cast_list.yaml must be a mapping" in p for p in problems)

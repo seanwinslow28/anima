@@ -62,16 +62,17 @@ def validate_artdept_dir(bundle_dir: Path, repo_root: Path | None = None) -> lis
     else:
         problems.append("missing file: artdept.json")
 
+    _UNPARSED = object()
     designed_ids: list[str] = []
     cast_path = bundle_dir / "cast_list.yaml"
-    cast = None
+    cast = _UNPARSED
     if cast_path.exists():
         try:
             cast = yaml.safe_load(cast_path.read_text(encoding="utf-8"))
         except yaml.YAMLError as e:
             problems.append(f"cast_list.yaml invalid YAML: {e}")
 
-        if cast is not None:
+        if cast is not _UNPARSED:
             if not isinstance(cast, dict):
                 problems.append("cast_list.yaml must be a mapping")
             else:
@@ -134,7 +135,7 @@ def validate_artdept_dir(bundle_dir: Path, repo_root: Path | None = None) -> lis
     else:
         problems.append("missing file: cast_list.yaml")
 
-    if handoff is not None and cast_path.exists() and cast is not None and sorted(handoff.characters) != sorted(designed_ids):
+    if handoff is not None and cast_path.exists() and cast is not _UNPARSED and isinstance(cast, dict) and sorted(handoff.characters) != sorted(designed_ids):
         problems.append(
             f"artdept.json characters {sorted(handoff.characters)} do not match "
             f"cast_list.yaml designed ids {sorted(designed_ids)}"
