@@ -58,7 +58,22 @@ def test_readiness_report_names_the_gap_and_the_ready(tmp_path):
     assert "not in manifest `characters:`" in report
     assert "author_bible.py" in report
     report2 = (_emit(tmp_path, manifest={"characters": {"kid": {}}}) / "cy_readiness_report.md").read_text()
-    assert "registered" in report2
+    # Strengthen: the registration gap should NOT appear when kid is in manifest
+    assert "not in manifest `characters:`" not in report2
+
+
+def test_readiness_report_ready_branch_fires_when_all_gaps_clear(tmp_path):
+    # Create the anchor in source-refs so the anchor gap clears
+    srcdir = tmp_path / "characters" / "kid" / "source-refs"
+    srcdir.mkdir(parents=True)
+    (srcdir / "kid.png").write_bytes(b"\x89PNG\r\n\x1a\n")
+    # Emit with kid in manifest (register is pencil-test-colored, which is authored)
+    out = _emit(tmp_path, manifest={"characters": {"kid": {}}})
+    report = (out / "cy_readiness_report.md").read_text()
+    # The ready branch should fire: "registered; Cy-ready."
+    assert "registered; Cy-ready." in report
+    # The NOT Cy-ready branch should NOT fire
+    assert "NOT Cy-ready" not in report
 
 
 def test_cast_round_trips_through_yaml(tmp_path):
