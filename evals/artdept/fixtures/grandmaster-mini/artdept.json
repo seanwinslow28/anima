@@ -1,0 +1,6 @@
+{
+  "slug": "grandmaster",
+  "characters": ["kid", "grandma"],
+  "stage_provenance": ["micro-expand", "interrogate", "look-test", "lock", "expand-outward", "synthesize"],
+  "mode": "fixture"
+}
