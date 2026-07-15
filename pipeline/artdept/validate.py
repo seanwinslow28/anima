@@ -64,71 +64,77 @@ def validate_artdept_dir(bundle_dir: Path, repo_root: Path | None = None) -> lis
 
     designed_ids: list[str] = []
     cast_path = bundle_dir / "cast_list.yaml"
+    cast = None
     if cast_path.exists():
-        cast = yaml.safe_load(cast_path.read_text(encoding="utf-8"))
-        if not isinstance(cast, dict):
-            problems.append("cast_list.yaml must be a mapping")
-        else:
-            designed = cast.get("designed")
-            if not isinstance(designed, list) or not designed:
-                problems.append("cast_list.yaml: designed must be a non-empty list")
-                designed = []
-            for i, entry in enumerate(designed):
-                if not isinstance(entry, dict):
-                    problems.append(f"designed #{i} is not a mapping")
-                    continue
-                for fld in REQUIRED_DESIGNED_FIELDS:
-                    if not entry.get(fld):
-                        problems.append(
-                            f"designed #{i} ({entry.get('character_id', '?')}): "
-                            f"missing required field {fld}"
-                        )
-                cid = entry.get("character_id")
-                if isinstance(cid, str):
-                    designed_ids.append(cid)
-                    if not SLUG_RE.match(cid):
-                        problems.append(f"designed character_id {cid!r} is not lowercase-kebab")
-                tier = entry.get("tier")
-                if tier and tier not in TIERS:
-                    problems.append(
-                        f"designed #{i} ({cid or '?'}): tier {tier!r} not in {TIERS} — "
-                        "a non-recurring identity is extras_guidance, not a designed entry"
-                    )
-                anchors = entry.get("anchors")
-                if anchors is not None and (not isinstance(anchors, list) or not anchors):
-                    problems.append(
-                        f"designed #{i} ({cid or '?'}): anchors must be a non-empty list of refs"
-                    )
-                elif isinstance(anchors, list):
-                    for ref in anchors:
-                        if not (isinstance(ref, str) and _resolves(ref, bundle_dir, repo_root)):
+        try:
+            cast = yaml.safe_load(cast_path.read_text(encoding="utf-8"))
+        except yaml.YAMLError as e:
+            problems.append(f"cast_list.yaml invalid YAML: {e}")
+
+        if cast is not None:
+            if not isinstance(cast, dict):
+                problems.append("cast_list.yaml must be a mapping")
+            else:
+                designed = cast.get("designed")
+                if not isinstance(designed, list) or not designed:
+                    problems.append("cast_list.yaml: designed must be a non-empty list")
+                    designed = []
+                for i, entry in enumerate(designed):
+                    if not isinstance(entry, dict):
+                        problems.append(f"designed #{i} is not a mapping")
+                        continue
+                    for fld in REQUIRED_DESIGNED_FIELDS:
+                        if not entry.get(fld):
                             problems.append(
-                                f"designed #{i} ({cid or '?'}): anchor ref {ref!r} does not "
-                                "resolve (checked bundle dir, then repo root)"
+                                f"designed #{i} ({entry.get('character_id', '?')}): "
+                                f"missing required field {fld}"
                             )
-            world = cast.get("world")
-            if world is not None:
-                if not isinstance(world, list):
-                    problems.append("cast_list.yaml: world must be a list of locations")
-                else:
-                    for j, loc in enumerate(world):
-                        if not isinstance(loc, dict) or not loc.get("id"):
-                            problems.append(f"world #{j}: missing id")
-                            continue
-                        for ref in loc.get("refs") or []:
+                    cid = entry.get("character_id")
+                    if isinstance(cid, str):
+                        designed_ids.append(cid)
+                        if not SLUG_RE.match(cid):
+                            problems.append(f"designed character_id {cid!r} is not lowercase-kebab")
+                    tier = entry.get("tier")
+                    if tier and tier not in TIERS:
+                        problems.append(
+                            f"designed #{i} ({cid or '?'}): tier {tier!r} not in {TIERS} — "
+                            "a non-recurring identity is extras_guidance, not a designed entry"
+                        )
+                    anchors = entry.get("anchors")
+                    if anchors is not None and (not isinstance(anchors, list) or not anchors):
+                        problems.append(
+                            f"designed #{i} ({cid or '?'}): anchors must be a non-empty list of refs"
+                        )
+                    elif isinstance(anchors, list):
+                        for ref in anchors:
                             if not (isinstance(ref, str) and _resolves(ref, bundle_dir, repo_root)):
                                 problems.append(
-                                    f"world #{j} ({loc['id']}): ref {ref!r} does not resolve"
+                                    f"designed #{i} ({cid or '?'}): anchor ref {ref!r} does not "
+                                    "resolve (checked bundle dir, then repo root)"
                                 )
-            if not (isinstance(cast.get("extras_guidance"), str) and cast["extras_guidance"].strip()):
-                problems.append(
-                    "cast_list.yaml: missing extras_guidance — extras are covered by "
-                    "guidance baked into the prompt pack, never by silence (design §6)"
-                )
+                world = cast.get("world")
+                if world is not None:
+                    if not isinstance(world, list):
+                        problems.append("cast_list.yaml: world must be a list of locations")
+                    else:
+                        for j, loc in enumerate(world):
+                            if not isinstance(loc, dict) or not loc.get("id"):
+                                problems.append(f"world #{j}: missing id")
+                                continue
+                            for ref in loc.get("refs") or []:
+                                if not (isinstance(ref, str) and _resolves(ref, bundle_dir, repo_root)):
+                                    problems.append(
+                                        f"world #{j} ({loc['id']}): ref {ref!r} does not resolve"
+                                    )
+                if not (isinstance(cast.get("extras_guidance"), str) and cast["extras_guidance"].strip()):
+                    problems.append(
+                        "cast_list.yaml: missing extras_guidance — extras are covered by "
+                        "guidance baked into the prompt pack, never by silence (design §6)"
+                    )
     else:
         problems.append("missing file: cast_list.yaml")
 
-    if handoff is not None and cast_path.exists() and sorted(handoff.characters) != sorted(designed_ids):
+    if handoff is not None and cast_path.exists() and cast is not None and sorted(handoff.characters) != sorted(designed_ids):
         problems.append(
             f"artdept.json characters {sorted(handoff.characters)} do not match "
             f"cast_list.yaml designed ids {sorted(designed_ids)}"
@@ -148,7 +154,10 @@ def register_warnings(bundle_dir: Path) -> list[str]:
     cast_path = bundle_dir / "cast_list.yaml"
     if not cast_path.exists():
         return warnings
-    cast = yaml.safe_load(cast_path.read_text(encoding="utf-8"))
+    try:
+        cast = yaml.safe_load(cast_path.read_text(encoding="utf-8"))
+    except yaml.YAMLError:
+        return warnings
     if not isinstance(cast, dict) or not isinstance(cast.get("designed"), list):
         return warnings
     for i, entry in enumerate(cast["designed"]):

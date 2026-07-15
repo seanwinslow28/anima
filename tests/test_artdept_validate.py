@@ -100,3 +100,11 @@ def test_unregistered_register_warns_not_fails(tmp_path):
     warnings = register_warnings(d)
     assert len(warnings) == 1
     assert "style-register-authoring-playbook" in warnings[0]
+
+
+def test_malformed_yaml_reports_not_crashes(tmp_path):
+    d = make_bundle(tmp_path)
+    (d / "cast_list.yaml").write_text("designed: [\n  - character_id: kid\n")
+    problems = validate_artdept_dir(d)
+    assert any("cast_list.yaml invalid YAML" in p for p in problems)
+    assert register_warnings(d) == []          # degrades quietly, never crashes
