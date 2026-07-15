@@ -22,3 +22,14 @@ def test_valid_dir_exits_0(tmp_path, capsys, monkeypatch):
     assert main(["validate", str(d)]) == 0
     out = capsys.readouterr().out
     assert "WARN: w1" in out and "ok:" in out
+
+
+def test_warnings_print_on_the_fail_path_too(tmp_path, capsys, monkeypatch):
+    import pipeline.artdept.cli as cli
+    monkeypatch.setattr(cli, "validate_artdept_dir", lambda d: ["p1"])
+    monkeypatch.setattr(cli, "register_warnings", lambda d: ["w1"])
+    d = tmp_path / "bad"
+    d.mkdir()
+    assert cli.main(["validate", str(d)]) == 1
+    out = capsys.readouterr().out
+    assert "WARN: w1" in out and "FAIL: p1" in out

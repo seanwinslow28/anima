@@ -67,7 +67,7 @@ two-block discipline inline in the conversation. This is the front door's
   `design lock`, per-character `register lock`, and `chosen prompt recipe`.
   Plus the ordinary world locks and scope calls. Every one is a named
   specific: "primal-sketch-grit, chosen over samurai-jack-s5 because the
-  gritty ink over color carried the kid's face across the transformation" is
+  gritty ink over color carried the kid's face across the transformation (illustrative lock shape — GRANDMASTER's real register was left open by design)" is
   a lock; "we picked a register" is not.
 - **Stages append only to their own PROPOSALS section**, and only the four
   kinds: `observations`, `options`, `recommendation`, `open_questions`. A

@@ -44,7 +44,7 @@ No lock is a category. Each is a named specific, in the sidecar, with the reason
 it beat the alternative.
 - **Worked positive:** "[L4] register lock — kid: primal-sketch-grit, chosen
   over samurai-jack-s5 because the gritty ink-over-color carried his face across
-  the transformation." "Pale skin, messy brown hair, thick square too-big
+  the transformation (illustrative lock shape — GRANDMASTER's real register was left open by design)." "Pale skin, messy brown hair, thick square too-big
   glasses, chunky worn sneakers."
 - **Anti-example:** "[L4] register: primal (looked good)" — no named specific,
   no why, nothing Cy or a future session can reproduce.
