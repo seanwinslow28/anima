@@ -155,6 +155,7 @@ The load-bearing artifact. Mechanics as *annotation* over the §8 samples — no
 | **Character-Intro Zinger-Last** | NAME (age), concrete + concrete + a zinger last (often an abstract yoked to concretes — zeugma) | The intro line itself is the joke; never re-describe later | "a woman covered in vomit stains and regret" |
 | **The Register-Break Button** | A colloquial/narrator voice punctures formality as the closer | Last line breaks the scene's register | "Basic office hullabaloo." |
 | **The Fumbled Idiom + Bail-Out** | A character reaches for a stock phrase, botches it, bails with a shrug word | Cliché attempted → abandoned mid-phrase | "host with the m-- Whatever." |
+| **The Earned Random One-Off (the "Big Gulps" rule)** | A brief, grounded, deeply HUMAN non-sequitur — a real person's actual social behavior caught in passing, glanced over, **never referenced again**. Serves no plot; earns its place by being true. The performance/timing carries it | Background or transition beats only — never inside an emotional turn; the story moves along mid-gag | Lloyd in *Dumb and Dumber*, leaving the 7-Eleven past two guys by their car: "Big Gulps, huh? Alright!" (beat) "Welp, see ya later!" (improvised, kept because it was human). Sean's species: two parents' hushed "...and she still doesn't know?" guillotined by "PIÑATA TIME!" |
 
 ## What Sean Writes About (the WHAT layer — his thematic gravity)
 
@@ -222,6 +223,7 @@ The warmth-under-darkness worldview survives at every level. Strip the gore befo
 - **The quiet, handed-over win.** The small victory has to be *clawed* — the word is load-bearing. The character earns it through escalating, disproportionate, often absurd obstacles and commitment (he argues till his face turns blue; he breaks into the closed shop to make the sandwich he could've made at home, because the place is symbolic to him). The comedy AND the earning live in the escalation; a win that arrives quietly or too fast under-delivers. Build the momentum first.
 - **Sanding down the darkness.** The dark beat usually carries the comedy.
 - **Clever abstraction-wit.** Bodies, props, food, named people, timing — not metaphors about concepts.
+- **Random ≠ wacky (the Big Gulps failure mode).** The earned random one-off must be something a real person would actually do — Seinfeld-grounded, human, unaware of itself. If the bit is zany for zany's sake, self-aware, or performing its own randomness, it's sketch noise, not a Big Gulps. Test: could you have caught it on a home video of a real party?
 
 ## The Format Pass (how the voice reaches the page)
 
