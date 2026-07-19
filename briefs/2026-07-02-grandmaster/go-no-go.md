@@ -7,6 +7,36 @@ just not on NB2. See "## Resolution" below. The GRANDMASTER Cy Bible pass is
 still gated — now on a gpt-image across-edit identity validation, NOT on the
 register, which is authored and done. No calendar deadline; Sean sets pace.)*
 
+**Update 2026-07-14 — design sprint ran; across-edit identity looks favorable.**
+A collaborative character-design sprint (kid + grandma) ran through gpt-image via
+the Higgsfield transport (48 credits). **Across-edit identity held** on both primal
+and samurai-jack — editing an anchor into re-posed/re-costumed/aged variants kept
+the character's face — which favorably informs the T2 across-edit gate above (not a
+formal Cy Bible pass, but the load-bearing risk it flagged). Sean also found the
+"too real" drift is primal's nature on gpt-image, and fixed it with a **web-search
+style lever** (`Use Web search to research Genndy Tartakovsky's show Primal…`) that
+produced the exact animated-cartoon look. **Register LOCKED 2026-07-15 (Sean's
+call): `primal-sketch-grit`** (the cartoon-pushed look) — the samurai-jack-s5 A/B
+is closed. **host-dad still undesigned; story needs a front-door pass before the
+pipeline (see `story-ideas-2026-07-15.md`).** Full
+record: [`docs/anima-test-runs/2026-07-14-grandmaster-character-design-sprint.md`](../../docs/anima-test-runs/2026-07-14-grandmaster-character-design-sprint.md).
+
+**Update 2026-07-18 — the story pass RAN; the piece is now FIRST LICKS.** Concept +
+studio brief fully revised (instilling reveal, bully-dad repeal, camcorder open,
+runtime 3:30–4:00, run scope = Act-2 turn slice first); host-dad's design brief
+CHANGED (douchey bigger-male-version of Brittany) and Brittany + party-mom joined
+the seeds. See `concept.md` §Decision Record. The Cy Bible pass remains gated as
+above; the Art Department queue now carries host-dad + Brittany (+ mom, extras-tier).
+
+**Update 2026-07-19 — the Art Department session RAN (the queue is cleared).**
+Host-dad (Fieri×Goodman), Brittany (Mini-Fieri candy-bling), and party-mom are
+designed + Sean-eye-ratified, plus grandma's-room and yard 16:9 layouts; bundle
+validates clean at `runs/2026-07-19-first-licks-artdept/bundle/` (28 Higgsfield
+credits). The session's dad→Brittany→mom edit chain held identity across edits —
+further favorable evidence for the across-edit T2 gate above, which formally
+closes only at the costed Cy Bible pass (still gated, still needing its own
+green-light).
+
 ## Resolution (2026-07-04)
 
 **The spike ran** (Checkpoint 3, ~$0.25, three NB2 frames in
