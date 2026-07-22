@@ -173,3 +173,41 @@ def register_warnings(bundle_dir: Path) -> list[str]:
                 f"before the Cy pass (Cy fails loud on an unregistered register)."
             )
     return warnings
+
+
+def location_angle_warnings(bundle_dir: Path) -> list[str]:
+    """SOFT flags for the single-angle-location trap (DR #20, 2026-07-20).
+
+    Every key location must be designed from a *set* of camera angles (master +
+    reverse/180° + an angle per recurring character standing-position) with a
+    spatial placement map in environment-style.md, so composites place
+    characters consistently and shot/reverse-shot holds — a location carrying
+    one ref is the trap that made the FIRST LICKS geyser shots read as two
+    figures a foot apart and left grandma's room single-angle. WARN, never fail:
+    a location genuinely seen once may legitimately have one angle, and the call
+    is Sean's eye (mirrors register_warnings — the hard gate stays Cy)."""
+    bundle_dir = Path(bundle_dir)
+    warnings: list[str] = []
+    cast_path = bundle_dir / "cast_list.yaml"
+    if not cast_path.exists():
+        return warnings
+    try:
+        cast = yaml.safe_load(cast_path.read_text(encoding="utf-8"))
+    except yaml.YAMLError:
+        return warnings
+    if not isinstance(cast, dict) or not isinstance(cast.get("world"), list):
+        return warnings
+    for loc in cast["world"]:
+        if not isinstance(loc, dict) or not loc.get("id"):
+            continue
+        refs = loc.get("refs")
+        n = len(refs) if isinstance(refs, list) else 0
+        if n < 2:
+            warnings.append(
+                f"location {loc['id']!r} has {n} angle ref(s) — DR #20 wants a "
+                "multi-angle set (master + reverse/180° + per-character-position) "
+                "plus a placement map in environment-style.md. Confirm this "
+                "location is truly single-angle, or add its angle set (the montage "
+                "+ room single-angle slips are why this check exists)."
+            )
+    return warnings

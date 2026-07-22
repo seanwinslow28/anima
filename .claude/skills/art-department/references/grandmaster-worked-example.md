@@ -20,7 +20,7 @@ then expand outward to the second character, the backgrounds, and the staging.
 **Spend:** 48 Higgsfield credits (3999.64 → 3951.64), all gpt-image-2 edits via
 the Task-7-proven `invoke_image_edit` runner. Fleet-ops clean — Higgsfield
 credits, **no `ANTHROPIC_API_KEY`**, no Claude SDK. Plus Sean's own uncounted
-ChatGPT web-app generations (subscription) — the definitive batch.
+Codex / ChatGPT Desktop app generations (subscription; path-based, project filesystem) — the definitive batch.
 
 ## Decisions locked
 
