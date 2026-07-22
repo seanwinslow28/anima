@@ -39,7 +39,7 @@ two-block discipline inline in the conversation. This is the front door's
 
 ### look-test   <!-- ONE block per contested axis (register A/B; a design variant) -->
 - observations: <why this axis is contested — the fork Sean can't call from prose>
-- options: <the candidate prompts rendered (or emitted for Sean's web-app pass),
+- options: <the candidate prompts rendered (or emitted for Sean's Desktop-app pass),
   same-composition/different-register so it is apples-to-apples; each a named
   specific, with its credit cost announced against the running total>
 - recommendation: <Artie's lean, one line — which look and why>

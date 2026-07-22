@@ -20,7 +20,7 @@ The GRANDMASTER sprint set out to run a piece through the pipeline and instead d
 
 The Art Department is the stage that **fills the gap the front door names.** It consumes terse character seeds + a style-route pick and produces the ratified anchors + locked register Cy needs to begin. It is a *different lifecycle phase* from the front door — post-greenlight, real design commitment, real (if cheap) spend — which is exactly why it earns its own stage rather than bloating the front door or overloading Cy.
 
-The field report also flagged the load-bearing workflow discovery, which this design is built around: **the winning path was the pipeline producing a prompt pack + a ChatGPT batch-orchestration prompt, with Sean driving the final generation in the web app** — where his best taste work happens. In Sean's words: *"This is about playing around and finding the right style. Not reading the brief and register and giving me a prompt pack based on those. It should be a fun playground for art and characters."*
+The field report also flagged the load-bearing workflow discovery, which this design is built around: **the winning path was the pipeline producing a prompt pack + a ChatGPT batch-orchestration prompt, with Sean driving the final generation in the Codex / ChatGPT Desktop app** — which has the project filesystem, so the pack is path-based (references cited by path, outputs saved to an output folder), never attachment-based (corrected 2026-07-20). This is where his best taste work happens. In Sean's words: *"This is about playing around and finding the right style. Not reading the brief and register and giving me a prompt pack based on those. It should be a fun playground for art and characters."*
 
 ## 3. Where it sits
 
@@ -54,7 +54,7 @@ A resumable, human-gated session — a wide exploration that narrows:
 3. **Look-test forks (inline).** Where a fork is contested (primal-vs-jack), Artie writes candidate prompts using a **kit of techniques** — the **web-search-the-show lever** (*"Use web search to research Genndy Tartakovsky's Primal to accurately depict the art style"* — the sprint's best discovery), register research, the [`prompt-how-much`](../../.claude/skills/prompt-how-much) fresh-vs-edit economy — and can **cheaply generate** a few candidates to show Sean where the fork lands. Sean's eye arbitrates; Artie iterates.
 4. **Lock.** When Sean's eye says "that's it," the winner is captured: the anchor is ratified into `source-refs/`, the register is locked (§7), and the **winning prompt recipe** is recorded.
 5. **Expand outward.** The same grill-and-lock loop for named secondary cast + key locations + the environment style, reusing the locked hero anchors as references (the GRANDMASTER dependency-map discipline: *edit the anchors you make, never cross styles*).
-6. **SYNTHESIZE + emit (`artdept-synthesize`).** Assemble the bundle (§8) — headlined by the **prompt pack + ChatGPT batch-orchestration prompt** Sean takes to the web app for the final high-quality generation.
+6. **SYNTHESIZE + emit (`artdept-synthesize`).** Assemble the bundle (§8) — headlined by the **prompt pack + ChatGPT batch-orchestration prompt** Sean runs in the Codex / ChatGPT Desktop app (path-based, project filesystem) for the final high-quality generation.
 
 **In-stage generation is a live tool, but cheap and exploratory** — the definitive batch is always Sean's in ChatGPT. The stage's job is *find the look with Sean*, then hand him the reproducible recipe.
 
@@ -67,6 +67,8 @@ The line is **designed anchor vs generation guidance**, and it is checkable:
 | Every principal + every named / recurring secondary character | Anonymous background extras, set-dressing |
 
 **The world:** key location/background designs + a locked `environment-style.md` note — the backgrounds that set the visual identity, not every backdrop. Anonymous extras and props inherit the look through the prompt pack + the locked register, not through bespoke design.
+
+**Multi-angle location sets (standing rule, added 2026-07-20 — Sean; applies to every anima short).** A key location is not one establishing plate — it is a **camera-angle set + a spatial placement map**. Design each key location from **multiple angles** (master + reverse/180° + an angle per recurring character standing-position) and write a **placement map** (a top-down of where the fixtures, the characters' marks, and the crowd sit), so composites place characters *consistently* around the set and shot/reverse-shot coverage holds. **Why this is a rule, not a nicety:** the FIRST LICKS geyser proofs (2026-07-19) built the kid-OTS and dad-OTS from the single yard master, so the two read as if standing two feet apart on the same side — when the dad should be across the yard with the camera flipped. Without the angle set + map, every character lands against the same background. **Ownership:** the Art Department (world-scope) authors the set + map; **Cy consumes it** (Cy authors characters, not locations). The angle plates are EDITS of the master (same fixtures, new camera) and ride the same prompt pack. Angle count scales to the piece — enough to cover the scene's real coverage, not every degree.
 
 ## 7. Register behavior — pick, or trigger authoring
 
@@ -84,7 +86,7 @@ Per greenlit piece, validated for *structure* by the code seam (taste is never a
 - **Populated `characters/{id}/source-refs/`** for each principal + named character — ratified anchor(s), turnaround roughs, and `notes.md`. This is exactly what Cy ingests to start (it satisfies Cy's non-empty-`source-refs/` precondition).
 - **Ratified register** per character (the `style_register` the manifest + Cy read).
 - **`design-bible.md`** — the museum-worthy design-intent doc: personality→visual reasoning, the loaded-object logic, the look-test forks and why the winner won.
-- **`prompt-pack.md` + the ChatGPT orchestration prompt** — the reproducible recipe and the batch runner Sean hands to the web app (the GRANDMASTER deliverables are the reference shape: fresh-vs-edit economy, the dependency map, two-style folders, checkpointed batches).
+- **`prompt-pack.md` + the ChatGPT orchestration prompt** — the reproducible recipe and the batch runner Sean runs in the Codex / ChatGPT Desktop app (path-based: references cited by file path, outputs saved to an output folder, no attachments). The GRANDMASTER deliverables are the reference shape: fresh-vs-edit economy, the dependency map, two-style folders, checkpointed batches.
 - **World set** — key location designs + `environment-style.md`.
 - **Cast list** — named cast (→ anchors) vs extras (→ generation guidance).
 - **`artdept.json`** handoff descriptor + an updated **gap report** naming which characters are now design-complete vs which still need a Cy Bible + manifest registration.

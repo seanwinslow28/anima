@@ -1,8 +1,9 @@
 """python -m pipeline.artdept validate <dir> — validate only, no scaffold.
 
-Exit codes: 0 valid, 1 problems found, 2 usage/missing dir. Register warnings
-print on every path but never affect the exit code: an unauthored register at
-the Art Department is a called dependency, not a failure (the hard gate is Cy).
+Exit codes: 0 valid, 1 problems found, 2 usage/missing dir. Soft warnings
+(unauthored register; single-angle location per DR #20) print on every path but
+never affect the exit code — both are called-dependency nudges, not failures
+(the hard gate is Cy).
 """
 
 from __future__ import annotations
@@ -10,7 +11,11 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from pipeline.artdept.validate import register_warnings, validate_artdept_dir
+from pipeline.artdept.validate import (
+    location_angle_warnings,
+    register_warnings,
+    validate_artdept_dir,
+)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -28,7 +33,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"error: {bundle_dir} is not a directory")
         return 2
     problems = validate_artdept_dir(bundle_dir)
-    for w in register_warnings(bundle_dir):
+    for w in register_warnings(bundle_dir) + location_angle_warnings(bundle_dir):
         print(f"WARN: {w}")
     if problems:
         for p in problems:

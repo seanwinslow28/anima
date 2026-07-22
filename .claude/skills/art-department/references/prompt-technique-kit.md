@@ -76,6 +76,39 @@ design. Clean flat-daylight turnaround + candid + a wide isolation-staging shot
 gave the real read. Save the dramatic lighting for the *piece*, never for the
 design plate.
 
+## (f) Generation-workflow conventions — bake these into every pack header
+
+The pack is run in the **Codex / ChatGPT Desktop app, which has the project
+filesystem**. These conventions get re-derived every session; write them into the
+pack's Rules header once, verbatim, so the batch holds together:
+
+- **Path-based, never attachments.** Cite every reference BY FILE PATH; save every
+  output to a named path in one output folder so later batches read earlier outputs
+  from the same folder. Quote paths with spaces.
+- **The continuity rule.** When a prompt places a designed character or re-angles a
+  designed location, cite the reference image(s) by path and NAME each — never
+  re-describe a designed character or location from text (that fights the reference
+  and drifts identity). Party-2 scenes use the Y2 anchors, etc.
+- **Scene frames render in the scene's own light.** A composite inherits the
+  daylight and palette of its location reference — **never a darkened or
+  silhouetted grade** applied on top. The FIRST LICKS geyser v1 was darkened and
+  "read as a different film"; the fix was to inherit the party-yard daylight.
+  (This is the complement to (d): design plates = flat neutral daylight; *scene*
+  frames = the location's palette law, never flat-neutral, never re-graded.)
+- **Never cross styles in a chain** — see (c). Each register pass edits its own
+  anchors; a Primal image never seeds a Samurai-Jack gen or vice versa.
+
+## (g) The cross-style composition/lighting reference
+
+You CAN use an image from a *different* register purely as a **composition and
+lighting map** — framing, figure scale, the light direction/god-rays, the depth
+layering — while rendering in your own locked register. The lever is an explicit
+scope clause: *"Use `<path>` for COMPOSITION AND LIGHTING ONLY — NOT its art style
+or color; render entirely in the STYLE clause below."* Proven on FIRST LICKS: the
+Samurai-Jack cherry-blossom still drove the tree-meditation framing/backlight while
+the frame rendered in `primal-sketch-grit`. Use sparingly and always scoped — an
+unscoped off-register reference will pull the style with it.
+
 ## (e) Register research — read before you write a route
 
 Before writing any candidate prompt in a register, **read

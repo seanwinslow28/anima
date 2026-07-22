@@ -8,7 +8,11 @@ from pathlib import Path
 import yaml
 
 from pipeline.artdept.handoff import Handoff
-from pipeline.artdept.validate import register_warnings, validate_artdept_dir
+from pipeline.artdept.validate import (
+    location_angle_warnings,
+    register_warnings,
+    validate_artdept_dir,
+)
 
 
 def make_bundle(tmp_path: Path, *, register: str = "pencil-test-colored") -> Path:
@@ -100,6 +104,28 @@ def test_unregistered_register_warns_not_fails(tmp_path):
     warnings = register_warnings(d)
     assert len(warnings) == 1
     assert "style-register-authoring-playbook" in warnings[0]
+
+
+def test_single_angle_location_warns_not_fails(tmp_path):
+    d = make_bundle(tmp_path)  # fixture world = one location, refs: []
+    assert validate_artdept_dir(d) == []          # structure valid — soft flag only
+    warnings = location_angle_warnings(d)
+    assert len(warnings) == 1
+    assert "backyard-party" in warnings[0]
+    assert "DR #20" in warnings[0]
+    # a multi-angle location (>=2 refs) does NOT warn:
+    cast = yaml.safe_load((d / "cast_list.yaml").read_text())
+    (d / "refs" / "yard-master.png").write_bytes(b"\x89PNG\r\n\x1a\n")
+    (d / "refs" / "yard-reverse.png").write_bytes(b"\x89PNG\r\n\x1a\n")
+    cast["world"][0]["refs"] = ["refs/yard-master.png", "refs/yard-reverse.png"]
+    (d / "cast_list.yaml").write_text(yaml.safe_dump(cast, sort_keys=False))
+    assert location_angle_warnings(d) == []
+
+
+def test_location_angle_warnings_degrade_quietly(tmp_path):
+    d = make_bundle(tmp_path)
+    (d / "cast_list.yaml").write_text("designed: [\n  - character_id: kid\n")
+    assert location_angle_warnings(d) == []       # malformed YAML never crashes
 
 
 def test_malformed_yaml_reports_not_crashes(tmp_path):

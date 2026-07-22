@@ -38,13 +38,17 @@ anti-render negation; EDIT / COMPOSITE = terse, style-silent, reference-carried.
 **Never re-derive or "improve" a prompt the room already locked** — the pack is
 the record of what won Sean's eye, not a second guess at it.
 
-**`chatgpt-orchestration.md` — the batch runner Sean takes to the web app.** The
-dependency map (which prompt feeds which), the **never-cross-styles** rule (a
-register's edits reference only that register's anchors), and **checkpointed
-batches** (one batch, save, show, wait for "continue"). The GRANDMASTER
-orchestration prompt is the exact shape — fresh foundations → edits → composites,
-in order. This is the deliverable where Sean's definitive high-quality
-generation happens; it must be runnable as written.
+**`chatgpt-orchestration.md` — the batch runner Sean runs in the Codex / ChatGPT
+Desktop app.** That app has the project's filesystem, so the orchestration is
+**path-based, not attachment-based**: it names an **output folder** (all
+generations save there by their listed filenames), cites every input/prior
+output **by file path** (quote paths with spaces), and never says "attach" or
+"upload." It carries the dependency map (which prompt feeds which), the
+**never-cross-styles** rule (a register's edits reference only that register's
+anchors), and **checkpointed batches** (one batch, save, show, wait for
+"continue"). The GRANDMASTER orchestration prompt is the exact shape — fresh
+foundations → edits → composites, in order. This is the deliverable where Sean's
+definitive high-quality generation happens; it must be runnable as written.
 
 **`environment-style.md` — the world's locked look.** The key-location design(s)
 and the environment-style note: the flat-daylight staging, the palette the world
