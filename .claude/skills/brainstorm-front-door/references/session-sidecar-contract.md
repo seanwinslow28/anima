@@ -13,13 +13,19 @@ inline in the conversation (the storytelling-skill sidecar rule).
 
 - [L1] SPARK (verbatim): "<Sean's words, unedited>"
 - [L2] premise: <the picked micro-expand premise, one line>
+  - why (verbatim): "<Sean's one-line reason, quoted exactly; omit the whole
+    sub-line if he skipped the question>"
 - [L3] tonal lean: <...>
+  - why (verbatim): "<...>"
 - [L4] live risks: <the carried risk questions>
 - [L5] single objective: <...>
 - [L6] <one line per resolved North-Star point / character specific / non-negotiable>
 - ...
 - [Ln] stress verdict: proceed (residuals: <named Tigers>)   <!-- after Sean decides; `revise` names what to fix -->
+  - why (verbatim): "<...>"
 - [Ln] SUPERSEDES [Lk]: <new decision + why>   <!-- history is never edited -->
+  - why (verbatim): "<Sean's reason for the change; the line above carries the
+    orchestrator's account of what changed>"
 
 ## PROPOSALS LOG   <!-- stage-appended; four content kinds only -->
 
@@ -75,6 +81,17 @@ inline in the conversation (the storytelling-skill sidecar rule).
 - **Only the orchestrator writes LOCKED DECISIONS**, and only after Sean
   decides. Locks are append-only: a change is a new `SUPERSEDES` entry, never
   an edit — the sidecar is the session's audit trail.
+- **Every lock carries Sean's own one-line reason, marked verbatim.** The
+  orchestrator asks *why* at lock time and records the answer as an indented
+  `- why (verbatim): "<Sean's words>"` sub-line, quoted exactly — never
+  tightened, merged, or completed. Unmarked reason text reads downstream as
+  the orchestrator's paraphrase, so an unmarked line does not satisfy this
+  rule. If Sean skips the question, or agrees with the orchestrator's one
+  candidate guess without adding his own words, the sub-line is omitted
+  entirely — silence records nothing, and a reason is never inferred, guessed
+  into place, or backfilled after the fact. `SUPERSEDES` entries take the
+  sub-line too: the entry line's prose "why" is the orchestrator's account of
+  what changed, the sub-line is Sean's reason for changing it.
 - **Stages append only to their own PROPOSALS section**, and only the four
   kinds: `observations`, `options`, `recommendation`, `open_questions`. A
   stage that wants to decide something global (choose the style, skip a
