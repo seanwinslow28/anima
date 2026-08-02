@@ -22,6 +22,8 @@ These rules apply to **every** Claude Code session working in this project. They
 
 - **Archive convention — `COMPLETED/` and `OLD/` subfolders.** Within `docs/` and `prompts/`, completed (shipped, done) and old (superseded) artifacts live in `COMPLETED/` and `OLD/` subdirectories respectively. The roots stay focused on what's active. When you finish a phase or supersede a doc, move it into the correct archive folder rather than leaving it in the root. Use `git mv` so renames are tracked.
 
+- **Per-animation-project docs — `CLAUDE.md` + `STORYBOARD.md` in the project's brief dir (convention, 2026-07-23).** Every animation project carries two living docs in its `briefs/{project}/` dir, created from [`docs/templates/`](docs/templates/) at project start: a project **`CLAUDE.md`** (the session-orientation layer — the piece's laws as one-liners, read-first pointers, where-things-live; auto-loads for any session in that tree; **never forks the record** — decisions stay in the project's `concept.md` Decision Record, and concept.md wins on disagreement) and a **`STORYBOARD.md`** (the per-beat production tracker: script/board/location/character/still/motion/Sean-approved status per beat; **updated on every generation and approval**). First real pair: [`briefs/2026-07-02-grandmaster/CLAUDE.md`](briefs/2026-07-02-grandmaster/CLAUDE.md) + [`STORYBOARD.md`](briefs/2026-07-02-grandmaster/STORYBOARD.md) (FIRST LICKS).
+
 ## The 10-Phase Pipeline
 
 ```

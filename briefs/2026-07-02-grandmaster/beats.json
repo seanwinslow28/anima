@@ -1,0 +1,114 @@
+{
+  "slug": "first-licks",
+  "logline": "Weeks after losing his grandmother - his best friend - a timid kid humiliated at a birthday pinata ritual discovers she secretly trained him his whole life through the games they played; he trains a year in her memory and returns to take the pinata down like a small samurai.",
+  "beats": [
+    {
+      "id": 1,
+      "title": "The Sacred Object",
+      "intent": "Enthrone the pinata as a mythic relic before the world arrives - NJ-suburbs cinematic pan to the balloon house, then the letterboxed dawn backyard, slow push-in, one streamer-tick foley, children's screams rising underneath.",
+      "emotional_beat": "reverent dread, played dead straight",
+      "cast": ["kid"],
+      "feel": "hero hold 6-10s; Samurai-Jack-intro energy; the audio joke builds under the reverence",
+      "notes": "beat-sheet-v2 #1-2. Optional reverent Sparkle-Horse low-angle plants the gross-up. The kid is not yet on screen - cast carries the film's subject."
+    },
+    {
+      "id": 2,
+      "title": "The Camcorder Party",
+      "intent": "SMASH-CUT through VHS static into camcorder POV mid-Happy-Birthday: the cast introduced by how they perform for the lens; the zoom accidentally finds the one kid NOT performing; the Linda line; CLICK - the film's own camera takes over on the kid and never leaves.",
+      "emotional_beat": "chaotic performance -> accidental stillness -> one second of dead silence",
+      "cast": ["kid", "brittany", "dad", "mom"],
+      "feel": "POV shots 1-2s jittery and audio-hot; the film-camera handover must FEEL like a grammar change",
+      "notes": "beat-sheet-v2 #3-9. Grill-tong one-off (two cuts, +/- sniff, edit picks). 4:3 VHS treatment teaches the texture the Act-2 glitch will violate. Camera-holder never seen; one line."
+    },
+    {
+      "id": 3,
+      "title": "The Catch and the Streamer",
+      "intent": "The competence plant, two parts: a wild overthrow snagged without looking - offered back, taken with zero eye contact (the erasure is the non-reaction) - then the red streamer drifts by; mesmerized, he pockets it. The pocket rhyme begins.",
+      "emotional_beat": "invisible to everyone -> a private moment of unexplained pull",
+      "cast": ["kid", "dad"],
+      "feel": "the catch natural and unremarked - never a startling discovery; the streamer trance is quiet and held",
+      "notes": "beat-sheet-v2 #10-12. Dad texture beats ride here (A4 koozie + beer-can crush; A11 window-grin optional). Pocket rhyme: streamer (Act 1) -> star (Act 2) -> the draw (Act 3)."
+    },
+    {
+      "id": 4,
+      "title": "First Licks",
+      "intent": "The ritual: the dad calls the little freak up first - the kid, deep in the streamer trance, never sees the toss - CLONK, 'Heads up.' Then the epic-deflate: full samurai buildup, sprint, leap - CUT to flat side-wide, one continuous shot: swing, string-yank, face-plant. He exits alone past Brittany's satisfied smile; off-camera the dad is already hunting the next target.",
+      "emotional_beat": "trance -> public humiliation -> a flash of fierce hope -> deflate -> alone",
+      "cast": ["kid", "dad", "brittany"],
+      "feel": "the buildup borrows Act-3's exact grammar (wides, long holds, slow pans) so the deflate stings; kids roar, adults wince, the dad is the only adult enjoying it",
+      "notes": "beat-sheet-v2 #13-15. Title line lands here, once. Exit button: *chuckles* 'Alright, who's next? How 'bout you, twinkle toes.' String established as the dad's weapon."
+    },
+    {
+      "id": 5,
+      "title": "The Absence",
+      "intent": "Home. The reflex - the hallway walk to her room for comfort, like always - hits the absence. Her dark room holds the whole relationship in set dressing.",
+      "emotional_beat": "raw grief made legible without a word",
+      "cast": ["kid", "grandma"],
+      "feel": "STRICT NO-JOKE ZONE begins; slow, held, environmental",
+      "notes": "beat-sheet-v2 #16. Grandma present only as the room. Posters, tape shelf, knick-knacks, Polaroids-through-the-years; no memory montage."
+    },
+    {
+      "id": 6,
+      "title": "The Tape and the Glitch",
+      "intent": "He presses play to finish the ritual. The home movie: their games, the boombox song, her laugh - the only voice she gets. Then the GLITCH: taped-over 1970s training footage, the same moves. Match cut: his childhood game / her warrior form. The inference detonates in him, not on screen.",
+      "emotional_beat": "comfort ritual -> her laugh -> the world rearranges itself",
+      "cast": ["kid", "grandma"],
+      "feel": "the hinge of the film (wordless-reveal gate); the glitch violates a texture the cold open made familiar",
+      "notes": "beat-sheet-v2 #17-18. Voice rules: laugh only, degraded through the VHS chain. Song planted diegetically - it becomes the montage score."
+    },
+    {
+      "id": 7,
+      "title": "The Box",
+      "intent": "The footage leads him: on tape she places the headband INTO the box - his eyes-only double-take finds the same box half-hidden in the room. Inside: the worn red headband (phoenix stitch), the 1970s tournament photo - her, small, beat-up, hand raised in victory - and on its back, her creed: 'Fall seven times. Rise eight.' Beneath, a tray of ninja stars; he pockets one, silent.",
+      "emotional_beat": "discovery -> proof it's possible -> a creed that lights him -> one warm childlike beat",
+      "cast": ["kid", "grandma"],
+      "feel": "she leads him without ever addressing him; the star pocket is the turn's single smile - no ceremony, no attachment",
+      "notes": "beat-sheet-v2 #19-22. The creed is HERS (nana korobi ya oki) - never a message to him. The star is one of many; the audience must forget it until Act 3."
+    },
+    {
+      "id": 8,
+      "title": "Ignition",
+      "intent": "He ties on the headband - too big, it slips, he ties it anyway. The year begins.",
+      "emotional_beat": "grief becomes purpose",
+      "cast": ["kid"],
+      "feel": "small, quiet, decisive; the montage song is about to take over",
+      "notes": "beat-sheet-v2 #23. The choice is entirely his - preparation was hers, the rising is his."
+    },
+    {
+      "id": 9,
+      "title": "The Year",
+      "intent": "The training montage, one song, four seasons: end-summer clumsy foundations, fall precision and the rain misogi, the winter low (glasses off - the transformation completes), spring mastery (bottle-cap -> petal pin; string-yard). The D1 fixed-frame tree refrain repeats the replica composition each season until the final frame pays off: full blossom, her space held empty, petals filling it for one beat.",
+      "emotional_beat": "clumsy resolve -> dedication -> the grief-work floor -> mastery -> tribute",
+      "cast": ["kid", "grandma", "neighbor"],
+      "feel": "one skill per vignette, repetition-with-variation; boombox decays as the calendar; neighbor runner beats never adjacent - sporadic with breathing room; montage trims first at the stopwatch",
+      "notes": "beat-sheet-v2 #24-35. Grandma present via the tape-composition rhymes and the empty space. Seasonal wardrobe DR #32; the star is never shown training - it stays forgotten in his pocket."
+    },
+    {
+      "id": 10,
+      "title": "The Invitation",
+      "intent": "The bootleg-gaudy envelope in the mailbox, addressed to him - inside, a hand-drawn doodle of him face-down under the tree and pinata. Invited back to be mocked; his return is a response, not a plan.",
+      "emotional_beat": "quiet confirmation - this is what the year was for",
+      "cast": ["kid", "brittany"],
+      "feel": "short, cold, no music",
+      "notes": "beat-sheet-v2 #36. No mailman on screen. Brittany's cruelty carried by the doodle - she set the trap."
+    },
+    {
+      "id": 11,
+      "title": "The Return and the Strike",
+      "intent": "Same yard, same ritual, escalated rentals, and the headband fits. The dad tosses the stick - snatched without looking, stare-down. Pose, charge, leap; the string-yank cheat comes; mid-air the star severs the string at the dad's grip and lodges in the fence; the STICK splits the pinata's belly. FLASH. The money shot: post-strike pose held dead still as the belly splits and the rainbow geyser floods down.",
+      "emotional_beat": "quiet certainty -> hold -> BURST -> awe",
+      "cast": ["kid", "dad", "brittany"],
+      "feel": "Act-1's buildup grammar repeated with the opposite outcome; hero holds on the standoff and the money shot; two weapons two jobs - the star foils the cheat, never targets the man",
+      "notes": "beat-sheet-v2 #37-42. Belly-cut lore: head intact, gut-spill geyser, liquid only. Gate #3 (star staging) binds the stills."
+    },
+    {
+      "id": 12,
+      "title": "First and Last Licks",
+      "intent": "The held silence breaks into the candy charge (Brittany first, still awful). He spins the stick and walks - no look back. The dad stares at the star in the fence: one flash of respect, then the shake-off. At the gate a lollipop bounces his way - snatched, unwrapped, popped in - and he heads home, stick on shoulder, ghost-echo rising. The final image: one-shot pull-back from his silhouette on the road until the gutted Sparkle Horse hangs in the dark foreground - the sacred object de-throned. Hold. Black.",
+      "emotional_beat": "the dirty victory - the world unchanged, the kid transformed, her song carrying him home",
+      "cast": ["kid", "dad", "brittany"],
+      "feel": "silence gags only (patient zero and/or the scream-charge); the closing mirrors the opening, transformed",
+      "notes": "beat-sheet-v2 #43-48. Optional mockup-gated credits stinger: the taped-over cassette. Tribute button is audio-only; no glance up."
+    }
+  ]
+}

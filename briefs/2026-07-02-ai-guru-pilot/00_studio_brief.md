@@ -18,7 +18,7 @@ Sincere mockery aimed entirely inward. 90s Nicktoon gross-out (Ren & Stimpy: wet
 
 ### What this is NOT
 
-- Not a takedown of real creators, tools, or brands — every genre cliché is generic and invented; nothing on screen parodies a specific named person, channel, or product.
+- Not a takedown of real creators, tools, or brands — every genre cliché is generic and invented; nothing on screen parodies a specific named person, channel, or product. (Nostalgic, affectionate callbacks to early-YouTube originals are allowed — see non-negotiables, amended 2026-08-01.)
 - Not a kids' show wearing a kid-protagonist costume — the humor, gross-out, and darkness play at full adult strength; a kid lead doesn't mean a kid audience.
 - Not black-and-white about "the internet is bad" — the piece stays genuinely admiring of people who actually share knowledge; the mockery lands only on hollow, value-free content-for-content's-sake.
 - Not a growth story — Aiden does not learn a lesson and change. The ending is the machine getting smarter about him, not him getting wiser about the machine.
@@ -39,7 +39,7 @@ TBD — no hard deadline. This is exploratory pipeline validation; Sean sets the
 
 ## What are the non-negotiables?
 
-- The joke is always on Aiden's own attempts — no specific real creator, brand, or platform is ever named or parodied; genre clichés stay generic and invented.
+- The joke is always on Aiden's own attempts — no making fun of specific relevant people; genre clichés stay generic and invented. Amended 2026-08-01: affectionate callbacks to early-YouTube-era originals are allowed (e.g., the signed chocolate-rain-guy photo in Aiden's room) — a testament to Aiden knowing the original viral stars, not a parody of them.
 - Real AI tools/brands are never shown as literal trademarked UI or logos — Orby and every in-app AI tool Aiden uses are original, generic-parody designs.
 - Orby reads cute and helpful only while Aiden is watching or recording; the instant Aiden looks away, Orby gets exactly one beat to go demonic/deranged before snapping back — capped at one clean instance in the pilot, never a recurring jump-scare.
 - Orby pitches content ideas in a ringmaster/carnival-barker cadence; genuinely useful ideas and unhinged/dangerous ones are delivered in the identical chipper register — the tell lives in content, never in performance.

@@ -50,6 +50,39 @@ conversation with the same two-block discipline.
 Record the spark verbatim as the first locked entry. Sean's words, not your
 paraphrase — the paraphrase is where the first drift happens.
 
+### Every lock carries Sean's reason, in his own words
+
+Before you write a LOCKED DECISION — a fresh lock or a `SUPERSEDES` entry —
+ask Sean one short question, then write the lock:
+
+> Why that one? One line.
+
+Record his answer as an indented `- why (verbatim): "<his words>"` sub-line
+under the lock, quoted exactly. The `(verbatim)` tag is the same marking the
+SPARK line carries, and it is load-bearing: an unmarked reason reads as your
+paraphrase of his thinking, which is precisely the drift the verbatim-spark
+rule exists to prevent.
+
+Four rules keep it honest:
+
+- **Verbatim or nothing.** If you tighten, merge, or finish his sentence, the
+  reason is yours and it doesn't ship. Record what he actually said.
+- **One guess, offered as a prompt.** If the answer is a category rather than
+  a reason ("liked B better", "felt right"), you may offer **one** candidate
+  reason for him to react to — the same reflex that pushes every lock to a
+  named specific, and a real aid when he knows the pick is right but hasn't
+  found the why yet. The guess is thinking scaffolding, **never the recorded
+  text.** Never guess twice.
+- **Only his words land.** If he agrees with your guess and adds his own line,
+  that line is the reason. If he simply agrees and moves on, the lock gets no
+  reason sub-line — your guess is never promoted into the quote.
+- **Silence records nothing.** He can wave the question off, and that lock
+  carries no sub-line at all. Never write a reason he didn't give, never infer
+  one from the conversation, never leave a placeholder to fill in later.
+
+Ask at lock time or not at all. A reason reconstructed after the session is a
+weaker and different thing.
+
 ## Step 1 — micro-expand (always on, inline, no skill call)
 
 Before any interviewing, lead with divergence. Produce, tersely:
