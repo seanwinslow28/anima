@@ -24,6 +24,18 @@ These rules apply to **every** Claude Code session working in this project. They
 
 - **Per-animation-project docs — `CLAUDE.md` + `STORYBOARD.md` in the project's brief dir (convention, 2026-07-23).** Every animation project carries two living docs in its `briefs/{project}/` dir, created from [`docs/templates/`](docs/templates/) at project start: a project **`CLAUDE.md`** (the session-orientation layer — the piece's laws as one-liners, read-first pointers, where-things-live; auto-loads for any session in that tree; **never forks the record** — decisions stay in the project's `concept.md` Decision Record, and concept.md wins on disagreement) and a **`STORYBOARD.md`** (the per-beat production tracker: script/board/location/character/still/motion/Sean-approved status per beat; **updated on every generation and approval**). First real pair: [`briefs/2026-07-02-grandmaster/CLAUDE.md`](briefs/2026-07-02-grandmaster/CLAUDE.md) + [`STORYBOARD.md`](briefs/2026-07-02-grandmaster/STORYBOARD.md) (FIRST LICKS).
 
+- **Every PR here is squash-merged — expect false divergence on the next branch (2026-08-02).** Squashing replaces a branch's commits with one new commit on `main`, so git loses the shared ancestry even though the *content* landed. Any branch created before that squash then looks divergent forever. Recognize it by these symptoms, all of which have bitten this repo:
+  - A PR shows **far more changed files than `main` actually needs** (PR #121 displayed 67 when the real answer was 17).
+  - The PR reports **conflicts in files nobody touched twice** — usually `CHANGELOG.md` and a `concept.md`, because both sides append near the top.
+  - `git branch -d` **refuses to delete a branch that is provably merged**, because it checks ancestry.
+  - `git log origin/main..<branch>` shows commits that are already on `main`.
+
+  **The fix, and the order matters.** Before opening the PR, merge `main` back into the branch — `git merge --no-commit --no-ff origin/main` — and resolve. This resets the merge base and shrinks the PR to the real diff. Precedent: `c87fadd` did it for the #119 overlap and `85b2b73` for #120.
+
+  **Resolve by evidence, not by side.** Do not reflexively take either version. Compare content and prove which is newer, because **`main` can be the stale one**: at PR #121, `main` still carried the *superseded* FIRST LICKS canon (the retired camcorder-cassette end card, the old "phoenix is born" inscription, the ~3:30–4:00 runtime, the mid-montage second-compartment star discovery) — all killed by DR #33/#34, all still live on `main` because the branch holding the ratified text hadn't merged yet. Two checks that settle it fast: `diff <(git show origin/main:FILE) <(git show HEAD:FILE)` for whether one side is a strict superset, and the Decision Record for which text a DR ratified.
+
+  **Verifying a stale branch before deleting it.** Ancestry lies here, so use content. `git diff --name-only origin/main..<branch>` (two-dot) is the real test — `0` means `main` already has everything. Three-dot (`...`) uses the broken merge base and will overstate. A branch that looks ahead by hundreds of insertions is usually just *behind*, holding older versions of lines `main` has since rewritten. Confirm the branch's PR is `MERGED`, then delete with `-D` (`-d` will refuse).
+
 ## The 10-Phase Pipeline
 
 ```
