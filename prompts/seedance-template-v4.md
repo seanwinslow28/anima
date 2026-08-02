@@ -10,6 +10,8 @@
 
 For all Seedance 2.0 image-to-video generations on hand-drawn pencil-test aesthetic content. Fill in the `[BRACKETED]` placeholders with shot-specific content; leave the structural scaffolding alone.
 
+**Generalization — the genre anchor is also the anti-3D lever (2026-07-23).** Seedance 2.0 reads **3D / volumetric by default** and has **no negation** (rule 2), so the leading genre anchor is the only thing that flattens it. For ANY 2D register (not just this pencil-test one), lead with a **flat-2D-cel anchor** naming the medium + the register/show + **`animated on twos`** (the load-bearing stepped-2D token that reads hand-drawn, not smooth-3D). Ratified by Sean's A/B on the FIRST LICKS primal M7 pass — the anchored take read measurably flatter. Worked anchor: *"Flat hand-drawn 2D cel animation — bold hand-inked lines, flat drawn shapes, animated on twos, in the [register/show] style."* See memory `seedance-2d-animation-anchor`.
+
 ## The template
 
 ```
