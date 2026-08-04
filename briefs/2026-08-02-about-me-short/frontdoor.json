@@ -1,0 +1,24 @@
+{
+  "slug": "about-me-short",
+  "characters": [
+    "sean-anchor",
+    "claude-mascot",
+    "codex-cloud",
+    "gemini-star",
+    "grok-gremlin",
+    "user"
+  ],
+  "stage_provenance": [
+    "micro-expand",
+    "expand:ending-and-problem",
+    "expand:voice-format",
+    "expand:hq-room",
+    "expand:user-problem",
+    "expand:user-character",
+    "interrogate",
+    "art-viz",
+    "stress-test",
+    "synthesize"
+  ],
+  "mode": "interactive"
+}

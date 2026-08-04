@@ -1,0 +1,127 @@
+- character_id: sean-anchor
+  display_name: Sean
+  story_role: 'Protagonist and narrator. The Full Stack PM, center frame: in the chaos
+    in cycle 1 (thinking he''s conducting, egging the team on), then the swivel-away
+    step-back — the film''s one quiet beat — and the steady conductor of the pit stop.
+    Speaks exactly once on screen (the question to the user); his real recorded voice
+    is the serene How-To narrator throughout.'
+  style_register: pencil-test-colored
+  source_notes: 'Existing registered character — reuse the sean-anchor Bible.
+
+    New acting requirements for this piece:
+
+    - The swivel: desk chair turned away from three monitors to face camera, eyes
+    closed, deep breath, both palms pressed gently downward at chest height (the ''everybody
+    settle'' gesture — small, bent elbows, nothing straight-armed; a raised-arm pose
+    was explicitly retired for silhouette read-risk).
+
+    - Cycle-1 ''egging them on'' energy vs. post-step-back conductor calm — same character,
+    two tempos.
+
+    - Scene anchor: briefs/2026-08-02-about-me-short/art-viz/route-c--gpt-ref.png
+    (backup route-c--nb2.png).
+
+    - Turnarounds on disk: runs/Act-Rework-Backlog/00_refs_normalized/sean-character-full-body-turnaround.png,
+    runs/Act-Rework-Backlog/00_refs_normalized/sean-head-turnaround.png.'
+  anchor_ref: characters/sean-anchor/anchor.png
+  style_ref_ids: []
+  cy_target_dir: characters/sean-anchor/
+- character_id: claude-mascot
+  display_name: Claude
+  story_role: 'Sidekick. Terracotta plush robot — earnest, over-caveating, gentle
+    voice. Wrong-build: a 40-page beautifully-structured, sticky-flagged strategy
+    document, still growing as the alarm re-blares. Pit-stop micro-task: the confirmation
+    copy.'
+  style_register: pencil-test-colored
+  source_notes: 'Existing registered character — reuse the claude-mascot Bible.
+
+    New acting requirements: buried-under-paper gag staging; tidy reading-nook corner
+    (squared book stack, sticky-flags, small well-watered plant).
+
+    Turnarounds on disk: runs/Act-Rework-Backlog/00_refs_normalized/claude-anchor.png,
+    runs/Act-Rework-Backlog/00_refs_normalized/claude-turnaround.png.'
+  anchor_ref: runs/Act-Rework-Backlog/00_refs_normalized/claude-anchor.png
+  style_ref_ids: []
+  cy_target_dir: characters/claude-mascot/
+- character_id: codex-cloud
+  display_name: Codex
+  story_role: 'Sidekick. Cloud creature with a terminal-symbol (>_) face — terse build-monotone
+    voice. Wrong-build: silently rebuilds the entire checkout stack from scratch,
+    flawless, ten thousand lines, nobody asked. Pit-stop micro-task: one line of code.'
+  style_register: pencil-test-colored
+  source_notes: 'Lavender-purple rounded cloud body, stubby arms, terminal-prompt
+    face (>_) that doubles as its expression surface.
+
+    Corner: a humming server rack wedged next to the microwave, mechanical keyboard,
+    labeled cables, terminal glow.
+
+    Voice cliche: terse, monotone, ship-it energy; speaks in short build statements.
+
+    Anchor + turnaround on disk: runs/Act-Rework-Backlog/00_refs_normalized/codex-cloud-anchor.png,
+    runs/Act-Rework-Backlog/00_refs_normalized/codex-turnaround.png; scene anchor
+    briefs/2026-08-02-about-me-short/art-viz/route-c--gpt-ref.png.'
+  anchor_ref: runs/Act-Rework-Backlog/00_refs_normalized/codex-cloud-anchor.png
+  style_ref_ids: []
+  cy_target_dir: characters/codex-cloud/
+- character_id: gemini-star
+  display_name: Gemini
+  story_role: 'Sidekick. Blue-purple star creature — bubbly option-overload voice.
+    Wrong-build: fifty gorgeous redesign concepts taped over every surface (new brand,
+    new logo, seasonal themes, a shop mascot). Pit-stop micro-task: make the button
+    pretty.'
+  style_register: pencil-test-colored
+  source_notes: 'Five-pointed star body with a blue-to-purple gradient, stubby arms,
+    tiny cheerful face; reads sweet, moves fast.
+
+    Corner: moodboard wall, string lights, dozens of taped-up colorful sketches.
+
+    Voice cliche: bubbly, enthusiastic, always offering one more option.
+
+    Anchor + turnaround on disk: runs/Act-Rework-Backlog/00_refs_normalized/gemini-star-anchor.png,
+    runs/Act-Rework-Backlog/00_refs_normalized/gemini-star-turnaround.png.'
+  anchor_ref: runs/Act-Rework-Backlog/00_refs_normalized/gemini-star-anchor.png
+  style_ref_ids: []
+  cy_target_dir: characters/gemini-star/
+- character_id: grok-gremlin
+  display_name: Grok
+  story_role: 'Sidekick. Grey gremlin — feral edgelord voice, chaos energy played
+    affectionate, never contemptuous (comedy-boundary rule: brilliant, only misaimed).
+    Wrong-build: sledgehammers the checkout wall (''what if buying was FREE?'') and
+    builds a guerrilla-marketing rocket mid-room. Pit-stop micro-task: demolish the
+    old button.'
+  style_register: pencil-test-colored
+  source_notes: 'Grey gremlin: huge bat ears, wide sharp-toothed grin, skinny limbs,
+    tail; red-orange eyes.
+
+    Corner: the beanbag, a dartboard with every dart in the wall AROUND it, a ceiling
+    scorch mark nobody discusses.
+
+    Tone guardrail (stress-test Track item): the caricature stays on the affection
+    side of the affection/snide line — sensitivity read at boards.
+
+    Anchor + turnaround on disk: runs/Act-Rework-Backlog/00_refs_normalized/grok-gremlin-anchor.png,
+    runs/Act-Rework-Backlog/00_refs_normalized/grok-gremlin-turnaround.png.'
+  anchor_ref: runs/Act-Rework-Backlog/00_refs_normalized/grok-gremlin-anchor.png
+  style_ref_ids: []
+  cy_target_dir: characters/grok-gremlin/
+- character_id: user
+  display_name: The USER
+  story_role: The reason the film exists. A faceless grey pencil-test humanoid in
+    a t-shirt reading 'USER', small in the doorway, unnoticed through the chaos. Colorizes
+    green — still faceless — at the exact moment Sean understands the real problem.
+    Never a specific man or woman.
+  style_register: pencil-test-colored
+  source_notes: 'Design thesis, Sean verbatim: ''A user is almost always faceless
+    unless it''s a close client or customer'' — understanding is what colorizes them.
+
+    Two states: (1) GREY — unfinished, construction-lines placeholder person, the
+    only fully colorless element in any frame; (2) GREEN — same figure, colorful (green
+    lean), still faceless, beaming posture.
+
+    The USER tee survives both states.
+
+    No refs exist yet — art-department design pass to come; scene-scale reference
+    in briefs/2026-08-02-about-me-short/art-viz/route-c--gpt-ref.png (doorway figure).'
+  anchor_ref: null
+  style_ref_ids: []
+  cy_target_dir: characters/user/
