@@ -3,30 +3,76 @@ display_name: Claude Mascot
 style_register: pencil-test-colored
 palette:
 - name: terracotta_orange_body
-  hex: '#C77C52'
+  hex: '#DE9C78'
+  source: anchor.png
+  method: sampled
+  sampled_on: '2026-08-15'
+  confidence: high
+  supersedes: '#C77C52'
   role: "body-fill-primary \u2014 the rounded box; flat muted clay-orange with cross-hatched\
     \ warm-graphite shadow, never gradient- or cel-shaded"
 - name: cream_paper
-  hex: '#F2E6CC'
+  hex: '#FCF4DE'
+  source: anchor.png
+  method: sampled
+  sampled_on: '2026-08-15'
+  confidence: high
+  supersedes: '#F2E6CC'
   role: "paper-base \u2014 the shared substrate with sean-anchor; grain and warmth\
     \ read through the line work, never a flat vector fill"
 - name: warm_graphite_line
   hex: '#3D3530'
+  source: sean-anchor/character.yaml
+  method: declared
+  confidence: unverified
+  not_resampled_because: "an anti-aliased pencil stroke over a warm ground has no single
+    pixel colour to sample; a modal sample returns the blend and a darkest-core sample
+    disagrees with it by more than the error being corrected. This is a design intent,
+    not a measurement. Sample it by eye with a colour picker on a stroke core at full
+    resolution, or leave it declared."
   role: "line-contour \u2014 construction cross-line, final contour, and cross-hatch;\
     \ warm dark gray, never pure black, never cool gray (carried from sean-anchor\
     \ for register parity)"
 - name: terracotta_shadow
   hex: '#9E5A38'
+  source: anchor.png, A-7 two-shot
+  method: eyeballed
+  confidence: unverified
+  not_resampled_because: "the cross-hatch is a blend by design, and the sampled value
+    varies by dE 23 across plates of the same character — an unstable estimate would
+    replace an unverified one with a falsely precise one."
   role: "shadow-hatch \u2014 the darker clay tone the warm-graphite cross-hatch reads\
     \ as where it sits over the body fill on the far side plane and the underside"
 - name: cast_shadow_graphite
   hex: '#B3A78C'
+  source: anchor.png, A-7 two-shot
+  method: eyeballed
+  confidence: unverified
+  not_resampled_because: "sampled value varies by dE 12 across plates of the same
+    character; a loose graphite scribble has no flat region to sample."
   role: "cast-shadow \u2014 the soft, loose, hand-drawn graphite scribble directly\
     \ beneath the box on the paper, not a rendered drop-shadow"
 - name: eye_dot_graphite
   hex: '#2E2823'
+  source: anchor.png
+  method: eyeballed
+  confidence: unverified
+  not_resampled_because: "the dots cover under 0.01% of the pixels and are entirely
+    anti-aliased edge; there is no unblended core to sample."
   role: "eye-and-brow-accent \u2014 the two dot eyes and the two short brow strokes;\
     \ the deepest warm-graphite mark on the face"
+palette_note: "2026-08-15 — every entry now states where it came from and how it was
+  obtained, because driftgate scored an extraction against this palette and reported
+  five disagreements that were substantially this sheet's own drift from its sources
+  (driftgate G67). Two entries were re-sampled from the anchor and superseded: the body
+  fill and the paper, both flat regions whose sampled value is stable to dE 3 across
+  every plate of this character. Four were NOT re-sampled and keep their original
+  eyeballed or declared values, each with the reason recorded — a line stroke and an
+  eye dot have no unblended pixel to sample, and the two shadow tones vary by more
+  across plates than the error being corrected. Sampled by hue-gated modal analysis of
+  the anchor at 900px, not a colorimeter. Nothing here is a taste judgement: the
+  superseded values were further from every plate of this character than the model's
+  own reading was, including the plate they were eyeballed from."
 proportions:
   sf03: opt_out
   head_to_body: "N/A \u2014 the mascot is a single fused rounded-box body with no\
