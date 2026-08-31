@@ -1,0 +1,13 @@
+# U — single-character corner plate (Codex at his rack). The S04 plate.
+# job 6505a009-c109-4c14-99eb-3ab3c43afe90 | gpt_image_2 2k/high 16:9
+# refs: cast-scale-lineup.png + D-clean-plate.png
+# RESULT: FFT phase-corr 0.423 — BETTER than the two-character edit, with the tighter
+#         ~65-word prompt. Armchair, tables, mugs, rug, plant, cooler, coffee machine all held.
+# This is the prompt SHAPE to copy for character-into-plate: role-tag both refs, name ONE
+# character, one position clause in words, one scale clause, "Keep Image 2 unchanged", stop.
+
+Image 1 is the character reference lineup. Image 2 is the background scene.
+
+Add only the lavender-purple cloud creature from Image 1, keeping its exact design: pale chevron, one dot eye, short underscore mouth, small brows. Place it at the left, standing on the floor beside the tall black rack, one stubby arm raised to it. It is knee-high, small in the room, with a soft graphite contact shadow.
+
+Keep Image 2 unchanged. Pencil-test register. Do not add any text.

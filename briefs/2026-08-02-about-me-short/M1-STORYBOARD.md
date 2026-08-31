@@ -88,11 +88,11 @@ authority for the character-into-plate edit.
 |---|---|---|---|---|---|---|---|---|
 | S01 | Title card — HOW TO SOLVE A PROBLEM | 1 | typography, **not** Seedance | ✓ | — | n/a | — | The straight man: it must not move, so the alarm has something to break |
 | S02 | **Sean at his desk — MEDIUM, from behind** | 2 | full-scene | ✓ | **✓** | n/a | — | **The all-corners wide was CUT 2026-08-30.** In it the mascots clustered near centre and all faced camera, contradicting the per-corner premise it was meant to establish. The film opens on Sean typing and cuts out to each corner. Plate `S02-sean-desk-v1.png` |
-| S03 | Claude's tidy nook | 2 | full-scene | ✓ rebuilt | **RE** | n/a | — | **Bare-wall version SUPERSEDED 2026-08-30** — Sean: *"feels naked… an extremely clean museum, not a workspace."* Sparse plate preserved at `m1-guides/old/`. Guide rebuilt prop-rich; re-generate |
+| S03 | Claude's tidy nook | 2 | plate + edit | ✓ rebuilt | **✓** | **✓** | — | Re-generated prop-rich 2026-08-30. Ordered clutter — supply desk, file box, binder shelf — because his tidiness is the characterisation. Plate `plates/S03-claude-nook-v2.png`, composite `composites/S03-claude-nook-composite-v1.png` (phase-corr 0.52). Sparse v1 preserved at `m1-guides/old/` |
 | S04 | Codex's humming rack | 2 | plate + edit | ✓ | **✓** | **✓** | **✓** | **Proven end to end in probe-205.** Plate `U-codex-corner.png`, 7s clip `W-single-7s.mp4` |
-| S05 | Gemini's string-lit moodboard | 2 | plate + edit | ✓ | — | — | — | Mid-bit: taping up another concept, already bouncing to the next |
-| S06 | Grok's dartboard | 2 | plate + edit | ✓ | — | — | — | Darts in the **wall around** the board. The misses are the joke and they land before he throws |
-| S07 | The CRT alarm — PROBLEM! | 3 | plate + edit | ✓ | — | — | — | Dead-stop hold → burst. Falling CHECKOUT COMPLETIONS graph |
+| S05 | Gemini's string-lit moodboard | 2 | plate + edit | ✓ | **✓** | **draft ×3** | — | Plate `plates/S05-gemini-moodboard-v1.png` — the best of the four, and it matches S04's moodboard wall. **Composite needs Sean's pick**: v1 no raised arm, v2 arm up but the star silhouette collapses, v3 silhouette holds and a fresh card is on the board. Lean v3 |
+| S06 | Grok's dartboard | 2 | plate + edit | ✓ | **✓** | **✓** | — | Plate + composite landed first time. Every dart in the wall, board face clean. `composites/S06-grok-dartboard-composite-v1.png` (phase-corr 0.47). **Prompt hazard recorded:** "fanged", "red eyes", "gremlin", "throw" tripped the NSFW filter — the softened wording is in `prompts/S06-grok-composite.txt` and is the one to reuse |
+| S07 | The CRT alarm — PROBLEM! | 3 | plate + edit | ✓ | **✓ ×2** | n/a | — | Generated as a **keyframe pair**: `plates/S07-alarm-v1.png` (screen on, PROBLEM! over the falling graph) and `composites/S07-alarm-screenoff-v1.png` (same set, screen dark) as a surgical edit, phase-corr 0.47. That pair unlocks the start+end-keyframe route, one of the two untested drift mitigations. Open: the graph carries no CHECKOUT COMPLETIONS label |
 
 **Aliasing hazard on this movement:** Codex (lavender cloud) and Gemini (blue-purple star)
 are the same colour family, and NB2 corrupted one with the other **4/4** in July. They are in
@@ -112,6 +112,30 @@ later shot needs both in frame, split the generation passes.
 - **The CRT** (S07) fires again at beat 10 — *PROBLEM (STILL!)*, visually bigger, frame shake
   and red flood — and a third time as the closing sting. Same fixture, same wall.
 - **The CRT is now the USER's stage.** Sean's ruling moves the USER's introduction from the doorway onto the screen, so S07's television is carrying more than the alarm — Movement 3's reveal happens in that same fixture.
+
+## Production log — 2026-08-30 evening
+
+Instrumented against the **4-hour bar**. Clock started 21:29; four plates, four composites
+and two re-rolls done by 21:47 — **~18 minutes of wall-clock for six of the seven setups'
+still-images**, 9 `gpt_image_2` calls at 8.5 credits each (~76 credits). One NSFW refusal
+(S06, first wording) and three rolls on S05. No motion generated yet — that gate is Sean's.
+
+**Route note, and it is a change of mechanism for S03.** The storyboard had S03 as
+`full-scene`; it was generated as a **clean plate + character edit** like the others, so
+every corner now has a character-free plate on file. That is what keeps the
+matte-the-character-out-and-re-lay-it-on-the-pristine-plate mitigation available for S03
+too, and it costs one extra generation. Say so if you would rather have had the single pass.
+
+**The re-angle reconstruction pattern is what made these work.** `gpt_image_2` will not
+re-camera from an edit, so each plate role-split two references: the S04 plate as
+world/style/fixture bible with an explicit *"do not copy its camera"* clause, and the shot's
+own character-free composition rough for the camera. Every plate followed its rough. The
+character-free roughs are new, emitted by `make_m1_guides.py` as
+`M1-S0X-…-plate-rough.png` — same shot, characters and red guide marks stripped, $0.
+
+**Prompts are now on disk.** The previous session's plate prompts were not saved and could
+not be recovered; [`prompts/`](prompts/) holds every prompt used tonight plus the shared
+blocks, so a re-roll is a re-run rather than a reconstruction.
 
 ## Open before generation starts
 

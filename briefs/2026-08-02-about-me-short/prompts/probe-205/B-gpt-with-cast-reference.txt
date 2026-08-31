@@ -1,0 +1,14 @@
+# B — identity test, GPT Image 2 + CAST LINEUP REFERENCE. *** THE WINNER ***
+# job 071eaecf-46f7-4bac-aaf0-62b06c627e01 | gpt_image_2 2k/high 16:9 | ~8.5cr
+# refs: cast-scale-lineup.png
+# RESULT: identity HOLDS (chevron, dot eye, underscore, brows; star's curved top point)
+#         AND the graphite register survives. Settled the fear that refs would cost the tooth.
+#         No colour-family aliasing between the lavender cloud and the blue-purple star.
+
+Image 1 is the character reference lineup. Keep each character's exact design, proportions and facial features — in particular the cloud creature's terminal-prompt face and the star creature's shape and face. Do not redesign them.
+
+Place them in a new scene: medium shot of two adjacent corners of a cluttered break-room headquarters, a 16:9 cartoon still.
+
+On the left, the lavender-purple cloud creature stands beside a humming server rack, one stubby arm reaching up to it. On the right, the blue-and-purple star creature stands in front of a moodboard wall covered edge to edge with dozens of taped-up colorful sketches, strung with small clip lights.
+
+Style: 2D pencil-test animation still — graphite linework, visible construction lines, warm cream paper, loose flat-color washes that do not fully respect the lines, as if the film is colorizing mid-frame. The creatures keep their colors; the room stays cream-and-graphite. 1950s cartoon staging. No clean vector fill, no digital gradients, no painterly gloss, no oil-painting rendering, no photorealism. Do not add any text.

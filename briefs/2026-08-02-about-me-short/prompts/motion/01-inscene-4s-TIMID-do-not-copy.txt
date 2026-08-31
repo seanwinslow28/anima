@@ -1,0 +1,20 @@
+# IN-SCENE MOTION, 4s — THE OVER-DAMPED PROMPT. Kept as the counter-example.
+# job 0dd48945-6e93-4bb1-9fd5-c9dbca6bad9a | seedance_2_0 fast 4s 720p generate_audio:false
+# start_image: job 071eaecf (the B plate)
+# RESULT: background REGENERATED — 27.4% of moodboard pixels and 35.7% of rack pixels changed
+#         by >8 levels. Camera drifted despite "LOCKED". Codex lost its dot eye and left the rack.
+#         Motion energy only 4.40.
+# TWO FAULTS, BOTH THE PROMPT'S:
+#   1. ~40% of it is NEGATION. Seedance has NO negative-prompt support — all of it was wasted.
+#   2. "light taps", "one small bounce", "feet planted" are DAMPING words. They dampen.
+# See 03-inscene-4s-LIVELY.txt for the rebuild: +55% motion energy for slightly LESS drift.
+
+The camera is LOCKED — no camera move, no pan, no zoom, no drift.
+
+The lavender-purple cloud creature on the left taps at the server rack with its raised stubby arm, two or three light taps, its rounded body bobbing gently as it does. The blue-and-purple star creature on the right gives one small bounce on the spot and gestures upward toward the moodboard wall behind it. Both keep their feet planted on the floor. No walking across the room, no new characters, nothing enters frame.
+
+EVERY PROP AND SURFACE STAYS EXACTLY THE SAME DRAWING: the server rack, its status lights, the coffee counter, the water cooler, the moodboard sheets, the clip lights, the tables, the mugs, the rug and the plant do not change, move, multiply or redraw.
+
+2D ANIMATION RULES: this is a hand-drawn colored-pencil pencil-test animation. The image stays a FLAT 2D DRAWING at all times — visible paper grain, gentle line boil on the pencil lines, motion held on twos. No 3D rotation, no parallax warping of the drawing, no perspective morph, no CGI smoothness, no depth-of-field blur, no lighting changes.
+
+THE CLOUD CREATURE'S FACE NEVER CHANGES DESIGN: a pale chevron, one dot eye, a short underscore bar and small brows, exactly as in the first frame. NO MOUTH is ever added to it.

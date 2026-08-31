@@ -1,0 +1,14 @@
+# E — characters on a flat chroma green field (GREEN-SCREEN ROUTE, later withdrawn)
+# job 6c79ecd0-c6ee-4951-b523-d73f7a474013 | gpt_image_2 2k/high 16:9 | refs: cast-scale-lineup.png
+# RESULT: GPT honoured the flat-green instruction almost perfectly — measured std < 1 level
+#         per channel, 99.9th-pct deviation 3.8. Essentially studio-flat, which FALSIFIED the
+#         prediction that a generated green screen would be uneven.
+# ROUTE WITHDRAWN: characters on green gesture at NOTHING. Won on pixel stability, lost on staging.
+
+Image 1 is the character reference lineup. Keep each character's exact design, proportions and facial features — in particular the cloud creature's terminal-prompt face (chevron, dot eye, underscore mouth, small brows) and the star creature's shape, curved top point and face. Do not redesign them.
+
+Draw ONLY these two characters standing on a completely FLAT, EVEN, PURE CHROMA GREEN BACKGROUND (#00B140). The left character is the lavender-purple cloud creature, one stubby arm raised in front of it as if tapping at something. The right character is the blue-and-purple star creature, one arm raised as if pointing upward. Both stand full-height with their feet clearly visible and flat on the ground line at the bottom of the frame.
+
+ABSOLUTELY NOTHING ELSE IN FRAME: no room, no furniture, no props, no floor, no shadow, no horizon, no gradient, no texture, no paper grain in the background. The background is a single uniform flat green fill, edge to edge.
+
+The CHARACTERS THEMSELVES keep the pencil-test look: graphite linework, visible construction lines, loose flat-color washes that do not fully respect the lines. The characters keep their colors and read cleaner and more saturated than a background would. No clean vector fill, no digital gradients on the characters, no painterly gloss, no photorealism. Do not add any text.

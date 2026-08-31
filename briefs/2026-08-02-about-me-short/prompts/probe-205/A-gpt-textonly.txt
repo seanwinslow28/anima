@@ -1,0 +1,10 @@
+# A — identity test, GPT Image 2 TEXT-ONLY (no character reference)
+# job 45d96bc1-a08c-4e03-aa93-286d8a30b0a9 | gpt_image_2 2k/high 16:9 | ~8.5cr
+# RESULT: superb register, IDENTITY DRIFTS. Codex over-saturated, no brows, no dot eye;
+#         star symmetrical and wrong. This is why plates carry the cast lineup as a ref.
+
+Medium shot of two adjacent corners of a cluttered break-room headquarters, a 16:9 cartoon still.
+
+On the left, a chubby lavender-purple cloud creature with stubby limbs, whose face is a computer-terminal prompt symbol — a pale angular chevron and a short underscore bar — stands beside a humming server rack, one stubby arm reaching up to it. On the right, a cheerful blue-and-purple star creature with five points, stubby arms and a tiny smiling face with two dot eyes, stands in front of a moodboard wall covered edge to edge with dozens of taped-up colorful sketches, strung with small clip lights.
+
+Style: 2D pencil-test animation still — graphite linework, visible construction lines, warm cream paper, loose flat-color washes that do not fully respect the lines, as if the film is colorizing mid-frame. The creatures keep their colors; the room stays cream-and-graphite. 1950s cartoon staging. No clean vector fill, no digital gradients, no painterly gloss, no oil-painting rendering, no photorealism. Do not add any text.

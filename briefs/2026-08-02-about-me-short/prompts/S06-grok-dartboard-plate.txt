@@ -1,0 +1,13 @@
+Image 1 is the WORLD BIBLE for this location. Preserve its drawing style, line weight, paper, palette, light, and its fixture designs and materials exactly. Do NOT copy its camera, framing, horizon, perspective or screen-space layout.
+Image 2 is a monochrome COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon line and left-to-right placement, replace its grey shapes with the corresponding real fixtures, and remove every guide mark.
+
+CAMERA: eye level, medium-wide on the dartboard wall, locked. Horizon low, floor occupying the bottom fifth.
+VISIBLE LEFT TO RIGHT: a battered side table at the left edge with crushed drink cans and a mug on it; a stretch of clear empty floor; a few sheets of paper on the floor; two stacked wooden crates; then the hero prop — a dartboard hung flat on the wall with its face completely clean and no dart in it, and seven darts stuck into the bare wall all around the board, above it, beside it and below it, each with a small chipped dent in the plaster where it went in; the vertical seam where two walls meet; and a metal cabinet of binders at the right edge.
+Every dart has missed. Nothing is stuck in the board itself.
+This corner belongs to a reckless show-off: it is scuffed, cluttered and lived-in.
+OUT OF FRAME: the rest of the break room, the server rack, the moodboard wall, the television. The wall is intact — no hole, no damage beyond the dart dents. The floor in the left half stays clear and empty.
+The room is empty of characters and people.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on the characters and on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text apart from what is described.

@@ -41,6 +41,10 @@ import subprocess
 OUT = os.path.dirname(os.path.abspath(__file__))
 W, H = 1536, 864
 GY = 700                       # the shared ground line — never move it
+PLATE_MODE = False             # True → emit the CLEAN plate rough:
+                               # no characters, no red guide marks. The plate
+                               # pass generates the empty set; the character is
+                               # edited in afterwards (settled route, probe-205).
 
 BG, FLOOR = "#eeeeee", "#bcbcbc"
 DARK, MID, LIGHT = "#292929", "#555555", "#9a9a9a"
@@ -138,6 +142,57 @@ def dartboard(cx, cy, r=78):
     return s
 
 
+def shelfunit(x, gy=GY, w=200, h=360, shelves=4, per=5):
+    """Shelving of binders. The standard lived-in wall filler — a workspace has
+    storage in it. Added 2026-08-30 when Sean reverted the bare-wall read."""
+    s = f'<rect x="{x}" y="{gy-h}" width="{w}" height="{h}" fill="{FAINT}"/>'
+    step = (h - 40) // shelves
+    bw = (w - 44) // per
+    for i in range(shelves):
+        y = gy - h + 20 + i * step
+        s += f'<rect x="{x+14}" y="{y}" width="{w-28}" height="14" fill="{MID}"/>'
+        for j in range(per):
+            s += (f'<rect x="{x+22+j*bw}" y="{y-46}" width="{bw-9}" height="46" '
+                  f'fill="{LIGHT}"/>')
+    return s
+
+
+def boxes(x, gy=GY, n=3):
+    """Stacked cartons — printer paper, spare parts, the stuff nobody unpacks."""
+    s = ""
+    for i in range(n):
+        w = 130 - i * 16
+        s += (f'<rect x="{x+i*11}" y="{gy-(i+1)*84}" width="{w}" height="84" '
+              f'fill="{MID if i % 2 else LIGHT}"/>')
+    return s
+
+
+def floorjunk(x0, gy=GY, n=5):
+    """Loose paper and debris on the floor. Cheap, and it is what makes a room
+    read as worked-in rather than showroom-clean."""
+    s = ""
+    for i in range(n):
+        s += (f'<rect x="{x0+i*54}" y="{gy-16+(i%3)*6}" width="{78-(i%2)*20}" '
+              f'height="10" fill="{LIGHT}"/>')
+    return s
+
+
+def worktable(x, gy=GY, w=300, h=140, mess=True):
+    """A low table or credenza with supplies on it."""
+    s = f'<rect x="{x}" y="{gy-h}" width="{w}" height="{h}" fill="{LIGHT}"/>'
+    if mess:
+        s += f'<rect x="{x+24}" y="{gy-h-38}" width="112" height="38" fill="{MID}"/>'
+        s += f'<rect x="{x+164}" y="{gy-h-26}" width="56" height="26" fill="{MID}"/>'
+        s += f'<circle cx="{x+w-46}" cy="{gy-h-17}" r="17" fill="{MID}"/>'
+    return s
+
+
+def livedin_caption(x=W // 2, y=120,
+                    text="LIVED-IN: supplies, boxes, binders, loose paper — a workspace"):
+    return (f'<text x="{x}" y="{y}" font-family="Helvetica" font-size="21" '
+            f'text-anchor="middle" fill="{CAPTION}">{text}</text>')
+
+
 def crt(cx, cy, w=300, h=230, alarm=False):
     """Corner-mounted CRT. alarm=True draws the PROBLEM! plate + falling graph."""
     s = (f'<path d="M{cx} {cy-h//2-70}v70" stroke="{MID}" stroke-width="7"/>'
@@ -187,6 +242,8 @@ def doorway(x, gy=GY, w=170, h=380):
 # bat ears, square plush, human. Heights are the cast-scale-lineup ratios —
 # Sean 1.00, Grok 0.42, Codex 0.36, Gemini 0.30, Claude 0.26.
 def sean(cx, gy=GY, h=340, back=False, lean=0):
+    if PLATE_MODE:
+        return ""
     r = h * 0.15
     hcy = gy - h + r
     sh = hcy + r
@@ -203,6 +260,8 @@ def sean(cx, gy=GY, h=340, back=False, lean=0):
 
 def codex(cx, gy=GY, h=180):
     """Lobed cloud + two stubby legs."""
+    if PLATE_MODE:
+        return ""
     bw = h * 0.92
     by = gy - h * 0.34
     s = ""
@@ -218,6 +277,8 @@ def codex(cx, gy=GY, h=180):
 
 def gemini(cx, gy=GY, h=150):
     """Five-point star with a flopping top point + two legs."""
+    if PLATE_MODE:
+        return ""
     body = h * 0.68
     cy = gy - h + body * 0.55
     pts = []
@@ -236,6 +297,8 @@ def gemini(cx, gy=GY, h=150):
 
 def grok(cx, gy=GY, h=210):
     """Round gremlin, big bat ears, tail."""
+    if PLATE_MODE:
+        return ""
     r = h * 0.34
     cy = gy - h + r * 1.15
     s = (f'<path d="M{cx-r*1.02:.0f} {cy-r*0.30:.0f}L{cx-r*2.05:.0f} {cy-r*1.55:.0f}'
@@ -254,6 +317,8 @@ def grok(cx, gy=GY, h=210):
 
 def claude(cx, gy=GY, h=130):
     """Squarish terracotta plush, stubby limbs, side nubs."""
+    if PLATE_MODE:
+        return ""
     bw, bh = h * 0.72, h * 0.66
     x, y = cx - bw / 2, gy - h
     s = (f'<rect x="{x:.0f}" y="{y:.0f}" width="{bw:.0f}" height="{bh:.0f}" '
@@ -268,130 +333,178 @@ def claude(cx, gy=GY, h=130):
 
 
 # ── the seven setups ──────────────────────────────────────────────────────
-shots = {}
+def build_shots(plate=False):
+    """Build every rough. plate=True strips the characters and every red
+    guide mark, giving the CLEAN composition rough the plate pass wants."""
+    global PLATE_MODE
+    PLATE_MODE = plate
+    shots = {}
 
-# S01 — the title card. Typography, not blocking: this one is a layout rough.
-s, tail = head("M1-S01 — TITLE CARD · beat 1, 4s · the film's only card · "
-               "1950s 'HOW TO' plate, dead centre, held still || the card is the "
-               "straight man: nothing moves, so the alarm later has something to break")
-b = s + f'<rect x="150" y="210" width="{W-300}" height="340" fill="{FAINT}"/>'
-b += (f'<text x="{W//2}" y="382" font-family="Helvetica" font-size="76" font-weight="bold" '
-      f'text-anchor="middle" fill="{DARK}">HOW TO SOLVE</text>')
-b += (f'<text x="{W//2}" y="472" font-family="Helvetica" font-size="76" font-weight="bold" '
-      f'text-anchor="middle" fill="{DARK}">A PROBLEM</text>')
-b += f'<path d="M{W//2-190} 512H{W//2+190}" stroke="{MID}" stroke-width="7"/>'
-shots["M1-S01-titlecard-guide"] = b + tail
+    # S01 — the title card. Typography, not blocking: this one is a layout rough.
+    s, tail = head("M1-S01 — TITLE CARD · beat 1, 4s · the film's only card · "
+                   "1950s 'HOW TO' plate, dead centre, held still || the card is the "
+                   "straight man: nothing moves, so the alarm later has something to break")
+    b = s + f'<rect x="150" y="210" width="{W-300}" height="340" fill="{FAINT}"/>'
+    b += (f'<text x="{W//2}" y="382" font-family="Helvetica" font-size="76" font-weight="bold" '
+          f'text-anchor="middle" fill="{DARK}">HOW TO SOLVE</text>')
+    b += (f'<text x="{W//2}" y="472" font-family="Helvetica" font-size="76" font-weight="bold" '
+          f'text-anchor="middle" fill="{DARK}">A PROBLEM</text>')
+    b += f'<path d="M{W//2-190} 512H{W//2+190}" stroke="{MID}" stroke-width="7"/>'
+    shots["M1-S01-titlecard-guide"] = b + tail
 
-# S02 — Sean at his desk, MEDIUM. Replaces the all-corners wide, cut 2026-08-30.
-# Sean's ruling: in the wide the mascots clustered near centre and all faced camera,
-# so it contradicted the per-corner premise it was meant to establish. The film now
-# opens on Sean working and cuts out to each corner — Goofy grammar: establish almost
-# nothing, let each character own its own frame.
-s, tail = head("M1-S02 — SEAN AT THE DESK · beat 2 · MEDIUM, from behind · he is typing, "
-               "absorbed, unhurried || he fills the frame and the room falls away — no "
-               "corner is established here; every mascot gets its own shot instead")
-CX, DESK = W // 2, 660          # desk edge crosses the lower frame
-b = s
-b += f'<path d="M0 214H{W}" stroke="{LIGHT}" stroke-width="5"/>'      # one quiet wall line
-# monitors stand ON the desk, behind him
-b += f'<rect x="{CX-118}" y="300" width="236" height="176" rx="8" fill="{MID}"/>'
-b += f'<rect x="{CX-392}" y="330" width="228" height="150" rx="8" fill="{LIGHT}"/>'
-b += f'<rect x="{CX+164}" y="330" width="228" height="150" rx="8" fill="{LIGHT}"/>'
-# chair back behind him
-b += f'<rect x="{CX-176}" y="452" width="352" height="230" rx="26" fill="{LIGHT}"/>'
-# SEAN, seated, from behind — head + shoulders only; the desk crops him
-b += f'<circle cx="{CX}" cy="392" r="104" fill="{DARK}"/>'
-b += (f'<path d="M{CX-172} {DESK} Q{CX-158} 486 {CX-96} 470 H{CX+96} '
-      f'Q{CX+158} 486 {CX+172} {DESK} Z" fill="{DARK}"/>')
-# arms reaching forward to the keyboard
-b += (f'<path d="M{CX-150} 540 L{CX-96} {DESK-24} M{CX+150} 540 L{CX+96} {DESK-24}" '
-      f'stroke="{DARK}" stroke-width="46" stroke-linecap="round"/>')
-b += f'<path d="M0 {DESK}H{W}V{H}H0Z" fill="{FLOOR}"/>'               # desk surface
-b += f'<rect x="{CX-160}" y="{DESK+26}" width="320" height="30" rx="9" fill="{MID}"/>'  # keyboard
-b += (f'<text x="{CX}" y="188" font-family="Helvetica" font-size="21" '
-      f'text-anchor="middle" fill="{CAPTION}">wall kept EMPTY — no corner, no clutter</text>')
-b += (f'<text x="{CX}" y="{DESK-176}" font-family="Helvetica" font-size="21" '
-      f'text-anchor="middle" fill="{CAPTION}">SEAN · seated, back to camera, typing</text>')
-shots["M1-S02-sean-desk-medium-guide"] = b + tail
+    # S02 — Sean at his desk, MEDIUM. Replaces the all-corners wide, cut 2026-08-30.
+    # Sean's ruling: in the wide the mascots clustered near centre and all faced camera,
+    # so it contradicted the per-corner premise it was meant to establish. The film now
+    # opens on Sean working and cuts out to each corner — Goofy grammar: establish almost
+    # nothing, let each character own its own frame.
+    s, tail = head("M1-S02 — SEAN AT THE DESK · beat 2 · MEDIUM, from behind · he is typing, "
+                   "absorbed, unhurried || he fills the frame and the room falls away — no "
+                   "corner is established here; every mascot gets its own shot instead")
+    CX, DESK = W // 2, 660          # desk edge crosses the lower frame
+    b = s
+    b += f'<path d="M0 214H{W}" stroke="{LIGHT}" stroke-width="5"/>'      # one quiet wall line
+    # monitors stand ON the desk, behind him
+    b += f'<rect x="{CX-118}" y="300" width="236" height="176" rx="8" fill="{MID}"/>'
+    b += f'<rect x="{CX-392}" y="330" width="228" height="150" rx="8" fill="{LIGHT}"/>'
+    b += f'<rect x="{CX+164}" y="330" width="228" height="150" rx="8" fill="{LIGHT}"/>'
+    # chair back behind him
+    b += f'<rect x="{CX-176}" y="452" width="352" height="230" rx="26" fill="{LIGHT}"/>'
+    # SEAN, seated, from behind — head + shoulders only; the desk crops him
+    b += f'<circle cx="{CX}" cy="392" r="104" fill="{DARK}"/>'
+    b += (f'<path d="M{CX-172} {DESK} Q{CX-158} 486 {CX-96} 470 H{CX+96} '
+          f'Q{CX+158} 486 {CX+172} {DESK} Z" fill="{DARK}"/>')
+    # arms reaching forward to the keyboard
+    b += (f'<path d="M{CX-150} 540 L{CX-96} {DESK-24} M{CX+150} 540 L{CX+96} {DESK-24}" '
+          f'stroke="{DARK}" stroke-width="46" stroke-linecap="round"/>')
+    b += f'<path d="M0 {DESK}H{W}V{H}H0Z" fill="{FLOOR}"/>'               # desk surface
+    b += f'<rect x="{CX-160}" y="{DESK+26}" width="320" height="30" rx="9" fill="{MID}"/>'  # keyboard
+    b += (f'<text x="{CX}" y="188" font-family="Helvetica" font-size="21" '
+          f'text-anchor="middle" fill="{CAPTION}">wall kept EMPTY — no corner, no clutter</text>')
+    b += (f'<text x="{CX}" y="{DESK-176}" font-family="Helvetica" font-size="21" '
+          f'text-anchor="middle" fill="{CAPTION}">SEAN · seated, back to camera, typing</text>')
+    shots["M1-S02-sean-desk-medium-guide"] = b + tail
 
-# S03 — Claude's tidy nook.
-s, tail = head("M1-S03 — CLAUDE'S NOOK · beat 2 · the tidy corner: everything squared, "
-               "flagged, alphabetised || he is MID-BIT — adding one more flag to a stack "
-               "already taller than he is. Earnest, not comic.")
-# BARE WALLS REVERTED 2026-08-30 (Sean): the sparse Goofy read made the corners
-# look like "an extremely clean museum, not a workspace." A break-room HQ mid-chaos
-# is LIVED IN, and the clutter is characterisation. Keep the big-in-frame scale;
-# put the props and junk back. Facing discipline stays.
-b = s + floor()
-b += paperstack(880, h=560, w=230)                       # the hero tower
-b += paperstack(1130, h=330, w=170)                      # a second stack
-b += f'<rect x="1270" y="{GY-360}" width="200" height="360" fill="{FAINT}"/>'   # shelving
-for i in range(4):                                       # shelves of binders
-    b += f'<rect x="1284" y="{GY-340+i*88}" width="172" height="16" fill="{MID}"/>'
-    for j in range(5):
-        b += f'<rect x="{1292+j*33}" y="{GY-404+i*88+56}" width="24" height="52" fill="{LIGHT}"/>'
-b += f'<rect x="120" y="{GY-150}" width="300" height="150" fill="{LIGHT}"/>'    # low desk
-b += f'<rect x="150" y="{GY-186}" width="120" height="36" fill="{MID}"/>'       # tray of supplies
-b += f'<rect x="300" y="{GY-176}" width="60" height="26" fill="{MID}"/>'        # stapler
-for i, x in enumerate((470, 520, 566)):                                          # loose papers on floor
-    b += f'<rect x="{x}" y="{GY-14+i*5}" width="86" height="10" fill="{LIGHT}"/>'
-b += f'<rect x="700" y="{GY-96}" width="120" height="96" fill="{MID}"/>'        # box of files
-b += claude(560, h=380)                                  # still large in frame
-b += (f'<path d="M632 {GY-360} q86 -54 176 -86" fill="none" stroke="{CAPTION}" '
-      f'stroke-width="4" stroke-dasharray="10 8"/>')     # his reach, toward the stack
-b += (f'<text x="{W//2}" y="120" font-family="Helvetica" font-size="21" '
-      f'text-anchor="middle" fill="{CAPTION}">LIVED-IN: supplies, boxes, binders, loose paper — a workspace</text>')
-b += mark(560, "CLAUDE · reaching up and away, never looks at camera")
-shots["M1-S03-claude-nook-guide"] = b + tail
+    # S03 — Claude's tidy nook.
+    s, tail = head("M1-S03 — CLAUDE'S NOOK · beat 2 · the tidy corner: everything squared, "
+                   "flagged, alphabetised || he is MID-BIT — adding one more flag to a stack "
+                   "already taller than he is. Earnest, not comic.")
+    # BARE WALLS REVERTED 2026-08-30 (Sean): the sparse Goofy read made the corners
+    # look like "an extremely clean museum, not a workspace." A break-room HQ mid-chaos
+    # is LIVED IN, and the clutter is characterisation. Keep the big-in-frame scale;
+    # put the props and junk back. Facing discipline stays.
+    b = s + floor()
+    b += paperstack(880, h=560, w=230)                       # the hero tower
+    b += paperstack(1130, h=330, w=170)                      # a second stack
+    b += f'<rect x="1270" y="{GY-360}" width="200" height="360" fill="{FAINT}"/>'   # shelving
+    for i in range(4):                                       # shelves of binders
+        b += f'<rect x="1284" y="{GY-340+i*88}" width="172" height="16" fill="{MID}"/>'
+        for j in range(5):
+            b += f'<rect x="{1292+j*33}" y="{GY-404+i*88+56}" width="24" height="52" fill="{LIGHT}"/>'
+    b += f'<rect x="120" y="{GY-150}" width="300" height="150" fill="{LIGHT}"/>'    # low desk
+    b += f'<rect x="150" y="{GY-186}" width="120" height="36" fill="{MID}"/>'       # tray of supplies
+    b += f'<rect x="300" y="{GY-176}" width="60" height="26" fill="{MID}"/>'        # stapler
+    for i, x in enumerate((470, 520, 566)):                                          # loose papers on floor
+        b += f'<rect x="{x}" y="{GY-14+i*5}" width="86" height="10" fill="{LIGHT}"/>'
+    b += f'<rect x="700" y="{GY-96}" width="120" height="96" fill="{MID}"/>'        # box of files
+    b += claude(560, h=380)                                  # still large in frame
+    b += (f'<path d="M632 {GY-360} q86 -54 176 -86" fill="none" stroke="{CAPTION}" '
+          f'stroke-width="4" stroke-dasharray="10 8"/>')     # his reach, toward the stack
+    b += (f'<text x="{W//2}" y="120" font-family="Helvetica" font-size="21" '
+          f'text-anchor="middle" fill="{CAPTION}">LIVED-IN: supplies, boxes, binders, loose paper — a workspace</text>')
+    b += mark(560, "CLAUDE · reaching up and away, never looks at camera")
+    shots["M1-S03-claude-nook-guide"] = b + tail
 
-# S04 — Codex's humming rack. The banked probe plate matches this setup.
-s, tail = head("M1-S04 — CODEX'S RACK · beat 2 · PLATE + 7s CLIP ALREADY BANKED "
-               "(probe-205) || mid-bit: hammering the rack, body squashing on every "
-               "strike. The one corner already proven end to end.")
-b = s + floor() + corner(980)
-b += rack(340, w=230, h=500)
-b += f'<rect x="600" y="{GY-150}" width="300" height="150" fill="{MID}"/>'
-b += moodboard(1290, cy=320, w=420, h=300)
-b += codex(560, h=210)
-shots["M1-S04-codex-rack-guide"] = b + tail
+    # S04 — Codex's humming rack. The banked probe plate matches this setup.
+    s, tail = head("M1-S04 — CODEX'S RACK · beat 2 · PLATE + 7s CLIP ALREADY BANKED "
+                   "(probe-205) || mid-bit: hammering the rack, body squashing on every "
+                   "strike. The one corner already proven end to end.")
+    b = s + floor() + corner(980)
+    b += rack(340, w=230, h=500)
+    b += f'<rect x="600" y="{GY-150}" width="300" height="150" fill="{MID}"/>'
+    b += moodboard(1290, cy=320, w=420, h=300)
+    b += codex(560, h=210)
+    shots["M1-S04-codex-rack-guide"] = b + tail
 
-# S05 — Gemini's string-lit moodboard.
-s, tail = head("M1-S05 — GEMINI'S MOODBOARD · beat 2 · the wall of fifty concepts, "
-               "string lights above || mid-bit: taping up yet another one, already "
-               "bouncing to the next. Delight, never mania.")
-b = s + floor() + corner(240)
-b += moodboard(900, cy=340, w=760, h=420) + stringlights(540, 1270, 130, n=9)
-b += gemini(400, h=230)
-b += (f'<text x="400" y="{GY-265}" font-family="Helvetica" font-size="22" '
-      f'text-anchor="middle" fill="{CAPTION}">arm up, taping</text>')
-shots["M1-S05-gemini-moodboard-guide"] = b + tail
+    # S05 — Gemini's string-lit moodboard.
+    s, tail = head("M1-S05 — GEMINI'S MOODBOARD · beat 2 · the wall of fifty concepts, "
+                   "string lights above || mid-bit: taping up yet another one, already "
+                   "bouncing to the next. Delight, never mania.")
+    # PROP-RICH per the 2026-08-30 reversal: this corner is where fifty concepts
+    # get made, so the supplies that made them are in shot.
+    b = s + floor() + corner(240)
+    b += moodboard(900, cy=330, w=760, h=400) + stringlights(540, 1270, 120, n=9)
+    b += shelfunit(56, w=172, h=300, shelves=3, per=4)   # binders, far left of the seam
+    b += worktable(600, w=360, h=130)                    # tape, markers, mug, scissors
+    b += boxes(1316, n=3)                                # cartons of blank card
+    b += floorjunk(986, n=5)                             # concepts that fell off the wall
+    b += gemini(400, h=230)
+    b += livedin_caption()
+    b += (f'<text x="400" y="{GY-265}" font-family="Helvetica" font-size="22" '
+          f'text-anchor="middle" fill="{CAPTION}">arm up, taping</text>')
+    shots["M1-S05-gemini-moodboard-guide"] = b + tail
 
-# S06 — Grok's dartboard corner.
-s, tail = head("M1-S06 — GROK'S DARTBOARD · beat 2 · darts in the WALL around the board, "
-               "not in it || mid-bit: mid-throw, grinning. The misses are the joke and "
-               "they are already on the wall before he throws.")
-b = s + floor() + corner(1230)
-b += dartboard(1000, 330, r=92)
-b += f'<rect x="1250" y="{GY-260}" width="240" height="260" fill="{FAINT}"/>'
-b += grok(430, h=290)
-b += (f'<text x="430" y="{GY-352}" font-family="Helvetica" font-size="22" '
-      f'text-anchor="middle" fill="{CAPTION}">mid-throw, arm back</text>')
-shots["M1-S06-grok-dartboard-guide"] = b + tail
+    # S06 — Grok's dartboard corner.
+    s, tail = head("M1-S06 — GROK'S DARTBOARD · beat 2 · darts in the WALL around the board, "
+                   "not in it || mid-bit: mid-throw, grinning. The misses are the joke and "
+                   "they are already on the wall before he throws.")
+    # PROP-RICH per the 2026-08-30 reversal. The hole in the wall and the rocket
+    # belong to Grok's zone but NOT yet — he blows the wall in Movement 2, so beat 2
+    # shows the wall intact and only the darts have missed so far.
+    b = s + floor() + corner(1230)
+    b += dartboard(1000, 330, r=92)
+    b += shelfunit(1268, w=200, h=340, shelves=4, per=4)  # cabinet, right of the seam
+    b += worktable(112, w=240, h=120)                     # side table, cans and a mug
+    b += boxes(812, n=2)                                  # crates he uses as a throw line
+    b += floorjunk(596, n=3)
+    b += grok(430, h=290)
+    b += livedin_caption()
+    b += (f'<text x="430" y="{GY-352}" font-family="Helvetica" font-size="22" '
+          f'text-anchor="middle" fill="{CAPTION}">mid-throw, arm back</text>')
+    shots["M1-S06-grok-dartboard-guide"] = b + tail
 
-# S07 — the CRT alarm. Beat 3.
-s, tail = head("M1-S07 — THE ALARM · beat 3, 3s · CRT flicks on: PROBLEM! over the "
-               "falling CHECKOUT graph || dead-stop hold, then burst. The CRT is HIGH on "
-               "the right wall (see S02) so this cut stays oriented.")
-b = s + floor() + corner(420)
-b += crt(880, 300, w=520, h=400, alarm=True)
-b += (f'<text x="880" y="560" font-family="Helvetica" font-size="24" '
-      f'text-anchor="middle" fill="{CAPTION}">CHECKOUT COMPLETIONS</text>')
-b += moodboard(1330, cy=300, w=340, h=260)
-shots["M1-S07-alarm-guide"] = b + tail
+    # S07 — the CRT alarm. Beat 3.
+    s, tail = head("M1-S07 — THE ALARM · beat 3, 3s · CRT flicks on: PROBLEM! over the "
+                   "falling CHECKOUT graph || dead-stop hold, then burst. The CRT is HIGH on "
+                   "the right wall (see S02) so this cut stays oriented.")
+    # PROP-RICH per the 2026-08-30 reversal. No character in this setup — the CRT
+    # is the actor. The cable run down the wall is deliberate: it makes the set read
+    # as a fixture that was installed, not a screen floating on a plane.
+    b = s + floor() + corner(420)
+    b += crt(880, 300, w=520, h=400, alarm=True)
+    b += (f'<path d="M880 500q-40 90 -140 96" fill="none" stroke="{MID}" '
+          f'stroke-width="6"/>')                           # cable tail off the set
+    b += (f'<text x="880" y="444" font-family="Helvetica" font-size="24" '
+          f'text-anchor="middle" fill="{CAPTION}">CHECKOUT COMPLETIONS</text>')
+    b += moodboard(1330, cy=290, w=340, h=250)
+    b += shelfunit(150, w=200, h=330, shelves=4, per=4)   # filing, left of the seam
+    b += worktable(646, w=420, h=140)                     # credenza under the CRT
+    b += boxes(480, n=2)
+    b += floorjunk(1120, n=4)
+    b += livedin_caption(x=250, y=150,
+                         text="LIVED-IN: filing, boxes, credenza, loose paper")
+    shots["M1-S07-alarm-guide"] = b + tail
+
+
+    if plate:
+        # One place to strip guide marks: everything drawn in CAPTION red is a
+        # note to a human, never set content. Regex beats gating each call site.
+        import re as _re
+        for k, v in list(shots.items()):
+            v = _re.sub(r'<text[^>]*fill="%s"[^>]*>.*?</text>' % CAPTION, "", v)
+            v = _re.sub(r'<path[^>]*(?:stroke|fill)="%s"[^>]*/>' % CAPTION, "", v)
+            shots[k] = v
+    return shots
 
 
 # ── write + render ────────────────────────────────────────────────────────
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+
+shots = build_shots()
+PLATE_ROUGHS = ("M1-S03-claude-nook-guide", "M1-S05-gemini-moodboard-guide",
+                "M1-S06-grok-dartboard-guide", "M1-S07-alarm-guide")
+for name, svg in build_shots(plate=True).items():
+    if name in PLATE_ROUGHS:
+        shots[name.replace("-guide", "-plate-rough")] = svg
 
 for name, svg in shots.items():
     with open(f"{OUT}/{name}.svg", "w") as f:

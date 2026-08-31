@@ -1,0 +1,19 @@
+# TITLE CARD A — the gang climbing the letters. NOT SELECTED, may be revisited.
+# job b8939f2e-c84f-4bfb-b03b-3c1976276b23 | gpt_image_2 2k/high 16:9 | refs: cast lineup
+# Direct Goofy Gymnastics grammar: the type dominates and the characters play ON it.
+# Sean: "I like Card A, but Sean is extremely small compared to the others, so we'll go with
+#        Card D for now and might circle back to Card A and regenerate."
+# TO REGENERATE: the single change is Sean's scale — make him substantially larger at the
+#        bottom centre so he reads as the protagonist rather than a bystander. Everything else
+#        landed (Grok swinging from the O, Claude propping the A with flagged paper, Gemini
+#        perched, Codex wedged between words).
+
+Image 1 is the character reference lineup. Keep each character's exact design, proportions and facial features.
+
+A 1950s theatrical cartoon TITLE CARD, 16:9. Large hand-lettered display capitals reading HOW TO SOLVE A PROBLEM, arranged on two lines across the frame, drawn in graphite outline and filled with a flat muted blue wash.
+
+The characters climb on the lettering itself: the grey bat-eared gremlin swings one-armed from the O of PROBLEM, grinning; the small terracotta plush robot props up a tilting letter with a tall stack of sticky-flagged papers; the blue-purple star creature perches on the top edge of a letter; the lavender-purple cloud creature is wedged between two words, squashed flat. The lanky blond man in a navy t-shirt and grey jeans stands small at the bottom centre, hands on hips, head tipped back, looking up at all of it.
+
+Ground: warm cream drawing paper, a light putty cream, with one soft pale tonal ellipse behind the type. Flat, quiet, low-contrast, no vignette and no dramatic lighting.
+
+Style: 2D pencil-test animation — graphite linework, visible construction lines, loose flat-colour washes that do not fully respect the lines. 1950s theatrical cartoon title card staging. No clean vector fill, no digital gradients, no painterly gloss, no photorealism. The only text anywhere in the image is HOW TO SOLVE A PROBLEM.

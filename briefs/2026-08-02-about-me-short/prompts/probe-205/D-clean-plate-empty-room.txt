@@ -1,0 +1,10 @@
+# D — the empty plate (no characters), used as the composite destination
+# job 2a775770-abb7-4bf6-9c4e-0169a40db01e | gpt_image_2 2k/high 16:9
+# RESULT: clean empty room. Ran WARMER and more saturated than the hero frame — this is the
+#         measurement that forced the palette clause.
+
+Medium shot of two adjacent corners of a cluttered break-room headquarters, a 16:9 cartoon still. THE ROOM IS COMPLETELY EMPTY OF CHARACTERS — no people, no creatures, no figures of any kind.
+
+On the left, a tall black server rack with many small coloured status lights and loose cabling. Center, a low counter with a coffee machine, stacked mugs and a water cooler. On the right, a moodboard wall covered edge to edge with dozens of taped-up colorful sketches on small pale sheets, strung with a line of small clip lights. A tiled floor with a worn rug, two low round tables with mugs and loose paper, an armchair at the left edge, a potted plant at the right edge.
+
+Style: 2D pencil-test animation still — graphite linework, visible construction lines, warm cream paper, loose flat-color washes that do not fully respect the lines, as if the film is colorizing mid-frame. The room stays cream-and-graphite. 1950s cartoon staging. No clean vector fill, no digital gradients, no painterly gloss, no oil-painting rendering, no photorealism. Do not add any text.

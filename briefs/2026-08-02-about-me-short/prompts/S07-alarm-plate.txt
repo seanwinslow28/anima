@@ -1,0 +1,12 @@
+Image 1 is the WORLD BIBLE for this location. Preserve its drawing style, line weight, paper, palette, light, and its fixture designs and materials exactly. Do NOT copy its camera, framing, horizon, perspective or screen-space layout.
+Image 2 is a monochrome COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon line and left-to-right placement, replace its grey shapes with the corresponding real fixtures, and remove every guide mark.
+
+CAMERA: slightly low angle, looking up at the television mounted high on the wall, medium-wide, locked. Horizon low, floor occupying the bottom fifth.
+VISIBLE LEFT TO RIGHT: a filing shelf of ring binders at the left edge; the vertical seam where two walls meet; a low credenza against the wall with paper trays and a mug on it; above the credenza, bracket-mounted high on the wall, a boxy old cathode-ray television with a thick bezel, its cable running down the wall behind the credenza; the screen is switched on and shows a hand-drawn line graph falling steeply from left to right, and above the graph the single hand-lettered word PROBLEM! in bold capitals; at the right edge the corner of the moodboard wall of taped-up sketches; loose paper on the floor below it.
+The television is the only lit thing in the shot and it still sits in the same even, high-key light as the rest of the room.
+OUT OF FRAME: the rest of the break room, the server rack, the desk, the dartboard.
+The room is empty of characters and people.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on the characters and on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. The only text anywhere in the image is the word PROBLEM! on the television screen.

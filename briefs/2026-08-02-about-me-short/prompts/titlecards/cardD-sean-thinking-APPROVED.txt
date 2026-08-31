@@ -1,0 +1,20 @@
+# TITLE CARD D — Sean thinking, mascots misbehaving in the corners. *** APPROVED ***
+# job 3744d9e3-a35a-4ae2-8540-3fec075a901f | gpt_image_2 2k/high 16:9 | refs: cast lineup
+# Sean: "we'll go with Card D for now."
+# Grammar borrowed from the Goofy "How To" cards: a designed graphic plate, character on the
+# card, soft tonal ellipse behind, hand-lettered display type.
+# WHY D OVER A structurally: the brief makes the narrator's composure the engine and calls the
+# card the straight man. A still, composed centre gives the alarm something to break; the chaos
+# is promised in the margins rather than spent up front.
+
+Image 1 is the character reference lineup. Keep each character's exact design, proportions and facial features.
+
+A 1950s theatrical cartoon TITLE CARD, 16:9. Hand-lettered display capitals reading HOW TO SOLVE A PROBLEM centred across the lower third of the frame, drawn in graphite outline and filled with a flat muted blue wash.
+
+Above the lettering, the lanky blond man in a navy t-shirt and grey jeans sits dead centre in a swivel desk chair turned to face the viewer, elbow on his knee and chin resting on his fist, eyes calm and steady — a thinking pose, completely still and composed.
+
+In the four corners of the card, drawn much smaller, the mascots are already misbehaving: the grey bat-eared gremlin swings from the top-left corner; the lavender-purple cloud creature tips over a stack of papers at the top right; the blue-purple star creature bounces in the bottom left; the small terracotta plush robot is buried under sticky-flagged pages at the bottom right. The man does not look at any of them.
+
+Ground: warm cream drawing paper, a light putty cream, with one soft pale tonal ellipse behind the seated man. Flat, quiet, low-contrast, no vignette and no dramatic lighting.
+
+Style: 2D pencil-test animation — graphite linework, visible construction lines, loose flat-colour washes that do not fully respect the lines. 1950s theatrical cartoon title card staging. No clean vector fill, no digital gradients, no painterly gloss, no photorealism. The only text anywhere in the image is HOW TO SOLVE A PROBLEM.

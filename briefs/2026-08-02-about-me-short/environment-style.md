@@ -132,3 +132,45 @@ therefore carry more weight now: single-character plates (−18%), 7s duration, 
 camera stated positively, and — still untested — matting the character out of the animated
 clip and re-laying it over the pristine plate, which would make plate drift structurally
 impossible.
+
+---
+
+## MEASURED 2026-08-30, after the four prop-rich plates: the set has split into two creams
+
+The four plates generated tonight (S03 v2, S05, S06, S07) all came back **warmer and
+darker than canonical, by the same amount and in the same direction**:
+
+| Plate | Wall as generated | Δ vs #f5e8d1 |
+|---|---|---|
+| S03 Claude's nook v2 | (227, 206, 172) | −18 / −26 / −37 |
+| S05 Gemini's moodboard | (227, 207, 175) | −18 / −25 / −34 |
+| S06 Grok's dartboard | (226, 208, 177) | −19 / −24 / −32 |
+| S07 the alarm | (213–223, 189–199, 157–164) | −22 to −32 / −33 to −43 / −45 to −52 |
+
+**The cause is mechanical and was found by measuring the reference, not the output.** These
+four are the first plates generated with the **S04 plate as the world/style bible**, and
+S04's own paper measures **(218, 191, 152)** — 27 / 41 / 57 levels off canonical, because
+S04 was generated in probe-205 *before* the palette clause existed. The clause and the
+reference pulled in opposite directions and the reference won about two thirds of the
+argument. Every new plate landed between the two, within 4 levels of its siblings.
+
+So the room is now split into two consistent groups, not scattered:
+
+| Group | Wall | Members |
+|---|---|---|
+| **Canonical cream** | ≈ (245, 232, 209) | S02 desk medium (Sean-approved), S03 sparse (superseded) |
+| **Bible tan** | ≈ (225, 205, 172) | S04 rack (banked + only clip proven end to end), S03 v2, S05, S06, S07 |
+
+**This is a ruling for Sean, not a re-roll.** Both groups are internally consistent, and the
+fix is free either way: a flat per-channel gain on the paper tone matches one group to the
+other exactly, costs $0, is reversible, and is a **post** operation — which is where
+FIRST LICKS DR #41 already says the look lives. Normalised copies of every plate and
+composite are banked at [`plates/normalised/`](plates/normalised/) (gains ≈ 1.08 / 1.13 /
+1.21) so the comparison can be made by eye rather than by argument.
+
+**Do not re-roll good plates over this.** The tolerance was doing its job — it caught a
+reference conflict, which is exactly what it is for.
+
+**Floor target still PROVISIONAL.** The three new sparse-to-mid floors measured
+(207–218, 186–196, 155–159), all far from #e8d6bc, but they inherit the same bible tan, so
+they cannot re-base the floor until the paper question is settled first.

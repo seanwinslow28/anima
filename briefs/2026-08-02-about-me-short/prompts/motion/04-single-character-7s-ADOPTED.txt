@@ -1,0 +1,19 @@
+# SINGLE-CHARACTER MOTION, 7s, fast. *** THE ADOPTED RECIPE ***
+# job 4784e9ae-5890-4fa6-bedb-8847620ada84 | seedance_2_0 fast 7s 720p generate_audio:false
+# start_image: job 6505a009 (the U Codex-corner plate)
+# RESULT: Sean — "very cartoony with squash and stretch. Beautiful motion."
+#         Carries the WHOLE three-part beat from ONE still: hammer-typing with a genuine
+#         multi-arm smear frame -> stop and lean in to read a blinking light -> arms overhead
+#         in triumph. Motion energy 4.44. Drift 23.5% moodboard / 24.1% table.
+#         vs the two-character 4s control: single-character cuts drift ~18%.
+#         vs the same prompt at 4s: 7s buys +25% motion energy for ~1pp of drift.
+# NOTE THE POSITIVE LOCKS — these replaced the useless negations and they are why the feet
+#      stay on the floor: "Its face stays a pale chevron..." / "Its feet return to the floor".
+# STILL UNSOLVED: Codex's face goes off-model under `fast` (it grows a mouth). `std` holds
+#      the face but Sean rejected it — "it stutters and looks broken".
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The lavender cloud creature hammers both stubby arms across the black rack in a frantic burst of typing, its body squashing flat on each strike and stretching tall between them. It stops dead, leans in close to peer at a blinking light, then throws both arms overhead in triumph and bounces where it stands.
+
+Its face stays a pale chevron, one dot eye and a short underscore bar with small brows. Its feet return to the floor on every landing. Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

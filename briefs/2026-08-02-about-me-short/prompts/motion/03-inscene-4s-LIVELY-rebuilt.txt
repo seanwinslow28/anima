@@ -1,0 +1,16 @@
+# IN-SCENE MOTION, 4s — THE REBUILD. Genre anchor, vivid verbs, ZERO negation.
+# job 0927d4a7-31d1-41c8-9f20-132a77ac606d | seedance_2_0 fast 4s 720p generate_audio:false
+# start_image: job 071eaecf (the B plate) — SAME start frame as 01, so the prompt is the
+#              only variable.
+# RESULT: motion energy 4.40 -> 6.82 (+55%) with drift 26.7% -> 24.7% (slightly BETTER).
+#         Liveliness and stability are NOT in tension. Real squash/stretch and a genuine
+#         stretched smear frame appeared.
+# BUT IT OVERSHOT: Codex grew a mouth and gritted teeth; Gemini flew horizontally like a bird.
+#         CAUSE: the negated identity-lock and grounding clauses were removed (correctly —
+#         Seedance ignores negation) but never RESTATED POSITIVELY. See 04/05 for the fix.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, animation held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot, every prop and surface stays the same drawing.
+
+The lavender cloud creature hammers both stubby arms across the server rack in a frantic burst of typing, its whole body squashing flat on each strike and stretching tall between them, lights flashing under its hands. The blue-purple star creature drops into a deep anticipation crouch, springs high off the floor, flings both arms wide at the moodboard wall, lands with a bounce and throws a triumphant point up at it, its star points quivering on the accent.
+
+Squash and stretch on every accent. Smear frames through the fast arcs. Snappy timing, hard accents, elastic overshoot, comic energy.

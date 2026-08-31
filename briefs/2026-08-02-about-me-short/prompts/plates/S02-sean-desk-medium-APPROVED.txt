@@ -1,0 +1,25 @@
+# S02 — SEAN AT HIS DESK, MEDIUM. *** APPROVED — the film's opening shot ***
+# job 7f76489b-bfcc-4ce3-8d03-d64952c1e17b | gpt_image_2 2k/high 16:9
+# refs: route-c--gpt-ref.png (style bible) + M1-S02-sean-desk-medium-guide.png + cast lineup
+# Replaces the cut wide. Sean: "we should open on Sean typing at his desk as a medium shot,
+# then we'll cut to each character."
+# RESULT: clean. He is alone, absorbed, back to camera, bare wall, desk cropping him at the waist.
+# PALETTE: wall came back (245,232,209) — 16 levels LIGHTER than the then-target #e5d7c2.
+#          Second consecutive light miss, which is what triggered the RE-BASE. This plate's own
+#          wall value BECAME the new canonical cream #f5e8d1.
+# NOTE: the bare wall here is fine (it is a desk medium). Sean later REVERTED bare walls for the
+#       CORNER shots — see plates/S03-claude-nook.txt.
+
+Image 1 is the WORLD AND STYLE BIBLE: preserve its rendering, palette, line quality and the man's design. Do NOT copy its camera, framing, horizon or screen-space layout.
+Image 2 is the COMPOSITION ROUGH: follow its camera, framing and screen-space layout exactly; replace its grey shapes with the real subject; remove every guide mark, tick, label and caption.
+Image 3 is the character reference lineup: keep the man's exact design — lanky, late twenties, tousled blond hair, short beard, dark navy t-shirt, grey rolled jeans.
+
+CAMERA: a MEDIUM shot from directly behind the man, close in. He is seated at his desk and fills the middle of the frame; the desk edge crosses the bottom of frame and crops him at the waist.
+
+He is typing — both hands on the keyboard, shoulders relaxed, head tipped slightly down toward the centre monitor, absorbed and unhurried. Three monitors stand on the desk in front of him, their screens filled with quiet lines of code. The back of his desk chair rises behind him.
+
+THE WALL BEHIND IS EMPTY: a plain, bare cream wall with nothing on it — no shelves, no posters, no sketches, no server rack, no television, no furniture, no clutter of any kind. HE IS ALONE IN THE FRAME: no creatures, no mascots, no other characters, no other people.
+
+Warm cream drawing paper throughout, a light putty cream, never white and never yellow. The desk surface is a warm mid tone, clearly DARKER than the wall behind it. Walls are flat, quiet and low-contrast. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Style: 2D pencil-test animation still — graphite linework, visible construction lines, loose flat-colour washes that do not fully respect the lines. 1950s cartoon staging. No clean vector fill, no digital gradients, no painterly gloss, no photorealism. Do not add any text.
