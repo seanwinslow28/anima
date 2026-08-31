@@ -107,13 +107,28 @@ CRT.
 **5. Backgrounds are flat colour fields.** No texture, no clutter, no detail competing with
 the character.
 
-### What this changes
+### What this changes — and what Sean REVERTED
 
-Movement 1 was first boarded with **knee-high mascots in furnished corners** — the opposite
-of this grammar. The corner shots should push in so the mascot **owns the frame**, against a
-**much emptier wall**.
+**Adopted: the character owns the frame.** Corner shots push in so the mascot fills a large
+share of frame height, and every character's **facing** is stated (absorbed in its own task,
+never addressing the lens). This is load-bearing — the all-corners wide failed precisely
+because facing was unstated.
 
-This also happens to solve a measured engineering problem. Probe-205's background drift of
-**22–27%** was measured on the busiest surface in the room — a moodboard wall of dozens of
-small sketches. A flat wall has almost nothing for the model to re-invent. **The Goofy
-grammar and the drift fix are the same move: emptier backgrounds, bigger characters.**
+**REVERTED 2026-08-30: the bare wall.** S03 was first generated sparse, one prop against an
+empty wall, and Sean ruled it out — *"it feels naked and weird. Like they're in an extremely
+clean museum and not a workspace."* He is right and the reasoning was mine to get wrong:
+**Goofy's set is sparse because it is a gym.** A break-room HQ where four agents are mid-
+chaos is LIVED IN, and the clutter is characterisation — the tidy nook, the humming rack,
+the fifty taped concepts, the darts in the wall are each a character's *portrait*. Strip them
+and the corners say nothing.
+
+**So the corners are prop-rich: supplies, boxes, binders, loose paper, the junk of a real
+workspace.** Bare walls are not the house style.
+
+**This re-opens a measured cost, and it should be planned for rather than rediscovered.**
+Probe-205's background drift of **22–27%** was measured on the busiest surface in the room. A
+prop-dense plate is exactly the condition Seedance re-invents. The drift mitigations
+therefore carry more weight now: single-character plates (−18%), 7s duration, a locked
+camera stated positively, and — still untested — matting the character out of the animated
+clip and re-laying it over the pristine plate, which would make plate drift structurally
+impossible.

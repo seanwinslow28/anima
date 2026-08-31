@@ -318,17 +318,30 @@ shots["M1-S02-sean-desk-medium-guide"] = b + tail
 s, tail = head("M1-S03 — CLAUDE'S NOOK · beat 2 · the tidy corner: everything squared, "
                "flagged, alphabetised || he is MID-BIT — adding one more flag to a stack "
                "already taller than he is. Earnest, not comic.")
-# Goofy grammar: he OWNS the frame, the wall behind is bare. One prop, no clutter.
+# BARE WALLS REVERTED 2026-08-30 (Sean): the sparse Goofy read made the corners
+# look like "an extremely clean museum, not a workspace." A break-room HQ mid-chaos
+# is LIVED IN, and the clutter is characterisation. Keep the big-in-frame scale;
+# put the props and junk back. Facing discipline stays.
 b = s + floor()
-b += paperstack(920, h=596, w=250)                      # the tower — taller than he is
-b += claude(520, h=430)                                  # ~50% of frame height
-b += (f'<path d="M600 {GY-410} q90 -60 190 -96" fill="none" stroke="{CAPTION}" '
+b += paperstack(880, h=560, w=230)                       # the hero tower
+b += paperstack(1130, h=330, w=170)                      # a second stack
+b += f'<rect x="1270" y="{GY-360}" width="200" height="360" fill="{FAINT}"/>'   # shelving
+for i in range(4):                                       # shelves of binders
+    b += f'<rect x="1284" y="{GY-340+i*88}" width="172" height="16" fill="{MID}"/>'
+    for j in range(5):
+        b += f'<rect x="{1292+j*33}" y="{GY-404+i*88+56}" width="24" height="52" fill="{LIGHT}"/>'
+b += f'<rect x="120" y="{GY-150}" width="300" height="150" fill="{LIGHT}"/>'    # low desk
+b += f'<rect x="150" y="{GY-186}" width="120" height="36" fill="{MID}"/>'       # tray of supplies
+b += f'<rect x="300" y="{GY-176}" width="60" height="26" fill="{MID}"/>'        # stapler
+for i, x in enumerate((470, 520, 566)):                                          # loose papers on floor
+    b += f'<rect x="{x}" y="{GY-14+i*5}" width="86" height="10" fill="{LIGHT}"/>'
+b += f'<rect x="700" y="{GY-96}" width="120" height="96" fill="{MID}"/>'        # box of files
+b += claude(560, h=380)                                  # still large in frame
+b += (f'<path d="M632 {GY-360} q86 -54 176 -86" fill="none" stroke="{CAPTION}" '
       f'stroke-width="4" stroke-dasharray="10 8"/>')     # his reach, toward the stack
-b += (f'<text x="520" y="{GY-470}" font-family="Helvetica" font-size="22" '
-      f'text-anchor="middle" fill="{CAPTION}">reaching UP and AWAY from camera</text>')
 b += (f'<text x="{W//2}" y="120" font-family="Helvetica" font-size="21" '
-      f'text-anchor="middle" fill="{CAPTION}">wall BARE — one prop only, no clutter</text>')
-b += mark(520, "CLAUDE · absorbed, never looks at camera")
+      f'text-anchor="middle" fill="{CAPTION}">LIVED-IN: supplies, boxes, binders, loose paper — a workspace</text>')
+b += mark(560, "CLAUDE · reaching up and away, never looks at camera")
 shots["M1-S03-claude-nook-guide"] = b + tail
 
 # S04 — Codex's humming rack. The banked probe plate matches this setup.
