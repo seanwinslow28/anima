@@ -166,6 +166,16 @@ def desk3mon(cx, gy=GY, w=430):
     return s
 
 
+def mark(cx, text, y=None):
+    """A named position mark under a figure. The guide should STATE placement,
+    not imply it — the framing audit named 'scale is never stated in words' as
+    the whole problem, and the same is true of position."""
+    y = y or GY + 34
+    return (f'<path d="M{cx} {GY-8}v16" stroke="{CAPTION}" stroke-width="4"/>'
+            f'<text x="{cx}" y="{y}" font-family="Helvetica" font-size="21" '
+            f'text-anchor="middle" fill="{CAPTION}">{text}</text>')
+
+
 def doorway(x, gy=GY, w=170, h=380):
     return (f'<rect x="{x}" y="{gy-h}" width="{w}" height="{h}" fill="{FAINT}"/>'
             f'<rect x="{x}" y="{gy-h}" width="{w}" height="{h}" fill="none" '
@@ -276,17 +286,20 @@ shots["M1-S01-titlecard-guide"] = b + tail
 s, tail = head("M1-S02 — HQ WIDE · beat 2 · Sean centre at the desk, BACK TO CAMERA, "
                "the only still figure || establishes the whole room and every corner's "
                "position — every later cut is oriented off this one")
-b = s + floor() + pendant(830)
-b += corner(268) + corner(1258)
-b += doorway(48)
-# every zone gets its own lane — no character overlaps another's props
-b += paperstack(345, h=235, w=112) + claude(452, h=118)          # Claude, far left
-b += rack(600, w=124, h=330) + codex(700, h=152)                 # Codex
-b += desk3mon(890, w=380) + sean(890, h=326, back=True)          # SEAN, centre
-b += crt(1120, 132, w=176, h=136)                                # CRT high, right wall
-b += moodboard(1120, cy=352, w=280, h=200) + stringlights(1000, 1250, 236, n=5)
-b += gemini(1010, h=132)                                         # Gemini at her board
-b += dartboard(1448, 402, r=48) + grok(1352, h=178)              # Grok, far right
+b = s + floor() + pendant(800)
+b += corner(150) + corner(1390)
+b += doorway(30)                                    # EMPTY — the USER is never in it
+# Five lanes, evenly spread. x positions are stated, not implied — the prompt
+# repeats them in words, because position and scale are never inferred.
+b += paperstack(180, h=250, w=118) + claude(272, h=126)          # 1 · far left
+b += rack(430, w=132, h=350) + codex(540, h=162)                 # 2 · left of centre
+b += desk3mon(800, w=400) + sean(800, h=336, back=True)          # 3 · CENTRE
+b += moodboard(1078, cy=350, w=260, h=196) + stringlights(960, 1200, 232, n=5)
+b += gemini(1062, h=142)                                         # 4 · right of centre
+b += crt(1300, 150, w=190, h=148)                                # CRT high, right wall
+b += dartboard(1466, 404, r=50) + grok(1352, h=192)              # 5 · far right
+b += (mark(272, "1 · CLAUDE") + mark(540, "2 · CODEX") + mark(800, "3 · SEAN (back)")
+      + mark(1062, "4 · GEMINI") + mark(1352, "5 · GROK"))
 shots["M1-S02-hq-wide-guide"] = b + tail
 
 # S03 — Claude's tidy nook.
