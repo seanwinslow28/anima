@@ -8,9 +8,16 @@ if true. Story content lives in [`beats-v1.md`](beats-v1.md) and
 **Status legend:** `—` not started · `draft` exists, not ratified · `✓` done/banked ·
 `✓S` Sean-approved · `RE` needs regeneration (reason in Notes)
 
-**Framing grammar (from *Goofy Gymnastics*, watched 2026-08-30):** establish the set ONCE,
-then play every gag against a near-empty flat wall with the character owning 60–90% of frame
-height. See [`environment-style.md`](environment-style.md) — **this revises the first
+**Framing grammar (from *Goofy Gymnastics*, watched 2026-08-30):** play every shot against a
+near-empty flat wall with the character owning 60–90% of frame height. **There is no
+establishing wide at all** — Sean cut it 2026-08-30. The consequence is explicit: the
+audience never sees the whole room, so continuity rests entirely on the corner plates
+matching each other. Every corner must carry the same signature — same paper, same floor,
+same baseboard, same light.
+
+**State FACING, not just position.** The cut wide failed partly because facing was never
+specified and everything defaulted to addressing the lens. Each mascot's attention direction
+goes in its prompt: absorbed in its own task, never looking at camera. See [`environment-style.md`](environment-style.md) — **this revises the first
 boarding**, which had knee-high mascots in furnished corners. It is also the drift fix: the
 22–27% background drift was measured on the busiest wall in the room.
 
@@ -80,7 +87,7 @@ authority for the character-into-plate edit.
 | # | Setup | Beat | Mechanism | Guide | Plate | Composite | Motion | Notes |
 |---|---|---|---|---|---|---|---|---|
 | S01 | Title card — HOW TO SOLVE A PROBLEM | 1 | typography, **not** Seedance | ✓ | — | n/a | — | The straight man: it must not move, so the alarm has something to break |
-| S02 | HQ establishing wide, Sean back to camera | 2 | full-scene | ✓ | — | — | — | Establishes every corner; all later cuts orient off it. Sean is the only still figure |
+| S02 | **Sean at his desk — MEDIUM, from behind** | 2 | full-scene | ✓ | **✓** | n/a | — | **The all-corners wide was CUT 2026-08-30.** In it the mascots clustered near centre and all faced camera, contradicting the per-corner premise it was meant to establish. The film opens on Sean typing and cuts out to each corner. Plate `S02-sean-desk-v1.png` |
 | S03 | Claude's tidy nook | 2 | plate + edit | ✓ | — | — | — | Mid-bit: adding one more flag to a stack taller than he is |
 | S04 | Codex's humming rack | 2 | plate + edit | ✓ | **✓** | **✓** | **✓** | **Proven end to end in probe-205.** Plate `U-codex-corner.png`, 7s clip `W-single-7s.mp4` |
 | S05 | Gemini's string-lit moodboard | 2 | plate + edit | ✓ | — | — | — | Mid-bit: taping up another concept, already bouncing to the next |

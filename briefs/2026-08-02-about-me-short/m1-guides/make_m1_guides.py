@@ -282,25 +282,37 @@ b += (f'<text x="{W//2}" y="472" font-family="Helvetica" font-size="76" font-wei
 b += f'<path d="M{W//2-190} 512H{W//2+190}" stroke="{MID}" stroke-width="7"/>'
 shots["M1-S01-titlecard-guide"] = b + tail
 
-# S02 — HQ establishing wide. Sean centre, BACK TO CAMERA. The hero angle.
-s, tail = head("M1-S02 — HQ WIDE · beat 2 · Sean centre at the desk, BACK TO CAMERA, "
-               "the only still figure || establishes the whole room and every corner's "
-               "position — every later cut is oriented off this one")
-b = s + floor() + pendant(800)
-b += corner(150) + corner(1390)
-b += doorway(30)                                    # EMPTY — the USER is never in it
-# Five lanes, evenly spread. x positions are stated, not implied — the prompt
-# repeats them in words, because position and scale are never inferred.
-b += paperstack(180, h=250, w=118) + claude(272, h=126)          # 1 · far left
-b += rack(430, w=132, h=350) + codex(540, h=162)                 # 2 · left of centre
-b += desk3mon(800, w=400) + sean(800, h=336, back=True)          # 3 · CENTRE
-b += moodboard(1078, cy=350, w=260, h=196) + stringlights(960, 1200, 232, n=5)
-b += gemini(1062, h=142)                                         # 4 · right of centre
-b += crt(1300, 150, w=190, h=148)                                # CRT high, right wall
-b += dartboard(1466, 404, r=50) + grok(1352, h=192)              # 5 · far right
-b += (mark(272, "1 · CLAUDE") + mark(540, "2 · CODEX") + mark(800, "3 · SEAN (back)")
-      + mark(1062, "4 · GEMINI") + mark(1352, "5 · GROK"))
-shots["M1-S02-hq-wide-guide"] = b + tail
+# S02 — Sean at his desk, MEDIUM. Replaces the all-corners wide, cut 2026-08-30.
+# Sean's ruling: in the wide the mascots clustered near centre and all faced camera,
+# so it contradicted the per-corner premise it was meant to establish. The film now
+# opens on Sean working and cuts out to each corner — Goofy grammar: establish almost
+# nothing, let each character own its own frame.
+s, tail = head("M1-S02 — SEAN AT THE DESK · beat 2 · MEDIUM, from behind · he is typing, "
+               "absorbed, unhurried || he fills the frame and the room falls away — no "
+               "corner is established here; every mascot gets its own shot instead")
+CX, DESK = W // 2, 660          # desk edge crosses the lower frame
+b = s
+b += f'<path d="M0 214H{W}" stroke="{LIGHT}" stroke-width="5"/>'      # one quiet wall line
+# monitors stand ON the desk, behind him
+b += f'<rect x="{CX-118}" y="300" width="236" height="176" rx="8" fill="{MID}"/>'
+b += f'<rect x="{CX-392}" y="330" width="228" height="150" rx="8" fill="{LIGHT}"/>'
+b += f'<rect x="{CX+164}" y="330" width="228" height="150" rx="8" fill="{LIGHT}"/>'
+# chair back behind him
+b += f'<rect x="{CX-176}" y="452" width="352" height="230" rx="26" fill="{LIGHT}"/>'
+# SEAN, seated, from behind — head + shoulders only; the desk crops him
+b += f'<circle cx="{CX}" cy="392" r="104" fill="{DARK}"/>'
+b += (f'<path d="M{CX-172} {DESK} Q{CX-158} 486 {CX-96} 470 H{CX+96} '
+      f'Q{CX+158} 486 {CX+172} {DESK} Z" fill="{DARK}"/>')
+# arms reaching forward to the keyboard
+b += (f'<path d="M{CX-150} 540 L{CX-96} {DESK-24} M{CX+150} 540 L{CX+96} {DESK-24}" '
+      f'stroke="{DARK}" stroke-width="46" stroke-linecap="round"/>')
+b += f'<path d="M0 {DESK}H{W}V{H}H0Z" fill="{FLOOR}"/>'               # desk surface
+b += f'<rect x="{CX-160}" y="{DESK+26}" width="320" height="30" rx="9" fill="{MID}"/>'  # keyboard
+b += (f'<text x="{CX}" y="188" font-family="Helvetica" font-size="21" '
+      f'text-anchor="middle" fill="{CAPTION}">wall kept EMPTY — no corner, no clutter</text>')
+b += (f'<text x="{CX}" y="{DESK-176}" font-family="Helvetica" font-size="21" '
+      f'text-anchor="middle" fill="{CAPTION}">SEAN · seated, back to camera, typing</text>')
+shots["M1-S02-sean-desk-medium-guide"] = b + tail
 
 # S03 — Claude's tidy nook.
 s, tail = head("M1-S03 — CLAUDE'S NOOK · beat 2 · the tidy corner: everything squared, "
