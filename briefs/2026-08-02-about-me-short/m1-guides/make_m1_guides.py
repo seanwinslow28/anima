@@ -318,12 +318,17 @@ shots["M1-S02-sean-desk-medium-guide"] = b + tail
 s, tail = head("M1-S03 — CLAUDE'S NOOK · beat 2 · the tidy corner: everything squared, "
                "flagged, alphabetised || he is MID-BIT — adding one more flag to a stack "
                "already taller than he is. Earnest, not comic.")
-b = s + floor() + corner(1120)
-b += paperstack(430, h=330, w=170) + paperstack(640, h=250, w=140)
-b += f'<rect x="820" y="{GY-120}" width="260" height="120" fill="{MID}"/>'
-b += claude(268, h=196)
-b += (f'<text x="268" y="{GY-232}" font-family="Helvetica" font-size="22" '
-      f'text-anchor="middle" fill="{CAPTION}">reaching up</text>')
+# Goofy grammar: he OWNS the frame, the wall behind is bare. One prop, no clutter.
+b = s + floor()
+b += paperstack(920, h=596, w=250)                      # the tower — taller than he is
+b += claude(520, h=430)                                  # ~50% of frame height
+b += (f'<path d="M600 {GY-410} q90 -60 190 -96" fill="none" stroke="{CAPTION}" '
+      f'stroke-width="4" stroke-dasharray="10 8"/>')     # his reach, toward the stack
+b += (f'<text x="520" y="{GY-470}" font-family="Helvetica" font-size="22" '
+      f'text-anchor="middle" fill="{CAPTION}">reaching UP and AWAY from camera</text>')
+b += (f'<text x="{W//2}" y="120" font-family="Helvetica" font-size="21" '
+      f'text-anchor="middle" fill="{CAPTION}">wall BARE — one prop only, no clutter</text>')
+b += mark(520, "CLAUDE · absorbed, never looks at camera")
 shots["M1-S03-claude-nook-guide"] = b + tail
 
 # S04 — Codex's humming rack. The banked probe plate matches this setup.

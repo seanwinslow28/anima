@@ -4,31 +4,41 @@ The binding look of the HQ set, and the **palette clause** every plate prompt ca
 verbatim. Written 2026-08-30 before any Movement 1 plate generated, because plates
 generated per-angle drift apart otherwise — and that drift is measured, not feared.
 
-## The measured problem
+## The measured problem, and the re-base
 
-Three existing assets, three different creams:
+Three existing assets came back with three different creams — a **37-level spread in red**
+between lightest and darkest. The first clause targeted the hero frame (#e5d7c2). Two plates
+generated against it then came back **consistently lighter**, in the same direction both
+times:
 
-| Asset | Paper | Floor |
+| Plate | Wall measured | Delta vs #e5d7c2 |
 |---|---|---|
-| `art-viz/route-c--gpt-ref.png` — **the hero-frame anchor** | **#e5d7c2** | #dbccb9 |
-| `probe-205/D-clean-plate.png` | #d5be99 | #9f7862 |
-| `cast-scale-lineup.png` (model sheet, not a scene) | #faf0db | — |
+| S02 all-corners wide (cut) | (235, 218, 194) | +6 / +3 / 0 — pass |
+| S02 desk medium | (245, 232, 209) | **+16 / +17 / +15** — fail |
 
-A **37-level spread in red and 66 in blue** between the lightest and darkest. Cut two of
-these together and the room changes colour on the cut. The hero frame is canonical — the
-studio brief names it the hero-frame anchor — so every plate matches **it**, not the probe
-plate.
+**Ruled by Sean 2026-08-30: re-base the canonical cream to what the model actually
+produces.** Fighting a consistent bias on every generation costs a re-roll each time and
+buys nothing; consistency across twenty-odd plates matters more than matching the hero
+frame, which was a style test and never appears in the film. Both new values are **measured
+from real GPT Image 2 output**, not derived.
+
+| | Canonical | RGB | Source |
+|---|---|---|---|
+| **Paper / wall** | **#f5e8d1** | (245, 232, 209) | the S02 desk medium |
+| **Floor** | **#e8d6bc** | (232, 214, 188) | the S02 wide |
+
+*Superseded: #e5d7c2 / #dbccb9 (hero frame). Kept here as the record, not as the target.*
 
 ---
 
 ## THE PALETTE CLAUSE — paste verbatim into every plate and composite prompt
 
-> Warm cream drawing paper throughout, a light putty cream (#e5d7c2), never white and never
-> yellow. The floor is the same cream a half-step darker (#dbccb9). Walls and floor are
-> flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on the
-> characters and on small props. Graphite line and cross-hatch shadow carry all the form.
-> Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast,
-> no vignette, no dramatic lighting.
+> Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The
+> floor is the same cream a half-step darker. Walls and floor are flat, quiet, and
+> low-contrast — the room is a pale ground, and colour lives only on the characters and on
+> small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays
+> high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no
+> dramatic lighting.
 
 **Never edit the clause per shot.** If a shot genuinely needs a different key — a night
 beat, the alarm's red flood — that is a **post** treatment, not a generation change
@@ -43,9 +53,20 @@ checking a *surgical edit* preserved a plate, use an edge-diff heatmap and FFT p
 correlation instead.
 
 ```
-sample upper wall  → target #e5d7c2  (229, 215, 194)  ±8
-sample floor       → target #dbccb9  (219, 204, 185)  ±8
+sample upper wall  → target #f5e8d1  (245, 232, 209)  ±8
+sample floor       → target #e8d6bc  (232, 214, 188)  ±8   ← PROVISIONAL, see below
 ```
+
+**The wall target is validated.** S03 measured (247, 235, 211) against it — delta 2/3/2, a
+clean pass on the first plate generated after the re-base.
+
+**The floor target is not, and should not be enforced yet.** It was measured from the CUT
+all-corners wide — a furnished room with a rug, which is not what a sparse plate looks like.
+S03's floor came back (242, 227, 201), 10–13 levels lighter, and **the plate is correct**:
+in a bare Goofy-style setup the floor is barely a separate surface from the wall, which is
+the look we want. The tolerance flagged a wrong target, not a defective plate. **Re-base the
+floor once S05 and S06 give two more sparse samples** — do not re-roll good plates to hit a
+number derived from an unrepresentative source.
 
 ---
 

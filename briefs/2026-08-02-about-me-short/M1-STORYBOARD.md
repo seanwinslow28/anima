@@ -88,7 +88,7 @@ authority for the character-into-plate edit.
 |---|---|---|---|---|---|---|---|---|
 | S01 | Title card — HOW TO SOLVE A PROBLEM | 1 | typography, **not** Seedance | ✓ | — | n/a | — | The straight man: it must not move, so the alarm has something to break |
 | S02 | **Sean at his desk — MEDIUM, from behind** | 2 | full-scene | ✓ | **✓** | n/a | — | **The all-corners wide was CUT 2026-08-30.** In it the mascots clustered near centre and all faced camera, contradicting the per-corner premise it was meant to establish. The film opens on Sean typing and cuts out to each corner. Plate `S02-sean-desk-v1.png` |
-| S03 | Claude's tidy nook | 2 | plate + edit | ✓ | — | — | — | Mid-bit: adding one more flag to a stack taller than he is |
+| S03 | Claude's tidy nook | 2 | full-scene | ✓ | **✓** | n/a | — | Plate `S03-claude-nook-v1.png`. Wall passes the re-based cream at delta 2/3/2. Facing stated and honoured — he faces away, never at camera |
 | S04 | Codex's humming rack | 2 | plate + edit | ✓ | **✓** | **✓** | **✓** | **Proven end to end in probe-205.** Plate `U-codex-corner.png`, 7s clip `W-single-7s.mp4` |
 | S05 | Gemini's string-lit moodboard | 2 | plate + edit | ✓ | — | — | — | Mid-bit: taping up another concept, already bouncing to the next |
 | S06 | Grok's dartboard | 2 | plate + edit | ✓ | — | — | — | Darts in the **wall around** the board. The misses are the joke and they land before he throws |
