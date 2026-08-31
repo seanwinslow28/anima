@@ -8,6 +8,12 @@ if true. Story content lives in [`beats-v1.md`](beats-v1.md) and
 **Status legend:** `—` not started · `draft` exists, not ratified · `✓` done/banked ·
 `✓S` Sean-approved · `RE` needs regeneration (reason in Notes)
 
+**Framing grammar (from *Goofy Gymnastics*, watched 2026-08-30):** establish the set ONCE,
+then play every gag against a near-empty flat wall with the character owning 60–90% of frame
+height. See [`environment-style.md`](environment-style.md) — **this revises the first
+boarding**, which had knee-high mascots in furnished corners. It is also the drift fix: the
+22–27% background drift was measured on the busiest wall in the room.
+
 **Runtime:** 0:00–0:15, three beats, seven setups. Beat 2's *"slow pan of the HQ"* is
 **not** one continuous wide — Sean ruled 2026-08-30 that it is the establishing angle plus
 a cut to each mascot's own corner.
@@ -57,8 +63,10 @@ camera turned to that zone. **Nothing moves between shots.**
   words in every prompt, never leave it inferred.
 - The **CRT is high on the right wall above Gemini's moodboard**, so beat 3's alarm can cut
   from any corner and stay oriented.
-- The **doorway is west, screen-left**. The USER stands in it in Movement 3 — it is framed
-  in S02 now so that beat inherits a set that already contains it.
+- The **doorway is west, screen-left**, and stays **empty set dressing**. Sean ruled
+  2026-08-30 that a figure standing in it read wrong: **the USER does not appear in the room
+  at all.** The USER is introduced **on the CRT** — the TV flashes `PROBLEM!`, then cuts to
+  the USER *in* the television. No plate places a figure in the doorway.
 
 ---
 
@@ -96,13 +104,14 @@ later shot needs both in frame, split the generation passes.
   happen in these same corners, escalated.
 - **The CRT** (S07) fires again at beat 10 — *PROBLEM (STILL!)*, visually bigger, frame shake
   and red flood — and a third time as the closing sting. Same fixture, same wall.
-- **The doorway** is where the USER appears in Movement 3.
+- **The CRT is now the USER's stage.** Sean's ruling moves the USER's introduction from the doorway onto the screen, so S07's television is carrying more than the alarm — Movement 3's reveal happens in that same fixture.
 
 ## Open before generation starts
 
-1. **Plate palette continuity.** The probe-205 plate runs warmer and more saturated than the
-   first test room. Plates generated per-angle will drift unless a fixed palette and lighting
-   clause binds every plate prompt. Needs writing before S02–S03 and S05–S07 generate.
+1. ~~**Plate palette continuity.**~~ **CLOSED 2026-08-30** — measured (hero frame paper
+   **#e5d7c2** vs probe plate **#d5be99**, a 37-level red spread) and the binding clause is
+   written at [`environment-style.md`](environment-style.md). Every plate and composite
+   prompt carries it verbatim; tolerance ±8 levels per channel or re-roll.
 2. **Codex's face at scale.** It went off-model in every `fast` generation. At corner-shot
    scale it is small enough not to read, but S04's clip should get Sean's eye on that
    specifically before the rest of the corners generate to the same recipe.
