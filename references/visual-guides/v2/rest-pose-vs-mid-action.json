@@ -1,0 +1,23 @@
+[
+  {
+    "created_at": "2026-09-03T10:30:45.118701Z",
+    "display_name": "GPT Image 2",
+    "id": "69016805-6a31-4428-8c0b-a55dcb736ea8",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_103045_69016805-6a31-4428-8c0b-a55dcb736ea8_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [],
+      "model": "videotape-alpha",
+      "prompt": "Educational animation reference diagram, clean black line art on white. Title at top: \"The Still Holds a REST Pose\". TWO panels side by side. LEFT panel headed \"MID-ACTION — wrong\" with a red X: a cartoon character frozen mid-throw, arm cocked all the way back, one foot off the ground, clearly an instant rather than a position. Caption: \"an instant. The motion must either repeat it or undo it.\". RIGHT panel headed \"AT REST — correct\" with a green check: the same character standing upright and settled, arms hanging at its sides, both feet flat, holding a ball loosely in one hand, turned three-quarters toward the viewer and looking off to one side at its target. Caption: \"a position. The motion starts from here.\". A dividing note between them: \"Held is not the same as transient — hands resting on a keyboard is a position, a hand pressing something onto a wall is an instant.\". No other text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_103045_69016805-6a31-4428-8c0b-a55dcb736ea8.png",
+    "status": "completed"
+  }
+]

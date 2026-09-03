@@ -1,0 +1,23 @@
+[
+  {
+    "created_at": "2026-09-03T10:28:13.328426Z",
+    "display_name": "GPT Image 2",
+    "id": "9bca1be6-a8eb-4fb6-b265-b6035fa3e5a5",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_102813_9bca1be6-a8eb-4fb6-b265-b6035fa3e5a5_min.webp",
+    "params": {
+      "aspect_ratio": "1:1",
+      "height": 2048,
+      "medias": [],
+      "model": "videotape-alpha",
+      "prompt": "Educational animation timing chart, clean black line art on white, professional textbook style. Title at top: \"Ease In/Out vs Linear Spacing\". TWO columns side by side. LEFT column headed \"EASE IN / EASE OUT (Correct)\": a vertical column of ten numbered dots, CLOSE TOGETHER at the top, SPREAD WIDE in the middle, CLOSE TOGETHER at the bottom — and immediately to the right of that dot column, a simple cartoon character drawn ten times in the SAME vertical spacing, dropping from a standing crouch, falling, and landing in a bent-knee absorb. RIGHT column headed \"LINEAR (Wrong — Floaty)\": ten evenly spaced numbered dots, and beside them the same character drawn ten times at perfectly even spacing, looking like it is drifting down through water. Bracket labels on the left column: \"Slow start\", \"Fast / accelerating\", \"Slow stop / impact\". Footer: \"Spacing IS timing — even spacing reads as floating.\". No other text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2048
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_102813_9bca1be6-a8eb-4fb6-b265-b6035fa3e5a5.png",
+    "status": "completed"
+  }
+]

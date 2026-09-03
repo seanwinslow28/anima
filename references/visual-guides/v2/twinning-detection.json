@@ -1,0 +1,23 @@
+[
+  {
+    "created_at": "2026-09-03T10:28:13.369794Z",
+    "display_name": "GPT Image 2",
+    "id": "958a1bd7-6700-4b71-9b8b-360d84735be8",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_102813_958a1bd7-6700-4b71-9b8b-360d84735be8_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [],
+      "model": "videotape-alpha",
+      "prompt": "Educational animation reference diagram, clean black line art on white. Title at top: \"Twinning — Symmetry Looks Robotic\". Two cartoon figures side by side. LEFT figure labelled \"TWINNED (Robotic)\" with a red X: both arms in identical mirrored positions, both legs straight and identical, shoulders perfectly level, weight centred. Callout arrows reading \"both arms mirrored\" and \"both legs identical\" and \"shoulders level\". RIGHT figure labelled \"OFFSET (Natural)\" with a green check: one arm raised and one hand in a pocket, shoulders tilted, hips tilted the opposite way, weight on one leg. Callout arrows reading \"arms offset\", \"shoulders tilted\", \"weight shifted\". Footer: \"Offset limbs in both pose AND timing — a 2 to 4 frame delay.\". Spell every word correctly. No other text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_102813_958a1bd7-6700-4b71-9b8b-360d84735be8.png",
+    "status": "completed"
+  }
+]

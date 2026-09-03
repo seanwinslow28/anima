@@ -1,79 +1,106 @@
-# Pipeline Handoff Protocol (PHP)
+# Handoff Protocol
 
-Read this reference when transitioning from the Creative Director's strategic planning to execution in a pipeline phase. Fill in the bracketed fields based on the interview and selected route.
+Read this when moving from direction into execution. It is a **template to fill from the
+project**, not a description of any one project's pipeline.
 
-## 1. Strategic Directive (The "North Star")
+**Every bracketed field is supplied by Phase 0 and the interview.** If you find yourself
+writing a tool name, a file path, a resolution or a naming convention that you did not read out
+of the project, stop — you are inventing a pipeline instead of reporting one.
 
-- **Single Objective:** [One sentence. e.g., "Generate a seamless 3.5-second pencil test loop showcasing Sean's character animation skill for the portfolio hero section."]
-- **Creative Intent:** [Mood/tone. e.g., "Hand-drawn warmth, contemplative-to-energetic arc, subtle acting over broad gestures."]
-- **Target Audience:** [e.g., "Animation studio recruiters and creative directors reviewing portfolio sites."]
-- **Primary Platform:** [e.g., "Web hero section — GIF for preview, WebM for playback, MP4 for archival."]
+---
 
-## 2. Asset Audit
+## 1. Strategic directive
 
-- **Existing Assets:**
-  - [ ] A-2 anchor: `images/2D-Character-Sketch-Sean-v1.png`
-  - [ ] Approved keyframes: `runs/{run_id}/approved/PT_A1_F*.png`
-  - [ ] Prompt files: `prompts/F{##}.txt`
-  - [ ] Style cluster: `.claude/skills/gemini-pencil-animation-image-gen/references/pencil-animation-prompt-templates.md`
-- **Missing / To-Be-Created:**
-  - [ ] [e.g., "In-between frames for F13 to F18 transition need ComfyUI generation"]
-  - [ ] [e.g., "Sprite transformation sequence (F24-F28) needs design"]
-- **File Structure:**
-  - [ ] Run directory: `runs/{run_id}/`
-  - [ ] Subfolders: `candidates/`, `approved/`, `rejected/`, `audit/`, `export/`
+- **Single objective:** [one sentence — the ONE thing this has to achieve]
+- **Creative intent:** [mood, tone, register, and the arc if there is one]
+- **Audience:** [who sees it, and in what state]
+- **Distribution:** [where it lives — this decides aspect, duration and formats]
 
-## 3. Technical Specifications
+## 2. Asset audit
 
-- **Resolution:** 1920x1080 (16:9)
-- **Frame Rate:** 12fps on Twos
-- **Total Frames:** 42 (Act 1 hero loop)
-- **Style Profile:** Pencil test — cream paper (#FAF5E8), warm graphite gray lines, construction marks
-- **Export Formats:**
-  - GIF: 480px @ 15fps, <5MB, two-pass palette
-  - WebM: 1920x1080, VP9, CRF 30
-  - MP4: 1920x1080, H.264, CRF 18
-- **Naming Convention:** `PT_{ActID}_{FrameNumber}_{AssetType}.{ext}`
+**Exists and approved:**
+- [ ] [character or subject references, with paths]
+- [ ] [approved plates, stills or frames]
+- [ ] [the prompt archive, including the rejected files]
+- [ ] [any spatial or style bible]
 
-## 4. Execution Roadmap
+**Missing, to be created:**
+- [ ] [name each gap, and say which is on the critical path]
 
-### Phase A: Scaffold
-1. Verify `manifest.yaml` is current with all keyframes, chains, and QA codes
-2. Initialize run directory: `python3 pipeline/generate.py --manifest manifest.yaml --dry-run`
-3. Confirm prompt files exist in `prompts/F{##}.txt` for all generation targets
+**Where work lands:**
+- [ ] [the project's existing directory convention — follow it]
+- [ ] [the project's existing naming convention — follow it]
 
-### Phase B: Generate
-1. **[generate.py]** Run keyframe generation chains (Chain 1 and Chain 2 can run in parallel)
-2. **[generate_image.py]** Each frame generated with A-2 anchor + previous approved frame as references
-3. **[comfyui-workflows]** For in-betweens: extract OpenPose skeletons, generate with ControlNet
-4. **[video models]** For subtle transitions: submit keyframe pairs to Veo/Wan/Kling
+> If the project has no convention, propose one **and say that you are proposing it.** Never
+> introduce a naming scheme silently; a second scheme is worse than an imperfect first one.
 
-### Phase C: Audit
-1. **[audit.py]** Run HF01 automated check (PIL aspect ratio) on all candidates
-2. **[audit.py]** Run HF02-HF05 + SF01-SF05 vision review on each candidate
-3. **[continuity_audit.py]** Run CC01-CC08 cross-frame checks on approved sequence
-4. **[Retry]** Failed frames follow retry ladder (re-anchor, tighten, human review)
+## 3. Technical specifications
 
-### Phase D: Assemble
-1. **[assemble.sh]** Build hold-frame sequence (duplicate keyframes per manifest hold_frames)
-2. **[assemble.sh]** Verify all 42 frames present in sequence
-3. **[FFmpeg]** Render MP4, WebM, GIF per export specs
-4. **[Verify]** GIF under 5MB, all formats play at correct fps
+Read these out of the project. Do not default them.
 
-### Phase E: QA Review
-1. **[creative-director]** Run critique rubric on final exports (Identity, Style, Composition, Continuity, Technical)
-2. **[2d-animation-principles]** Validate timing, spacing, expression arc
-3. **[Decision]** Ship if loop plays smoothly at 12fps and character is recognizably Sean in pencil test style on cream paper
+- **Register:** [the style token, stated as the project states it]
+- **Resolution / aspect / frame rate:** [ ]
+- **Route:** [model and settings for stills; model and settings for motion]
+- **Cost per unit:** [per still, per clip, in the project's own units]
+- **Budget ceiling:** [and what happens at it]
+- **Output formats:** [ ]
 
-## 5. Verification Checkpoints
+## 4. Execution roadmap
 
-- [ ] **30% (Rough):** First 2 keyframes generated and approved. Timing feels right in isolation.
-- [ ] **60% (Structure):** All keyframes approved. Continuity audit passes. Frame sequence assembled.
-- [ ] **90% (Polish):** Exports rendered. Loop is seamless. Style consistent across all frames.
+Each step names a **real** tool with its real invocation.
 
-## 6. Definition of Done
+### Phase A — Scaffold
+1. Confirm every input the first generation needs actually exists
+2. Dry-run whatever can be dry-run, at zero cost
+3. Verify the prompt files are on disk and non-empty
 
-- [ ] **Engine Truth:** Loop plays smoothly at 12fps and character is recognizably Sean in pencil test style on cream animation paper.
-- [ ] **Technical Integrity:** No flash frames, aspect ratio correct, all exports within spec.
-- [ ] **Objective Met:** Animation clearly demonstrates character animation skill for portfolio.
-- [ ] **File Hygiene:** Run directory organized, audit log complete, manifest.lock.yaml frozen.
+> **Guard against empty prompts.** If a runner can be handed an empty string, it will be, and
+> some CLIs accept it as satisfying a required field and charge for the result. Check byte
+> count before spending, and read the prompt back out of the job record afterwards.
+
+### Phase B — Generate
+1. [the still/plate step, with its tool]
+2. [the composite or edit step, with its tool]
+3. [the motion step, with its tool]
+
+Generate one unit first and look at it before running the batch.
+
+### Phase C — Verify
+1. [structural checks the project has — run them]
+2. [the eye: put the work in front of the director]
+3. Failures follow the project's retry ladder; record what changed between attempts
+
+### Phase D — Assemble
+1. [assembly tool and steps]
+2. [format and delivery]
+
+### Phase E — Review
+1. Run the critique rubric on the result
+2. Consult animation principles for timing and acting
+3. Ship or return, against the Definition of Done below
+
+## 5. Verification checkpoints
+
+- [ ] **30% — Rough.** The approach is proven on one unit. It is right in isolation.
+- [ ] **60% — Structure.** All units approved. Continuity holds between them.
+- [ ] **90% — Polish.** Outputs rendered, consistent end to end, within spec.
+
+## 6. Definition of done
+
+- [ ] **It reads.** The thing a viewer is supposed to understand is understood, at playback speed.
+- [ ] **It holds.** Identity, register, scale and continuity survive across every unit.
+- [ ] **It is technically sound.** Correct aspect, no artifacts, outputs within spec.
+- [ ] **The objective is met** — measured against §1, not against how much work it took.
+- [ ] **The director has said so.** No rubric substitutes for that.
+- [ ] **The record is complete.** Every prompt on disk with its result, its cost and its
+      diagnosis; superseded work preserved rather than overwritten; every reversal explained.
+
+---
+
+## Cost reporting
+
+Announce cost **before** spending it, as a running total: *"12 credits, running 36 of 100."*
+
+At the ceiling, stop and ask — either for a raised ceiling or for permission to continue at
+zero cost by emitting prompts for the director to run themselves. **Never quietly spend past
+the number.**

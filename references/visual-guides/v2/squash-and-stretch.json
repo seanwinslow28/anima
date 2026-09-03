@@ -1,0 +1,23 @@
+[
+  {
+    "created_at": "2026-09-03T10:28:13.353836Z",
+    "display_name": "GPT Image 2",
+    "id": "6b6d28aa-f447-4241-8ba5-71903c66f2ca",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_102813_6b6d28aa-f447-4241-8ba5-71903c66f2ca_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [],
+      "model": "videotape-alpha",
+      "prompt": "Educational animation reference diagram, clean black line art on white, professional textbook style. Title at top: \"Squash & Stretch — Volume Conservation\". TOP HALF: a bouncing ball arc with a dotted path, five stages numbered 1 to 5 — 1) Normal (in air) a circle, 2) Stretch (falling) a vertical ellipse, 3) Squash (impact) a wide flat ellipse ON the ground line, 4) Stretch (rising) a vertical ellipse, 5) Normal (apex) a circle. Each stage numbered ONCE only, no repeated labels. BOTTOM HALF: the SAME five stages shown on a simple round cartoon character with stubby arms and feet — normal, stretched tall as it falls, squashed wide and flat as it lands with its feet splayed, stretched tall as it rebounds, normal at the apex. A bracket links each ball stage down to its matching character stage. Footer: \"Scale X times Scale Y is approximately 1.0 — volume stays constant\". No other text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_102813_6b6d28aa-f447-4241-8ba5-71903c66f2ca.png",
+    "status": "completed"
+  }
+]

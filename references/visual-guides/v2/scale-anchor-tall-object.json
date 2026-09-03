@@ -1,0 +1,23 @@
+[
+  {
+    "created_at": "2026-09-03T10:30:45.332344Z",
+    "display_name": "GPT Image 2",
+    "id": "dd45c8f1-21a7-4a4b-bb68-ee78a7fc1eee",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_103045_dd45c8f1-21a7-4a4b-bb68-ee78a7fc1eee_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [],
+      "model": "videotape-alpha",
+      "prompt": "Educational reference diagram, clean black line art on white. Title at top: \"Anchor Scale to a TALL Object\". TWO panels side by side. LEFT panel headed \"SHORT ANCHOR — fails\" with a red X: a small cartoon creature standing beside a knee-high side table, drawn TWICE — once correctly small, and once ghosted at roughly double the size, with a curved arrow showing it drifting larger. Caption: \"a low object reads as a floor, not a ceiling\". RIGHT panel headed \"TALL ANCHOR — holds\" with a green check: the same creature beside a tall floor-to-ceiling shelving unit, with a dotted horizontal measure line showing the creature reaching only one quarter of the way up the shelf, and a human silhouette beside it for scale. Caption: \"a tall object gives a ratio that cannot be misread\". Footer: \"Name a tall fixture, state a fraction of its height, and add a human yardstick.\". No other text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_103045_dd45c8f1-21a7-4a4b-bb68-ee78a7fc1eee.png",
+    "status": "completed"
+  }
+]
