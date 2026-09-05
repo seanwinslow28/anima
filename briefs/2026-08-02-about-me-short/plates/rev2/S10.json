@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-03T20:54:25.960007Z",
+    "display_name": "GPT Image 2",
+    "id": "570b7d9e-ff3b-41ae-bd39-9c8c55cafbaf",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_205425_570b7d9e-ff3b-41ae-bd39-9c8c55cafbaf_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "8e130c21-814a-4d61-a998-a852c8672068",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/8e130c21-814a-4d61-a998-a852c8672068_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "02ee3ad1-15e4-4c7b-b70d-ed0e871e4751",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/02ee3ad1-15e4-4c7b-b70d-ed0e871e4751.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the FIXTURE AND STYLE BIBLE: the same desk, the same three monitors, the same office chair, lamp, mug, cork board, shelf and whiteboard, in the same drawing style, line weight, paper colour and palette. Preserve the exact design of every fixture. Do NOT copy its camera or its framing — this is the same desk seen from the OTHER side.\nImage 2 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement exactly; replace each grey block with the corresponding fixture; remove every guide mark.\n\nCAMERA: a medium shot square on to the desk from the open floor in front of it, from LOW DOWN — the lens is only knee-high to a grown adult and tipped slightly upward, the way a small creature standing on the floor would see the desk. The desk's front edge crosses the frame a little below its middle; the three monitors stand above it; the cork board and the shelf are high above them; the ceiling line is out of frame above.\n\nPERSPECTIVE — draw it deliberately. The vanishing point is LOW, at the height of the desk drawers, near the centre of the frame. Because we are looking up, the desk's top surface is hidden and we see its front edge and its drawer fronts; the monitors show their screens and the undersides of their bezels; the cork board, the shelf and the whiteboard are seen from below and their bottom edges are nearer to us than their top edges. Vertical lines stay vertical. The wall behind is one flat plane; the floor is a shallow band along the very bottom of the frame.\n\nVISIBLE LEFT TO RIGHT: clipped by the left edge, the whiteboard of half-erased diagrams and below it the low printer bench with a wire paper tray; then the long wooden desk with two drawers each side, an empty swivel office chair in front of it TURNED ROUND to face us, its seat and back towards the lens; on the desk THREE monitors showing quiet lines of code, screens towards us, a desk lamp and a mug; above them the cork board of pinned notes and, higher and to the right, the shelf of ring binders with a trailing plant; high at the right, the small brass bell on its wall bracket with a pull cord hanging down; clipped by the right edge, a fat striped party-popper confetti cannon standing on a three-legged tripod.\nOUT OF FRAME: the television, the dartboard, the paper towers, the server rack, the moodboard, the doorway.\nThe room is empty of characters and people. The chair is empty.\n\nWarm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_205425_570b7d9e-ff3b-41ae-bd39-9c8c55cafbaf.png",
+    "status": "completed"
+  }
+]

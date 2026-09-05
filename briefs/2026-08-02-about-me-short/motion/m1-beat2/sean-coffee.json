@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-01T18:29:56.628994Z",
+    "display_name": "Seedance 2.0",
+    "id": "feb99ac8-48bf-4908-a45e-41e7447deba2",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "306cc900-b4cf-40ae-be0c-668b5b6b24e4",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/306cc900-b4cf-40ae-be0c-668b5b6b24e4_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe seated man in the dark shirt, seen from behind, hammers both hands across the keyboard in a fast burst, his shoulders driving down on every strike and his whole back bouncing. Without turning his head, his right hand shoots sideways off the keys, snatches the blue mug, swings it up past his ear for a fast gulp and slams it back down on the desk — his left hand never stops typing. Both hands crash back onto the keys and he types harder, the chair rocking under him.\n\nHe is seen from behind in every frame: the back of his blond head and his dark short-sleeved shirt, the same head and the same shirt in every frame, never turning towards the camera. He stays seated in the office chair in every frame. The three dark monitors stay three dark monitors on the desk in front of him, in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260901_182956_feb99ac8-48bf-4908-a45e-41e7447deba2.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260901_182956_feb99ac8-48bf-4908-a45e-41e7447deba2_thumbnail.webp"
+  }
+]

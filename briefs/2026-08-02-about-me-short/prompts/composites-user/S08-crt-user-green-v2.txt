@@ -1,0 +1,26 @@
+# S08 CRT CLOSEUP — THE USER ON SCREEN, green + smile + thumbs up. v2. 16:9. 8.5 cr.
+# v1 (refs/user-looktest/S08-green.png) is KEPT — Sean: "keep these 2 just in case."
+#
+# *** THE v1 DEFECT, AND IT WAS THE PROMPT, NOT THE MODEL. ***
+#   Sean: "make sure to include the thumbs up for the green user in the CRT screen. It looks
+#   great in the turnaround, but it's not showing up in the CRT screen frame."
+#   The character crop handed to v1 (refs/user-looktest/H-torso2.png) CONTAINS the thumbs-up,
+#   the action lines and the elbow circles — verified by eye before writing this. So nothing
+#   was missing from the input. v1's prompt said the character appears "head and shoulders
+#   only", which is an instruction to cut the arms off, and the model obeyed it exactly.
+#   LESSON, and it generalises past this shot: a FRAMING clause silently deletes anything
+#   outside the frame it names. When a pose lives in the arms, the framing clause has to be
+#   written around the pose ("from the waist up, with the raised thumbs-up in frame"), never
+#   as a generic portrait crop.
+
+Image 1 is the character. Image 2 is the scene (the CRT closeup) — keep image 2 exactly as it is, every fixture, the camera, the framing, the paper and the palette unchanged.
+
+One change only: the television's dark screen is now lit and pale, and image 1's character is on the screen from the waist up, centred and filling the screen.
+
+Its raised arm and its closed fist with the thumb sticking straight up are fully in frame, exactly as in image 1 — the thumbs-up must be clearly visible on the screen. The short radiating action lines around its head are in frame too, and its enormous grin and the crosshair on its blank head read clearly. The word USER on its shirt sits well inside the screen with clear space beneath it, never cropped by the screen edge.
+
+Keep the character's construction lines exactly as image 1 draws them: the crosshair across its head, the light centre line, the small circles at its shoulders and elbows, and the broken searching contour. It is a picture on the television, drawn in the same graphite and the same green as image 1.
+
+The only text anywhere in the picture is the word USER on its shirt.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.

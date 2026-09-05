@@ -1,0 +1,26 @@
+# THE USER — look-test E: THE SAME BUILD, RED. 8.5 cr.
+# SEAN, 2026-09-02: "an option B with the user being red as opposed to grey. Red = problem.
+#   Green = problem solved."
+# WHAT THIS CHANGES, recorded because it is a story decision and not a palette decision:
+#   character_seeds.yaml's thesis is that the USER is "the only fully colorless element in any
+#   frame" and that "understanding is what colorizes them". A RED user is not colourless, so
+#   beat 18 becomes a colour CHANGE (red -> green) rather than a colour ARRIVAL (none -> green).
+#   Red/green is the more legible signal — an audience reads it with no help from the VO —
+#   and it costs the subtler idea. Sean's eye decides between D and E; this file only records
+#   that the two are different films, not different swatches.
+# THE RED IS DELIBERATELY COOL AND DULL. Claude the mascot is warm orange-terracotta; a warm
+#   red USER would read as related to Claude. This one is pushed towards brick/rose.
+
+A cartoon figure of a person in a soft muted red, drawn as a pencil-test figure that is still under construction but HAS BEEN FILLED IN. The body is one solid smooth dull cool brick red shape that reads clearly as a single silhouette. Drawn ON TOP of that fill, in visible darker graphite, are the construction lines the animator never erased: a small circle at each shoulder, elbow, wrist, hip, knee and ankle, a light vertical centre line running down the whole body, and a crosshair across the blank head. The contour around the figure is a light broken searching pencil line gone over two or three times rather than one clean stroke.
+
+Its red is soft, muted and slightly cool — a dull brick red, never a bright fire-engine red, and clearly NOT the warm orange-terracotta of the other characters.
+
+It wears a plain short-sleeved t-shirt with the word USER across the chest in plain capitals. The word USER is drawn in a much darker, heavier graphite than everything around it, clearly darker than the fill behind it, so it reads at a glance and is never lost in the colour.
+
+The figure stands still and upright at rest, both arms hanging down at its sides, both feet flat, facing straight towards us. It has NO face at all: the head is completely blank, with no eyes, no mouth, no nose, no ears and no hair. It is not a specific man and not a specific woman — no gender markers of any kind, no hairstyle, no jaw line, plain simple limbs.
+
+Centred, full body from head to feet, alone on plain empty warm cream drawing paper, a pale putty cream, never white and never yellow. Nothing else in the picture: no room, no furniture, no floor line, no shadow, no border.
+
+The only text anywhere in the picture is the word USER on the t-shirt.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.

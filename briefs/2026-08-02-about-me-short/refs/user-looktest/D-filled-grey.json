@@ -1,0 +1,23 @@
+[
+  {
+    "created_at": "2026-09-02T19:36:11.23121Z",
+    "display_name": "GPT Image 2",
+    "id": "8b2437be-9ebc-40ae-b5ea-4a392d630dcd",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_193611_8b2437be-9ebc-40ae-b5ea-4a392d630dcd_min.webp",
+    "params": {
+      "aspect_ratio": "1:1",
+      "height": 2048,
+      "medias": [],
+      "model": "videotape-alpha",
+      "prompt": "A grey cartoon figure of a person, drawn as a pencil-test figure that is still under construction but HAS BEEN FILLED IN. The body is one solid smooth mid-grey shape that reads clearly as a single silhouette. Drawn ON TOP of that fill, in visible darker graphite, are the construction lines the animator never erased: a small circle at each shoulder, elbow, wrist, hip, knee and ankle, a light vertical centre line running down the whole body, and a crosshair across the blank head. The contour around the figure is a light broken searching pencil line gone over two or three times rather than one clean stroke.\n\nIt is entirely grey and colourless — it is the only element in the picture with no colour in it at all.\n\nIt wears a plain short-sleeved t-shirt with the word USER across the chest in plain capitals. The word USER is drawn in a much darker, heavier graphite than everything around it, clearly darker than the fill behind it, so it reads at a glance and is never lost in the colour.\n\nThe figure stands still and upright at rest, both arms hanging down at its sides, both feet flat, facing straight towards us. It has NO face at all: the head is completely blank, with no eyes, no mouth, no nose, no ears and no hair. It is not a specific man and not a specific woman — no gender markers of any kind, no hairstyle, no jaw line, plain simple limbs.\n\nCentred, full body from head to feet, alone on plain empty warm cream drawing paper, a pale putty cream, never white and never yellow. Nothing else in the picture: no room, no furniture, no floor line, no shadow, no border.\n\nThe only text anywhere in the picture is the word USER on the t-shirt.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2048
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_193611_8b2437be-9ebc-40ae-b5ea-4a392d630dcd.png",
+    "status": "completed"
+  }
+]

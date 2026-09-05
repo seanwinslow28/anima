@@ -1,0 +1,17 @@
+# S12 · CLAUDE at the foot of the canyon — beat 5 composite. 2026-09-05. gpt_image_2 edit, 2 refs:
+#   refs/turnaround-views/claude-sitting-v2.png (¾ front, sitting and writing — continuity of ACTION across the cut:
+#   Claude writes in every still where it is at rest) + normalised/S12-claude-canyon-v1.png. 8.5 cr.
+# STAGING: the builder small at the foot of the build; the eye comes down the flags and lands on it.
+# RUN: motion/composite.sh prompts/composites-M2/S12-claude.txt refs/turnaround-views/claude-sitting-v2.png \
+#        normalised/S12-claude-canyon-v1.png composites/M2/S12-claude.json
+# RESULT: (unrolled)
+Image 1 is the CHARACTER: a small rounded terracotta-orange cartoon creature, a soft cube with four stubby legs, small nubs for arms, and two dot eyes, sitting on the floor writing on a sheet of paper with a pencil. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same steep upward perspective, same towers of paper, same fixtures, same palette. This picture is seen from a lens lying on the floor looking up, so the character is the one thing at floor level.
+
+POSITION: sitting on the floor at the very bottom of the frame, in the centre, at the foot of the tallest tower of paper, between the base of that tower and the bottom edge of the picture, with a sheet of paper on the floor in front of it. Its whole body is inside the bottom third of the frame.
+SCALE — draw it SMALL: it is a tiny creature, only knee-high to a grown adult even standing, and here it sits. The top of its head reaches no higher than a quarter of the way up the shortest stack of paper at the right of centre, and it is dwarfed by the towers above it. It is never person-sized.
+FACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its full face, its chest and its legs. It is NOT seen from behind and NOT in profile. Its eyes are cast down at the sheet of paper it is writing on; it is absorbed in that and never looks into the camera.
+POSE: it sits still at rest on the floor, one arm nub holding the pencil to the page, the other resting on the floor. Draw it in the same hand as the room — graphite line with a light terracotta coloured-pencil wash, the same line weight as the furniture — with a soft graphite contact shadow pooled on the floor beneath it.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

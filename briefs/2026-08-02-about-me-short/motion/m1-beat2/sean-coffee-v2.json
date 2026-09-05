@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-01T18:46:51.512261Z",
+    "display_name": "Seedance 2.0",
+    "id": "030fb0d0-7b6e-481c-a620-6b8da92d99b4",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "1a980218-884d-48d3-a27d-c5b561669c79",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/1a980218-884d-48d3-a27d-c5b561669c79_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe seated man in the dark shirt, seen from behind, hammers both hands across the keyboard in a fast burst, his shoulders driving down on every strike, his head locked on the monitors. Without looking away, his right hand whips sideways off the keys in one long smear frame, snatches the blue mug and tips it straight up for a single fast chug, his head tipping back with it. His hand whips the mug back down onto the desk in another smear frame and both hands crash onto the keys, typing harder than before.\n\nHe is seen from behind in every frame: the back of his blond head and his dark short-sleeved shirt, the same head and the same shirt in every frame, never turning towards the camera. He stays seated in the office chair in every frame. The three dark monitors stay three dark monitors on the desk in front of him, in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260901_184651_030fb0d0-7b6e-481c-a620-6b8da92d99b4.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260901_184651_030fb0d0-7b6e-481c-a620-6b8da92d99b4_thumbnail.webp"
+  }
+]

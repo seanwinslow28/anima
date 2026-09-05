@@ -1,0 +1,17 @@
+# S14 · GEMINI in the foreground of the fifty — beat 7 composite. 2026-09-05. gpt_image_2 edit, 2 refs:
+#   refs/turnaround-views/gemini-v2.png (¾ front, all five points) + normalised/S14-gemini-fifty-v1.png. 8.5 cr.
+# STAGING: she stays in the FOREGROUND and the wall does the receding (the director's call on "how many is
+#   fifty"). Eyes UP at the wall — the task the slap/slap/slap loop starts from.
+# RUN: motion/composite.sh prompts/composites-M2/S14-gemini.txt refs/turnaround-views/gemini-v2.png \
+#        normalised/S14-gemini-fifty-v1.png composites/M2/S14-gemini.json
+# RESULT: (unrolled)
+Image 1 is the CHARACTER: a small rounded lavender-and-blue cartoon star with a soft round belly, five points, two dot eyes and a small smiling mouth. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same raking perspective, same wall of sketches, same buried worktable, same fixtures, same palette.
+
+POSITION: standing on the floor in the near foreground at the lower left of centre, just in front of and to the left of the near end of the long wooden worktable, on top of the loose sketches scattered across the floor, its whole body clear of the table. It is close to the lens, so it is drawn larger than anything on the far wall.
+SCALE — draw it SMALL: it stands a little above knee height on a grown adult. Standing beside the near end of the worktable, the top of its head sits clearly BELOW the table top, about three quarters of the table's height. It is a tiny creature, never person-sized.
+FACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its mouth, its round belly, all five points of the star and both feet. It is NOT seen from behind and NOT in profile. Its eyes are turned up and off to one side towards the wall of sketches beside it; it is absorbed in that and never looks into the camera.
+POSE: it stands still and upright at rest, both arms hanging down at its sides, both feet flat on the floor. Draw it in the same hand as the room — graphite line with a light lavender-and-blue coloured-pencil wash, the same line weight as the furniture — with a soft graphite contact shadow pooled on the floor beneath it.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

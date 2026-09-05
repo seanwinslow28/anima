@@ -1,0 +1,14 @@
+Image 1 is the FIXTURE AND STYLE BIBLE: preserve its drawing style, line weight, paper colour, palette, rendering, and the design of any fixture it shares with this wall. Do NOT copy its layout, its left-to-right order, or which fixtures are present.
+Image 2 is the COMPOSITION ROUGH: follow its left-to-right placement, its proportions and its heights exactly; replace each grey block with the real fixture named below, and remove every guide mark.
+
+THIS IS A FLAT ELEVATION — an animation background layout drawing of one wall, seen straight on from directly in front. No perspective, no vanishing point, no receding floor plane, no ceiling, no adjoining walls. Every fixture is square to the viewer. A thin baseboard runs the full width along the bottom. The wall is ten feet tall.
+The wall is empty of characters and people.
+
+This wall belongs to one man and nobody else. It is his whole station plus the office overflow that ends up either side of it.
+
+LEFT TO RIGHT ALONG THE WALL:
+a tall grey filing cabinet with cardboard boxes and a tired trailing plant on top; a low bench carrying a printer and stacked paper trays, with a whiteboard on the wall above it covered in half-erased diagrams; then the hero — a wide wooden desk with three monitors on it showing quiet lines of code, a desk lamp, a mug and a leaning stack of paper, and above the desk a corkboard thick with pinned notes and photographs, a floating shelf of ring binders with a trailing plant, and a bundle of cables running down the wall; a gap of bare wall; a small brass ship's bell on a wall bracket well above head height with a pull cord hanging from it; below and right of the bell, a confetti cannon standing on a tripod; at the right edge a long low storage bench with cardboard boxes on it and a coat rack on the wall above.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. Walls are flat, quiet, and low-contrast — the wall is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.

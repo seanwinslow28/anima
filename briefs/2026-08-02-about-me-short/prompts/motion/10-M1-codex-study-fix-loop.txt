@@ -1,0 +1,29 @@
+# CODEX, M1 beat 2 — THE STUDY-AND-FIX LOOP. Sean's own move, 2026-09-01.
+# seedance_2_0 fast 7s 720p | start_image: normalised/S04-codex-composite-frontal-v1.png
+#
+# SEAN, verbatim: "we should have it studying the computer rack, quickly jumping up and
+#   reorganizing the wires, goes back down to study it again, and jumps back up to reorganize.
+#   This is a great way to showcase a loop and a way to show how fast and eager Codex is."
+#
+# THE JUMP IS ALREADY PROVEN ON THIS EXACT SETUP. `motion/ab-codex/armA.mp4` — the clip Sean
+#   called "very cartoony with squash and stretch. Beautiful motion." — has Codex spring up to
+#   the rack, work, and drop. Same start frame, same route. The feet-law repeal is not a risk
+#   here; it is a return to the one vertical this project has already landed.
+# FACE: the mouth defect is Sean-approved ("fine and he likes it") — do not spend rolls on it.
+#   The lock is nevertheless written the way ab-codex/README recommends, as a constant through
+#   time rather than a rest state, because that phrasing is free.
+# RESULT — clip: motion/m1-beat2/S04-codex-study-fix-v1.mp4 | first roll, 24.5 cr
+#   layout 0.992 f0 / 0.989 last — THE TIGHTEST PLATE HOLD MEASURED ON THIS PROJECT.
+#   motion 1.37 · drift 7.0% · travel 19.9px (the most travel of the five — it climbs)
+#   The loop lands, and the CABLES ACTUALLY GET COILED: the loose loops on the rack face become
+#   a neat bundle by ~3.5s and stay coiled. A genuine spin-smear at ~2.5s.
+#   Codex grows a mouth again (Sean-approved defect, not chased). It also invents a thin
+#   pointer/stick in the last ~1s — an invented prop nobody asked for. Flagged, not judged.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The lavender cloud creature leans in close to the black server rack, head tipping side to side as it studies the tangle of cables. It springs straight up the face of the rack, grabs the hanging cables in both stubby arms and whips them into a tight coil in a blur, then drops back down to the floor. It lands square, leans in and studies the coil again, tips its head the other way, and springs straight back up to yank the cables tighter.
+
+Its face is exactly one pale chevron and one short straight bar, the same chevron and the same bar in every frame. It lands on both feet on the floor after every leap. It stays small, no taller than a quarter of the black server rack beside it, in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

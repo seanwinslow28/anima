@@ -1,0 +1,32 @@
+# CLAUDE, M1 BEAT 2 — REJECTED BY SEAN. SLOW MOTION. Do not copy this shape.
+# seedance_2_0 fast 7s 720p | start_image: normalised/S03-claude-composite-frontal-v1.png
+# clip: ../../motion/m1-beat2/S03-claude-tidy-v1.mp4
+#
+# SEAN: "The Claude mascot jumps up in slow motion, touches the paper stack, and slowly falls
+#        back to the ground." Correct, and the session that made it under-called the defect as
+#        "airborne with no visible contact" when the real fault is the TIMING.
+#
+# THREE CAUSES, ALL IN THIS PROMPT:
+#   1. DAMPING WORDS. The closing block said "unhurried timing, a slow ease into each pose,
+#      small held moments, the gentlest overshoot". This is exactly the mistake 01 already
+#      recorded -- "light taps", "one small bounce" are DAMPING words, they dampen -- re-made
+#      with better manners. There is no calm register. Calm is a SMALL ACTION AT FULL SNAP.
+#      The slapstick vocabulary block from 04/06 is CONSTANT and must never be edited per beat.
+#   2. ONE ACTION OVER SEVEN SECONDS. 04 fills 7s with three distinct events. One event given
+#      7s gets spread across 7s, and spreading is slow motion. Three events, ~2-2.5s each.
+#   3. A VERTICAL MOVE. Seedance has no gravity model and a jump is where that shows. Stage the
+#      business inside the character's own reach; Claude does not need the top of the tower.
+#
+# WHAT IT GOT RIGHT, and this part carries forward:
+#   THE FACE LOCK HELD -- two dot eyes, two brows, no mouth, all 7s -- because it was stated as
+#   a CONSTANT THROUGH TIME ("the same two eyes and two brows in every frame") rather than as a
+#   rest state ("its face stays..."), which is what 04/06 used and what lost to the beat.
+#   Layout hold vs the start frame was 0.985 at frame 0 and 0.987 at the last frame, the best
+#   measured on this project -- and the clip is still bad, which is the whole lesson about
+#   trusting metrics over the eye.
+
+1950s theatrical cartoon, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The small terracotta cube creature reaches up with one stubby arm and presses a crooked paper flag flat against the tall leaning stack of paper, smoothing it with one slow careful stroke. It settles back down onto all four feet, tips its head to one side to check the stack is square, and gives a single small satisfied nod. The tall stack sways once, gently, and comes to rest.
+
+Its face is exactly two small dark dot eyes and two short brows, the same two eyes and two brows in every frame. Its four feet return to the floor after the reach. It stays small, no taller than a quarter of the paper stack, in every frame. Unhurried timing, a slow ease into each pose, small held moments at the top and the bottom of the reach, the gentlest overshoot on the sway.

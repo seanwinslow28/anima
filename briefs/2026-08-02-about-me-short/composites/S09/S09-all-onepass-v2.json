@@ -1,0 +1,72 @@
+[
+  {
+    "created_at": "2026-09-04T16:43:43.044249Z",
+    "display_name": "GPT Image 2",
+    "id": "ae8973a5-590c-47a2-b660-df46ca48e5f4",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260904_164343_ae8973a5-590c-47a2-b660-df46ca48e5f4_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "5f4f0a1b-2dd3-473b-9707-a11196796054",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/5f4f0a1b-2dd3-473b-9707-a11196796054_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "ce9ab605-7e4a-4a63-98af-11bdc21deda9",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/ce9ab605-7e4a-4a63-98af-11bdc21deda9.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "6c770365-8329-4154-8704-256af41d4374",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/6c770365-8329-4154-8704-256af41d4374.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "7aa89add-d6fa-43dd-8d6c-9329c5cec0bb",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/7aa89add-d6fa-43dd-8d6c-9329c5cec0bb.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "735c084f-2b69-4f6a-9286-1a02238e7249",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/735c084f-2b69-4f6a-9286-1a02238e7249.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "cbecb7f1-4b95-407e-b447-dd33e50456ad",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/cbecb7f1-4b95-407e-b447-dd33e50456ad.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the BACKGROUND SCENE: a wide view of a whole room from high up. Images 2, 3, 4, 5 and 6 are five CHARACTER REFERENCES, one character per image. Add all five characters to Image 1. Draw each character EXACTLY as it appears in its own reference image — the same shapes, the same face, the same colours, the same proportions — changed only in size, placement and the direction it faces. Keep Image 1 unchanged in every other respect — same camera, same framing, same fixtures, same palette. Draw every character in the same hand as the room: graphite line with a light coloured-pencil wash and a soft graphite contact shadow on the floor beneath it, the same line weight as the furniture. Each is a small part of this big picture.\n\nThe character in Image 2 stands on the far wall's floor at the foot of the two tall stacks of flagged paper, just beside them. TINY: its head reaches only a quarter of the way up the taller stack. Turned three-quarters towards us, whole front visible, eyes on the paper stacks, at rest, all its feet on the floor.\n\nThe character in Image 3 stands on the far wall's floor in the gap between the coffee counter and the tall black server rack. TINY: its head reaches barely a quarter of the way up the rack and it is shorter than the counter. Turned three-quarters towards us, whole front visible, eyes on the rack, at rest, arms down, both feet on the floor.\n\nThe character in Image 4 sits in the office chair already at the long desk on the right-hand wall; turn that chair to face the desk in the same spot, no second chair. A full-grown adult, seated, head a little above the chair back and below the cork board. Seen from behind and a little from his right, three-quarters away from us, face not visible, both hands flat on the keyboard, at rest.\n\nThe character in Image 5 stands on the floor on the left side, just to the right of the wooden worktable and a step out from the wall of taped sketches. SMALL: its head sits clearly below the top of the worktable. Turned three-quarters towards us, whole front visible, eyes turned up to the sketches on the wall, at rest, arms down, both feet on the floor.\n\nThe character in Image 6 stands on the open floor in the lower right, nearest the camera, in front of and to the left of the low bench with the printer on it — the largest figure standing on the floor because it is the closest, yet still a small creature only thigh-high to an adult, never person-sized. Turned three-quarters towards us, whole front visible, every part of it fully drawn. It holds one small dart in one hand and looks down at it, brows up, cheerful. At rest, arms down, both feet flat on the floor.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260904_164343_ae8973a5-590c-47a2-b660-df46ca48e5f4.png",
+    "status": "completed"
+  }
+]

@@ -8,9 +8,18 @@
 2. **Instant black** (blind-reader note): the smash to black after the sting must be immediate — any linger on the smile softens the joke to sentiment or curdles it to bleak.
 3. **Genuine smile** (blind-reader note): the team's smiles before the sting must read genuine, so the sting plays as cyclicality, never cynicism about the fix.
 
-## ⚠ Flagged for Sean at the read (bundle-internal contradiction, discovered building this)
+## ✅ Resolved 2026-08-31 — the contradiction is gone, because the line is gone
 
-Concept.md Movement 1 says "heads turn to Sean. **He speaks**; the room detonates" (inherited from L4's "silence until Sean speaks"), but the non-negotiable says **"The Sean character speaks exactly once — the question."** This sheet stages the detonation trigger as a **wordless GO gesture** (chair-spin + finger-twirl "let's move") to preserve the one-line rule — the rule that makes the question land. Confirm or override at the read.
+This sheet used to flag a conflict: concept.md's Movement 1 said "heads turn to Sean. **He
+speaks**; the room detonates," while the non-negotiable said he speaks exactly once. It was
+staged as a **wordless GO gesture** (chair-spin + finger-twirl) to protect the one-line rule.
+
+Sean has now ruled that **he never speaks aloud at all** — the question is typed into a chat box
+on his own monitor, and the USER lives on screens only (see the amendment at the foot of
+[`00_studio_brief.md`](00_studio_brief.md)). The wordless GO gesture therefore stops being a
+workaround and becomes the house style: the film runs on VO, music and sound effects, and every
+in-scene beat is played physically. Beat 13's staging changes with it — no walk to the doorway,
+he turns back to the monitors and types.
 
 ---
 
@@ -45,7 +54,7 @@ Concept.md Movement 1 says "heads turn to Sean. **He speaks**; the room detonate
 |---|------|-----|----------------|------------------------|
 | 11 | 0:50 | 2s | Record scratch. Chaos dead-stops mid-frame (move → hold) | *(silence)* |
 | 12 | 0:52 | 4s | **THE SWIVEL:** Sean turns his chair away from the monitors — eyes closed, deep breath. **Held 2–3s past comfort. No gag. Protected.** The narration/picture gap closes here | *(silence, then, quiet and agreeing:)* "Sometimes, the next step… is a step back." |
-| 13 | 0:56 | 4s | Sean walks to the doorway; the small grey USER. **THE QUESTION (locked, his only line):** "Can you show me what happened the last time you tried to check out?" | *(VO silent — Sean speaks in-scene)* |
+| 13 | 0:56 | 4s | Sean turns back to his monitors and **types**. A chat box on the centre screen; the small grey USER is the avatar in it. **THE QUESTION (locked, now typed, not spoken):** "Can you show me what happened the last time you tried to check out?" | *(VO silent — the line appears on screen)* |
 | 14 | 1:00 | 6s | **THE REPLAY** on the big TV: screen-recording, cursor circling, circling — never finding the buy button. Room watches, still. **Legibility floor 5–6s — never the compression victim** | "Step seven: watch." |
 | 15 | 1:06 | 3s | Full-cast **sigh of relief** — the fix is comically small | *(VO silent)* |
 | 16 | 1:09 | 5s | **F1 PIT STOP (≤5s, hard):** Sean calls micro-tasks — Codex one line, Gemini make it pretty, Claude confirmation copy, Grok demolishes the old button. Flawless tiny execution | "Step eight: solve it. Together." *(or silent — pit-stop SFX may own it)* |

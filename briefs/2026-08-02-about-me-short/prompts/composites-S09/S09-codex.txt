@@ -1,0 +1,15 @@
+# S09 · CODEX into the CRT-POV plate. 2 of 5. gpt_image_2 edit · 8.5 cr.
+#   Image 1 = refs/turnaround-views/codex-v2.png · Image 2 = normalised/S09-room-reacts-v1.png (CLEAN)
+#   Far wall, tiny (2′2″ at ~23 ft). Rest pose, ¾ front, eyes on the rack. Never in a pass with Gemini.
+# RESULT — first roll, job 9a27d8a9. Landed: in the gap between counter and rack, tiny, ¾ front, bracket-and-dash face intact, eyes on the rack. Matte pasted 1.16%.
+
+Image 1 is the CHARACTER: a small rounded periwinkle-blue cloud creature with a bracket-and-dash face, two small brows, and short stubby arms. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette. This is a very wide shot of a whole room from high up, so the character is a small part of the picture.
+
+POSITION: on the far wall of the room, standing on the floor at the foot of the tall black server rack, just to the LEFT of it in the gap between the rack and the low coffee counter. It is far from the camera, so it is drawn very small.
+SCALE — draw it TINY: it is a thigh-high creature seen from across the room. At the foot of the server rack the top of its head reaches barely a quarter of the way up the rack, and it is shorter than the coffee counter beside it is tall. It is a small creature, never person-sized.
+FACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — the pale bracket-and-dash face, both brows, its chest, both arms and both feet. It is NOT seen from behind and NOT in profile. Its eyes are turned off to one side towards the tall dark server rack beside it; it is absorbed in that and never looks into the camera.
+POSE: it stands still and upright at rest, both arms hanging down at its sides, both feet flat on the floor and clear of the baseboard. Draw it with a soft graphite contact shadow on the floor beneath it.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

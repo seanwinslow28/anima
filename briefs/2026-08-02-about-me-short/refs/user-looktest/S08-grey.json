@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-02T20:38:23.098587Z",
+    "display_name": "GPT Image 2",
+    "id": "2d504971-a5be-4afe-9071-33ff3d3d8646",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_203823_2d504971-a5be-4afe-9071-33ff3d3d8646_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "c2fb4775-fb21-462c-af6e-9ddfd8890757",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/c2fb4775-fb21-462c-af6e-9ddfd8890757.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "b76e529a-6278-493d-898f-fa64b6ee38f6",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/b76e529a-6278-493d-898f-fa64b6ee38f6_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the character. Image 2 is the scene (the CRT closeup) — keep image 2 exactly as it is, every fixture, the camera, the framing, the paper and the palette unchanged.\n\nOne change only: the television's dark screen is now lit and pale, and image 1's character is on the screen, head and shoulders only, centred and filling the screen, its head near the top edge and the word USER on its shirt sitting well inside the screen with clear space beneath it, never cropped by the screen edge. It is a picture on the television, drawn in the same graphite and the same grey as image 1.\n\nThe only text anywhere in the picture is the word USER on its shirt.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_203823_2d504971-a5be-4afe-9071-33ff3d3d8646.png",
+    "status": "completed"
+  }
+]

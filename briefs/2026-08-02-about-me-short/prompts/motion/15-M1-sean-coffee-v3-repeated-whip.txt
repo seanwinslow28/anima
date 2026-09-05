@@ -1,0 +1,49 @@
+# SEAN, M1 beat 2 — v3: THE REPEATED WHIP. 2026-09-01.
+# seedance_2_0 fast 7s 720p | start_image: normalised/S02-sean-composite-v1.png
+# THE INCUMBENT IS v1, not v2. Sean: "The first generation is the better one so far."
+#   v1 motion 1.78 / layout 0.986-0.983. v3 has to beat that, not merely add the gag.
+#
+# SINGLE-VARIABLE TEST, deliberately. v2 tested ONE lever — naming the smear frames at the two
+#   specific moments inside the action block — and it FAILED: the chug landed, the smears did
+#   not, and the held chug cost 1.78 -> 1.53 motion energy. v3 therefore REMOVES that naming
+#   from the action block entirely (it survives only in the constant block 4, which is never
+#   edited) and tests exactly one different lever:
+#
+#     THE ACTION ITSELF IS REPEATED, NOT DESCRIBED HARDER.
+#
+#   Every smear this project has actually produced came from a FAST REPEATED or ROTATIONAL
+#   action — 04's multi-armed hammer-typing, Codex's spin at ~2.5s in S04-codex-study-fix-v1 —
+#   and never from a single one-way translation. So the reach becomes three direction changes
+#   in a row: whips out, OVERSHOOTS, whips back, whips out again and snatches it.
+# Second fix, from v2's own failure: the gulp is "one hard fast gulp" and the mug whips
+#   straight back down. v2's "chugs it down in a quick motion" came back as a 1.8s held pull,
+#   which is where the energy went.
+# If v3 still shows no smear, the finding is that a one-way reach is not smearable on this
+#   route, and v1 ships.
+# RESULT — REGRESSION ON EVERY AXIS. clip: motion/m1-beat2/S02-sean-coffee-v3.mp4 | 24.5 cr
+#   motion 1.39 (v1 1.78, v2 1.53) · layout 0.969/0.966 (v1 0.986/0.983) · drift 8.5%
+#   *** HE NEVER DRINKS. *** Not one frame has the mug at his mouth or his head tipped back.
+#   The repeated whip ATE THE BEAT: he reaches out and back, out and back, and the gulp that
+#   v2 landed cleanly is simply gone. Describing the reach as repeated bought reaching, not a
+#   smear — and it spent the seconds the chug needed.
+#
+# THE FINDING, and it is worth more than the clip: on seedance_2_0 `fast`, a ONE-WAY
+#   TRANSLATION IS NOT SMEARABLE by either lever available in the prompt.
+#     v2 named the smear at the exact moment  -> clean arc, no smear, held chug.
+#     v3 made the action itself repeated      -> clean arc, no smear, and the chug vanished.
+#   Two independent levers, two failures, one conclusion. The smears this project HAS produced
+#   (04's multi-armed typing, Codex's spin) are rotational or in-place-repeating, not a hand
+#   crossing the frame once. Stop buying rolls against this; if the smear is wanted it is a
+#   post/compositing job, not a prompt job.
+#
+# STANDING: v1 (prompts/motion/09) is the incumbent and remains the best Sean clip —
+#   Sean 2026-09-01: "The first generation is the better one so far." v2 is the sillier chug
+#   at lower energy. v3 is superseded by its own result and kept only as the negative record.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The seated man in the dark shirt, seen from behind, hammers both hands across the keyboard in a fast burst, his shoulders driving down on every strike, his head locked on the monitors. Without looking away, his right hand whips sideways off the keys, overshoots the blue mug and whips back, whips out again and snatches it, tips it straight up for one hard fast gulp and whips it back down onto the desk. Both hands crash onto the keys and he hammers away harder than before.
+
+He is seen from behind in every frame: the back of his blond head and his dark short-sleeved shirt, the same head and the same shirt in every frame, never turning towards the camera. He stays seated in the office chair in every frame. The three dark monitors stay three dark monitors on the desk in front of him, in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

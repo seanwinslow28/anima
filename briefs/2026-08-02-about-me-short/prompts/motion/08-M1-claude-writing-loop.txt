@@ -1,0 +1,44 @@
+# CLAUDE, M1 beat 2 — THE WRITING LOOP. Sean's own move, 2026-09-01.
+# seedance_2_0 fast 7s 720p | start_image: normalised/S03-claude-composite-frontal-v1.png
+#
+# SEAN, verbatim: "he can be standing in front of a small stack of papers in front of him,
+#   scribbling some writing very quickly on the top piece of paper, takes the piece of paper
+#   and jumps up to the top of the stack, places it, and quickly goes back down to write on
+#   the next piece. This showcases how much Claude LOVES to write up pages of documents."
+#
+# TWO STANDING RULINGS THIS FILE IS THE FIRST TO CARRY:
+#   1. THE FEET LAW IS REPEALED. Sean: "the feet don't HAVE to stay down. That was just an
+#      issue in the previous session because Claude floated to the top and gently fell to the
+#      floor in slow motion." He is right and 07's diagnosis was over-broad: the defect was
+#      the TIMING SHAPE, not the altitude. Jumps are allowed. What replaces the rule is a
+#      LANDING constant ("lands on all four feet after every leap") plus speed verbs on the
+#      vertical — springs, drops, slams — never a neutral or eased description of a jump.
+#   2. FILL THE SEVEN SECONDS. Sean: "I'd rather have more room and character personality
+#      actions to work with as opposed to a quick cut for each. The timing comes down in the
+#      edit, not the generations." So the ~2-2.5s-per-event budget is retired as a ceiling.
+#      A LOOP is the ideal shape: it cannot degenerate into one action stretched over 7s.
+#
+# INVENTED PROPS, and this is the roll's real question. The low pile of loose paper at its
+#   feet is NOT in the start frame. Seedance can generate objects not in frame. Sean has
+#   sanctioned trying this before regenerating the still: "if we have to regenerate an image
+#   of Claude writing on the piece of paper, that's fine, but let's see if we can get that
+#   motion from Seedance before going that route." No pencil is named — one fewer invented
+#   object, and the paper context carries the read.
+# RESULT — *** LOCKED BY SEAN 2026-09-01: "Claude looks GREAT! That one's locked." ***
+#   clip: motion/m1-beat2/S03-claude-writing-loop-v1.mp4 | first roll, 24.5 cr
+#   TWO FULL CYCLES in 7s: scribble -> snatch -> leap -> place -> drop -> scribble faster -> leap.
+#   THE INVENTED PROP WORKED. Seedance drew the low pile of loose paper at its feet that is not
+#   in the start frame, and it reads as writing. The still did NOT have to be re-generated.
+#   Jump timing at 12fps: ascent ~3 frames (0.25s), descent ~6 (0.5s). It accelerates and lands.
+#   It jumps to the TALL stack, not the shorter one the prompt named, and clips out of frame top
+#   at the apex. It ends on top of the stack, not on the floor.
+#   layout 0.985 f0 / 0.951 last · motion 1.17 · drift 8.6%
+#   THE METRIC IS BLIND, AGAIN: motion 1.17 vs the REJECTED slow-motion clip's 1.11.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The small terracotta cube creature scribbles fast across the top sheet of a low pile of loose paper at its feet, its whole body bouncing on every stroke. It snatches the finished sheet up, springs straight up onto the shorter paper stack beside it in one hard leap, slaps the page down on top, and drops back to the floor. It lands on all four feet, grabs the next sheet, and scribbles even faster. It springs up a second time and slams another page onto the pile.
+
+Its face is exactly two small dark dot eyes and two short brows, the same two eyes and two brows in every frame. It lands on all four feet on the floor after every leap. It stays small, no taller than a quarter of the tall flagged paper stack behind it, in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

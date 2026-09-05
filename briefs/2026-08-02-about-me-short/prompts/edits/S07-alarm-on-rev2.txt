@@ -1,0 +1,23 @@
+# S07 — THE ALARM SCREEN, rev2. gpt_image_2 EDIT of normalised/S07-plate-v2.png. 8.5 cr.
+# Purpose: the END KEYFRAME for the S07 motion. The plate has the screen dark (rest-pose law);
+#   this is the same plate with the screen lit. Seedance then gets both and only has to snap
+#   between them — which keeps the TEXT out of the video model's hands entirely. gpt_image_2
+#   already rendered a clean "PROBLEM!" on the rev1 plate (normalised/S07-alarm-v1.png); a
+#   video model would garble it.
+# The screen design is carried from that rev1 plate: PROBLEM! in caps across the top, a jagged
+#   line falling left-to-right beneath it, small arrowhead at the end.
+# NO "CHECKOUT COMPLETIONS" LABEL, and the reason is measured, not aesthetic: in rev2 framing
+#   the CRT screen is ~200px of a 2000px-wide frame — 10% of frame width, ~128px at 720p
+#   output. One word of caps is already tight; a second, smaller line would garble. Storyboard
+#   open item 2 stays open, and it is one clause away if Sean wants it.
+# Edit discipline per prompt-how-much: role-tag, hold, ONE change, style token, text clause.
+#   The fixture list is deliberately NOT enumerated — naming objects in an edit invites
+#   literal-noun drift, and "keep it exactly as it is" is what the edit surface is FOR.
+
+Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same fixtures, same paper and palette.
+
+Change ONE thing: the small television's dark screen is now lit and pale, and on it, drawn in the same graphite line as the rest of the picture, is the single word PROBLEM! in plain capitals across the top of the screen, with a jagged line falling from upper left to lower right beneath it, ending in a small arrowhead.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.
+
+The only text anywhere in the picture is the word PROBLEM! on the television screen.

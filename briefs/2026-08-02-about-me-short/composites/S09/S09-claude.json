@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-03T23:39:20.155766Z",
+    "display_name": "GPT Image 2",
+    "id": "e277a46e-32e9-43fd-a3aa-4aecdabd9296",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_233920_e277a46e-32e9-43fd-a3aa-4aecdabd9296_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "88b0fba0-ecc5-48b5-a68a-8482afed1391",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/88b0fba0-ecc5-48b5-a68a-8482afed1391.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "b33ebb67-dd68-4132-ba49-51b2dbde10dc",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/b33ebb67-dd68-4132-ba49-51b2dbde10dc_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a small rounded terracotta-orange cartoon creature, a soft cube with four stubby legs, small nubs for arms, and two dot eyes. Image 2 is the BACKGROUND SCENE.\n\nAdd the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette. This is a very wide shot of a whole room from high up, so the character is a small part of the picture.\n\nPOSITION: on the far wall of the room, standing on the floor at the foot of the two tall leaning stacks of flagged paper, just to the LEFT of them and clear of the binder shelf. It is far from the camera, so it is drawn very small.\nSCALE — draw it TINY: it is a knee-high creature seen from across the room. The top of its head reaches only about a quarter of the way up the taller paper stack beside it, and it is far shorter than the small supply desk to its right. It is a small creature, never person-sized.\nFACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its face, both arm-nubs and all four feet. It is NOT seen from behind and NOT in profile. Its eyes are turned off to one side towards the paper stacks beside it; it is absorbed in those and never looks into the camera.\nPOSE: it stands still and upright at rest, both arm-nubs at its sides, all four feet flat on the floor and clear of the baseboard. Draw it with a soft graphite contact shadow on the floor beneath it.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_233920_e277a46e-32e9-43fd-a3aa-4aecdabd9296.png",
+    "status": "completed"
+  }
+]

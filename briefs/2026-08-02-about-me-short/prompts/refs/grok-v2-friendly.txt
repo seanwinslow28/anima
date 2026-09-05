@@ -1,0 +1,20 @@
+# GROK REFERENCE FIX — a friendly ¾-front view, to REPLACE grok-v2 as the composite reference. 2026-09-04.
+#   Found while answering "are the words competing with the reference?": the ¾-front view cut from the
+#   turnaround sheet (refs/turnaround-views/grok-v2.png) is drawn on the SNIDE side — narrowed red eyes,
+#   angled brows, one ear as a blade across a sawtooth grin. Every friendly Grok on screen (S06, the
+#   one-pass v1) came from the description line overriding that sheet. Fix the reference once; every
+#   later composite and Seedance start frame inherits it.
+#   gpt_image_2 edit, ONE ref (grok-v2), 1:1, 8.5 cr. Edit recipe: lock, ONE change, style, stop.
+# RUN: motion/gen_image_ref.sh prompts/refs/grok-v2-friendly.txt refs/turnaround-views/grok-v2.png 1:1 refs/grok-v2-friendly.json
+# RESULT — first roll, 8.5 cr, job 0225c45e → refs/turnaround-views/grok-v2-friendly.png (2048²).
+#   Same body, ears, crest, tail, claws and pose; round red-orange eyes, raised brows, an even-toothed
+#   friendly grin. The ear still crosses the grin diagonally as it does on the sheet (the 'clear of the
+#   mouth' clause did not take — it is the design's ear, left as is). THIS IS NOW THE GROK COMPOSITE REF.
+
+Image 1 is the character reference: a round grey cartoon creature with big pointed ears, a tufted tail, a spiky crest down its back, and clawed hands and feet, drawn as a graphite pencil sketch on cream paper, seen three-quarters from the front, standing at rest with its arms at its sides.
+
+Keep everything about it exactly as drawn — the same round body, the same big notched pointed ears, the same crest, the same tail, the same hands and feet, the same pose, the same three-quarter view, the same pencil sketch on the same cream paper, the same size in the frame.
+
+ONE CHANGE, the expression: give it bright, round, wide-open eyes with red-orange irises and raised, friendly brows, and a wide friendly cartoon grin of small even teeth — cheerful and mischievous, never menacing. The ear stays an ear, drawn behind the head and clear of the mouth.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

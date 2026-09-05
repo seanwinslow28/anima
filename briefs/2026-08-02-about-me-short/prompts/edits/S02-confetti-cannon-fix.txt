@@ -1,0 +1,17 @@
+# S02 — THE CONFETTI CANNON, redesigned. Beat 9 (and its twin, beat 17). gpt_image_2 EDIT of
+#   normalised/S02-sean-composite-v1.png (the still the locked beat-2 clip was driven from). 8.5 cr. 2026-09-05.
+# WHY: the cannon has read as a telescope since 08-31 — a long thin tube on a tripod, eyepiece end to us, pointed
+#   at the sky is a telescope's silhouette. A confetti cannon's silhouette is SHORT and FAT with a wide flared open
+#   muzzle. Same spot, same tripod, same footprint, so the composite and Sean survive untouched.
+# BOTH STATES ON ONE PLATE: the still holds the REST state (bell hanging, cannon loaded and quiet); beat 9's clip
+#   does the sag and the misfire, beat 17's the full swing and the clean burst, from this same start frame.
+# CONTINUITY FLAG for Sean: the locked beat-2 clip still shows the telescope. At frame-edge, at 720p, and two
+#   movements apart it is a frame-stepper's catch, but it is a difference; re-rolling beat 2 is 24.5 if he wants it.
+# RUN: motion/gen_image_ref.sh prompts/edits/S02-confetti-cannon-fix.txt normalised/S02-sean-composite-v1.png 16:9 composites/M2/S02-cannon-fix.json
+# RESULT: (unrolled)
+
+Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same young man in the chair, same desk, monitors, bell and every other fixture, same paper and palette.
+
+Change ONE thing: the tall thin patterned tube standing on the tripod at the right of frame is now a confetti cannon: a short, fat barrel shaped like a stubby mortar, about twice as wide as the old tube and half as long, with a wide flared open muzzle angled up towards the desk, painted in cheerful party stripes with a few small confetti shapes, standing on the same squat tripod in the same spot, with a pull-cord ring dangling from its base. It is loaded and quiet.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.

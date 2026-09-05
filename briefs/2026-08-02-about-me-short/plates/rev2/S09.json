@@ -1,0 +1,56 @@
+[
+  {
+    "created_at": "2026-09-03T20:54:25.550828Z",
+    "display_name": "GPT Image 2",
+    "id": "89f30be9-d46a-4c52-8f14-94e4915737d0",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_205425_89f30be9-d46a-4c52-8f14-94e4915737d0_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "076b5ad0-20b7-4ba0-a100-9eb3e196aadd",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/076b5ad0-20b7-4ba0-a100-9eb3e196aadd_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "d34d28ac-9dd4-4ee7-8928-d0201e7dbd0a",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/d34d28ac-9dd4-4ee7-8928-d0201e7dbd0a_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "c4fb4f3f-7539-44bf-a795-4ab2644c0092",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/c4fb4f3f-7539-44bf-a795-4ab2644c0092_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "a5d21f3b-1eca-499a-9597-f847fdee9d3c",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/a5d21f3b-1eca-499a-9597-f847fdee9d3c.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Images 1, 2 and 3 are FIXTURE AND STYLE BIBLES — flat elevations of the three walls in this shot: the wall of taped sketches, the far wall with the doorway, and the desk wall. Preserve their drawing style, line weight, paper colour, palette, and the exact design of every fixture. Do NOT copy their flat orthographic camera.\nImage 4 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement exactly; replace each grey block with the corresponding fixture; remove every guide mark.\n\nCAMERA: a very wide shot of the whole office from HIGH on one end wall, the lens up near the ceiling, tipped well down so that the floor is a broad wedge filling the lower half of the frame and the far wall sits in the upper half. We are looking down the length of the room. Three walls are in frame: the near wall of taped sketches runs away from us along the LEFT, the far end wall faces us, and the desk wall runs away from us along the RIGHT. Nothing of the wall the camera is on is visible.\n\nPERSPECTIVE — draw it deliberately. The vanishing point sits on the far wall a little left of centre, at the far wall's mid-height. The left wall and the right wall both converge steeply towards it: fixtures on the left wall show their RIGHT-HAND faces and shrink fast as they recede; fixtures on the right wall show their LEFT-HAND faces and shrink fast as they recede. Two clean vertical corner seams run floor to ceiling where the far wall meets the side walls. The two baseboard lines slope down towards the vanishing point and the far baseboard is short and level. Because the lens is high, we see the TOPS of the desk, the counter, the worktable and the cabinets.\n\nVISIBLE. Along the LEFT wall, near to far: the long moodboard of taped product and mascot concept sketches — shopping bags, checkout buttons, packaging, price tags, storefront signs, little round cartoon creatures, each on a small square of paper held by one piece of tape — with a swag of small string lights above it, then a low worktable with tape rolls, a jar of markers and a mug, then at the far end a low storage cabinet with cardboard cartons stacked on top. On the FAR wall, left to right: a water cooler with paper cups, a low counter with a drip coffee machine, glass jug and mugs, a tall black server rack full of small coloured status lights with loose cabling, a plain open empty doorway, a squared-away shelf of ring binders, two leaning towers of paper flagged with coloured sticky notes, and a small supply desk with a jar of pens. Along the RIGHT wall, near to far: a large cork board of pinned notes clipped by the right edge, and below it a long wooden desk with THREE monitors showing quiet lines of code, a desk lamp and a mug, a shelf of binders and a trailing plant above the desk, an empty office chair pulled up to the desk with its back to us, a whiteboard of half-erased diagrams, a low printer bench, and at the far corner a tall grey filing cabinet with boxes and a tired plant on top. The floor is a wide open expanse of plain paper with nothing on it.\n\nOUT OF FRAME: the television, the dartboard, the side table, the crates, the binder shelving, the credenza, the bell, the confetti cannon and the storage bench — everything on the wall the camera is on.\nThe room is empty of characters and people.\n\nWarm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_205425_89f30be9-d46a-4c52-8f14-94e4915737d0.png",
+    "status": "completed"
+  }
+]

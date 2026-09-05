@@ -1,0 +1,38 @@
+# S10 — SEAN'S STATION FROM THE ROOM, low. NEW SETUP, beats 4 (the silent GO), 12 (the swivel)
+#   and 13 (the typed question). 2026-09-03. gpt_image_2 · 2k · high · 16:9 · 8.5 cr.
+# Camera = room-bible/m2-candidates/SHOT-B4-A-plate-rough.png: on the room side of the desk,
+#   4 ft south of the chair, lens 2'3" off the floor — a MASCOT'S eye height — tipped up 6°.
+#   Sean chose A 2026-09-03: "the room literally looks up to him."
+# THIS IS THE FIRST TIME HIS FACE IS DRAWN IN THIS ROOM. The plate is character-free; the face
+#   arrives in the composite (prompts/composites-frontal/S10-sean.txt) — that is the look-test.
+# REFS: Image 1 = normalised/S02-plate-v1.png as FIXTURE bible (the same desk, monitors, chair,
+#   lamp, mug, board, shelf — the S08 precedent: the wide plate as bible, a new camera as rough).
+#   Image 2 = the plate rough. Only one wall is in frame, so the PERSPECTIVE paragraph does the
+#   work the second elevation did on the corners (the S07 lesson).
+# RUN: motion/gen_image_refs.sh prompts/plates-rev2/S10-sean-front.txt plates/rev2/S10.json \
+#        normalised/S02-plate-v1.png room-bible/m2-candidates/SHOT-B4-A-plate-rough.png
+# RESULT — first roll, 8.5 cr, job 570b7d9e. plates/rev2/S10-sean-front-v1.png → normalised/
+#   (paper gain 1.002–1.009, pass — the S02 bible held the palette). Every S02 fixture carried
+#   over on-model (whiteboard, printer bench and trays, desk, three code monitors, lamp, mug,
+#   cork board, shelf + plant, bell, cannon) and the chair is empty and turned to face us — the
+#   composite's rest pose is ready. ONE MISS: the LOW ANGLE only half-landed. We see under the
+#   shelf and the bell from below, but the desk top and the floor are visible and the monitor
+#   undersides are not — it reads as a medium a little below eye level (nearer the B rough
+#   than the A rough). Sean's call: accept (a clean plate; beat 12 may want exactly this
+#   height) or re-roll with the vanishing point stated BELOW the desk top. The confetti
+#   cannon still reads as a telescope (open item 3).
+
+Image 1 is the FIXTURE AND STYLE BIBLE: the same desk, the same three monitors, the same office chair, lamp, mug, cork board, shelf and whiteboard, in the same drawing style, line weight, paper colour and palette. Preserve the exact design of every fixture. Do NOT copy its camera or its framing — this is the same desk seen from the OTHER side.
+Image 2 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement exactly; replace each grey block with the corresponding fixture; remove every guide mark.
+
+CAMERA: a medium shot square on to the desk from the open floor in front of it, from LOW DOWN — the lens is only knee-high to a grown adult and tipped slightly upward, the way a small creature standing on the floor would see the desk. The desk's front edge crosses the frame a little below its middle; the three monitors stand above it; the cork board and the shelf are high above them; the ceiling line is out of frame above.
+
+PERSPECTIVE — draw it deliberately. The vanishing point is LOW, at the height of the desk drawers, near the centre of the frame. Because we are looking up, the desk's top surface is hidden and we see its front edge and its drawer fronts; the monitors show their screens and the undersides of their bezels; the cork board, the shelf and the whiteboard are seen from below and their bottom edges are nearer to us than their top edges. Vertical lines stay vertical. The wall behind is one flat plane; the floor is a shallow band along the very bottom of the frame.
+
+VISIBLE LEFT TO RIGHT: clipped by the left edge, the whiteboard of half-erased diagrams and below it the low printer bench with a wire paper tray; then the long wooden desk with two drawers each side, an empty swivel office chair in front of it TURNED ROUND to face us, its seat and back towards the lens; on the desk THREE monitors showing quiet lines of code, screens towards us, a desk lamp and a mug; above them the cork board of pinned notes and, higher and to the right, the shelf of ring binders with a trailing plant; high at the right, the small brass bell on its wall bracket with a pull cord hanging down; clipped by the right edge, a fat striped party-popper confetti cannon standing on a three-legged tripod.
+OUT OF FRAME: the television, the dartboard, the paper towers, the server rack, the moodboard, the doorway.
+The room is empty of characters and people. The chair is empty.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.

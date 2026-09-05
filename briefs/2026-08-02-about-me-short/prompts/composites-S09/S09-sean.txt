@@ -1,0 +1,17 @@
+# S09 · SEAN into the CRT-POV plate. 3 of 5. gpt_image_2 edit · 8.5 cr.
+#   Image 1 = refs/turnaround-views/sean-v4.png (¾ back) · Image 2 = normalised/S09-room-reacts-v1.png (CLEAN)
+#   Right wall, at the desk, middle distance (~12 ft). REST = at the keyboard, back ¾ to us, so the
+#   clip's chair-spin to the lens is his biggest visible event. The plate's chair is turned to the
+#   room; this asks the edit to seat him facing the desk, redrawing the chair IN PLACE (not moved).
+# RESULT — first roll, job 8049ce58. Landed — and the chair TURNED IN PLACE as asked: seated facing the desk, hands on the keyboard, back ¾ to us, no second chair. Matte pasted 2.50%.
+
+Image 1 is the CHARACTER: a young man with short blonde hair, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette. This is a very wide shot of a whole room from high up, so the character is a small part of the picture.
+
+POSITION: sitting in the office chair that is already in the scene, at the long desk with the three monitors on the right-hand wall. Turn that chair so that it faces the desk, in the same spot — do not move it and do not draw a second chair.
+SCALE: a full-grown adult at that desk, seen from across the room and from above — seated, the top of his head rises a little above the chair back and sits below the cork board on the wall. He is the largest figure the desk could hold, and no larger.
+FACING: he is seen from behind and a little from his right side, three-quarters away from us, facing the monitors. The back of his blonde head and his shoulders are what we see; his face is not visible.
+POSE: he sits still and upright at rest, both hands resting flat on the keyboard, feet on the floor under the desk.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

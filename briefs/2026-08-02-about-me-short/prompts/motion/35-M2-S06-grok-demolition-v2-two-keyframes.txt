@@ -1,0 +1,23 @@
+# 8 · GROK DEMOLISHES THE WALL — v2, TWO KEYFRAMES, 2026-09-05. Sean on v1: "the rocket looks great, but Grok is supposed to
+#   take the hammer, smash the wall, pull the rocket into the room from the other side of the wall, and pat it."
+# seedance_2_0 fast 7s 720p · start: normalised/S06-grok-hammer-v1.png (the INTACT corner, Grok holding the hammer at rest)
+#   · end: normalised/S06B-grok-v1.png (the breach, the rocket in the room, Grok beside it holding the hammer)
+# THE SHAPE: hoist / smash (the wall bursts, the side table tips, a hole opens to blank paper) / smash again (wider) / drop the
+#   hammer's head, reach through, HAUL the rocket in nose-first and prop it in the hole / pat it twice. The end frame constrains
+#   the whole wrecked state, so the model has to reach it; the start frame is state A, so it has to do the wrecking.
+# "Takes the hammer" = hoists it (in hand at rest; pickup fails on this project). Register + vocabulary VERBATIM.
+# WATCH FOR: the rocket appearing BEFORE the hole (it must come through); the side table teleporting; the hammer changing hands.
+# RUN: motion/generate2kf.sh prompts/motion/35-M2-S06-grok-demolition-v2-two-keyframes.txt normalised/S06-grok-hammer-v1.png normalised/S06B-grok-v1.png motion/m2-beat8/S06B-grok-demolition-v2.json
+motion/m2-beat8/S06B-grok-demolition-v2.mp4, 24.5 cr, first roll of the two-keyframe route. THE WHOLE STORY: intact corner /
+#   hoist / the wall bursts and the side table goes over / second swing widens the hole / hammer dropped / Grok leans in THROUGH
+#   the hole / the rocket hauled in nose-first / propped and patted, Grok beside it with the hammer. Layout 0.988 vs the start
+#   frame, 0.987 vs the end frame - both keyframes held; bg 'drift' 28% is the wrecking itself; motion 2.91. Grin + eyes held.
+#   SUPERSEDES v1 (25) as the beat-8 candidate. Sean's eye owed.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The round grey cartoon creature with the big pointed ears and the wide friendly grin hoists the heavy sledgehammer high over its head, coils its whole body back, and whips the hammer into the wall beside the round side table in a hard smear. The plaster bursts, the side table tips over and its cans scatter, and a ragged hole opens in the wall with nothing but blank paper behind it. It whips the hammer into the wall again and the hole tears wider, plaster and splinters clattering onto the floor. It drops the hammer's head to the floor, reaches through the hole with both arms, and hauls a big cardboard rocket into the room nose-first through the hole, propping it leaning against the broken edge. It pats the rocket's side twice, delighted, and stands beside it with the hammer.
+
+Its face is exactly two red-orange eyes and one wide grin of small teeth, the same two eyes and the same grin in every frame. Its two tall pointed ears are the same two ears in every frame. It lands on both feet on the floor after every hop. It stays small, no taller than a third of the tall shelving of binders at frame right, in every frame. Through the hole there is only blank cream paper in every frame once it opens. The dartboard, the stacked crates, the storage bench and the shelving stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

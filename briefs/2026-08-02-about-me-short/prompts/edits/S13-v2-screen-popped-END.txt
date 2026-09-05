@@ -1,0 +1,14 @@
+# S13 v2 · THE SCREEN POPPED OUT — beat 6 END frame. gpt_image_2 EDIT of the Codex composite (normalised/S13-v2-codex-v1.png).
+#   8.5 cr. 2026-09-05. Sean: "Codex should hit the computer tower, the screen pops out from the side with lines of code and
+#   Codex then codes at max speed. The screen flashes and floods with code." The S07 arm-B route: the text-ish screen is drawn
+#   here, once, and Seedance snaps between the two keyframes instead of inventing it. Edit discipline: role-tag, hold, ONE
+#   change, style token, text clause.
+# RUN: motion/gen_image_ref.sh prompts/edits/S13-v2-screen-popped-END.txt normalised/S13-v2-codex-v1.png 16:9 composites/M2/S13-v2-screen-popped.json
+# RESULT: first roll, 8.5 cr. composites/M2/S13-v2-screen-popped-v1.png -> normalised/ (verify 0.281 / 0.850 PASS). The screen
+#   on a hinged arm out of the rack's left side, over the counter, pale-lit, dash-code; Codex untouched. *** THE BEAT-6 v2 END FRAME ***
+
+Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same small cloud creature in the same spot, same rack, counter and every other fixture, same paper and palette.
+
+Change ONE thing: a big flat screen has popped straight out of the LEFT side of the tall black server rack on a hinged metal arm, and now hangs out over the coffee counter at the height of the rack's upper half, tilted a little towards us. The screen is lit and flooded edge to edge with dense scrolling lines of code, drawn as the film draws code: row upon row of small graphite dashes and short blocks, indented like program listings, packed so tight the screen reads as a solid wall of text, with a soft pale glow on the wall around it. A thick cable runs from the screen back into the rack.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any legible text or letters.

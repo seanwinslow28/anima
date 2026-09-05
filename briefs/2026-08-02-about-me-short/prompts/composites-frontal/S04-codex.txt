@@ -1,0 +1,10 @@
+Image 1 is the CHARACTER: a small rounded periwinkle-blue cloud creature with a bracket-and-dash face, two small brows, and short stubby arms. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette.
+
+POSITION: standing on the open floor in front of the tall dark server rack and a little to its left, its whole body clear of the furniture.
+SCALE — draw it SMALL: it stands only thigh-high to a grown adult. At the foot of the server rack the top of its head reaches barely a quarter of the way up the rack, and it is shorter than the coffee counter beside it is tall. It is a small creature, never person-sized.
+FACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — the pale bracket-and-dash face, both brows, its chest, both arms and both feet. It is NOT seen from behind and NOT in profile. Its eyes are turned off to one side towards the tall dark server rack beside it; it is absorbed in that and never looks into the camera.
+POSE: it stands still and upright at rest, both arms hanging down at its sides, both feet flat on the floor and well clear of the baseboard. Draw it with a soft graphite contact shadow pooled on the floor beneath it.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

@@ -1,0 +1,30 @@
+# S14 (proposed id) — GEMINI'S FIFTY CONCEPTS, beat 7. Camera B7-B RAKING EAST ALONG THE BOARD, ruled 2026-09-03.
+# 2026-09-05. gpt_image_2 · 2k · high · 16:9 · 8.5 cr. Lens at (4.4, 14.4), eye 4.0, pitch -6, raking along the south wall.
+# Room state B for this corner = concepts on EVERY surface (beats-v1 #7): the board has escaped its wall.
+# THE DIRECTOR'S CALL on "how many is fifty when they recede": the count is done by RECESSION — the sheets get
+#   smaller, denser and start overlapping towards the vanishing point, so fifty reads as countless without a
+#   number; and by SPILL — onto the worktable, the floor, the string lights, the cabinet, round the corner onto
+#   the far wall. Gemini stays in the FOREGROUND (composited later, gemini-v2, ¾ front, eyes on the board) and
+#   the wall does the receding; the S05-one-more-v1 "wall fills itself" idea is the motion's job.
+# REFS: ELEV-south (the board) + ELEV-east (the far wall at frame-left) as fixture + style bible; the B7-B plate
+#   rough LAST as the camera. Character-free.
+# RUN: motion/gen_image_refs.sh prompts/plates-rev2/S14-B7B-gemini-fifty.txt plates/rev2/S14.json \
+#        normalised/ELEV-south-v2.png normalised/ELEV-east-v3.png room-bible/m2-candidates/SHOT-B7-B-plate-rough.png
+# RESULT: first roll, 8.5 cr, job e8f03d66. plates/rev2/S14-gemini-fifty-v1.png -> normalised/. LANDED: the raking wall recedes
+#   to a vanishing point, sketches three-deep and shrinking to flecks, string lights with sketches clipped on, the worktable
+#   buried, the floor covered, cartons and the far wall's binders papered, CRT dark. Fifty reads as countless.
+Images 1 and 2 are FIXTURE AND STYLE BIBLES — flat elevations of the two walls in this shot: the long wall of taped-up concept sketches with the worktable, and the far end wall with the television, the binder shelving and the low credenza. Preserve their drawing style, line weight, paper colour, palette, the exact design of every fixture, and what is drawn on the taped-up sheets. Do NOT copy their flat orthographic camera.
+Image 3 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement; replace each grey block with the corresponding fixture; remove every guide mark.
+
+CAMERA: a RAKING shot along one long wall — the lens stands close to the wall of sketches at the right, a little below eye level, and looks down the length of it, so the wall runs away from us diagonally across the frame from very near at the RIGHT edge to very far at the LEFT of centre. The floor is a wedge across the lower left.
+
+PERSPECTIVE — draw it deliberately. The vanishing point sits left of centre, on the far end wall. The long wall of sketches on the RIGHT converges steeply towards it: sheets near the right edge are large, and they shrink and pack tighter and tighter as they recede, until near the vanishing point they are tiny overlapping flecks. The worktable in the near right foreground shows its left-hand end and its top. The far end wall at the LEFT faces us nearly flat and is small. One clean vertical corner seam runs floor to ceiling where the long wall meets the far wall. The baseboard on the long wall slopes down towards the vanishing point.
+
+VISIBLE. Along the RIGHT, near to far: the long moodboard — but it has overflowed: concept sketches on small squares of coloured paper are taped everywhere now, three and four deep, overlapping, crooked, some taped over others, some hanging by one corner, running up to the ceiling and down to the floor, far denser than a tidy grid — shopping bags, checkout buttons, packaging, price tags, storefront signs, little round cartoon creatures, each in loose pencil; the swag of small string lights above has sketches clipped to it too; in the near foreground the low wooden worktable is buried under drifts of sketches with the tape rolls, the marker jar and the mug poking out; sketches are taped to the table's legs and lie scattered across the floor in the foreground; far along the wall a low storage cabinet with cartons on top, sketches taped to the cartons. On the FAR wall at the left: the boxy old television bracket-mounted high up, screen dark, the tall shelving unit of ring binders, and the low credenza, with a few stray sketches taped onto the shelving and the credenza where the flood has turned the corner.
+
+OUT OF FRAME: the desk with monitors, the paper towers, the server rack, the doorway, the dartboard.
+The room is empty of characters and people. A patch of floor in the near foreground, in front of the worktable, stays clear.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.

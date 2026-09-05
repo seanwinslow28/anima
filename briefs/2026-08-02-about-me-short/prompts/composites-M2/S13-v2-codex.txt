@@ -1,0 +1,17 @@
+# S13 v2 · CODEX at the rack — beat 6 START frame, on the corrected plate (no cooler, no screen). 2026-09-05.
+#   gpt_image_2 edit, 2 refs: refs/turnaround-views/codex-v2.png + normalised/S13-codex-corner-v2.png. 8.5 cr.
+#   Same spot as the M1 S04 frontal (in front of the rack, a little to its left) so the corner reads as beat 2's. The face is
+#   tipped up at the rack (the 3/4 sheet's far-eye dot is on-model - never call it drift).
+# RUN: motion/composite.sh prompts/composites-M2/S13-v2-codex.txt refs/turnaround-views/codex-v2.png normalised/S13-codex-corner-v2.png composites/M2/S13-v2-codex.json
+# RESULT: first roll, 8.5 cr. composites/M2/S13-v2-codex-v1.png -> normalised/ (verify 0.199 / 0.783 PASS). At the rack, 3/4
+#   front, face tipped up, scale ~2/3 the counter. *** THE BEAT-6 v2 START FRAME ***
+Image 1 is the CHARACTER: a small rounded periwinkle-blue cloud creature with a bracket-and-dash face, two small brows, and short stubby arms. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same bare wall above the counter, same rack, same fixtures, same palette.
+
+POSITION: standing on the floor in front of the tall black server rack and a little to its left, between the rack and the coffee counter, its whole body clear of the furniture.
+SCALE — draw it SMALL: it stands only thigh-high to a grown adult. The top of its head reaches about two thirds of the way up the coffee counter beside it, and barely a quarter of the way up the server rack. It is a small creature, never person-sized.
+FACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — the pale bracket-and-dash face, both brows, its chest, both arms and both feet. It is NOT seen from behind and NOT in profile. Its face is tipped up and off to one side towards the tall server rack beside it; it is absorbed in that and never faces the camera.
+POSE: it stands still and upright at rest, both arms hanging down at its sides, both feet flat on the floor and well clear of the baseboard. Draw it in the same hand as the room — graphite line with a light periwinkle coloured-pencil wash, the same line weight as the furniture — with a soft graphite contact shadow pooled on the floor beneath it.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

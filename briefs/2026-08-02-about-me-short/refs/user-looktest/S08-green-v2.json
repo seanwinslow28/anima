@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-02T20:49:49.277747Z",
+    "display_name": "GPT Image 2",
+    "id": "ef485231-a4de-497d-a211-4161432f050b",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_204949_ef485231-a4de-497d-a211-4161432f050b_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "c04771b4-d3e4-42f1-8394-17e7cf293de7",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/c04771b4-d3e4-42f1-8394-17e7cf293de7.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "bb8a3849-6d63-4095-a84b-536c367a4eab",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/bb8a3849-6d63-4095-a84b-536c367a4eab_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the character. Image 2 is the scene (the CRT closeup) — keep image 2 exactly as it is, every fixture, the camera, the framing, the paper and the palette unchanged.\n\nOne change only: the television's dark screen is now lit and pale, and image 1's character is on the screen from the waist up, centred and filling the screen.\n\nIts raised arm and its closed fist with the thumb sticking straight up are fully in frame, exactly as in image 1 — the thumbs-up must be clearly visible on the screen. The short radiating action lines around its head are in frame too, and its enormous grin and the crosshair on its blank head read clearly. The word USER on its shirt sits well inside the screen with clear space beneath it, never cropped by the screen edge.\n\nKeep the character's construction lines exactly as image 1 draws them: the crosshair across its head, the light centre line, the small circles at its shoulders and elbows, and the broken searching contour. It is a picture on the television, drawn in the same graphite and the same green as image 1.\n\nThe only text anywhere in the picture is the word USER on its shirt.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_204949_ef485231-a4de-497d-a211-4161432f050b.png",
+    "status": "completed"
+  }
+]

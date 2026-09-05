@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-05T18:51:23.158781Z",
+    "display_name": "GPT Image 2",
+    "id": "1ac878f7-9050-4488-9bae-d8835cb79e8f",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_185123_1ac878f7-9050-4488-9bae-d8835cb79e8f_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "56aea66e-3877-4934-9cc2-82c0e192b023",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/56aea66e-3877-4934-9cc2-82c0e192b023_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Edit this drawing. Keep the same camera, the same framing, the same two walls meeting at the same vertical corner seam, the same floor, paper, line and colour. Keep the long low storage bench with its boxes on the left wall exactly as drawn, and keep the tall shelving unit of ring binders at the right edge exactly as drawn.\n\nWreck the corner. Where the round three-legged side table stood, just to the right of the corner seam, smash a ragged hole through the right-hand wall: it starts at the floor and reaches a little above head height, about two feet wide, with jagged broken plaster edges and splintered wooden lath sticking out around its rim. Through the hole there is nothing at all — only the blank cream paper, no room, no outside, nothing drawn. The side table lies knocked over on its side on the floor in front of the hole, its crushed drink cans and the mug scattered across the floor. A fan of broken plaster chunks, lath splinters and pale dust spreads across the floor out from the hole.\n\nStanding on the floor in front of the hole is a half-built homemade rocket, taller than the crates: a big cardboard mailing tube for a body, a paper cone taped on as the nose, and three fins cut from crate slats nailed to its base. It is tilted so that its nose pokes out through the hole and its tail fins face into the room towards us. It is unfinished — tape, string and a loose slat still hanging off it. A heavy sledgehammer leans against the two stacked wooden crates, its head on the floor.\n\nThe dartboard still hangs on the wall but crooked, tipped over on its nail, with the same seven darts still stuck into the plaster around it and the board face still clean. Two of the ring binders on the shelving have slid flat.\n\nWarm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. The room is empty of characters and people. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_185123_1ac878f7-9050-4488-9bae-d8835cb79e8f.png",
+    "status": "completed"
+  }
+]

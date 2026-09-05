@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-02T20:35:51.429577Z",
+    "display_name": "GPT Image 2",
+    "id": "514a839a-ba1e-4c7a-89be-d335bd728a0c",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_203551_514a839a-ba1e-4c7a-89be-d335bd728a0c_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "488dd9c0-7c9e-4a38-933e-8bbcd4bcc927",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/488dd9c0-7c9e-4a38-933e-8bbcd4bcc927_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "c270bd6a-8ab9-4741-acfe-f93ec456a791",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/c270bd6a-8ab9-4741-acfe-f93ec456a791_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the fixture and style bible. Preserve its fixture designs, its materials, its palette, its paper and its rendering exactly: the same television, the same wall shelf and brackets, the same hanging cable, the same taped sketches. Do NOT copy its camera, its framing or its screen-space layout.\n\nImage 2 is the camera. Follow its framing, its perspective and its left-to-right placement exactly — this is the same room seen closer. Redraw everything in it at full detail and full resolution, with real graphite line and cross-hatch, rather than enlarging a small picture.\n\nCAMERA: a close shot of the small television on its wall shelf, the television filling most of the frame.\n\nVISIBLE, left to right: the right-hand edge of the tall bookshelf of binders, then the television on its wall shelf with its bracket and its cable hanging down, then the wall of small taped sketches beginning at the right.\n\nOUT OF FRAME: the dartboard, the side table, the crates, the cabinet and the floor.\n\nThe television screen is completely dark and empty — a blank unlit screen, no picture and no text on it.\n\nWarm cream drawing paper throughout, a pale putty cream, never white and never yellow. Do not add any text anywhere in the picture.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_203551_514a839a-ba1e-4c7a-89be-d335bd728a0c.png",
+    "status": "completed"
+  }
+]

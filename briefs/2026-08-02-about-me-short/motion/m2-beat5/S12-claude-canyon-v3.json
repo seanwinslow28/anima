@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-05T19:52:43.786847Z",
+    "display_name": "Seedance 2.0",
+    "id": "1df6e427-977f-448a-b671-1f99a12d33af",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "bd9259ca-afa5-4cbf-afba-1338de49ff0f",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/bd9259ca-afa5-4cbf-afba-1338de49ff0f_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot, the lens on the floor looking straight up the towers.\n\nThe small terracotta cube creature scribbles across sheet after sheet at furious speed, its whole body bouncing on every stroke, and flings each finished page over its shoulder the instant it is done, so that the air around it fills with dozens of loose pages tumbling, spinning and fluttering in every direction, a blizzard of paper. It springs straight up the face of the tallest tower in one hard leap to the top of the frame, slaps a whole armful of pages onto the tower so that loose sheets explode off the top of it, and drops back down through a thick storm of falling paper. It lands on all four feet, grabs the next sheet and scribbles even faster, pages flying off in every direction, and springs up a second time with another armful.\n\nDozens of loose pages are tumbling through the air across the whole frame in every frame, thick as a snowstorm, from the floor to the top of the towers. Its face is exactly two small dark dot eyes and two short brows, the same two eyes and two brows in every frame. It lands on all four feet on the floor after every leap. It stays small, tinier than the shortest stack of paper, in every frame. The three towers of paper stand in the same places and reach out of the top of the frame in every frame; the shelf of binders at the left and the grey filing cabinet at the right stay the same drawings in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_195243_1df6e427-977f-448a-b671-1f99a12d33af.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_195243_1df6e427-977f-448a-b671-1f99a12d33af_thumbnail.webp"
+  }
+]

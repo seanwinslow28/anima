@@ -1,0 +1,20 @@
+# 4 · THE SILENT GO — v2, ACTION WRITTEN BY SEAN VERBATIM, 2026-09-05. Do not paraphrase.
+# seedance_2_0 fast 7s 720p · start: normalised/S10-sean-composite-v2.png
+# His changes on top of my v2 draft: he looks up to the RIGHT first, then SCANS the room at camera level "as if
+#   looking at people behind the frame" (the mascots), takes a DEEP BREATH, then the nod / two-finger flick /
+#   turn to the desk. Four events. Register and vocabulary blocks verbatim.
+# If this misses, the next step is prompts/../.claude/skills/prompt-how-much, keeping both blocks constant.
+# RESULT — motion/m2-beat4/S10-silent-go-v2.mp4, 24.5 cr, first roll of Sean's wording. Layout f0 0.979 /
+#   last 0.911 (the swivel displaces the chair left of centre at the end). Motion energy 1.94 vs v1's 2.12;
+#   bg drift 11% vs 16%. Reads as the beat: looks up-right, scans the room at lens height, breath, nod,
+#   index finger up then a two-finger flick, swivels to the desk, hands on the keyboard. Two nits for the
+#   eye: his mouth opens as if speaking around the scan/nod (the closed-mouth constant slipped for a few
+#   frames), and the final swivel carries the chair a little left. Owed Sean's eye.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The young man in the navy T-shirt sits facing us in the office chair looks up to the right, then scans the room at camera angle level as if looking at people behind the frame. He takes a deep breath, gives one small, decisive nod. He lifts one hand off the armrest, flicks two fingers forward once — go — and drops the hand back to the armrest. He swivels the chair round to the desk in one quick turn and puts both hands on the keyboard.
+
+His face is the same calm face in every frame: short blonde hair, light stubble, two blue eyes and a closed mouth. The three monitors stay dark, the same three dark screens with the same faint lines of code in every frame. The desk and the cork board behind him stay the same drawings in every frame. The chair turns on the spot and stays at the desk.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

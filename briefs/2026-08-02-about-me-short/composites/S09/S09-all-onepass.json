@@ -1,0 +1,72 @@
+[
+  {
+    "created_at": "2026-09-04T16:08:31.23565Z",
+    "display_name": "GPT Image 2",
+    "id": "103960d8-7694-4439-99ff-953789e60fd2",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260904_160831_103960d8-7694-4439-99ff-953789e60fd2_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "df858b02-23e9-4dd9-b570-324f2c6b4e5b",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/df858b02-23e9-4dd9-b570-324f2c6b4e5b_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "34791e67-eb42-46d6-9100-49663e1bc3a8",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/34791e67-eb42-46d6-9100-49663e1bc3a8.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "7433bbd9-534a-49aa-ba0e-e18459c1765f",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/7433bbd9-534a-49aa-ba0e-e18459c1765f.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "71f95aac-37f6-4e5b-8b28-ce1b500a3246",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/71f95aac-37f6-4e5b-8b28-ce1b500a3246.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "4a0789ce-e33a-465d-8e59-83e35a3aa04b",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/4a0789ce-e33a-465d-8e59-83e35a3aa04b.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "0050ca74-fd2f-4e48-8c40-7fd012ba204f",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/0050ca74-fd2f-4e48-8c40-7fd012ba204f.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the BACKGROUND SCENE: a wide view of a whole room from high up. Images 2 to 6 are five CHARACTERS, one per image. Add all five characters to Image 1. Keep Image 1 unchanged in every other respect — same camera, same framing, same fixtures, same palette. Draw every character in the same hand as the room: graphite line with a light coloured-pencil wash and a soft graphite contact shadow on the floor beneath it, the same line weight as the furniture. Each is a small part of this big picture.\n\nImage 2 — a small rounded terracotta-orange cartoon creature, a soft cube with four stubby legs, small nubs for arms and two dot eyes. It stands on the far wall's floor at the foot of the two tall stacks of flagged paper, just beside them. TINY: its head reaches only a quarter of the way up the taller stack. Turned three-quarters towards us, whole front visible, eyes on the paper stacks, at rest, all four feet on the floor.\n\nImage 3 — a small rounded periwinkle-blue cloud creature with a bracket-and-dash face, two small brows and short stubby arms. It stands on the far wall's floor in the gap between the coffee counter and the tall black server rack. TINY: its head reaches barely a quarter of the way up the rack and it is shorter than the counter. Turned three-quarters towards us, whole front visible, eyes on the rack, at rest, arms down, both feet on the floor.\n\nImage 4 — a young man with short blonde hair, a navy T-shirt, grey jeans and grey sneakers. He sits in the office chair already at the long desk on the right-hand wall; turn that chair to face the desk in the same spot, no second chair. A full-grown adult, seated, head a little above the chair back and below the cork board. Seen from behind and a little from his right, three-quarters away from us, face not visible, both hands flat on the keyboard, at rest.\n\nImage 5 — a small rounded lavender-and-blue cartoon star with a soft round belly, five points, two dot eyes and a small smiling mouth. It stands on the floor on the left side, just to the right of the wooden worktable and a step out from the wall of taped sketches. SMALL: its head sits clearly below the top of the worktable. Turned three-quarters towards us, whole front visible with all five points, eyes turned up to the sketches on the wall, at rest, arms down, both feet on the floor.\n\nImage 6 — a round grey cartoon creature with big pointed ears, a wide friendly cartoon grin, small bright eyes and a tufted tail. It stands on the open floor in the lower right, nearest the camera, in front of and to the left of the low bench with the printer on it — the largest figure standing on the floor because it is the closest, yet still a small creature only thigh-high to an adult, never person-sized. Turned three-quarters towards us, whole front visible, both ears and its tail fully drawn. Its eyes are bright, round and wide open with its brows up, looking down at the single small dart it holds in one hand; cheerful. At rest, arms down, both feet flat on the floor.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260904_160831_103960d8-7694-4439-99ff-953789e60fd2.png",
+    "status": "completed"
+  }
+]

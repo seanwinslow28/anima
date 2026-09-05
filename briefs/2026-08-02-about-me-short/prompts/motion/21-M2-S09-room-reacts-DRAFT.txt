@@ -1,0 +1,24 @@
+# RESULT v1 — motion/m2-beat3h/S09-room-reacts-v1.mp4, 24.5 cr. REJECTED by Sean: "very silly, definitely not
+#   what we're going for." Layout f0 0.994 / last 0.956 (plate held); the FACES did not — no per-character face
+#   constant was written, so 'snaps round to stare' became jaw-drop screams on Grok and Gemini. Take verbs
+#   (snaps, jerks, whip, freeze, staring) spent the constant energy on shock takes. Fixed in 22 (v2).
+# THE ROOM REACTS, M2 BEAT 3½ — the CRT's POV. DRAFT, unrolled. 2026-09-03. Sean locked the
+#   camera and the shape: everyone snaps to the alarm, the mascots turn to Sean, cut to S10.
+# seedance_2_0 fast 7s 720p | start_image: the S09 five-character composite (does not exist yet)
+# THREE EVENTS: (1) every head in the room snaps round to look straight at US at once — the lens
+#   is the alarm, so this is the one shot in the film where looking into the camera IS the story;
+#   (2) the four small creatures turn their heads together to the young man at the desk;
+#   (3) he turns his head from us to them. Event 3 motivates the cut: four heads send the eye to
+#   him, and the next frame is his face (S10).
+# The alarm's red flood and shake are POST, as on every alarm beat. There is no screen in frame.
+# NEVER pass the five character refs to Seedance (measured: refs override the plate at frame 0).
+# WATCH FOR: anyone walking (five figures, five sizes, nobody crosses the floor); the far-wall
+#   figures dissolving (Claude and Codex are a few pixels); the desk band drifting.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+A quiet office seen from high on one end wall. All at once every head in the room snaps round to stare straight at us: the young man at the desk spins his chair to face us; the grey creature with the big ears near the front jerks upright, dart still in its hand; the blue star by the sketch wall whips round; and at the far wall the lavender cloud spins from the rack and the little terracotta cube snaps its head up from the paper it is writing on. All five freeze, staring up at us. Then the four small creatures turn their heads together towards the young man at his desk, and he turns his head from us to them.
+
+The same five figures stand in the same five places at the same five sizes in every frame; nobody crosses the floor. Every fixture — the desk and its monitors, the sketch wall, the far wall's rack and doorway and paper towers — stays the same drawing in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

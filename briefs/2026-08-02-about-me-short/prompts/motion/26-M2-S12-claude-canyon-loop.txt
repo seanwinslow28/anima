@@ -1,0 +1,21 @@
+# 5 · CLAUDE'S 40-PAGE DOC — v1 draft, 2026-09-05. The locked beat-2 loop (08) re-staged from the worm's eye.
+# seedance_2_0 fast 7s 720p · start: normalised/S12-claude-v2.png (the canyon plate + Claude sitting, writing)
+# THE GAG THE CAMERA BUYS: from the floor, the leap to the top of the stack goes OUT THE TOP OF FRAME, and the
+#   drop brings it back. Write / leap out / pages shower / drop in / write faster / leap again — a loop.
+# RISK, named: a character leaving frame invites the model to follow it (a re-camera) or lose it. Fixed-camera
+#   clause + an explicit "drops back into frame" event + the towers as constants are the guards. Watch layout_hold.
+# Register + vocabulary VERBATIM; face constant; landing constant; speed verbs; zero negation.
+# RUN: motion/generate.sh prompts/motion/26-M2-S12-claude-canyon-loop.txt normalised/S12-claude-v2.png motion/m2-beat5/S12-claude-canyon-v1.json
+# RESULT: motion/m2-beat5/S12-claude-canyon-v1.mp4, 24.5 cr, first roll, job (see json). THE LOOP LANDED: three beats of writing
+#   (body bouncing) / springs straight up the canyon to the top of frame in a shower of pages / drops / lands on all four /
+#   writes again / on the SECOND leap the model drew a real vertical SMEAR frame (the repeated-action guide, proven). It reaches
+#   the top of frame rather than leaving it - close enough, and safer. Layout 0.980 / 0.973, drift 10.8%, motion 1.48. Face
+#   held (dot eyes + brows). Sean's eye owed.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot, the lens on the floor looking straight up the towers.
+
+The small terracotta cube creature scribbles fast across the sheet of paper on the floor in front of it, its whole body bouncing on every stroke. It snatches the finished sheet up and springs straight up the face of the tallest tower in one hard leap, clean out of the top of the frame. A shower of loose pages spirals down past the towers, and it drops back into frame and lands on the floor at the foot of the tower. It lands on all four feet, grabs the next sheet, scribbles even faster, and springs up out of the top of the frame a second time.
+
+Its face is exactly two small dark dot eyes and two short brows, the same two eyes and two brows in every frame. It lands on all four feet on the floor after every leap. It stays small, tinier than the shortest stack of paper, in every frame. The three towers of paper stand in the same places and reach out of the top of the frame in every frame; the shelf of binders at the left and the grey filing cabinet at the right stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

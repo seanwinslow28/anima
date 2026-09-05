@@ -1,0 +1,28 @@
+# S13 v2 — CODEX'S CORNER from the B6-A camera, matched to the S04 fixture set. 2026-09-05. Sean on v1: continuity error —
+#   the locked M1 frame (composites/frontal/S04-codex-composite-frontal-v1.png) has NO screen and NO water cooler. Keep the
+#   angle; regenerate the background to match S04's items; remove the cooler. The screen now POPS OUT of the rack in the clip.
+# MY v1 ERROR, named: the B6-A rough drew the storage cabinet + the corner seam at the left, and I wrote "water cooler" in the
+#   VISIBLE list - a VISIBLE list contradicting the rough, the exact failure _blocks.md warns about. Fixed here: two walls, two
+#   elevations (south + west), the VISIBLE list read off the rough and the S04 frame.
+# gpt_image_2 · 2k · high · 16:9 · 8.5 cr. Refs: ELEV-south + ELEV-west (fixture + style bible) + the B6-A plate rough (camera).
+# RUN: motion/gen_image_refs.sh prompts/plates-rev2/S13-B6A-codex-corner-v2.txt plates/rev2/S13-v2.json \
+#        normalised/ELEV-south-v2.png normalised/ELEV-west-v2.png room-bible/m2-candidates/SHOT-B6-A-plate-rough.png
+# RESULT: first roll, 8.5 cr. plates/rev2/S13-codex-corner-v2.png -> normalised/. THE S04 CORNER from the ruled angle: cartons
+#   + sketches receding at left, the seam, bare wall, the counter with machine/jug/two mugs, the rack, the doorway. No cooler,
+#   no screen. *** THE BEAT-6 PLATE. S13 v1 (with the code wall + cooler) is SUPERSEDED - kept as the record. ***
+Images 1 and 2 are FIXTURE AND STYLE BIBLES — flat elevations of the two walls that meet in this corner: the wall of taped concept sketches with the low storage cabinet, and the wall with the coffee counter, the server rack and the doorway. Preserve their drawing style, line weight, paper colour, palette, and the exact design of every fixture. Do NOT copy their flat orthographic camera.
+Image 3 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement; replace each grey block with the corresponding fixture; ignore the red block entirely and leave that wall bare; remove every guide mark.
+
+CAMERA: a medium shot from inside the room, eye level, looking almost square at the coffee-counter wall with the lens close to it, so the fixtures are large and cropped by the frame edges. The corner where this wall meets the wall of sketches is at the LEFT of frame. The floor is a narrow band at the bottom.
+
+PERSPECTIVE: the counter wall faces us nearly flat; the wall of sketches at the left recedes away from us steeply and its fixtures show their right-hand faces, shrinking as they go. One clean vertical corner seam runs floor to ceiling at the left of centre. The tall server rack stands close to the lens right of centre and rises out of the top of frame; the baseboard on the facing wall is nearly level.
+
+VISIBLE LEFT TO RIGHT: on the left-hand wall, receding — the west end of the wall of taped-up concept sketches on small coloured sheets, and below it a low storage cabinet with cardboard cartons stacked on top; then the corner seam; then on the facing wall — a bare stretch of wall, the low coffee counter with the drip coffee machine, the glass jug and two stacked mugs on top, the wall above the counter bare; the tall black server rack full of small coloured status lights with loose cabling looped down its side, close to the lens, its top out of frame; and beyond the rack at the right edge, the edge of the plain open doorway.
+
+There is no water cooler and no screen or television anywhere in the picture. The wall above the coffee counter is bare paper.
+OUT OF FRAME: the desk with monitors, the paper towers, the dartboard, the television.
+The room is empty of characters and people. The floor in front of the counter and the rack stays clear.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.

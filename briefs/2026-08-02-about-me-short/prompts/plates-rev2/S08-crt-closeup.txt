@@ -1,0 +1,39 @@
+# S08 — THE CRT CLOSEUP PLATE. gpt_image_2, 2 role-split refs, 16:9 2k high. 8.5 cr.
+# A NEW SETUP, added 2026-09-02 on Sean's call: "we also should have a closeup of the CRT
+#   screen in this project... The CRT screen will be showing us a lot and help with the
+#   storytelling without any dialogue. The VO can explain, but we need to see what's happening
+#   on the screen clearly, so the wide shot wouldn't be used as much. That was more of an
+#   establishing shot."
+#   This also answers his earlier note that the film must not be cuts into the same corners.
+#
+# WHY A NEW PLATE AND NOT THE EXISTING CROP: normalised/S07-alarm-closeup-v1.png is a 2.69x
+#   blow-up of a region only ~340px wide in the source. Fine as an END KEYFRAME, where it is
+#   on screen for a moment at the end of a push-in. Not fine for a shot that has to carry
+#   beats 13, 14 and 18 with legible screen content — there is no graphite detail in it to
+#   enlarge, only softness.
+#
+# RE-ANGLE RECONSTRUCTION PATTERN, per prompts/_blocks.md — gpt_image_2 WILL NOT re-camera from
+#   an edit instruction, so the refs are ROLE-SPLIT:
+#     Image 1 = the S07 wide plate — FIXTURE, MATERIAL, PALETTE and STYLE bible ONLY.
+#     Image 2 = SHOT-S08-crt-closeup-rough.png — the camera. It is a straight CROP of image 1,
+#               so unlike a drawn rough it cannot disagree with the set: it IS the set, at the
+#               target framing. The model's job is to REDRAW it at full detail, not invent it.
+#
+# THE SCREEN IS DARK, per the rest-pose law. Every beat's screen content — the USER, the
+#   replay, PROBLEM! — is a surgical edit on top of this plate, so one plate serves all of them.
+
+Image 1 is the fixture and style bible. Preserve its fixture designs, its materials, its palette, its paper and its rendering exactly: the same television, the same wall shelf and brackets, the same hanging cable, the same taped sketches. Do NOT copy its camera, its framing or its screen-space layout.
+
+Image 2 is the camera. Follow its framing, its perspective and its left-to-right placement exactly — this is the same room seen closer. Redraw everything in it at full detail and full resolution, with real graphite line and cross-hatch, rather than enlarging a small picture.
+
+CAMERA: a close shot of the small television on its wall shelf, the television filling most of the frame.
+
+VISIBLE, left to right: the right-hand edge of the tall bookshelf of binders, then the television on its wall shelf with its bracket and its cable hanging down, then the wall of small taped sketches beginning at the right.
+
+OUT OF FRAME: the dartboard, the side table, the crates, the cabinet and the floor.
+
+The television screen is completely dark and empty — a blank unlit screen, no picture and no text on it.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. Do not add any text anywhere in the picture.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.

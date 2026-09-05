@@ -1,4 +1,11 @@
-# SINGLE-CHARACTER MOTION, 7s, fast. *** THE ADOPTED RECIPE ***
+# SINGLE-CHARACTER MOTION, 7s, fast. *** THE ADOPTED ROUTE + SHAPE — NOT AN M1 BEAT ***
+# RE-SCOPED 2026-09-01. Sean: "I thought the Codex output was a prompt test, not the final
+#   output." He is right. What this file settles is the ROUTE (fast, 7s, 720p, start-image
+#   only) and the FOUR-BLOCK SHAPE. Its ACTION is not Movement 1 — frantic typing, peer at a
+#   blinking light, arms overhead in triumph is BEAT 6, Codex's Movement 2 wrong-build. The
+#   clip at motion/ab-codex/armA.mp4 is banked as an M2 asset, not an M1 beat.
+#   Its face lock phrasing is also SUPERSEDED — see 07's header: state locks as constants
+#   through time, not as rest states.
 # job 4784e9ae-5890-4fa6-bedb-8847620ada84 | seedance_2_0 fast 7s 720p generate_audio:false
 # start_image: job 6505a009 (the U Codex-corner plate)
 # RESULT: Sean — "very cartoony with squash and stretch. Beautiful motion."

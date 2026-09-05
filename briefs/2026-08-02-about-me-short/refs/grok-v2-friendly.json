@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-04T17:52:04.107703Z",
+    "display_name": "GPT Image 2",
+    "id": "0225c45e-1997-41ce-8996-3faef8c0168b",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260904_175204_0225c45e-1997-41ce-8996-3faef8c0168b_min.webp",
+    "params": {
+      "aspect_ratio": "1:1",
+      "height": 2048,
+      "medias": [
+        {
+          "data": {
+            "id": "d29bc39c-16a5-422e-9c9f-fee8967bc6e6",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/d29bc39c-16a5-422e-9c9f-fee8967bc6e6.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the character reference: a round grey cartoon creature with big pointed ears, a tufted tail, a spiky crest down its back, and clawed hands and feet, drawn as a graphite pencil sketch on cream paper, seen three-quarters from the front, standing at rest with its arms at its sides.\n\nKeep everything about it exactly as drawn — the same round body, the same big notched pointed ears, the same crest, the same tail, the same hands and feet, the same pose, the same three-quarter view, the same pencil sketch on the same cream paper, the same size in the frame.\n\nONE CHANGE, the expression: give it bright, round, wide-open eyes with red-orange irises and raised, friendly brows, and a wide friendly cartoon grin of small even teeth — cheerful and mischievous, never menacing. The ear stays an ear, drawn behind the head and clear of the mouth.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2048
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260904_175204_0225c45e-1997-41ce-8996-3faef8c0168b.png",
+    "status": "completed"
+  }
+]

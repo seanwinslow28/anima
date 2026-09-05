@@ -1,0 +1,19 @@
+# THE USER — look-test A: THE FLAT PLACEHOLDER. gpt_image_2 from scratch, 1:1 2k high. 8.5 cr.
+# The read already in the scene anchor (art-viz/route-c--gpt-ref.png, doorway figure at frame
+# left): a solid flat grey fill with a hard contour. The "grey box person" from a wireframe.
+# ARGUMENT FOR: it survives at ANY size. Post-08-31 the USER lives on SCREENS ONLY — a chat-box
+#   avatar on Sean's centre monitor inside a wide shot is maybe 40px tall. A solid silhouette
+#   still reads a person at 40px. Nothing else here is guaranteed to.
+# ARGUMENT AGAINST: closest to a stock icon; the least specific to this film.
+
+A simple flat grey cartoon figure of a person, drawn as one solid smooth grey shape with a clean dark contour line around it, like a placeholder figure in a wireframe. Its body is filled in evenly with flat grey and has no interior detail, no folds and no shading.
+
+The figure stands still and upright at rest, both arms hanging down at its sides, both feet flat, facing straight towards us. It has NO face at all: the head is completely blank, with no eyes, no mouth, no nose, no ears and no hair. It is not a specific man and not a specific woman — no gender markers of any kind, no hairstyle, no jaw line, plain simple limbs. It wears a plain short-sleeved t-shirt with the word USER across the chest in plain capitals.
+
+It is entirely grey and colourless — it is the only element in the picture with no colour in it at all.
+
+Centred, full body from head to feet, alone on plain empty warm cream drawing paper, a pale putty cream, never white and never yellow. Nothing else in the picture: no room, no furniture, no floor line, no shadow, no border.
+
+The only text anywhere in the picture is the word USER on the t-shirt.
+
+Hand-drawn animation pencil test: graphite contour line, paper tooth showing — no flat vector fill on the background, no digital gradients, no painterly rendering, no photographic lighting, no 3D.

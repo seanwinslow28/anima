@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-05T18:56:11.361363Z",
+    "display_name": "GPT Image 2",
+    "id": "732eb25a-dbbf-4636-82d9-ba4367b39a21",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_185611_732eb25a-dbbf-4636-82d9-ba4367b39a21_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "c6e59768-d96c-4d3c-bef5-ec5313ce3ac3",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/c6e59768-d96c-4d3c-bef5-ec5313ce3ac3.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "a4e3ba78-095e-432d-b8c7-4f302d7f48a9",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/a4e3ba78-095e-432d-b8c7-4f302d7f48a9_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a round grey cartoon creature with big pointed ears, a wide friendly cartoon grin, small bright eyes and a tufted tail. Image 2 is the BACKGROUND SCENE.\n\nAdd the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same hole in the wall, same rocket, same rubble, same fixtures, same palette. One change only besides the character: the sledgehammer that leans against the stacked crates is gone from there, because the character is holding it.\n\nPOSITION: standing on the floor at the lower right of centre, at the edge of the rubble, just to the LEFT of the two stacked wooden crates and to the RIGHT of the base of the leaning rocket, with the mug on the floor near its feet. It does not cover the rocket or the crates.\nSCALE — draw it SMALL: it stands only thigh-high to a grown adult. Beside the rocket the top of its head reaches only about a third of the way up the rocket's body, and it is about a third the height of the tall shelving of ring binders at the right of frame. It is a small creature, never person-sized.\nFACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its full grin, both ears, its chest, both arms and both feet. It is NOT seen from behind and NOT in profile. Its eyes are bright, round and wide open with its brows raised, looking up and to its side at the nose cone of the rocket, delighted with it; it never looks into the camera.\nPOSE: it stands still and upright at rest, both feet flat on the floor, holding the heavy sledgehammer upright in front of it with both hands on the handle and the hammer's head resting on the floor beside its feet. Draw it in the same hand as the room — graphite line with a light grey coloured-pencil wash over its body, the same line weight as the furniture — with a soft graphite contact shadow pooled on the floor beneath it.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_185611_732eb25a-dbbf-4636-82d9-ba4367b39a21.png",
+    "status": "completed"
+  }
+]

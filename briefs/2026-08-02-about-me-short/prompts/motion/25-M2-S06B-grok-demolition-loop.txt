@@ -1,0 +1,23 @@
+# 8 · GROK DEMOLISHES THE WALL — v1 draft, 2026-09-05. The loop: swing / rubble / rocket-lean / swing again.
+# seedance_2_0 fast 7s 720p · start: normalised/S06B-grok-v1.png (the breach plate + Grok at rest with the hammer)
+# BUILT AGAINST THE GUIDES: each swing is a whole acting beat (hoist = anticipation, whip = action, plaster burst
+#   = overshoot, hop = settle); the swing REPEATS, which is what actually produces a smear (a one-way move never
+#   smears); the hop carries a landing constant (jumps allowed, weight demanded); every fixture, and the BLANK
+#   PAPER inside the hole (a plate-loss magnet), is a per-frame constant. Face constant in the "same … in every
+#   frame" form. Speed verbs only; zero take verbs; zero negation; no absolute time cues. Register + vocabulary
+#   blocks VERBATIM. The identity line is the S06-throw wording that passed the video path — never paraphrase.
+# WATCH FOR on first roll: the hole re-drawing itself (anything appearing through it); the rocket's angle
+#   drifting; the hammer changing hands or size; a third swing becoming a walk across the rubble.
+# RUN: motion/generate.sh prompts/motion/25-M2-S06B-grok-demolition-loop.txt normalised/S06B-grok-v1.png motion/m2-beat8/S06B-grok-demolition-v1.json
+# RESULT: motion/m2-beat8/S06B-grok-demolition-v1.mp4, 24.5 cr, first roll, job c85fd4c7. ALL FOUR EVENTS on the sheet: hoist
+#   / whip into the wall with plaster flying / hop back / lean on the rocket admiring the nose / hoist and whip again. Layout
+#   0.986 / 0.949 (last frame a hair under the M1 bar - the second swing ends mid-action), drift 11.9%, motion 2.26 (Grok's
+#   M1 throw was 1.71). The hole stays blank paper; the rocket holds its angle; grin + red eyes held on the sheet. Sean's eye owed.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The round grey cartoon creature with the big pointed ears and the wide friendly grin hoists the heavy sledgehammer high over its head, coils its whole body back, and whips the hammer into the broken edge of the hole in the wall in a hard smear. A burst of plaster chunks and wood splinters flies out of the wall and clatters down onto the rubble. It hops back on the spot, delighted, drops the hammer's head to the floor, slaps the side of the cardboard rocket with its free hand and leans an elbow on it, admiring the nose cone. Then it hoists the hammer overhead, coils back even harder, and whips it into the wall again, and another burst of plaster clatters down.
+
+Its face is exactly two red-orange eyes and one wide grin of small teeth, the same two eyes and the same grin in every frame. Its two tall pointed ears are the same two ears in every frame. It lands on both feet on the floor after every hop. It stays small, no taller than a third of the tall shelving of binders at frame right, in every frame. The cardboard rocket stays leaning in the same place at the same angle in every frame. Through the hole there is only blank cream paper in every frame. The dartboard, the overturned side table, the stacked crates, the storage bench and the shelving stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

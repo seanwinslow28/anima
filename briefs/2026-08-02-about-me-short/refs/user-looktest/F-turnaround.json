@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-02T20:17:08.901084Z",
+    "display_name": "GPT Image 2",
+    "id": "cfc806d4-8009-4cc7-acf5-eddfdba1d4fb",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_201708_cfc806d4-8009-4cc7-acf5-eddfdba1d4fb_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "fffabe32-67ee-4cb1-a3cd-eb8606cecafc",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/fffabe32-67ee-4cb1-a3cd-eb8606cecafc.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the character design reference. Copy its design, its proportions, its grey, its construction lines and its lettering exactly. Do NOT copy its single-view framing — this is a new drawing with five views.\n\nA character turnaround model sheet: the same identical character drawn five times in a row, evenly spaced across the sheet, all five at exactly the same height and standing on the same ground line — front view, three-quarter front view, side profile facing right, three-quarter back view, and back view from directly behind. In every view it stands still and upright at rest, both arms hanging down at its sides, both feet flat.\n\nThe character is a faceless placeholder person, drawn as a pencil-test figure still under construction but filled in. Its body is one solid smooth shape read clearly as a single silhouette. Drawn ON TOP of that fill, in visible darker graphite, are the construction lines the animator never erased: a small circle at each shoulder, elbow, wrist, hip, knee and ankle, a light vertical centre line running down the whole body, and a crosshair across the blank head. The contour is a light broken searching pencil line gone over two or three times rather than one clean stroke.\n\nIt has NO face: the head is completely blank, with no eyes, no nose, no ears and no hair. It is not a specific man and not a specific woman — no gender markers of any kind, no hairstyle, no jaw line, plain simple limbs. It wears a plain short-sleeved t-shirt with the word USER across the chest in plain capitals, drawn in a much darker heavier graphite than the fill behind it so the word reads at a glance.\n\nThe word USER is on the front of the shirt, so it is fully readable in the front view, partly turned away in the three-quarter and profile views, and not visible at all from directly behind.\n\nIt is entirely grey and colourless — the only element on the sheet with no colour in it.\n\nA light horizontal guide line marks the top of the head and another marks the ground, running across all five figures. Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. Nothing else on the sheet: no room, no furniture, no shadow, no border, no labels.\n\nThe only text anywhere in the picture is the word USER on the shirt.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_201708_cfc806d4-8009-4cc7-acf5-eddfdba1d4fb.png",
+    "status": "completed"
+  }
+]

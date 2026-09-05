@@ -1,0 +1,16 @@
+# S09 · GEMINI into the CRT-POV plate. 4 of 5. gpt_image_2 edit · 8.5 cr.
+#   Image 1 = refs/turnaround-views/gemini-v2.png · Image 2 = normalised/S09-room-reacts-v1.png (CLEAN)
+#   Left, on the floor by the worktable (~10 ft) — the nearer of the two big-scale figures.
+#   Rest pose, ¾ front, eyes on the sketches. Never in a pass with Codex.
+# RESULT — first roll, job 0ce25466. Landed: ¾ front, eyes up-right to the sketch wall, all five points. Stands a step further out on the open floor than 'beside the worktable' — reads as mid-floor rather than at the wall. Acceptable at rest; noted. Matte pasted 0.89%.
+
+Image 1 is the CHARACTER: a small rounded lavender-and-blue cartoon star with a soft round belly, five points, two dot eyes and a small smiling mouth. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette. This is a very wide shot of a whole room from high up, so the character is a small part of the picture.
+
+POSITION: standing on the open floor on the LEFT side of the picture, just to the right of the wooden worktable and a step out from the wall of taped sketches, its whole body clear of the table and the cabinet.
+SCALE — draw it SMALL: it stands a little above knee height on a grown adult. The top of its head sits clearly BELOW the top of the worktable beside it, and far below the lowest row of taped sketches on the wall. It is a tiny creature, never person-sized.
+FACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its mouth, its round belly, all five points of the star and both feet. It is NOT seen from behind and NOT in profile. Its eyes are turned up and off to one side towards the wall of taped sketches beside it; it is absorbed in those and never looks into the camera.
+POSE: it stands still and upright at rest, both arms hanging down at its sides, both feet flat on the floor well out from the wall and clear of the baseboard. Draw it with a soft graphite contact shadow on the floor beneath it.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

@@ -1,0 +1,48 @@
+# S07, M1 beat 3 — THE ALARM WITH A PUSH-IN. A/B, 2026-09-01. Sean's shot.
+# SEAN, verbatim: "It should be off, then flash, then show PROBLEM!, and the camera quickly
+#   zooms to the TV that shows the screen that has the word PROBLEM! flashing on and off. We
+#   can try to use frame 1 and see if seedance gets it on it's own and we can also generate the
+#   closeup of the screen first so that it has a first and last frame to work with."
+#
+# ARM A — start frame only:  --start-image normalised/S07-plate-v2.png
+# ARM B — start + end:       --start-image normalised/S07-plate-v2.png
+#                            --end-image   normalised/S07-alarm-closeup-v1.png
+# IDENTICAL PROMPT ON BOTH ARMS. The end frame is the only variable, the same discipline that
+#   settled the reference question in motion/ab-codex. 24.5 cr each.
+#
+# *** BLOCK 1 IS MODIFIED FOR THIS SHOT, AND ONLY THIS SHOT. ***
+#   "Fixed camera, locked tripod, one continuous shot" is REMOVED. It has been constant on
+#   every clip in this project and it is a contradiction here: a push-in IS a camera move, and
+#   an instruction to hold the camera plus an instruction to move it is a conflict the model
+#   resolves however it likes. `prompt-how-much` is explicit that locked-vs-free is a DIAL —
+#   keep the clause for one locked shot, drop it and NAME the move for a camera move.
+#   S07 is the only setup that gets this: it has no character, and the alarm is the shot.
+#   The five character corners keep the locked clause unchanged.
+#
+# THE END FRAME IS A CROP, NOT A GENERATION (post/make_closeup.py, $0). A generated close-up
+#   would be a RE-ANGLE, and gpt_image_2 will not re-camera from an edit — it would have to be
+#   reconstructed from the world bible, at cost, with a real chance the television comes back a
+#   different television. A crop cannot drift: it IS the plate. 1000x563 out of 2688x1520, a
+#   2.69x push-in, and only ~1.28x of real upscale at 720p output.
+#
+# PRIOR: the two-keyframe route already cost some camera hold on this shot (0.989 -> 0.931
+#   against the start frame). That was a defect when the camera was supposed to be locked.
+#   Here the camera is SUPPOSED to move, so the same behaviour may be the mechanism instead of
+#   the bug — which is exactly why arm B is worth running against arm A rather than assuming.# *** LOCKED BY SEAN 2026-09-01: ARM B, THIS ROLL. motion/m1-beat3/S07-pushin-armB.mp4 ***
+#   "It's not really what I'm looking for, so I'll fix it in post with Arm B v1."
+#   Two later timing attempts (prompts 18 and 19) are SUPERSEDED by this ruling. Prompt 19 did
+#   hit the requested number — zoom at 3.08s against this clip's 4.54s — and it still lost, so
+#   record the actual lesson rather than the metric: the timing note was never a timing-number
+#   problem the prompt could solve. Sean cuts timing in the edit, which is his standing rule
+#   from earlier the same day ("the timing comes down in the edit, not the generations"), and
+#   three rolls were spent proving it applies here too.
+#   This clip also carries the CREAM screen; 19's reads pale blue. The blink was always a post
+#   job. Nothing is owed to the generation on this shot.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil.
+
+The room holds dead still for one beat. The small television's dark screen flares white in one hard flash and the word PROBLEM! bangs on above a jagged line falling to the right. The whole room jolts with it — the mug hops, the darts shiver in the wall, the taped sketches flutter. The camera snaps in fast on the television, one hard quick push-in that stops dead, and the screen flashes PROBLEM! on and off, on and off.
+
+From the moment it lights, the screen shows the same word PROBLEM! and the same falling line every time it flashes on. The television, the dartboard, the bookshelf of binders and the cabinet stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

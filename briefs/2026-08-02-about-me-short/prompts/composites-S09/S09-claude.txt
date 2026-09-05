@@ -1,0 +1,15 @@
+# S09 · CLAUDE into the CRT-POV plate. 1 of 5. gpt_image_2 edit · 8.5 cr.
+#   Image 1 = refs/turnaround-views/claude-v2.png · Image 2 = normalised/S09-room-reacts-v1.png (CLEAN)
+#   Far wall, tiny (1′6″ at ~24 ft). Rest pose, ¾ front, eyes on the tower. Merged first (deepest).
+# RESULT — first roll, job e277a46e. Landed: at the foot of the towers (a step to their RIGHT, not left — fine), tiny, ¾ front, eyes on the stacks, contact shadow. Matte pasted 0.25% of frame.
+
+Image 1 is the CHARACTER: a small rounded terracotta-orange cartoon creature, a soft cube with four stubby legs, small nubs for arms, and two dot eyes. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette. This is a very wide shot of a whole room from high up, so the character is a small part of the picture.
+
+POSITION: on the far wall of the room, standing on the floor at the foot of the two tall leaning stacks of flagged paper, just to the LEFT of them and clear of the binder shelf. It is far from the camera, so it is drawn very small.
+SCALE — draw it TINY: it is a knee-high creature seen from across the room. The top of its head reaches only about a quarter of the way up the taller paper stack beside it, and it is far shorter than the small supply desk to its right. It is a small creature, never person-sized.
+FACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its face, both arm-nubs and all four feet. It is NOT seen from behind and NOT in profile. Its eyes are turned off to one side towards the paper stacks beside it; it is absorbed in those and never looks into the camera.
+POSE: it stands still and upright at rest, both arm-nubs at its sides, all four feet flat on the floor and clear of the baseboard. Draw it with a soft graphite contact shadow on the floor beneath it.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

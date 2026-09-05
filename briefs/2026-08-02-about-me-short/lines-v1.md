@@ -1,3 +1,9 @@
+> **AMENDED 2026-08-31 — THE QUESTION IS TYPED, NOT SPOKEN.** Sean ruled that the USER lives
+> on screens only (chat box + CRT) and that the Sean character never speaks aloud. The line
+> below is unchanged word for word; only its delivery moves — it appears in a chat box on his
+> centre monitor instead of being said to a figure in the doorway. The full reasoning and
+> what it costs are in the amendment at the foot of [`00_studio_brief.md`](00_studio_brief.md).
+
 # Lines v1 — the two thesis lines (stress residual R1)
 
 *Writers-room session 2026-08-03. Satisfies the Studio Brief non-negotiable: "Sean's question and the narrator's button line are written and cold-read with one working PM before boards." Candidates below; winning pair + Sean's verbatim reasons + cold-read result recorded at the bottom. This file is the lines' home until boards; the emitted bundle (`concept.md` / `00_studio_brief.md`) stays as validated.*

@@ -1,0 +1,29 @@
+# S12 (proposed id) — CLAUDE'S PAPER CANYON, beat 5. Camera B5-A WORM'S EYE UP THE TOWER, ruled by Sean 2026-09-03.
+# 2026-09-05. gpt_image_2 · 2k · high · 16:9 · 8.5 cr. Lens on the floor at (3.6, 7.8), eye 0.8, pitched up 10.
+# Room state B for this corner = the tower has GROWN: the 40-page doc, visibly still growing (beats-v1 #5).
+# THE DIRECTOR'S CALL, and why: the canyon must go OUT THE TOP of frame (the escalation is vertical, the
+#   opposite of the CRT's high look two beats earlier), and the EYE RESTS ON CLAUDE's spot — the small gap at
+#   the foot of the stacks, bottom centre. The flags lead the eye UP and out; Claude (composited later,
+#   claude-sitting-v2, writing) is what it comes back to. Three-point perspective: the verticals converge above.
+# REFS, role-split per _blocks.md: ELEV-west + ELEV-north (a two-wall corner shot gets BOTH walls) as fixture +
+#   style bible; the B5-A plate rough LAST as the camera. Character-free.
+# RUN: motion/gen_image_refs.sh prompts/plates-rev2/S12-B5A-claude-canyon.txt plates/rev2/S12.json \
+#        normalised/ELEV-west-v2.png normalised/ELEV-north-v2.png room-bible/m2-candidates/SHOT-B5-A-plate-rough.png
+# RESULT: first roll, 8.5 cr, job fd00fe7b. plates/rev2/S12-claude-canyon-v1.png -> normalised/. LANDED, and it is the shot:
+#   three-point perspective, three stacks going out the top of frame, flags fringing upward, loose pages, the binder shelf
+#   looming left, the filing cabinet right, ceiling wedge at the top. Floor is a sliver at the bottom centre - Claude's spot.
+Images 1 and 2 are FIXTURE AND STYLE BIBLES — flat elevations of the two walls that meet in this corner: the wall with the supply desk, the paper towers and the binder shelf, and the wall with the tall grey filing cabinet. Preserve their drawing style, line weight, paper colour, palette, and the exact design of every fixture. Do NOT copy their flat orthographic camera.
+Image 3 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement; replace each grey block with the corresponding fixture; remove every guide mark.
+
+CAMERA: a WORM'S EYE view — the lens lies almost on the floor, less than a foot up, right at the foot of the paper towers, and is tipped steeply UPWARD. We are looking up into the corner where two walls meet, at the towers of paper soaring over us. The floor is barely visible, a sliver at the very bottom of frame; the ceiling is visible at the top, where the two walls meet it.
+
+PERSPECTIVE — draw it deliberately, this is the whole shot. Because the camera looks steeply up, every vertical line CONVERGES towards a single point far above the top of the frame: the corner seam, the edges of the towers, the sides of the shelving and the cabinet all lean inward as they rise. The towers are widest at the bottom, nearest the lens, and narrow as they climb. The corner seam runs up through the middle of the frame, leaning, and the two walls fan out from it. Nothing is level; the baseboard, where it shows, is a short slanted line at the bottom.
+
+VISIBLE. At the LEFT of frame, very close to the lens and looming, the end and underside of the tall open shelf of ring binders, seen from below. In the CENTRE, standing against the left-hand wall just left of the corner seam, the hero: a tower of loose paper that has grown enormous — a stack of pages so tall it goes clean OUT THE TOP OF THE FRAME, with coloured sticky flags stepping up its edge in a dense fringe that gets thicker the higher it goes. Beside it a second stack, also flagged, also far taller than before, its top out of frame too, and a third newer stack begun in front of them. Loose pages spiral off the tops; a few flutter partway down the frame. Between the stacks and the shelf, at the bottom centre of the frame, a small clear gap of floor at the foot of the tower where a small figure could sit. To the RIGHT of the corner seam, on the right-hand wall, the tall grey filing cabinet with boxes and a trailing plant on top, seen from below, its top near the ceiling.
+
+OUT OF FRAME: the supply desk (hidden behind the towers), the desk with monitors, the server rack, the doorway, the moodboard, the dartboard, the television.
+The room is empty of characters and people.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.

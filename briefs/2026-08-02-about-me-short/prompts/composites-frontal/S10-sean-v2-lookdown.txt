@@ -1,0 +1,28 @@
+# S10 — SEAN, seated, LOOKING DOWN at the mascots. v2 of the face look-test. 2026-09-03.
+# Sean, on v1: "We can keep this because we'll have Seedance provide the expression, emotion,
+#   and action, but let's try to have one of him looking down as if he was looking at the
+#   mascots, if possible." v1 is KEPT (composites/rev2/S10-sean-composite-v1.png); this is a
+#   second option, not a replacement. ONE change from v1: the FACING clause's eyeline — head
+#   tipped down, eyes lowered to the floor a few feet in front of the chair, where a small
+#   creature would stand. Everything else verbatim.
+# gpt_image_2 edit · sean-v2 + normalised/S10-sean-front-v1.png · 8.5 cr.
+# RUN: motion/composite.sh prompts/composites-frontal/S10-sean-v2-lookdown.txt \
+#        refs/turnaround-views/sean-v2.png normalised/S10-sean-front-v1.png composites/rev2/S10-sean-v2.json
+# RESULT — first roll, 8.5 cr, job 3fe395a9. composites/rev2/S10-sean-composite-v2.png →
+#   normalised/ (gain 1.007–1.024, pass). THE EYELINE LANDED: chin dipped, eyes lowered to the
+#   floor at frame-left in front of the chair — exactly where a mascot would stand at this lens
+#   height — same face, same rest pose, same plate. Shoulders a touch more relaxed than v1.
+#   verify_edit 0.100 / 0.564 / shift (0,0) → CHECK, same reading as v1 (figure coverage).
+#   BOTH v1 (eyes to the room) and v2 (eyes down to the mascots) are kept; Sean picks the
+#   start frame for the GO. v2 is the session's lean: the GO is given to people at his feet.
+
+Image 1 is the CHARACTER: a young man with short blonde hair, light stubble, blue eyes, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette.
+
+POSITION: sitting in the office chair that is already in the scene, which is turned round to face us, the desk and the three monitors behind him. Do not draw a second chair and do not move the desk.
+SCALE: a full-grown adult in that chair — seated, his head rises clear above the chair back and sits in front of the middle monitor, his shoulders as wide as the chair back. We are looking slightly up at him from low down.
+FACING — this is the important part: he is turned three-quarters TOWARDS US. His whole face is visible — both eyes, the stubble, his mouth, his full head of hair — and his chest, both arms and both knees. He is NOT seen from behind and NOT in profile. His head is tipped DOWN and his eyes are lowered: he is looking down at the floor a few feet in front of his chair, the way a tall person looks down at a small creature standing at his feet — chin dipped, gaze down and a little off to one side, never into the camera. His expression is calm and steady, mouth closed.
+POSE: he sits still and upright at rest, both forearms resting on the armrests of the chair, both hands relaxed, both feet flat on the floor. Draw a soft graphite contact shadow on the floor beneath his feet and the chair.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

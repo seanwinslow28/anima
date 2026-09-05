@@ -1,0 +1,24 @@
+# S13 · CODEX under the code wall — beat 6 composite. 2026-09-05. gpt_image_2 edit, 2 refs:
+#   refs/turnaround-views/codex-v2.png (¾ front) + normalised/S13-codex-code-wall-v1.png. 8.5 cr.
+# STAGING: tiny at the counter beneath his ten thousand lines. Bigger in frame than at S04 (the lens is close),
+#   which helps the known Codex-face-under-fast risk: more pixels for the bracket-and-dash face to hold.
+# RUN: motion/composite.sh prompts/composites-M2/S13-codex.txt refs/turnaround-views/codex-v2.png \
+#        normalised/S13-codex-code-wall-v1.png composites/M2/S13-codex-v2.json
+# RESULT v1: first roll, 8.5 cr, job 764482f8. composites/M2/S13-codex-v1.png -> normalised/. Position, scale, wash and
+#   the 3/4-front all landed - and it GREW AN EYE: a dark dot beside the chevron (the S09 one-pass failure, now on a
+#   single). MY FAULT: the FACING clause said 'its EYES are turned up' on a character that has none. v2 below: the face
+#   is tipped up (no 'eyes'), and the identity line locks the face as bracket + dash and nothing else.
+# RESULT v2: second roll, 8.5 cr, job d33b1266. composites/M2/S13-codex-v2.png -> normalised/ (verify 0.174 / 0.740 PASS). THE DOT IS
+#   STILL THERE - and it is ON-MODEL: refs/turnaround-views/codex-v2.png (Sean's sheet, 3/4 front) draws the far eye as exactly
+#   that dot beside the bracket. My v1 'defect' was a misread of the design; this re-roll was an unnecessary 8.5. Both v1 and v2
+#   are on-model; v1 drives the beat-6 clip (its prompt is the one to copy; this file's 'no eyes' line is WRONG for 3/4 views).
+Image 1 is the CHARACTER: a small rounded periwinkle-blue cloud creature with a bracket-and-dash face, two small brows, and short stubby arms. Its face is nothing but one pale angle bracket and one short pale dash beneath two small brows — it has no eyes and no mouth, and nothing else is drawn on its face. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same big screen of code, same rack, same fixtures, same palette.
+
+POSITION: standing on the floor in front of the coffee counter, near the counter's right-hand end and just to the left of the tall black server rack, directly beneath the big screen of code, its whole body clear of the furniture.
+SCALE — draw it SMALL: it stands only thigh-high to a grown adult. The top of its head reaches about two thirds of the way up the coffee counter beside it, and barely a quarter of the way up the server rack. It is a small creature, never person-sized.
+FACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — the pale bracket-and-dash face, both brows, its chest, both arms and both feet. It is NOT seen from behind and NOT in profile. Its face is tipped up and off to one side towards the big screen of scrolling code above it; it is absorbed in that and never faces the camera.
+POSE: it stands still and upright at rest, both arms hanging down at its sides, both feet flat on the floor and well clear of the baseboard. Draw it in the same hand as the room — graphite line with a light periwinkle coloured-pencil wash, the same line weight as the furniture — with a soft graphite contact shadow pooled on the floor beneath it.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

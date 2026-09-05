@@ -1,5 +1,8 @@
+# S03 composite v2. REST POSE — Sean's rule 2026-08-31: never generate the character already
+# mid-action, because Seedance is then asked to produce a movement the still has already made.
+# v1 (arm up, pressing a flag) is superseded for exactly that reason.
 Image 1 is the character. Image 2 is the background scene.
 Keep its exact squarish plush shape, terracotta colour, two small dot eyes, side nubs and stubby legs.
 Place it standing on the floor just left of the tall paper tower, small — knee-high to a person, its head reaching about a quarter of the tower's height.
-It faces the tower in three-quarter back view, one stubby arm stretched up pressing a sticky flag onto the stack.
+It stands still and upright at rest, both stubby arms hanging down at its sides, both feet flat on the floor, turned three-quarters away from us to face the paper tower.
 Keep Image 2 unchanged. Hand-drawn pencil-test line and colour to match. Do not add any text.

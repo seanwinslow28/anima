@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-03T23:42:45.994337Z",
+    "display_name": "GPT Image 2",
+    "id": "8049ce58-81a5-4e60-9384-c688835ee61b",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_234245_8049ce58-81a5-4e60-9384-c688835ee61b_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "5f1bd435-b5a6-4b30-ac9b-8c55ac02778a",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/5f1bd435-b5a6-4b30-ac9b-8c55ac02778a.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "2cc24023-59da-4452-8696-b5e0bcd178b6",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/2cc24023-59da-4452-8696-b5e0bcd178b6_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a young man with short blonde hair, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the BACKGROUND SCENE.\n\nAdd the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette. This is a very wide shot of a whole room from high up, so the character is a small part of the picture.\n\nPOSITION: sitting in the office chair that is already in the scene, at the long desk with the three monitors on the right-hand wall. Turn that chair so that it faces the desk, in the same spot — do not move it and do not draw a second chair.\nSCALE: a full-grown adult at that desk, seen from across the room and from above — seated, the top of his head rises a little above the chair back and sits below the cork board on the wall. He is the largest figure the desk could hold, and no larger.\nFACING: he is seen from behind and a little from his right side, three-quarters away from us, facing the monitors. The back of his blonde head and his shoulders are what we see; his face is not visible.\nPOSE: he sits still and upright at rest, both hands resting flat on the keyboard, feet on the floor under the desk.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_234245_8049ce58-81a5-4e60-9384-c688835ee61b.png",
+    "status": "completed"
+  }
+]

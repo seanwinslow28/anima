@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-05T19:54:46.561013Z",
+    "display_name": "GPT Image 2",
+    "id": "fb33fb2a-a608-4eaf-9adc-085db98eba5e",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_195446_fb33fb2a-a608-4eaf-9adc-085db98eba5e_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "9fa2f992-b11c-4df2-9390-28ade38c4090",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/9fa2f992-b11c-4df2-9390-28ade38c4090_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same small cloud creature in the same spot, same rack, counter and every other fixture, same paper and palette.\n\nChange ONE thing: a big flat screen has popped straight out of the LEFT side of the tall black server rack on a hinged metal arm, and now hangs out over the coffee counter at the height of the rack's upper half, tilted a little towards us. The screen is lit and flooded edge to edge with dense scrolling lines of code, drawn as the film draws code: row upon row of small graphite dashes and short blocks, indented like program listings, packed so tight the screen reads as a solid wall of text, with a soft pale glow on the wall around it. A thick cable runs from the screen back into the rack.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any legible text or letters.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_195446_fb33fb2a-a608-4eaf-9adc-085db98eba5e.png",
+    "status": "completed"
+  }
+]

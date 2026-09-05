@@ -1,0 +1,26 @@
+# THE USER — GREEN STATE, thumbs up + action lines. gpt_image_2, ref = D, 1:1. 8.5 cr.
+# SEAN 2026-09-02: "As for the user beaming, it can still be faceless/anonymous, but just have
+#   it giving a thumbs up and action lines above its head to show the beaming."
+# WHY THIS IS THE RIGHT CALL and not just a workaround: a faceless character has exactly one
+#   acting channel — POSTURE AND SILHOUETTE. A thumbs-up plus radiating action lines is
+#   readable at 32px, which a facial expression never would be, and it keeps beat 18's promise
+#   ("beaming, still faceless") without breaking the design's one rule.
+# THE GREEN is pushed warm and leafy, deliberately away from Gemini's blue-purple.
+
+Image 1 is the character design reference. Copy its design, its proportions, its construction lines and its lettering exactly, and change only its colour and its pose.
+
+The character is a faceless placeholder person, drawn as a pencil-test figure still under construction but filled in. Its body is one solid smooth shape read clearly as a single silhouette. Drawn ON TOP of that fill, in visible darker graphite, are the construction lines the animator never erased: a small circle at each shoulder, elbow, wrist, hip, knee and ankle, a light vertical centre line running down the whole body, and a crosshair across the blank head. The contour is a light broken searching pencil line gone over two or three times rather than one clean stroke.
+
+It has NO face: the head is completely blank, with no eyes, no nose, no ears and no hair. It is not a specific man and not a specific woman — no gender markers of any kind, no hairstyle, no jaw line, plain simple limbs. It wears a plain short-sleeved t-shirt with the word USER across the chest in plain capitals, drawn in a much darker heavier graphite than the fill behind it so the word reads at a glance.
+
+It is a warm friendly leaf green all over — a fresh grassy green, clearly not blue and not purple. The word USER on its shirt stays a much darker graphite than the green behind it.
+
+It stands upright and squares its shoulders, and its right arm is bent up with the fist closed and the thumb sticking straight up in a clear thumbs-up. Its other arm hangs at its side. Short radiating action lines burst outward above and around its blank head, the cartoon mark for delight. Its whole posture is proud and beaming: chest up, shoulders back, standing tall.
+
+Its head is still completely blank — no eyes, no nose, no mouth, no face of any kind.
+
+Centred, full body from head to feet, alone on plain empty warm cream drawing paper, a pale putty cream, never white and never yellow. Nothing else in the picture: no room, no furniture, no floor line, no border.
+
+The only text anywhere in the picture is the word USER on the t-shirt.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.

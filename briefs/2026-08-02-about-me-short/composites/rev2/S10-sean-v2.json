@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-03T22:57:30.718342Z",
+    "display_name": "GPT Image 2",
+    "id": "3fe395a9-66f7-4ee8-8c2b-3266219145d1",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_225730_3fe395a9-66f7-4ee8-8c2b-3266219145d1_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "1744dd09-b604-40eb-9715-d17d9ee1eea9",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/1744dd09-b604-40eb-9715-d17d9ee1eea9.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "4782fd93-6002-4997-b8e0-a2d073af08b1",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/4782fd93-6002-4997-b8e0-a2d073af08b1_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a young man with short blonde hair, light stubble, blue eyes, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the BACKGROUND SCENE.\n\nAdd the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette.\n\nPOSITION: sitting in the office chair that is already in the scene, which is turned round to face us, the desk and the three monitors behind him. Do not draw a second chair and do not move the desk.\nSCALE: a full-grown adult in that chair — seated, his head rises clear above the chair back and sits in front of the middle monitor, his shoulders as wide as the chair back. We are looking slightly up at him from low down.\nFACING — this is the important part: he is turned three-quarters TOWARDS US. His whole face is visible — both eyes, the stubble, his mouth, his full head of hair — and his chest, both arms and both knees. He is NOT seen from behind and NOT in profile. His head is tipped DOWN and his eyes are lowered: he is looking down at the floor a few feet in front of his chair, the way a tall person looks down at a small creature standing at his feet — chin dipped, gaze down and a little off to one side, never into the camera. His expression is calm and steady, mouth closed.\nPOSE: he sits still and upright at rest, both forearms resting on the armrests of the chair, both hands relaxed, both feet flat on the floor. Draw a soft graphite contact shadow on the floor beneath his feet and the chair.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_225730_3fe395a9-66f7-4ee8-8c2b-3266219145d1.png",
+    "status": "completed"
+  }
+]

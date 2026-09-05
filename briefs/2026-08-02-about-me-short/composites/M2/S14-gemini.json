@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-05T19:00:41.45902Z",
+    "display_name": "GPT Image 2",
+    "id": "67ddc2d4-fa0d-483e-a0f3-562c4264ea84",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_190041_67ddc2d4-fa0d-483e-a0f3-562c4264ea84_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "29ef2d25-238c-4fba-bc5f-8c4b10fcf071",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/29ef2d25-238c-4fba-bc5f-8c4b10fcf071.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "3026ed4a-dc36-4878-bc8a-04a41bb8d6fc",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/3026ed4a-dc36-4878-bc8a-04a41bb8d6fc_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a small rounded lavender-and-blue cartoon star with a soft round belly, five points, two dot eyes and a small smiling mouth. Image 2 is the BACKGROUND SCENE.\n\nAdd the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same raking perspective, same wall of sketches, same buried worktable, same fixtures, same palette.\n\nPOSITION: standing on the floor in the near foreground at the lower left of centre, just in front of and to the left of the near end of the long wooden worktable, on top of the loose sketches scattered across the floor, its whole body clear of the table. It is close to the lens, so it is drawn larger than anything on the far wall.\nSCALE — draw it SMALL: it stands a little above knee height on a grown adult. Standing beside the near end of the worktable, the top of its head sits clearly BELOW the table top, about three quarters of the table's height. It is a tiny creature, never person-sized.\nFACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its mouth, its round belly, all five points of the star and both feet. It is NOT seen from behind and NOT in profile. Its eyes are turned up and off to one side towards the wall of sketches beside it; it is absorbed in that and never looks into the camera.\nPOSE: it stands still and upright at rest, both arms hanging down at its sides, both feet flat on the floor. Draw it in the same hand as the room — graphite line with a light lavender-and-blue coloured-pencil wash, the same line weight as the furniture — with a soft graphite contact shadow pooled on the floor beneath it.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_190041_67ddc2d4-fa0d-483e-a0f3-562c4264ea84.png",
+    "status": "completed"
+  }
+]

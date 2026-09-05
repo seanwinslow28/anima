@@ -135,42 +135,45 @@ impossible.
 
 ---
 
-## MEASURED 2026-08-30, after the four prop-rich plates: the set has split into two creams
+## RULED 2026-08-31: normalise the paper in post. Every frame.
 
-The four plates generated tonight (S03 v2, S05, S06, S07) all came back **warmer and
-darker than canonical, by the same amount and in the same direction**:
+Sean: *"Normalize each in post. It makes the characters stand out more. They all seem to
+blend or just not look right with the tan. They still look great, but it could get messy
+down the line."*
 
-| Plate | Wall as generated | Δ vs #f5e8d1 |
-|---|---|---|
-| S03 Claude's nook v2 | (227, 206, 172) | −18 / −26 / −37 |
-| S05 Gemini's moodboard | (227, 207, 175) | −18 / −25 / −34 |
-| S06 Grok's dartboard | (226, 208, 177) | −19 / −24 / −32 |
-| S07 the alarm | (213–223, 189–199, 157–164) | −22 to −32 / −33 to −43 / −45 to −52 |
+**What had happened.** The four prop-rich plates all came back warmer and darker than
+canonical `#f5e8d1` — by the same amount, in the same direction, within four levels of each
+other. Not scatter: agreement with the wrong reference. They were the first plates generated
+with the **S04 rack plate as their world/style bible**, and S04 predates this clause; its own
+paper sits at **(218, 191, 152)**, some 27 / 41 / 57 levels warm of canonical. The clause and
+the reference pulled opposite ways and the reference won about two thirds of the argument.
 
-**The cause is mechanical and was found by measuring the reference, not the output.** These
-four are the first plates generated with the **S04 plate as the world/style bible**, and
-S04's own paper measures **(218, 191, 152)** — 27 / 41 / 57 levels off canonical, because
-S04 was generated in probe-205 *before* the palette clause existed. The clause and the
-reference pulled in opposite directions and the reference won about two thirds of the
-argument. Every new plate landed between the two, within 4 levels of its siblings.
+| Frame | Wall as generated | Gain applied | Wall after |
+|---|---|---|---|
+| S01 title card D | (247, 235, 212) | 0.99 / 0.99 / 0.99 | (245, 232, 209) |
+| S02 desk, dressed | (241, 225, 204) | 1.02 / 1.03 / 1.03 | (245, 232, 208) |
+| S03 nook plate | (230, 210, 178) | 1.06 / 1.10 / 1.18 | (244, 232, 208) |
+| S04 rack (probe) | (226, 203, 165) | 1.09 / 1.14 / 1.27 | (244, 232, 209) |
+| S05 moodboard + CRT | (226, 205, 176) | 1.09 / 1.13 / 1.19 | (244, 232, 208) |
+| S06 dartboard | (228, 210, 180) | 1.08 / 1.11 / 1.16 | (244, 232, 208) |
+| S07 alarm | (236, 218, 186) | 1.04 / 1.06 / 1.12 | (244, 232, 208) |
 
-So the room is now split into two consistent groups, not scattered:
+**The correction is a per-channel gain, not an offset** — paper is a multiplicative tint, and
+a gain leaves the graphite blacks black instead of lifting them to grey. Clipping stays under
+0.4% of pixels even on S04, the heaviest lift.
 
-| Group | Wall | Members |
-|---|---|---|
-| **Canonical cream** | ≈ (245, 232, 209) | S02 desk medium (Sean-approved), S03 sparse (superseded) |
-| **Bible tan** | ≈ (225, 205, 172) | S04 rack (banked + only clip proven end to end), S03 v2, S05, S06, S07 |
+**The pipeline step is [`post/normalize_paper.py`](post/normalize_paper.py)**, $0, deterministic
+and idempotent; output lands in [`normalised/`](normalised/) and **that directory is the
+working set from here on** — motion, edit and delivery all read from it. Re-run it after any
+new generation. It finds the wall by sweeping small patches across the upper band and taking
+the flattest pale ones, rather than by hand-tuned sample points; only the S04 rack plate needs
+a steering window, because its upper band is server rack on one side and moodboard on the
+other and the sweep otherwise scores a fixture as paper.
 
-**This is a ruling for Sean, not a re-roll.** Both groups are internally consistent, and the
-fix is free either way: a flat per-channel gain on the paper tone matches one group to the
-other exactly, costs $0, is reversible, and is a **post** operation — which is where
-FIRST LICKS DR #41 already says the look lives. Normalised copies of every plate and
-composite are banked at [`plates/normalised/`](plates/normalised/) (gains ≈ 1.08 / 1.13 /
-1.21) so the comparison can be made by eye rather than by argument.
+**Generation still carries the palette clause.** Normalising is a safety net for reference
+drift, not a licence to stop asking. A plate that generates near-canonical needs a gain near
+1.0, and that is the cheapest signal that a new reference has not dragged the paper again.
 
-**Do not re-roll good plates over this.** The tolerance was doing its job — it caught a
-reference conflict, which is exactly what it is for.
-
-**Floor target still PROVISIONAL.** The three new sparse-to-mid floors measured
-(207–218, 186–196, 155–159), all far from #e8d6bc, but they inherit the same bible tan, so
-they cannot re-base the floor until the paper question is settled first.
+**The floor target is retired, not re-based.** Floors in these plates run 10–20 levels under
+their own walls and vary with how much floor a setup shows. The wall is the control surface;
+normalising to it brings the floor with it. Stop enforcing a separate floor number.

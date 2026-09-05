@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-05T18:56:15.649878Z",
+    "display_name": "GPT Image 2",
+    "id": "a677875c-dc29-4db3-ad67-8c641d392842",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_185615_a677875c-dc29-4db3-ad67-8c641d392842_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "7b98aa9f-052a-4794-afe1-de3dcfe82b38",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/7b98aa9f-052a-4794-afe1-de3dcfe82b38_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "e64eb615-fff8-4611-9e22-69d1abe457b1",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/e64eb615-fff8-4611-9e22-69d1abe457b1.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the FIXTURE AND STYLE BIBLE — a flat elevation of the wall with the server rack, the coffee counter and the water cooler. Preserve its drawing style, line weight, paper colour, palette, and the exact design of every fixture. Do NOT copy its flat orthographic camera.\nImage 2 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement; replace each grey block with the corresponding fixture; remove every guide mark.\n\nCAMERA: a medium shot from inside the room, eye level, looking almost square at one wall, the lens close to it, so the fixtures are large and cropped by the frame edges. The floor is a narrow band at the bottom.\n\nPERSPECTIVE: the wall faces us nearly flat, with a slight lean: fixtures at the left show a sliver of their right-hand faces and fixtures at the right show a sliver of their left-hand faces. The tall server rack stands close to the lens at the right of centre and rises out of the top of frame; the baseboard is nearly level.\n\nVISIBLE LEFT TO RIGHT: at the left, the water cooler with its blue bottle and paper cups, cropped by the frame edge, with a big dark coffee machine and mugs beside it; then the low coffee counter, its top crowded with the drip coffee machine, the glass jug and mugs; ABOVE the counter, filling the upper centre of the frame, the hero: a huge wall-mounted flat screen, bracket-mounted, LIT, and filled edge to edge with dense scrolling lines of code — drawn as the film draws code: row upon row of small graphite dashes and short blocks, indented like program listings, packed so tight the screen reads as a solid wall of text, with a soft pale glow on the wall around it; thick loose cables run from the screen down the wall and into the tall black server rack that stands right of centre, close to the lens, full of small coloured status lights and looped cabling, its top out of frame; beyond the rack at the right, the edge of the plain open doorway.\n\nOUT OF FRAME: the desk with monitors, the paper towers, the moodboard, the dartboard, the television.\nThe room is empty of characters and people. The floor in front of the counter stays clear.\n\nWarm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any legible text or letters.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_185615_a677875c-dc29-4db3-ad67-8c641d392842.png",
+    "status": "completed"
+  }
+]

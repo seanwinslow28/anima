@@ -1,0 +1,12 @@
+Image 1 is the FIXTURE AND STYLE BIBLE — a flat elevation of this wall. Preserve its drawing style, line weight, paper colour, palette, and the exact design of every fixture, including what is drawn on the taped-up sheets. Do NOT copy its flat orthographic camera.
+Image 2 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement; replace each grey block with the corresponding fixture; remove every guide mark.
+
+CAMERA: a medium-wide from inside the room looking square at the moodboard wall, eye level, tipped a little down so the floor occupies the lower fifth. The board runs nearly the full width of frame.
+VISIBLE LEFT TO RIGHT: a low storage cabinet with cartons on top at the far left; then the hero wall — roughly fifty concept sketches taped up on small sheets of coloured paper in a loose irregular grid, corners lifting, tape visible, several pinned crooked; a swag of small round string lights above them; a low wooden worktable standing against the board carrying rolls of tape, a jar of markers, scissors and a mug; loose sketches that have fallen onto the floor.
+Every sheet is a rough product or mascot idea in loose pencil — shopping bags, checkout buttons, packaging boxes, price tags, storefront signs, little round cartoon creatures. None is a landscape.
+OUT OF FRAME: the television is off to the left and not visible. No desk, no rack, no dartboard.
+The room is empty of characters and people. The floor at the left of the board stays clear.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.

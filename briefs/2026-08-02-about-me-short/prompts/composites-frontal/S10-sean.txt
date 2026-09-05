@@ -1,0 +1,34 @@
+# S10 — SEAN, seated, turned to face the room. THE FACE LOOK-TEST. 2026-09-03.
+# gpt_image_2 edit · 2 refs · 8.5 cr per roll · budget 1–3 rolls.
+#   Image 1 = refs/turnaround-views/sean-v2.png (the ¾-front view — the facing law's view;
+#             short blonde hair, stubble, blue eyes, navy T-shirt, grey jeans, grey sneakers).
+#   Image 2 = the S10 plate (plates/rev2/S10-sean-front-v1.png, normalised).
+# Every Sean asset in this film so far is the back of his head. This is the one roll that
+#   decides whether his face can carry a held beat (12) as well as a gesture (4). Judge it on
+#   the FACE — the rest of the recipe is the proven corner-composite shape.
+# REST POSE (law): seated, upright, hands on the armrests. Seedance supplies the nod, the twirl
+#   and the spin back (prompts/motion/20-M2-S10-sean-silent-go-DRAFT.txt).
+# RUN: motion/composite.sh prompts/composites-frontal/S10-sean.txt refs/turnaround-views/sean-v2.png \
+#        normalised/S10-plate-v1.png composites/rev2/S10-sean.json
+# RESULT — first roll, 8.5 cr, job 896353fa. composites/rev2/S10-sean-composite-v1.png →
+#   normalised/ (gain 1.007–1.024, pass). THE FACE LANDED: on-model to the turnaround (short
+#   blonde hair, stubble, blue eyes, navy tee, grey jeans, grey sneakers), three-quarters to us,
+#   eyes off to frame-left and slightly down, calm closed-mouth smile; forearms on the armrests,
+#   both feet flat with a contact shadow. He sits tall — head against the cork board rather than
+#   in front of the middle monitor as written — which reads fine and suits the low-ish lens.
+#   METRICS: verify_edit phase 0.112 / edge keep 0.577 / shift (0,0) → CHECK against floors
+#   0.15 / 0.7. Read with care: every fixture is present, on-model and in place by eye; the
+#   figure covers ~20% of the plate (the mascot composites cover ~3%), and edge-keep counts
+#   covered plate edges as lost. A tripwire, not a verdict — Sean's eye rules. If the plate
+#   ever needs to be byte-true behind him, matte-and-relay is the tool, not a re-roll.
+
+Image 1 is the CHARACTER: a young man with short blonde hair, light stubble, blue eyes, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette.
+
+POSITION: sitting in the office chair that is already in the scene, which is turned round to face us, the desk and the three monitors behind him. Do not draw a second chair and do not move the desk.
+SCALE: a full-grown adult in that chair — seated, his head rises clear above the chair back and sits in front of the middle monitor, his shoulders as wide as the chair back. We are looking slightly up at him from low down.
+FACING — this is the important part: he is turned three-quarters TOWARDS US. His whole face is visible — both eyes, the stubble, his mouth, his full head of hair — and his chest, both arms and both knees. He is NOT seen from behind and NOT in profile. His eyes are turned a little off to one side and slightly downward, towards the floor of the room in front of him; he is looking at something there and never looks into the camera. His expression is calm and steady, mouth closed.
+POSE: he sits still and upright at rest, both forearms resting on the armrests of the chair, both hands relaxed, both feet flat on the floor. Draw a soft graphite contact shadow on the floor beneath his feet and the chair.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

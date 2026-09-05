@@ -1,0 +1,9 @@
+Image 1 is the CHARACTER: a young man with short blonde hair, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette.
+
+POSITION: sitting in the office chair that is already in the scene, pulled up to the desk, seen from directly behind. Do not draw a second chair and do not move the desk.
+SCALE: a full-grown adult at that desk — seated, the top of his head rises a little above the top of the chair back, level with the lower half of the middle monitor.
+POSE: he sits still and upright at rest, back to us, shoulders level, both hands resting flat on the keyboard, feet on the floor. His face is never visible and he never turns towards us.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

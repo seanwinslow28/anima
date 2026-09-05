@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-05T19:00:50.971909Z",
+    "display_name": "GPT Image 2",
+    "id": "2bfd7d3a-3d3e-4807-a140-5d75d6f37348",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_190050_2bfd7d3a-3d3e-4807-a140-5d75d6f37348_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "08902234-36ae-480f-8965-235181f487ac",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/08902234-36ae-480f-8965-235181f487ac_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same fixtures, same paper and palette.\n\nChange ONE thing: the television's dark screen is now lit and pale, and on it, drawn in the same graphite line as the rest of the picture, is the word PROBLEM in big plain capitals filling the width of the screen across the top, with the word (STILL!) in smaller plain capitals inside round brackets on a second line directly beneath it, and beneath that a jagged line falling steeply from upper left to lower right, ending in a small arrowhead that runs right off the bottom edge of the screen.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.\n\nThe only text anywhere in the picture is PROBLEM and (STILL!) on the television screen.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_190050_2bfd7d3a-3d3e-4807-a140-5d75d6f37348.png",
+    "status": "completed"
+  }
+]

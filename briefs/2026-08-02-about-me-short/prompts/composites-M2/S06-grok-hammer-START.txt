@@ -1,0 +1,21 @@
+# S06 · GROK WITH THE HAMMER, the corner INTACT — the beat-8 START frame. 2026-09-05, Sean's ruling on the v1 clip: "Grok is
+#   supposed to take the hammer, smash the wall, pull the rocket into the room from the other side of the wall, and pat it."
+#   So the clip starts in room state A and ends in state B: start = THIS (the locked S06 plate + Grok holding the sledgehammer
+#   at rest), end = normalised/S06B-grok-v1.png (the breach with the rocket in and Grok beside it). Two keyframes, the S07 route.
+# THE HAMMER IS IN HIS HANDS AT REST (head on the floor) rather than on the crates, because prop pickup has failed on this
+#   project (S06: "he just has one"); "takes the hammer" becomes "hoists the hammer" in the clip.
+# gpt_image_2 edit, 2 refs: refs/turnaround-views/grok2-v2.png + normalised/S06-plate-v1.png. 8.5 cr. Same spot as the S06
+#   frontal composite (left of the side table, below the dartboard) so the corner reads as the beat-2 corner.
+# RUN: motion/composite.sh prompts/composites-M2/S06-grok-hammer-START.txt refs/turnaround-views/grok2-v2.png normalised/S06-plate-v1.png composites/M2/S06-grok-hammer.json
+# RESULT: first roll, 8.5 cr. composites/M2/S06-grok-hammer-v1.png -> normalised/ (verify 0.226 / 0.817 PASS). Grok at the
+#   S06 spot, 3/4 front, hammer head on the floor, eyes at the wall by the side table, corner intact. *** THE BEAT-8 v2 START FRAME ***
+Image 1 is the CHARACTER: a round grey cartoon creature with big pointed ears, a wide friendly cartoon grin, small bright eyes and a tufted tail. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette.
+
+POSITION: standing on the open floor in the lower middle of the frame, just to the left of the round three-legged side table and below the dartboard. It must not cover the vertical seam where the two walls meet — that corner stays visible behind it.
+SCALE — draw it SMALL: it stands only thigh-high to a grown adult. Beside the round side table the top of its head is barely above the level of the tabletop, and it is only about a third the height of the tall binder shelving at the right of frame. It is a small creature, never person-sized.
+FACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its full grin, both ears, its chest, both arms and both feet. It is NOT seen from behind and NOT in profile. Its eyes are bright, round and wide open with its brows raised, looking off to one side at the bare wall beside the side table, gleeful; it never looks into the camera.
+POSE: it stands still and upright at rest, both feet flat on the floor and well clear of the baseboard, holding a heavy sledgehammer upright in front of it with both hands on the handle and the hammer's head resting on the floor beside its feet. Draw it in the same hand as the room — graphite line with a light grey coloured-pencil wash over its body, the same line weight as the furniture — with a soft graphite contact shadow pooled on the floor beneath it.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

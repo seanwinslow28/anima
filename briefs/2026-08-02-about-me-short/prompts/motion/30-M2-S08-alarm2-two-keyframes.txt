@@ -1,0 +1,20 @@
+# 10 · ALARM #2, PROBLEM (STILL!) — v1 draft, 2026-09-05. The S07 arm-B route: start dark, end lit, no text in the
+#   video model's hands. The closeup IS the escalation, so there is no push-in to buy this time.
+# seedance_2_0 fast 7s 720p · start: normalised/S08-crt-closeup-v1.png · end: normalised/S08-alarm2-v1.png
+# THE BLINK IS NOT BOUGHT (S07: three phrasings failed; it is a post opacity keyframe) — the screen bangs on and
+#   HOLDS. The shake and the red flood are post. What the clip is for: the jolt — brackets shiver, sketches
+#   flutter, the cable swings — the same alive-ness that made the S07 clip worth its roll.
+# RUN: motion/generate2kf.sh prompts/motion/30-M2-S08-alarm2-two-keyframes.txt normalised/S08-crt-closeup-v1.png normalised/S08-alarm2-v1.png motion/m2-beat10/S08-alarm2-v1.json
+# RESULT: motion/m2-beat10/S08-alarm2-v1.mp4, 24.5 cr, first roll, job 9ee0b4ed. Dark for two beats / one white flash / PROBLEM
+#   (STILL!) bangs on and HOLDS in every lit frame / the television itself ROCKS on its shelf while the sketches flutter and
+#   the cable whips / settles. Both keyframes held: layout 0.994 vs the dark start, 0.991 vs the lit end. Motion 6.17 (the flash
+#   + the jolt). The set rattling is the model's reading of 'the whole picture jolts' - a cartoon jolt, arguably the shake
+#   itself; post can add or skip its own. Sean's eye owed.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The television holds dark and dead still for one beat. Then its screen flares pale in one hard flash and the words PROBLEM (STILL!) bang on above a jagged line falling off the bottom of the screen, and the whole picture jolts with it — the shelf brackets shiver, the taped sketches on the wall flutter, and the hanging cable swings hard and settles. The screen stays lit and holds, and the sketches settle back against the wall.
+
+From the moment it lights, the screen shows the same words PROBLEM (STILL!) and the same falling line in every frame. The television, its shelf and brackets, the shelf of binders at the left and the taped sketches at the right stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

@@ -1,0 +1,20 @@
+# S06B — GROK'S CORNER, WRECKED. Beat 8, camera B8-A = the S06 camera. 2026-09-05.
+# Variant B "THE CORNER IS GONE" — the bigger answer to Sean's "how much of the room is gone?", rolled beside
+#   variant A so his eye chooses between two pictures rather than two paragraphs. gpt_image_2 edit, one ref.
+# RISK, named: this kills the corner seam, the plate's structural spine, so the model may re-render the whole
+#   frame (watch verify_edit), and Movement 3's same-framing return has fewer landmarks to rhyme against.
+# RUN: motion/gen_image_ref.sh prompts/plates-rev2/S06B-wrecked-corner-gone.txt normalised/S06-plate-v1.png 16:9 plates/rev2/S06B-corner-gone.json
+# RESULT: first roll, 8.5 cr, job 5016176c. plates/rev2/S06B-corner-gone-v1.png -> normalised/. A spectacular drawing:
+#   the seam gone, crates smashed to slats, dartboard over the void, hammer in the rubble. verify 0.100 / 0.556 CHECK
+#   (whole-frame re-render, as A). Kept as the bigger answer; NOT the lean - see the A/B sheet plates/rev2/S06B-AB-sheet.jpg.
+Edit this drawing. Keep the same camera, the same framing, the same floor, paper, line and colour. Keep the long low storage bench with its boxes at the left exactly as drawn, and keep the tall shelving unit of ring binders at the right edge exactly as drawn.
+
+Demolish the corner. The whole corner where the two walls meet has been smashed out: a huge ragged hole runs from the floor almost to the top of the frame, taking the end of the left-hand wall, the end of the right-hand wall and the corner seam with it, with jagged broken plaster edges and splintered wooden lath all around the rim. Through the hole there is nothing at all — only the blank cream paper, no room, no outside, nothing drawn. The round three-legged side table lies smashed on the floor with its cans and mug scattered. The two wooden crates are broken into loose slats. A wide field of broken plaster chunks, lath splinters and pale dust covers the floor in front of the hole.
+
+Leaning out through the hole is a half-built homemade rocket, as tall as a grown adult: a big cardboard mailing tube for a body, a paper cone taped on as the nose, and three fins cut from the broken crate slats nailed to its base. It is tilted so that its nose pokes out through the hole and its tail fins face into the room towards us, unfinished, with tape, string and a loose slat still hanging off it. A heavy sledgehammer lies on the floor among the rubble, its head down.
+
+The dartboard hangs by one nail over the edge of the hole, tipped almost sideways, with the same seven darts still stuck into what plaster is left around it and the board face still clean. Two of the ring binders on the shelving have slid flat.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. The room is empty of characters and people. Do not add any text.
