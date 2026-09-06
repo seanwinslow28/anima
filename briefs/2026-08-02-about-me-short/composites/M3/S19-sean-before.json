@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-06T18:51:58.864651Z",
+    "display_name": "GPT Image 2",
+    "id": "a476bd27-4d03-4a77-979f-dca7895bec55",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_185158_a476bd27-4d03-4a77-979f-dca7895bec55_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "8e881d54-9127-43bf-8059-f8f21ca1ec4e",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/8e881d54-9127-43bf-8059-f8f21ca1ec4e.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "6fff0b3f-6026-49cd-a0f7-e2e16617ac27",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/6fff0b3f-6026-49cd-a0f7-e2e16617ac27_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a young man with short blonde hair, light stubble, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the BACKGROUND SCENE.\n\nAdd the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same desk, monitors, chair, cork board, shelf, lamp, mug, bell, whiteboard, printer bench, streamers and fallen cannon, same paper and palette.\n\nPOSITION: sitting in the office chair that is already in the scene, pulled up to the desk, facing the desk and the monitors. Do not draw a second chair and do not move the desk or the chair.\nSCALE: a full-grown adult in that chair — seated, his head rises clear above the chair back, his shoulders as wide as the chair back, his head level with the middle of the monitors.\nFACING: he faces the desk, so we see him from his RIGHT side and a little from behind — a three-quarter back view. His face is turned towards the monitors and mostly hidden from us; we see his right ear, his right cheek and jaw with its stubble, and the back and side of his short blonde hair. He does NOT look at us.\nPOSE — a held pose: both arms are thrown straight up over his head in celebration, both hands clenched into fists, elbows nearly straight, the fists high above the top of the cork board's lower edge; his back is straight and his chest lifted; both feet are on the floor under the desk. Draw a soft graphite contact shadow on the floor beneath the chair.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_185158_a476bd27-4d03-4a77-979f-dca7895bec55.png",
+    "status": "completed"
+  }
+]

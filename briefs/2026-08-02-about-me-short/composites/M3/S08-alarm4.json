@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-06T18:42:38.168484Z",
+    "display_name": "GPT Image 2",
+    "id": "a55e36e5-d77f-4830-8163-95d53174b4fc",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_184238_a55e36e5-d77f-4830-8163-95d53174b4fc_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "1f607838-a110-4f73-b057-7f569eb29370",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/1f607838-a110-4f73-b057-7f569eb29370_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same fixtures, same paper and palette.\n\nChange ONE thing: the television's dark screen is now lit and pale, and on it, drawn in the same graphite line as the rest of the picture, are two lines of big plain capitals: the word ANOTHER across the top of the screen, and directly beneath it, larger, the word PROBLEM! with an exclamation mark, filling the width of the screen; and beneath both a jagged line falling steeply from upper left to lower right, ending in a small arrowhead in the lower right corner of the screen.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.\n\nThe only text anywhere in the picture is ANOTHER PROBLEM! on the television screen.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_184238_a55e36e5-d77f-4830-8163-95d53174b4fc.png",
+    "status": "completed"
+  }
+]

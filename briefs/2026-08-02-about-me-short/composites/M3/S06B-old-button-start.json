@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-06T18:30:52.644144Z",
+    "display_name": "GPT Image 2",
+    "id": "07ef7891-2bd2-47c1-a6dc-fc5d12659c1f",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_183052_07ef7891-2bd2-47c1-a6dc-fc5d12659c1f_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "aa8eb667-d620-4ce1-8b7f-eec04f201521",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/aa8eb667-d620-4ce1-8b7f-eec04f201521_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same small grey creature holding the sledgehammer in the same spot, same hole in the wall, same rocket, same rubble, same fixtures, same paper and palette.\n\nChange ONE thing: standing upright on the rubble on the open floor at the LEFT of the creature, between the storage bench and the rocket, is a huge drawn web-page button — a big rounded rectangle, taller than the creature by half again, like a giant key from a keyboard: a thick outer outline, a pale inner face, a slight drop shadow, and the single word BUY in big plain capitals across its face. It stands on its bottom edge on the floor and leans back a little against the wall. It is drawn in the same graphite line as the rest of the picture.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.\n\nThe only text anywhere in the picture is the word BUY on the big button.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_183052_07ef7891-2bd2-47c1-a6dc-fc5d12659c1f.png",
+    "status": "completed"
+  }
+]

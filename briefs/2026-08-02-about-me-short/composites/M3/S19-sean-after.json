@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-06T18:56:50.91527Z",
+    "display_name": "GPT Image 2",
+    "id": "6658eeac-350d-4455-a723-8bcf57c34828",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_185650_6658eeac-350d-4455-a723-8bcf57c34828_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "f8189dd0-f45d-491f-b977-840955f59eb7",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/f8189dd0-f45d-491f-b977-840955f59eb7_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same desk, monitors, chair, cork board, shelf, lamp, mug, bell, whiteboard, printer bench, streamers, confetti and fallen cannon, same paper and palette.\n\nChange ONE thing: the young man in the chair has dropped his arms and turned his head. Both arms are now down, his forearms resting on the chair's armrests, hands relaxed. His head has turned round towards us and tipped UP: he is looking up and over his right shoulder, past the camera, towards the upper right corner of the frame, at something high up off frame. Because of the turn his face is now three-quarters visible to us — both eyes, both brows, his nose, his mouth, the stubble on his jaw. His expression is confused: both brows raised high, eyes wide open, mouth a small round o. He stays seated in the same chair on the same spot, his body still facing the desk; only his head and arms have changed. Same short blonde hair, same navy T-shirt.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_185650_6658eeac-350d-4455-a723-8bcf57c34828.png",
+    "status": "completed"
+  }
+]

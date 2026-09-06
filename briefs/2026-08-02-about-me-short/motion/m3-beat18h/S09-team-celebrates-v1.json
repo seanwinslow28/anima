@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-06T18:56:50.1837Z",
+    "display_name": "Seedance 2.0",
+    "id": "55145fb7-97cb-411a-880a-707102a39ee1",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "180d125d-8101-4ad8-bfe7-5e8323d1b315",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/180d125d-8101-4ad8-bfe7-5e8323d1b315_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nAll five of them cheer at once, each on its own spot. The small terracotta cube creature at the far wall flings both arms up and bounces on the spot, waving its one pencil. The small lavender cloud creature at the foot of the server rack springs straight up, drops, and springs up again, arms up. The young man in the office chair throws both fists in the air, then spins the chair one full turn and comes back round to face the room, laughing, fists up. The small blue-purple star creature by the worktable leaps and twirls once, all five points spread, and lands. The round grey creature with the big pointed ears on the open floor jumps up and down on the spot, arms high, ears flapping. They all land, hold their arms up together for a beat, and settle, grinning.\n\nEvery character keeps its own face in every frame: the cube creature its two dot eyes and two brows, the cloud creature its pale chevron and short bar, the young man his short blonde hair and stubble and navy T-shirt, the star its two round eyes and small open smile, the grey creature its two red-orange eyes and wide grin of small teeth. Each of the five stays on its own spot on the floor in every frame and lands on the floor after every leap. The five stay the same five sizes in every frame. The room stays the same drawing in every frame: the wall of taped sketches, the popped code screen on the rack, the towers of paper, the rubble and the rocket's nose, the desk and monitors, the paper on the floor.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_185650_55145fb7-97cb-411a-880a-707102a39ee1.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_185650_55145fb7-97cb-411a-880a-707102a39ee1_thumbnail.webp"
+  }
+]

@@ -1,0 +1,56 @@
+[
+  {
+    "created_at": "2026-09-06T18:43:02.674887Z",
+    "display_name": "GPT Image 2",
+    "id": "dd030f42-5b9b-45bd-90da-af4dc7587b4c",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_184302_dd030f42-5b9b-45bd-90da-af4dc7587b4c_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "a77df710-61a0-4103-8fa6-24e4153ea366",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/a77df710-61a0-4103-8fa6-24e4153ea366_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "532f6a13-94d9-4968-988d-9fb6912e635f",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/532f6a13-94d9-4968-988d-9fb6912e635f_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "a70be4e1-bc18-4757-9284-d3fea46b8aab",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/a70be4e1-bc18-4757-9284-d3fea46b8aab_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "4fcf644c-b599-4008-a95d-68082331cb8e",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/4fcf644c-b599-4008-a95d-68082331cb8e.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Images 1, 2 and 3 are FIXTURE AND STYLE BIBLES: the office chair, the keyboard and the desk top from image 1; the far wall of taped sketches with its string lights, worktable and storage cabinet from image 2; the side wall with the tall black server rack, the coffee counter and the water cooler from image 3 — all in the same drawing style, line weight, paper colour and palette. Preserve the exact design of every fixture. Do NOT copy their cameras or their flat framing.\nImage 4 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement exactly; replace each grey block with the corresponding fixture; remove every guide mark and the green block — the green block marks where a person will sit and is NOT drawn.\n\nCAMERA: the desk's own point of view — the lens sits on the desk top between the monitors, at screen height, looking out over the keyboard into the room, straight at the office chair. A wide lens up close: the top row of the keyboard runs along the very bottom of the frame, large and soft-focus-near; just beyond it the empty office chair faces us square in the centre of the frame, its seat and back towards the lens, close and big; and behind the chair the whole room falls away to the far wall.\n\nPERSPECTIVE — draw it deliberately. The vanishing point is in the centre of the frame at the height of the chair's back, on the far wall. The two side walls converge steeply towards it: the wall on the LEFT shows its right-hand faces, the wall on the RIGHT shows its left-hand faces, and both baseboards slope down towards the far wall's short level baseboard. Two clean vertical corner seams run floor to ceiling where the far wall meets the side walls. Vertical lines stay vertical. The floor is a wide wedge between the chair and the far wall.\n\nTHE ROOM IS WRECKED AND AT REST. VISIBLE, left to right: along the LEFT wall, near to far, a low credenza, and high above it, small, an old boxy television on a bracket shelf with its screen lit pale, then a run of small taped sketches wrapping around the corner; on the FAR wall, every inch taped over with small square sketches of shopping bags, checkout buttons, packaging, price tags, storefront signs and little round cartoon creatures — sketches over sketches, spilling onto the floor in drifts and half-burying the low worktable beneath the string lights, with the storage cabinet and its cartons at the far left corner; along the RIGHT wall, far to near, the water cooler, the coffee counter, and the tall black server rack with a wide flat screen popped out of it on an arm, the screen full of dense rows of small dark dashes and blocks like code, loose cabling everywhere. Sheets of paper lie on the floor across the whole room.\n\nOUT OF FRAME: the three monitors (the lens is between them), the cork board, the whiteboard, the bell, the confetti cannon, the paper towers, the dartboard, the hole in the wall.\nThe room is empty of characters and people. The chair is empty.\n\nWarm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_184302_dd030f42-5b9b-45bd-90da-af4dc7587b4c.png",
+    "status": "completed"
+  }
+]

@@ -1,0 +1,49 @@
+[
+  {
+    "created_at": "2026-09-06T19:00:03.63353Z",
+    "display_name": "Seedance 2.0",
+    "id": "1dc35dff-ad62-4fef-9cf4-a0f3c86ae142",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "fca96f03-ad76-402e-bc3f-b4956a9c4446",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/fca96f03-ad76-402e-bc3f-b4956a9c4446_resize.jpg"
+          },
+          "role": "start_image"
+        },
+        {
+          "data": {
+            "id": "c3cd09ba-025c-45e8-b678-384cc116aa41",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/c3cd09ba-025c-45e8-b678-384cc116aa41_resize.jpg"
+          },
+          "role": "end_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe young man at the desk, both fists raised high over his head in celebration, holds the pose, shaking his fists once. Then something off to the upper right catches him: his fists freeze, his eyes flick up and to the right, his head snaps round and up after them, towards us and past us to the upper right, and both arms drop to the armrests in one loose fall. He holds there, head turned and tipped up, brows raised, mouth a small round o, completely still, staring up at the thing off frame. He holds.\n\nHis short blonde hair, his stubble and his navy T-shirt are the same in every frame. He stays seated in the same chair on the same spot in every frame, and the chair stays where it is in every frame. The desk, the three monitors, the cork board, the shelf of binders with the plant, the lamp, the mug, the bell, the whiteboard and the printer bench stay the same drawings in every frame; the streamers and confetti on the floor and the fallen cannon lie still in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_190003_1dc35dff-ad62-4fef-9cf4-a0f3c86ae142.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_190003_1dc35dff-ad62-4fef-9cf4-a0f3c86ae142_thumbnail.webp"
+  }
+]

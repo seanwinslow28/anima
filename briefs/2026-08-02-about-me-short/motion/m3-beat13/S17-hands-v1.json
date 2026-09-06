@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-06T18:51:58.239964Z",
+    "display_name": "Seedance 2.0",
+    "id": "c4fbf1f6-361a-4cb7-82b9-bd765b598733",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "39a54d64-a429-4d91-9e3e-def7b53a7b18",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/39a54d64-a429-4d91-9e3e-def7b53a7b18_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nTwo hands rest on the keyboard. The right index finger lifts and presses one key, then the left index finger presses one key, then the right middle finger presses one key, each press a small clean dip of one key. Both hands rest completely still for a moment. Then three more single keys are pressed, one finger at a time, left, right, right. Then the right little finger reaches out to the right and presses the wide Enter key once, a single soft dip, and both hands come back to rest on the keys and stay there.\n\nThere are exactly two hands with five fingers each in every frame, and they stay on the keyboard in every frame. The keyboard stays on the same spot on the desk in every frame, its keys blank rectangles in every frame. The mouse at the upper left and the blue mug at the upper right stay the same drawings in every frame, and the wooden desk top stays the same in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_185158_c4fbf1f6-361a-4cb7-82b9-bd765b598733.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_185158_c4fbf1f6-361a-4cb7-82b9-bd765b598733_thumbnail.webp"
+  }
+]

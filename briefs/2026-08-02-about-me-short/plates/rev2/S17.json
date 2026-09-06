@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-06T18:42:38.961069Z",
+    "display_name": "GPT Image 2",
+    "id": "6786caa8-c749-4cbd-ba7e-57cd9dd38db9",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_184238_6786caa8-c749-4cbd-ba7e-57cd9dd38db9_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "6ce47d84-36c0-4ef5-8495-0b00af742944",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/6ce47d84-36c0-4ef5-8495-0b00af742944_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "a5e540e8-6762-4a56-a92e-5c603857a55f",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/a5e540e8-6762-4a56-a92e-5c603857a55f.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the FIXTURE AND STYLE BIBLE: the same keyboard, mouse, wooden desk top and blue mug, in the same drawing style, line weight, paper colour and palette. Preserve the exact design of the keyboard and desk. Do NOT copy its camera or framing — this is the same keyboard seen from very close. Image 2 is the CHARACTER whose hands these are: a young man with fair skin and a navy T-shirt; use it only for the look of his hands and forearms.\n\nCAMERA: an extreme close-up looking down at the keyboard from above and a little in front of it, from the far side of the desk, as if from the foot of the monitors. The keyboard fills the lower two-thirds of the frame, seen from its top edge, its rows of keys drawn as small blank rectangles in graphite. Two adult hands rest on it in the centre, fingers spread lightly over the middle row of keys, wrists relaxed, the forearms in navy sleeves running off the bottom edge of the frame; the hands are still and at rest, not pressing anything. At the top of the frame the wooden desk top runs across, the base of the blue mug clipped at the right edge and the mouse at the left. Nothing else is in frame.\n\nThe hands are drawn simply and correctly: two hands, five fingers each, fingers relaxed and slightly curled, the thumbs resting near the space bar. Light coloured-pencil skin wash.\n\nWarm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. The keys are blank rectangles. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_184238_6786caa8-c749-4cbd-ba7e-57cd9dd38db9.png",
+    "status": "completed"
+  }
+]

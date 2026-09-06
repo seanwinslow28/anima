@@ -1,0 +1,12 @@
+prompt bytes: 1201  duration: 7s
+--- prompt sent ---
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+Two hands rest on the keyboard. The right index finger lifts and presses one key, then the left index finger presses one key, then the right middle finger presses one key, each press a small clean dip of one key. Both hands rest completely still for a moment. Then three more single keys are pressed, one finger at a time, left, right, right. Then the right little finger reaches out to the right and presses the wide Enter key once, a single soft dip, and both hands come back to rest on the keys and stay there.
+
+There are exactly two hands with five fingers each in every frame, and they stay on the keyboard in every frame. The keyboard stays on the same spot on the desk in every frame, its keys blank rectangles in every frame. The mouse at the upper left and the blue mug at the upper right stay the same drawings in every frame, and the wooden desk top stays the same in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.
+--- end ---
+job json -> motion/m3-beat13/S17-hands-v1.json
+exit 0

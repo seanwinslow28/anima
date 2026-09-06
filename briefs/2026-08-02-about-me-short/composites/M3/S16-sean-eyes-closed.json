@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-06T18:52:00.69833Z",
+    "display_name": "GPT Image 2",
+    "id": "de41ccf6-6564-48d6-a5ca-88e1a32f3985",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_185200_de41ccf6-6564-48d6-a5ca-88e1a32f3985_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "502e4de6-c629-4631-a90e-d524045fde03",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/502e4de6-c629-4631-a90e-d524045fde03.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "32eef7e8-f722-44f6-a39a-f8fd406f6074",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/32eef7e8-f722-44f6-a39a-f8fd406f6074_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a young man with short blonde hair, light stubble, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the BACKGROUND SCENE.\n\nAdd the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same keyboard in the foreground, same chair, same wrecked room behind, same paper and palette.\n\nPOSITION: sitting in the office chair that is already in the scene, which faces us square, the room behind him. Do not draw a second chair and do not move the chair or the keyboard.\nSCALE: a full-grown adult seen from very close — seated, his head and shoulders fill the middle of the frame, his head rising clear above the chair back, his shoulders as wide as the chair back, his knees near the bottom of the frame just behind the keyboard. We are looking at him from the height of his chest, straight on.\nFACING — this is the important part: he faces us SQUARE ON, his whole face towards the lens — his full head of hair, both brows, the stubble, his mouth, both ears. He is NOT seen from behind and NOT in profile. HIS EYES ARE CLOSED: both eyes shut, each drawn as one short calm curved line, his brows level and relaxed, his head level. His expression is calm and completely still, his mouth closed in one small straight line.\nPOSE: he sits upright and still, at rest, both forearms resting along the armrests of the chair, both hands relaxed and open, well away from the keyboard.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_185200_de41ccf6-6564-48d6-a5ca-88e1a32f3985.png",
+    "status": "completed"
+  }
+]

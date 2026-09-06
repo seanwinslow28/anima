@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-06T18:42:44.734164Z",
+    "display_name": "GPT Image 2",
+    "id": "2117f3c9-280e-42b0-beb3-3acbb075c2e1",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_184244_2117f3c9-280e-42b0-beb3-3acbb075c2e1_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "21edd67c-8893-4b45-9e10-9204e43803a7",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/21edd67c-8893-4b45-9e10-9204e43803a7_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Edit this drawing. Keep the same camera, the same very wide high framing, the same three walls and two corner seams, the same floor, paper, line and colour, and every fixture where it is: the moodboard wall and worktable at the left, the water cooler, the coffee counter, the server rack, the doorway, the binder shelf and the supply desk on the far wall, the desk with its three monitors, lamp and mug, the cork board, the whiteboard, the printer bench and the filing cabinet on the right wall, and the empty office chair turned out towards the room.\n\nWreck the room, and leave the wreck at rest — nothing in the air, everything settled:\n\nOn the LEFT wall, the moodboard has exploded: every inch of that wall from floor to ceiling is taped over with small square sketches of shopping bags, checkout buttons, packaging, price tags, storefront signs and little round cartoon creatures, sketches taped over sketches, and they spill across the floor in front of the wall in overlapping drifts that half-bury the worktable and the cartons.\n\nOn the FAR wall, at the left, a wide flat screen has popped out of the front of the black server rack on a metal arm and hangs out into the room, its face full of dense rows of small dark dashes and blocks like code, with loose cabling spilling from the rack around it. At the far wall's right end, where the two leaning towers of paper stood, there are now three enormous towers of loose paper fringed with hundreds of small coloured sticky flags, rising from the floor right out of the top of the frame, with loose sheets carpeting the floor around their feet and heaped against the supply desk and the shelf.\n\nAt the RIGHT edge of the frame, in the near corner beyond the desk, a spill of plaster rubble, broken laths and dust has come across the floor from out of frame, with the pointed nose of a big cardboard rocket poking into the frame from the right, and a few darts stuck in the wall.\n\nAcross the desk and the floor around the chair lie a few curling paper streamers and small confetti dots. The whole floor between the walls is scattered with loose sheets of paper lying flat.\n\nWarm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. The room is empty of characters and people. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_184244_2117f3c9-280e-42b0-beb3-3acbb075c2e1.png",
+    "status": "completed"
+  }
+]
