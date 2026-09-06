@@ -225,8 +225,8 @@ Sean, on the six v1 packages: *"These are all looking great so far, but we need 
 **Round-2 spend: 230 cr, measured** (balance 3,462.5 → **3,232.5**), 17 generations, 17 landings. Day total **487.5 cr**.
 
 **✓S — Sean, 2026-09-05 17:38: *"These are all PERFECT. Great job."*** Beats **6, 8, 10** (one candidate each) are copied into
-`_LOCKED-M2/` as 11 / 13 / 15 with their keyframes. Beats **5, 7, 9** are approved with more than one take each; the variant pick
-is his and the lock (10 / 12 / 14) waits on it. Committed on branch `about-me-short/m2-wave-2`.
+`_LOCKED-M2/` as 11 / 13 / 15 with their keyframes. **20:08 — Sean picked: beat 5 v3, beat 7 v2, beat 9 v2** → locked as 10 / 12 / 14 with their start
+frames. **Movement 2 is fully locked, `_LOCKED-M2/` 08–15.** Committed and pushed on branch `about-me-short/m2-wave-2`.
 
 **Spend 2026-09-03:** 76.5 credits (two plates, two face composites, five S09 composites — nine generations, nine first-roll landings). **2026-09-04:** +83 (two one-pass A/Bs, the Grok reference fix, the Grok single v2, then the two Movement-2 clips at 24.5 each). **2026-09-05:** +73.5 (the v2 pair, then GO v3 which lost to v2); Sean's own rolls (v3–v5 of both beats) took the balance to **3,720 at the wave-2 session start (measured, `higgsfield account status`)**. **Wave 2 (2026-09-05 afternoon): 257.5 cr, measured** — two beat-8 plate variants (17), beats 5/6/7 plates (25.5), five composites incl. two re-rolls (42.5), the S08 alarm-2 edit (8.5), the S02 cannon fix (8.5), six clips (147). 23 generations, 23 first-roll landings, 0 refusals. **Balance 3,462.5** (`higgsfield account status`, matches the running total to the credit). Everything owed Sean's eye; nothing locked.
 **Normaliser note:** `post/normalize_paper.py` needs numpy — run it with the repo venv,

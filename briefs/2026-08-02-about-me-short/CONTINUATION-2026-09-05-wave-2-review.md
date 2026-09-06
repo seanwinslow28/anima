@@ -74,3 +74,13 @@ the NE corner's bible.
 | **10** | v1 | v1 | Unchanged |
 
 Round-2 laws are `_blocks.md` §10–14. The tracker's round-2 table carries every path and number.
+
+---
+
+## CLOSED — 2026-09-05 20:08. Movement 2 is locked.
+
+Sean: *"These are all PERFECT"* (17:38), then *"Lock beat 5 v3, beat 7 v2, beat 9 v2"* (20:08). `_LOCKED-M2/` now carries
+08–15, every clip with its start (and, for the two-keyframe beats, end) frame. The next session boards **Movement 3** —
+begin with the angle budget (§ Open, 6) and with `_LOCKED-M2/13_beat8_S06B_end-frame.png` as the NE corner's bible.
+The open items that survive: the beat-2 telescope (24.5 to re-roll if wanted), S07's blink in post, S11 for beat 13, beat 14's
+replay design, beat 12's held face, the stopwatch table-read.

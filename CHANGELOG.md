@@ -37,6 +37,10 @@ two-keyframe clip. Beat 7 whirlwind v2/v3 (size vs footing; stopped at two). **B
 breach) did the whole smash / haul-the-rocket-in / pat in one roll, both ends held.** Beat 9 v2 (same prompt: the cannon
 toppled, the lean) + v3 (chair spin: the model invented his face — flagged). Laws 10–14 in `_blocks.md`. Balance **3,232.5**.
 
+**Closed 20:08 — Movement 2 fully LOCKED.** Sean approved every round-2 result and picked beat 5 v3, beat 7 v2, beat 9 v2;
+`_LOCKED-M2/` carries 08–15 with keyframes. Committed on `about-me-short/m2-wave-2` as two commits (the record; the ~1.3 GB
+media trail, droppable) and pushed at Sean's ask. Next: Movement 3 boards, starting with the angle budget.
+
 ## 2026-09-03 — about-me-short: Movement 2 camera candidates roughed at $0 (creative-director pass, no spend)
 
 **What & why.** Sean's 2026-09-02 ruling — *no cutting back to a corner in the same angle unless the frame is visibly wrecked and the motion is chaotic* — reopened beats 5, 6, 7 and 8 and added a reaction beat (3½, the CRT's own point of view) before the wordless GO. He also said he cannot judge staging from prose, so this session's output is **pictures**: fifteen candidate cameras (three per beat) solved against the room bible and put in front of him as contact sheets, with a stated lean per beat. **Nothing is ratified and no credits were spent** (balance still 4,370).
