@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-06T22:06:14.678675Z",
+    "display_name": "GPT Image 2",
+    "id": "8e45372e-7de2-4a40-a825-f286d920ed84",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_220614_8e45372e-7de2-4a40-a825-f286d920ed84_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "bd010309-8818-423f-9ab5-bc50d86bd1b2",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/bd010309-8818-423f-9ab5-bc50d86bd1b2.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "fdb42eaf-aef8-41df-9e8c-6dabca197962",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/fdb42eaf-aef8-41df-9e8c-6dabca197962_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a round grey cartoon creature with big pointed ears, a wide friendly cartoon grin, small bright eyes and a tufted tail. Image 2 is the BACKGROUND SCENE.\n\nAdd the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same wreck, same palette, and every character already in the picture exactly as drawn. This is a very wide cutaway of a whole room, so the character is a small part of the picture.\n\nPOSITION: in the far RIGHT corner of the room, standing on the spill of plaster rubble on the floor just in front of the ragged hole in the wall, beside the foot of the big cardboard rocket and clear of the dartboard's wall. It is far from the camera, so it is drawn small.\nSCALE — draw it SMALL: it stands only thigh-high to a grown adult. Its head reaches no higher than a third of the way up the tall binder shelving on that wall, and it is shorter than the stacked crates beside it. It is a small creature, never person-sized.\nFACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its full grin, both ears, its chest, both arms and both feet. It is NOT seen from behind and NOT in profile. Its eyes are bright, round and wide open with its brows raised, looking up at the nose of the cardboard rocket beside it, cheerful; it never looks into the camera.\nPOSE: it stands still and upright at rest, one hand resting on the handle of a heavy sledgehammer that stands upright beside it with its head on the floor, the other arm hanging at its side, both feet flat on the rubble. Draw it in the same hand as the room — graphite line with a light grey coloured-pencil wash over its body, the same line weight as the furniture — with a soft graphite contact shadow on the rubble beneath it.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_220614_8e45372e-7de2-4a40-a825-f286d920ed84.png",
+    "status": "completed"
+  }
+]

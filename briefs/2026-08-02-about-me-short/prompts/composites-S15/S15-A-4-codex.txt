@@ -1,7 +1,7 @@
 # S15-A chain 4/5 — CODEX at the foot of the rack, near-left, face up at the popped screen. 6.5 cr. 2026-09-06.
 # Scene = normalised/S15-A-chain-3.png. Ref = refs/turnaround-views/codex-v2.png (¾ front). Never write 'its eyes' for Codex (law 3).
 # RUN: motion/composite.sh prompts/composites-S15/S15-A-4-codex.txt refs/turnaround-views/codex-v2.png normalised/S15-A-chain-3.png composites/S15/S15-A-4-codex.json
-# RESULT: (pending)
+# RESULT: composites/S15/S15-A-4-codex-v1.png -> normalised/ (= S15-A-chain-4.png), 6.5 cr, first roll. LANDED: Codex at the foot of the rack, ¾ front, chevron + bar, face tipped up at the popped screen, a quarter of the rack tall; placed to the RIGHT of the rack (by the doorway) rather than in the counter gap — a placement nit, accepted. Claude, Sean, Grok and the plate held (verify vs chain-3 0.306 / 0.817 / (0,0) PASS). Eye-verified before step 5.
 
 Image 1 is the CHARACTER: a small rounded periwinkle-blue cloud creature with a bracket-and-dash face, two small brows, and short stubby arms. Image 2 is the BACKGROUND SCENE.
 

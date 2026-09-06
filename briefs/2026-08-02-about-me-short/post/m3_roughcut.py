@@ -22,12 +22,18 @@ L = "_LOCKED-M2/"; M = "motion/"; N = "normalised/"
 #    Every trim is a first guess for Sean to argue with. SHIP = the single-image v2 if it landed, else the 2kf v1 (cut before the morph).
 import os as _os
 _SHIP = M+"m3-beat17/S18-ship-key-v2-single.mp4" if _os.path.exists(M+"m3-beat17/S18-ship-key-v2-single.mp4") else M+"m3-beat17/S18-ship-key-v1.mp4"
+_WIDE = M+"m3-beat11/S15-wide-chaos-v1.mp4"
+_WIDE_SHOTS = ([("clip", _WIDE, 0.3, 3.2, "11/12 · THE WIDE (S15-A): the chaos, the swivel"),
+                ("frame", _WIDE, 3.5, 1.2, "11/12 · THE FREEZE (record scratch; frame = a first guess, Sean picks)")]
+               if _os.path.exists(_WIDE) else
+               [("frame", L+"10_beat5_S12_claude-canyon.mp4", 6.4, 0.45, "11/12 · THE WIDE — PLACEHOLDER"),
+                ("frame", L+"11_beat6_S13_codex-screen-pop.mp4", 2.9, 0.45, "11/12 · THE WIDE — placeholder"),
+                ("frame", L+"12_beat7_S14_gemini-whirlwind.mp4", 1.2, 0.45, "11/12 · THE WIDE — placeholder"),
+                ("frame", L+"13_beat8_S06B_grok-demolition.mp4", 1.8, 0.65, "11/12 · THE WIDE — placeholder")])
+_DELEG = M+"m3-beat16/S02-sean-delegation-v2-mime.mp4"   # Sean's 17:55 re-roll (v2, the calm still); v2b beside it
 SHOTS = [
-    ("clip", M+"m3-beat10h/S19-sean-notices-v1.mp4", 1.6, 2.6, "10.5 · Sean alone notices (S19)"),
-    ("frame", L+"10_beat5_S12_claude-canyon.mp4", 6.4, 0.45, "11/12 · THE WIDE — PLACEHOLDER (S15 awaits Sean's A/B pick)"),
-    ("frame", L+"11_beat6_S13_codex-screen-pop.mp4", 2.9, 0.45, "11/12 · THE WIDE — placeholder"),
-    ("frame", L+"12_beat7_S14_gemini-whirlwind.mp4", 1.2, 0.45, "11/12 · THE WIDE — placeholder"),
-    ("frame", L+"13_beat8_S06B_grok-demolition.mp4", 1.8, 0.65, "11/12 · THE WIDE — placeholder"),
+    ("clip", "_LOCKED-M3/16_beat10.5_S19_sean-notices.mp4", 1.6, 2.6, "10.5 · Sean alone notices (locked)"),
+] + _WIDE_SHOTS + [
     ("clip", "_LOCKED-M3/18_beat12_S10_the-swivel.mp4", 0.5, 5.4, "12 · THE SWIVEL (locked; ends before the eyes open)"),
     ("clip", M+"m3-beat13/S16-sean-eyes-open-v1.mp4", 1.2, 3.6, "13.1 · turns back, eyes open on us (S16)"),
     ("clip", M+"m3-beat13/S17-hands-v1.mp4", 0.0, 2.4, "13.2 · the hands (S17)"),
@@ -37,7 +43,7 @@ SHOTS = [
     ("clip", M+"m3-beat15/S04-codex-relief-v2.mp4", 0.9, 1.1, "15 · RELIEF — Codex"),
     ("clip", M+"m3-beat15/S05-gemini-relief-v2.mp4", 0.9, 1.1, "15 · RELIEF — Gemini"),
     ("clip", M+"m3-beat15/S06B-grok-relief-v2.mp4", 0.9, 1.2, "15 · RELIEF — Grok"),
-    ("clip", M+"m3-beat16/S02-sean-delegation-v1.mp4", 0.6, 7.4, "16 · THE DELEGATION (10s roll, trimmed)"),
+    ("clip", _DELEG, 0.6, 7.4, "16 · THE DELEGATION v2 mime (10s roll, trimmed)"),
     ("clip", "_LOCKED-M3/28_beat16.5_S03_claude-pitstop.mp4", 0.0, 1.3, "16.5 · PIT STOP — Claude (locked)"),
     ("clip", "_LOCKED-M3/29_beat16.5_S04_codex-pitstop.mp4", 0.0, 1.3, "16.5 · PIT STOP — Codex (locked)"),
     ("clip", "_LOCKED-M3/30_beat16.5_S05_gemini-pitstop.mp4", 0.0, 1.3, "16.5 · PIT STOP — Gemini (locked)"),
@@ -46,7 +52,7 @@ SHOTS = [
     ("clip", "_LOCKED-M3/33_beat18_S08_user-colorizes.mp4", 0.8, 4.0, "18 · the USER colorizes (locked)"),
     ("clip", M+"m3-beat18h/S09-team-celebrates-v1.mp4", 0.3, 3.2, "18.5 · THE CELEBRATION (S09 state C)"),
     ("still", "_LOCKED-M3/35_beat19_S08_the-button-hold.png", 4.0, "19 · THE BUTTON (VO runs here; locked)"),
-    ("still", N+"S08-alarm4-v1.png", 0.4, "20 · the sting — ANOTHER PROBLEM!"),
+    ("clip", M+"m3-beat20/S08-sting-transition-v1.mp4", 0.9, 1.3, "20 · the sting — flash + shake → ANOTHER PROBLEM!"),
     ("red", N+"S08-alarm4-v1.png", 0.15, ""),
     ("black", None, 1.0, ""),
 ]

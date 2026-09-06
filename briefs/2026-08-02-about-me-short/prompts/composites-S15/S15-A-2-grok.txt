@@ -1,7 +1,7 @@
 # S15-A chain 2/5 — GROK on the rubble at the hole, far-right, with the sledgehammer. 6.5 cr. 2026-09-06.
 # Scene = normalised/S15-A-chain-1.png. Ref = refs/turnaround-views/grok2-v2.png (Sean's friendly turnaround, ¾ front). The Grok identity line is verbatim (law).
 # RUN: motion/composite.sh prompts/composites-S15/S15-A-2-grok.txt refs/turnaround-views/grok2-v2.png normalised/S15-A-chain-1.png composites/S15/S15-A-2-grok.json
-# RESULT: (pending)
+# RESULT: composites/S15/S15-A-2-grok-v1.png -> normalised/ (= S15-A-chain-2.png), 6.5 cr, first roll. LANDED: Grok on the rubble beside the rocket, hand on the upright sledgehammer, ¾ front, grin + round eyes on the rocket's nose, thigh-high scale; Claude and the plate held (verify vs chain-1 0.335 / 0.837 / (0,0) PASS). Eye-verified before step 3.
 
 Image 1 is the CHARACTER: a round grey cartoon creature with big pointed ears, a wide friendly cartoon grin, small bright eyes and a tufted tail. Image 2 is the BACKGROUND SCENE.
 

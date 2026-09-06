@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-06T22:08:38.331006Z",
+    "display_name": "GPT Image 2",
+    "id": "d9a1a8ef-d54e-4878-8063-834ade9af0d7",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_220838_d9a1a8ef-d54e-4878-8063-834ade9af0d7_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "bd3f2ba0-3632-4e30-9e2f-175833516fd0",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/bd3f2ba0-3632-4e30-9e2f-175833516fd0.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "91b9a574-380c-4eb9-873e-0c5586cc02f5",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/91b9a574-380c-4eb9-873e-0c5586cc02f5_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a young man with short blonde hair, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the BACKGROUND SCENE.\n\nAdd the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same wreck, same palette, and every character already in the picture exactly as drawn. This is a very wide cutaway of a whole room, so the character is a small part of the picture.\n\nPOSITION: sitting in the office chair that is already in the scene, pulled up to the long desk with the three monitors in the centre of the far wall, in the same spot — do not move the chair and do not draw a second chair.\nSCALE: a full-grown adult at that desk, seen from across the room — seated, the top of his head rises a little above the chair back and sits below the cork board on the wall. He is the largest figure the desk could hold, and no larger.\nFACING: he is seen from directly behind, his back square to us, facing the monitors. The back of his blonde head and his shoulders are what we see; his face is not visible.\nPOSE: he sits still and upright at rest, both hands resting flat on the keyboard, feet on the floor under the desk.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_220838_d9a1a8ef-d54e-4878-8063-834ade9af0d7.png",
+    "status": "completed"
+  }
+]
