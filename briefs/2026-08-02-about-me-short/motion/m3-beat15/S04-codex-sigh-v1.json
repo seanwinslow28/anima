@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-06T10:36:49.522427Z",
+    "display_name": "Seedance 2.0",
+    "id": "bb2b9448-6419-475b-9064-7eb2f72e6543",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "4728a20c-ffad-4c10-887c-dced178001c5",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/4728a20c-ffad-4c10-887c-dced178001c5_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe small lavender cloud creature standing at the foot of the server rack tips its face all the way up at the big screen full of code hanging over the counter. It puffs itself up tall and stiff, then everything drops at once: its whole puffy body sags and squashes down into itself, its stubby arms flop, a long deflating slump. It bobs back up small, tips its face up at the screen again, and sags a second time, smaller. Then it straightens with a tiny relieved bounce, gives one little shrug, and settles.\n\nIts face is exactly one pale chevron and one short straight bar, the same chevron and the same bar in every frame. It stays standing on the same spot on the floor in every frame. It stays small, no taller than a quarter of the black server rack beside it, in every frame. The big screen stays out on its arm over the counter, lit and full of the same dense lines of code, in every frame; the spilled cables lie still in every frame; the server rack, the coffee machine, the jug, the mugs, the counter, the cabinet with its boxes, the taped sketches and the doorway stay the same drawings in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103649_bb2b9448-6419-475b-9064-7eb2f72e6543.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103649_bb2b9448-6419-475b-9064-7eb2f72e6543_thumbnail.webp"
+  }
+]

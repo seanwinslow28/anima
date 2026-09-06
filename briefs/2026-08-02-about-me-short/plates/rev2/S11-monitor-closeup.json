@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-06T10:27:50.507967Z",
+    "display_name": "GPT Image 2",
+    "id": "9f20c169-4653-4cce-835e-c02e818028e2",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_102750_9f20c169-4653-4cce-835e-c02e818028e2_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "0b254dcc-175a-4b39-bf93-5ecc3f057f3f",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/0b254dcc-175a-4b39-bf93-5ecc3f057f3f_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "f2a065e3-16fd-41f4-87eb-4ffded5b227f",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/f2a065e3-16fd-41f4-87eb-4ffded5b227f_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the fixture and style bible. Preserve its fixture designs, its materials, its palette, its paper and its rendering exactly: the same three flat monitors on their stands, the same keyboard and mouse, the same desk top, the same cork board of pinned notes and photographs above, the same desk lamp and blue mug. Do NOT copy its camera, its framing or its screen-space layout.\n\nImage 2 is the camera. Follow its framing, its perspective and its left-to-right placement exactly — this is the same desk seen closer, straight on. Redraw everything in it at full detail and full resolution, with real graphite line and cross-hatch, rather than enlarging a small picture.\n\nCAMERA: a close shot straight at the middle one of the three monitors on the desk. The middle monitor fills the centre of the frame; the two side monitors are cut by the left and right frame edges; the bottom edge of the cork board runs along the top of the frame; the keyboard, the mouse and the desk top run along the bottom of the frame.\n\nVISIBLE, left to right: the right half of the left monitor, the whole middle monitor on its stand, the left half of the right monitor, the base of the desk lamp and the blue mug at the far right, the keyboard and mouse on the desk top below.\n\nOUT OF FRAME: the office chair — nobody sits at the desk and no chair back rises into the frame; the printer, the whiteboard, the shelf of binders, the bell and the cannon.\n\nThe middle monitor's screen is completely dark and empty — a blank unlit screen, no picture and no text on it. The two side monitors show the same faint dark screens with faint lines of code as image 1.\n\nWarm cream drawing paper throughout, a pale putty cream, never white and never yellow. Do not add any legible text anywhere in the picture.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_102750_9f20c169-4653-4cce-835e-c02e818028e2.png",
+    "status": "completed"
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-06T10:36:46.556309Z",
+    "display_name": "Seedance 2.0",
+    "id": "5b85b8fc-0670-4970-9449-8e15bb9b5bd8",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "a6d993b6-fbac-4e7b-b024-159a90499e75",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/a6d993b6-fbac-4e7b-b024-159a90499e75_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe small terracotta cube creature sitting on the floor stops writing, lowers its pencil and tips its head back to look all the way up the towering stacks of paper above it. It draws itself up tall and stiff, then everything drops at once: its whole body sags and squashes down into itself, its arms flop, its head droops, a long deflating slump. It bobs back up small, looks up at the towers again, and sags a second time, smaller. Then it lifts its head with a small relieved grin, gives one little shrug, and settles.\n\nIts face is exactly two small dark dot eyes and two short brows, the same two eyes and two brows in every frame. It holds exactly one pencil in every frame. It stays sitting in the same spot on the floor in every frame. It stays small, tinier than the bookshelf's lower shelf, in every frame. The three towers of paper stand in the same places and reach out of the top of the frame in every frame; the loose sheets on the floor lie still where they are in every frame; the small desk, the bookshelf of binders and the grey filing cabinet stay the same drawings in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103646_5b85b8fc-0670-4970-9449-8e15bb9b5bd8.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103646_5b85b8fc-0670-4970-9449-8e15bb9b5bd8_thumbnail.webp"
+  }
+]

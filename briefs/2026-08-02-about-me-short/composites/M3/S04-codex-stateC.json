@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-06T10:33:58.57579Z",
+    "display_name": "GPT Image 2",
+    "id": "1cb759c8-4e89-4812-9680-7c715392efac",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103358_1cb759c8-4e89-4812-9680-7c715392efac_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "2709654a-f3b2-4623-8450-c28728d94035",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/2709654a-f3b2-4623-8450-c28728d94035.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "6c66aa05-90d8-41e7-a38a-d5dccfdac309",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/6c66aa05-90d8-41e7-a38a-d5dccfdac309_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a small lavender cloud creature with a scalloped puffy outline, two stubby arms, two small feet, and a face that is exactly one pale chevron and one short straight bar. Image 2 is the BACKGROUND SCENE.\n\nAdd the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same popped-out screen on its arm, same rack, counter and spilled cables, same fixtures, same palette.\n\nPOSITION: standing on the floor in front of the coffee counter, just to the LEFT of the foot of the tall black server rack, beneath the screen that hangs out over the counter. It does not cover the counter's doors or the rack.\nSCALE — draw it SMALL: it stands only thigh-high to a grown adult. At the foot of the server rack the top of its head reaches barely a quarter of the way up the rack, and it is shorter than the coffee counter beside it is tall. It is a small creature, never person-sized.\nFACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — its full face with the chevron and the bar, its scalloped body, both arms and both feet. It is NOT seen from behind and NOT in profile. Its face is tipped UP towards the screen full of code hanging above it; it is absorbed in that and never looks into the camera.\nPOSE: it stands still and upright at rest, both arms hanging down at its sides, both feet flat on the floor. Draw it in the same hand as the room — graphite line with a light lavender coloured-pencil wash over its body, the same line weight as the furniture — with a soft graphite contact shadow pooled on the floor beneath it.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103358_1cb759c8-4e89-4812-9680-7c715392efac.png",
+    "status": "completed"
+  }
+]

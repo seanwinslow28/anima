@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-06T10:27:32.219385Z",
+    "display_name": "GPT Image 2",
+    "id": "b5a409e1-41b8-4a27-91a3-d89599fe50dc",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_102732_b5a409e1-41b8-4a27-91a3-d89599fe50dc_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "78bab37f-9d1e-4a13-a557-c28ee3adba9a",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/78bab37f-9d1e-4a13-a557-c28ee3adba9a_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Edit this drawing. Keep the same camera, the same framing, the same walls, floor, paper, line and colour. Keep the wall of small taped sketches at the left, the long cabinet with the stacked cardboard boxes, the coffee counter with its coffee machine, jug and two mugs, the tall black server rack, and the doorway at the right, all exactly as drawn.\n\nChange one thing, and the mess it made: a big flat screen has popped straight out of the LEFT side of the tall black server rack on a hinged metal arm, and now hangs out over the coffee counter at the height of the rack's upper half, tilted a little towards us. The screen is lit pale and flooded edge to edge with dense lines of code, drawn as the film draws code: row upon row of small graphite dashes and short blocks, indented like program listings, packed so tight the screen reads as a solid wall of text, with a soft pale glow on the wall around it. A thick cable runs from the screen back into the rack, and a tangle of loose cables has spilled out of the rack's open side, down over the edge of the counter and onto the floor. Everything is at rest and still.\n\nWarm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. The room is empty of characters and people. Do not add any legible text or letters.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_102732_b5a409e1-41b8-4a27-91a3-d89599fe50dc.png",
+    "status": "completed"
+  }
+]

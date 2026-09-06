@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-06T10:33:56.568001Z",
+    "display_name": "GPT Image 2",
+    "id": "79966d9f-2e3b-4747-a783-a847f0decf16",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103356_79966d9f-2e3b-4747-a783-a847f0decf16_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "afacc7a0-6de2-4952-a746-1bcab839953b",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/afacc7a0-6de2-4952-a746-1bcab839953b.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "2faf17f3-8ed9-4db8-beb9-031eddc3d36b",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/2faf17f3-8ed9-4db8-beb9-031eddc3d36b_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a small terracotta-orange cube creature with two small dark dot eyes and two short brows, sitting on the floor writing on a sheet of paper with one pencil. Image 2 is the BACKGROUND SCENE.\n\nAdd the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same towers of paper, same sheets on the floor, same fixtures, same palette.\n\nPOSITION: sitting on the floor in the open space in front of the towers of paper, a little left of centre, between the small supply desk and the bookshelf, on top of the loose sheets that carpet the floor, with one sheet of paper on the floor in front of it that it is writing on. It does not cover the desk or the bookshelf.\nSCALE — draw it SMALL: it is only knee-high to a grown adult. Sitting, the top of its head reaches barely a tenth of the way up the towers of paper behind it, and it is shorter than the bookshelf's lower shelf is tall. It is a tiny creature, never person-sized.\nFACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, both brows, its full face, its body, both arms and both feet. It is NOT seen from behind and NOT in profile. Its eyes are turned down at the sheet of paper in front of it; it is absorbed in writing and never looks into the camera.\nPOSE: it sits still and upright at rest on the floor, holding exactly ONE pencil in one hand, the pencil tip resting on the sheet — there is only one pencil anywhere in the picture. Draw it in the same hand as the room — graphite line with a light terracotta coloured-pencil wash over its body, the same line weight as the furniture — with a soft graphite contact shadow pooled on the floor beneath it.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103356_79966d9f-2e3b-4747-a783-a847f0decf16.png",
+    "status": "completed"
+  }
+]

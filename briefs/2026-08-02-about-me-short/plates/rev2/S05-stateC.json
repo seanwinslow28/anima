@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-06T10:27:34.352281Z",
+    "display_name": "GPT Image 2",
+    "id": "5b2db66d-5ebe-4f65-9b14-a611142ed9dd",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_102734_5b2db66d-5ebe-4f65-9b14-a611142ed9dd_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "d9771219-8498-4570-a807-60811783f1e3",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/d9771219-8498-4570-a807-60811783f1e3_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Edit this drawing. Keep the same camera, the same framing, the same wall, floor, paper, line and colour. Keep the string of small lights across the top, the long wooden worktable with its rolls of tape, jar of pens, scissors and mug, and the low cabinet with the stacked cardboard boxes at the left, all exactly as drawn.\n\nBury the room in sketches. The wall is now covered edge to edge and floor to ceiling with taped sketches two and three deep, overlapping each other, crowding right up to and behind the string lights, with a few sketches hanging from the string lights by their tape. More sketches are taped over the front of the cabinet and over the boxes standing on it, over the front and the legs of the worktable, and the worktable top is buried under a drift of loose sketches that spills off its far end. The floor is carpeted with loose sketches lying flat and overlapping, everywhere, right to the bottom edge of the frame. Every sketch is the same kind of small drawing as the ones already on the wall — shopping bags, shopping carts, boxes, price tags, little round shop mascots — in the same pale coloured pencil. Everything is at rest and settled — nothing is in the air.\n\nWarm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. The room is empty of characters and people. Do not add any text or letters.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_102734_5b2db66d-5ebe-4f65-9b14-a611142ed9dd.png",
+    "status": "completed"
+  }
+]

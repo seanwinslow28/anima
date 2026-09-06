@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-06T10:33:55.020655Z",
+    "display_name": "GPT Image 2",
+    "id": "94093e7e-3a72-4a56-914d-3c19d5b6c9ee",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103355_94093e7e-3a72-4a56-914d-3c19d5b6c9ee_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "794c276d-3286-4124-8a14-2fb47b270cb2",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/794c276d-3286-4124-8a14-2fb47b270cb2_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "c3f8235d-82e2-4a16-bc9a-0d6c6bdce90c",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/c3f8235d-82e2-4a16-bc9a-0d6c6bdce90c.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same three monitors, keyboard, mouse, desk, cork board, lamp and mug, same paper and palette. Image 2 is a small grey faceless figure with a crosshair on its blank round head and the word USER on its shirt: use it only as the design of the avatar described below.\n\nChange ONE thing: the middle monitor's dark screen is now lit pale and shows a plain chat window filling the screen. Across the top of the window is a header bar with, at its left, a small round avatar: the head and shoulders of image 2's grey figure, blank head, crosshair, the word USER on its shirt, drawn small. Beneath the header, one message bubble fills most of the screen, and inside it, hand-lettered in plain clear graphite capitals large enough to read easily, spread over three lines, is the question:\n\nCAN YOU SHOW ME WHAT HAPPENED THE LAST TIME YOU TRIED TO CHECK OUT?\n\nBeneath the bubble, along the bottom of the window, is an empty text-entry box with a short vertical cursor line at its left end. Everything on the screen is drawn in graphite line in the same hand as the rest of the picture, the way a pencil-test animator draws a screen: hand-ruled boxes, slightly wobbly lines, a faint pale wash on the header bar.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.\n\nThe only text anywhere in the picture is the question on the middle screen and the word USER on the avatar's shirt.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103355_94093e7e-3a72-4a56-914d-3c19d5b6c9ee.png",
+    "status": "completed"
+  }
+]
