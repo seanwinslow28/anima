@@ -93,3 +93,25 @@ pose reference), then the 13.1 clip re-rolled off it (6.5 + 24.5). B's chain (32
 **Law 34 (appended):** the chained single-character edit route holds identity on the CLI — five edits, five first rolls, the plate and every
 earlier character byte-close at each step (verify pass ×4, one 1-px CHECK). The July/September failures were the MATTE and the ONE-PASS, not the
 edit. Chain far-to-near so each new figure can overlap an earlier one correctly.
+
+---
+
+## ADDENDUM 2 — 2026-09-06 19:21 → 20:40: Sean's third rulings (locks 16 + 20; the S15 wide rebuilt as a 2kf). 
+
+**Locked:** 16 = v2b (`_LOCKED-M3/27`), 20 = the transition (`36`). **Spend this round 172 cr** (balance 2,329 → 2,157, to the credit).
+
+**The S15 wide, straight:** v1 rejected (law 13 — the spin invented his face). Rebuilt as a two-keyframe: START = Sean's deblurred chain-5
+(normalised, upscaled to 2688×1520), END = **the freeze**, built by a second five-step chain (`composites-S15/end/E1–E5`, 5/5 first roll):
+Sean facing us with his own face in dismay, Claude flinging, Grok mid-swing, Codex mid-leap, Gemini mid-whirl. **Then three 2kf rolls (v2, v3, v4)
+all did the same thing:** the right face lands at ~1.4s, and the model rolls him and the chair toward the lens until he is a third of the frame.
+Constants, matched sizes, no face words, 5s — none of it held. Three misses = the stop rule; **no fourth was bought.** Law 37.
+
+**The $0 answer in the rough cut v4** (`motion/m3-roughcut/M3-roughcut-v4.mp4`, 60.0s; ~110s with M1+M2): v4 from 0 to 1.6s (the chaos, the
+swivel completing at the right scale — the per-frame curve peaks vs the END at 1.4s) → **the END still as the freeze** (which is where the record
+scratch lands anyway) → beat 12's close-up for the breath. If that reads, the shot is done. If Sean wants a clean 7s, the kit for his own web-app
+roll is `prompts/motion/S15-WEBAPP-KIT.md` (std mode / 4s / the character-reference lever are the three untried moves).
+
+**13.1 finished the way Sean asked:** Gemini (mid-spin, left) and Codex (mid-leap on the rack, right) edited into the S16 still in the freeze's
+poses (the freeze as pose reference), then the clip re-rolled off it — the pair stays frozen in every frame while his eyes open on us (law 38).
+
+**Owed by Sean:** the wide (the $0 cut vs his own roll), 13.1 v2, and whether the freeze still stands as the record-scratch frame.

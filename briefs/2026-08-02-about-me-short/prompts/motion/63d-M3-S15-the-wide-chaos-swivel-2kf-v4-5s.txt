@@ -6,7 +6,7 @@
 #   back → 13.1. START = normalised/S15-A-all-HQ-v1.png (Sean's deblur, normalised). END = normalised/S15-A-end-5.png (the chain: Sean facing us with
 #   HIS face + the four mascots mid-action = the FREEZE frame, law 21). The v1 (63) invented his face on the spin (law 13); the END frame carries it now.
 # RUN: motion/generate2kf.sh prompts/motion/63d-M3-S15-the-wide-chaos-swivel-2kf-v4-5s.txt normalised/S15-A-all-HQ-2688.png normalised/S15-A-end-5.png motion/m3-beat11/S15-wide-chaos-v4-2kf.json 5
-# RESULT: (rolling)
+# RESULT: motion/m3-beat11/S15-wide-chaos-v4-2kf.mp4, 5.04s, 17.5 cr — **THE THIRD SCALE MISS** (0.988→0.651 vs START, 0.929→0.676 vs END): the same forward roll after the swivel, with NO face words, matched frame sizes, spot + size constants, 5s. The face-acting hypothesis was WRONG. Law 37: a 2kf wide whose END turns a small figure to face the lens zooms him regardless. STOP RULE (three misses on one shot): no fourth roll. $0 answer: the swivel completes at NORMAL scale by ~2.4s in every version — cut there and cut to the END still as the freeze (which the record scratch wants anyway). Kit for Sean's own web-app roll: prompts/motion/S15-WEBAPP-KIT.md.
 
 1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
 

@@ -462,3 +462,12 @@ shows — `claude-sitting-v*`), and a mascot's rest pose carries its M1 task acr
 36. **The mime lives in the clip, not the still.** "His lips move as he mouths a short, clear instruction … his face turning with it" plus DROPPING
     the closed-mouth constant gave a living face on the calm still (16 v2); the determined still (v2b) only changes the opening expression. Write
     the acting into the motion prompt first; re-draw the still only when the opening face itself is the note.
+37. **A two-keyframe wide whose END turns a small figure to face the lens ZOOMS him, and no constant stops it.** Three rolls (7s, 7s, 5s) off the
+    same START/END pair: the swivel lands with the right face at ~1.4s, then the model rolls him and his chair forward to a third of the frame
+    (0.65 vs both keyframes by the end). Tried and failed: "turns on the spot and goes nowhere", "the same small far-away size", "nothing comes
+    closer to the camera", START upscaled to the END's exact size, no face words, 5s. The single-image roll held his size but invented his face
+    (law 13). The two failures are complementary, so the honest cut is: the 2kf's first ~1.6s (chaos + the swivel at the right scale) → the END
+    still as the freeze. Do not buy a fourth; hand the kit over (`S15-WEBAPP-KIT.md`).
+38. **The freeze IS the END keyframe.** When a beat ends on a record-scratch freeze, build the END frame as the freeze (everyone mid-action, law 21)
+    and cut to the STILL — the clip only has to get there. This also gives 13.1 its background for free: the two mascots in that lens are edited
+    into the S16 still in the freeze's poses (a 2-ref edit: the scene + the freeze as pose reference) and stated frozen in the clip. Both first roll.

@@ -19,6 +19,11 @@ beat 16 re-rolled two ways with the mime written into the clip (v2 calm still, v
 held at every step (law 34)**; the beat 11/12 wide clip landed (chaos first, the swivel last); rough cut v3. Owed: the freeze-frame pick, then 13.1's
 background mascots frozen to match. Laws 34–36. Review packet addendum.
 
+**Evening addendum 2 (19:21 rulings, 172 cr → balance 2,157).** Beats 16 (v2b) and 20 locked. The S15 wide's v1 rejected on law 13 and rebuilt as a
+two-keyframe off Sean's deblurred start with a second five-step chain for the END/freeze frame (5/5 first roll); three 2kf rolls all zoomed him after
+the swivel (law 37 — stop rule applied, kit written); the rough cut v4 uses the clip's first 1.6s and the END still as the freeze (law 38). 13.1
+rebuilt with Gemini and Codex frozen behind him in the freeze's poses (still + clip, both first roll).
+
 **Why.** Sean's 10:51 rulings + 13:53 answers (recorded in the 3b continuation) settle every open beat; this wave builds them. Two deviations
 recorded with reasons: the 18.5 ensemble was built as a room-edit around Sean's own locked composite (1 roll) instead of five chained edits
 (answer 3's route stays the fallback, unspent); the SHIP END's screen_swap paste was skipped because the edit re-drew the key cluster (law 28),
