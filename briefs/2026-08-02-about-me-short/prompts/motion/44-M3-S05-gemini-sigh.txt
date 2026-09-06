@@ -3,6 +3,7 @@
 # CONSTANTS: face (two eyes + small open smile — the squint-shut nit from beat 7 is why it is stated); five points; size; the sketches stay.
 # RUN: motion/generate.sh prompts/motion/44-M3-S05-gemini-sigh.txt normalised/S05-gemini-stateC-v1.png motion/m3-beat15/S05-gemini-sigh-v1.json
 # RESULT: motion/m3-beat15/S05-gemini-sigh-v1.mp4, 24.5 cr, first roll, job 25f961dc. LANDED: scans the wall / stretches into a tall SPIKE / puddle-flat / back up. Layout 0.865/0.865 — LOW AT BOTH ENDS AND EQUAL: the sketch-covered plate's line boil defeats the 160x90 correlation, not a re-camera (the plate is the same by eye). The drop is at ~t=3.0–4.7s.
+# BANKED 2026-09-06 (Sean): beat 15 is a sigh of RELIEF ("They're all supposed to look happy, not upset") — this v1 DISTRESS sigh is banked as a 'beat 10.x distress' candidate for Sean to place, not deleted. Relief re-roll at 5s → prompts/motion/54-M3-S05-gemini-relief-sigh-5s.txt.
 
 1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
 

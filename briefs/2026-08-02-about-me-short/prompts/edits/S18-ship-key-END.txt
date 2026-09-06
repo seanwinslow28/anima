@@ -1,0 +1,13 @@
+# S18 — THE SHIP KEY, END frame: the finger ON the key, the key pressed down. EDIT of normalised/S18-ship-key-start-v1.png. 6.5 cr. 2026-09-06.
+# After it lands: post/screen_swap.py pastes ONLY the key+finger rectangle back over the START so everything else is byte-identical (law 10 + the S07
+#   lesson) -> normalised/S18-ship-key-end-composed.png, the 2kf END. Then prompts/motion/60 (2kf, 24.5).
+# RUN: motion/gen_image_ref.sh prompts/edits/S18-ship-key-END.txt normalised/S18-ship-key-start-v1.png 16:9 composites/M3/S18-ship-key-end.json
+# RESULT: composites/M3/S18-ship-key-end-v1.png -> normalised/, 6.5 cr, first roll, job 0cc04bc9. LANDED: the key sunk flush, the fingertip on the P, the hand followed. BUT the edit re-rendered the keyboard (the right-hand key cluster and the grain differ; verify 0.131 / 0.593 / (0,0) CHECK), so a screen_swap rectangle paste would seam through the keys — NOT composed. The 2kf runs on the raw END (beats 8/17/18 precedent: edit end-frames held >=0.96); fallback = a single-image roll off the START.
+
+Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same keyboard, same small blank keys, same wooden desk top, same paper and palette.
+
+Change ONE thing: the index finger has moved onto the big SHIP key and is pressing it down — the fingertip rests in the middle of the key's face, and the key is sunk down into the keyboard, its top now level with the keyboard's frame and its side walls hidden, so that it sits visibly lower than the small keys around it. The word SHIP stays on its face, partly covered by the fingertip. The rest of the hand follows the finger a little, the other fingers still curled back. Draw a small soft graphite shadow around the sunk key. Nothing else moves.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.
+
+The only text anywhere in the picture is the word SHIP on the big key.

@@ -63,13 +63,15 @@ SEAN_FT = 6.0
 RATIO = dict(sean=1.00, grok=0.42, codex=0.36, gemini=0.30, claude=0.26)
 
 
-def who(tag, x, y, h=None, w=None, seated=False):
-    """One cast member as a block: footprint centred on (x, y), real height."""
+def who(tag, x, y, h=None, w=None, seated=False, z0=0.0):
+    """One cast member as a block: footprint centred on (x, y), real height.
+    z0 (wave 3b, default 0 = inert): raise the block's foot so a close-up aims at the
+    head-and-shoulders rather than the whole body's centroid."""
     if h is None:
         h = 4.3 if seated else SEAN_FT * RATIO[tag]
     if w is None:
         w = 0.42 * h if tag == "sean" else 0.8 * h
-    return dict(tag=tag, x=x, y=y, h=h, w=w)
+    return dict(tag=tag, x=x, y=y, h=h, w=w, z0=z0)
 
 
 # Where everyone stands at rest, read off the approved M1 composites.
@@ -151,7 +153,7 @@ def cast_boxes(cast):
     out = []
     for c in cast:
         hw = c["w"] / 2
-        out.append(((c["x"] - hw, c["x"] + hw, c["y"] - hw, c["y"] + hw, 0.0, c["h"]),
+        out.append(((c["x"] - hw, c["x"] + hw, c["y"] - hw, c["y"] + hw, c.get("z0", 0.0), c["h"]),
                     CASTFILL, c["tag"]))
     return out
 
@@ -293,6 +295,11 @@ def make(name, shot):
                (0, 0, ROOM_H_FT)], WALLTONE),
              ([(ROOM_W_FT, 0, 0), (ROOM_W_FT, ROOM_D_FT, 0),
                (ROOM_W_FT, ROOM_D_FT, ROOM_H_FT), (ROOM_W_FT, 0, ROOM_H_FT)], WALLTONE)]
+    # Wave 3b (2026-09-06): omit=["south"] removes a wall so a CUTAWAY camera can stand
+    # behind its plane — the cartoon convention the beat-11 inspiration uses. Inert when absent.
+    _wall_ix = dict(floor=0, north=1, south=2, west=3, east=4)
+    shell = [sh for i, sh in enumerate(shell)
+             if i not in {_wall_ix[w] for w in shot.get("omit", [])}]
     drawn = []
     for poly, fill in shell:
         svg, m = screen(poly, fill, SEAM, 1)
@@ -303,6 +310,12 @@ def make(name, shot):
 
     items = []
     drawlist = [(bx, fill, EDGE, 2) for bx, fill in boxes()]
+    # A cutaway drops that wall's FIXTURES too (they would stand between the lens and the room).
+    _on_wall = dict(north=lambda b: b[2] <= 0.0, south=lambda b: b[3] >= ROOM_D_FT,
+                    west=lambda b: b[0] <= 0.0, east=lambda b: b[1] >= ROOM_W_FT)
+    for w in shot.get("omit", []):
+        if w in _on_wall:
+            drawlist = [d for d in drawlist if not _on_wall[w](d[0])]
     if shot.get("state", "A") == "B":
         drawlist += [(bx, fill, CAP, 3) for bx, fill, _ in m2_boxes()]
     if shot.get("draw_cast", True):
@@ -338,9 +351,19 @@ M2DIR = "m2-candidates/"
 if __name__ == "__main__":
     import sys
     print(f"shot roughs → {OUT}")
-    if "m2" not in sys.argv:                       # `m2` = candidates only
+    if "m2" not in sys.argv and "m3" not in sys.argv:   # `m2`/`m3` = candidates only
         for n, sh in SHOTS.items():
             make(n, sh)
+    if "m3" in sys.argv:                           # `m3` = the wave-3b candidates only
+        os.makedirs(os.path.join(OUT, "m3-candidates/"), exist_ok=True)
+        from m3_candidates import M3
+        for n, sh in M3.items():
+            sh.setdefault("state", "B")
+            sh.setdefault("dir", "m3-candidates/")
+            make(n, sh)
+            print("     ", n, sh["_solved"])
+            make(n + "-plate", dict(sh, draw_cast=False))
+        sys.exit(0)
     if "m1" not in sys.argv:                       # `m1` = the six M1 roughs only
         os.makedirs(os.path.join(OUT, M2DIR), exist_ok=True)
         from m2_candidates import M2

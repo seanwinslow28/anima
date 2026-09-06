@@ -4,6 +4,7 @@
 # seedance_2_0 fast 7s 720p · start: _LOCKED-M2/13_beat8_S06B_end-frame.png
 # RUN: motion/generate.sh prompts/motion/45-M3-S06B-grok-sigh.txt _LOCKED-M2/13_beat8_S06B_end-frame.png motion/m3-beat15/S06B-grok-sigh-v1.json
 # RESULT: motion/m3-beat15/S06B-grok-sigh-v1.mp4, 24.5 cr, first roll, job a2666e3d. THE BEST ACTING OF THE WAVE: ears up at the rocket / puffs / DEFLATES over the hammer with a genuinely sad face, ears flopped / bobs / the grin returns with a shrug. Layout 0.990/0.990. The frown mid-clip breaks the 'same grin in every frame' constant ON PURPOSE (the model chose the acting) — keep it; that IS the sigh. The drop is at ~t=2.4–4.7s.
+# BANKED 2026-09-06 (Sean): beat 15 is a sigh of RELIEF ("They're all supposed to look happy, not upset") — this v1 DISTRESS sigh is banked as a 'beat 10.x distress' candidate for Sean to place, not deleted. Relief re-roll at 5s → prompts/motion/55-M3-S06B-grok-relief-sigh-5s.txt.
 
 1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
 

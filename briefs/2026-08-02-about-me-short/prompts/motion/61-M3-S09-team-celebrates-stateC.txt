@@ -1,0 +1,15 @@
+# 18.5 · THE CELEBRATION — the whole team cheering in their corners of the wreck. v1, 7s. 2026-09-06.
+# Sean's ruling: "Visual twin of S09-all-webapp-v2 — but the room is looking like the big mess they just created … The motion: the whole team celebrating
+#   and cheering in their corners." Start: normalised/S09-webapp-stateC-v1.png (route a) or the chained composite (route b). Five characters, each a
+#   whole cheer beat, faces as constants, everyone stays in their own spot. The beat-3½ reaction clip (prompts/motion/21-22) is the precedent for
+#   five characters moving in this frame; the facing law held there because the start frame was ¾ front.
+# RUN: motion/generate.sh prompts/motion/61-M3-S09-team-celebrates-stateC.txt normalised/S09-webapp-stateC-v1.png motion/m3-beat18h/S09-team-celebrates-v1.json
+# RESULT: motion/m3-beat18h/S09-team-celebrates-v1.mp4, 24.5 cr, first roll. LANDED (sheet): all five cheer at once — Sean fists up + a chair SPIN (a real smear on the chair) / Grok jumps, fists up / Codex springs / Claude's arms up at the towers / Gemini leaps as a big purple smear and lands / arms up together / everyone settles back to rest. Layout 0.972/0.972. Faces held by eye at this size. Sean's eye owed.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+All five of them cheer at once, each on its own spot. The small terracotta cube creature at the far wall flings both arms up and bounces on the spot, waving its one pencil. The small lavender cloud creature at the foot of the server rack springs straight up, drops, and springs up again, arms up. The young man in the office chair throws both fists in the air, then spins the chair one full turn and comes back round to face the room, laughing, fists up. The small blue-purple star creature by the worktable leaps and twirls once, all five points spread, and lands. The round grey creature with the big pointed ears on the open floor jumps up and down on the spot, arms high, ears flapping. They all land, hold their arms up together for a beat, and settle, grinning.
+
+Every character keeps its own face in every frame: the cube creature its two dot eyes and two brows, the cloud creature its pale chevron and short bar, the young man his short blonde hair and stubble and navy T-shirt, the star its two round eyes and small open smile, the grey creature its two red-orange eyes and wide grin of small teeth. Each of the five stays on its own spot on the floor in every frame and lands on the floor after every leap. The five stay the same five sizes in every frame. The room stays the same drawing in every frame: the wall of taped sketches, the popped code screen on the rack, the towers of paper, the rubble and the rocket's nose, the desk and monitors, the paper on the floor.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

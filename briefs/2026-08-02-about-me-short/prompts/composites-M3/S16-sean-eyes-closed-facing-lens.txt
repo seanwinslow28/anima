@@ -1,0 +1,17 @@
+# S16 — SEAN FROM THE MONITORS, EYES CLOSED, CALM: beat 13.1's start still. 2026-09-06. gpt_image_2 edit, 2 refs (sean-v1 front + the S16 plate), 6.5 cr.
+# Law 16 (a destination still beats a rotation): the still already faces the lens, eyes shut; the clip (prompts/motion/58) does the last degrees of
+#   the turn, then the eyes open ON the lens, then a small settled nod. Zero typing. Mouth: one small closed line (law 8/15).
+# The S16 lens is on the desk between the monitors: his hands are OFF the keyboard (resting on the armrests) so the keyboard in the foreground stays clear.
+# RUN: motion/composite.sh prompts/composites-M3/S16-sean-eyes-closed-facing-lens.txt refs/turnaround-views/sean-v1.png normalised/S16-monitors-pov-v1.png composites/M3/S16-sean-eyes-closed.json
+# RESULT: composites/M3/S16-sean-eyes-closed-v1.png -> normalised/, 6.5 cr, first roll. LANDED: square to the lens, eyes closed as two calm lines, small closed mouth, hands on the armrests off the keyboard, the wreck behind. *** BEAT 13.1's START *** -> prompts/motion/58.
+
+Image 1 is the CHARACTER: a young man with short blonde hair, light stubble, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same keyboard in the foreground, same chair, same wrecked room behind, same paper and palette.
+
+POSITION: sitting in the office chair that is already in the scene, which faces us square, the room behind him. Do not draw a second chair and do not move the chair or the keyboard.
+SCALE: a full-grown adult seen from very close — seated, his head and shoulders fill the middle of the frame, his head rising clear above the chair back, his shoulders as wide as the chair back, his knees near the bottom of the frame just behind the keyboard. We are looking at him from the height of his chest, straight on.
+FACING — this is the important part: he faces us SQUARE ON, his whole face towards the lens — his full head of hair, both brows, the stubble, his mouth, both ears. He is NOT seen from behind and NOT in profile. HIS EYES ARE CLOSED: both eyes shut, each drawn as one short calm curved line, his brows level and relaxed, his head level. His expression is calm and completely still, his mouth closed in one small straight line.
+POSE: he sits upright and still, at rest, both forearms resting along the armrests of the chair, both hands relaxed and open, well away from the keyboard.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

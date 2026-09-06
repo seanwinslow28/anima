@@ -1,0 +1,12 @@
+# 15 · CODEX'S SIGH OF RELIEF — v2, 5s. 2026-09-06. Same ruling + arc as 52. Start: normalised/S04-codex-stateC-v1.png. ≈17.5 cr.
+# Law 3 (wave 2): never write 'its eyes' for Codex — the face is the chevron + bar; the exhale is written through the BODY and the chevron.
+# RUN: motion/generate.sh prompts/motion/53-M3-S04-codex-relief-sigh-5s.txt normalised/S04-codex-stateC-v1.png motion/m3-beat15/S04-codex-relief-v2.json 5
+# RESULT: motion/m3-beat15/S04-codex-relief-v2.mp4, 5.04s, 17.5 cr, first roll, job 78e60857. LANDED (sheet): the held breath BALLOONS him to ~3x his size (frames 2-5) / the whoosh drop back to size / a wave-wipe / a hop / settles. Face (chevron + bar) held. Layout 0.992/0.993. The balloon is law 12's size-break on a puff-up — cartoon relief, Sean's call.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The small lavender cloud creature standing at the foot of the server rack draws in a huge breath that puffs it up tall and round and stiff, holds it for a beat, and lets it all out in one big happy whoosh — its whole puffy body drops soft and loose, its stubby arms fall to its sides, its pale chevron tips up into a happy arc. It wipes one stubby arm across its brow in one quick sweep and flicks it away. It gives one small happy hop on the spot, lands on the same spot, and settles, bouncing gently, its face tipped up at the screen.
+
+Its face is exactly one pale chevron and one short straight bar, the same chevron and the same bar in every frame, and it is happy in every frame. It stays standing on the same spot on the floor in every frame. It stays small, no taller than a quarter of the black server rack beside it, in every frame. The big screen stays out on its arm over the counter, lit and full of the same dense lines of code, in every frame; the spilled cables lie still in every frame; the server rack, the coffee machine, the jug, the mugs, the counter, the cabinet with its boxes, the taped sketches and the doorway stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

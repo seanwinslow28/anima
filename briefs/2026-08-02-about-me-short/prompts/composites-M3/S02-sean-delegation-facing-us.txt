@@ -1,0 +1,22 @@
+# S02 — SEAN FACING US, SMILING, AT REST: beat 16's start frame (the delegation). 2026-09-06. gpt_image_2 edit, 2 refs, 6.5 cr.
+# Sean's ruling: "a medium shot of the Sean character smiling and approving … Sean facing towards the camera … matches what his desk looks
+#   like now. 10 seconds so we have room to breathe." Framing = the S02 camera; scene = normalised/S02-cannon-fix-v1.png (the rev-2 plate with
+#   the FIXED cannon = "now"; the old dressed plate still shows the telescope). This is a REPLACE-in-place: the back-to-us man and his chair
+#   redrawn turned round to face the lens. The chair must turn with him (the S09 README's known risk); two misses → Sean's web-app kit.
+# REST POSE (law): hands resting on the armrests, smiling — the POINTING lives in the clip (prompts/motion/56). Face constant: a calm
+#   closed-mouth smile. Facing law: ¾ front, whole face; the S10 look-test is the precedent for his face at rest.
+# CONTINUITY QUESTION for Sean, not acted on: after beat 9 the cannon TOPPLED (locked v2). This frame keeps it upright per the doc's
+#   "now" = the cannon-fix composite. If the toppled cannon should carry to beat 16, it is a 6.5 edit of this result.
+# RUN: motion/composite.sh prompts/composites-M3/S02-sean-delegation-facing-us.txt refs/turnaround-views/sean-v2.png normalised/S02-cannon-fix-v1.png composites/M3/S02-sean-delegation.json
+# RESULT: composites/M3/S02-sean-delegation-v1.png -> normalised/, 6.5 cr, first roll, job bb7396a9. LANDED: the chair TURNED with him (the S09 known risk did not bite), ¾ front, calm closed-mouth smile, blue eyes off-lens, forearms on the armrests, legs easy, feet on the floor; every fixture + the striped cannon held. *** BEAT 16's START FRAME *** -> prompts/motion/56.
+
+Image 1 is the CHARACTER: a young man with short blonde hair, light stubble, blue eyes, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the SCENE, in which the same man sits at the desk with his back to us.
+
+Change ONE thing in Image 2: the man and his office chair are now turned right round to face us. Keep Image 2 unchanged in every other respect — same camera, same framing, same desk, monitors, cork board, whiteboard, printer bench, shelf, lamp, mug, bell and striped cannon, same paper and palette.
+
+POSITION: he sits in the same office chair on the same spot in front of the desk, but the chair has swivelled a half turn so its back is now towards the desk and the monitors, and he sits facing us. Do not draw a second chair and do not move the desk.
+SCALE: the same full-grown adult at the same size as before — seated, his head rises above the chair back and sits in front of the middle monitor, his shoulders as wide as the chair back.
+FACING — this is the important part: he is turned three-quarters TOWARDS US, his back to the desk and the monitors. His whole face is visible — both eyes, the stubble, his mouth, his full head of hair — and his chest, both arms and both knees. He is NOT seen from behind and NOT in profile. His eyes are open and level, looking out into the room a little to one side of the camera, never into the lens. His expression is a calm, warm, closed-mouth smile.
+POSE: he sits upright and still, at rest, both forearms resting along the armrests of the chair, both hands relaxed, both feet flat on the floor. Draw a soft graphite contact shadow on the floor beneath his feet and the chair.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

@@ -1,0 +1,15 @@
+# S08 — ALARM #3, THE STING, v2: ANOTHER PROBLEM! — beat 20. gpt_image_2 EDIT of normalised/S08-crt-closeup-v1.png. 6.5 cr. 2026-09-06.
+# Sean's ruling (10:51): "Regenerate an image that says ANOTHER PROBLEM! in the same frame. Then we cut to black." Supersedes
+#   S08-alarm3-problem-sting.txt (PROBLEM!, kept). Same S08 framing as beats 18/19 so the sting is a hard cut where ONLY the
+#   screen changes: the green smile → ANOTHER PROBLEM! → red flood (post) → black, zero linger. A still + post; no clip.
+# THE DESIGN: ANOTHER on a first line, PROBLEM! bigger beneath it filling the screen's width, the jagged line falling under both.
+# RUN: motion/gen_image_ref.sh prompts/edits/S08-alarm4-another-problem.txt normalised/S08-crt-closeup-v1.png 16:9 composites/M3/S08-alarm4.json
+# RESULT: composites/M3/S08-alarm4-v1.png -> normalised/, 6.5 cr, first roll, job a55e36e5. LANDED: ANOTHER over PROBLEM!, the jagged line under both, the S08 framing untouched. Beat 20's still. Red flood + black are post.
+
+Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same fixtures, same paper and palette.
+
+Change ONE thing: the television's dark screen is now lit and pale, and on it, drawn in the same graphite line as the rest of the picture, are two lines of big plain capitals: the word ANOTHER across the top of the screen, and directly beneath it, larger, the word PROBLEM! with an exclamation mark, filling the width of the screen; and beneath both a jagged line falling steeply from upper left to lower right, ending in a small arrowhead in the lower right corner of the screen.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.
+
+The only text anywhere in the picture is ANOTHER PROBLEM! on the television screen.

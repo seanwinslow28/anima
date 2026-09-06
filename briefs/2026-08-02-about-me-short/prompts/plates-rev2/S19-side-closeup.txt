@@ -1,0 +1,27 @@
+# S19 — SEAN'S DESK FROM THE SIDE, pushed in. NEW SETUP, beat 10.5 (Sean alone notices). 2026-09-06. gpt_image_2 2k high 16:9, 6.5 cr.
+# Sean (answer 1): a close-up angle from the S09 (CRT-side) direction so his face reads when he looks UP at the CRT. Camera =
+#   room-bible/m3-candidates/SHOT-S19-A-plate-rough.png: the S09 lens walked in along its own line to 7 ft from the chair, dropped to
+#   his eye level (4'10"), 55° lens. From here he sits ¾ back-profile to the desk; the CRT is behind-right of the CAMERA, so his look
+#   up-right at it turns his face TOWARDS us — the whole reason the camera is on this side (S19-B, the flat profile, is the alternative).
+# STATE: the aftermath of beat 9 — confetti and streamers on the desk and floor, the cannon toppled off its tripod (locked beat 9 v2).
+#   Plate is character-free; the chair is EMPTY; the fists-up BEFORE and the look-up AFTER are composites/edits on top.
+# REFS: Image 1 = normalised/S02-plate-v1.png (FIXTURE bible: the desk, monitors, chair, board, shelf, lamp, mug, whiteboard, bench).
+#   Image 2 = normalised/ELEV-north-v2.png (the whole desk wall in order). Image 3 = the plate rough (the camera).
+# RUN: motion/gen_image_refs.sh prompts/plates-rev2/S19-side-closeup.txt plates/rev2/S19.json normalised/S02-plate-v1.png normalised/ELEV-north-v2.png room-bible/m3-candidates/SHOT-S19-A-plate-rough.png
+# RESULT: plates/rev2/S19-side-closeup-v1.png -> normalised/, 6.5 cr, first roll, job fee98dd4. LANDED: the desk from its right end at seated eye level, the empty chair ¾ back, the three monitors raking away, the cork board + shelf + plant, the bell high right, streamers + confetti on the floor and desk, the cannon toppled beside its tripod at the right edge, the whiteboard + printer bench small at the left. *** THE S19 PLATE ***
+
+Image 1 and Image 2 are the FIXTURE AND STYLE BIBLES: the same long wooden desk, the same three monitors, the same office chair, lamp, blue mug, cork board, shelf of binders with the trailing plant, whiteboard and low printer bench, in the same drawing style, line weight, paper colour and palette. Preserve the exact design of every fixture. Do NOT copy their cameras or their framing — this is the same desk seen from its right-hand END.
+Image 3 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement exactly; replace each grey block with the corresponding fixture; remove every guide mark and every green block — the green block marks where a person will sit and is NOT drawn.
+
+CAMERA: a medium-close shot of the desk from its right-hand end, taken from the open floor beside the desk at the eye level of a seated person, looking along the desk towards the far end of the room. The desk runs diagonally away from us from the lower right of the frame towards the middle left. The three monitors stand on it seen at a steep raking angle, their screens turned away from us towards the chair; the cork board hangs above them; the empty office chair sits at the desk in the middle of the frame, seen from its side and a little from behind.
+
+PERSPECTIVE — draw it deliberately. The vanishing point is far off to the LEFT, beyond the frame, at the height of the seated eye. The desk top, its drawers, the monitor bezels and the cork board all converge towards it; every fixture on this wall shows its RIGHT-HAND face, and the fixtures further along the wall are drawn smaller and packed closer. Vertical lines stay vertical. The wall behind the desk is one flat plane running away to the left; the floor is a wedge in the lower left.
+
+VISIBLE, left to right: far off at the left, small, the whiteboard of half-erased diagrams and below it the low printer bench, both foreshortened; then the long desk with the three monitors on their stands, the keyboard and mouse, a few loose sheets of paper; the empty swivel office chair pulled up to the desk with its back three-quarters to us; above, the cork board of pinned notes and photographs and, nearer, the shelf of ring binders with the trailing plant; nearest the camera at the right, the end of the desk with the desk lamp and the blue mug, and the small brass bell on its wall bracket high at the right edge with its pull cord. Scattered over the desk top and the floor around the chair are a few curling paper streamers and small confetti dots in faint colour; on the floor at the far right, near the frame edge, the fat striped confetti cannon lies on its side beside its fallen three-legged tripod, one long streamer trailing from its mouth.
+
+OUT OF FRAME: the television, the dartboard, the server rack, the moodboard, the doorway, the paper towers.
+The room is empty of characters and people. The chair is empty.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.

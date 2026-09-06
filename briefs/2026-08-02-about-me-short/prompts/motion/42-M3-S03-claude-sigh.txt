@@ -5,6 +5,7 @@
 # CONSTANTS: face; ONE pencil; the towers reach out of the top of frame; the sheets on the floor stay where they lie; fixtures.
 # RUN: motion/generate.sh prompts/motion/42-M3-S03-claude-sigh.txt normalised/S03-claude-stateC-v1.png motion/m3-beat15/S03-claude-sigh-v1.json
 # RESULT: motion/m3-beat15/S03-claude-sigh-v1.mp4, 24.5 cr, first roll, job 5b85b8fc. LANDED: looks up / STANDS and draws up tall with an O mouth / collapses flat into a puddle / bobs back small / grin. Layout 0.989/0.984. The drop is at ~t=3.0–4.1s. The face grows a mouth for the O and the grin — acting, not drift (the sitting sheet has a small mouth).
+# BANKED 2026-09-06 (Sean): beat 15 is a sigh of RELIEF ("They're all supposed to look happy, not upset") — this v1 DISTRESS sigh is banked as a 'beat 10.x distress' candidate for Sean to place, not deleted. Relief re-roll at 5s → prompts/motion/52-M3-S03-claude-relief-sigh-5s.txt.
 
 1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
 

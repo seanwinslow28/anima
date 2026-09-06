@@ -1,0 +1,17 @@
+# S17 — THE HANDS. NEW SETUP, beat 13.2: an extreme close-up insert of Sean's two hands at rest on his keyboard. 2026-09-06. gpt_image_2 2k high 16:9, 6.5 cr.
+# Sean's ruling: "13.2 EXTREME CLOSE-UP of his hands typing." Calm is the note. The still holds the hands AT REST on the keys (rest-pose law;
+#   hands are a model risk, so they are STILL here); the clip does the few slow keys and one soft Enter (prompts/motion/58).
+# No room-bible rough exists for an insert this tight; the bible is the S02 plate (keyboard, desk, mug design) + sean-v1 (the hands' owner).
+#   Law 23: no wall in the top band → use the RAW plate, say so.
+# RUN: motion/gen_image_refs.sh prompts/plates-rev2/S17-hands-closeup.txt plates/rev2/S17.json normalised/S02-plate-v1.png refs/turnaround-views/sean-v1.png
+# RESULT: plates/rev2/S17-hands-closeup-v1.png -> normalised/, 6.5 cr, first roll, job 6786caa8. LANDED: two correct hands at rest on a blank-keyed keyboard from above, navy sleeves off the bottom edge, the mouse upper-left and the blue mug upper-right. Normaliser gain was sane on this one (a desk top fills the band). *** BEAT 13.2's START FRAME *** -> prompts/motion/57.
+
+Image 1 is the FIXTURE AND STYLE BIBLE: the same keyboard, mouse, wooden desk top and blue mug, in the same drawing style, line weight, paper colour and palette. Preserve the exact design of the keyboard and desk. Do NOT copy its camera or framing — this is the same keyboard seen from very close. Image 2 is the CHARACTER whose hands these are: a young man with fair skin and a navy T-shirt; use it only for the look of his hands and forearms.
+
+CAMERA: an extreme close-up looking down at the keyboard from above and a little in front of it, from the far side of the desk, as if from the foot of the monitors. The keyboard fills the lower two-thirds of the frame, seen from its top edge, its rows of keys drawn as small blank rectangles in graphite. Two adult hands rest on it in the centre, fingers spread lightly over the middle row of keys, wrists relaxed, the forearms in navy sleeves running off the bottom edge of the frame; the hands are still and at rest, not pressing anything. At the top of the frame the wooden desk top runs across, the base of the blue mug clipped at the right edge and the mouse at the left. Nothing else is in frame.
+
+The hands are drawn simply and correctly: two hands, five fingers each, fingers relaxed and slightly curled, the thumbs resting near the space bar. Light coloured-pencil skin wash.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. The keys are blank rectangles. Do not add any text.

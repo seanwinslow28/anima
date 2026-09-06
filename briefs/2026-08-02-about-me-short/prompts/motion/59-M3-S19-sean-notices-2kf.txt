@@ -1,0 +1,14 @@
+# 10.5 · SEAN ALONE NOTICES — fists up → the arms drop, the head snaps up at the CRT, he holds. v1, 2kf, 7s. 2026-09-06.
+# Sean (answer 1): "Sean is the only one that notices. He quickly looks up at the CRT screen … a before and an after image." START = normalised/S19-sean-before-v1.png
+#   (fists up, ¾ back), END = normalised/S19-sean-after-v1.png (arms down, head turned up-right at the CRT — towards us — confused). The eye-lead head
+#   turn (eye-lead-head-turn.png): the eyes go first, the head follows, then a hold. The CRT is off frame, behind-right of the camera.
+# RUN: motion/generate2kf.sh prompts/motion/59-M3-S19-sean-notices-2kf.txt normalised/S19-sean-before-v1.png normalised/S19-sean-after-v1.png motion/m3-beat10h/S19-sean-notices-v1.json
+# RESULT: (rolling)
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The young man at the desk, both fists raised high over his head in celebration, holds the pose, shaking his fists once. Then something off to the upper right catches him: his fists freeze, his eyes flick up and to the right, his head snaps round and up after them, towards us and past us to the upper right, and both arms drop to the armrests in one loose fall. He holds there, head turned and tipped up, brows raised, mouth a small round o, completely still, staring up at the thing off frame. He holds.
+
+His short blonde hair, his stubble and his navy T-shirt are the same in every frame. He stays seated in the same chair on the same spot in every frame, and the chair stays where it is in every frame. The desk, the three monitors, the cork board, the shelf of binders with the plant, the lamp, the mug, the bell, the whiteboard and the printer bench stay the same drawings in every frame; the streamers and confetti on the floor and the fallen cannon lie still in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

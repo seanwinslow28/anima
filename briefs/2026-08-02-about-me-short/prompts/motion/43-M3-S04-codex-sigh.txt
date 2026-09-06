@@ -3,6 +3,7 @@
 # CONSTANTS: face; the screen stays OUT on its arm, lit and full of code; the spilled cables stay; fixtures.
 # RUN: motion/generate.sh prompts/motion/43-M3-S04-codex-sigh.txt normalised/S04-codex-stateC-v1.png motion/m3-beat15/S04-codex-sigh-v1.json
 # RESULT: motion/m3-beat15/S04-codex-sigh-v1.mp4, 24.5 cr, first roll, job bb2b9448. LANDED: face up at the screen / STRETCHES tall and thin / puddle-squash / back small / shrug. Layout 0.988/0.989. Bracket + dash held. The drop is at ~t=2.4–3.5s.
+# BANKED 2026-09-06 (Sean): beat 15 is a sigh of RELIEF ("They're all supposed to look happy, not upset") — this v1 DISTRESS sigh is banked as a 'beat 10.x distress' candidate for Sean to place, not deleted. Relief re-roll at 5s → prompts/motion/53-M3-S04-codex-relief-sigh-5s.txt.
 
 1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
 

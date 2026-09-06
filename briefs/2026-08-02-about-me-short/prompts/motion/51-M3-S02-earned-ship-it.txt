@@ -4,6 +4,7 @@
 # The beat-9 prompt (29) with the two prop events inverted; everything else verbatim. Back to us (the facing law).
 # RUN: motion/generate.sh prompts/motion/51-M3-S02-earned-ship-it.txt normalised/S02-cannon-fix-v1.png motion/m3-beat17/S02-earned-ship-it-v1.json
 # RESULT: motion/m3-beat17/S02-earned-ship-it-v1.mp4, 24.5 cr, first roll, job 7d8cbf24. LANDED: key slam / both arms up / the cannon fires a real FOUNTAIN of confetti over the desk / the bell swings / the arms hold, shake / confetti settles everywhere / arms drop, he sits up. His back to us throughout. Layout 0.985/0.961 (the confetti is the difference). The cannon tips on its tripod but stays up — beat 9's twin, answering true.
+# RELEASED 2026-09-06 (Sean): "We won't go with the twin. It feels off." Beat 17 is now the SHIP-key ECU (S18). Clip kept; the cannon-fix start frame lives on as beat 16's plate basis.
 
 1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
 

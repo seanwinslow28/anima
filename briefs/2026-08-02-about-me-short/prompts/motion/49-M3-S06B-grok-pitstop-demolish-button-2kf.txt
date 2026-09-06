@@ -2,7 +2,7 @@
 # seedance_2_0 fast 7s 720p · start: normalised/S06B-old-button-start-v1.png · end: normalised/S06B-old-button-end-v1.png
 # Micro-task FIRST: hoist / one hard smash / the button bursts to splinters / hop back / pat the pile. The identity line VERBATIM.
 # RUN: motion/generate2kf.sh prompts/motion/49-M3-S06B-grok-pitstop-demolish-button-2kf.txt normalised/S06B-old-button-start-v1.png normalised/S06B-old-button-end-v1.png motion/m3-beat16/S06B-grok-pitstop-v1.json
-# RESULT: (held)
+# RESULT: motion/m3-beat16/S06B-grok-pitstop-v1.mp4, 24.5 cr, first roll, job b95afcbd. LANDED (sheet -sheet.png): hoists / coils / WHIPS the hammer down / the button bursts in a dust cloud / B U Y on the rubble / hops back delighted / dusts its hands / leans on the hammer grinning. Layout 0.986 vs START f0, 0.989 vs END last. Grin + ears + rocket + hole held. The micro-task is complete by ~2s (law 17). Sean's eye owed.
 
 1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
 

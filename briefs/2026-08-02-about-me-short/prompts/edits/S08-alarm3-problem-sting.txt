@@ -5,6 +5,7 @@
 # (STILL!) exists at $0 (normalised/S08-alarm2-v1.png) if Sean overrules.
 # RUN: motion/gen_image_ref.sh prompts/edits/S08-alarm3-problem-sting.txt normalised/S08-crt-closeup-v1.png 16:9 composites/M3/S08-alarm3.json
 # RESULT: composites/M3/S08-alarm3-v1.png -> normalised/, 6.5 cr, first roll, job d95fef39. LANDED: PROBLEM! across the upper screen, the jagged line falling to the lower right — the beat-3 design on the S08 framing. Red flood + black are post (post/m3_roughcut.py does a rough of both).
+# RELEASED 2026-09-06 (Sean): "Regenerate an image that says ANOTHER PROBLEM! in the same frame." PROBLEM! superseded, kept → prompts/edits/S08-alarm4-another-problem.txt.
 
 Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same fixtures, same paper and palette.
 

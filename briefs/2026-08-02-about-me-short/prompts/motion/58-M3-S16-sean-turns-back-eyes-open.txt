@@ -1,0 +1,14 @@
+# 13.1 · THE MONITORS' POV — Sean finishes the turn, opens his eyes on us, a small settled nod. v1, 7s. 2026-09-06.
+# Sean's ruling: "13.1 monitors-POV MEDIUM — Sean turns round calm, opens his eyes, looks at the camera (the monitors)." The one place in the film he
+#   looks INTO the lens on purpose — the lens is his own screen. Start: normalised/S16-sean-eyes-closed-v1.png (already facing us, eyes shut — law 16).
+#   Beat 12 (S10) ends BEFORE his eyes open (answer 4), so they open ONCE, here. Zero typing; hands off the keyboard. Mouth: one small closed line.
+# RUN: motion/generate.sh prompts/motion/58-M3-S16-sean-turns-back-eyes-open.txt normalised/S16-sean-eyes-closed-v1.png motion/m3-beat13/S16-sean-eyes-open-v1.json
+# RESULT: motion/m3-beat13/S16-sean-eyes-open-v1.mp4, 24.5 cr, first roll. LANDED (sheet + -FACE-sheet): opens with him turned ¾ in the chair, eyes shut (the beat-12 phenomenon, law 16: the model backs the still up into a turn) / squares to the lens over ~1s / the EYES OPEN on us / a small smile, a slow nod / holds looking at us. Hands off the keyboard. Layout f0 0.760 (the turn) / last 0.992. The cut can open after the square-up if the turn is unwanted. Sean's eye owed.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The young man in the office chair, eyes closed, facing us, finishes the last few degrees of the chair's turn towards us and comes to rest square to the lens. He holds completely still. Then his eyes open, calm and level, straight into the lens, and he looks at us. He holds the look. He gives one small, slow, settled nod, and holds still again, looking at us, calm.
+
+His eyes stay shut, two short calm curved lines, in every frame until the moment they open, and from then on they stay open and on the lens in every frame. His mouth stays one small closed straight line in every frame. His hands stay resting on the armrests in every frame, away from the keyboard. His short blonde hair, his stubble and his navy T-shirt are the same in every frame. The chair stays on the same spot in every frame. The keyboard along the bottom of the frame stays still in every frame, and the wrecked room behind him — the wall of taped sketches, the string lights, the paper on the floor, the server rack with its popped screen, the small television — stays the same drawing in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

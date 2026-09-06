@@ -1,0 +1,19 @@
+# 16 · THE DELEGATION — Sean, facing us, points each teammate to their job. v1, 10s. 2026-09-06.
+# Sean's ruling: "a medium shot of the Sean character smiling and approving … Sean points at each character assigning their roles … 10 seconds so we
+#   have room to breathe." Start: normalised/S02-sean-delegation-v1.png (chair turned to us, smiling, hands on the armrests — the pointing lives here).
+# THE FOUR DIRECTIONS from THIS camera (the ground plan, read from the S02 lens at 13.5,11 facing north; Sean faces us = south, so his right is our
+#   LEFT): Claude's NW nook = over his right shoulder, up and away to frame-LEFT; Codex's SW rack = down-left, towards the camera; Gemini at the south
+#   fifty = straight out PAST the camera; Grok's NE hole = over his left shoulder, up and away to frame-RIGHT. Four distinct point-and-nod beats, a
+#   small approving nod after each, then a 'go on' open-hands settle. Face: the closed-mouth SMILE as a constant (law 8/15: no breath word).
+# 10s = the first non-7s long roll: "please check the 10s is good and won't go in slow motion" — READ THE SHEET FOR SPREADING; the fallback is the
+#   same events at 7s, not a rewrite. seedance_2_0 fast 10s 720p ≈ 35 cr (3.5 cr/s, confirmed on the 5s roll).
+# RUN: motion/generate.sh prompts/motion/56-M3-S02-sean-delegation-10s.txt normalised/S02-sean-delegation-v1.png motion/m3-beat16/S02-sean-delegation-v1.json 10
+# RESULT: motion/m3-beat16/S02-sean-delegation-v1.mp4, **10.04s, 35 cr (the 3.5 cr/s rate holds at 10s)**, first roll. LANDED (sheet): point far-LEFT up + nod / point down-left + nod / point at the lens + nod / point far-RIGHT up + nod / the open-hands 'go on' / settles smiling. **NO SLOW MOTION** — five events fill the 10s at snap; the smile held; chair stayed turned. Layout 0.983/0.983. Sean's 10s check: passed on the sheet; his eye owed.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The young man in the office chair, facing us and smiling, lifts his right hand off the armrest and points sharply up and away over his right shoulder towards the far left of the frame, holds the point, and gives one small approving nod. He swings the point down and to the left, low and close towards the camera, and nods once. He swings it straight out at the camera, past us, and nods once. He swings it up and away over his left shoulder towards the far right of the frame, and nods once. Then he opens both hands palms up in a small "go on" gesture, drops them back onto the armrests, and settles, smiling, with one last slow nod.
+
+His mouth stays one small closed smile in every frame. His eyes stay open in every frame, following each point. His short blonde hair, his stubble and his navy T-shirt are the same in every frame. He stays seated in the same chair on the same spot on the floor in every frame, and the chair stays turned towards us in every frame. The desk, the three monitors, the cork board, the whiteboard, the printer bench, the shelf of binders, the lamp, the mug, the bell and the striped cannon stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.
