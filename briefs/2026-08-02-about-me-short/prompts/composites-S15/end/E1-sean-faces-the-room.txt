@@ -1,0 +1,14 @@
+# S15-A END frame, chain 1/5 — SEAN TURNED ROUND TO FACE US, looking at the chaos. 6.5 cr. 2026-09-06 19:21.
+# Sean: 'The Sean character in the original S15 video was a completely different person when he turned around' — law 13 (a chair spin from a back
+#   view invents his face). Fix: a 2kf. START = normalised/S15-A-all-HQ-v1.png (Sean's ChatGPT-deblurred chain-5, normalised); END = this chain:
+#   Sean facing us with HIS face (ref sean-v2, ¾ front), then the four mascots mid-action (E2–E5). The END is the FREEZE (law 21: it never animates past).
+# RUN: motion/composite.sh prompts/composites-S15/end/E1-sean-faces-the-room.txt refs/turnaround-views/sean-v2.png normalised/S15-A-all-HQ-v1.png composites/S15/E1-sean.json
+# RESULT: (rolling)
+
+Image 1 is the CHARACTER: a young man with short blonde hair, light stubble, blue eyes, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the SCENE, in which that same character is already drawn.
+
+Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same wreck, same paper and palette, and every OTHER character in the picture exactly as drawn. This is a very wide cutaway of a whole room, so the character is a small part of the picture.
+
+Change ONE thing: the man in the office chair at the desk in the centre of the far wall has spun his chair right round, so the chair's back is now to the desk and the monitors and he sits FACING US, looking out across the whole room. His whole face is visible — the short blonde hair, both eyes, the stubble, his mouth — drawn as the same young man as Image 1. His expression is dismay: both brows up, eyes wide, mouth open a little. Both hands grip the armrests, both feet on the floor. He stays in the same chair on the same spot at the same size; do not draw a second chair and do not move the desk.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.
