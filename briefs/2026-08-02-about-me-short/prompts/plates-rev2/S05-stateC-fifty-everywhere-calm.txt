@@ -1,0 +1,15 @@
+# S05 · GEMINI'S MOODBOARD, WRECKED AND CALM (room state C). Beats 15 + 16. 2026-09-06.
+# An EDIT of the locked S05 plate (normalised/S05-plate-v1.png, one design ref) — the M1 camera, the wreck dressed in (ruling 1, law 1).
+# STATE C = beat 7's fifty (S14: sketches three-deep, the spill on the table, the floor, the cartons) seen from the M1 camera, settled.
+# The S05 lesson, kept for the clip later: the wall is FULL in every frame including the first. Landmarks kept: string lights,
+#   worktable + its tape rolls / pen jar / scissors / mug, the cabinet + boxes.
+# RUN: motion/gen_image_ref.sh prompts/plates-rev2/S05-stateC-fifty-everywhere-calm.txt normalised/S05-plate-v1.png 16:9 plates/rev2/S05-stateC.json
+# RESULT: (unrolled)
+
+Edit this drawing. Keep the same camera, the same framing, the same wall, floor, paper, line and colour. Keep the string of small lights across the top, the long wooden worktable with its rolls of tape, jar of pens, scissors and mug, and the low cabinet with the stacked cardboard boxes at the left, all exactly as drawn.
+
+Bury the room in sketches. The wall is now covered edge to edge and floor to ceiling with taped sketches two and three deep, overlapping each other, crowding right up to and behind the string lights, with a few sketches hanging from the string lights by their tape. More sketches are taped over the front of the cabinet and over the boxes standing on it, over the front and the legs of the worktable, and the worktable top is buried under a drift of loose sketches that spills off its far end. The floor is carpeted with loose sketches lying flat and overlapping, everywhere, right to the bottom edge of the frame. Every sketch is the same kind of small drawing as the ones already on the wall — shopping bags, shopping carts, boxes, price tags, little round shop mascots — in the same pale coloured pencil. Everything is at rest and settled — nothing is in the air.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. The room is empty of characters and people. Do not add any text or letters.

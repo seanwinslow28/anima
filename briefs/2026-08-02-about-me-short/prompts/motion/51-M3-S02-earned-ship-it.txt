@@ -1,0 +1,14 @@
+# 17 · THE EARNED SHIP IT — v1, 2026-09-06. Beat 9's twin from the SAME start frame, with the props answering TRUE: bell full swing,
+#   ringing; cannon one HUGE clean burst. Sean's joy genuine and still small (ruling 6): arms up, one happy shake, sit up tall.
+# seedance_2_0 fast 7s 720p · start: normalised/S02-cannon-fix-v1.png (the locked beat-9 start frame)
+# The beat-9 prompt (29) with the two prop events inverted; everything else verbatim. Back to us (the facing law).
+# RUN: motion/generate.sh prompts/motion/51-M3-S02-earned-ship-it.txt normalised/S02-cannon-fix-v1.png motion/m3-beat17/S02-earned-ship-it-v1.json
+# RESULT: (unrolled)
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The young man at the desk, seen from behind, slams one key with a big flourish and throws both arms straight up over his head. On the wall at the right the small brass bell swings hard and wide on its bracket, ringing, its pull cord whipping back and forth, and the fat striped confetti cannon on its tripod fires one huge clean burst, a fountain of confetti that fills the air over the desk and flutters down everywhere. His raised arms give one small happy shake, then drop back to the keyboard, and he sits up tall in the chair.
+
+The back of his head, his short blonde hair and his navy T-shirt are the same in every frame. The chair stays at the desk. The three monitors stay the same three dark screens with the same faint lines of code in every frame, and the desk, the cork board, the shelf of binders and the whiteboard stay the same drawings in every frame. The bell stays on its bracket and the cannon stays upright on its tripod in the same spots in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

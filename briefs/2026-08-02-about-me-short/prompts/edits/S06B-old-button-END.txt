@@ -1,0 +1,11 @@
+# S06B — THE OLD BUTTON in SPLINTERS: beat 16's END frame. HELD for Q3. EDIT of the START frame once it exists (composites/M3/S06B-old-button-start → normalised). 8.5 cr.
+# RUN: motion/gen_image_ref.sh prompts/edits/S06B-old-button-END.txt normalised/S06B-old-button-start-v1.png 16:9 composites/M3/S06B-old-button-end.json
+# RESULT: (held)
+
+Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same small grey creature holding the sledgehammer in the same spot, same hole in the wall, same rocket, same rubble, same fixtures, same paper and palette.
+
+Change ONE thing: the huge BUY button standing on the floor is now smashed to pieces — a scatter of broken flat fragments lying on the rubble where it stood, a few big chunks and many small splinters, the letters B, U and Y each on a separate broken piece, tipped at different angles, with a little puff of dust settling. Nothing of it stands upright any more.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.
+
+The only text anywhere in the picture is the broken letters of the word BUY on the fragments.

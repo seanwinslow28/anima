@@ -1,0 +1,13 @@
+# 16 · PIT STOP — CODEX: one line of code. v1, 2026-09-06. Micro-task FIRST, one snap, settle, repeat. The screen stays lit; one
+#   new short line appears at the bottom of it each time (a small, checkable event; the flood was beat 6's).
+# seedance_2_0 fast 7s 720p · start: normalised/S04-codex-stateC-v1.png (same start as the sigh)
+# RUN: motion/generate.sh prompts/motion/47-M3-S04-codex-pitstop-one-line.txt normalised/S04-codex-stateC-v1.png motion/m3-beat16/S04-codex-pitstop-v1.json
+# RESULT: (unrolled)
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The small lavender cloud creature springs straight up onto the coffee counter in one hard leap and taps out exactly one short line on the counter top with both stubby arms in one quick rattle, and one new short line of code appears at the bottom of the big screen above it. It stops dead, tips its face up at the screen, and gives one crisp little nod. It hops back down to the floor, lands square, and springs straight back up onto the counter to tap out one more short line, even faster, and another new line appears on the screen.
+
+Its face is exactly one pale chevron and one short straight bar, the same chevron and the same bar in every frame. It lands on both feet after every leap. It stays small, no taller than a quarter of the black server rack beside it, in every frame. The big screen stays out on its arm over the counter, lit and full of the same dense lines of code, in every frame; the spilled cables lie still in every frame; the server rack, the coffee machine, the jug, the mugs, the counter, the cabinet with its boxes, the taped sketches and the doorway stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

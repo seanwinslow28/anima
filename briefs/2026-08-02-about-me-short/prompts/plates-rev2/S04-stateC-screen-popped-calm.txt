@@ -1,0 +1,15 @@
+# S04 · CODEX'S RACK, WRECKED AND CALM (room state C). Beats 15 + 16. 2026-09-06.
+# An EDIT of the locked S04 plate (normalised/S04-plate-v1.png, one design ref) — the M1 camera, the wreck dressed in (ruling 1, law 1).
+# STATE C = beat 6's popped screen (the S13 end frame, law 10) seen from the M1 camera. In S04 the rack stands at frame right with
+#   the counter to its LEFT, so the screen pops out of the rack's LEFT side over the counter — the same geometry as S13, consistent.
+# ONE wreck only (the screen + the cables it dragged out); the mugs and the coffee machine survive as landmarks. Dash-code, zero letters (law 7).
+# RUN: motion/gen_image_ref.sh prompts/plates-rev2/S04-stateC-screen-popped-calm.txt normalised/S04-plate-v1.png 16:9 plates/rev2/S04-stateC.json
+# RESULT: (unrolled)
+
+Edit this drawing. Keep the same camera, the same framing, the same walls, floor, paper, line and colour. Keep the wall of small taped sketches at the left, the long cabinet with the stacked cardboard boxes, the coffee counter with its coffee machine, jug and two mugs, the tall black server rack, and the doorway at the right, all exactly as drawn.
+
+Change one thing, and the mess it made: a big flat screen has popped straight out of the LEFT side of the tall black server rack on a hinged metal arm, and now hangs out over the coffee counter at the height of the rack's upper half, tilted a little towards us. The screen is lit pale and flooded edge to edge with dense lines of code, drawn as the film draws code: row upon row of small graphite dashes and short blocks, indented like program listings, packed so tight the screen reads as a solid wall of text, with a soft pale glow on the wall around it. A thick cable runs from the screen back into the rack, and a tangle of loose cables has spilled out of the rack's open side, down over the edge of the counter and onto the floor. Everything is at rest and still.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. The room is empty of characters and people. Do not add any legible text or letters.

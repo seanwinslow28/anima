@@ -1,0 +1,17 @@
+# S04 · CODEX under its wreck — beats 15 + 16 start frame, onto the state-C plate (plates/rev2/S04-stateC → normalised). 2026-09-06.
+# gpt_image_2 edit, 2 refs: refs/turnaround-views/codex-v2.png (¾ front) + normalised/S04-stateC-v1.png. 8.5 cr.
+# FACE (law 3): never write "its eyes" for Codex — "its face is tipped towards …". The far-eye dot on Sean's sheet is ON-MODEL.
+# STAGING (law 6): small at the foot of the rack, under the popped screen, ¾ front, face tipped UP at the screen. Scale law: the rack.
+# RUN: motion/composite.sh prompts/composites-M3/S04-codex-stateC.txt refs/turnaround-views/codex-v2.png normalised/S04-stateC-v1.png composites/M3/S04-codex-stateC.json
+# RESULT: (unrolled)
+
+Image 1 is the CHARACTER: a small lavender cloud creature with a scalloped puffy outline, two stubby arms, two small feet, and a face that is exactly one pale chevron and one short straight bar. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same popped-out screen on its arm, same rack, counter and spilled cables, same fixtures, same palette.
+
+POSITION: standing on the floor in front of the coffee counter, just to the LEFT of the foot of the tall black server rack, beneath the screen that hangs out over the counter. It does not cover the counter's doors or the rack.
+SCALE — draw it SMALL: it stands only thigh-high to a grown adult. At the foot of the server rack the top of its head reaches barely a quarter of the way up the rack, and it is shorter than the coffee counter beside it is tall. It is a small creature, never person-sized.
+FACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — its full face with the chevron and the bar, its scalloped body, both arms and both feet. It is NOT seen from behind and NOT in profile. Its face is tipped UP towards the screen full of code hanging above it; it is absorbed in that and never looks into the camera.
+POSE: it stands still and upright at rest, both arms hanging down at its sides, both feet flat on the floor. Draw it in the same hand as the room — graphite line with a light lavender coloured-pencil wash over its body, the same line weight as the furniture — with a soft graphite contact shadow pooled on the floor beneath it.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

@@ -1,0 +1,10 @@
+# S08 — THE GRAPH ROCKETS. Beat 17's END frame. gpt_image_2 EDIT of normalised/S08-crt-closeup-v1.png. 8.5 cr. 2026-09-06.
+# The alarm's twin, opposite result: no words — the picture is the joke (mute parity). The line climbs so steeply it leaves the screen.
+# RUN: motion/gen_image_ref.sh prompts/edits/S08-graph-rockets.txt normalised/S08-crt-closeup-v1.png 16:9 composites/M3/S08-graph-rockets.json
+# RESULT: (unrolled)
+
+Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same fixtures, same paper and palette.
+
+Change ONE thing: the television's dark screen is now lit and pale, and on it, drawn in the same graphite line as the rest of the picture, is a single jagged line that starts low in the lower left corner of the screen, dips once, and then climbs steeply up and to the right, steeper and steeper, ending in a small arrowhead that shoots right off the top edge of the screen near its upper right corner. Beneath the line, two short faint axis lines along the left and bottom edges of the screen. Nothing else on the screen.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.

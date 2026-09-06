@@ -1,0 +1,23 @@
+# S10 — SEAN, THE SWIVEL. Beat 12's start frame: chair turned to us, EYES CLOSED, palms pressed gently down at chest height. 2026-09-06.
+# gpt_image_2 edit · 2 refs: refs/turnaround-views/sean-v2.png (¾ front) + normalised/S10-sean-front-v1.png (the S10 plate, B4-A camera).
+#   8.5 cr. The v2 look-down composite is the precedent (prompts/composites-frontal/S10-sean-v2-lookdown.txt); ONE change of pose.
+# WHY THIS POSE IN THE STILL (ruling 7 + the facing law): the swivel must FINISH in the clip, never begin from his back — a rotation
+#   from a back view invents his face (beat 9 v3). So the still already holds the destination: face visible, eyes already closed.
+#   The palms-down gesture is a HELD pose (rest-pose law satisfied); the raised-arm pose was retired for silhouette risk.
+# THE MOUTH (law 8): the still holds it closed as a small straight line; the clip's "breath" is written as the SHOULDERS only.
+# CONTINUITY NIT, recorded: the S10 plate still carries the TELESCOPE at frame right (the cannon fix landed on S02 only). At this
+#   lens it is a frame-edge prop behind a held face. Options for Sean: accept; an 8.5 cannon edit of this composite; or the $0
+#   push-in crop (post/make_closeup.py) that drops the right edge and makes the film's quietest beat a closer shot.
+# RUN: motion/composite.sh prompts/composites-M3/S10-sean-swivel-eyes-closed.txt refs/turnaround-views/sean-v2.png normalised/S10-sean-front-v1.png composites/M3/S10-sean-swivel.json
+# RESULT: (unrolled)
+
+Image 1 is the CHARACTER: a young man with short blonde hair, light stubble, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette.
+
+POSITION: sitting in the office chair that is already in the scene, which is turned round to face us, the desk and the three monitors behind him. Do not draw a second chair and do not move the desk.
+SCALE: a full-grown adult in that chair — seated, his head rises clear above the chair back and sits in front of the middle monitor, his shoulders as wide as the chair back. We are looking slightly up at him from low down.
+FACING — this is the important part: he is turned three-quarters TOWARDS US, his back to the desk and the monitors. His whole face is visible — the stubble, his mouth, his full head of hair — and his chest, both arms and both knees. He is NOT seen from behind and NOT in profile. HIS EYES ARE CLOSED: both eyes shut, each drawn as one short calm curved line, his brows level and relaxed, his head level. His expression is calm and completely still, his mouth closed in one small straight line.
+POSE: he sits upright and still, at rest. Both elbows are bent and tucked near his sides, and both hands are held out low in front of his chest, PALMS FACING DOWN, fingers together and relaxed, as if gently pressing the air down towards his lap — a small, quiet, settling gesture, the hands no wider apart than his shoulders and well below his chin. Both feet flat on the floor. Draw a soft graphite contact shadow on the floor beneath his feet and the chair.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

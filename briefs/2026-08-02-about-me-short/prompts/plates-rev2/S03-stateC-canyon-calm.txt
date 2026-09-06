@@ -1,0 +1,17 @@
+# S03 · CLAUDE'S NOOK, WRECKED AND CALM (room state C). Beats 15 + 16. 2026-09-06.
+# The M3 angle ruling (wave-3 doc, ruling 1): the corner returns use the ORIGINAL M1 camera with the wreck dressed in — the
+#   "what have we done" reveal in the framing the audience knows. So this is an EDIT of the locked S03 plate (law 1: a wrecked
+#   return is an edit, not a re-angle), with normalised/S03-plate-v1.png as the ONE design ref.
+# STATE C = state B, calm: the canyon (beat 5's three towers, S12) now seen from the M1 camera, the paper storm SETTLED on the floor.
+# WHAT SURVIVES on purpose: the supply desk, the bookshelf, the filing cabinet + plant, the corner seam — the M1 landmarks.
+# A large edit re-renders the whole frame (law 1) — verify_edit reads CHECK by construction; invisible at 720p.
+# RUN: motion/gen_image_ref.sh prompts/plates-rev2/S03-stateC-canyon-calm.txt normalised/S03-plate-v1.png 16:9 plates/rev2/S03-stateC.json
+# RESULT: (unrolled)
+
+Edit this drawing. Keep the same camera, the same framing, the same two walls meeting at the same vertical corner seam, the same floor, paper, line and colour. Keep the small wooden supply desk at the left with its pencil cup and stapler, the low bookshelf of ring binders, and the tall grey filing cabinet at the right with the boxes and the trailing plant on top, all exactly as drawn.
+
+Bury the corner in paper. Where the two stacks of paper stood there are now three enormous towers of paper, each one a stack of loose sheets as wide as the old stacks but rising from the floor straight out of the top of the frame, leaning very slightly, their front edges fringed all the way up with the same small coloured sticky flags as before, hundreds of them. The floor of the whole corner is carpeted with loose sheets of paper lying flat and overlapping, drifted into heaps against the foot of the desk, the bookshelf and the filing cabinet, with a few sheets draped over the desk top and over the top shelf of binders. Everything is at rest and settled — nothing is in the air, the storm is over. The sheets are blank cream paper.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. The room is empty of characters and people. Do not add any text.
