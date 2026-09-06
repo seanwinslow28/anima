@@ -1,15 +1,5 @@
-# S15-A — THE SUPER WIDE, a CUTAWAY of the wrecked room (state C). NEW SETUP, beats 11/12. 2026-09-06. gpt_image_2 2k high 16:9, 6.5 cr. HELD FOR SEAN'S PICK (A vs B).
-# Sean's ruling: "recreate the inspiration for this whole short" (art-viz/route-c--gpt-ref.png) — a super wide of the WRECKED room, NOT from the CRT
-#   alarm POV; Sean swivels round to face the chaos; record scratch; everyone freezes; he breathes in; he turns back → 13.1.
-# Camera = room-bible/m3-candidates/SHOT-S15-A-plate-rough.png (A, the session's lean; Sean's own lean was "wider than real"): the near (south)
-#   wall REMOVED and the lens 10 ft behind where it stood, 7 ft up, 86°. An impossible camera — so is the inspiration's. Every corner is its true
-#   corner: Claude NW far-left, Codex SW near-left at the rack, Sean centre, Grok NE far-right at the hole, Gemini near-right where her wall was.
-# REFS: Images 1–3 = normalised/ELEV-west-v2.png, ELEV-north-v2.png, ELEV-east-v3.png (the three walls in frame, left / far / right, as fixture
-#   bibles). Image 4 = the plate rough (the camera). The wreck is prose from the three state-C corner plates + the NE bible. Plate is character-free;
-#   the five are CHAINED single-character edits on top (answer 3), Sean first (at the desk, back to the room, hands on the keyboard).
-# RUN: motion/gen_image_refs.sh prompts/plates-rev2/S15-A-super-wide-cutaway.txt plates/rev2/S15-A.json normalised/ELEV-west-v2.png normalised/ELEV-north-v2.png normalised/ELEV-east-v3.png room-bible/m3-candidates/SHOT-S15-A-plate-rough.png
-# RESULT: plates/rev2/S15-A-plate-v1.png -> normalised/, 6.5 cr, first roll. LANDED: the whole room in one cutaway — cooler, the popped code screen, the rack and the doorway at left; the three flagged towers, the filing cabinet, the whiteboard and the desk (chair to the desk, cannon toppled, streamers) centre; the hole, the rocket, the rubble, the dartboard, the CRT with a falling line, and the sketch drift at right; three walls, two seams, the ceiling line. The inspiration, drawn. *** THE S15-A PLATE *** -> the chain, prompts/composites-S15/.
-
+prompt bytes: 4880
+--- prompt sent ---
 Images 1, 2 and 3 are FIXTURE AND STYLE BIBLES — flat elevations of the three walls in this shot: the left wall with the doorway and the server rack, the far wall with the desk, and the right wall with the television and the dartboard. Preserve their drawing style, line weight, paper colour, palette, and the exact design of every fixture. Do NOT copy their flat orthographic camera.
 Image 4 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement exactly; replace each grey block with the corresponding fixture; remove every guide mark and every green block — the green blocks mark where people will stand and are NOT drawn.
 
@@ -25,3 +15,7 @@ The room is empty of characters and people. The chair is empty.
 Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
 
 Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.
+--- end ---
+refs: normalised/ELEV-west-v2.png normalised/ELEV-north-v2.png normalised/ELEV-east-v3.png room-bible/m3-candidates/SHOT-S15-A-plate-rough.png
+job json -> plates/rev2/S15-A.json
+exit 0

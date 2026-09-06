@@ -1,0 +1,15 @@
+# S15-A chain 4/5 — CODEX at the foot of the rack, near-left, face up at the popped screen. 6.5 cr. 2026-09-06.
+# Scene = normalised/S15-A-chain-3.png. Ref = refs/turnaround-views/codex-v2.png (¾ front). Never write 'its eyes' for Codex (law 3).
+# RUN: motion/composite.sh prompts/composites-S15/S15-A-4-codex.txt refs/turnaround-views/codex-v2.png normalised/S15-A-chain-3.png composites/S15/S15-A-4-codex.json
+# RESULT: (pending)
+
+Image 1 is the CHARACTER: a small rounded periwinkle-blue cloud creature with a bracket-and-dash face, two small brows, and short stubby arms. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same wreck, same palette, and every character already in the picture exactly as drawn. This is a very wide cutaway of a whole room, so the character is a small part of the picture.
+
+POSITION: on the LEFT wall of the room, nearer to the camera than the desk, standing on the floor at the foot of the tall black server rack, in the gap between the rack and the coffee counter, beneath the wide screen that hangs out of the rack on its arm. Its whole body is on the open floor and clear of the furniture.
+SCALE — draw it SMALL: it is a thigh-high creature. At the foot of the server rack the top of its head reaches barely a quarter of the way up the rack, and it is shorter than the coffee counter beside it is tall. It is a small creature, never person-sized.
+FACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — the pale bracket-and-dash face, both brows, its chest, both arms and both feet. It is NOT seen from behind and NOT in profile. Its face is tipped up towards the big screen of code hanging above it; it is absorbed in that and never looks into the camera.
+POSE: it stands still and upright at rest, both arms hanging down at its sides, both feet flat on the floor and clear of the baseboard. Draw it with a light coloured-pencil wash and a soft graphite contact shadow on the floor beneath it.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.
