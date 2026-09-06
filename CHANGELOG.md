@@ -13,6 +13,12 @@ the S09 state-C plate and the 18.5 twin (route a: one room-edit around the locke
 (58.6s; 108.7s of the 2:00 with M1+M2). **Held for Sean:** the S15 super-wide A/B pick (plate prompt written for A). Laws 26–33 appended to
 `prompts/_blocks.md`; tracker wave-3b table in `M1-STORYBOARD.md`; review packet `CONTINUATION-2026-09-06-wave-3b-review.md`.
 
+**Evening addendum (Sean's 17:55 rulings, 164 cr → balance 2,329).** Locked 10.5 / 13.2 / 15 ×4 / 16.5 Grok / 17 / 18.5 into `_LOCKED-M3/`;
+beat 16 re-rolled two ways with the mime written into the clip (v2 calm still, v2b determined still — Sean picks); beat 20 got its flash-and-shake
+2kf transition off the green hold; both S15 plates generated (A cutaway, B real lens); **the five-character chain ran on A, five first rolls, identity
+held at every step (law 34)**; the beat 11/12 wide clip landed (chaos first, the swivel last); rough cut v3. Owed: the freeze-frame pick, then 13.1's
+background mascots frozen to match. Laws 34–36. Review packet addendum.
+
 **Why.** Sean's 10:51 rulings + 13:53 answers (recorded in the 3b continuation) settle every open beat; this wave builds them. Two deviations
 recorded with reasons: the 18.5 ensemble was built as a room-edit around Sean's own locked composite (1 roll) instead of five chained edits
 (answer 3's route stays the fallback, unspent); the SHIP END's screen_swap paste was skipped because the edit re-drew the key cluster (law 28),

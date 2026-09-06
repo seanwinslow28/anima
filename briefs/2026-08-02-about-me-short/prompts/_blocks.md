@@ -452,3 +452,13 @@ shows — `claude-sitting-v*`), and a mascot's rest pose carries its M1 task acr
 33. **The room-bible solver grew two keys for the new setups** (`make_shot_roughs.py`): `omit=["south"]` removes a wall AND its fixtures so a cutaway
     lens can stand behind the wall plane (S15-A), and `who(..., z0=)` raises a cast block's foot so a close-up aims at the head-and-shoulders instead of
     pitching into the lap (S19, S16). Both inert when absent; the six M1 roughs stayed byte-identical.
+
+34. **The chained single-character edit route holds identity on the CLI** (S15-A, 2026-09-06 evening): five edits onto the plate, one character at a
+    time, far-to-near, eye-verified between — five first rolls, `verify_edit` PASS at four steps and a 1-px CHECK at one, every earlier figure and
+    the plate byte-close each time. The S09 failures were the MATTE (clipped ears, cut Codex) and the ONE-PASS (Codex/Gemini conflated), never the
+    single edit. Answer 3's route, now proven; the web app is the fallback, not the default.
+35. **A 2kf transition off a locked hold** (green USER → ANOTHER PROBLEM!) lands the beat-3/10 alarm shape on the first roll when the prompt is the
+    alarm-2 prompt with the start state swapped: hold / flash / bang on / the SET rocks / hold. Reuse the shape; change only the two states.
+36. **The mime lives in the clip, not the still.** "His lips move as he mouths a short, clear instruction … his face turning with it" plus DROPPING
+    the closed-mouth constant gave a living face on the calm still (16 v2); the determined still (v2b) only changes the opening expression. Write
+    the acting into the motion prompt first; re-draw the still only when the opening face itself is the note.

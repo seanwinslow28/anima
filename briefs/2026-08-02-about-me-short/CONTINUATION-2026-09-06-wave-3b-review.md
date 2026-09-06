@@ -64,3 +64,32 @@ Sean picks S15 (A/B/C) and rules on the packages above. Then: the S15 plate + ch
 size, the cannon topple, 13.1's head); copy each ✓S into `_LOCKED-M3/` at its reserved number and flip the tracker rows; re-run the rough cut with his
 trims; the stopwatch read against the 2:00 with the 5s pit stop and the 6s replay as the floors; then the movement's post list (beat 12's out-point
 before the eyes open, the 13.3 crop-in, beat 14's hold, beat 19's VO hold, beat 20's red flood + instant black).
+
+
+---
+
+## ADDENDUM — 2026-09-06 evening: Sean's 17:55 rulings executed (164 cr; balance 2,493 → 2,329, to the credit)
+
+**Locked into `_LOCKED-M3/`:** 10.5 (`16`), 13.2 (`20`), 15 ×4 (`23–26`), 16.5 Grok (`31`), 17 (`32` = the single-image v2, the packet's lean),
+18.5 (`34`). README rows + tracker rows flipped.
+
+**Built:**
+- **16 re-rolled two ways** (Sean: the face must follow the finger, the lips must move): **v2** = the calm still + the mime prompt (`motion/56b`,
+  10s, 35) — the face is alive, mouth open at every point, grin at the settle (0.972/0.972); **v2b** = a determined-face still (6.5) + the same
+  prompt (35; 0.977/0.977). They differ mainly in the OPENING face. **Sean picks.** Route C (dialogue with audio, cut in post) unspent.
+- **20 transition** (`motion/62`, 2kf green USER → ANOTHER PROBLEM!, 5s, 17.5): holds, one white flash, bangs on, the set rocks, the cable swings,
+  holds (0.991/0.991). Instant black is post.
+- **S15: both plates** (A the cutaway, B the real lens; 6.5 each, first roll) — Sean: "I agree with A, but generate B as well." **The chain ran on A**
+  (`prompts/composites-S15/S15-A-1..5`): Claude → Grok → Sean → Codex → Gemini, **five first rolls, verify pass at every step, 32.5 cr** =
+  `normalised/S15-A-all-v1.png`. **Answer 3's chained route is proven on the CLI** (law 34, below). Then **the wide clip** (`motion/63`, 24.5,
+  first roll; 0.982/0.950): chaos first, Sean's swivel in the last ~2s. `S15-wide-chaos-v1-sheet24.png` = 24 frames for the **freeze pick**.
+- **Rough cut v3** `motion/m3-roughcut/M3-roughcut-v3.mp4` (62.0s; 112.0s with M1+M2): the wide + a guessed freeze at 3.5s, the v2 mime delegation,
+  the sting transition, every lock.
+
+**Still owed by Sean:** the beat-16 pick (v2 / v2b); **the freeze frame** off the 24-frame sheet; then **13.1's background composite** — Gemini and
+Codex frozen behind him in the S16 still in the SAME poses as the freeze (an edit of `S16-sean-eyes-closed-v1.png` with the freeze frame as the
+pose reference), then the 13.1 clip re-rolled off it (6.5 + 24.5). B's chain (32.5) only if his eye moves to B after seeing both plates.
+
+**Law 34 (appended):** the chained single-character edit route holds identity on the CLI — five edits, five first rolls, the plate and every
+earlier character byte-close at each step (verify pass ×4, one 1-px CHECK). The July/September failures were the MATTE and the ONE-PASS, not the
+edit. Chain far-to-near so each new figure can overlap an earlier one correctly.

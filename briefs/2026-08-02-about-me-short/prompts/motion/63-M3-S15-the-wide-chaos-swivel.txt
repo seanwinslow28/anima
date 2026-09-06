@@ -4,7 +4,7 @@
 #   Start: normalised/S15-A-all-v1.png (the chain: everyone at rest, ¾ front; Sean back to us — the swivel TO the room is his beat).
 #   Five characters moving at once at this size: the 3½ reaction clip is the precedent. Each corner's action is its locked M2 wrong-build.
 # RUN: motion/generate.sh prompts/motion/63-M3-S15-the-wide-chaos-swivel.txt normalised/S15-A-all-v1.png motion/m3-beat11/S15-wide-chaos-v1.json
-# RESULT: (rolling)
+# RESULT: motion/m3-beat11/S15-wide-chaos-v1.mp4, 24.5 cr, first roll. LANDED (sheet + -sheet24.png for the freeze pick): the room goes at once — Claude flings pages at the towers / Codex springs tall at the rack / Grok hoists and hammers at the hole / Gemini whirls into a DIAMOND SMEAR near-right (size held, law 12) / and in the last ~2s Sean's chair spins round to face the room, hands on the armrests, head scanning. Chaos first, swivel last — the cut's order by construction. Layout 0.982/0.950. The FREEZE frame is Sean's pick off -sheet24.png (24 frames at 0.29s); the rough cut v3 guesses t=3.5s. Sean's eye owed.
 
 1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
 
