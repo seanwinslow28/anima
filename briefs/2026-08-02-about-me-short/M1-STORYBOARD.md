@@ -261,3 +261,14 @@ aloud"*; the "confirm or override" flag above (§ Spatial authority) is stale. T
 
 **$0 tools this wave:** `post/fetch_result.py` (job json → file; refuses an empty `[]`), `post/cursor_overlay.py`, `post/typewriter_reveal.py`,
 `post/m3_roughcut.py` (the SHOTS table is the edit; re-run after any change).
+
+### Sean's rulings on wave 3 — 2026-09-06 10:51 (recorded; the next session executes from `CONTINUATION-2026-09-06-wave-3b-fixes.md`)
+
+**✓S:** beat 12 (the swivel v1), 13.3 (the chat box + typewriter; Sean crops in CapCut), 14 (the replay page + post cursor), 16.5 ×3 (Claude /
+Codex / Gemini pit stops), 18 (the colorize), 19 (the green hold). **Released, kept:** the beat-13 typing clip; both beat-17 clips + the graph
+edit; the PROBLEM! sting still. **Banked elsewhere:** the four v1 sighs → beat-10.5 "sighs of distress" candidates. **Re-do:** beat 15 as
+RELIEF, 5s each. **New:** beat 11 = a super wide of the wrecked room recreating `art-viz/route-c--gpt-ref.png` (not the CRT POV; map the
+cast first); 13.1 monitors-POV medium (calm turn, eyes open on the lens); 13.2 extreme close-up of the hands typing; 16 = Sean facing us on
+the S02 framing, smiling, delegating by pointing, 10s; 17 = an extreme close-up of a SHIP key pressed (start + end frame); 18.5 = the S09
+wide in state C, the team cheering in their corners; 20 = ANOTHER PROBLEM!. **Q3 = yes** (roll the old button). Five assumptions to confirm
+are listed at the top of the 3b continuation.
