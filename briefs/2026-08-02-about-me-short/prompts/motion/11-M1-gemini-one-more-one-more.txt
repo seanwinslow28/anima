@@ -1,0 +1,32 @@
+# GEMINI, M1 beat 2 — ONE MORE, ONE MORE. Sean approved the lean, 2026-09-01.
+# seedance_2_0 fast 7s 720p | start_image: normalised/S05-gemini-composite-frontal-v1.png
+#
+# WHY THIS MOVE: acceleration is both the personality and the strongest motion shape — it ends
+#   bigger than it started, and it literally grows the wall that beat 7 (fifty concepts taped
+#   over every surface) covers. The loose sketches at its feet are already in the start frame,
+#   so nothing has to be invented.
+# DURATION RULING (2026-09-01): the approved three beats grew a fourth sheet and a leap, because
+#   the feet law is repealed and 7s is to be filled, not rationed.
+# SCALE anchor is the cabinet-and-boxes, deliberately: the worktable beside it is knee-high and
+#   the scale law says a short anchor reads as a floor, not a ceiling (S05 came back 1.78x once
+#   already on exactly that mistake).
+# RESULT — clip: motion/m1-beat2/S05-gemini-one-more-v1.mp4 | first roll, 24.5 cr
+#   *** THE PLATE IS GONE AT FRAME ZERO. layout 0.875 f0 / 0.978 last · drift 18.3% ***
+#   The model WIPED THE MOODBOARD WALL BARE for frame 0 and had Gemini tape all ~45 sketches
+#   back up over the 7 seconds, finishing on the approved plate. That is why f0 is low and last
+#   is high — the exact inverse of the ab-codex reference failure, and a different cause.
+#   DIAGNOSIS, and it is the prompt's: "the row of sketches growing sideways across the wall"
+#   told the model the wall GROWS. A wall that grows to full must start empty. The model obeyed.
+#   THE FIX is a positive constant, not a deletion: state that the wall is already covered.
+#     "The wall behind it is covered edge to edge with taped sketches in every frame, including
+#      the first frame; it adds more on top of the ones already there."
+#   BANK IT ANYWAY: performed backwards this is BEAT 7 — fifty concepts taped over every
+#   surface, built on camera. Same status as motion/ab-codex/armA.mp4, an M2 asset from an M1 roll.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The small blue-purple star creature slaps a loose sketch flat onto the wall at its own head height, its whole body squashing on the hit. It spins on the spot, snatches another sheet off the floor, springs up and slaps that one onto the wall above the first. It drops down, grabs two more sheets at once, and slaps them up in a fast one-two, the row of sketches growing sideways across the wall. It bounces backwards and throws both arms wide at the wall it has filled.
+
+Its face is exactly two round dark eyes and one small open smile, the same two eyes and the same smile in every frame. It has five points, the same five points in every frame. It lands on both feet on the floor after every leap. It stays small, no taller than half the height of the cabinet and the stacked boxes behind it, in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

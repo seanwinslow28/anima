@@ -1,0 +1,17 @@
+# 5 · CLAUDE'S 40-PAGE DOC — v3, THE BLIZZARD, 2026-09-05. v2 gave 3-6 pages a frame; Sean asked for "papers flying
+#   EVERYWHERE". v3 pushes only the paper density (dozens / blizzard / snowstorm / floor to the top of the towers) and leaves
+#   the action, the bounce wording and every constant verbatim. Start unchanged: normalised/S12-claude-v2.png.
+# If v3 still under-delivers, the honest next lever is POST: a paper-particle overlay, the way a 2D studio would do it.
+# RUN: motion/generate.sh prompts/motion/37-M2-S12-claude-canyon-v3-BLIZZARD.txt normalised/S12-claude-v2.png motion/m2-beat5/S12-claude-canyon-v3.json
+motion/m2-beat5/S12-claude-canyon-v3.mp4, 24.5 cr. MORE again: 5-8 pages a frame, pages flung over the shoulder, two leaps
+#   to the top edge, a stretched drop through the paper. Layout 0.978 / 0.955, drift 11.9%, motion 1.97 (v1 1.48, v2 1.61).
+#   THE MODEL TOPS OUT here - three densities of wording gave 1-3 / 3-6 / 5-8 pages, never a blizzard. A fourth roll is
+#   not the lever; a paper-particle overlay in POST is. Sean picks the level (v2 or v3) and rules on the overlay.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot, the lens on the floor looking straight up the towers.
+
+The small terracotta cube creature scribbles across sheet after sheet at furious speed, its whole body bouncing on every stroke, and flings each finished page over its shoulder the instant it is done, so that the air around it fills with dozens of loose pages tumbling, spinning and fluttering in every direction, a blizzard of paper. It springs straight up the face of the tallest tower in one hard leap to the top of the frame, slaps a whole armful of pages onto the tower so that loose sheets explode off the top of it, and drops back down through a thick storm of falling paper. It lands on all four feet, grabs the next sheet and scribbles even faster, pages flying off in every direction, and springs up a second time with another armful.
+
+Dozens of loose pages are tumbling through the air across the whole frame in every frame, thick as a snowstorm, from the floor to the top of the towers. Its face is exactly two small dark dot eyes and two short brows, the same two eyes and two brows in every frame. It lands on all four feet on the floor after every leap. It stays small, tinier than the shortest stack of paper, in every frame. The three towers of paper stand in the same places and reach out of the top of the frame in every frame; the shelf of binders at the left and the grey filing cabinet at the right stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

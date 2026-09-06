@@ -1,0 +1,25 @@
+# S06B · GROK at the foot of his wrong-build — beat 8 composite onto variant A (THE BREACH). 2026-09-05.
+# gpt_image_2 edit, 2 refs: refs/turnaround-views/grok2-v2.png (Sean's friendly turnaround, ¾ front, no dart —
+#   SUPERSEDES grok-v2 / grok-v2-friendly) + normalised/S06B-breach-v1.png. 8.5 cr.
+# STAGING: the builder small at the foot of his build — the same staging as Claude under the tower and Codex
+#   under the code wall, so the four wrong-builds cut as a set. He stands beside the rocket, not in front of it,
+#   so the off-camera eyeline (up at the nose cone) has somewhere real to go (the facing law).
+# THE HAMMER: in his hands at rest (head on the floor), because prop pickup fails in Seedance (S06: "he just has
+#   one"); the plate's hammer leaning on the crates is removed in the same edit. The plate itself stays the bible.
+# IDENTITY LINE VERBATIM — the Grok wording hazard; never paraphrase. Ask for the wash (S09 lesson).
+# RUN: motion/composite.sh prompts/composites-M2/S06B-grok.txt refs/turnaround-views/grok2-v2.png \
+#        normalised/S06B-breach-v1.png composites/M2/S06B-grok.json
+# RESULT: first roll, 8.5 cr, job 732eb25a. composites/M2/S06B-grok-v1.png -> normalised/. LANDED: 3/4 front, hammer head on
+#   the floor, eyes up at the nose cone, friendly grin + round red eyes held, grey wash, plate hammer removed from the crates.
+#   Scale ~0.40 of the shelf (S06 landed 0.33; within the 20% the cut tolerates). verify 0.096 / 0.548 CHECK, read as
+#   figure coverage + the same whole-frame regrow. *** THE BEAT-8 START FRAME *** -> prompts/motion/25.
+Image 1 is the CHARACTER: a round grey cartoon creature with big pointed ears, a wide friendly cartoon grin, small bright eyes and a tufted tail. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same hole in the wall, same rocket, same rubble, same fixtures, same palette. One change only besides the character: the sledgehammer that leans against the stacked crates is gone from there, because the character is holding it.
+
+POSITION: standing on the floor at the lower right of centre, at the edge of the rubble, just to the LEFT of the two stacked wooden crates and to the RIGHT of the base of the leaning rocket, with the mug on the floor near its feet. It does not cover the rocket or the crates.
+SCALE — draw it SMALL: it stands only thigh-high to a grown adult. Beside the rocket the top of its head reaches only about a third of the way up the rocket's body, and it is about a third the height of the tall shelving of ring binders at the right of frame. It is a small creature, never person-sized.
+FACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its full grin, both ears, its chest, both arms and both feet. It is NOT seen from behind and NOT in profile. Its eyes are bright, round and wide open with its brows raised, looking up and to its side at the nose cone of the rocket, delighted with it; it never looks into the camera.
+POSE: it stands still and upright at rest, both feet flat on the floor, holding the heavy sledgehammer upright in front of it with both hands on the handle and the hammer's head resting on the floor beside its feet. Draw it in the same hand as the room — graphite line with a light grey coloured-pencil wash over its body, the same line weight as the furniture — with a soft graphite contact shadow pooled on the floor beneath it.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

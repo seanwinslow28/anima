@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-05T19:05:48.747111Z",
+    "display_name": "Seedance 2.0",
+    "id": "d3a5b2e6-f512-44d4-90b6-0282ae0aee28",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "fcccca68-b3f9-4e45-bafa-4718c5ea2327",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/fcccca68-b3f9-4e45-bafa-4718c5ea2327_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe young man at the desk, seen from behind, slams one key with a big flourish and throws both arms straight up over his head. On the wall at the right the small brass bell gives one heavy swing on its bracket and sags, its pull cord swinging, and the fat striped confetti cannon on its tripod coughs out a single small puff and three pieces of confetti that flutter down to the floor. His raised arms hang there a beat, then drop back to the keyboard, and he slumps a little in the chair.\n\nThe back of his head, his short blonde hair and his navy T-shirt are the same in every frame. The chair stays at the desk. The three monitors stay the same three dark screens with the same faint lines of code in every frame, and the desk, the cork board, the shelf of binders and the whiteboard stay the same drawings in every frame. The bell stays on its bracket and the cannon stays on its tripod in the same spots in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_190548_d3a5b2e6-f512-44d4-90b6-0282ae0aee28.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_190548_d3a5b2e6-f512-44d4-90b6-0282ae0aee28_thumbnail.webp"
+  }
+]

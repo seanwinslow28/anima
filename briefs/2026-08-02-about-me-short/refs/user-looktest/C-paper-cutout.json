@@ -1,0 +1,23 @@
+[
+  {
+    "created_at": "2026-09-02T18:38:11.969559Z",
+    "display_name": "GPT Image 2",
+    "id": "6bf02956-6bd3-43ec-be7f-0d4d56a3dba5",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_183811_6bf02956-6bd3-43ec-be7f-0d4d56a3dba5_min.webp",
+    "params": {
+      "aspect_ratio": "1:1",
+      "height": 2048,
+      "medias": [],
+      "model": "videotape-alpha",
+      "prompt": "A flat grey paper cut-out of a person, as if a figure were cut with scissors from a sheet of grey card: a clean cut edge all the way round, the paper's own fibrous texture across it, and a small soft drop shadow underneath showing it is a separate piece of paper lying on top of the page. It is a flat silhouette shape with no drawn interior detail.\n\nThe figure stands still and upright at rest, both arms hanging down at its sides, both feet flat, facing straight towards us. It has NO face at all: the head is completely blank, with no eyes, no mouth, no nose, no ears and no hair. It is not a specific man and not a specific woman — no gender markers of any kind, no hairstyle, no jaw line, plain simple limbs. It wears a plain short-sleeved t-shirt with the word USER across the chest in plain capitals.\n\nIt is entirely grey and colourless — it is the only element in the picture with no colour in it at all.\n\nCentred, full body from head to feet, alone on plain empty warm cream drawing paper, a pale putty cream, never white and never yellow. Nothing else in the picture: no room, no furniture, no floor line, no shadow, no border.\n\nThe only text anywhere in the picture is the word USER on the t-shirt.\n\nHand-drawn animation pencil test on paper, paper tooth showing — no digital gradients, no painterly rendering, no photographic lighting, no 3D.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2048
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_183811_6bf02956-6bd3-43ec-be7f-0d4d56a3dba5.png",
+    "status": "completed"
+  }
+]

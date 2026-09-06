@@ -1,0 +1,27 @@
+# 4 · THE SILENT GO — v3, one re-roll on prompt-how-much levers. 2026-09-05.
+# seedance_2_0 fast 7s 720p · start: normalised/S10-sean-composite-v2.png
+# Sean on v2: "solid, but still kind of off. Re-roll one more time; v2 is usable if this doesn't work."
+# FOUR LEVERS from prompt-how-much, Sean's four events untouched:
+#   1. "Frames carry identity; the prompt is for motion" — the hair/stubble/eyes re-description is cut.
+#   2. The open mouth in v2 is almost certainly "takes a deep breath" read as an inhale through the mouth.
+#      The breath is now a CHEST-AND-SHOULDERS motion with the mouth closed (a positive state, no negation).
+#   3. "As if looking at people behind the frame" is an abstraction; the eyeline now has concrete targets —
+#      a sweep across the room at his own eye level with three short pauses.
+#   4. The chair base is a positive constant (planted; only the seat turns) — v2's swivel slid it left.
+# RESULT — motion/m2-beat4/S10-silent-go-v3.mp4, 24.5 cr. WORSE THAN v2 on both nits — report it straight:
+#   the mouth opens WIDER (a full "oh" at ~2s, again at ~5s) and the swivel displaces the chair MORE
+#   (layout last 0.884 vs v2's 0.911). Motion energy 1.71 vs 1.94. The sweep-with-pauses and the nod landed;
+#   the flick came back as an index finger again. v2 STANDS as the usable take (Sean's own fallback).
+#   NEGATIVE FINDING, two phrasings now: a closed-mouth constant does NOT hold on this face through a breath
+#   or an eye-scan — "closed mouth ... in every frame" (v2) and "chest and shoulders rise ... mouth closed" +
+#   "his mouth stays closed" (v3) both opened it. Per the S07 blink lesson, stop buying rolls against a
+#   phrasing. The remaining lever is the timing law: DELETE THE EVENT — drop the breath and let the nod
+#   carry the composure. That is Sean's addition, so it is his call.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The young man in the office chair looks up to the right, then sweeps his eyes across the room at his own eye level, right to left, pausing three times as if on three faces in front of him. His chest and shoulders rise in one slow breath and fall, mouth closed. He gives one small, decisive nod. He lifts one hand off the armrest, flicks two fingers forward once — go — and drops the hand back to the armrest. He swivels the chair round to the desk in one quick turn and puts both hands on the keyboard.
+
+His mouth stays closed and his face stays the same calm face in every frame. The chair's base stays planted on the same spot of floor in every frame; only the seat turns. The three monitors stay dark, the same three dark screens with the same faint lines of code in every frame, and the desk and the cork board behind him stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

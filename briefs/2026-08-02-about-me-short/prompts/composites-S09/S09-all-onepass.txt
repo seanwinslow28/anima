@@ -1,0 +1,39 @@
+# S09 · ALL FIVE IN ONE PASS — the A/B Sean asked for (2026-09-04): "GPT Image 2 should be able
+#   to handle multiple image references. Grok looks like you photoshopped it in."
+#   Image 1 = normalised/S09-room-reacts-v1.png (the CLEAN plate) · Images 2–6 = the five
+#   character views, in this order: claude-v2, codex-v2, sean-v4, gemini-v2, grok-v2.
+#   ONE gpt_image_2 edit, 8.5 cr, no matte. Compared against composites/S09/S09-all-v1b.png (the
+#   five-independent-edits + matte route). The July Codex/Gemini colour-family corruption that
+#   made the singles rule was measured on NB2; gpt_image_2 held five identities from the lineup
+#   on every M1 plate, so the single-pass risk is unmeasured, not known.
+#   Grok's eyeline is the v2 wording (bright round eyes, brows up, looking at his own dart) —
+#   the v1 side-glance came back as a sneer.
+# RUN: motion/gen_image_refs.sh prompts/composites-S09/S09-all-onepass.txt composites/S09/S09-all-onepass.json \
+#        normalised/S09-room-reacts-v1.png refs/turnaround-views/claude-v2.png refs/turnaround-views/codex-v2.png \
+#        refs/turnaround-views/sean-v4.png refs/turnaround-views/gemini-v2.png refs/turnaround-views/grok-v2.png
+# RESULT — first roll, 8.5 cr, job 103960d8. composites/S09/S09-all-onepass-v1.png.
+#   GROK FIXED: round bright eyes, brows up, cheerful small-tooth grin, dart held up, ears and tail
+#   whole, a soft grey wash — the affection side of the line, and he sits IN the drawing.
+#   Sean / Claude / Gemini landed (chair turned to the desk again; Gemini a touch larger, on the floor
+#   by the worktable, eyes up). Every figure carries the wash the singles lacked.
+#   CODEX DRIFTED: drawn with two round eyes and a smiling mouth — the bracket-and-dash face is
+#   gone. This is the known Codex failure (it grows a face), now on gpt_image_2 with five refs in
+#   one pass. The matte route's Codex, drawn alone, kept the `>_` face.
+#   PLATE: verify_edit 0.091 / 0.580 CHECK — a whole-frame re-render (vs the matte route's
+#   0.784 / 0.954). Every fixture is present and on-bible; the sketches and small props redrew
+#   slightly. S09 is a one-use setup with no other angle cut against this plate, so this drift is
+#   cosmetic here — it would NOT be acceptable on a corner that M1 already locked.
+
+Image 1 is the BACKGROUND SCENE: a wide view of a whole room from high up. Images 2 to 6 are five CHARACTERS, one per image. Add all five characters to Image 1. Keep Image 1 unchanged in every other respect — same camera, same framing, same fixtures, same palette. Draw every character in the same hand as the room: graphite line with a light coloured-pencil wash and a soft graphite contact shadow on the floor beneath it, the same line weight as the furniture. Each is a small part of this big picture.
+
+Image 2 — a small rounded terracotta-orange cartoon creature, a soft cube with four stubby legs, small nubs for arms and two dot eyes. It stands on the far wall's floor at the foot of the two tall stacks of flagged paper, just beside them. TINY: its head reaches only a quarter of the way up the taller stack. Turned three-quarters towards us, whole front visible, eyes on the paper stacks, at rest, all four feet on the floor.
+
+Image 3 — a small rounded periwinkle-blue cloud creature with a bracket-and-dash face, two small brows and short stubby arms. It stands on the far wall's floor in the gap between the coffee counter and the tall black server rack. TINY: its head reaches barely a quarter of the way up the rack and it is shorter than the counter. Turned three-quarters towards us, whole front visible, eyes on the rack, at rest, arms down, both feet on the floor.
+
+Image 4 — a young man with short blonde hair, a navy T-shirt, grey jeans and grey sneakers. He sits in the office chair already at the long desk on the right-hand wall; turn that chair to face the desk in the same spot, no second chair. A full-grown adult, seated, head a little above the chair back and below the cork board. Seen from behind and a little from his right, three-quarters away from us, face not visible, both hands flat on the keyboard, at rest.
+
+Image 5 — a small rounded lavender-and-blue cartoon star with a soft round belly, five points, two dot eyes and a small smiling mouth. It stands on the floor on the left side, just to the right of the wooden worktable and a step out from the wall of taped sketches. SMALL: its head sits clearly below the top of the worktable. Turned three-quarters towards us, whole front visible with all five points, eyes turned up to the sketches on the wall, at rest, arms down, both feet on the floor.
+
+Image 6 — a round grey cartoon creature with big pointed ears, a wide friendly cartoon grin, small bright eyes and a tufted tail. It stands on the open floor in the lower right, nearest the camera, in front of and to the left of the low bench with the printer on it — the largest figure standing on the floor because it is the closest, yet still a small creature only thigh-high to an adult, never person-sized. Turned three-quarters towards us, whole front visible, both ears and its tail fully drawn. Its eyes are bright, round and wide open with its brows up, looking down at the single small dart it holds in one hand; cheerful. At rest, arms down, both feet flat on the floor.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

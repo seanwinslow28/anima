@@ -1,0 +1,39 @@
+{
+  "created_at": "2026-09-05T19:05:45.64974Z",
+  "display_name": "Seedance 2.0",
+  "id": "1f2eb9b5-7a5a-42b4-ad50-5e1a5b7b5020",
+  "job_type": "seedance_2_0",
+  "min_result_url": null,
+  "params": {
+    "aspect_ratio": "16:9",
+    "bitrate_mode": "standard",
+    "duration": 7,
+    "generate_audio": false,
+    "genre": "auto",
+    "height": 720,
+    "medias": [
+      {
+        "data": {
+          "id": "b05b6756-3ea2-4760-b7c3-5c63bf39775d",
+          "type": "media_input",
+          "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/b05b6756-3ea2-4760-b7c3-5c63bf39775d_resize.jpg"
+        },
+        "role": "start_image"
+      }
+    ],
+    "mode": "fast",
+    "model": "seedance_2_0_fast",
+    "multi_prompt": [],
+    "multi_shot_mode": "custom",
+    "multi_shots": false,
+    "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe small blue-purple star creature snatches a loose sketch off the buried worktable and slaps it flat onto the wall of sketches beside it, its whole body squashing on the hit. It snatches another and slaps it higher, springs up and slaps a third higher still, then grabs two at once and slaps them up in a fast one-two, each one landing on top of the sketches already taped there. Sketches slide off the worktable and flutter to the floor with every slap. It bounces backwards, throws both arms wide at the wall, and snatches the next sketch.\n\nThe long wall is covered edge to edge with taped sketches in every frame, including the first frame, receding all the way to the far end of the room, and every sheet it slaps up goes on top of the ones already hanging there. Its face is exactly two round dark eyes and one small open smile, the same two eyes and the same smile in every frame. It has five points, the same five points in every frame. It lands on both feet on the floor after every leap. It stays small, no taller than the worktable beside it, in every frame. The worktable, the string lights, and the far wall's television, shelving and cabinet stay the same drawings in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+    "prompt_language": "en",
+    "reference_elements": [],
+    "resolution": "720p",
+    "speedramp": "auto",
+    "width": 1280
+  },
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_190545_1f2eb9b5-7a5a-42b4-ad50-5e1a5b7b5020.mp4",
+  "status": "completed",
+  "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_190545_1f2eb9b5-7a5a-42b4-ad50-5e1a5b7b5020_thumbnail.webp"
+}

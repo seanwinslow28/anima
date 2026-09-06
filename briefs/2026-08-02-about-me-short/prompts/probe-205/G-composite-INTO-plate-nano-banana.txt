@@ -1,0 +1,15 @@
+# G — the same composite instruction through nano_banana_2. LOST.
+# job 6b6c00cb-b7df-4c05-84a5-860cfb49d19d | nano_banana_2 2k 16:9
+# RESULT: integration and grounding excellent, but it RE-RENDERED rather than edited —
+#         armchair, both tables, rug and mugs deleted, camera pulled wider.
+#         FFT phase-corr 0.077; furniture-zone edge NCC 0.049 (i.e. the furniture is gone).
+# Partly the prompt's fault: 85 words that re-describe the scene. Read as a lean, not a
+# disqualification — NB2 remains the tool for RE-ANGLES, which GPT cannot do from an edit.
+
+Image 1 is the character reference lineup. Image 2 is the background scene.
+
+Add the lavender-purple cloud creature and the blue-purple star creature into Image 2, keeping their exact designs — the cloud's chevron, dot eye, underscore mouth and brows; the star's curved top point. The cloud stands at the left beside the black server rack, one stubby arm raised to it. The star stands at the right in front of the moodboard wall, one arm pointing up at it.
+
+Both are knee-high and small in the room, feet flat on the tiled floor, each with a soft graphite contact shadow beneath it.
+
+Keep Image 2 unchanged. Pencil-test register. Do not add any text.

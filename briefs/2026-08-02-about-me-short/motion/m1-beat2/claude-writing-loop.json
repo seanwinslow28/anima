@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-01T18:29:46.824205Z",
+    "display_name": "Seedance 2.0",
+    "id": "cd77cec8-6790-4652-b363-65e57158d69c",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "4f0d2af8-177b-4005-b3f4-a6a26a85d487",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/4f0d2af8-177b-4005-b3f4-a6a26a85d487_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe small terracotta cube creature scribbles fast across the top sheet of a low pile of loose paper at its feet, its whole body bouncing on every stroke. It snatches the finished sheet up, springs straight up onto the shorter paper stack beside it in one hard leap, slaps the page down on top, and drops back to the floor. It lands on all four feet, grabs the next sheet, and scribbles even faster. It springs up a second time and slams another page onto the pile.\n\nIts face is exactly two small dark dot eyes and two short brows, the same two eyes and two brows in every frame. It lands on all four feet on the floor after every leap. It stays small, no taller than a quarter of the tall flagged paper stack behind it, in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260901_182946_cd77cec8-6790-4652-b363-65e57158d69c.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260901_182946_cd77cec8-6790-4652-b363-65e57158d69c_thumbnail.webp"
+  }
+]

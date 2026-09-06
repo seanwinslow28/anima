@@ -1,0 +1,11 @@
+# SINGLE-CHARACTER MOTION, 4s — the duration control for 04
+# job 26ea565b-ddd9-42cf-a981-b680652b2251 | seedance_2_0 fast 4s 720p generate_audio:false
+# start_image: job 6505a009 | IDENTICAL PROMPT to 04, so duration is the only variable.
+# RESULT: motion energy 3.56, drift 22.4% moodboard / 23.7% table.
+#         Confirms FIRST LICKS' "DURATION IS THE DIAL between continuity and articulation".
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The lavender cloud creature hammers both stubby arms across the black rack in a frantic burst of typing, its body squashing flat on each strike and stretching tall between them. It stops dead, leans in close to peer at a blinking light, then throws both arms overhead in triumph and bounces where it stands.
+
+Its face stays a pale chevron, one dot eye and a short underscore bar with small brows. Its feet return to the floor on every landing. Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

@@ -1,104 +1,147 @@
-# Critique Rubrics & Critique-to-Action Map
+# Critique Rubrics & the Defect-to-Lever Map
 
-Read this reference when reviewing or critiquing AI-generated animation frames. Use the scoring rubric to evaluate each dimension, then use the Critique-to-Action Map to translate observations into pipeline-specific fixes.
+Read this when reviewing generated work. Score with the rubric, then use the map to turn each
+observation into a change someone can actually make.
 
-## Scoring Rubric (1-4 Scale)
+**Everything in angle brackets is supplied by the project, not by this file.** Phase 0 of the
+skill is where you find `<the reference>`, `<the register>` and `<the route>`. A rubric that
+names one project's character or one project's model is a rubric that lies to every other
+project.
 
-### A. Keyframe Quality (Gemini Generation)
+---
+
+## Scoring rubric (1–4)
+
+### A. Stills — a generated frame, keyframe or composite
 
 | Score | Identity | Style | Composition | Continuity | Technical |
-|-------|----------|-------|-------------|------------|-----------|
-| 4 | Unmistakably Sean — matches A-2 in all features | Full pencil test aesthetic: graphite lines, construction marks, cross-hatching, cream paper | Pose reads clearly, matches storyboard beat exactly | Props, clothing, direction all match previous frames | 16:9 aspect, correct paper texture, proper resolution |
-| 3 | Recognizably Sean with minor feature variance | Mostly pencil test but missing 1-2 elements (e.g., no construction lines) | Pose is close but angle or intensity differs slightly | Minor prop inconsistency (e.g., stylus angle) | Aspect ratio correct, minor texture issues |
-| 2 | Sean-like but notable drift in key features (jaw, hair) | Mixed aesthetic — some pencil test, some digital artifacts | Pose partially matches but key element wrong (arm position) | Direction or clothing change from previous frame | Aspect ratio slightly off, paper texture weak |
-| 1 | Not recognizable as Sean | Wrong aesthetic entirely (anime, vector, 3D) | Pose doesn't match storyboard at all | Major continuity break (missing prop, wrong outfit) | Wrong aspect ratio, missing paper texture |
+|---|---|---|---|---|---|
+| 4 | Unmistakably the subject; matches `<the reference>` in every named feature | `<the register>` fully intact | Staging reads clearly and matches the boarded intent | Props, wardrobe, facing, scale all match neighbouring frames | Correct aspect, correct ground, correct resolution |
+| 3 | Recognizable, minor feature variance | Mostly right, one or two register elements missing | Close, but angle or intensity differs | One minor prop or dressing inconsistency | Aspect right, minor ground issues |
+| 2 | Subject-like, but notable drift in a key feature | Mixed — part register, part model default | Partially matches; one key element wrong | Facing, wardrobe or scale changed between frames | Aspect slightly off, ground weak |
+| 1 | Not recognizable as the subject | Wrong register entirely | Does not match the intent at all | Major break — missing prop, wrong scale, wrong side | Wrong aspect, ground absent |
 
-### B. In-Between Quality (ComfyUI / Video Model)
+### B. Motion — a generated clip
 
-| Score | Identity Preservation | Motion Quality | Style Consistency | Artifact Check |
-|-------|----------------------|----------------|-------------------|---------------|
-| 4 | Character identical across all interpolated frames | Smooth arc, proper easing, follows physics | Line weight and texture match keyframes exactly | No ghosting, no double exposure, clean edges |
-| 3 | Minor drift in 1-2 frames, still recognizable | Generally smooth with 1 minor spacing issue | Mostly consistent, slight line weight variance | Minor artifact in 1 frame, not distracting |
-| 2 | Noticeable identity change mid-sequence | Linear spacing (floaty), or jerky transitions | Visible style difference from keyframes | Multiple artifacts, ghosting visible |
-| 1 | Character unrecognizable in interpolated frames | Broken motion, limbs teleport or distort | Completely different aesthetic from keyframes | Severe artifacts throughout |
+| Score | Identity | Motion quality | Style consistency | Artifacts | Background |
+|---|---|---|---|---|---|
+| 4 | Held across the whole clip | Reads with weight; accelerates and lands | Line and texture match the source still | Clean throughout | The plate holds; framing is where it started |
+| 3 | Slight drift, still reading | Generally right, one spacing issue | Slight variance | One minor artifact | Small drift, recoverable |
+| 2 | Noticeable change mid-clip | Uniform spacing (floats), or stutters | Visibly different from the still | Multiple artifacts, ghosting | Background visibly regenerating |
+| 1 | Unrecognizable partway through | Broken — limbs teleport or melt | Different aesthetic entirely | Severe throughout | Plate lost, or the camera moved when it was locked |
 
-### C. Assembly Quality (FFmpeg Export)
+### C. Assembly
 
-| Score | Timing | Loop | Format | Playback |
-|-------|--------|------|--------|----------|
-| 4 | Hold durations feel natural, pacing matches storyboard | F40 to F01 seamless, no visible cut | All formats within spec (GIF <5MB, correct codecs) | Smooth at target fps, no dropped frames |
-| 3 | Minor pacing issue in 1 transition | Slight visible seam at loop point | 1 format slightly off spec | Occasional stutter |
-| 2 | Multiple transitions feel wrong (too fast or dragging) | Obvious loop cut | Missing format or wrong codec | Playback issues |
-| 1 | Timing completely off, feels random | No loop continuity | Broken exports | Won't play |
+| Score | Timing | Continuity across cuts | Format | Playback |
+|---|---|---|---|---|
+| 4 | Pacing matches intent; holds feel natural | Every cut lands; matched shots actually match | All outputs within spec | Smooth at target rate |
+| 3 | One transition slightly off | One cut soft | One output off spec | Occasional stutter |
+| 2 | Several transitions wrong | Repeated framings read as a mistake | Missing output or wrong codec | Playback problems |
+| 1 | Timing arbitrary | No continuity | Broken exports | Will not play |
 
-## Critique-to-Action Map
+---
 
-### 1. Identity Drift
-*"The character doesn't look like Sean." / "Face shape changed." / "Wrong hair."*
+## The defect-to-lever map
 
-| Tool | Actions |
-|------|---------|
-| **Gemini (retry)** | Re-anchor from A-2 with explicit identity corrections. Add SF02-specific prompt block. Emphasize "same hair shape, same jaw angle, same eye spacing, same nose." |
-| **ComfyUI** | Increase IPAdapter weight (0.7-0.8) with A-2 as identity reference. Verify ControlNet isn't overriding facial features. |
-| **Video model** | Reject interpolation. Try different model or increase identity preservation weight. Consider shorter interpolation span. |
+Columns are **surfaces**, not products. Bind them to the project's real tools in Phase 0.
 
-### 2. Style Drift
-*"Lines are too clean." / "Looks digital." / "Missing construction lines." / "Too dark."*
+### 1. Identity drift
+*"It stopped looking like the character." / "The face changed."*
 
-| Tool | Actions |
-|------|---------|
-| **Gemini (retry)** | Add style refinement block from pencil-animation-prompt-templates.md. Emphasize "warm gray graphite, NOT black ink" and "visible construction line artifacts." |
-| **ComfyUI** | Add pencil-texture style LoRA. Reduce CFG to avoid over-sharpening. Adjust negative prompt for digital artifacts. |
-| **Post-process** | Apply paper texture overlay in compositing phase if generation can't achieve it. |
+| Surface | Lever |
+|---|---|
+| Still, retry | Re-anchor explicitly from `<the reference>`. Name the features that must hold — *"the same jaw angle, the same eye spacing, the same silhouette"* — rather than saying "keep it on-model". |
+| Motion | State identity as a **constant through time**, never as a rest state. *"Its face is exactly two dot eyes and two brows, the same two eyes and two brows in every frame"* holds; *"its face stays…"* loses to the action. |
+| Motion | **Check whether a reference image is fighting the start frame.** On some models an extra reference overrides the start frame's composition outright — verify before assuming the prompt is at fault. |
 
-### 3. Composition and Pose
-*"Pose doesn't match." / "Arms are wrong." / "Facing wrong direction."*
+### 2. Style drift
+*"Lines are too clean." / "It looks digital." / "It over-rendered."*
 
-| Tool | Actions |
-|------|---------|
-| **Gemini (retry)** | Quantify pose: specify exact angles ("right arm extended 45 degrees forward"), add red circle marker technique for prop placement. |
-| **ComfyUI** | Increase ControlNet strength (0.9+) for pose skeleton. Verify OpenPose skeleton matches intended pose. |
-| **manifest.yaml** | If storyboard needs updating, revise the pose description in the keyframe entry. |
+| Surface | Lever |
+|---|---|
+| Still, retry | Name the register positively **and** negate the render modes it must not drift to. The negation half is what stops the drift on image models. |
+| Motion | Register belongs in a **constant block that is never edited per shot.** Varying it per beat is how a sequence loses coherence. |
+| Post | If generation cannot hold it, do it in post — and make that a rule, not a rescue. Generate clean, apply the look once, downstream. |
 
-### 4. Timing and Pacing
-*"The nod feels too fast." / "The hold drags." / "Motion is monotonous."*
+### 3. Composition, pose and framing
+*"The pose is wrong." / "It cropped the thing I needed."*
 
-| Tool | Actions |
-|------|---------|
-| **manifest.yaml** | Adjust `hold_frames` for the affected keyframe. |
-| **assemble.sh** | Rebuild frame sequence with updated holds. Re-export all formats. |
-| **2d-animation-principles** | Consult Duration Defaults table. Check if hold >12 frames needs moving hold treatment. |
+| Surface | Lever |
+|---|---|
+| Still, retry | Quantify. Angles, not adjectives. |
+| Still, retry | **A framing clause silently deletes whatever falls outside the frame it names.** "Head and shoulders only" removes a raised arm — the model is obeying, not failing. When the pose lives in the limbs, write the framing around the pose. |
+| Composite | Scale and position are **never inferred**. Give an explicit scale clause and an explicit position clause in words. |
 
-### 5. Expression Mismatch
-*"Expression doesn't match the beat." / "Face is blank." / "Wrong emotion."*
+### 4. Scale failure
+*"It came back twice the size it should be."*
 
-| Tool | Actions |
-|------|---------|
-| **Gemini (retry)** | Add explicit expression direction: "eyebrows lifted, mouth open to half-smile, eyes wide with recognition." Reference storyboard beat description. |
-| **Continuity audit** | Check CC08 (expression arc) — does the emotion flow logically from the previous keyframe? |
+| Surface | Lever |
+|---|---|
+| Composite | **Anchor to a tall fixture, never a low one.** A knee-high object reads as a floor, not a ceiling. Load `visual-guides/scale-anchor-tall-object.png`. |
+| Composite | Four moves together: shout the direction, give a human yardstick, state a fraction of a tall named fixture, and negate the failure explicitly. |
 
-### 6. Paper Texture Issues
-*"Background is too white." / "Missing hole punches." / "Wrong grain."*
+### 5. Timing and pacing
+*"It's slow motion." / "The beat happens too late." / "Nothing happens."*
 
-| Tool | Actions |
-|------|---------|
-| **Gemini (retry)** | Add paper texture refinement block. Specify "#FAF5E8 warm cream with visible grain texture, three hole-punch marks at bottom edge, hand-written production label." |
-| **Post-process** | Overlay scanned paper texture if generation consistently fails this check (SF04). |
+| Surface | Lever |
+|---|---|
+| Motion | **Duration ÷ events sets the tempo.** One action given the whole duration gets spread across it, and spreading is slow motion. A repeating loop cannot degenerate that way. |
+| Motion | **To move a beat earlier, delete an event — do not shorten a sentence.** Models spend time on events, not on words. A described hold is itself an event; write it as a state instead. |
+| Motion | **Damping words dampen.** "Gentle", "unhurried", "settle", "small", "ease into" all reduce energy. There is no calm register — calm is a small action at full snap. |
+| Assembly | Some timing is not a generation problem at all. Generate long, cut short. |
 
-### 7. Continuity Breaks
-*"Stylus switched hands." / "Outfit changed." / "Scale is off."*
+### 6. Under-motion and smears
+*"It barely moves." / "I asked for a smear and got none."*
 
-| Tool | Actions |
-|------|---------|
-| **Gemini (retry)** | Add CRITICAL CONTINUITY note to prompt. Use red circle marker technique for prop hand placement. Reference the approved previous frame explicitly. |
-| **continuity_audit.py** | Run full CC01-CC08 check. Log findings with frame number and description. |
-| **Frame chaining** | Ensure the correct approved frame is being passed as reference in generate.py. |
+| Surface | Lever |
+|---|---|
+| Motion | Pair any effect with a **subject** motion; a static subject stays frozen while the effect fires. |
+| Motion | **Smears come from reversals and rotations, never from one-way translations.** No wording will smear a single reach. Load `visual-guides/smear-from-repeated-motion.png`. |
+| Still | **The still must hold a rest pose, not an instant.** A mid-action still forces the motion model to repeat or undo the pose. Load `visual-guides/rest-pose-vs-mid-action.png`. |
 
-### 8. AI Interpolation Artifacts
-*"Ghosting between frames." / "Melted features." / "Double exposure."*
+### 7. Continuity breaks
+*"The prop switched hands." / "Two shots that should match don't."*
 
-| Tool | Actions |
-|------|---------|
-| **Video model** | Reject and retry with different seed. Try a different model (Veo vs Wan vs Kling). Reduce interpolation span (fewer frames between keyframes). |
-| **ComfyUI** | Reduce denoise strength. Increase ControlNet weight. Verify pose skeleton is clean. |
-| **RIFE/FILM** | Lower exp value. Use FILM instead of RIFE for large motion gaps. |
+| Surface | Lever |
+|---|---|
+| Still, retry | State the continuity requirement as critical and reference the approved neighbouring frame explicitly. |
+| Planning | When a new angle **invents** a zone of a location, ratify that frame before any other angle showing the same zone — it becomes that zone's reference. Otherwise the fixtures drift between angles. |
+| Audit | Run whatever structural check the project has, and record findings against a frame identifier. |
+
+### 8. Background and plate loss
+*"The room redrew itself." / "The camera moved and I locked it."*
+
+| Surface | Lever |
+|---|---|
+| Motion | Name the camera state deliberately. Locked and free are a dial, not a default. |
+| Motion | Prop-dense frames drift most. Consider two keyframes from the same plate, or matting the subject out and re-laying it on the pristine plate. |
+| Measurement | Compare frame zero **and** the last frame against the source. A low frame-zero score is a re-camera, not drift, and the two have different fixes. |
+
+### 9. Interpolation artifacts
+*"Ghosting." / "Melted features." / "Double exposure."*
+
+| Surface | Lever |
+|---|---|
+| Motion | Reject and retry with a different seed before changing anything else. |
+| Motion | Shorten the span the model has to invent. |
+| Route | If it repeats across seeds, it is the route, not the roll. |
+
+### 10. Refusals
+*"It came back with no image."*
+
+| Surface | Lever |
+|---|---|
+| Any | Content filters read **wording**, not intent. Describe the same subject and the same action in plainer, warmer terms. |
+| Archive | **Record the wording that passed, verbatim.** A refusal rediscovered twice is a process failure, not a model failure. |
+
+---
+
+## Two standing cautions
+
+**The eye outranks the metric.** A result can pass every measurement and still be wrong. Metrics
+catch structural failure — a lost plate, a re-camera, a drifted identity — and nothing else.
+Show the work; do not report numbers about it.
+
+**Record the reversal.** When a critique overturns an earlier ruling, write down why, keep the
+superseded artifact, and state what the change costs. The prompt archive is the project's
+memory, and the files marked REJECTED are the most valuable ones in it.

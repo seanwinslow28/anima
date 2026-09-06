@@ -1,0 +1,42 @@
+{
+ "R1": [
+  "spacing-ease-in-out",
+  "1:1",
+  921
+ ],
+ "R2": [
+  "squash-and-stretch",
+  "16:9",
+  895
+ ],
+ "R3": [
+  "spacing-accelerating",
+  "16:9",
+  904
+ ],
+ "C1": [
+  "twinning-detection",
+  "16:9",
+  784
+ ],
+ "C2": [
+  "anticipation-action-settle",
+  "16:9",
+  751
+ ],
+ "N1": [
+  "smear-from-repeated-motion",
+  "16:9",
+  879
+ ],
+ "N2": [
+  "scale-anchor-tall-object",
+  "16:9",
+  887
+ ],
+ "N3": [
+  "rest-pose-vs-mid-action",
+  "16:9",
+  901
+ ]
+}

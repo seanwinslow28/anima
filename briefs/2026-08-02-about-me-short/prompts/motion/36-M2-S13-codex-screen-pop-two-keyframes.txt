@@ -1,0 +1,21 @@
+# 6 · CODEX REBUILDS EVERYTHING — v2, TWO KEYFRAMES, 2026-09-05. Sean's shape: "Codex should hit the computer tower, the
+#   screen pops out from the side with lines of code and Codex then codes at max speed. The screen flashes and floods with
+#   code." The corner is now the S04 corner (no cooler); the screen exists only in the END frame.
+# seedance_2_0 fast 7s 720p · start: normalised/S13-v2-codex-v1.png (no screen) · end: normalised/S13-v2-screen-popped-v1.png
+# THE SHAPE: spring at the rack and slam it with both arms / the screen BANGS out of the rack's side on its arm / Codex drops to
+#   the counter and hammer-types at max speed, the whole body a blur / the screen FLASHES and floods with code faster and
+#   faster / it finishes and stands back beside the rack (the end frame). Register + vocabulary VERBATIM; face constant.
+# RUN: motion/generate2kf.sh prompts/motion/36-M2-S13-codex-screen-pop-two-keyframes.txt normalised/S13-v2-codex-v1.png normalised/S13-v2-screen-popped-v1.png motion/m2-beat6/S13-codex-screen-pop-v2.json
+# RESULT: motion/m2-beat6/S13-codex-screen-pop-v2.mp4, 24.5 cr, first roll of the two-keyframe route. THE WHOLE SHAPE: hit the rack /
+#   the screen BANGS out white on its arm / Codex springs onto the counter and hammer-types / the screen floods with code /
+#   flashes white / floods again / Codex drops to the floor. Layout 0.987 vs start, 0.988 vs end - both keyframes held; motion
+#   2.01. ONE REGISTER SLIP for the eye: the first flood comes in GREEN-PHOSPHOR code (~2s, frames 5-7 of the sheet), then
+#   settles to graphite dash-code. Face: bracket + dash held, the far-eye dot squints during the effort. SUPERSEDES v1 (27).
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The lavender cloud creature springs at the tall black server rack and slams it with both stubby arms in one hard hit. A big flat screen bangs straight out of the rack's side on a hinged arm and swings out over the coffee counter, flashing white as it lights, then floods edge to edge with lines of code. The creature drops onto the counter and hammer-types on the counter top at maximum speed, both arms a blur with speed lines, its whole body bouncing on every hit, while the code on the screen scrolls upward faster and faster and the screen flashes with each new flood of lines. It types in one last hard flourish, hops back down to the floor, and stands beside the rack looking up at the screen full of code.
+
+Its face is exactly one pale chevron and one short straight bar, the same chevron and the same bar in every frame. It lands on both feet after every leap. It stays small, no taller than a quarter of the black server rack beside it, in every frame. Once the screen is out it stays out on its arm in the same place, lit and full of code, in every frame. The server rack, the coffee machine, the jug, the mugs, the storage cabinet and the doorway stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

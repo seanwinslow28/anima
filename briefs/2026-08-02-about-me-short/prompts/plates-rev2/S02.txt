@@ -1,0 +1,11 @@
+Image 1 is the FIXTURE AND STYLE BIBLE — a flat elevation of this wall. Preserve its drawing style, line weight, paper colour, palette, and the exact design of every fixture on it. Do NOT copy its flat orthographic camera.
+Image 2 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement; replace each grey block with the corresponding fixture from Image 1; remove every guide mark.
+
+CAMERA: a medium shot from inside the room looking straight at the north wall, eye level, slightly above a seated person and tipped a little down so the floor shows along the bottom of frame. The desk fills the middle of the frame.
+VISIBLE LEFT TO RIGHT: the edge of a whiteboard covered in half-erased diagrams; a low bench with a printer and stacked paper trays; the wide wooden desk with three monitors showing quiet lines of code, a desk lamp, a mug and a leaning stack of paper; above it a corkboard thick with pinned notes, a floating shelf of ring binders with a trailing plant, and a bundle of cables running down the wall; at the right edge a small brass bell on a wall bracket with a pull cord, and a confetti cannon standing on a tripod.
+OUT OF FRAME: every other wall. No paper towers, no server rack, no dartboard, no moodboard, no television.
+The room is empty of characters and people. An empty office chair stands at the desk.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.

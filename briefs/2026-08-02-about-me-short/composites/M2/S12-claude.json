@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-05T19:00:18.605782Z",
+    "display_name": "GPT Image 2",
+    "id": "8b6d84b5-a599-4ee1-90bf-22af3e8d3b43",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_190018_8b6d84b5-a599-4ee1-90bf-22af3e8d3b43_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "bad00efb-c092-41a0-848e-3473676f4752",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/bad00efb-c092-41a0-848e-3473676f4752.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "b5bf3fc7-a886-4181-921c-30153e64fdf9",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/b5bf3fc7-a886-4181-921c-30153e64fdf9_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a small rounded terracotta-orange cartoon creature, a soft cube with four stubby legs, small nubs for arms, and two dot eyes, sitting on the floor writing on a sheet of paper with a pencil. Image 2 is the BACKGROUND SCENE.\n\nAdd the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same steep upward perspective, same towers of paper, same fixtures, same palette. This picture is seen from a lens lying on the floor looking up, so the character is the one thing at floor level.\n\nPOSITION: sitting on the floor at the very bottom of the frame, in the centre, at the foot of the tallest tower of paper, between the base of that tower and the bottom edge of the picture, with a sheet of paper on the floor in front of it. Its whole body is inside the bottom third of the frame.\nSCALE — draw it SMALL: it is a tiny creature, only knee-high to a grown adult even standing, and here it sits. The top of its head reaches no higher than a quarter of the way up the shortest stack of paper at the right of centre, and it is dwarfed by the towers above it. It is never person-sized.\nFACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its full face, its chest and its legs. It is NOT seen from behind and NOT in profile. Its eyes are cast down at the sheet of paper it is writing on; it is absorbed in that and never looks into the camera.\nPOSE: it sits still at rest on the floor, one arm nub holding the pencil to the page, the other resting on the floor. Draw it in the same hand as the room — graphite line with a light terracotta coloured-pencil wash, the same line weight as the furniture — with a soft graphite contact shadow pooled on the floor beneath it.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_190018_8b6d84b5-a599-4ee1-90bf-22af3e8d3b43.png",
+    "status": "completed"
+  }
+]

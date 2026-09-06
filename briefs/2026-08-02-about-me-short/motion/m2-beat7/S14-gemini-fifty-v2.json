@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-05T19:49:26.032238Z",
+    "display_name": "Seedance 2.0",
+    "id": "7e29933a-93da-4ec2-b832-603e55c6309a",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "09c0d55f-e77b-4b43-becc-0a916eef185e",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/09c0d55f-e77b-4b43-becc-0a916eef185e_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe small blue-purple star creature spins on the spot into a whirling tornado, a spinning blur of blue and purple with speed lines, and only its arms whip out of the whirl to slap sketch after sketch onto the wall beside it faster than the eye can follow, high and low, sketches flying up off the worktable into the whirl and out onto the wall. It stops dead for one instant, arms wide at the wall, grinning, then spins up again even faster, the whirl whipping more sketches onto the wall and sending loose sheets flying off the table onto the floor. It stops dead a second time, snatches a sheet, and whirls again.\n\nThe long wall is covered edge to edge with taped sketches in every frame, including the first frame, receding all the way to the far end of the room, and every sheet it slaps up goes on top of the ones already hanging there. Whenever it stops, its face is exactly two round dark eyes and one small open smile, the same two eyes and the same smile every time, and it has the same five points every time. It stays in the same spot on the floor beside the near end of the worktable in every frame, and it stays small, no taller than the worktable, in every frame. The worktable, the string lights, and the far wall's television, shelving and cabinet stay the same drawings in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_194926_7e29933a-93da-4ec2-b832-603e55c6309a.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_194926_7e29933a-93da-4ec2-b832-603e55c6309a_thumbnail.webp"
+  }
+]

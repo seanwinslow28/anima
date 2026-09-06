@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-05T19:01:16.83885Z",
+    "display_name": "GPT Image 2",
+    "id": "0f0620e7-6dbd-42fa-b2ff-3b982323d8da",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_190116_0f0620e7-6dbd-42fa-b2ff-3b982323d8da_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "cfd2178f-d763-48df-bd70-9b97335ed8e2",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/cfd2178f-d763-48df-bd70-9b97335ed8e2_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same young man in the chair, same desk, monitors, bell and every other fixture, same paper and palette.\n\nChange ONE thing: the tall thin patterned tube standing on the tripod at the right of frame is now a confetti cannon: a short, fat barrel shaped like a stubby mortar, about twice as wide as the old tube and half as long, with a wide flared open muzzle angled up towards the desk, painted in cheerful party stripes with a few small confetti shapes, standing on the same squat tripod in the same spot, with a pull-cord ring dangling from its base. It is loaded and quiet.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_190116_0f0620e7-6dbd-42fa-b2ff-3b982323d8da.png",
+    "status": "completed"
+  }
+]

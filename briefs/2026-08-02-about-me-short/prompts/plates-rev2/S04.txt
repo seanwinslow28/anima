@@ -1,0 +1,11 @@
+Image 1 and Image 2 are FIXTURE AND STYLE BIBLES — flat elevations of the two walls that meet in this corner. Preserve their drawing style, line weight, paper colour, palette, and the exact design of every fixture. Do NOT copy their flat orthographic camera.
+Image 3 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement; replace each grey block with the corresponding fixture; remove every guide mark.
+
+CAMERA: a medium-wide from inside the room looking into the SOUTH-WEST CORNER, eye level, tipped down so the floor occupies the lower third. Two walls meet in frame and the corner seam is visible.
+VISIBLE LEFT TO RIGHT: on the left-hand wall — the west end of a wall of taped-up concept sketches on small coloured sheets, and below it a low storage cabinet with cardboard cartons stacked on top; then the corner; then on the right-hand wall a low counter with a drip coffee machine, a glass jug and stacked mugs, a tall black server rack full of small coloured status lights with loose cabling looped down its side, and beyond it the edge of a plain open doorway.
+OUT OF FRAME: the desk with monitors, the paper towers, the dartboard, the television.
+The room is empty of characters and people. The floor beside the rack stays clear.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.

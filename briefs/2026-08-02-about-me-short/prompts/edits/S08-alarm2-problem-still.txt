@@ -1,0 +1,18 @@
+# S08 — ALARM #2, PROBLEM (STILL!) — beat 10. gpt_image_2 EDIT of normalised/S08-crt-closeup-v1.png. 8.5 cr. 2026-09-05.
+# The END/START keyframe for the beat-10 clip: the S07 alarm design carried onto the closeup and made BIGGER — the
+#   closeup is the escalation without a new drawing (production map). Shake + red flood are POST (a shake
+#   contradicts the locked-tripod clause). Same edit discipline as the S07 rev2 edit: role-tag, hold, ONE change,
+#   style token, text clause; fixtures deliberately not enumerated.
+# THE DESIGN, bigger than beat 3 in three ways: PROBLEM fills the screen's width; a second line (STILL!) in
+#   brackets beneath it — legible now because the screen is ~60% of frame width, the reason S08 exists; the
+#   jagged line falls STEEPER and runs off the bottom edge of the screen.
+# RUN: motion/gen_image_ref.sh prompts/edits/S08-alarm2-problem-still.txt normalised/S08-crt-closeup-v1.png 16:9 plates/rev2/S08-alarm2.json
+# RESULT: (unrolled)
+
+Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same fixtures, same paper and palette.
+
+Change ONE thing: the television's dark screen is now lit and pale, and on it, drawn in the same graphite line as the rest of the picture, is the word PROBLEM in big plain capitals filling the width of the screen across the top, with the word (STILL!) in smaller plain capitals inside round brackets on a second line directly beneath it, and beneath that a jagged line falling steeply from upper left to lower right, ending in a small arrowhead that runs right off the bottom edge of the screen.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.
+
+The only text anywhere in the picture is PROBLEM and (STILL!) on the television screen.

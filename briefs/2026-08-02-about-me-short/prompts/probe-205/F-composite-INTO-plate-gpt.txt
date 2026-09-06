@@ -1,0 +1,19 @@
+# F — character-into-plate edit, GPT Image 2. *** THE WINNER, and the settled route ***
+# job bdb29698-9716-41a5-b8c9-670cdea63401 | gpt_image_2 2k/high 16:9
+# refs: cast-scale-lineup.png + D-clean-plate.png
+# RESULT: FFT phase-corr 0.412 vs NB2's 0.077; furniture-zone edge NCC 0.609 vs 0.049.
+#         Armchair, tables, mugs, rug and camera all preserved; Gemini correctly occluded
+#         BEHIND the round table. Contact shadows produced unprompted — grounding solves itself.
+# WHY GPT: prompt-how-much records its edit path as SURGICAL-ONLY, unable to re-camera.
+#          For a locked-plate composite that limitation is exactly the requirement.
+# CAVEAT: this prompt is ~85 words and re-describes the scene. prompt-how-much says
+#         ≤70 words and NEVER re-describe the scene — that over-length is what cost NB2
+#         its plate. Later plates use the tighter form; see plates/S03-claude-nook.txt.
+
+Image 1 is the character reference lineup. Image 2 is the background scene.
+
+Add the lavender-purple cloud creature and the blue-purple star creature into Image 2, keeping their exact designs — the cloud's chevron, dot eye, underscore mouth and brows; the star's curved top point. The cloud stands at the left beside the black server rack, one stubby arm raised to it. The star stands at the right in front of the moodboard wall, one arm pointing up at it.
+
+Both are knee-high and small in the room, feet flat on the tiled floor, each with a soft graphite contact shadow beneath it.
+
+Keep Image 2 unchanged. Pencil-test register. Do not add any text.

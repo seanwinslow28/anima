@@ -1,0 +1,21 @@
+# S08 CRT CLOSEUP — THE USER ON SCREEN, grey. v2. gpt_image_2 composite, 2 refs, 16:9. 8.5 cr.
+# v1 (refs/user-looktest/S08-grey.png) is KEPT — Sean: "keep these 2 just in case."
+# THE v1 DEFECT WAS MINE, TWICE OVER:
+#   1. I reported v1 as having lost its construction lines. It had not. The crop is head and
+#      shoulders, so the SHOULDERS ARE THE ONLY JOINTS IN FRAME, and their circles were there.
+#      Sean caught it. Nothing was missing; I misread my own image.
+#   2. The real defect, which I missed, is in the green v2 file: "head and shoulders only"
+#      instructed the model to cut off the raised arm. See that file.
+# This v2 changes ONE thing against v1 — it names the construction lines as something to
+#   preserve rather than leaving them to "the same graphite". Worth one roll to see whether
+#   naming them strengthens them at screen scale; v1 already passes.
+
+Image 1 is the character. Image 2 is the scene (the CRT closeup) — keep image 2 exactly as it is, every fixture, the camera, the framing, the paper and the palette unchanged.
+
+One change only: the television's dark screen is now lit and pale, and image 1's character is on the screen from the waist up, centred, filling the screen, its head near the top edge and the word USER on its shirt sitting well inside the screen with clear space beneath it, never cropped by the screen edge.
+
+Keep the character's construction lines exactly as image 1 draws them: the crosshair across its blank head, the light centre line down its body, the small circles at its shoulders and elbows, and the broken searching contour gone over two or three times. It is a picture on the television, drawn in the same graphite and the same grey as image 1.
+
+The only text anywhere in the picture is the word USER on its shirt.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.

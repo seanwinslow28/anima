@@ -105,3 +105,35 @@ Educational animation diagram showing TWINNING detection. Two versions of the sa
 ```
 Educational animation diagram showing LINE OF ACTION. Three character poses side by side, each with a single curved line drawn through the body showing the energy flow. LEFT pose: character standing confidently with a gentle S-curve line of action through their body, from head through spine to planted foot. Label: 'S-Curve — confident, dynamic'. CENTER pose: character leaning forward eagerly with a strong C-curve line of action, body forming a clear arc. Label: 'C-Curve — forward energy'. RIGHT pose: character standing perfectly straight with a rigid vertical line. Label: 'Straight — stiff, lifeless'. The curved lines are drawn in RED overlaid on each figure. A note below: 'Draw the line of action FIRST, then build the pose around it'. Title: 'Line of Action — The Energy Spine'. Clean pencil sketch style, white background.
 ```
+
+---
+
+# 2026-09-03 — rebuilds, corrections and additions
+
+Rendered with `gpt_image_2` (quality high, 2k) rather than AI Studio: these are text-heavy
+diagrams and that model renders lettering reliably. Full prompts in
+[`v2/PROMPTS-2026-09-03.md`](v2/PROMPTS-2026-09-03.md); superseded originals in
+[`old/`](old/), suffixed with their 2026-06-15 date.
+
+**Why the rebuilds happened.** Sean, 2026-09-03: the guides are *"the 2D animation principles
+visually described as educational diagrams and they don't SHOW what it would look like on a
+character or object."* True of exactly three of the thirteen — the rest already showed a figure
+or a limb. **`arc-paths.png` is the standard the three were raised to:** it keeps the abstract
+diagram *and* draws it on a real arm with ghosted in-betweens. Diagram alone cannot calibrate
+"is this floaty"; a character at the same spacing can.
+
+| File | Change |
+|---|---|
+| `spacing-ease-in-out.png` | REBUILT — dot columns kept, a character now falls at the matching spacing beside each column |
+| `squash-and-stretch.png` | REBUILT — ball arc kept on top, the same five stages now shown on a character below, bracketed to each stage. Also fixes the duplicated "3) Squash (impact)" label |
+| `spacing-odd-rule.png` → `spacing-accelerating.png` | REBUILT AND RENAMED — the physics notation (`v = at`, `s = ½gt²`) is not a lever anyone can prompt. Replaced with an accelerating fall drawn on a character, gaps measured in units |
+| `twinning-detection.png` | CORRECTED — the original read "both legs mirrored **ams** and angles" |
+| `anticipation-action-settle.png` | CORRECTED — every stage label was duplicated top and bottom, identically |
+| `smear-from-repeated-motion.png` | **NEW** — a one-way translation stays crisp; only a reversal or a rotation produces a smear |
+| `scale-anchor-tall-object.png` | **NEW** — a knee-high anchor reads as a floor, not a ceiling; anchor to a tall fixture and state a fraction |
+| `rest-pose-vs-mid-action.png` | **NEW** — the still holds a position, never an instant; held is not the same as transient |
+
+**The three new guides are generative-animation principles, not hand-drawn ones.** The original
+thirteen teach what to draw on frame 4 versus frame 5, which is craft knowledge for an animator.
+These three teach what a *prompt* has to say to get a result out of an image or video model, and
+each was learned by measuring a failure rather than by reading a book.

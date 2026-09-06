@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-05T19:08:52.158649Z",
+    "display_name": "Seedance 2.0",
+    "id": "8b3f0816-59b6-421f-92e7-4263eb6ab592",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "59154512-5624-46d1-8e9d-f3ca65650dbc",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/59154512-5624-46d1-8e9d-f3ca65650dbc_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot, the lens on the floor looking straight up the towers.\n\nThe small terracotta cube creature scribbles fast across the sheet of paper on the floor in front of it, its whole body bouncing on every stroke. It snatches the finished sheet up and springs straight up the face of the tallest tower in one hard leap, clean out of the top of the frame. A shower of loose pages spirals down past the towers, and it drops back into frame and lands on the floor at the foot of the tower. It lands on all four feet, grabs the next sheet, scribbles even faster, and springs up out of the top of the frame a second time.\n\nIts face is exactly two small dark dot eyes and two short brows, the same two eyes and two brows in every frame. It lands on all four feet on the floor after every leap. It stays small, tinier than the shortest stack of paper, in every frame. The three towers of paper stand in the same places and reach out of the top of the frame in every frame; the shelf of binders at the left and the grey filing cabinet at the right stay the same drawings in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_190852_8b3f0816-59b6-421f-92e7-4263eb6ab592.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_190852_8b3f0816-59b6-421f-92e7-4263eb6ab592_thumbnail.webp"
+  }
+]

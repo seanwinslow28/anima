@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-02T20:20:55.36517Z",
+    "display_name": "GPT Image 2",
+    "id": "f327e6f5-a7ee-4466-aad7-beb15b3ec544",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_202055_f327e6f5-a7ee-4466-aad7-beb15b3ec544_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "0a21c4d8-8917-4928-be74-580c57a6a57d",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/0a21c4d8-8917-4928-be74-580c57a6a57d.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "127cc516-3303-4b73-8186-66ead931cbc4",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/127cc516-3303-4b73-8186-66ead931cbc4_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the character. Image 2 is the scene — keep image 2 exactly as it is, every fixture, the camera, the framing, the paper and the palette unchanged.\n\nOne change only: the television's dark screen is now lit and pale, and image 1's character is on the screen, head and shoulders only, centred, filling the screen from side to side with its head near the top edge. It is a picture on the television, drawn in the same graphite and the same green as image 1.\n\nThe only text anywhere in the picture is the word USER on its shirt.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_202055_f327e6f5-a7ee-4466-aad7-beb15b3ec544.png",
+    "status": "completed"
+  }
+]

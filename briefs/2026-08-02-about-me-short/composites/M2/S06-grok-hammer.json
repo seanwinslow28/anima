@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-05T19:49:39.116584Z",
+    "display_name": "GPT Image 2",
+    "id": "7420ab72-d4f6-47c5-8d07-5a7b0cde4cd3",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_194939_7420ab72-d4f6-47c5-8d07-5a7b0cde4cd3_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "c4730b4a-8186-48d1-8e53-2de24224a7fb",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/c4730b4a-8186-48d1-8e53-2de24224a7fb.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "3f8a0e5f-05bd-4817-ac6b-ac1bed43c053",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/3f8a0e5f-05bd-4817-ac6b-ac1bed43c053_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a round grey cartoon creature with big pointed ears, a wide friendly cartoon grin, small bright eyes and a tufted tail. Image 2 is the BACKGROUND SCENE.\n\nAdd the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette.\n\nPOSITION: standing on the open floor in the lower middle of the frame, just to the left of the round three-legged side table and below the dartboard. It must not cover the vertical seam where the two walls meet — that corner stays visible behind it.\nSCALE — draw it SMALL: it stands only thigh-high to a grown adult. Beside the round side table the top of its head is barely above the level of the tabletop, and it is only about a third the height of the tall binder shelving at the right of frame. It is a small creature, never person-sized.\nFACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its full grin, both ears, its chest, both arms and both feet. It is NOT seen from behind and NOT in profile. Its eyes are bright, round and wide open with its brows raised, looking off to one side at the bare wall beside the side table, gleeful; it never looks into the camera.\nPOSE: it stands still and upright at rest, both feet flat on the floor and well clear of the baseboard, holding a heavy sledgehammer upright in front of it with both hands on the handle and the hammer's head resting on the floor beside its feet. Draw it in the same hand as the room — graphite line with a light grey coloured-pencil wash over its body, the same line weight as the furniture — with a soft graphite contact shadow pooled on the floor beneath it.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_194939_7420ab72-d4f6-47c5-8d07-5a7b0cde4cd3.png",
+    "status": "completed"
+  }
+]

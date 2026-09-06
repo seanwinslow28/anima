@@ -1,0 +1,32 @@
+# S02 — THE ALL-CORNERS ESTABLISHING WIDE. *** CUT BY SEAN 2026-08-30 ***
+# job c3367ac0-2ead-4daf-9e26-947701576f29 | gpt_image_2 2k/high 16:9
+# refs: route-c--gpt-ref.png (world bible) + M1-S02-hq-wide-guide.png (rough) + cast lineup
+# RESULT: technically a success — followed the left-to-right placement exactly, empty doorway,
+#         CRT high right, darts in the wall, scale correct, and it did NOT read flat.
+#         Palette: wall passed (delta 6/3/0), floor failed (13/10/3).
+# WHY CUT (Sean): "all of the characters are looking at the camera and they're not in their own
+#         corners. They're all closer to the center of the room. It defeats the purpose."
+# TWO LESSONS, both now standing rules:
+#   1. FIVE LANES ALONG ONE WALL ARE NOT CORNERS. A corner needs its own wall and depth.
+#   2. STATE FACING, not just position. Facing was never specified, so everything
+#      defaulted to addressing the lens.
+# KEPT because this is also the reference implementation of the RECONSTRUCTION PATTERN
+# (prompt-how-much): Image 1 = world/style/fixture bible with its CAMERA EXPLICITLY EXCLUDED,
+# Image 2 = the monochrome composition rough, plus CAMERA / VISIBLE LEFT-TO-RIGHT / OUT OF
+# FRAME stated separately. Use this shape for any future re-angle.
+
+Image 1 is the WORLD AND STYLE BIBLE for this room: preserve its fixture designs, materials, palette, light and rendering. Do NOT copy its camera, framing, horizon or screen-space layout.
+Image 2 is the COMPOSITION ROUGH: follow its camera, perspective, horizon and left-to-right placement exactly; replace its grey shapes with the corresponding characters and fixtures; remove every guide mark, number, label, tick and caption.
+Image 3 is the character reference lineup: keep each character's exact design, proportions and facial features.
+
+CAMERA: a straight-on wide of the whole break-room headquarters, eye level, the back wall flat to camera, the full room in one frame.
+
+VISIBLE LEFT TO RIGHT: an empty doorway at the far left edge with nobody standing in it; the small terracotta plush robot beside a tall leaning tower of sticky-flagged papers; the lavender-purple cloud creature beside a tall black server rack; the lanky blond man in a navy t-shirt and grey jeans at the exact centre, seated at a desk of three monitors with his BACK TO CAMERA, the only still figure in the room; the blue-purple star creature in front of a wall of taped-up sketches lit by a string of small clip lights; the grey bat-eared gremlin at the far right beside a dartboard with darts stuck in the wall around it. A corner-mounted CRT television hangs high on the right wall above the sketches, its screen blank and dark.
+
+SCALE: the man is full height. The gremlin is a little under half his height, the cloud creature about a third, the star creature slightly smaller again, the plush robot about a quarter. All four are knee-high beside him and all stand with their feet on the floor.
+
+OUT OF FRAME: the wall behind the camera.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet and low-contrast — the room is a pale ground, and colour lives only on the characters and on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Style: 2D pencil-test animation still — graphite linework, visible construction lines, loose flat-colour washes that do not fully respect the lines. 1950s cartoon staging. No clean vector fill, no digital gradients, no painterly gloss, no photorealism. Do not add any text.

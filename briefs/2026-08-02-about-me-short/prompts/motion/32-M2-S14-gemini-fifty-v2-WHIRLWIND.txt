@@ -1,0 +1,20 @@
+# 7 · GEMINI'S FIFTY CONCEPTS — v2, 2026-09-05 (Sean on v1: "the framing is perfect. We just need Gemini going at a very fast
+#   speed as if it was the Tasmanian devil (Taz) from Looney Tunes.")
+# seedance_2_0 fast 7s 720p · start: normalised/S14-gemini-v1.png (unchanged)
+# WHAT CHANGED: the action is a ROTATIONAL whirl (the smear guide: rotation produces the smear), described as a spinning
+#   tornado blur with only the arms whipping out of it, on the spot; the wall-climb vertical is gone. Taz is NOT named (a name
+#   pulls a design); the whirl is described. She stops dead for one instant each cycle so the face constant has somewhere to
+#   live, then spins up again. Register + vocabulary VERBATIM.
+# RUN: motion/generate.sh prompts/motion/32-M2-S14-gemini-fifty-v2-WHIRLWIND.txt normalised/S14-gemini-v1.png motion/m2-beat7/S14-gemini-fifty-v2.json
+# RESULT: motion/m2-beat7/S14-gemini-fifty-v2.mp4, 24.5 cr. THE WHIRL LANDED - a true rotation with a spin-smear ring, stops dead
+#   with the face intact, sketches on the wall and the wall full throughout. ONE DEFECT: on the first whirl she BALLOONS to
+#   ~3x her size (frames 2-4 of the sheet), then spins at true scale on the second (frames 8-9). Layout 0.974 / 0.921, drift
+#   12.9%, motion 2.93 (v1 2.08). v3 (file 38) adds one clause locking the whirl to her own size; Sean picks the level.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The small blue-purple star creature spins on the spot into a whirling tornado, a spinning blur of blue and purple with speed lines, and only its arms whip out of the whirl to slap sketch after sketch onto the wall beside it faster than the eye can follow, high and low, sketches flying up off the worktable into the whirl and out onto the wall. It stops dead for one instant, arms wide at the wall, grinning, then spins up again even faster, the whirl whipping more sketches onto the wall and sending loose sheets flying off the table onto the floor. It stops dead a second time, snatches a sheet, and whirls again.
+
+The long wall is covered edge to edge with taped sketches in every frame, including the first frame, receding all the way to the far end of the room, and every sheet it slaps up goes on top of the ones already hanging there. Whenever it stops, its face is exactly two round dark eyes and one small open smile, the same two eyes and the same smile every time, and it has the same five points every time. It stays in the same spot on the floor beside the near end of the worktable in every frame, and it stays small, no taller than the worktable, in every frame. The worktable, the string lights, and the far wall's television, shelving and cabinet stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

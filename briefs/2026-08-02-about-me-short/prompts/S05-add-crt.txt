@@ -1,0 +1,5 @@
+# S05 + the CRT. The floor plan (m1-guides/M1-HQ-floor-plan.png) predicts it: S05 looks SOUTH
+# at the moodboard, so EAST is its frame-LEFT, and the television hangs on that east wall above
+# the binder shelving at the frame edge. Run as a surgical edit so the plate survives intact.
+Add one object only: a boxy old cathode-ray television with a thick bezel, bracket-mounted high on the wall at the far left of frame, directly above the shelf of ring binders and angled slightly in toward the room. Its screen is switched off — blank dark glass with a faint pale reflection. It is small in frame and sits up in the top-left corner, cropped by the frame edge if it needs to be.
+Everything else in the image is identical: same camera, same framing, same moodboard, string lights, worktable, boxes, floor, paper, line and colour. Do not add any text.

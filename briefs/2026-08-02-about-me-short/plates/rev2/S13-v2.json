@@ -1,0 +1,48 @@
+[
+  {
+    "created_at": "2026-09-05T19:49:42.561554Z",
+    "display_name": "GPT Image 2",
+    "id": "64b6058a-a73b-43ff-bba8-dc5ec8c4cc19",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_194942_64b6058a-a73b-43ff-bba8-dc5ec8c4cc19_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "1a5db891-541d-4234-9736-93a378715000",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/1a5db891-541d-4234-9736-93a378715000_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "33f024f8-f8c1-457c-a8c2-359862bce398",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/33f024f8-f8c1-457c-a8c2-359862bce398_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "9b5c0aec-54dd-42e6-9c80-64fc982e1965",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/9b5c0aec-54dd-42e6-9c80-64fc982e1965.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Images 1 and 2 are FIXTURE AND STYLE BIBLES — flat elevations of the two walls that meet in this corner: the wall of taped concept sketches with the low storage cabinet, and the wall with the coffee counter, the server rack and the doorway. Preserve their drawing style, line weight, paper colour, palette, and the exact design of every fixture. Do NOT copy their flat orthographic camera.\nImage 3 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement; replace each grey block with the corresponding fixture; ignore the red block entirely and leave that wall bare; remove every guide mark.\n\nCAMERA: a medium shot from inside the room, eye level, looking almost square at the coffee-counter wall with the lens close to it, so the fixtures are large and cropped by the frame edges. The corner where this wall meets the wall of sketches is at the LEFT of frame. The floor is a narrow band at the bottom.\n\nPERSPECTIVE: the counter wall faces us nearly flat; the wall of sketches at the left recedes away from us steeply and its fixtures show their right-hand faces, shrinking as they go. One clean vertical corner seam runs floor to ceiling at the left of centre. The tall server rack stands close to the lens right of centre and rises out of the top of frame; the baseboard on the facing wall is nearly level.\n\nVISIBLE LEFT TO RIGHT: on the left-hand wall, receding — the west end of the wall of taped-up concept sketches on small coloured sheets, and below it a low storage cabinet with cardboard cartons stacked on top; then the corner seam; then on the facing wall — a bare stretch of wall, the low coffee counter with the drip coffee machine, the glass jug and two stacked mugs on top, the wall above the counter bare; the tall black server rack full of small coloured status lights with loose cabling looped down its side, close to the lens, its top out of frame; and beyond the rack at the right edge, the edge of the plain open doorway.\n\nThere is no water cooler and no screen or television anywhere in the picture. The wall above the coffee counter is bare paper.\nOUT OF FRAME: the desk with monitors, the paper towers, the dartboard, the television.\nThe room is empty of characters and people. The floor in front of the counter and the rack stays clear.\n\nWarm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_194942_64b6058a-a73b-43ff-bba8-dc5ec8c4cc19.png",
+    "status": "completed"
+  }
+]

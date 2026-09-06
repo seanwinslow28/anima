@@ -1,0 +1,32 @@
+# S13 (proposed id) — THE CODE WALL, beat 6. Camera B6-A SQUARE ON THE CODE WALL, ruled by Sean 2026-09-03.
+# 2026-09-05. gpt_image_2 · 2k · high · 16:9 · 8.5 cr. Lens at (8.4, 14.3), eye 5.5, pitch -2, square to the west wall.
+# THE CODE WALL is placed in the bible: west wall x 13.1-15.6, sill 4.2, 2.6 tall — above the coffee counter.
+#   It does not exist in state A (the S04 plate has no screen) — Codex built it, so the rack's cabling runs up to it.
+# THE DIRECTOR'S CALL on the text question (the doc asked for it before the plate): the code is drawn the way
+#   this film already draws code — the S02 monitors' "quiet lines of code" are rows of small graphite dashes and
+#   blocks with indentation, no letters. LEAN: keep that idiom, denser and lit. It reads as code (mute-parity),
+#   never has to be read, obeys the no-text law, and boils well under Seedance. Real legible code is one roll
+#   away if Sean wants it; say so and I will re-roll.
+# REFS: ELEV-west as fixture + style bible (one wall, square on — but the rough is NOT square-ish to it, it is a
+#   3/4 look with the rack looming near right, so the flat-camera trap that bit S07 should not fire); the B6-A
+#   plate rough LAST as the camera. Character-free (Codex composited later, codex-v2).
+# RUN: motion/gen_image_refs.sh prompts/plates-rev2/S13-B6A-codex-code-wall.txt plates/rev2/S13.json \
+#        normalised/ELEV-west-v2.png room-bible/m2-candidates/SHOT-B6-A-plate-rough.png
+# RESULT: first roll, 8.5 cr, job a677875c. plates/rev2/S13-codex-code-wall-v1.png -> normalised/. LANDED: the big screen of
+#   dash-code (reads as code, zero letters), cabled into the rack; cooler, counter, rack, doorway in rough order. The screen
+#   reads dark-with-pale-lines rather than 'lit' - fine in this register; a glow would be post if wanted.
+Image 1 is the FIXTURE AND STYLE BIBLE — a flat elevation of the wall with the server rack, the coffee counter and the water cooler. Preserve its drawing style, line weight, paper colour, palette, and the exact design of every fixture. Do NOT copy its flat orthographic camera.
+Image 2 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement; replace each grey block with the corresponding fixture; remove every guide mark.
+
+CAMERA: a medium shot from inside the room, eye level, looking almost square at one wall, the lens close to it, so the fixtures are large and cropped by the frame edges. The floor is a narrow band at the bottom.
+
+PERSPECTIVE: the wall faces us nearly flat, with a slight lean: fixtures at the left show a sliver of their right-hand faces and fixtures at the right show a sliver of their left-hand faces. The tall server rack stands close to the lens at the right of centre and rises out of the top of frame; the baseboard is nearly level.
+
+VISIBLE LEFT TO RIGHT: at the left, the water cooler with its blue bottle and paper cups, cropped by the frame edge, with a big dark coffee machine and mugs beside it; then the low coffee counter, its top crowded with the drip coffee machine, the glass jug and mugs; ABOVE the counter, filling the upper centre of the frame, the hero: a huge wall-mounted flat screen, bracket-mounted, LIT, and filled edge to edge with dense scrolling lines of code — drawn as the film draws code: row upon row of small graphite dashes and short blocks, indented like program listings, packed so tight the screen reads as a solid wall of text, with a soft pale glow on the wall around it; thick loose cables run from the screen down the wall and into the tall black server rack that stands right of centre, close to the lens, full of small coloured status lights and looped cabling, its top out of frame; beyond the rack at the right, the edge of the plain open doorway.
+
+OUT OF FRAME: the desk with monitors, the paper towers, the moodboard, the dartboard, the television.
+The room is empty of characters and people. The floor in front of the counter stays clear.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any legible text or letters.

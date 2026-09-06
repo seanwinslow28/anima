@@ -1,0 +1,48 @@
+[
+  {
+    "created_at": "2026-09-05T18:56:16.102905Z",
+    "display_name": "GPT Image 2",
+    "id": "fd00fe7b-c11f-43ea-8a15-d0cf71ba015a",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_185616_fd00fe7b-c11f-43ea-8a15-d0cf71ba015a_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "df27683f-5a4b-45d3-a9d3-bebf6b67f599",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/df27683f-5a4b-45d3-a9d3-bebf6b67f599_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "8c784752-a519-499b-93ba-2ecfdb3d5853",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/8c784752-a519-499b-93ba-2ecfdb3d5853_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "3b8bd618-2e2a-4033-8b0c-3535aefd2c66",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/3b8bd618-2e2a-4033-8b0c-3535aefd2c66.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Images 1 and 2 are FIXTURE AND STYLE BIBLES — flat elevations of the two walls that meet in this corner: the wall with the supply desk, the paper towers and the binder shelf, and the wall with the tall grey filing cabinet. Preserve their drawing style, line weight, paper colour, palette, and the exact design of every fixture. Do NOT copy their flat orthographic camera.\nImage 3 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement; replace each grey block with the corresponding fixture; remove every guide mark.\n\nCAMERA: a WORM'S EYE view — the lens lies almost on the floor, less than a foot up, right at the foot of the paper towers, and is tipped steeply UPWARD. We are looking up into the corner where two walls meet, at the towers of paper soaring over us. The floor is barely visible, a sliver at the very bottom of frame; the ceiling is visible at the top, where the two walls meet it.\n\nPERSPECTIVE — draw it deliberately, this is the whole shot. Because the camera looks steeply up, every vertical line CONVERGES towards a single point far above the top of the frame: the corner seam, the edges of the towers, the sides of the shelving and the cabinet all lean inward as they rise. The towers are widest at the bottom, nearest the lens, and narrow as they climb. The corner seam runs up through the middle of the frame, leaning, and the two walls fan out from it. Nothing is level; the baseboard, where it shows, is a short slanted line at the bottom.\n\nVISIBLE. At the LEFT of frame, very close to the lens and looming, the end and underside of the tall open shelf of ring binders, seen from below. In the CENTRE, standing against the left-hand wall just left of the corner seam, the hero: a tower of loose paper that has grown enormous — a stack of pages so tall it goes clean OUT THE TOP OF THE FRAME, with coloured sticky flags stepping up its edge in a dense fringe that gets thicker the higher it goes. Beside it a second stack, also flagged, also far taller than before, its top out of frame too, and a third newer stack begun in front of them. Loose pages spiral off the tops; a few flutter partway down the frame. Between the stacks and the shelf, at the bottom centre of the frame, a small clear gap of floor at the foot of the tower where a small figure could sit. To the RIGHT of the corner seam, on the right-hand wall, the tall grey filing cabinet with boxes and a trailing plant on top, seen from below, its top near the ceiling.\n\nOUT OF FRAME: the supply desk (hidden behind the towers), the desk with monitors, the server rack, the doorway, the moodboard, the dartboard, the television.\nThe room is empty of characters and people.\n\nWarm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_185616_fd00fe7b-c11f-43ea-8a15-d0cf71ba015a.png",
+    "status": "completed"
+  }
+]

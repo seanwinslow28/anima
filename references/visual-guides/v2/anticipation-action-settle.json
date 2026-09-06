@@ -1,0 +1,23 @@
+[
+  {
+    "created_at": "2026-09-03T10:30:45.117411Z",
+    "display_name": "GPT Image 2",
+    "id": "1f8e0fe7-29e1-4955-9ee7-fb1b12ac640e",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_103045_1f8e0fe7-29e1-4955-9ee7-fb1b12ac640e_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [],
+      "model": "videotape-alpha",
+      "prompt": "Educational animation reference diagram, loose graphite sketch style on white. Title at top: \"The Acting Beat Pattern\". A simple cartoon character drawn five times in a row, left to right, with a curved arrow running beneath the whole row. Each figure has ONE label, placed ABOVE it only, never repeated below: \"Stage 1 — Thought (6-12fr)\" standing still, eyes shifting; \"Stage 2 — Anticipation (4-8fr)\" coiling back away from the direction of travel; \"Stage 3 — Action (fast)\" lunging forward hard; \"Stage 4 — Overshoot (3-5fr)\" past the target and off balance; \"Stage 5 — Settle (ease-out)\" upright and still again. Labels appear once each, above the figures only. Footer: \"Anticipation sells the action. Overshoot sells the weight.\". No other text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_103045_1f8e0fe7-29e1-4955-9ee7-fb1b12ac640e.png",
+    "status": "completed"
+  }
+]

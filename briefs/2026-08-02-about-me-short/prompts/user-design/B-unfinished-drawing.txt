@@ -1,0 +1,20 @@
+# THE USER — look-test B: THE UNFINISHED DRAWING. gpt_image_2 from scratch, 1:1 2k high. 8.5 cr.
+# What character_seeds.yaml LITERALLY says: "unfinished, construction-lines placeholder person".
+# ARGUMENT FOR: it is the strongest thesis available and it is native to this film's own
+#   register. The whole picture is a PENCIL TEST — so the USER becomes the one character the
+#   animator has not finished drawing yet, and beat 18's colorize is the drawing being
+#   FINISHED. Understanding completes the drawing. That is the film's actual idea, drawn.
+# ARGUMENT AGAINST: fragile at chat-avatar scale — open construction lines may mush to a smudge
+#   at 40px, which is the size it plays at in beat 13.
+
+A grey cartoon figure of a person drawn as an UNFINISHED pencil construction: the circle-and-line armature is still visible straight through the body, the contour is drawn in light broken searching strokes that do not fully close, and parts of the arms and legs are still only guideline shapes that were never inked. Nothing is filled in — the figure is open, hollow and see-through, built from visible construction geometry.
+
+The figure stands still and upright at rest, both arms hanging down at its sides, both feet flat, facing straight towards us. It has NO face at all: the head is completely blank, with no eyes, no mouth, no nose, no ears and no hair. It is not a specific man and not a specific woman — no gender markers of any kind, no hairstyle, no jaw line, plain simple limbs. It wears a plain short-sleeved t-shirt with the word USER across the chest in plain capitals.
+
+It is entirely grey and colourless — it is the only element in the picture with no colour in it at all.
+
+Centred, full body from head to feet, alone on plain empty warm cream drawing paper, a pale putty cream, never white and never yellow. Nothing else in the picture: no room, no furniture, no floor line, no shadow, no border.
+
+The only text anywhere in the picture is the word USER on the t-shirt.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.

@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-02T20:17:09.746619Z",
+    "display_name": "GPT Image 2",
+    "id": "f92f64c2-e27a-43cc-99e2-fed61eeb6826",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_201709_f92f64c2-e27a-43cc-99e2-fed61eeb6826_min.webp",
+    "params": {
+      "aspect_ratio": "1:1",
+      "height": 2048,
+      "medias": [
+        {
+          "data": {
+            "id": "dc3c23b9-a336-486c-a638-3a1c05ae7173",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/dc3c23b9-a336-486c-a638-3a1c05ae7173.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the character design reference. Copy its design, its proportions, its construction lines and its lettering exactly, and change only its colour and its pose.\n\nThe character is a faceless placeholder person, drawn as a pencil-test figure still under construction but filled in. Its body is one solid smooth shape read clearly as a single silhouette. Drawn ON TOP of that fill, in visible darker graphite, are the construction lines the animator never erased: a small circle at each shoulder, elbow, wrist, hip, knee and ankle, a light vertical centre line running down the whole body, and a crosshair across the blank head. The contour is a light broken searching pencil line gone over two or three times rather than one clean stroke.\n\nIt has NO face: the head is completely blank, with no eyes, no nose, no ears and no hair. It is not a specific man and not a specific woman — no gender markers of any kind, no hairstyle, no jaw line, plain simple limbs. It wears a plain short-sleeved t-shirt with the word USER across the chest in plain capitals, drawn in a much darker heavier graphite than the fill behind it so the word reads at a glance.\n\nIt is a warm friendly leaf green all over — a fresh grassy green, clearly not blue and not purple. The word USER on its shirt stays a much darker graphite than the green behind it.\n\nIt stands upright and squares its shoulders, and its right arm is bent up with the fist closed and the thumb sticking straight up in a clear thumbs-up. Its other arm hangs at its side. Short radiating action lines burst outward above and around its blank head, the cartoon mark for delight. Its whole posture is proud and beaming: chest up, shoulders back, standing tall.\n\nAcross the lower half of its blank head is one enormous cartoon grin, drawn far too wide for the head — a single big curved line turning up at both ends with a row of simple square teeth along it. That grin is the ONLY thing on its head: still no eyes, no nose, no ears, no eyebrows, no other feature of any kind. The head is otherwise completely blank.\n\nCentred, full body from head to feet, alone on plain empty warm cream drawing paper, a pale putty cream, never white and never yellow. Nothing else in the picture: no room, no furniture, no floor line, no border.\n\nThe only text anywhere in the picture is the word USER on the t-shirt.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2048
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_201709_f92f64c2-e27a-43cc-99e2-fed61eeb6826.png",
+    "status": "completed"
+  }
+]

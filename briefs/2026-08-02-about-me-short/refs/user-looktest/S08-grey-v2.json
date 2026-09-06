@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-02T20:49:49.33119Z",
+    "display_name": "GPT Image 2",
+    "id": "261d20c2-87e2-46c8-ac6b-37f564bfae66",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_204949_261d20c2-87e2-46c8-ac6b-37f564bfae66_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "6c40eac1-6d3b-4d79-85b8-dab853a6c28a",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/6c40eac1-6d3b-4d79-85b8-dab853a6c28a.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "41a0dc99-ddf4-4cee-9953-0bd18fa9f803",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/41a0dc99-ddf4-4cee-9953-0bd18fa9f803_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the character. Image 2 is the scene (the CRT closeup) — keep image 2 exactly as it is, every fixture, the camera, the framing, the paper and the palette unchanged.\n\nOne change only: the television's dark screen is now lit and pale, and image 1's character is on the screen from the waist up, centred, filling the screen, its head near the top edge and the word USER on its shirt sitting well inside the screen with clear space beneath it, never cropped by the screen edge.\n\nKeep the character's construction lines exactly as image 1 draws them: the crosshair across its blank head, the light centre line down its body, the small circles at its shoulders and elbows, and the broken searching contour gone over two or three times. It is a picture on the television, drawn in the same graphite and the same grey as image 1.\n\nThe only text anywhere in the picture is the word USER on its shirt.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260902_204949_261d20c2-87e2-46c8-ac6b-37f564bfae66.png",
+    "status": "completed"
+  }
+]

@@ -1,0 +1,16 @@
+# S07 CRT — THE USER ON SCREEN, green + smile (beat 18). gpt_image_2 composite, 2 refs, 16:9 2k high. 8.5 cr.
+# SEAN 2026-09-02: "we'll see what it looks like on the CRT TV screen. It shouldn't be the full
+#   body on the TV screen. It would just be the upper torso."
+# The torso is a CROP of the locked D drawing (post/, free), not a new drawing — so what is on
+#   the screen is provably the same character, with no chance of a second design appearing.
+# COMPOSITE DISCIPLINE per prompt-how-much: ~50-70 words, role-tag both refs, ONE scale clause,
+#   ONE position clause in words, "keep image 2 unchanged", and NEVER re-describe the scene.
+#   Re-describing the room is what regenerates the room.
+
+Image 1 is the character. Image 2 is the scene — keep image 2 exactly as it is, every fixture, the camera, the framing, the paper and the palette unchanged.
+
+One change only: the television's dark screen is now lit and pale, and image 1's character is on the screen, head and shoulders only, centred, filling the screen from side to side with its head near the top edge. It is a picture on the television, drawn in the same graphite and the same green as image 1.
+
+The only text anywhere in the picture is the word USER on its shirt.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.

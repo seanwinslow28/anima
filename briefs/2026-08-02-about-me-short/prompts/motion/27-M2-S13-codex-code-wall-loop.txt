@@ -1,0 +1,21 @@
+# 6 · CODEX REBUILDS EVERYTHING — v1 draft, 2026-09-05. armA's hammer / peer / triumph, under a scrolling wall.
+# seedance_2_0 fast 7s 720p · start: normalised/S13-codex-v1.png (the code-wall plate + Codex at the counter)
+# THE SCROLL IS A CONSTANT ACTION (the lines scroll upward without pause in every frame) — a repeating motion the
+#   model can hold, and the one place this film's "code" moves. Codex's loop: spring onto the counter / hammer-type
+#   the counter top in a blur / stop and peer up / triumph hop / drop / spring again, faster.
+# THE KNOWN RISK: Codex's face under fast — it grew a mouth on every back-view still in July; the 3/4-front start
+#   frame and the face constant are the guards, and he is bigger in frame here than at S04. Watch it on the sheet.
+# RUN: motion/generate.sh prompts/motion/27-M2-S13-codex-code-wall-loop.txt normalised/S13-codex-v1.png motion/m2-beat6/S13-codex-code-wall-v1.json
+# RESULT: motion/m2-beat6/S13-codex-code-wall-v1.mp4, 24.5 cr, first roll, job (see json). Springs onto the counter / hammer-types
+#   in a blur with speed lines / peers up / both arms up in triumph / a hop to the rack's edge / drops / hammers again. THE
+#   SCREEN SCROLLS, measured: 7-12 px per 0.25s while he hammers, 0 while he peers - exactly the prompt's shape - but DOWNWARD
+#   (asked upward); a nit at 720p. Face: bracket + dash held through 7s, no round eyes, no mouth; the far-eye dot squints during
+#   the effort. Layout 0.990 / 0.973, drift 10.9%, motion 3.14. armA stays the fallback. Sean's eye owed.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The lavender cloud creature springs straight up onto the coffee counter in one hard leap and hammers both stubby arms across the counter top in a typing blur, its whole body bouncing on every hit, while the lines of code on the big screen above it scroll upward faster and faster. It stops, tips its head back and peers up at the screen, then throws both arms overhead in triumph and hops on the spot. It drops back down to the floor, lands square, and springs straight back up onto the counter to hammer again, faster.
+
+The big screen stays lit and full of dense lines of code in every frame, and the lines scroll upward without pause. Its face is exactly one pale chevron and one short straight bar, the same chevron and the same bar in every frame. It lands on both feet after every leap. It stays small, no taller than a quarter of the black server rack beside it, in every frame. The server rack, the coffee machine, the jug, the mugs, the water cooler and the doorway stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

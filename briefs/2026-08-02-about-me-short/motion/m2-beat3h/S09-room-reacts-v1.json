@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-04T21:51:54.022436Z",
+    "display_name": "Seedance 2.0",
+    "id": "1f72514a-a3bc-4515-87e2-346639539e44",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "f2ffad7e-630f-45d5-897a-3c981601db17",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/f2ffad7e-630f-45d5-897a-3c981601db17.png"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nA quiet office seen from high on one end wall. All at once every head in the room snaps round to stare straight at us: the young man at the desk spins his chair to face us; the grey creature with the big ears near the front jerks upright, dart still in its hand; the blue star by the sketch wall whips round; and at the far wall the lavender cloud spins from the rack and the little terracotta cube snaps its head up from the paper it is writing on. All five freeze, staring up at us. Then the four small creatures turn their heads together towards the young man at his desk, and he turns his head from us to them.\n\nThe same five figures stand in the same five places at the same five sizes in every frame; nobody crosses the floor. Every fixture — the desk and its monitors, the sketch wall, the far wall's rack and doorway and paper towers — stays the same drawing in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260904_215154_1f72514a-a3bc-4515-87e2-346639539e44.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260904_215154_1f72514a-a3bc-4515-87e2-346639539e44_thumbnail.webp"
+  }
+]

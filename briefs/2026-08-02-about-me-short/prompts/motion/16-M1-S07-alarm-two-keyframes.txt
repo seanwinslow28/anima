@@ -1,0 +1,69 @@
+# S07, M1 beat 3 — THE ALARM. *** THE FIRST TWO-KEYFRAME SHOT ON THIS PROJECT. ***
+# seedance_2_0 fast 7s 720p
+#   --start-image normalised/S07-plate-v2.png            (screen DARK — the approved plate)
+#   --end-image   normalised/S07-alarm-screenonly-v1.png (same plate, screen LIT — a gpt_image_2
+#                                                         surgical edit, prompts/edits/)
+#
+# WHY THIS SHOT IS ROUTED DIFFERENTLY FROM THE OTHER FIVE. It has no character; the thing that
+#   performs is a SCREEN, and screens carry TEXT. Video models garble text. gpt_image_2 does
+#   not — it drew a clean "PROBLEM!" on the rev1 plate already. So the text is drawn by the
+#   image model in a still, and Seedance is only asked to snap between two stills it was given.
+#
+# AND IT IS THE DRIFT MITIGATION THE STORYBOARD HAS LISTED AS UNTESTED SINCE 2026-08-30:
+#   "first+last keyframes composed from the same plate". Both keyframes ARE the same plate, so
+#   the background cannot drift between them by construction — the model is interpolating
+#   between two frames of an identical room rather than re-imagining one. Measure the drift on
+#   this clip against the five single-keyframe clips (7.0-11.6%); that comparison is the point.
+#
+# THE INTERPOLATION HAZARD, stated so it is not mistaken for a prompt failure: given two
+#   keyframes a model's default move is a DISSOLVE, and a dissolve is exactly wrong for an
+#   alarm. The lever is to name the event with a hard verb and give it a flicker to land on —
+#   "snaps on hard, flares, flickers twice" — rather than describing a transition.
+#
+# WHAT IS DELIBERATELY *NOT* IN THIS PROMPT, because the look lives in post (FIRST LICKS DR #41):
+#   the RED FLOOD and the FRAME SHAKE. Both are beat 10 and beat 20's visual twins, and a frame
+#   shake would contradict block 1's "fixed camera, locked tripod", which is constant and never
+#   edited. The generation supplies the room reacting; post supplies the flood and the shake.
+# ALSO NOT HERE: the tighter framing. The CRT owns ~15% of frame height in rev2 against ~35% in
+#   the superseded rev1, so beat 3 may want to be closer. That is an EDIT decision and it stays
+#   free: a crop of a wide is available at any time, a wide is not recoverable from a crop. So
+#   generate the wide. Nothing is lost and nothing is pre-empted.
+# RESULT — TWO ROLLS, 49 cr. v2 IS THE ONE. clips: motion/m1-beat3/S07-alarm-v{1,2}.mp4
+#
+#   | keyframe pair                          | layout f0 | layout last | motion |
+#   | v1  dark plate + gpt_image_2 EDIT      |   0.989   |    0.931    |  3.36  |
+#   | v2  dark plate + SCREEN-ONLY composite |   0.992   |  **0.947**  |  4.58  |
+#
+# WHAT THE ROUTE BOUGHT: the text problem is GONE. "PROBLEM!" is drawn by the image model and
+#   carried into the clip clean — no video model ever had to render a letter. And it is a hard
+#   SNAP at ~1.7s, not the dissolve two keyframes default to; naming the event with a hard verb
+#   ("snaps on hard, flares, flickers twice") is what bought that.
+#   v2 goes further and FLARES PURE WHITE for ~0.5s before the screen resolves. Nothing in the
+#   prompt asked for a glow burst; the model gave the alarm a flash. Motion 4.58 is the highest
+#   figure on this project by a wide margin.
+#
+# WHAT IT DID NOT BUY, and this closes an open storyboard item with a NO:
+#   The storyboard has listed "first+last keyframes composed from the same plate" since
+#   2026-08-30 as the untested candidate for killing background drift. IT IS NOT ONE.
+#   v1 came back with a visibly BREATHING CAMERA — the framing pulls back and pushes in
+#   through the 7s — because a gpt_image_2 "surgical" edit is surgical by post/verify_edit.py's
+#   floors (it passed at phase 0.272, shift (0,0)) and is still a slightly different room in
+#   every pixel. Handed two subtly different rooms, the model reconciles them by MOVING THE
+#   CAMERA. post/screen_swap.py fixes the cause — the v2 end frame is byte-identical to the
+#   start frame outside a 1.29%-of-frame rectangle — and the breathing is REDUCED, 0.931 ->
+#   0.947, but NOT eliminated. Two keyframes cost some camera hold. That is the finding.
+#
+# DO NOT READ THE `bg drift` COLUMN ON THIS SHOT. It rose 14.0% -> 18.0% and that is not a
+#   defect: drift is measured OUTSIDE the character box, the box here is just the CRT, and the
+#   whole room is SUPPOSED to be reacting to the alarm. On a shot where the set is the
+#   performer the metric measures the performance. It is meaningless here; use the eye.
+#
+# STILL IN POST, deliberately: the red flood, the frame shake, and the tighter framing.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+For one beat the room holds dead still. Then the small television's dark screen snaps on hard, flares pale and flickers twice, and the jagged line on it stabs downward. The whole room jolts with it: the television rattles on its bracket, the mug on the cabinet hops and rocks, the darts shiver in the wall, and the taped sketches on the wall flutter hard.
+
+From the moment the screen lights it shows the same word PROBLEM! and the same falling line in every frame. The television stays on its shelf bracket in every frame. The dartboard, the bookshelf of binders, the cabinet and the corner seam stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

@@ -1,0 +1,23 @@
+[
+  {
+    "created_at": "2026-09-03T10:28:13.366276Z",
+    "display_name": "GPT Image 2",
+    "id": "1e00fd02-22d2-43e0-8bc3-c7cfb2983620",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_102813_1e00fd02-22d2-43e0-8bc3-c7cfb2983620_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [],
+      "model": "videotape-alpha",
+      "prompt": "Educational animation reference diagram, clean black line art on white, professional textbook style. Title at top: \"Accelerating Spacing — A Fall Speeds Up\". A simple cartoon character falling from the top left to the bottom right, drawn FIVE times along a dotted path. The gap between each successive drawing gets visibly LARGER — a small gap between drawings 1 and 2, a much larger gap between drawings 4 and 5. Each gap is labelled with a horizontal measure bar reading \"1 unit\", \"3 units\", \"5 units\", \"7 units\". The character's pose changes as it falls: arms starting to rise, hair and clothing trailing upward more strongly in the later drawings. On the right, a comparison strip labelled \"WRONG — even gaps\" with a red X, showing the same character falling with identical gaps between every drawing. Footer: \"Equal gaps read as floating. A real fall covers more ground every frame.\". No other text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_102813_1e00fd02-22d2-43e0-8bc3-c7cfb2983620.png",
+    "status": "completed"
+  }
+]

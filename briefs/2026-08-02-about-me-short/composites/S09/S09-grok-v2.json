@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-04T17:55:24.621183Z",
+    "display_name": "GPT Image 2",
+    "id": "f2670d58-140c-4acd-8cb4-6d91ca4db850",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260904_175524_f2670d58-140c-4acd-8cb4-6d91ca4db850_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "c880ba0b-8784-4ebe-9037-c49989024413",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/c880ba0b-8784-4ebe-9037-c49989024413.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "c9c61ef0-f53f-4f4f-a60a-e3bc1a0528ac",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/c9c61ef0-f53f-4f4f-a60a-e3bc1a0528ac_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a round grey cartoon creature with big pointed ears, a wide friendly cartoon grin, small bright eyes and a tufted tail. Image 2 is the BACKGROUND SCENE.\n\nAdd the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette. This is a very wide shot of a whole room from high up, so the character is a small part of the picture.\n\nPOSITION: standing on the open floor in the LOWER RIGHT of the picture, near the camera, a little in front of and to the left of the low wooden bench with the printer on it, its whole body on the open floor and clear of the furniture. It is the nearest figure to the camera, so it is drawn larger than anything else that stands on the floor.\nSCALE — draw it SMALL in the room, though near to us: it stands only thigh-high to a grown adult. Its head would not reach the top of the desk further along the wall, and it is shorter than the printer bench beside it is long. It is a small creature, never person-sized.\nFACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its full grin, both ears, its chest, both arms and both feet. It is NOT seen from behind and NOT in profile. Its eyes are bright, round and wide open with its brows raised, looking down at the small dart it holds in its own hand, cheerful; it never looks into the camera.\nPOSE: it stands still and upright at rest, both arms hanging down at its sides with one hand holding a single small dart, both feet flat on the floor. Draw it in the same hand as the room — graphite line with a light grey coloured-pencil wash over its body, the same line weight as the furniture — with a soft graphite contact shadow pooled on the floor beneath it.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260904_175524_f2670d58-140c-4acd-8cb4-6d91ca4db850.png",
+    "status": "completed"
+  }
+]

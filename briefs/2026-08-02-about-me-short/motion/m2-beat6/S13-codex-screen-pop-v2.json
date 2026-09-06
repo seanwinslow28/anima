@@ -1,0 +1,49 @@
+[
+  {
+    "created_at": "2026-09-05T19:57:15.513693Z",
+    "display_name": "Seedance 2.0",
+    "id": "ffd97521-d0ea-4b36-adeb-d700e3b0a591",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "1e704bbe-55e3-4136-88e3-78bf1c14eb31",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/1e704bbe-55e3-4136-88e3-78bf1c14eb31_resize.jpg"
+          },
+          "role": "start_image"
+        },
+        {
+          "data": {
+            "id": "f694416d-e96e-4042-8ce4-3ace783cd389",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/f694416d-e96e-4042-8ce4-3ace783cd389_resize.jpg"
+          },
+          "role": "end_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe lavender cloud creature springs at the tall black server rack and slams it with both stubby arms in one hard hit. A big flat screen bangs straight out of the rack's side on a hinged arm and swings out over the coffee counter, flashing white as it lights, then floods edge to edge with lines of code. The creature drops onto the counter and hammer-types on the counter top at maximum speed, both arms a blur with speed lines, its whole body bouncing on every hit, while the code on the screen scrolls upward faster and faster and the screen flashes with each new flood of lines. It types in one last hard flourish, hops back down to the floor, and stands beside the rack looking up at the screen full of code.\n\nIts face is exactly one pale chevron and one short straight bar, the same chevron and the same bar in every frame. It lands on both feet after every leap. It stays small, no taller than a quarter of the black server rack beside it, in every frame. Once the screen is out it stays out on its arm in the same place, lit and full of code, in every frame. The server rack, the coffee machine, the jug, the mugs, the storage cabinet and the doorway stay the same drawings in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_195715_ffd97521-d0ea-4b36-adeb-d700e3b0a591.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_195715_ffd97521-d0ea-4b36-adeb-d700e3b0a591_thumbnail.webp"
+  }
+]

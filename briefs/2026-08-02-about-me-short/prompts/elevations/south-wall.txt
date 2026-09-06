@@ -1,0 +1,14 @@
+Image 1 is the FIXTURE AND STYLE BIBLE: preserve its drawing style, line weight, paper colour, palette, rendering, and the design of any fixture it shares with this wall. Do NOT copy its layout, its left-to-right order, or which fixtures are present.
+Image 2 is the COMPOSITION ROUGH: follow its left-to-right placement, its proportions and its heights exactly; replace each grey block with the real fixture named below, and remove every guide mark.
+
+THIS IS A FLAT ELEVATION — an animation background layout drawing of one wall, seen straight on from directly in front. No perspective, no vanishing point, no receding floor plane, no ceiling, no adjoining walls. Every fixture is square to the viewer. A thin baseboard runs the full width along the bottom. The wall is ten feet tall.
+The wall is empty of characters and people.
+
+LEFT TO RIGHT ALONG THE WALL:
+a low storage cabinet with cardboard cartons stacked on top of it; a stretch of bare wall; then the long hero wall — roughly fifty concept sketches taped up on small sheets of coloured paper in a loose irregular grid, corners lifting, tape visible, several pinned crooked, running most of the width of the wall and stopping about waist height above the floor; a swag of small round string lights strung across above them; a low wooden worktable standing against the board carrying rolls of tape, a jar of markers, scissors and a mug; the taped sheets continue unbroken to the right edge of frame.
+
+WHAT IS DRAWN ON THE SHEETS MATTERS: every one is a rough product or mascot idea sketched in loose pencil — shopping bags, checkout buttons, packaging boxes, price tags, storefront signs, logo roughs, and little round cartoon creature designs with faces. They are design concepts for a shop. None of them is a landscape: no mountains, no trees, no hills, no scenery, no horizons.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. Walls are flat, quiet, and low-contrast — the wall is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.

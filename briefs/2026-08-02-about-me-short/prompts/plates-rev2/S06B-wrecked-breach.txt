@@ -1,0 +1,28 @@
+# S06B — GROK'S CORNER, WRECKED (room state B). Beat 8, camera B8-A = the S06 camera, ruled by Sean 2026-09-03.
+# 2026-09-05. Variant A "THE BREACH" — the lean. gpt_image_2 edit, ONE design ref: the approved S06 plate.
+# WHY AN EDIT, NOT A RE-ANGLE: B8-A is the same camera as S06, so the re-angle reconstruction pattern does not
+#   apply. The wrecked-return rule works BECAUSE the audience recognises the drawing; a surgical edit keeps the
+#   approved drawing by construction (the S02 "edit rather than regenerate" law).
+# THE HOLE is placed in the bible: east wall x 0-2 (the side table's slot at the corner seam), floor to 6.4'.
+#   The rocket leans out of it. This plate becomes the NE corner's bible for Movement 3 (DR #20) — ratify first.
+# WHAT SURVIVES, on purpose: the corner seam, the dartboard (crooked, darts still in the plaster), the bookshelf,
+#   the storage bench. M3's "what have we done" return plays in this framing and needs the landmarks.
+# THROUGH THE HOLE: blank paper, nothing drawn — on-register, and it never has to match an outside.
+# Grok is NOT in this plate (composited later, grok2-v2 + a sledgehammer at rest).
+# RUN: motion/gen_image_ref.sh prompts/plates-rev2/S06B-wrecked-breach.txt normalised/S06-plate-v1.png 16:9 plates/rev2/S06B-breach.json
+# RESULT: first roll, 8.5 cr, job 1ac878f7. plates/rev2/S06B-breach-v1.png -> normalised/. LANDED: ragged hole at the corner
+#   through to blank paper, side table over, rubble fan, rocket nose-into-the-hole with fins to us, hammer on the crates,
+#   two binders slid flat. Dartboard came back STRAIGHT (asked crooked) - not a defect. verify_edit 0.070 / 0.482 CHECK:
+#   the WHOLE FRAME re-rendered (bench corr 0.75, shelf 0.77 vs the plate) - every fixture in place, line texture regrown.
+#   Expected for a large edit; invisible at 720p; allowed by the wrecked-frame rule. THE LEAN. Owed Sean's eye.
+Edit this drawing. Keep the same camera, the same framing, the same two walls meeting at the same vertical corner seam, the same floor, paper, line and colour. Keep the long low storage bench with its boxes on the left wall exactly as drawn, and keep the tall shelving unit of ring binders at the right edge exactly as drawn.
+
+Wreck the corner. Where the round three-legged side table stood, just to the right of the corner seam, smash a ragged hole through the right-hand wall: it starts at the floor and reaches a little above head height, about two feet wide, with jagged broken plaster edges and splintered wooden lath sticking out around its rim. Through the hole there is nothing at all — only the blank cream paper, no room, no outside, nothing drawn. The side table lies knocked over on its side on the floor in front of the hole, its crushed drink cans and the mug scattered across the floor. A fan of broken plaster chunks, lath splinters and pale dust spreads across the floor out from the hole.
+
+Standing on the floor in front of the hole is a half-built homemade rocket, taller than the crates: a big cardboard mailing tube for a body, a paper cone taped on as the nose, and three fins cut from crate slats nailed to its base. It is tilted so that its nose pokes out through the hole and its tail fins face into the room towards us. It is unfinished — tape, string and a loose slat still hanging off it. A heavy sledgehammer leans against the two stacked wooden crates, its head on the floor.
+
+The dartboard still hangs on the wall but crooked, tipped over on its nail, with the same seven darts still stuck into the plaster around it and the board face still clean. Two of the ring binders on the shelving have slid flat.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. The room is empty of characters and people. Do not add any text.

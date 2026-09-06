@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-05T14:18:34.90997Z",
+    "display_name": "Seedance 2.0",
+    "id": "cb79b0d2-26ce-4e6a-9421-94582641309d",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "a217a950-2ae6-42f4-853b-043a7bcad736",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/a217a950-2ae6-42f4-853b-043a7bcad736_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe young man in the navy T-shirt sits facing us in the office chair looks up to the right, then scans the room at camera angle level as if looking at people behind the frame. He takes a deep breath, gives one small, decisive nod. He lifts one hand off the armrest, flicks two fingers forward once — go — and drops the hand back to the armrest. He swivels the chair round to the desk in one quick turn and puts both hands on the keyboard.\n\nHis face is the same calm face in every frame: short blonde hair, light stubble, two blue eyes and a closed mouth. The three monitors stay dark, the same three dark screens with the same faint lines of code in every frame. The desk and the cork board behind him stay the same drawings in every frame. The chair turns on the spot and stays at the desk.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_141834_cb79b0d2-26ce-4e6a-9421-94582641309d.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_141834_cb79b0d2-26ce-4e6a-9421-94582641309d_thumbnail.webp"
+  }
+]

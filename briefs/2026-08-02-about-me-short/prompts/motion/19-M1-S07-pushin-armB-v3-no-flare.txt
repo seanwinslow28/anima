@@ -1,0 +1,70 @@
+# *** SUPERSEDED — Sean locked arm B v1 (prompt 17): "It's not really what I'm looking for."
+#   It hit the requested 3.08s zoom and still lost, which is the useful part: hitting the
+#   number is not the same as the shot being right, and the eye outranks the number AGAIN. ***
+# S07, M1 beat 3 — ARM B v3, THE LAST TIMING ATTEMPT. 2026-09-01.
+# seedance_2_0 fast 7s 720p
+#   --start-image normalised/S07-plate-v2.png
+#   --end-image   normalised/S07-alarm-closeup-v1.png
+# SEAN: "Try one more time. If it doesn't work, I'll fix it in post with Arm B v1."
+#   So this is the last roll on this shot either way. v1 (prompt 17, arm B) is the fallback and
+#   is not superseded by anything here.
+#
+# WHAT v2 GOT WRONG, and it was the prompt, not the model:
+#   v2 tried to buy an earlier zoom by COMPRESSING THE DESCRIPTION. That is not the lever. The
+#   model spends time on EVENTS, not on words, so removing words changed nothing (zoom 5.0s ->
+#   4.5s) while the two things I added actively hurt:
+#     - "flares white in one hard flash" made WHITE a screen STATE, and the model held it for
+#       ~3s. PROBLEM! did not become readable until ~5.5s, AFTER the zoom. v1 had the word up
+#       at ~2.0s in the wide. Strictly worse on Sean's actual note.
+#     - four "on and off"s reinforced the same thing and produced ZERO flashes at the landing.
+#   NEGATIVE FINDING, recorded so it is never bought again: *** seedance_2_0 does not honour an
+#   absolute time cue. *** v2's closing sentence "the flash, the jolt and the zoom all happen
+#   inside the first three seconds" had no measurable effect. It is deleted here.
+#
+# v3'S ONE LEVER — FEWER EVENTS BEFORE THE ZOOM. Count them:
+#     v1: dead-still hold · white flash · PROBLEM! bangs on · room jolts   -> FOUR, zoom at ~5.0s
+#     v2: dead-still hold · white flash + jolt at once                     -> TWO-ish, zoom ~4.5s
+#     v3: (dark is a STATE, not an event) · snap-on + jolt at once         -> ONE, zoom is next
+#   The white flare is gone entirely: the screen goes straight to the word, so no white state
+#   exists for the model to sit in. And the opening dark is written as a CONDITION ("the screen
+#   is dark") rather than an action ("the room holds dead still for one beat") — a described
+#   hold is itself an event, and this shot cannot afford one.
+# The tail is re-phrased away from states and onto the word: "the word PROBLEM! blinks hard,
+#   again and again" rather than "on and off", so the constant is the WORD, not the whiteness.
+# RESULT — *** THE TIMING LANDED. zoom starts 3.08s (Sean asked for "about 3 seconds"). ***
+#   clip: motion/m1-beat3/S07-pushin-armB-v3.mp4 | 24.5 cr
+#   Measured with post/beat_times.py at 24fps, and the camera tracked on the LEFT THIRD of
+#   frame only — the screen flare's glow spills outside any screen box and contaminated every
+#   earlier reading. Do not trust a camera-move number measured over the whole frame on a shot
+#   with a flash in it.
+#
+#   | clip | screen lights | PROBLEM! readable | zoom starts | zoom lands |
+#   | v1   |     1.92s     |       1.92s       |    4.54s    |   4.58s    |
+#   | v2   |     1.33s     |      ~5.50s       |    1.42s    |   4.33s (a drift, not a snap) |
+#   | v3   |   **1.04s**   |     **1.04s**     |  **3.08s**  | **3.42s**  |
+#
+# THE LEVER, confirmed, and it is the finding worth keeping: TO MOVE A BEAT EARLIER, DELETE AN
+#   EVENT — do not shorten a sentence. v2 compressed the wording and bought 0.5s. v3 deleted
+#   the white flare (a two-second event in its own right) and bought 1.5s. Words are not time;
+#   events are time. Corollary, from v2: writing a HOLD as an action ("the room holds dead
+#   still for one beat") makes the hold an event and costs its duration. Write it as a state.
+#
+# TWO THINGS STILL NOT LANDED, and neither is worth another roll:
+#   1. IT DOES NOT BLINK. One on-transition, measured, then it holds lit. THREE phrasings have
+#      now failed — "on and off" (v1, one flash), four repetitions of it (v2, ZERO flashes and
+#      a 3s white hold), "blinks hard, again and again" (v3, zero). A blink is an opacity
+#      keyframe in post and costs nothing there. Stop buying rolls against it.
+#   2. THE SCREEN READS PALE BLUE where the drawn still is cream. Minor palette drift, and it
+#      argues for doing the blink in post anyway since that region gets touched regardless.
+#
+# NEGATIVE FINDING, carried from v2 and worth its own line because it is cheap to re-try by
+#   accident: *** seedance_2_0 DOES NOT HONOUR AN ABSOLUTE TIME CUE. *** "inside the first
+#   three seconds" had no measurable effect. Event count is the only timing control available.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil.
+
+The small television's screen is dark. It snaps on with the word PROBLEM! above a jagged line falling to the right, and the whole room jolts with it at once — the mug hops, the darts shiver in the wall, the taped sketches flutter. The camera slams straight in on the television in one fast smear zoom, the room streaking past, and stops dead. The word PROBLEM! blinks hard on the screen, again and again and again.
+
+Every time it lights, the screen shows the same word PROBLEM! in the same plain capitals above the same falling line. The television, the bookshelf of binders and the taped sketches stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

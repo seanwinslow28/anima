@@ -1,0 +1,15 @@
+# SINGLE-CHARACTER MOTION, 7s, mode: std — REJECTED BY SEAN
+# job 52555e19-ecba-4583-b2be-d15e4f2945ff | seedance_2_0 STD 7s 720p generate_audio:false
+# start_image: job 6505a009 | IDENTICAL PROMPT to 04, so MODE is the only variable. 31.5cr.
+# RESULT: std FIXES the face — it never adds a mouth, keeps chevrons as eyes and the
+#         underscore as the mouth, and drifts less (21.5% / 19.6%).
+#         BUT motion energy falls 4.44 -> 3.35 and Sean ruled: "Don't use the std. It stutters
+#         and looks broken." A mean-energy number cannot tell restraint from stuttering —
+#         his eye caught what the metric could not.
+# STANDING RULING: `fast` everywhere. std is not the answer to the face problem.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The lavender cloud creature hammers both stubby arms across the black rack in a frantic burst of typing, its body squashing flat on each strike and stretching tall between them. It stops dead, leans in close to peer at a blinking light, then throws both arms overhead in triumph and bounces where it stands.
+
+Its face stays a pale chevron, one dot eye and a short underscore bar with small brows. Its feet return to the floor on every landing. Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

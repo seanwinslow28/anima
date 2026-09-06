@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-03T23:41:04.870036Z",
+    "display_name": "GPT Image 2",
+    "id": "9a27d8a9-3a1a-4065-9496-6f5dfafe814e",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_234104_9a27d8a9-3a1a-4065-9496-6f5dfafe814e_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "6c4e30d9-8a34-426c-80a4-d9e47b70f1b2",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/6c4e30d9-8a34-426c-80a4-d9e47b70f1b2.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "c4480d92-8b50-4165-ad72-79839b4c4f31",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/c4480d92-8b50-4165-ad72-79839b4c4f31_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a small rounded periwinkle-blue cloud creature with a bracket-and-dash face, two small brows, and short stubby arms. Image 2 is the BACKGROUND SCENE.\n\nAdd the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette. This is a very wide shot of a whole room from high up, so the character is a small part of the picture.\n\nPOSITION: on the far wall of the room, standing on the floor at the foot of the tall black server rack, just to the LEFT of it in the gap between the rack and the low coffee counter. It is far from the camera, so it is drawn very small.\nSCALE — draw it TINY: it is a thigh-high creature seen from across the room. At the foot of the server rack the top of its head reaches barely a quarter of the way up the rack, and it is shorter than the coffee counter beside it is tall. It is a small creature, never person-sized.\nFACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — the pale bracket-and-dash face, both brows, its chest, both arms and both feet. It is NOT seen from behind and NOT in profile. Its eyes are turned off to one side towards the tall dark server rack beside it; it is absorbed in that and never looks into the camera.\nPOSE: it stands still and upright at rest, both arms hanging down at its sides, both feet flat on the floor and clear of the baseboard. Draw it with a soft graphite contact shadow on the floor beneath it.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_234104_9a27d8a9-3a1a-4065-9496-6f5dfafe814e.png",
+    "status": "completed"
+  }
+]

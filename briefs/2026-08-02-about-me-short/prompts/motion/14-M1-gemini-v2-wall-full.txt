@@ -1,0 +1,33 @@
+# GEMINI, M1 beat 2 — v2, THE WALL FIX. 2026-09-01.
+# seedance_2_0 fast 7s 720p | start_image: normalised/S05-gemini-composite-frontal-v1.png
+# v1 (prompts/motion/11) is BANKED, NOT superseded — Sean: "keep the original as well. I like
+#   what it gave." motion/m1-beat2/S05-gemini-one-more-v1.mp4 stays, and stays labelled a
+#   beat-7 asset: it wipes the moodboard bare and builds all ~45 sketches back on camera.
+#
+# THE DEFECT WAS ONE CLAUSE. v1's action block said "the row of sketches GROWING SIDEWAYS
+#   ACROSS THE WALL". A wall that grows to full has to start empty, so the model emptied it —
+#   layout 0.875 at frame ZERO, the plate gone before a frame of motion. Not a model failure;
+#   it obeyed.
+# THE FIX IS A POSITIVE CONSTANT, NOT A DELETION. Removing the clause would leave the wall's
+#   state unstated, and unstated is what the model fills in. So block 3 now asserts the wall is
+#   already covered IN THE FIRST FRAME, and block 2 says every new sheet goes ON TOP of what is
+#   there. Same shape as the face locks that hold: a constant through time, stated positively.
+# RESULT — THE FIX WORKED. clip: motion/m1-beat2/S05-gemini-one-more-v2.mp4 | 1 roll, 24.5 cr
+#   layout f0 0.875 -> 0.957 · last 0.978 -> 0.959 · drift 18.3% -> 11.6% · motion 1.59 -> 1.43
+#   The moodboard is FULL in frame 0 and stays full. The one-clause diagnosis is confirmed:
+#   "growing sideways across the wall" was the whole defect, and a positive constant fixed it
+#   in one roll. That is a reusable finding, not a one-off — an unstated prop state is a state
+#   the model invents, so state it.
+#   THE COST, and Sean decides whether it matters: with the wall already full, the ACTION IS
+#   HARDER TO READ. v1's empty->full made "it is taping sketches up" unmistakable; v2's sheets
+#   land among ~45 existing ones and the gesture reads as motion near a wall. There is a good
+#   vertical smear at ~6s. Two clips, two different things: v1 is legible and off-plate, v2 is
+#   on-plate and subtler.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The small blue-purple star creature slaps a loose sketch flat onto the covered wall at its own head height, its whole body squashing on the hit. It spins on the spot, snatches another sheet off the floor, springs up and slaps that one onto the wall above the first. It drops down, grabs two more sheets at once and slaps them up in a fast one-two, each one landing on top of the sketches already taped there. It bounces backwards and throws both arms wide at the wall.
+
+The wall behind it is covered edge to edge with taped sketches in every frame, including the first frame, and every sheet it slaps up goes on top of the ones already hanging there. Its face is exactly two round dark eyes and one small open smile, the same two eyes and the same smile in every frame. It has five points, the same five points in every frame. It lands on both feet on the floor after every leap. It stays small, no taller than half the height of the cabinet and the stacked boxes behind it, in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

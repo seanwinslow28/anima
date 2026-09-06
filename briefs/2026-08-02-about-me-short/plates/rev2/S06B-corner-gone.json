@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-05T18:51:25.254828Z",
+    "display_name": "GPT Image 2",
+    "id": "5016176c-f834-4ad9-a662-11f110c4bd63",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_185125_5016176c-f834-4ad9-a662-11f110c4bd63_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "88c30e4d-3948-454b-b399-3c82e6606649",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/88c30e4d-3948-454b-b399-3c82e6606649_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Edit this drawing. Keep the same camera, the same framing, the same floor, paper, line and colour. Keep the long low storage bench with its boxes at the left exactly as drawn, and keep the tall shelving unit of ring binders at the right edge exactly as drawn.\n\nDemolish the corner. The whole corner where the two walls meet has been smashed out: a huge ragged hole runs from the floor almost to the top of the frame, taking the end of the left-hand wall, the end of the right-hand wall and the corner seam with it, with jagged broken plaster edges and splintered wooden lath all around the rim. Through the hole there is nothing at all — only the blank cream paper, no room, no outside, nothing drawn. The round three-legged side table lies smashed on the floor with its cans and mug scattered. The two wooden crates are broken into loose slats. A wide field of broken plaster chunks, lath splinters and pale dust covers the floor in front of the hole.\n\nLeaning out through the hole is a half-built homemade rocket, as tall as a grown adult: a big cardboard mailing tube for a body, a paper cone taped on as the nose, and three fins cut from the broken crate slats nailed to its base. It is tilted so that its nose pokes out through the hole and its tail fins face into the room towards us, unfinished, with tape, string and a loose slat still hanging off it. A heavy sledgehammer lies on the floor among the rubble, its head down.\n\nThe dartboard hangs by one nail over the edge of the hole, tipped almost sideways, with the same seven darts still stuck into what plaster is left around it and the board face still clean. Two of the ring binders on the shelving have slid flat.\n\nWarm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. The room is empty of characters and people. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_185125_5016176c-f834-4ad9-a662-11f110c4bd63.png",
+    "status": "completed"
+  }
+]

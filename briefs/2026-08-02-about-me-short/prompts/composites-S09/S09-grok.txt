@@ -1,0 +1,24 @@
+# S09 · GROK into the CRT-POV plate. 5 of 5. gpt_image_2 edit · 8.5 cr. Merged LAST (nearest).
+#   Image 1 = refs/turnaround-views/grok-v2.png · Image 2 = normalised/S09-room-reacts-v1.png (CLEAN)
+#   Near right on the open floor (~7 ft from a lens 7′9″ up) — the biggest figure in the frame,
+#   the scale-as-distance gag. He has stepped off his corner (out of frame right) toward the room.
+#   *** NSFW WORDING HAZARD — the character line below is the one on record as passing. Do not paraphrase. ***
+# RESULT — first roll, job d7a5edff, no NSFW refusal. Placement and scale landed (near right, the biggest floor figure, dart in hand, eyes to the right edge). THE FACE DRIFTED to the snide side of the line — narrowed, angled eyes and a lowered brow,
+#   one ear drawn as a blade slashing across the grin, and the grin itself enormous and sawtoothed
+#   (composites/S09/S09-grok-v1-face-crop.png). Compare the approved S06 composite: round bright
+#   eyes, brows up, a grin of small teeth — cheerful. Same character line both times, so the
+#   wording is not the cause; the likely cause is the eyeline clause ('back towards the corner it
+#   came from') reading as a scheming side-glance at this size. Body, scale, dart, pose all fine.
+#   v2 (S09-grok-v2.txt) changes ONLY the eyes: bright, round, wide open, brows up, looking down
+#   at the dart in its own hand — a task, not a glance. Sean's call to re-roll; 8.5 cr, merge is $0. Matte pasted 2.39%.
+
+Image 1 is the CHARACTER: a round grey cartoon creature with big pointed ears, a wide friendly cartoon grin, small bright eyes and a tufted tail. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette. This is a very wide shot of a whole room from high up, so the character is a small part of the picture.
+
+POSITION: standing on the open floor in the LOWER RIGHT of the picture, near the camera, a little in front of and to the left of the low wooden bench with the printer on it, its whole body on the open floor and clear of the furniture. It is the nearest figure to the camera, so it is drawn larger than anything else that stands on the floor.
+SCALE — draw it SMALL in the room, though near to us: it stands only thigh-high to a grown adult. Its head would not reach the top of the desk further along the wall, and it is shorter than the printer bench beside it is long. It is a small creature, never person-sized.
+FACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its full grin, both ears, its chest, both arms and both feet. It is NOT seen from behind and NOT in profile. Its eyes are turned off to one side towards the right edge of the picture, back towards the corner it came from; it is absorbed in that and never looks into the camera.
+POSE: it stands still and upright at rest, both arms hanging down at its sides with one hand holding a single small dart, both feet flat on the floor. Draw it with a soft graphite contact shadow pooled on the floor beneath it.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

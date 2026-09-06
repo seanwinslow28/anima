@@ -1,0 +1,12 @@
+Image 1 is the WORLD BIBLE for this location. Preserve its drawing style, line weight, paper, palette, light, and its fixture designs and materials exactly. Do NOT copy its camera, framing, horizon, perspective or screen-space layout.
+Image 2 is a monochrome COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon line and left-to-right placement, replace its grey shapes with the corresponding real fixtures, and remove every guide mark.
+
+CAMERA: eye level, straight on to the flat wall of the paperwork nook, medium-wide, locked. Horizon low, floor occupying the bottom fifth.
+VISIBLE LEFT TO RIGHT: a low supply desk with a tray of pens and a stapler squared on it; a few sheets of paper lying flat on the floor; a closed cardboard file box; then the hero prop — a leaning tower of loose paper as tall as a person, sticky flags in red, yellow, green and blue stepping down its edges in a neat rhythm; beside it a second, shorter flagged stack; and at the right edge a shelving unit of ring binders, upright, evenly spaced and labelled.
+This corner belongs to a fastidious tidy worker: it is full of stuff and every single thing is squared, flagged and alphabetised. Ordered clutter, not chaos, and not a showroom.
+OUT OF FRAME: the rest of the break room, the server rack, the moodboard wall, the television. The floor in front of the tall paper tower stays clear and empty.
+The room is empty of characters and people.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on the characters and on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.

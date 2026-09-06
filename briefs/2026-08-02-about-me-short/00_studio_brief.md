@@ -4,11 +4,11 @@
 
 ## What is this story about?
 
-A product manager and his four AI sidekicks share a break-room headquarters. An alarm — PROBLEM! over a falling checkout graph — detonates the room: each sidekick instantly builds a brilliant, magnificent, completely wrong solution, and Sean is in the chaos with them, egging them on. A hollow ship, and the alarm re-blares. Sean steps back — the film's one quiet beat — asks the faceless USER in the doorway a single question, and learns the truth on a screen-replay: the customer simply couldn't find the buy button. The same team then executes the tiny right fix as a five-second F1 pit stop. The graph rockets; the grey USER blooms green. The emotional engine is autobiographical: judgement is not being above the chaos — it's the practiced act of stepping back out of it.
+A product manager and his four AI sidekicks share a break-room headquarters. An alarm — PROBLEM! over a falling checkout graph — detonates the room: each sidekick instantly builds a brilliant, magnificent, completely wrong solution, and Sean is in the chaos with them, egging them on. A hollow ship, and the alarm re-blares. Sean steps back — the film's one quiet beat — types a single question to the faceless USER in a chat box on his own monitor, and learns the truth on a screen-replay: the customer simply couldn't find the buy button. The same team then executes the tiny right fix as a five-second F1 pit stop. The graph rockets; the grey USER blooms green. The emotional engine is autobiographical: judgement is not being above the chaos — it's the practiced act of stepping back out of it.
 
 ## Who is this character?
 
-**Sean** — the Full Stack PM, center frame. Pencil-test human (existing `sean-anchor` Bible). Cycle 1: in the chaos, thinking he's conducting. The pivot: swivels his desk chair away from the monitors, eyes closed, deep breath. Speaks exactly once — the question to the user. The narrator is also Sean: his real recorded voice, serene throughout.
+**Sean** — the Full Stack PM, center frame. Pencil-test human (existing `sean-anchor` Bible). Cycle 1: in the chaos, thinking he's conducting. The pivot: swivels his desk chair away from the monitors, eyes closed, deep breath. Never speaks aloud. He asks his one question by typing it into a chat box on his own screen — ruled 2026-08-31, superseding "speaks exactly once"; see the amendment at the foot of this brief. The narrator is also Sean: his real recorded voice, serene throughout.
 
 **Claude** — small terracotta plush robot (existing `claude-mascot` Bible). Earnest, over-caveating, gentle voice. Wrong-build: a 40-page sticky-flagged strategy document, still growing.
 
@@ -18,7 +18,7 @@ A product manager and his four AI sidekicks share a break-room headquarters. An 
 
 **Grok** — grey gremlin, bat ears, sharp grin. Feral edgelord. Wrong-build: sledgehammers the wall, builds a guerrilla-marketing rocket. NEW — needs Cy Bible.
 
-**The USER** — faceless grey pencil-test humanoid, t-shirt reading "USER," small in the doorway. Colorizes green — still faceless — at the moment Sean understands the real problem. Never a specific man or woman. NEW — needs Cy Bible.
+**The USER** — faceless grey pencil-test humanoid, t-shirt reading "USER." Lives **on screens only**: in the chat box on Sean's monitor and on the CRT. Never physically in the room. Colorizes green — still faceless — at the moment Sean understands the real problem. Never a specific man or woman. NEW — needs Cy Bible.
 
 ## What is the tone?
 
@@ -52,7 +52,7 @@ None — ships with the audited About page. Draft-before-pro budget posture; stu
 - The narrator's composure never breaks; no VO line ever describes a visible joke.
 - The narrator/picture gap IS cycle 1; the gap closes at the step-back and stays closed through the pit stop.
 - The step-back is held 2–3 seconds past comfort: eyes closed, swivel away from monitors, no gag.
-- The Sean character speaks exactly once — the question to the user.
+- **The Sean character never speaks aloud.** His one question is typed into a chat box on his monitor. The film runs on VO, music and sound effects alone. *(Amended 2026-08-31 — it read "speaks exactly once — the question to the user.")*
 - Every beat reads on mute: TV text, signs, and labels carry the plot; captions baked in.
 - The four wrong-builds are named and escalate one per beat: Claude's 40-page document, Codex's full rebuild, Gemini's fifty concepts, Grok's wall-demolition rocket.
 - The alarm fires twice (second louder: "PROBLEM (STILL!)"); the SHIP IT bell rings twice (hollow, then earned).
@@ -67,3 +67,42 @@ None — ships with the audited About page. Draft-before-pro budget posture; stu
 - Build order: the first production stub is a 2-second pit-stop slice (≥2 characters, one micro-task each). No full boarding before it passes.
 - No full production spend before a blind-judged 30-second scratch narration passes; the narrator fallback path is named in writing.
 - Sean's question and the narrator's button line are written and cold-read with one working PM before boards.
+
+---
+
+## Amendment — 2026-08-31 · the USER lives on screens, and Sean never speaks
+
+Ruled by Sean, and it replaces two things that were locked: the USER's doorway, and Sean's
+single spoken line.
+
+> "We'll keep it at Sean's computer. It can be a simple chat box situation. No need to
+> complicate things. It makes more sense for the faceless user to be on the TV and in a chat
+> box as opposed to just standing in the doorway."
+
+**What changes.**
+
+| Was | Is |
+|---|---|
+| The USER stands small in the doorway | The USER exists **only on screens** — the chat box on Sean's monitor, and the CRT |
+| Sean speaks exactly once — the question, aloud, to the user | Sean **never speaks aloud**. He types the question into the chat box |
+| Beat 13: Sean walks to the doorway | Beat 13: Sean turns back to his monitors and types. It plays at his station |
+
+**Why it is better and not merely simpler.** The film was already built to run on VO, music and
+sound effects; one spoken line was the single exception, and exceptions cost more than they earn.
+A faceless user who only ever exists as a screen presence is also a truer picture of the thing
+the film is about — the customer you cannot see, whose complaint arrives as text on a monitor.
+And it removes a staging problem that had already been ruled once: a figure in the doorway
+"read wrong" (2026-08-30), which is what moved the USER onto the CRT in the first place. This
+finishes that move rather than leaving the USER half in two places.
+
+**What it costs.** The doorway becomes pure set dressing and never carries a beat. The
+colorize-to-green moment (beat 18) now happens **on screen**, not to a body in the room — it
+still lands, but it lands as an interface changing colour, which is a smaller physical event
+and may need the CRT to fill more of the frame at that beat.
+
+**What it buys the production.** Beats 2, 4, 12 and 13 all play at Sean's station, so it is the
+most-used angle in the film. The room bible draws it accordingly.
+
+Downstream files updated the same day: [`beats-v1.md`](beats-v1.md) beat 13,
+[`lines-v1.md`](lines-v1.md) (the locked question is now typed, not spoken),
+[`M1-STORYBOARD.md`](M1-STORYBOARD.md), [`room-bible/`](room-bible/).

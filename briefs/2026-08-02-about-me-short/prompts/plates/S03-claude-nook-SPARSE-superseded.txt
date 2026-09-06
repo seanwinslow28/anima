@@ -1,0 +1,38 @@
+# S03 — CLAUDE'S NOOK, SPARSE VERSION. *** SUPERSEDED 2026-08-30 ***
+# job 9a517bac-cb85-450a-889f-f50a656f3a0e | gpt_image_2 2k/high 16:9
+# refs: cast lineup + M1-S03-claude-nook-guide.png + job 7f76489b (the S02 plate as style bible)
+# Plate preserved at m1-guides/old/S03-claude-nook-v1-SPARSE-superseded.png
+#
+# WHAT WORKED, and should be carried into the re-generation:
+#   · The RE-BASED CREAM VALIDATED: wall came back delta 2/3/2. First plate after the re-base,
+#     clean pass, no re-roll.
+#   · FACING WORKED. He is turned away, absorbed, never addresses the lens — the exact fix for
+#     what killed the wide. Keep this clause.
+#   · Character OWNS THE FRAME at ~55% of frame height. Keep.
+#   · Referencing the PREVIOUS PLATE as the style bible (not the hero frame) — plate-to-plate
+#     matching is stronger continuity than matching both to a third image. Keep.
+#
+# WHY SUPERSEDED (Sean): "I'm not liking the lack of props and office supplies in these shots...
+#   it feels naked and weird. Like they're in an extremely clean museum and not a workspace."
+#   The prior session over-applied Goofy Gymnastics' empty walls — GOOFY'S SET IS SPARSE BECAUSE
+#   IT IS A GYM. This HQ is lived-in and the clutter is CHARACTERISATION.
+#
+# TO RE-GENERATE: keep everything above; DELETE the "THE WALL BEHIND IS BARE" paragraph and
+#   replace it with the lived-in dressing the rebuilt guide now carries — shelving of binders,
+#   stacked cartons, a low desk with a supply tray and a stapler, loose paper on the floor, a
+#   second stack. The tower and the flag stay the hero action.
+
+Image 1 is the character reference lineup: keep the small terracotta-orange plush robot's exact design — squarish rounded body, stubby limbs, small side nubs, two simple black dot eyes, no mouth.
+Image 2 is the COMPOSITION ROUGH: follow its camera, framing and screen-space layout exactly; replace its grey shapes with the real subject; remove every guide mark, tick, dashed line, label and caption.
+Image 3 is the STYLE AND PALETTE BIBLE: match its rendering, line quality, paper tone and value range exactly. Do NOT copy its camera, framing or subject.
+
+CAMERA: a MEDIUM shot, eye level, close in. The plush robot stands left of centre and is LARGE in frame — he fills about half the frame height.
+
+He is absorbed in his own task and NEVER looks at the camera: he stands facing away to the right, reaching UP and away with one stubby arm to press a small coloured flag onto a neat tower of paper that is far taller than he is. The tower stands to his right, squared off and immaculate, every sheet aligned, with dozens of small coloured tabs already down its edge. He is earnest and careful, not comic.
+
+>>> THE PARAGRAPH BELOW IS THE ONE SEAN REVERTED — REPLACE IT WITH LIVED-IN DRESSING <<<
+THE WALL BEHIND IS BARE: a plain empty cream wall with nothing on it — no shelves, no posters, no furniture, no desks, no other props, no clutter of any kind. Only the robot, the paper tower, the floor and the wall. HE IS ALONE: no other creatures, no people.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet and low-contrast — the room is a pale ground, and colour lives only on the characters and on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Style: 2D pencil-test animation still — graphite linework, visible construction lines, loose flat-colour washes that do not fully respect the lines. 1950s cartoon staging. No clean vector fill, no digital gradients, no painterly gloss, no photorealism. Do not add any text.

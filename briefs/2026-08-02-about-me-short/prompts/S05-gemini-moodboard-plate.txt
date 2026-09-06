@@ -1,0 +1,12 @@
+Image 1 is the WORLD BIBLE for this location. Preserve its drawing style, line weight, paper, palette, light, and its fixture designs and materials exactly. Do NOT copy its camera, framing, horizon, perspective or screen-space layout.
+Image 2 is a monochrome COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon line and left-to-right placement, replace its grey shapes with the corresponding real fixtures, and remove every guide mark.
+
+CAMERA: eye level, medium-wide on the moodboard wall, locked. Horizon low, floor occupying the bottom fifth.
+VISIBLE LEFT TO RIGHT: a shelving unit of ring binders at the far left edge; the vertical seam where two walls meet; then the hero prop — a wall covered in roughly forty concept sketches taped up on small sheets of coloured paper in a loose irregular grid, corners lifting, tape visible, several pinned crooked; a swag of small round string lights strung across the top of them; below the board a low worktable carrying rolls of tape, a jar of markers, scissors and a mug; a scatter of curled sketches that fell off the wall lying on the floor; and stacked cartons of blank card at the right edge.
+This corner belongs to an over-productive idea machine: it is crowded, generous and cheerful, a workspace mid-flow rather than a clean museum.
+OUT OF FRAME: the rest of the break room, the server rack, the desk. The television is mounted above the top edge of frame and is not visible. The floor at the left of the moodboard stays clear and empty.
+The room is empty of characters and people.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on the characters and on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.

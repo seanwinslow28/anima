@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-04T21:51:56.926558Z",
+    "display_name": "Seedance 2.0",
+    "id": "fb3adf87-58cc-4f54-9f44-c2065bfa2ab0",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "a2ac8f09-00ed-44ac-983e-1d4cf51a90d0",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/a2ac8f09-00ed-44ac-983e-1d4cf51a90d0_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe young man in the navy T-shirt sits facing us in the office chair with the three glowing monitors behind him. He looks out at the room and gives one slow, deliberate nod. Then his hand whips up beside his head, one finger twirling a fast spin-it-up circle in the air, and jabs straight out at the room. He slams the chair round in one snap, back to the monitors, and hammers both hands across the keyboard.\n\nHis face is the same face in every frame: short blonde hair, light stubble, two blue eyes and a closed mouth. The desk, the three monitors and the cork board behind him stay the same drawings in every frame. The chair spins on the spot and stays at the desk.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260904_215156_fb3adf87-58cc-4f54-9f44-c2065bfa2ab0.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260904_215156_fb3adf87-58cc-4f54-9f44-c2065bfa2ab0_thumbnail.webp"
+  }
+]

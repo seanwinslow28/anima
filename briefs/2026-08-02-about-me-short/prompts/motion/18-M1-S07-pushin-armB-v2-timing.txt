@@ -1,0 +1,41 @@
+# *** SUPERSEDED — Sean locked arm B v1 (prompt 17). Kept for the two negative findings it bought:
+#   an absolute time cue does nothing, and 'flares white' makes white a HELD STATE. ***
+# S07, M1 beat 3 — ARM B v2, TIMING FIX. 2026-09-01. Sean's note.
+# seedance_2_0 fast 7s 720p
+#   --start-image normalised/S07-plate-v2.png
+#   --end-image   normalised/S07-alarm-closeup-v1.png
+# ARM B IS RATIFIED AS THE ROUTE. Sean: "We'll go with Arm B. I'm not a fan of the lightning
+#   bolt. It gives off comic book and less pencil test." That defect belongs to arm A alone —
+#   with no end frame the model redrew the screen in bold outlined caps with a bolt. The end
+#   frame is what forbids it, so it is already solved by staying on this arm and needs no
+#   clause. Do not add a negation for it; Seedance has no negative-prompt support.
+#
+# SEAN'S NOTE, verbatim: "The timing feels off in the zoom... right after the TV flashes on and
+#   the whole place shakes with it, it does a quick zoom smear to the TV and then the screen
+#   flashes on and off. The zoom should occur probably about 3 seconds in. Right now, it happens
+#   around second 5 and flashes once when it's fully zoomed in."
+#
+# THREE CHANGES, and the first one is the one with evidence behind it:
+#   1. COLLAPSE THE OPENING FROM TWO EVENTS INTO ONE. v1 had the flash and the room-jolt as
+#      separate sentences, so the model spent two beats on them and the zoom fell to ~5s. They
+#      are now one simultaneous event joined by "at once". This is the project's own established
+#      lever — event count sets tempo — applied to pull a beat EARLIER rather than to fill time.
+#   2. THE TAIL GETS WEIGHT. v1 said "on and off, on and off" and got one flash at the end.
+#      Four flashes now, plus "for the rest of the shot", so the flashing has somewhere to live.
+#   3. THE ZOOM IS NAMED AS A SMEAR. "one fast smear zoom, the room streaking past." A whole-
+#      frame fast move is exactly the condition that HAS produced smears on this project
+#      (04's typing, Codex's spin) and that a one-way hand reach never did — see prompt 15.
+#
+# UNTESTED LEVER, flagged so the result is attributable: the closing structural sentence
+#   ("inside the first three seconds"). This project has never tested whether seedance_2_0
+#   honours an explicit time cue. It is additive and low-risk, but if the timing lands, change
+#   1 and this cue are confounded — a clean attribution costs one more roll and is only worth
+#   buying if the answer is wanted for other shots.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil.
+
+The room holds dead still. The small television's dark screen flares white in one hard flash and the whole room jolts with it at once — the word PROBLEM! bangs on above a jagged line falling to the right, the mug hops, the darts shiver in the wall, the taped sketches flutter. Immediately the camera slams in on the television in one fast smear zoom, the room streaking past, and stops dead. The screen flashes PROBLEM! on and off, on and off, on and off, on and off for the rest of the shot. The flash, the jolt and the zoom all happen inside the first three seconds.
+
+Every time it lights, the screen shows the same word PROBLEM! in the same plain capitals above the same falling line. The television, the bookshelf of binders and the taped sketches stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

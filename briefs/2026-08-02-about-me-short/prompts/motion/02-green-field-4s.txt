@@ -1,0 +1,18 @@
+# GREEN-FIELD MOTION, 4s — the green-screen route's motion test
+# job dcb1e9e9-da5f-4155-b3ab-8f01c9c5b376 | seedance_2_0 fast 4s 720p generate_audio:false
+# start_image: job 6c79ecd0 (the E green plate)
+# RESULT: backing held perfectly — 0.0% of pixels changed >8 levels across 97 frames.
+#         Character identity HELD. But the backing shade DRIFTED darker (greenness 101 -> 84),
+#         which broke a fixed-threshold key and left a translucent green rectangle. The key
+#         must measure EACH FRAME's own backing and scale its ramp.
+# ROUTE WITHDRAWN anyway: the characters are gesturing at nothing.
+
+The camera is LOCKED — no camera move, no pan, no zoom, no drift.
+
+The lavender-purple cloud creature on the left taps forward with its raised stubby arm, two or three light taps, its rounded body bobbing gently as it does. The blue-and-purple star creature on the right gives one small bounce on the spot and gestures upward with its raised arm. Both keep their feet planted. No walking, no new characters, nothing enters frame.
+
+THE BACKGROUND IS AND REMAINS A COMPLETELY FLAT, EVEN, PURE CHROMA GREEN FIELD, edge to edge, for every single frame. Nothing is ever added behind or around the characters: no room, no furniture, no props, no floor, no ground line, no cast shadow, no horizon, no gradient, no texture, no paper grain, no vignette. The green never changes shade, never darkens, never lightens.
+
+2D ANIMATION RULES: this is a hand-drawn colored-pencil pencil-test animation. The CHARACTERS stays a FLAT 2D DRAWING at all times — visible paper grain, gentle line boil on the pencil lines, motion held on twos. No 3D rotation, no parallax warping of the drawing, no perspective morph, no CGI smoothness, no depth-of-field blur, no lighting changes.
+
+THE CLOUD CREATURE'S FACE NEVER CHANGES DESIGN: a pale chevron, one dot eye, a short underscore bar and small brows, exactly as in the first frame. NO MOUTH is ever added to it.

@@ -233,7 +233,10 @@ When auditing frames or planning timing, load the relevant visual guide from `re
 |-------|------|----------|
 | Left/Right Body Map | `references/visual-guides/left-right-body-map.png` | Checking CC01 (stylus hand), any left/right orientation audit |
 | Ease In/Out Spacing | `references/visual-guides/spacing-ease-in-out.png` | Diagnosing "floaty" motion, validating in-between spacing |
-| Odd Rule Gravity | `references/visual-guides/spacing-odd-rule.png` | Validating falling/jumping arcs, gravity-based motion |
+| Accelerating Spacing | `references/visual-guides/spacing-accelerating.png` | Validating falling/jumping arcs, gravity-based motion |
+| Smear from Repeated Motion | `references/visual-guides/smear-from-repeated-motion.png` | Diagnosing why a described smear did not appear |
+| Scale Anchoring | `references/visual-guides/scale-anchor-tall-object.png` | A subject came back the wrong size against its surroundings |
+| Rest Pose vs Mid-Action | `references/visual-guides/rest-pose-vs-mid-action.png` | Authoring a still that a motion model has to move |
 | Drybrush Smear | `references/visual-guides/smear-drybrush-example.png` | Evaluating smear frames in pencil test style (F13→F18 IB02) |
 | Speed Lines | `references/visual-guides/smear-speedlines-example.png` | Evaluating directional motion indicators |
 | Acting Beat Pattern | `references/visual-guides/anticipation-action-settle.png` | Planning acting transitions, validating anticipation/overshoot |

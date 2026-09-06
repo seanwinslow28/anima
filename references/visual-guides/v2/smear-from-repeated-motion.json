@@ -1,0 +1,23 @@
+[
+  {
+    "created_at": "2026-09-03T10:30:45.098438Z",
+    "display_name": "GPT Image 2",
+    "id": "1eb9d5e3-2f68-47b4-ab9f-7321d59e4a6d",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_103045_1eb9d5e3-2f68-47b4-ab9f-7321d59e4a6d_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [],
+      "model": "videotape-alpha",
+      "prompt": "Educational animation reference diagram, clean black line art with graphite shading on white. Title at top: \"What Actually Produces a Smear\". TWO panels side by side. LEFT panel headed \"ONE-WAY MOVE — no smear\" with a red X: a cartoon arm reaching straight sideways from A to B in a single direction, three clean drawings, no blur, labelled \"a single translation stays crisp\". RIGHT panel headed \"REPEATED or ROTATING — smear\" with a green check: the same arm whipping back and forth across the same distance, drawn with a long streaked drybrush smear frame between the extremes, plus a second small example of a spinning body with a circular smear ring around it. Callouts: \"reverses direction\", \"rotates through the arc\", \"smear frame lives here — 1 frame\". Footer: \"Ask for a repeat or a rotation. A one-way reach will not smear no matter how it is described.\". No other text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260903_103045_1eb9d5e3-2f68-47b4-ab9f-7321d59e4a6d.png",
+    "status": "completed"
+  }
+]

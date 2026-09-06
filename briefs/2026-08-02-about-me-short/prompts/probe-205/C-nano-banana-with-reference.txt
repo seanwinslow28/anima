@@ -1,0 +1,8 @@
+# C — identity test, nano_banana_2 + CAST LINEUP REFERENCE
+# job 4597be95-10f5-4086-8f79-94f84ae0f392 | nano_banana_2 2k 16:9
+# NOTE: submitted as `nano_banana_2`, the API returned model `nano_banana_flash`.
+#       July's "nano_banana_2 = the forbidden Pro model" note is STALE, verified 2026-08-30.
+# RESULT: identity mostly holds (brows missing) but the register is visibly CLEANER and
+#         FLATTER — Sean's "a cleaned up pencil sketch", confirmed side by side.
+
+[identical prompt body to B-gpt-with-cast-reference.txt — only the model differed]

@@ -1,0 +1,42 @@
+# S09 — THE ROOM REACTS, the CRT's own point of view. NEW SETUP, beat 3½. 2026-09-03.
+# gpt_image_2 · 2k · high · 16:9 · 8.5 cr. Camera = room-bible/m2-candidates/SHOT-B3h-A-plate-rough.png
+#   (lens at the CRT glass, x 24.4 y 11.8, 7'9" up, solved yaw -164 / pitch -22 / 86°).
+# Sean locked the camera 2026-09-03 ("3½ is definitely locked"). Room state A — nothing is
+#   wrecked yet. The CRT itself is not in frame: we are looking OUT of it.
+# WHY THIS SHOT EXISTS: it reverses the 08-30 cut of the establishing wide, deliberately. That
+#   was a neutral wide that failed on facing and drift; this is a MOTIVATED POV — the alarm's
+#   view of the room at the moment the room turns to look back at it. Scale-as-distance is the
+#   staging: Grok and Gemini near and big, Sean middle, Claude and Codex tiny at the far wall.
+# REFS, role-split per _blocks.md: three elevations (south, west, north — the three walls in
+#   frame) as FIXTURE + STYLE bible, the plate rough LAST as the camera. Character-free: every
+#   character is a later composite, five separate passes (Codex and Gemini never share a pass).
+# RUN: motion/gen_image_refs.sh prompts/plates-rev2/S09-room-reacts.txt plates/rev2/S09.json \
+#        normalised/ELEV-south-v2.png normalised/ELEV-west-v2.png normalised/ELEV-north-v2.png \
+#        room-bible/m2-candidates/SHOT-B3h-A-plate-rough.png
+# RESULT — first roll, 8.5 cr, job 89f30be9. plates/rev2/S09-room-reacts-v1.png → normalised/
+#   (paper gain 1.034–1.050, pass). Three walls, the high lens, the floor wedge and both corner
+#   seams all landed; every far-wall fixture is present in plan order. TWO MISSES against the
+#   plan, both on the right wall:
+#   (1) the PRINTER BENCH was drawn at the NEAR right (the storage bench's spot, x 22–25.5)
+#       instead of beyond the desk at x 5.2–9, and the storage bench + filing cabinet are absent —
+#       a continuity error against S02, where the printer sits at frame-LEFT of the desk;
+#   (2) the office chair came back turned to face the room, not pulled up with its back to us.
+#   Neither is a plate-killer at this scale; both are Sean's call — a surgical edit (swap the
+#   printer for the storage bench's boxes; turn the chair) or accept. The worktable also sits
+#   a little further out from the sketch wall than the plan puts it.
+
+Images 1, 2 and 3 are FIXTURE AND STYLE BIBLES — flat elevations of the three walls in this shot: the wall of taped sketches, the far wall with the doorway, and the desk wall. Preserve their drawing style, line weight, paper colour, palette, and the exact design of every fixture. Do NOT copy their flat orthographic camera.
+Image 4 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement exactly; replace each grey block with the corresponding fixture; remove every guide mark.
+
+CAMERA: a very wide shot of the whole office from HIGH on one end wall, the lens up near the ceiling, tipped well down so that the floor is a broad wedge filling the lower half of the frame and the far wall sits in the upper half. We are looking down the length of the room. Three walls are in frame: the near wall of taped sketches runs away from us along the LEFT, the far end wall faces us, and the desk wall runs away from us along the RIGHT. Nothing of the wall the camera is on is visible.
+
+PERSPECTIVE — draw it deliberately. The vanishing point sits on the far wall a little left of centre, at the far wall's mid-height. The left wall and the right wall both converge steeply towards it: fixtures on the left wall show their RIGHT-HAND faces and shrink fast as they recede; fixtures on the right wall show their LEFT-HAND faces and shrink fast as they recede. Two clean vertical corner seams run floor to ceiling where the far wall meets the side walls. The two baseboard lines slope down towards the vanishing point and the far baseboard is short and level. Because the lens is high, we see the TOPS of the desk, the counter, the worktable and the cabinets.
+
+VISIBLE. Along the LEFT wall, near to far: the long moodboard of taped product and mascot concept sketches — shopping bags, checkout buttons, packaging, price tags, storefront signs, little round cartoon creatures, each on a small square of paper held by one piece of tape — with a swag of small string lights above it, then a low worktable with tape rolls, a jar of markers and a mug, then at the far end a low storage cabinet with cardboard cartons stacked on top. On the FAR wall, left to right: a water cooler with paper cups, a low counter with a drip coffee machine, glass jug and mugs, a tall black server rack full of small coloured status lights with loose cabling, a plain open empty doorway, a squared-away shelf of ring binders, two leaning towers of paper flagged with coloured sticky notes, and a small supply desk with a jar of pens. Along the RIGHT wall, near to far: a large cork board of pinned notes clipped by the right edge, and below it a long wooden desk with THREE monitors showing quiet lines of code, a desk lamp and a mug, a shelf of binders and a trailing plant above the desk, an empty office chair pulled up to the desk with its back to us, a whiteboard of half-erased diagrams, a low printer bench, and at the far corner a tall grey filing cabinet with boxes and a tired plant on top. The floor is a wide open expanse of plain paper with nothing on it.
+
+OUT OF FRAME: the television, the dartboard, the side table, the crates, the binder shelving, the credenza, the bell, the confetti cannon and the storage bench — everything on the wall the camera is on.
+The room is empty of characters and people.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.

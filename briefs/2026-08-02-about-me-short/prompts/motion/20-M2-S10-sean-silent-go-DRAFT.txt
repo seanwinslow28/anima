@@ -1,0 +1,23 @@
+# RESULT v1 — motion/m2-beat4/S10-silent-go-v1.mp4, 24.5 cr. REJECTED by Sean: absurd — the finger-twirl-and-jab
+#   played as a clown routine ("Step two: assess the situation with a cool head" wants a leader's GO, not a disco
+#   point). Layout f0 0.996 / last 0.949. Sean rewrote the action himself for v2 — see 23.
+# SEAN, M2 BEAT 4 — THE SILENT GO. DRAFT, unrolled. 2026-09-03. Sean agreed the shape.
+# seedance_2_0 fast 7s 720p | start_image: normalised/S10-sean-composite-v1.png (does not exist yet)
+# THE SHAPE, three events at full snap (fills 7s; nothing spread): look at the room → ONE slow
+#   deliberate nod → the hand whips up, a fast finger-twirl "spin it up" and a jab out at the
+#   room → he slams the chair round to the monitors and hammers the keyboard. The nod is the
+#   GO; the twirl is the "go, now"; the slam is the cut into beat 5.
+# LOCKS as constants through time (07's lesson), never rest states. Register and vocabulary
+#   blocks VERBATIM — never edited per beat. Zero negation.
+# WATCH FOR on first roll: the face (first time Seedance has had his face to animate); the
+#   monitors behind his head drifting (prop-dense band); the chair spin becoming a slow pan.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The young man in the navy T-shirt sits facing us in the office chair with the three glowing monitors behind him. He looks out at the room and gives one slow, deliberate nod. Then his hand whips up beside his head, one finger twirling a fast spin-it-up circle in the air, and jabs straight out at the room. He slams the chair round in one snap, back to the monitors, and hammers both hands across the keyboard.
+
+His face is the same face in every frame: short blonde hair, light stubble, two blue eyes and a closed mouth. The desk, the three monitors and the cork board behind him stay the same drawings in every frame. The chair spins on the spot and stays at the desk.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.
+
+# (see 22 for the v2 note)

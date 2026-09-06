@@ -1,0 +1,49 @@
+[
+  {
+    "created_at": "2026-09-01T19:38:14.538329Z",
+    "display_name": "Seedance 2.0",
+    "id": "9428c525-a1a9-4dcf-bf23-d229a360b05c",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "2fd1d6f4-e119-4262-83ca-46d945b89c62",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/2fd1d6f4-e119-4262-83ca-46d945b89c62_resize.jpg"
+          },
+          "role": "start_image"
+        },
+        {
+          "data": {
+            "id": "00f370a5-9d75-4762-a4cb-850ad638b673",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/00f370a5-9d75-4762-a4cb-850ad638b673_resize.jpg"
+          },
+          "role": "end_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil.\n\nThe room holds dead still for one beat. The small television's dark screen flares white in one hard flash and the word PROBLEM! bangs on above a jagged line falling to the right. The whole room jolts with it — the mug hops, the darts shiver in the wall, the taped sketches flutter. The camera snaps in fast on the television, one hard quick push-in that stops dead, and the screen flashes PROBLEM! on and off, on and off.\n\nFrom the moment it lights, the screen shows the same word PROBLEM! and the same falling line every time it flashes on. The television, the dartboard, the bookshelf of binders and the cabinet stay the same drawings in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260901_193814_9428c525-a1a9-4dcf-bf23-d229a360b05c.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260901_193814_9428c525-a1a9-4dcf-bf23-d229a360b05c_thumbnail.webp"
+  }
+]

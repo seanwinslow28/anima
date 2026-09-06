@@ -1,0 +1,18 @@
+# 5 · CLAUDE'S 40-PAGE DOC — v2, 2026-09-05 (Sean on v1: "MORE chaotic. Papers flying everywhere and he's rapidly writing
+#   as much as possible. Claude's bouncy squash and stretch movement is perfect though.")
+# seedance_2_0 fast 7s 720p · start: normalised/S12-claude-v2.png (unchanged)
+# WHAT CHANGED: the writing is sheet-after-sheet at furious speed with each page FLUNG over the shoulder; loose pages are in
+#   the air in EVERY frame (a constant, not an event); the leap carries an armful of pages; the drop is through a paper storm.
+#   The body-bounce wording is kept verbatim. Register + vocabulary VERBATIM; face + landing constants unchanged.
+# RUN: motion/generate.sh prompts/motion/31-M2-S12-claude-canyon-v2-CHAOS.txt normalised/S12-claude-v2.png motion/m2-beat5/S12-claude-canyon-v2.json
+# RESULT: motion/m2-beat5/S12-claude-canyon-v2.mp4, 24.5 cr. MORE paper than v1 (3-6 pages a frame vs 1-3), the bounce intact, two
+#   leaps to the top edge, a stretch frame on the drop. Layout 0.987 / 0.971, drift 11.3%, motion 1.61 (v1 1.48). Not yet
+#   'everywhere' - v3 (file 37) pushes the storm wording; Sean picks the level.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot, the lens on the floor looking straight up the towers.
+
+The small terracotta cube creature scribbles across sheet after sheet at furious speed, its whole body bouncing on every stroke, and flings each finished page over its shoulder the instant it is done, so that loose pages fly up and spiral everywhere around it. It springs straight up the face of the tallest tower in one hard leap to the top of the frame, slaps a whole armful of pages onto the tower, and drops back down through a storm of falling paper. It lands on all four feet, grabs the next sheet and scribbles even faster, pages flying off in every direction, and springs up a second time with another armful.
+
+Loose pages are tumbling through the air somewhere in the frame in every frame. Its face is exactly two small dark dot eyes and two short brows, the same two eyes and two brows in every frame. It lands on all four feet on the floor after every leap. It stays small, tinier than the shortest stack of paper, in every frame. The three towers of paper stand in the same places and reach out of the top of the frame in every frame; the shelf of binders at the left and the grey filing cabinet at the right stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

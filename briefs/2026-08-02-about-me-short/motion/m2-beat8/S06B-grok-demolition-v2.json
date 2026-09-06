@@ -1,0 +1,49 @@
+[
+  {
+    "created_at": "2026-09-05T19:51:49.929917Z",
+    "display_name": "Seedance 2.0",
+    "id": "d9ae7b01-82d8-466b-8539-5793ba0eccb6",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "2c1b6161-225d-43fa-b82d-9366672403a3",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/2c1b6161-225d-43fa-b82d-9366672403a3_resize.jpg"
+          },
+          "role": "start_image"
+        },
+        {
+          "data": {
+            "id": "13a8895f-0fef-4b76-9546-f2f63d051b19",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/13a8895f-0fef-4b76-9546-f2f63d051b19_resize.jpg"
+          },
+          "role": "end_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe round grey cartoon creature with the big pointed ears and the wide friendly grin hoists the heavy sledgehammer high over its head, coils its whole body back, and whips the hammer into the wall beside the round side table in a hard smear. The plaster bursts, the side table tips over and its cans scatter, and a ragged hole opens in the wall with nothing but blank paper behind it. It whips the hammer into the wall again and the hole tears wider, plaster and splinters clattering onto the floor. It drops the hammer's head to the floor, reaches through the hole with both arms, and hauls a big cardboard rocket into the room nose-first through the hole, propping it leaning against the broken edge. It pats the rocket's side twice, delighted, and stands beside it with the hammer.\n\nIts face is exactly two red-orange eyes and one wide grin of small teeth, the same two eyes and the same grin in every frame. Its two tall pointed ears are the same two ears in every frame. It lands on both feet on the floor after every hop. It stays small, no taller than a third of the tall shelving of binders at frame right, in every frame. Through the hole there is only blank cream paper in every frame once it opens. The dartboard, the stacked crates, the storage bench and the shelving stay the same drawings in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_195149_d9ae7b01-82d8-466b-8539-5793ba0eccb6.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260905_195149_d9ae7b01-82d8-466b-8539-5793ba0eccb6_thumbnail.webp"
+  }
+]

@@ -1,0 +1,25 @@
+# S09 · GROK v2 — the singles+matte route, with the two things the one-pass A/B taught. 2026-09-04.
+#   Refs: refs/turnaround-views/grok-v2-friendly.png (the FIXED reference, 2026-09-04) + the CLEAN plate. TWO changes from v1: (1) the eyeline — v1's "off to
+#   one side, back towards the corner" came back as a sneer; the one-pass v1 wording that came back
+#   FRIENDLY is used instead (bright round eyes, brows up, looking at his own dart). (2) the render —
+#   v1 was bare graphite with no wash; ask for the wash and the room's line weight explicitly.
+#   The character line is kept verbatim: the reference-only test proved the description is what
+#   holds his mood. 8.5 cr. Then re-merge with the other four singles at $0.
+# RUN: motion/composite.sh prompts/composites-S09/S09-grok-v2.txt refs/turnaround-views/grok-v2-friendly.png \
+#        normalised/S09-room-reacts-v1.png composites/S09/S09-grok-v2.json
+# RESULT — first roll, 8.5 cr, job f2670d58. composites/S09/S09-grok-v2.png. LANDED: round bright
+#   eyes, brows up, even-toothed friendly grin, ear clear of the mouth, ears and tail whole, a grey
+#   wash, dart in hand, same spot and scale as v1. Merged with the four v1 singles at thresh 12 /
+#   dilate 22 → composites/S09/S09-all-v2.png → normalised/S09-all-v2.png. verify_edit on the merge:
+#   phase 0.694 · edge keep 0.915 · shift (0,0) · PASS. *** THIS IS THE S09 STILL. ***
+
+Image 1 is the CHARACTER: a round grey cartoon creature with big pointed ears, a wide friendly cartoon grin, small bright eyes and a tufted tail. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same palette. This is a very wide shot of a whole room from high up, so the character is a small part of the picture.
+
+POSITION: standing on the open floor in the LOWER RIGHT of the picture, near the camera, a little in front of and to the left of the low wooden bench with the printer on it, its whole body on the open floor and clear of the furniture. It is the nearest figure to the camera, so it is drawn larger than anything else that stands on the floor.
+SCALE — draw it SMALL in the room, though near to us: it stands only thigh-high to a grown adult. Its head would not reach the top of the desk further along the wall, and it is shorter than the printer bench beside it is long. It is a small creature, never person-sized.
+FACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its full grin, both ears, its chest, both arms and both feet. It is NOT seen from behind and NOT in profile. Its eyes are bright, round and wide open with its brows raised, looking down at the small dart it holds in its own hand, cheerful; it never looks into the camera.
+POSE: it stands still and upright at rest, both arms hanging down at its sides with one hand holding a single small dart, both feet flat on the floor. Draw it in the same hand as the room — graphite line with a light grey coloured-pencil wash over its body, the same line weight as the furniture — with a soft graphite contact shadow pooled on the floor beneath it.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.
