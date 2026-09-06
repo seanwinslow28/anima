@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-09-06 — about-me-short: Movement 3 wave 3 — beats 11–20 built end to end (372 cr, 33/33 first-roll landings, 0 re-rolls)
+
+- Ran the wave-3 continuation under `/creative-director`: Phase 0 grounded in the locked state and the fourteen wave-2 laws, the four open questions roughed at $0 with a stated lean (`briefs/2026-08-02-about-me-short/m3-roughs/`), then the 30/60/90 order executed. Question 1 (typed or spoken) turned out to be already answered by the studio brief's 2026-08-31 amendment; the tracker's flag was stale. Question 4 taken as PROBLEM! and rolled. Questions 2 (the freeze) and 3 (the old button) are held for Sean with pictures.
+- Built every ruling-independent asset for beats 12–20: the swivel composite + clip (the closed mouth held — law 8 confirmed), the S11 monitor-closeup plate + the chat box carrying the full locked question (first roll), three state-C corner plates as edits of the locked M1 plates + three composites + four sigh clips + three pit-stop clips, the replay page + a $0 cursor overlay, the rocketing graph edit + two-keyframe clip + the earned SHIP IT, the USER's grey→green two-keyframe clip (colour change by keyframes proven), the PROBLEM! sting still. A $0 labelled rough cut of the whole movement (`motion/m3-roughcut/M3-roughcut-v1.mp4`, 43.6s).
+- Four $0 post tools: `post/fetch_result.py`, `post/cursor_overlay.py`, `post/typewriter_reveal.py`, `post/m3_roughcut.py`. Eleven new laws appended to `prompts/_blocks.md` (§ Wave 3 findings 15–25), incl. the measured price correction (`gpt_image_2` 2k high = 6.5 cr, not 8.5) and the ground-plan catch that the NE hole is behind the S09 lens.
+- Nothing locked; review packet at `briefs/2026-08-02-about-me-short/CONTINUATION-2026-09-06-wave-3-review.md`. Branch `about-me-short/m3-wave-3`, record and media as separate commits.
+
 ## 2026-09-05 — about-me-short: Movement 2 wave 2 — beats 5–10 all have a first-roll package (257.5 cr, 23/23 first-roll landings)
 
 **What.** Executed `briefs/2026-08-02-about-me-short/CONTINUATION-2026-09-05-movement-2-wave-2.md`

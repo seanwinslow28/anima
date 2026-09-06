@@ -4,7 +4,7 @@
 # The S05 lesson, kept for the clip later: the wall is FULL in every frame including the first. Landmarks kept: string lights,
 #   worktable + its tape rolls / pen jar / scissors / mug, the cabinet + boxes.
 # RUN: motion/gen_image_ref.sh prompts/plates-rev2/S05-stateC-fifty-everywhere-calm.txt normalised/S05-plate-v1.png 16:9 plates/rev2/S05-stateC.json
-# RESULT: (unrolled)
+# RESULT: plates/rev2/S05-stateC-v1.png -> normalised/ (gain 1.045–1.089, the biggest lift of the wave — the sketches went pale), 6.5 cr, first roll, job 5b2db66d. LANDED: sketches three-deep on the wall, over the cabinet and boxes, over the table front and legs, buried table top, carpeted floor, a few hanging off the string lights. Reads as the fifty gone mad, calm.
 
 Edit this drawing. Keep the same camera, the same framing, the same wall, floor, paper, line and colour. Keep the string of small lights across the top, the long wooden worktable with its rolls of tape, jar of pens, scissors and mug, and the low cabinet with the stacked cardboard boxes at the left, all exactly as drawn.
 

@@ -4,7 +4,7 @@
 #   the counter to its LEFT, so the screen pops out of the rack's LEFT side over the counter — the same geometry as S13, consistent.
 # ONE wreck only (the screen + the cables it dragged out); the mugs and the coffee machine survive as landmarks. Dash-code, zero letters (law 7).
 # RUN: motion/gen_image_ref.sh prompts/plates-rev2/S04-stateC-screen-popped-calm.txt normalised/S04-plate-v1.png 16:9 plates/rev2/S04-stateC.json
-# RESULT: (unrolled)
+# RESULT: plates/rev2/S04-stateC-v1.png -> normalised/ (gain 1.004–1.013), 6.5 cr, first roll, job b5a409e1. LANDED: the screen out of the rack's LEFT side on its arm over the counter, dash-code, a spill of cables over the counter to the floor; mugs, machine, boxes, sketches, doorway all in place.
 
 Edit this drawing. Keep the same camera, the same framing, the same walls, floor, paper, line and colour. Keep the wall of small taped sketches at the left, the long cabinet with the stacked cardboard boxes, the coffee counter with its coffee machine, jug and two mugs, the tall black server rack, and the doorway at the right, all exactly as drawn.
 

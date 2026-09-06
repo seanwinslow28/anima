@@ -1,15 +1,5 @@
-# S11 — THE MONITOR CLOSEUP PLATE. Beat 13. gpt_image_2, 2 role-split refs, 16:9 2k high. 8.5 cr. 2026-09-06.
-# OWED since 08-31 by the argument that earned S08: the question has to be LEGIBLE, and the centre monitor on the S02 wide is
-#   ~320px of a 2688px plate. Built like S08 (prompts/plates-rev2/S08-crt-closeup.txt): the S02 wide as the fixture bible,
-#   a post/make_closeup.py CROP as the camera rough — it IS the set at the target framing, so it cannot disagree with it.
-#     Image 1 = normalised/S02-plate-v1.png — FIXTURE, MATERIAL, PALETTE, STYLE bible ONLY.
-#     Image 2 = m3-roughs/S11-crop-w1000.png — the camera (a 2.69x crop centred on the middle monitor).
-# THE CHAIR: the crop carries the empty chair back across the middle monitor's lower left. In beat 13 Sean is IN that chair
-#   typing, so an insert of his screen with an empty chair in it contradicts the cut — the chair is written OUT OF FRAME here.
-# THE SCREEN IS DARK (rest-pose law, the S08 precedent): the chat box + the question are a surgical edit on top.
-# RUN: motion/gen_image_refs.sh prompts/plates-rev2/S11-monitor-closeup.txt plates/rev2/S11-monitor-closeup.json normalised/S02-plate-v1.png m3-roughs/S11-crop-w1000.png
-# RESULT: plates/rev2/S11-monitor-closeup-v1.png, 6.5 cr, first roll, job 9f20c169. LANDED: straight at the middle monitor, dark; side monitors' faint code, keyboard, mouse, mug, lamp, cork board top; NO CHAIR. normalize_paper read CHECK and over-gained it (no wall in the top band — the cork board) — the RAW plate is the normalised copy, gain 1.0 by hand. *** THE S11 PLATE ***
-
+prompt bytes: 2049
+--- prompt sent ---
 Image 1 is the fixture and style bible. Preserve its fixture designs, its materials, its palette, its paper and its rendering exactly: the same three flat monitors on their stands, the same keyboard and mouse, the same desk top, the same cork board of pinned notes and photographs above, the same desk lamp and blue mug. Do NOT copy its camera, its framing or its screen-space layout.
 
 Image 2 is the camera. Follow its framing, its perspective and its left-to-right placement exactly — this is the same desk seen closer, straight on. Redraw everything in it at full detail and full resolution, with real graphite line and cross-hatch, rather than enlarging a small picture.
@@ -25,3 +15,7 @@ The middle monitor's screen is completely dark and empty — a blank unlit scree
 Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. Do not add any legible text anywhere in the picture.
 
 Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.
+--- end ---
+refs: normalised/S02-plate-v1.png m3-roughs/S11-crop-w1000.png
+job json -> plates/rev2/S11-monitor-closeup.json
+exit 0

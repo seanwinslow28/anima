@@ -1,7 +1,7 @@
 # S08 — THE GRAPH ROCKETS. Beat 17's END frame. gpt_image_2 EDIT of normalised/S08-crt-closeup-v1.png. 8.5 cr. 2026-09-06.
 # The alarm's twin, opposite result: no words — the picture is the joke (mute parity). The line climbs so steeply it leaves the screen.
 # RUN: motion/gen_image_ref.sh prompts/edits/S08-graph-rockets.txt normalised/S08-crt-closeup-v1.png 16:9 composites/M3/S08-graph-rockets.json
-# RESULT: (unrolled)
+# RESULT: composites/M3/S08-graph-rockets-v1.png -> normalised/, 6.5 cr, first roll, job 3f93ea30. LANDED: the line dips once and rockets off the top right with an arrowhead; two faint axes; no words. *** THE BEAT-17 END FRAME ***
 
 Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same fixtures, same paper and palette.
 

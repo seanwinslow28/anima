@@ -3,7 +3,7 @@
 # FACE (law 3): never write "its eyes" for Codex — "its face is tipped towards …". The far-eye dot on Sean's sheet is ON-MODEL.
 # STAGING (law 6): small at the foot of the rack, under the popped screen, ¾ front, face tipped UP at the screen. Scale law: the rack.
 # RUN: motion/composite.sh prompts/composites-M3/S04-codex-stateC.txt refs/turnaround-views/codex-v2.png normalised/S04-stateC-v1.png composites/M3/S04-codex-stateC.json
-# RESULT: (unrolled)
+# RESULT: composites/M3/S04-codex-stateC-v1.png -> normalised/, 6.5 cr, first roll, job 1cb759c8. LANDED: ¾ front at the foot of the rack under the popped screen, chevron + bar, face tipped up, thigh-high. verify 0.270/0.834 PASS. *** THE BEAT-15/16 CODEX START FRAME ***
 
 Image 1 is the CHARACTER: a small lavender cloud creature with a scalloped puffy outline, two stubby arms, two small feet, and a face that is exactly one pale chevron and one short straight bar. Image 2 is the BACKGROUND SCENE.
 

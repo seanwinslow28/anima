@@ -1,11 +1,5 @@
-# 15 · CLAUDE SIGHS — v1, 2026-09-06. The deflate as one whole acting beat (anticipation = draws up tall; action = drops all at
-#   once; overshoot = the squash; settle = bobs back small), then a look at the towers, a second smaller sag, and a small relieved
-#   grin. A loop-ish shape fills the 7s; the cut takes ~0.75s (four corners in 3s). Silhouette: the sag must read in silhouette.
-# seedance_2_0 fast 7s 720p · start: normalised/S03-claude-stateC-v1.png (Claude sitting writing at the foot of the towers, state C)
-# CONSTANTS: face; ONE pencil; the towers reach out of the top of frame; the sheets on the floor stay where they lie; fixtures.
-# RUN: motion/generate.sh prompts/motion/42-M3-S03-claude-sigh.txt normalised/S03-claude-stateC-v1.png motion/m3-beat15/S03-claude-sigh-v1.json
-# RESULT: motion/m3-beat15/S03-claude-sigh-v1.mp4, 24.5 cr, first roll, job 5b85b8fc. LANDED: looks up / STANDS and draws up tall with an O mouth / collapses flat into a puddle / bobs back small / grin. Layout 0.989/0.984. The drop is at ~t=3.0–4.1s. The face grows a mouth for the O and the grin — acting, not drift (the sitting sheet has a small mouth).
-
+prompt bytes: 1408
+--- prompt sent ---
 1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
 
 The small terracotta cube creature sitting on the floor stops writing, lowers its pencil and tips its head back to look all the way up the towering stacks of paper above it. It draws itself up tall and stiff, then everything drops at once: its whole body sags and squashes down into itself, its arms flop, its head droops, a long deflating slump. It bobs back up small, looks up at the towers again, and sags a second time, smaller. Then it lifts its head with a small relieved grin, gives one little shrug, and settles.
@@ -13,3 +7,6 @@ The small terracotta cube creature sitting on the floor stops writing, lowers it
 Its face is exactly two small dark dot eyes and two short brows, the same two eyes and two brows in every frame. It holds exactly one pencil in every frame. It stays sitting in the same spot on the floor in every frame. It stays small, tinier than the bookshelf's lower shelf, in every frame. The three towers of paper stand in the same places and reach out of the top of the frame in every frame; the loose sheets on the floor lie still where they are in every frame; the small desk, the bookshelf of binders and the grey filing cabinet stay the same drawings in every frame.
 
 Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.
+--- end ---
+job json -> motion/m3-beat15/S03-claude-sigh-v1.json
+exit 0

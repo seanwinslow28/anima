@@ -6,7 +6,7 @@
 # WHAT SURVIVES on purpose: the supply desk, the bookshelf, the filing cabinet + plant, the corner seam — the M1 landmarks.
 # A large edit re-renders the whole frame (law 1) — verify_edit reads CHECK by construction; invisible at 720p.
 # RUN: motion/gen_image_ref.sh prompts/plates-rev2/S03-stateC-canyon-calm.txt normalised/S03-plate-v1.png 16:9 plates/rev2/S03-stateC.json
-# RESULT: (unrolled)
+# RESULT: plates/rev2/S03-stateC-v1.png -> normalised/ (gain 1.008–1.018), 6.5 cr, first roll, job fcfa9b43. LANDED: three towers out of the top of frame, flags all the way up, the floor carpeted, drifts against the desk/shelf/cabinet, sheets on the desk and the top shelf; every M1 landmark in place. verify CHECK by construction (law 1).
 
 Edit this drawing. Keep the same camera, the same framing, the same two walls meeting at the same vertical corner seam, the same floor, paper, line and colour. Keep the small wooden supply desk at the left with its pencil cup and stapler, the low bookshelf of ring binders, and the tall grey filing cabinet at the right with the boxes and the trailing plant on top, all exactly as drawn.
 

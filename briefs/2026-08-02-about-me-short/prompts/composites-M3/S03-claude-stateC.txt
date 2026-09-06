@@ -4,7 +4,7 @@
 # STAGING (law 6): the builder small at the foot of its own build, ¾ front, eyeline on the task — the four corners cut as a set.
 # LOCKS: pencil COUNT (law 4: exactly one pencil); red eyes are ON-MODEL; the wash. Scale law: a TALL anchor (the towers) + a ceiling.
 # RUN: motion/composite.sh prompts/composites-M3/S03-claude-stateC.txt refs/turnaround-views/claude-sitting-v2.png normalised/S03-stateC-v1.png composites/M3/S03-claude-stateC.json
-# RESULT: (unrolled)
+# RESULT: composites/M3/S03-claude-stateC-v1.png -> normalised/, 6.5 cr, first roll, job 79966d9f. LANDED: sitting writing on the carpet of sheets at the foot of the towers, ONE pencil, red eyes (on-model), eyes down at the sheet, tiny. verify 0.289/0.831 PASS. *** THE BEAT-15/16 CLAUDE START FRAME ***
 
 Image 1 is the CHARACTER: a small terracotta-orange cube creature with two small dark dot eyes and two short brows, sitting on the floor writing on a sheet of paper with one pencil. Image 2 is the BACKGROUND SCENE.
 

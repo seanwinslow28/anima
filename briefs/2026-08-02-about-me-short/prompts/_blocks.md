@@ -393,3 +393,33 @@ shows — `claude-sitting-v*`), and a mascot's rest pose carries its M1 task acr
     applies to every rotation, not just head-turns.
 14. **Re-rolling the same prompt is a real variety lever** (beat 9 v2: the cannon TOPPLED, unprompted). Buy
     the identical re-roll before buying a rewrite when the notes are "variety", not "wrong".
+
+---
+
+## WAVE 3 FINDINGS — beats 11–20, 2026-09-06. 33 generations, 33 first-roll landings, 0 re-rolls, 372 cr.
+
+15. **Delete the breath, keep the mouth.** Sean's held beat (12) needed a breath on a face that had opened its mouth under two
+    closed-mouth phrasings (S10). Written as *"his shoulders lift slowly and sink"* with no breath word and *"his mouth stays one
+    small closed straight line in every frame"*, the mouth held for all 7s. Law 8 is now paid for on the face it was written about.
+16. **A destination still beats a rotation.** The swivel's still already faced us, eyes shut; the clip opened him side-on with the
+    face in PROFILE and turned him square. The facing law held through a rotation because the model was never asked to turn a
+    back into a face (beat 9 v3's failure) — it turned a profile into a front.
+17. **The micro-task goes FIRST, then a settle, then it repeats.** With absolute time cues forbidden, ordering is the only way to
+    guarantee a complete beat early in a 7s clip for a ≤5s cut. All three pit stops completed the task inside ~1.5s.
+18. **A colour change by keyframes works** (beat 18, grey → green, both ends ≥0.965), and the model will invent a route for the
+    colour to travel (up the cable). A two-keyframe screen change works a second time (beat 17, dark → the rocketing line).
+19. **The sentence test passed.** A four-line hand-lettered question on a monitor closeup landed first roll; the film's "caps land"
+    finding extends to a full sentence. Typewriter reveal is post regardless (`post/typewriter_reveal.py`).
+20. **A UI is a drawing; the cursor is a sprite.** The replay page (dash-text, a tiny grey buy button) landed as an S08 edit; the
+    cursor is `post/cursor_overlay.py` — exact, loopable, never enters the corner. The model never had to hold a UI.
+21. **The rest-pose law has an exemption: a still that is never animated.** A freeze-frame (beat 11) can be the most mid-action
+    drawing in the film because nothing has to move from it.
+22. **The sigh breaks the face constant on purpose.** Every deflate clip put a frown or an O-mouth mid-sag where the prompt said
+    "the same grin in every frame". That is acting, not drift — read the constant as a return-to, not a lock, on an emotional beat.
+23. **The normaliser needs a wall in the top band.** S11 (a monitor closeup under a cork board) read CHECK and blew out at gain 1.2;
+    any closeup with no wall in the upper band uses the raw plate. `layout_hold` likewise reads ~0.87 on the sketch-buried S05
+    plate at BOTH ends — line boil over hundreds of small drawings, not a re-camera. Trust the eye on busy plates.
+24. **`gpt_image_2` 2k high billed 6.5 cr per image this session**, not the 8.5 in every doc (33 generations reconciled to the
+    credit: 21 images × 6.5 + 12 clips × 24.5 = 372). Budget at 6.5 until it moves again.
+25. **The NE hole is behind the S09 lens.** A "sum of the chaos" wide from the CRT's POV carries three of four wrecks; Grok's
+    rubble + the rocket's nose at the right edge stand in for the fourth. Check the ground plan before promising a frame.

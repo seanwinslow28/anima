@@ -9,7 +9,7 @@
 #   lens it is a frame-edge prop behind a held face. Options for Sean: accept; an 8.5 cannon edit of this composite; or the $0
 #   push-in crop (post/make_closeup.py) that drops the right edge and makes the film's quietest beat a closer shot.
 # RUN: motion/composite.sh prompts/composites-M3/S10-sean-swivel-eyes-closed.txt refs/turnaround-views/sean-v2.png normalised/S10-sean-front-v1.png composites/M3/S10-sean-swivel.json
-# RESULT: (unrolled)
+# RESULT: composites/M3/S10-sean-swivel-v1.png -> normalised/, 6.5 cr (measured — gpt_image_2 2k high is 6.5 today, not 8.5), first roll, job b694df17. LANDED: eyes closed as two calm lines, small closed-mouth smile, palms down over the armrests at chest height, elbows bent, feet flat; on-model. verify CHECK (figure coverage, the S10 reading). Telescope still at frame right (see the nit above); a \$0 push-in crop that drops it is at m3-roughs/B12-swivel-pushin-crop.png. *** THE BEAT-12 START FRAME *** -> prompts/motion/41.
 
 Image 1 is the CHARACTER: a young man with short blonde hair, light stubble, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the BACKGROUND SCENE.
 

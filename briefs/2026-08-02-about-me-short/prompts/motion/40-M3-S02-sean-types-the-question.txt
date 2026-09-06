@@ -7,7 +7,7 @@
 # CONSTANTS: hair, navy tee, chair at the desk, the three monitors DARK with faint code (the "glowing" lesson), bell hanging,
 #   cannon quiet on its tripod, desk/cork board/shelf/whiteboard. Zero negation; speed verbs; no absolute time cues.
 # RUN: motion/generate.sh prompts/motion/40-M3-S02-sean-types-the-question.txt normalised/S02-cannon-fix-v1.png motion/m3-beat13/S02-sean-types-v1.json
-# RESULT: (unrolled)
+# RESULT: motion/m3-beat13/S02-sean-types-v1.mp4, 24.5 cr, first roll, job ca6c1cf2. LANDED: leans in / a rattling burst / head tips / a second burst / the ENTER tap / sits back. Layout 0.981/0.982. Monitors stayed dark. ONE FLAG for the eye: mid-clip his head turns towards PROFILE (a partial face from behind, ~2 frames of the sheet) — at 720p a nit; the cut can trim around it.
 
 1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
 

@@ -9,7 +9,7 @@
 # WATCH FOR: the figure stepping OFF the screen into the room; a second USER; the green leaking onto the TV bezel; the mouth
 #   or eyes appearing on the blank head before the grin (it has no eyes — ever).
 # RUN: motion/generate2kf.sh prompts/motion/39-M3-S08-user-colorizes-two-keyframes.txt refs/user-looktest/S08-grey-v2.png refs/user-looktest/S08-green-v2.png motion/m3-beat18/S08-user-colorizes-v1.json
-# RESULT: (unrolled)
+# RESULT: motion/m3-beat18/S08-user-colorizes-v1.mp4, 24.5 cr, first roll, job e159e580. LANDED: grey holds ~1.5s / the GREEN TRAVELS UP THE CABLE into the set (the model's own gag) / the figure floods green / the grin + thumb SNAP on with the action lines / holds beaming. Layout 0.982/0.972 vs the grey start, 0.965/0.983 vs the green end — a COLOUR CHANGE BY KEYFRAMES is proven on this route. USER on the shirt held; no eyes appeared. The green cable is Sean's call (charming or a nit). Sean's eye owed.
 
 1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
 

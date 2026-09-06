@@ -1,15 +1,5 @@
-# S08 — THE REPLAY: the cluttered checkout page on the big TV. Beat 14 (floor 5–6s, the film's legibility floor). 2026-09-06.
-# gpt_image_2, 2 refs: normalised/S08-crt-closeup-v1.png (the scene, keep) + m3-roughs/B14-replay-page-rough.png (the $0 LAYOUT rough,
-#   drawn in PIL — the page's boxes, the tiny grey buy button bottom-right half under the cookie bar, dash-text everywhere). 8.5 cr.
-# THE DESIGN QUESTION ANSWERED: "can't find the buy button" in one drawing = a page that is all CLUTTER (menu, banner, big product
-#   picture, price, boxes, related items, a cookie bar) with the real buy button TINY, grey, thin-lined, tucked bottom-right and
-#   half hidden — the audience hunts too. It exists (beat 16 demolishes "the old button"; beat 14 shows why).
-# THE CURSOR IS POST (a sprite on a path: exact, loopable, $0) — the edit draws NO cursor. The red path on the rough is for the
-#   compositor, not the model; the prompt tells the model to ignore it.
-# TEXT: all dash-text (law 7) — the film's no-text law, and the one place where illegibility IS the joke.
-# RUN: motion/gen_image_refs.sh prompts/edits/S08-replay-checkout-page.txt composites/M3/S08-replay-page.json normalised/S08-crt-closeup-v1.png m3-roughs/B14-replay-page-rough.png
-# RESULT: composites/M3/S08-replay-page-v1.png -> normalised/, 6.5 cr, first roll, job b542bab7. LANDED: menu bar, banner, the bag picture, dash-text title/price/boxes, four related items, a scrollbar, and the TINY grey buy button tucked bottom-right. The cookie bar was dropped by the model — costs nothing. No cursor drawn. The cursor overlay: post/cursor_overlay.py -> motion/m3-beat14/S08-replay-cursor-v1.mp4 (7s, \$0).
-
+prompt bytes: 1919
+--- prompt sent ---
 Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same television, shelf and brackets, same cable, same shelf of binders and taped sketches, same paper and palette.
 
 Image 2 is a layout guide for what goes ON the television screen only. Ignore its red lines, its black arrow and its caption entirely; use only the arrangement of boxes inside the screen.
@@ -19,3 +9,7 @@ Change ONE thing: the television's dark screen is now lit and pale, and on it is
 Draw the whole page in graphite line in the same hand as the rest of the picture, the way a pencil-test animator would draw a web page — hand-ruled boxes, slightly wobbly lines, cross-hatch on the picture, a faint pale wash on the banner and the buttons. It is a picture on the television.
 
 Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any legible text or letters anywhere in the picture.
+--- end ---
+refs: normalised/S08-crt-closeup-v1.png m3-roughs/B14-replay-page-rough.png
+job json -> composites/M3/S08-replay-page.json
+exit 0

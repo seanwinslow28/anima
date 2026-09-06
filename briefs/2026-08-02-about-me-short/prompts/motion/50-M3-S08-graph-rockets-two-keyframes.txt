@@ -2,7 +2,7 @@
 # seedance_2_0 fast 7s 720p · start: normalised/S08-crt-closeup-v1.png · end: normalised/S08-graph-rockets-v1.png
 # What the clip is for: the line DRAWING ITSELF upward in one fast climb + the happy jolt of the set (the beat-10 rattle, proven).
 # RUN: motion/generate2kf.sh prompts/motion/50-M3-S08-graph-rockets-two-keyframes.txt normalised/S08-crt-closeup-v1.png normalised/S08-graph-rockets-v1.png motion/m3-beat17/S08-graph-rockets-v1.json
-# RESULT: (unrolled)
+# RESULT: motion/m3-beat17/S08-graph-rockets-v1.mp4, 24.5 cr, first roll, job cfae0580. LANDED: dark two beats / flash / the line DRAWS ITSELF up and off the top / the cable whips / holds. Layout 0.995 vs the dark start, 0.993 vs the rocket end — both keyframes held (beat 10's twin, proven twice now).
 
 1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
 

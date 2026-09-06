@@ -3,7 +3,7 @@
 # STAGING (law 6): small on the floor beside the near end of the buried worktable, ¾ front, eyes UP at the wall. Scale law: the worktable
 #   is a SHORT anchor (2.4 ft, the 1.78x miss) — so the ceiling is stated twice and against the string lights too.
 # RUN: motion/composite.sh prompts/composites-M3/S05-gemini-stateC.txt refs/turnaround-views/gemini-v2.png normalised/S05-stateC-v1.png composites/M3/S05-gemini-stateC.json
-# RESULT: (unrolled)
+# RESULT: composites/M3/S05-gemini-stateC-v1.png -> normalised/, 6.5 cr, first roll, job e9ad16b5. LANDED by eye: ¾ front beside the worktable, all five points, eyes up at the wall, ~worktable height (asked shorter; within the 20%). verify 0.064/0.325 shift (-6,-2) CHECK — the sketch-covered plate re-rendered whole (law 1's regrow on a busy plate); the drawing is the same by eye. *** THE BEAT-15/16 GEMINI START FRAME ***
 
 Image 1 is the CHARACTER: a small blue-purple five-pointed star creature with two round dark eyes and one small open smile, two arms and two feet. Image 2 is the BACKGROUND SCENE.
 

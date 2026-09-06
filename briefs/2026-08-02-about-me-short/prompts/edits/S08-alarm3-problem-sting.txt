@@ -4,7 +4,7 @@
 #   changes: the green smile → PROBLEM! → red flood (post) → black, zero linger. A still + post; no clip is bought.
 # (STILL!) exists at $0 (normalised/S08-alarm2-v1.png) if Sean overrules.
 # RUN: motion/gen_image_ref.sh prompts/edits/S08-alarm3-problem-sting.txt normalised/S08-crt-closeup-v1.png 16:9 composites/M3/S08-alarm3.json
-# RESULT: (unrolled)
+# RESULT: composites/M3/S08-alarm3-v1.png -> normalised/, 6.5 cr, first roll, job d95fef39. LANDED: PROBLEM! across the upper screen, the jagged line falling to the lower right — the beat-3 design on the S08 framing. Red flood + black are post (post/m3_roughcut.py does a rough of both).
 
 Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same fixtures, same paper and palette.
 
