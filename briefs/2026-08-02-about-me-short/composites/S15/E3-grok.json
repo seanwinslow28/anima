@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-06T23:28:15.167405Z",
+    "display_name": "GPT Image 2",
+    "id": "890ab696-f63b-447f-834d-40103a0f27a2",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_232815_890ab696-f63b-447f-834d-40103a0f27a2_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "c30c6a04-bc69-49da-9d96-7a986ee8b813",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/c30c6a04-bc69-49da-9d96-7a986ee8b813.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "a1196ebd-6f80-40d9-9e50-7c0ef8d033c0",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/a1196ebd-6f80-40d9-9e50-7c0ef8d033c0_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a round grey cartoon creature with big pointed ears, a wide friendly cartoon grin, small bright eyes and a tufted tail. Image 2 is the SCENE, in which that same character is already drawn.\n\nKeep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same wreck, same paper and palette, and every OTHER character in the picture exactly as drawn. This is a very wide cutaway of a whole room, so the character is a small part of the picture.\n\nChange ONE thing: the round grey creature standing on the rubble by the rocket in the far right corner is now caught mid-action, the heavy sledgehammer raised high over its head in both hands at the top of a swing, its whole body coiled and leaning back, both feet still planted on the rubble, a few chips of plaster frozen in the air beside it. It stays on the same spot at the same small size, with the same two bright eyes, the same wide grin of small teeth and the same two pointed ears. Nothing else about it changes.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_232815_890ab696-f63b-447f-834d-40103a0f27a2.png",
+    "status": "completed"
+  }
+]

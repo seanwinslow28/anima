@@ -1,6 +1,6 @@
 # S15-A END frame, chain 2/5 — CLAUDE mid-fling at the towers. 6.5 cr.
 # RUN: motion/composite.sh prompts/composites-S15/end/E2-claude-flinging.txt refs/turnaround-views/claude-sitting-v2.png normalised/S15-A-end-1.png composites/S15/E2-claude.json
-# RESULT: (pending)
+# RESULT: composites/S15/E2-claude-v1.png -> normalised/ (= S15-A-end-2.png), 6.5 cr, first roll. LANDED: Claude mid-fling, one arm-nub up, a sheet in hand, six pages frozen in the air around the towers; it reads as standing rather than sitting and the pencil is out of sight — a freeze-frame nit at 720p, accepted. Sean + the room held (verify vs end-1 0.391 / 0.865 / (0,0) PASS).
 
 Image 1 is the CHARACTER: a small rounded terracotta-orange cartoon creature, a soft cube with four stubby legs, small nubs for arms, and two dot eyes. Image 2 is the SCENE, in which that same character is already drawn.
 

@@ -1,6 +1,6 @@
 # S15-A END frame, chain 5/5 — GEMINI mid-whirl near-right. 6.5 cr. Size + footing stated (law 12).
 # RUN: motion/composite.sh prompts/composites-S15/end/E5-gemini-mid-whirl.txt refs/turnaround-views/gemini-v2.png normalised/S15-A-end-4.png composites/S15/E5-gemini.json
-# RESULT: (pending)
+# RESULT: composites/S15/E5-gemini-v1.png -> normalised/ (= **S15-A-end-5.png, THE END / FREEZE FRAME**), 6.5 cr, first roll. LANDED: Gemini mid-spin, arms out, two points streaked into smear arcs, a motion ring at the waist, sketches in the air; size + footing held. Everything else held (verify vs end-4 0.458 / 0.858 / (0,0) PASS). **The END chain: 5/5 first roll, 32.5 cr.**
 
 Image 1 is the CHARACTER: a small rounded lavender-and-blue cartoon star with a soft round belly, five points, two dot eyes and a small smiling mouth. Image 2 is the SCENE, in which that same character is already drawn.
 

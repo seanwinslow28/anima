@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-06T23:25:54.160582Z",
+    "display_name": "GPT Image 2",
+    "id": "36fff0d2-68b7-4d01-8cae-fa40393881a3",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_232554_36fff0d2-68b7-4d01-8cae-fa40393881a3_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "c96cd2df-bb21-4f06-9149-ef1528b53967",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/c96cd2df-bb21-4f06-9149-ef1528b53967.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "af1a7a2a-9823-4cd4-a327-9f4a2ad1846e",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/af1a7a2a-9823-4cd4-a327-9f4a2ad1846e_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a small rounded terracotta-orange cartoon creature, a soft cube with four stubby legs, small nubs for arms, and two dot eyes. Image 2 is the SCENE, in which that same character is already drawn.\n\nKeep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same wreck, same paper and palette, and every OTHER character in the picture exactly as drawn. This is a very wide cutaway of a whole room, so the character is a small part of the picture.\n\nChange ONE thing: the small orange cube creature sitting at the foot of the towers of paper in the far left corner is now caught mid-action, flinging a finished page over its shoulder — one arm-nub thrown up high behind it, a sheet of paper in the air just above and behind it, and three or four more loose sheets frozen in the air around it at different angles, mid-fall. It still sits on the same spot at the same tiny size, still holds exactly ONE pencil in its other arm-nub, its two dot eyes wide. Nothing else about it changes.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_232554_36fff0d2-68b7-4d01-8cae-fa40393881a3.png",
+    "status": "completed"
+  }
+]

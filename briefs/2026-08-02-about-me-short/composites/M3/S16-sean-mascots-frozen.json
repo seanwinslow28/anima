@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-06T23:36:26.834341Z",
+    "display_name": "GPT Image 2",
+    "id": "5dd262ef-2d2b-4b6a-b78d-c3aa7d5d0a6c",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_233626_5dd262ef-2d2b-4b6a-b78d-c3aa7d5d0a6c_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "8cf10bd8-33b4-4cc1-8d32-01dd94307d0e",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/8cf10bd8-33b4-4cc1-8d32-01dd94307d0e_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "87532211-3c32-4f8d-baa9-0da4ffabaa8f",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/87532211-3c32-4f8d-baa9-0da4ffabaa8f_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the SCENE: a young man sitting in an office chair facing us with his eyes closed, a keyboard along the bottom of the frame, and a wrecked office behind him. Image 2 is a very wide view of the same office in which two small creatures are caught mid-action: a small lavender-and-blue cartoon STAR spinning on the spot with its arms flung out and small sketches flying around it, and a small periwinkle-blue CLOUD creature with a bracket-and-dash face leaping up the front of a black server rack with its arms up. Use Image 2 only for the exact poses of those two creatures.\n\nAdd those two creatures to Image 1, frozen in exactly those mid-action poses, as if time had stopped. Keep Image 1 unchanged in every other respect — same camera, same framing, same young man with his eyes closed in the same chair, same keyboard, same fixtures, same wreck, same paper and palette.\n\nTHE STAR: standing on the floor in the middle distance behind the man's LEFT shoulder (the right side of the picture as we look at it is the server rack; place the star on the open floor in front of the far wall of taped sketches, a little left of centre), frozen mid-spin — body leaning into the turn, both arms flung straight out sideways, two points streaked into short curved smear arcs, a ring of small curved motion lines at its waist, three small square sketches frozen in the air around it. Small: thigh-high to a grown adult, shorter than the worktable behind it.\nTHE CLOUD: frozen in the air a little way up the front of the tall black server rack on the RIGHT, in the middle of a leap towards the big screen of code above it — both stubby arms up, body stretched a little taller, a short cluster of speed lines beneath it, its pale bracket-and-dash face tipped up at the screen. Small: a quarter of the rack tall.\nBoth creatures are three-quarters towards us; neither looks into the camera. Light coloured-pencil wash on both, a soft graphite contact shadow beneath the star.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_233626_5dd262ef-2d2b-4b6a-b78d-c3aa7d5d0a6c.png",
+    "status": "completed"
+  }
+]

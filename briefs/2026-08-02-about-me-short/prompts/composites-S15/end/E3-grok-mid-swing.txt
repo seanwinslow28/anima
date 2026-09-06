@@ -1,6 +1,6 @@
 # S15-A END frame, chain 3/5 — GROK mid-swing at the hole. 6.5 cr. The Grok identity line verbatim.
 # RUN: motion/composite.sh prompts/composites-S15/end/E3-grok-mid-swing.txt refs/turnaround-views/grok2-v2.png normalised/S15-A-end-2.png composites/S15/E3-grok.json
-# RESULT: (pending)
+# RESULT: composites/S15/E3-grok-v1.png -> normalised/ (= S15-A-end-3.png), 6.5 cr, first roll. LANDED: the sledgehammer high over its head in both hands, body coiled, plaster chips in the air, the grin + round eyes + ears held, feet on the rubble. Everything else held (verify vs end-2 0.510 / 0.903 / (0,0) PASS).
 
 Image 1 is the CHARACTER: a round grey cartoon creature with big pointed ears, a wide friendly cartoon grin, small bright eyes and a tufted tail. Image 2 is the SCENE, in which that same character is already drawn.
 

@@ -5,7 +5,7 @@
 #   back → 13.1. START = normalised/S15-A-all-HQ-v1.png (Sean's deblur, normalised). END = normalised/S15-A-end-5.png (the chain: Sean facing us with
 #   HIS face + the four mascots mid-action = the FREEZE frame, law 21). The v1 (63) invented his face on the spin (law 13); the END frame carries it now.
 # RUN: motion/generate2kf.sh prompts/motion/63b-M3-S15-the-wide-chaos-swivel-2kf.txt normalised/S15-A-all-HQ-v1.png normalised/S15-A-end-5.png motion/m3-beat11/S15-wide-chaos-v2-2kf.json
-# RESULT: (pending the END chain)
+# RESULT: motion/m3-beat11/S15-wide-chaos-v2-2kf.mp4, 24.5 cr — **A MISS**: HIS FACE IS RIGHT NOW (blonde, stubble, blue eyes, dismay — law 13 answered by the END frame), but from ~3s the model rolls him AND the chair TOWARDS THE LENS until he fills a quarter of the frame (a scale failure / plate loss on him alone; the room and the four mascots hold). Layout 0.974→0.655 vs START, 0.914→0.644 vs END. Two suspects: the START (1672x941) and END (2688x1520) differ in size; and the constant said only 'stays in his chair' — the chair was free to travel. Both fixed in 63c.
 
 1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
 

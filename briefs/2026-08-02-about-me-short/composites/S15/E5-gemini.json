@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-06T23:33:41.664476Z",
+    "display_name": "GPT Image 2",
+    "id": "3e7b7ade-bd68-446e-b278-d845a330a947",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_233341_3e7b7ade-bd68-446e-b278-d845a330a947_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "397f4b71-9c66-4dd1-b0ee-94a53cd3b6d3",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/397f4b71-9c66-4dd1-b0ee-94a53cd3b6d3.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "f09f6a8b-1d50-4b64-ae03-db96529f3da1",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/f09f6a8b-1d50-4b64-ae03-db96529f3da1_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a small rounded lavender-and-blue cartoon star with a soft round belly, five points, two dot eyes and a small smiling mouth. Image 2 is the SCENE, in which that same character is already drawn.\n\nKeep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same wreck, same paper and palette, and every OTHER character in the picture exactly as drawn. This is a very wide cutaway of a whole room, so the character is a small part of the picture.\n\nChange ONE thing: the small purple star creature standing on the open floor in the lower right is now caught mid-action, in the middle of a fast spin on the spot — its body leaning into the turn, both arms flung straight out sideways, two of its points streaked into short curved smear arcs, a ring of small curved motion lines around it at its waist, and three or four small square sketches frozen in the air around it as if flung from its hands. It stays on the same spot on the floor at the same size, both feet on the floor, with the same two dot eyes and small mouth. Nothing else about it changes.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_233341_3e7b7ade-bd68-446e-b278-d845a330a947.png",
+    "status": "completed"
+  }
+]

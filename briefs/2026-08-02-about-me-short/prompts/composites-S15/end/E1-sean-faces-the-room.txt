@@ -3,7 +3,7 @@
 #   view invents his face). Fix: a 2kf. START = normalised/S15-A-all-HQ-v1.png (Sean's ChatGPT-deblurred chain-5, normalised); END = this chain:
 #   Sean facing us with HIS face (ref sean-v2, ¾ front), then the four mascots mid-action (E2–E5). The END is the FREEZE (law 21: it never animates past).
 # RUN: motion/composite.sh prompts/composites-S15/end/E1-sean-faces-the-room.txt refs/turnaround-views/sean-v2.png normalised/S15-A-all-HQ-v1.png composites/S15/E1-sean.json
-# RESULT: (rolling)
+# RESULT: composites/S15/E1-sean-v1.png -> normalised/ (= S15-A-end-1.png), 6.5 cr, first roll. LANDED: the chair spun to face us, HIS face (blonde, stubble, blue eyes), brows up, eyes wide, mouth open — dismay; hands gripping the armrests; every other figure and the room held (verify vs the HQ start 0.433 / 0.908 / (0,0) PASS). Output 2688x1520 off a 1672x941 source (same 16:9). The line reads a touch crisper than the pencil plates — the HQ source's look, Sean's choice.
 
 Image 1 is the CHARACTER: a young man with short blonde hair, light stubble, blue eyes, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the SCENE, in which that same character is already drawn.
 
