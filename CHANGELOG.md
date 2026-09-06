@@ -1,5 +1,23 @@
 # Changelog
 
+## 2026-09-06 — about-me-short / Movement 3, wave 3b: Sean's rulings executed (beats 10.5–20)
+
+**What changed.** The wave-3b continuation ran end to end under `/creative-director`: `_LOCKED-M3/` created with the six ✓S packages
+(numbering `NN_beatB.B_Sxx_slug` from 16, gaps reserved for open beats — the M1/M2 integer form breaks on sub-beats; README says so);
+a duration argument on `motion/generate.sh` / `generate2kf.sh` (default 7; 3.5 cr/s confirmed at 5/7/10s); three new Sean cameras roughed
+at $0 in the room bible (`room-bible/m3_candidates.py` + `m3-candidates/sheets/`; solver gained inert `omit=` and `z0=` keys); then **26
+generations, 25 first-roll, 367.5 cr** (2,860.5 → 2,493, reconciled to the credit): the Grok BUY-button pit stop (START/END/2kf), ANOTHER PROBLEM!, the
+S19 side close-up (plate, BEFORE, AFTER, 2kf), the S16 monitors'-POV (plate, still, clip), the S17 hands (still, clip), the S18 SHIP key
+(START, END, 2kf + single-image fallback), the beat-16 delegation (Sean facing us + a **10s** clip with no slow motion), four RELIEF sighs at 5s,
+the S09 state-C plate and the 18.5 twin (route a: one room-edit around the locked five, identities held) + its clip, and the M3 rough cut v2
+(58.6s; 108.7s of the 2:00 with M1+M2). **Held for Sean:** the S15 super-wide A/B pick (plate prompt written for A). Laws 26–33 appended to
+`prompts/_blocks.md`; tracker wave-3b table in `M1-STORYBOARD.md`; review packet `CONTINUATION-2026-09-06-wave-3b-review.md`.
+
+**Why.** Sean's 10:51 rulings + 13:53 answers (recorded in the 3b continuation) settle every open beat; this wave builds them. Two deviations
+recorded with reasons: the 18.5 ensemble was built as a room-edit around Sean's own locked composite (1 roll) instead of five chained edits
+(answer 3's route stays the fallback, unspent); the SHIP END's screen_swap paste was skipped because the edit re-drew the key cluster (law 28),
+and the 2kf duly morphed — the single-image fallback is the honest alternative, both go to his eye.
+
 ## 2026-09-06 — about-me-short: Movement 3 wave 3 — beats 11–20 built end to end (372 cr, 33/33 first-roll landings, 0 re-rolls)
 
 - Ran the wave-3 continuation under `/creative-director`: Phase 0 grounded in the locked state and the fourteen wave-2 laws, the four open questions roughed at $0 with a stated lean (`briefs/2026-08-02-about-me-short/m3-roughs/`), then the 30/60/90 order executed. Question 1 (typed or spoken) turned out to be already answered by the studio brief's 2026-08-31 amendment; the tracker's flag was stale. Question 4 taken as PROBLEM! and rolled. Questions 2 (the freeze) and 3 (the old button) are held for Sean with pictures.

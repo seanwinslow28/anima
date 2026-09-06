@@ -3,7 +3,7 @@
 #   drawings → the model reconciles them mid-clip). Here the START is the only drawing and the model sinks the key itself. Sean ruled 'start frame
 #   and end frame'; this is the honest fallback with the same events, not a rewrite — both clips go to his eye.
 # RUN: motion/generate.sh prompts/motion/60b-M3-S18-ship-key-press-single.txt normalised/S18-ship-key-start-v1.png motion/m3-beat17/S18-ship-key-v2-single.json
-# RESULT: (rolling)
+# RESULT: motion/m3-beat17/S18-ship-key-v2-single.mp4, 24.5 cr, first roll. LANDED (sheet): the finger lifts / hovers over SHIP / comes down and PRESSES / holds / lifts a little and presses again / holds. The keyboard stays ONE drawing throughout — layout 0.979/0.980 vs the START. The key's sink is subtle (a shade on its face), the finger press reads. **The session's lean for beat 17 over the 2kf v1** (which morphs the keys). Sean's eye owed.
 
 1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
 

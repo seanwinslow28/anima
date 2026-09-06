@@ -3,7 +3,7 @@
 #   (fists up, ¾ back), END = normalised/S19-sean-after-v1.png (arms down, head turned up-right at the CRT — towards us — confused). The eye-lead head
 #   turn (eye-lead-head-turn.png): the eyes go first, the head follows, then a hold. The CRT is off frame, behind-right of the camera.
 # RUN: motion/generate2kf.sh prompts/motion/59-M3-S19-sean-notices-2kf.txt normalised/S19-sean-before-v1.png normalised/S19-sean-after-v1.png motion/m3-beat10h/S19-sean-notices-v1.json
-# RESULT: (rolling)
+# RESULT: motion/m3-beat10h/S19-sean-notices-v1.mp4, 24.5 cr, 2kf, first roll. LANDED (sheet): fists held high with a shake (~2.5s) / the head SNAPS round and up towards us with the eyes leading / both arms drop / the confused hold (brows up, o mouth) for the rest. Layout 0.992 vs BEFORE f0, 0.993 vs AFTER last — both keyframes held. The cut: ~1s of fists, the snap, ~1s of hold. Sean's eye owed.
 
 1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
 

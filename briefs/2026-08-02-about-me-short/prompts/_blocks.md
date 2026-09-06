@@ -423,3 +423,32 @@ shows — `claude-sitting-v*`), and a mascot's rest pose carries its M1 task acr
     credit: 21 images × 6.5 + 12 clips × 24.5 = 372). Budget at 6.5 until it moves again.
 25. **The NE hole is behind the S09 lens.** A "sum of the chaos" wide from the CRT's POV carries three of four wrecks; Grok's
     rubble + the rocket's nose at the right edge stand in for the fourth. Check the ground plan before promising a frame.
+
+---
+
+## WAVE 3b FINDINGS — beats 10.5–20 executed from Sean's rulings, 2026-09-06 (afternoon). 26 generations, 25 first-roll landings, 1 miss (the SHIP 2kf), 1 fallback, 367.5 cr (2,860.5 → 2,493, to the credit).
+
+26. **A 503 on CREATE can be a live job; a "no response received" on create was not.** The S18 START exited 3 with no json — `generate list`
+    showed it completed and billed; `higgsfield generate wait <full-uuid> --json` (the 8-char prefix is rejected) fetched it. The Grok relief's
+    first create ("request failed (no response received)") was NOT billed. Law 5 generalised: after ANY create error, read the list before spending.
+27. **The seedance rate is linear and the long roll does not spread when the prompt carries the events.** 3.5 cr/s measured at 5s (17.5), 7s (24.5)
+    and 10s (35). The 10s delegation filled with five events (four point-and-nods + a settle) at full snap — Sean's slow-motion worry is answered on
+    the sheet: duration is safe when the event count scales with it (law 6, the other way round).
+28. **An edit end-frame breaks the 2kf when the re-render redraws a COUNTABLE structure.** The SHIP END edit re-drew the small-key cluster; the clip
+    morphed from the START keyboard to the END keyboard at the press (0.975→0.630 vs START). Beats 8/17/18 survived because their end-frame change
+    was a hole, a screen, a colour — nothing the eye counts. Rule: an end frame that re-draws a grid (keys, binders, bricks) gets composed by region
+    (screen_swap) or the roll goes single-image. The single-image fallback (60b) is the same events without the second drawing.
+29. **The cheapest ensemble twin is a room edit around the approved cast.** For 18.5 the locked five-character composite was edited with the wrecked
+    plate as a SECOND reference ("take the room from image 2, keep the people from image 1") — one 6.5 roll, five identities held by eye. When the
+    cast is already approved in a frame, wreck the room around them rather than re-compositing the cast; the chained route (answer 3) is for a frame
+    the cast has never been in.
+30. **A relief sigh is a happy-face constant plus no sag word.** "Drops soft and loose … its smile spreads wide" with "the same happy face in every
+    frame" turned all four sighs from distress (v1) to relief (v2) in one roll each. The held breath BALLOONS a soft body (Codex ~3×): state SIZE as a
+    constant on a breath too — law 12 generalised from a whirl to an inhale.
+31. **Law 16 confirmed twice: the model backs a facing-us still up into a turn.** Beat 13.1 opened with him ¾-turned and squared up in ~1s, exactly
+    as beat 12 did (f0 0.76, last 0.99). Budget ~1s at the head of any facing-the-lens clip, or cut past it.
+32. **A confused look-up is an eye-lead head turn and it lands as one.** The 10.5 2kf went fists → eyes flick → head snaps → arms drop → hold, both
+    keyframes ≥0.99. The AFTER still that faces the camera three-quarters is what made the face readable; the BEFORE hides it on purpose.
+33. **The room-bible solver grew two keys for the new setups** (`make_shot_roughs.py`): `omit=["south"]` removes a wall AND its fixtures so a cutaway
+    lens can stand behind the wall plane (S15-A), and `who(..., z0=)` raises a cast block's foot so a close-up aims at the head-and-shoulders instead of
+    pitching into the lap (S19, S16). Both inert when absent; the six M1 roughs stayed byte-identical.

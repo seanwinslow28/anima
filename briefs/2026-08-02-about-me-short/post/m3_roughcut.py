@@ -17,29 +17,37 @@ W, H, FPS = 1280, 720, 24
 L = "_LOCKED-M2/"; M = "motion/"; N = "normalised/"
 
 # kind: clip (src, in, dur) | still (src, dur) | frame (src, t, dur) — a single frame held
+# ── WAVE 3b running order (2026-09-06 PM): 9 → 10 → 10.5 → 11/12 (S15, PLACEHOLDER until Sean picks A/B) → 12 (S10, cut BEFORE the
+#    eyes open) → 13.1 → 13.2 → 13.3 → 14 → 15 (four RELIEF sighs) → 16 (delegation, 10s) → 16.5 ×4 (+ Grok) → 17 (SHIP key) → 18 → 18.5 → 19 → 20.
+#    Every trim is a first guess for Sean to argue with. SHIP = the single-image v2 if it landed, else the 2kf v1 (cut before the morph).
+import os as _os
+_SHIP = M+"m3-beat17/S18-ship-key-v2-single.mp4" if _os.path.exists(M+"m3-beat17/S18-ship-key-v2-single.mp4") else M+"m3-beat17/S18-ship-key-v1.mp4"
 SHOTS = [
-    ("frame", L+"10_beat5_S12_claude-canyon.mp4", 6.4, 0.45, "11 · record scratch — route A freeze-cut (placeholder until Q2)"),
-    ("frame", L+"11_beat6_S13_codex-screen-pop.mp4", 2.9, 0.45, "11 · record scratch — route A freeze-cut"),
-    ("frame", L+"12_beat7_S14_gemini-whirlwind.mp4", 1.2, 0.45, "11 · record scratch — route A freeze-cut"),
-    ("frame", L+"13_beat8_S06B_grok-demolition.mp4", 1.8, 0.85, "11 · record scratch — route A freeze-cut"),
-    ("clip", M+"m3-beat12/S10-sean-swivel-v1.mp4", 0.5, 5.8, "12 · THE SWIVEL (protected)"),
-    ("clip", M+"m3-beat13/S02-sean-types-v1.mp4", 0.5, 2.2, "13 · he types"),
-    ("clip", M+"m3-beat13/S11-chat-typewriter-v1.mp4", 0.0, 4.7, "13 · the question (post typewriter)"),
-    ("clip", M+"m3-beat14/S08-replay-cursor-v1.mp4", 0.0, 6.0, "14 · THE REPLAY (post cursor)"),
-    ("clip", M+"m3-beat15/S03-claude-sigh-v1.mp4", 3.0, 0.9, "15 · the sigh — Claude"),
-    ("clip", M+"m3-beat15/S04-codex-sigh-v1.mp4", 2.0, 0.9, "15 · the sigh — Codex"),
-    ("clip", M+"m3-beat15/S05-gemini-sigh-v1.mp4", 2.8, 0.9, "15 · the sigh — Gemini"),
-    ("clip", M+"m3-beat15/S06B-grok-sigh-v1.mp4", 2.2, 1.0, "15 · the sigh — Grok"),
-    ("clip", M+"m3-beat16/S03-claude-pitstop-v1.mp4", 0.0, 1.3, "16 · PIT STOP — Claude: one line"),
-    ("clip", M+"m3-beat16/S04-codex-pitstop-v1.mp4", 0.0, 1.3, "16 · PIT STOP — Codex: one line"),
-    ("clip", M+"m3-beat16/S05-gemini-pitstop-v1.mp4", 0.0, 1.3, "16 · PIT STOP — Gemini: make it pretty"),
-    ("clip", M+"m3-beat15/S06B-grok-sigh-v1.mp4", 5.3, 1.0, "16 · PIT STOP — Grok: PLACEHOLDER (old button held for Q3)"),
-    ("clip", M+"m3-beat17/S08-graph-rockets-v1.mp4", 1.0, 2.0, "17 · the graph rockets"),
-    ("clip", M+"m3-beat17/S02-earned-ship-it-v1.mp4", 0.2, 2.2, "17 · the earned SHIP IT"),
-    ("clip", M+"m3-beat18/S08-user-colorizes-v1.mp4", 0.8, 4.0, "18 · the USER colorizes"),
-    ("still", "refs/user-looktest/S08-green-v2.png", 4.0, "19 · THE BUTTON (VO runs here)"),
-    ("still", N+"S08-alarm3-v1.png", 0.4, "20 · the sting"),
-    ("red", N+"S08-alarm3-v1.png", 0.15, ""),
+    ("clip", M+"m3-beat10h/S19-sean-notices-v1.mp4", 1.6, 2.6, "10.5 · Sean alone notices (S19)"),
+    ("frame", L+"10_beat5_S12_claude-canyon.mp4", 6.4, 0.45, "11/12 · THE WIDE — PLACEHOLDER (S15 awaits Sean's A/B pick)"),
+    ("frame", L+"11_beat6_S13_codex-screen-pop.mp4", 2.9, 0.45, "11/12 · THE WIDE — placeholder"),
+    ("frame", L+"12_beat7_S14_gemini-whirlwind.mp4", 1.2, 0.45, "11/12 · THE WIDE — placeholder"),
+    ("frame", L+"13_beat8_S06B_grok-demolition.mp4", 1.8, 0.65, "11/12 · THE WIDE — placeholder"),
+    ("clip", "_LOCKED-M3/18_beat12_S10_the-swivel.mp4", 0.5, 5.4, "12 · THE SWIVEL (locked; ends before the eyes open)"),
+    ("clip", M+"m3-beat13/S16-sean-eyes-open-v1.mp4", 1.2, 3.6, "13.1 · turns back, eyes open on us (S16)"),
+    ("clip", M+"m3-beat13/S17-hands-v1.mp4", 0.0, 2.4, "13.2 · the hands (S17)"),
+    ("clip", "_LOCKED-M3/21_beat13.3_S11_chat-typewriter.mp4", 0.0, 4.7, "13.3 · THE QUESTION (locked; Sean crops in CapCut)"),
+    ("clip", "_LOCKED-M3/22_beat14_S08_replay-cursor.mp4", 0.0, 6.0, "14 · THE REPLAY (locked)"),
+    ("clip", M+"m3-beat15/S03-claude-relief-v2.mp4", 0.9, 1.1, "15 · RELIEF — Claude"),
+    ("clip", M+"m3-beat15/S04-codex-relief-v2.mp4", 0.9, 1.1, "15 · RELIEF — Codex"),
+    ("clip", M+"m3-beat15/S05-gemini-relief-v2.mp4", 0.9, 1.1, "15 · RELIEF — Gemini"),
+    ("clip", M+"m3-beat15/S06B-grok-relief-v2.mp4", 0.9, 1.2, "15 · RELIEF — Grok"),
+    ("clip", M+"m3-beat16/S02-sean-delegation-v1.mp4", 0.6, 7.4, "16 · THE DELEGATION (10s roll, trimmed)"),
+    ("clip", "_LOCKED-M3/28_beat16.5_S03_claude-pitstop.mp4", 0.0, 1.3, "16.5 · PIT STOP — Claude (locked)"),
+    ("clip", "_LOCKED-M3/29_beat16.5_S04_codex-pitstop.mp4", 0.0, 1.3, "16.5 · PIT STOP — Codex (locked)"),
+    ("clip", "_LOCKED-M3/30_beat16.5_S05_gemini-pitstop.mp4", 0.0, 1.3, "16.5 · PIT STOP — Gemini (locked)"),
+    ("clip", M+"m3-beat16/S06B-grok-pitstop-v1.mp4", 0.4, 1.4, "16.5 · PIT STOP — Grok: the BUY button"),
+    ("clip", _SHIP, 1.4, 2.0, "17 · THE SHIP KEY (S18)"),
+    ("clip", "_LOCKED-M3/33_beat18_S08_user-colorizes.mp4", 0.8, 4.0, "18 · the USER colorizes (locked)"),
+    ("clip", M+"m3-beat18h/S09-team-celebrates-v1.mp4", 0.3, 3.2, "18.5 · THE CELEBRATION (S09 state C)"),
+    ("still", "_LOCKED-M3/35_beat19_S08_the-button-hold.png", 4.0, "19 · THE BUTTON (VO runs here; locked)"),
+    ("still", N+"S08-alarm4-v1.png", 0.4, "20 · the sting — ANOTHER PROBLEM!"),
+    ("red", N+"S08-alarm4-v1.png", 0.15, ""),
     ("black", None, 1.0, ""),
 ]
 
@@ -92,7 +100,7 @@ def main():
         print(f"  {os.path.basename(p_)}  {d}s")
     subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-an", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18", "-r", str(FPS), out], check=True)
     total = sum(s[3] if s[0] in ("clip", "frame") else s[2] for s in SHOTS)
-    print(f"{out}  {len(SHOTS)} segments, {total:.1f}s (beat sheet target ~37s)")
+    print(f"{out}  {len(SHOTS)} segments, {total:.1f}s (beat sheet target ~37s; M1 15s + M2 35s + this = {50+total:.1f}s of the 2:00 ceiling)")
 
 if __name__ == "__main__":
     main()
