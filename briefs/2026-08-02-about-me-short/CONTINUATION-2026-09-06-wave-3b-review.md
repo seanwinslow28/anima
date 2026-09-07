@@ -115,3 +115,18 @@ roll is `prompts/motion/S15-WEBAPP-KIT.md` (std mode / 4s / the character-refere
 poses (the freeze as pose reference), then the clip re-rolled off it — the pair stays frozen in every frame while his eyes open on us (law 38).
 
 **Owed by Sean:** the wide (the $0 cut vs his own roll), 13.1 v2, and whether the freeze still stands as the record-scratch frame.
+
+---
+
+## ADDENDUM 3 — 2026-09-07 15:46: Sean's S15 winner locked; 13.1 rebuilt as the full 180° swivel (37.5 cr; balance 2,199 → 2,161.5)
+
+**The wide is Sean's own roll** off the kit (`motion/m3-beat11/S15-wide-chaos-v5-winner.mp4`, 13.04s): the scale holds through the swivel and it
+ends on the freeze. **Locked as `_LOCKED-M3/17`** with the START, END and freeze frames. The CLI's v2–v4 stay as law 37's record.
+
+**13.1 v3 — the full 180°, first roll.** Sean: *"make it so Sean's doing a full 180 degree swivel. If the model doesn't get his face right, then
+we'll just go a similar route to what you've already generated."* Two edits of the frozen composite (his back to the lens; his eyes open on the lens)
+and a 2kf between them: the chair turns on the spot, his real face comes round eyes-shut, the hold, the eyes open on us, a nod — the pair frozen
+throughout, 0.994/0.993, no zoom. **Law 39:** a back-view rotation is safe when the END keyframe carries the face. v2 (the destination-still
+version) stays on disk as the fallback he named. **Rough cut v6** (`motion/m3-roughcut/M3-roughcut-v6.mp4`) carries the winner + 13.1 v3.
+
+**Owed by Sean:** 13.1 v3 (lock → `_LOCKED-M3/19`) and the record-scratch trim on his own wide. Everything else in Movement 3 is locked.

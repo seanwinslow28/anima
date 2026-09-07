@@ -5,7 +5,7 @@
 #   the END frame anchoring his real face; v2 (58b) is the fallback Sean named.
 # Ref = refs/turnaround-views/sean-v5.png (back view). The chair turns in place (the S02 delegation precedent).
 # RUN: motion/composite.sh prompts/composites-M3/S16-sean-BACK-to-lens-frozen-bg.txt refs/turnaround-views/sean-v5.png normalised/S16-sean-mascots-frozen-v1.png composites/M3/S16-sean-back.json
-# RESULT: (rolling)
+# RESULT: composites/M3/S16-sean-back-v1.png -> normalised/, 6.5 cr, first roll. LANDED: the chair turned, its back to us, the back of his blonde head and navy shirt, forearms on the armrests; Gemini + Codex frozen, the room and keyboard held (verify 0.217 / 0.708 / (0,0) PASS). *** 13.1 v3's START ***
 
 Image 1 is the CHARACTER: a young man with short blonde hair, a navy T-shirt, grey jeans and grey sneakers, seen from behind. Image 2 is the SCENE, in which the same man sits in an office chair facing us with his eyes closed.
 

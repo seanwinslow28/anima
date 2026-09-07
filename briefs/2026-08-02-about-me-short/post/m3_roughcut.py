@@ -29,7 +29,7 @@ SHOTS = [
     ("clip", "_LOCKED-M3/16_beat10.5_S19_sean-notices.mp4", 1.6, 2.6, "10.5 · Sean alone notices (locked)"),
 ] + _WIDE_SHOTS + [
     ("clip", "_LOCKED-M3/18_beat12_S10_the-swivel.mp4", 0.5, 5.4, "12 · THE SWIVEL (locked; ends before the eyes open)"),
-    ("clip", M+"m3-beat13/S16-sean-eyes-open-v2-frozen.mp4", 1.0, 3.8, "13.1 · turns back, eyes open on us — Gemini + Codex frozen behind (v2)"),
+    ("clip", M+"m3-beat13/S16-sean-180-swivel-v3.mp4", 0.4, 5.2, "13.1 · the full 180° swivel, eyes open on us — the pair frozen behind (v3)"),
     ("clip", M+"m3-beat13/S17-hands-v1.mp4", 0.0, 2.4, "13.2 · the hands (S17)"),
     ("clip", "_LOCKED-M3/21_beat13.3_S11_chat-typewriter.mp4", 0.0, 4.7, "13.3 · THE QUESTION (locked; Sean crops in CapCut)"),
     ("clip", "_LOCKED-M3/22_beat14_S08_replay-cursor.mp4", 0.0, 6.0, "14 · THE REPLAY (locked)"),

@@ -471,3 +471,8 @@ shows — `claude-sitting-v*`), and a mascot's rest pose carries its M1 task acr
 38. **The freeze IS the END keyframe.** When a beat ends on a record-scratch freeze, build the END frame as the freeze (everyone mid-action, law 21)
     and cut to the STILL — the clip only has to get there. This also gives 13.1 its background for free: the two mascots in that lens are edited
     into the S16 still in the freeze's poses (a 2-ref edit: the scene + the freeze as pose reference) and stated frozen in the clip. Both first roll.
+39. **Law 13 has an exit: a back-view rotation is safe when the END keyframe carries the face.** 13.1 v3 turned him a full 180° from his back to
+    the lens without inventing a face — the 2kf's END (his real face, eyes open) anchored every mid-turn frame, and the face-constant was written
+    "from the moment his face comes round". First roll, 0.994/0.993, no zoom (law 37 did not fire — the figure is already big in a medium, so the
+    model had no face to enlarge). The wide's zoom and the close-up's success are the same mechanism from two distances: the model brings a face to
+    a readable size; give it one at that size and it stays put.

@@ -24,6 +24,10 @@ two-keyframe off Sean's deblurred start with a second five-step chain for the EN
 the swivel (law 37 — stop rule applied, kit written); the rough cut v4 uses the clip's first 1.6s and the END still as the freeze (law 38). 13.1
 rebuilt with Gemini and Codex frozen behind him in the freeze's poses (still + clip, both first roll).
 
+**2026-09-07 addendum (37.5 cr → balance 2,161.5).** Sean's own S15 roll off the kit locked as `_LOCKED-M3/17` (ends on the freeze). 13.1 rebuilt as
+the full 180° swivel he asked for: a 2kf between a back-view START and an eyes-open END (both edits of the frozen composite) — first roll, his own face
+through the turn, the pair frozen; law 39 (a back-view rotation is safe when the END keyframe carries the face). Rough cut v6.
+
 **Why.** Sean's 10:51 rulings + 13:53 answers (recorded in the 3b continuation) settle every open beat; this wave builds them. Two deviations
 recorded with reasons: the 18.5 ensemble was built as a room-edit around Sean's own locked composite (1 roll) instead of five chained edits
 (answer 3's route stays the fallback, unspent); the SHIP END's screen_swap paste was skipped because the edit re-drew the key cluster (law 28),

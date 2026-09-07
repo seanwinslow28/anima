@@ -1,7 +1,7 @@
 # S16 — SEAN, EYES OPEN ON THE LENS, the frozen pair behind: beat 13.1 v3's END still. EDIT of normalised/S16-sean-mascots-frozen-v1.png. 6.5 cr. 2026-09-07.
 # ONE change: the eyes open, calm, straight into the lens (the destination of 13.1). Everything else byte-close.
 # RUN: motion/gen_image_ref.sh prompts/composites-M3/S16-sean-eyes-OPEN-frozen-bg.txt normalised/S16-sean-mascots-frozen-v1.png 16:9 composites/M3/S16-sean-eyes-open.json
-# RESULT: (rolling)
+# RESULT: composites/M3/S16-sean-eyes-open-v1.png -> normalised/, 6.5 cr, first roll. LANDED: both eyes open, blue, level, straight into the lens; the small closed mouth, the pose and the frozen pair byte-close (verify 0.261 / 0.780 / (0,0) PASS). *** 13.1 v3's END ***
 
 Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same young man in the same chair in the same pose with his hands on the armrests, same keyboard along the bottom, same wrecked room, same small purple star creature frozen mid-spin at the left and same small blue cloud creature frozen mid-leap on the server rack at the right, same paper and palette.
 
