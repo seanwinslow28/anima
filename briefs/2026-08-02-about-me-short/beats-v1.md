@@ -90,20 +90,41 @@ Read every SCRATCH VO line **aloud, 1952-serene pace** (unhurried — this is al
 - [ ] Pit stop ≤ 5s
 - [ ] Total ≤ 2:00
 
-## RESULTS (×2) — pending
+## RESULTS (×2) — performed 2026-09-07 against the first full-film assembly
 
-| Mark | Pass 1 | Pass 2 |
-|------|--------|--------|
-| ALARM #1 | | |
-| Detonation | | |
-| Hollow bell | | |
-| ALARM #2 | | |
-| Swivel start | | |
-| Swivel end | | |
-| **Question complete** | | |
-| Replay end | | |
-| Pit stop end | | |
-| Sting / black | | |
+*How it was run.* The protocol assumes a person holding the picture in their head; on 2026-09-07 the picture exists, so the
+read was performed against the assembled rough cut (`motion/film-roughcut/FILM-roughcut-v7.mp4`, every locked clip at
+the beat sheet's timings, 117.4s) with the `VO-SCRIPT-v1.md` lines timed at the two paces the script allows: **pass 1 at
+2.3 words/s** (the target 1952-serene pace) and **pass 2 at 2.0 words/s** (the slow bound). The silent beats are the cut's
+own durations, so the two passes differ only where a line overruns its window and the picture must hold for it (the button
+line at the slow pace, +0.3s). This is a desk read, not a voice read: **Sean's own read is the third pass** and replaces
+these the day the ElevenLabs takes exist. A third column shows the trim lean, `…-v8-trim-lean.mp4` (102.1s), the edit
+proposed in the story check.
 
-- Verdict vs. bars: _pending_
-- Sean call-outs at the read (incl. the "He speaks" flag): _pending_
+| Mark | Pass 1 (v7 @2.3 w/s) | Pass 2 (v7 @2.0 w/s) | v8 trim lean (@2.3) |
+|------|--------|--------|--------|
+| ALARM #1 (end of beat 3) | 0:15.1 | 0:15.1 | 0:14.3 |
+| Detonation (end of beat 4) | 0:20.7 | 0:20.7 | 0:19.1 |
+| Hollow bell (end of beat 9) | 0:46.4 | 0:46.4 | 0:39.5 |
+| ALARM #2 (end of beat 10) | 0:50.9 | 0:50.9 | 0:43.3 |
+| Swivel start | 1:00.8 | 1:00.8 | 0:51.1 |
+| Swivel end (5.1s held, out before the eyes open) | 1:05.9 | 1:05.9 | 0:56.2 |
+| **Question complete** (last word typed) | **1:16.7** | **1:16.7** | **1:04.9** |
+| Replay end (6.0s) | 1:24.2 | 1:24.2 | 1:12.4 |
+| Pit stop end (4.8s from its start) | 1:40.9 | 1:40.9 | 1:26.9 |
+| Sting / black | 1:56.4 | 1:56.7 | 1:41.1 |
+
+- **Verdict vs. bars (v7, the film as cut today):** Question ≤0:60 — **FAIL** (1:16.7; even the swivel *starts* after
+  the minute). Swivel held full duration — PASS (5.1s, the breath complete, cut before the eyes open). Replay ≥5s — PASS
+  (6.0). Pit stop ≤5s — PASS (4.8; the M3 rough cut v6 had it at 5.3 and was over). Total ≤2:00 — PASS by 3.6s (2.6s at
+  the slow pace), which is too little margin for a real voice read.
+- **Verdict vs. bars (v8, the trim lean):** Question ≤0:60 — **still FAIL, by 4.9s** (1:04.9); the step-back has landed by
+  0:56. Swivel / replay / pit stop — PASS (untouched). Total — PASS (1:42).
+- **Which movement gives:** Movement 2 (35.8s → 27.6s in v8: the four wrong-builds 5.0–5.5s → 4.0–4.4s, the GO and the
+  reaction ~0.6s each, the hollow ship and alarm #2 0.7s each) and the head of Movement 3 that the sheet never had (10.5
+  → 1.8s, the wide from its first real motion at 3.0s, the hands → 1.6s, the turn back → 3.9s). The swivel never. The
+  remaining 4.9s would have to come out of Movement 1's corners (1.45s → 1.2s) and the wrong-builds again (→ 3.5s), which
+  the story check argues against: past that the builds stop escalating and read as a montage. **Recommendation:**
+  take v8 and re-read the bar as "the step-back by 0:60, the question by 1:05" — Sean's call, recorded in
+  `GAPS-2026-09-07.md`.
+- **Sean call-outs at the read:** owed — the desk read has no ear in the room. The "He speaks" flag is closed (typed, never voiced; see above).

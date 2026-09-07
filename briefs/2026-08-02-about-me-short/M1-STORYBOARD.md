@@ -297,3 +297,22 @@ cameras were roughed at $0 first ([`room-bible/m3-candidates/sheets/`](room-bibl
 | **18.5** the celebration | S09 state C | **✓ state-C plate** `normalised/S09-stateC-v1.png` (6.5, first roll; the chained-route base, unused) → **✓ the twin, route (a)** `normalised/S09-webapp-stateC-v1.png` (6.5, first roll): the locked five-character composite with the room wrecked around them — the five held by eye | clip `motion/m3-beat18h/S09-team-celebrates-v1.mp4` (`motion/61`, 24.5) | Prompts `plates-rev2/S09-stateC-wreck.txt`, `plates-rev2/S09-webapp-stateC-twin.txt`. Route (a) = one edit of Sean's own composite instead of five chained edits. **✓S 17:55 → `_LOCKED-M3/34`** (*"perfect! Locked."*) |
 | **19** THE BUTTON | S08 | ✓S → `_LOCKED-M3/35` | post | locked |
 | **20** the sting | S08 | **✓** `normalised/S08-alarm4-v1.png` (6.5, first roll): **ANOTHER PROBLEM!** | post: still → red flood → black | **Sean 17:55: the still is great; transition from the green USER with a flash + shake like beat 3.** **✓** `motion/m3-beat20/S08-sting-transition-v1.mp4` (`motion/62`, 2kf green → ANOTHER PROBLEM!, 5s, 17.5, first roll; 0.991/0.991): holds, one white flash, bangs on, the set rocks, the cable swings, holds. **✓S 19:21 → `_LOCKED-M3/36`** (*"The transition is great. Locked."*). Instant black is post. Prompt `edits/S08-alarm4-another-problem.txt`. PROBLEM! superseded, kept |
+
+---
+
+## Post — kickoff, 2026-09-07 evening ($0; the picture is locked, post owns the rest)
+
+Session run under `/creative-director` from [`CONTINUATION-2026-09-07-post-kickoff.md`](CONTINUATION-2026-09-07-post-kickoff.md).
+Review packet: [`CONTINUATION-2026-09-07-post-review.md`](CONTINUATION-2026-09-07-post-review.md) (incl. the one-page story check).
+
+| Item | State | Where |
+|---|---|---|
+| **The whole film, assembled** (first M1/M2 cut + M3 v6 carried forward) | ✓ `motion/film-roughcut/FILM-roughcut-v7.mp4` **1:57.4** and the trim lean `…-v8-trim-lean.mp4` **1:42.1**, both from `post/film_roughcut.py` (the SHOTS tables are the edit; `.beats.md` beside each) | Sean picks the cut |
+| VO script for ElevenLabs | ✓ `VO-SCRIPT-v1.md` — 12 lines / 87 words, silent beats silent, both locked lines verbatim, windows off both cuts, delivery + pronunciation notes, take list (button ×3), mute-parity captions | Sean records / clones; WAVs → `post/vo/` |
+| Stopwatch table-read (#206) | ✓ performed as a desk read against v7 at 2.3 and 2.0 w/s; RESULTS filled in `beats-v1.md`. **Question completes 1:16.7 (v7) / 1:04.9 (v8); the 60s bar fails in both; the swivel starts at 1:00.8 in v7.** M2 gives, never the swivel | Sean rules the bar |
+| Gap check | ✓ `GAPS-2026-09-07.md` — 12 items: scratch gate never run (fallback now named: ElevenLabs stock newsreel voice), bell over the SHIP key (Sean), cannon 9→16 continuity (pictured; $0 matte lean), **beat 12 out-point corrected to ≤5.6s** (eyes open at 5.70, v6 caught them), freeze measured (wide frozen from ~7.7s), 13.3 hold survives the crop, no end card (Sean), no music (temp brief written), SFX list (24 cues), captions, unused assets, delivery spec (all 34 clips 1280×720 24fps video-only, verified) | |
+| Post checklist | ✓ `POST-CHECKLIST.md` — delivery spec, per-beat holds/floors/out-points, SFX, temp track, captions, the scratch gate, seven open rulings | |
+| Pit stop | **corrected**: v6 was 5.3s (over the ≤5s floor); now 4×1.2 = 4.8s | |
+| Story check | ✓ the spine reads cold; the gap opens at Step one and closes at the step-back line; the swivel is protected; the sting reads as a loop. **One beat owed:** the fix is implied, never shown (the new button / fixed page never appears; the graph twin was released) — accept for now, a 6.5 cr "page, fixed" still if a blind read stumbles. M3 trims A/B/C with leans (→ ~55–59s; ~40s is not reachable without cutting a floor) | Sean rules |
+
+**Spend: 0.** Balance 1,174.5. Nothing generated, edited or re-rolled; the two rough cuts are trims of locked material.

@@ -1,5 +1,32 @@
 # Changelog
 
+## 2026-09-07 — about-me-short: post kickoff — the VO script, the first whole-film assembly, the stopwatch read, the gap check, the story check ($0)
+
+**What changed.** The post-kickoff continuation ran end to end under `/creative-director` (Phase 0 only; no lock re-opened, nothing
+generated). Added `briefs/2026-08-02-about-me-short/VO-SCRIPT-v1.md` (12 narrator lines / 87 words for ElevenLabs in the 1952-serene
+register, every silent beat silent, both locked lines verbatim — the question typed, never voiced; the button cut on "quiet" — with
+timecode windows, delivery/pronunciation notes, a three-cadence take list for the button and the mute-parity caption text), `GAPS-2026-09-07.md`
+(the twelve Job-2 items, each verified / open / Sean's call), `POST-CHECKLIST.md` (delivery spec, per-beat holds/floors/out-points, the
+24-cue SFX list, a temp-track brief, captions, the scratch gate, seven open rulings), the review packet `CONTINUATION-2026-09-07-post-review.md`
+with the one-page story check, and `post/film_roughcut.py` — the **first assembly of the whole film** (`motion/film-roughcut/FILM-roughcut-v7.mp4`,
+1:57.4, Movements 1 and 2 cut for the first time at the beat sheet's timings + the M3 rough v6 carried forward) and the trim lean
+(`…-v8-trim-lean.mp4`, 1:42.1), each with a `.beats.md` table and a contact sheet; segment labels carry running timecodes. The stopwatch
+table-read (#206) was performed for the first time, as a desk read against v7 at 2.3 and 2.0 w/s, and the RESULTS table in `beats-v1.md` is
+filled. Tracker appended (`M1-STORYBOARD.md` § Post).
+
+**Why / what the picture corrected.** (1) Beat 12's eyes begin opening at ~5.70s of the locked clip, not the FACE sheet's ~6.2s; the M3
+rough v6 cut at 5.9s caught them — the out-point is now ≤5.6s (answer 4 holds: the eyes open once, in 13.1). (2) The pit stop in v6 was
+5.3s, over its ≤5s floor; now 4×1.2 = 4.8s. (3) The 60-second bar: the typed question completes at 1:16.7 in the film as cut and 1:04.9 in
+the trim lean, because the locked Movement-3 head (10.5 + the wide + the freeze + a 5.1s held swivel + the turn back + the hands) is 21.6s
+against the sheet's 10s; per the protocol the sheet loses, not the held beat — Movement 2 gives (35.8 → 27.6s), and the recommendation is
+v8 with the bar re-read as "step-back by 0:60, question by 1:05", Sean's call. (4) The 30s scratch-narration gate (a brief non-negotiable)
+was never run before production spend; recorded straight, the fallback now named in writing (an ElevenLabs stock newsreel voice on the
+same script) and the blind judge put on the post list. (5) The story check found one beat doing story work the picture doesn't carry: the
+fix is implied (four micro-tasks, a smashed old BUY, SHIP, the user green) but the new button / fixed page never appears and the graph
+twin was released — flagged for a blind read, a 6.5 cr still if it stumbles. The kickoff's pointer to `motion/m1-*`/`m2-*` rough cuts was
+stale (none existed); the assembly script is the fix. Script rewrites vs. the scratch lines are recorded in `VO-SCRIPT-v1.md` with reasons
+(Step four now sets up Codex's gag; the title and Step-one lines were cut to fit their windows at a serene pace).
+
 ## 2026-09-06 — about-me-short / Movement 3, wave 3b: Sean's rulings executed (beats 10.5–20)
 
 **What changed.** The wave-3b continuation ran end to end under `/creative-director`: `_LOCKED-M3/` created with the six ✓S packages
