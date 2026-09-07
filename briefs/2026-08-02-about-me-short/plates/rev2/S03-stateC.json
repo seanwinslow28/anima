@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-06T10:27:29.750567Z",
+    "display_name": "GPT Image 2",
+    "id": "fcfa9b43-63e9-45f4-ad75-a115a5965354",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_102729_fcfa9b43-63e9-45f4-ad75-a115a5965354_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "a6e9b7e1-71a5-46d7-b729-22fddeb26e2e",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/a6e9b7e1-71a5-46d7-b729-22fddeb26e2e_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Edit this drawing. Keep the same camera, the same framing, the same two walls meeting at the same vertical corner seam, the same floor, paper, line and colour. Keep the small wooden supply desk at the left with its pencil cup and stapler, the low bookshelf of ring binders, and the tall grey filing cabinet at the right with the boxes and the trailing plant on top, all exactly as drawn.\n\nBury the corner in paper. Where the two stacks of paper stood there are now three enormous towers of paper, each one a stack of loose sheets as wide as the old stacks but rising from the floor straight out of the top of the frame, leaning very slightly, their front edges fringed all the way up with the same small coloured sticky flags as before, hundreds of them. The floor of the whole corner is carpeted with loose sheets of paper lying flat and overlapping, drifted into heaps against the foot of the desk, the bookshelf and the filing cabinet, with a few sheets draped over the desk top and over the top shelf of binders. Everything is at rest and settled — nothing is in the air, the storm is over. The sheets are blank cream paper.\n\nWarm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. The room is empty of characters and people. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_102729_fcfa9b43-63e9-45f4-ad75-a115a5965354.png",
+    "status": "completed"
+  }
+]

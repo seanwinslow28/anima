@@ -1,0 +1,49 @@
+[
+  {
+    "created_at": "2026-09-07T19:51:20.129258Z",
+    "display_name": "Seedance 2.0",
+    "id": "38c0db84-3718-4935-9fb9-a3d56b561d95",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "24c6866b-1553-4382-92cf-47ce62ddbb83",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/24c6866b-1553-4382-92cf-47ce62ddbb83_resize.jpg"
+          },
+          "role": "start_image"
+        },
+        {
+          "data": {
+            "id": "14546cec-ad96-4f9f-ad34-ece5b6769938",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/14546cec-ad96-4f9f-ad34-ece5b6769938_resize.jpg"
+          },
+          "role": "end_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe young man sits in the office chair with his back to us, facing away into the wrecked room, both forearms on the armrests. He holds still for a beat. Then the chair turns on the spot, a slow full half-turn, bringing him round to face us square on — his eyes are closed as his face comes round, calm, his mouth one small closed line. He comes to rest facing us and holds completely still, eyes closed. Then his eyes open, calm and level, straight into the lens, and he looks at us. He gives one small, slow, settled nod, and holds, looking at us.\n\nHis eyes stay shut, two short calm curved lines, from the moment his face comes round until the moment they open, and from then on they stay open and on the lens in every frame. From the moment his face comes round it is the same face in every frame: short blonde hair, light stubble, a navy T-shirt. His mouth stays one small closed straight line in every frame. His hands stay on the armrests in every frame, away from the keyboard. The chair stays on the same spot in every frame — it turns on the spot and goes nowhere — and he stays the same size in every frame. The small purple star creature frozen mid-spin on the floor at the left and the small blue cloud creature frozen mid-leap on the server rack at the right stay exactly as they are, completely motionless, in every frame — time has stopped for them. The keyboard along the bottom of the frame stays still in every frame, and the wrecked room stays the same drawing in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260907_195120_38c0db84-3718-4935-9fb9-a3d56b561d95.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260907_195120_38c0db84-3718-4935-9fb9-a3d56b561d95_thumbnail.webp"
+  }
+]

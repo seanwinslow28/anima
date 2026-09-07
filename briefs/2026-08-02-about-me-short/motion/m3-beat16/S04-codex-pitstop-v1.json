@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-06T10:36:57.891866Z",
+    "display_name": "Seedance 2.0",
+    "id": "29735984-1b35-4559-9cb7-5bf74efacdc9",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "9836e638-faaf-4590-a053-431861a35727",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/9836e638-faaf-4590-a053-431861a35727_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe small lavender cloud creature springs straight up onto the coffee counter in one hard leap and taps out exactly one short line on the counter top with both stubby arms in one quick rattle, and one new short line of code appears at the bottom of the big screen above it. It stops dead, tips its face up at the screen, and gives one crisp little nod. It hops back down to the floor, lands square, and springs straight back up onto the counter to tap out one more short line, even faster, and another new line appears on the screen.\n\nIts face is exactly one pale chevron and one short straight bar, the same chevron and the same bar in every frame. It lands on both feet after every leap. It stays small, no taller than a quarter of the black server rack beside it, in every frame. The big screen stays out on its arm over the counter, lit and full of the same dense lines of code, in every frame; the spilled cables lie still in every frame; the server rack, the coffee machine, the jug, the mugs, the counter, the cabinet with its boxes, the taped sketches and the doorway stay the same drawings in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103657_29735984-1b35-4559-9cb7-5bf74efacdc9.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103657_29735984-1b35-4559-9cb7-5bf74efacdc9_thumbnail.webp"
+  }
+]

@@ -1,0 +1,16 @@
+# 13.1 · THE MONITORS' POV — v3: the FULL 180° SWIVEL from his back to his face, then the eyes open on us. 2kf, 7s. 2026-09-07.
+# Sean (15:46): "make it so Sean's doing a full 180 degree swivel. If the model doesn't get his face right, then we'll just go a similar route to what
+#   you've already generated for 13.1" (v2 = the destination-still version, the fallback). START = normalised/S16-sean-back-v1.png (his back to the
+#   lens, the frozen pair behind), END = normalised/S16-sean-eyes-open-v1.png (his real face, eyes open on the lens). Law 13's risk taken on purpose:
+#   the END keyframe anchors the face; the mid-turn frames are the model's. Watch the sheet for an invented face mid-turn and for a zoom (law 37 —
+#   less likely here: the face is already big).
+# RUN: motion/generate2kf.sh prompts/motion/58c-M3-S16-sean-180-swivel-2kf.txt normalised/S16-sean-back-v1.png normalised/S16-sean-eyes-open-v1.png motion/m3-beat13/S16-sean-180-swivel-v3.json
+# RESULT: motion/m3-beat13/S16-sean-180-swivel-v3.mp4, 24.5 cr, 2kf, first roll. **LANDED — THE FULL 180° WITH HIS OWN FACE** (sheet + -FACE-sheet): his back / the chair turns on the spot, the real face comes round in profile with the eyes shut / square, eyes closed, a still hold / the EYES OPEN on the lens / one slow nod / holds. Gemini + Codex frozen in every frame. No zoom. Layout 0.994 vs START f0, 0.993 vs END last. Law 13 beaten by the 2kf (law 39). v2 (58b) stays as the fallback Sean named. Sean's eye owed.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The young man sits in the office chair with his back to us, facing away into the wrecked room, both forearms on the armrests. He holds still for a beat. Then the chair turns on the spot, a slow full half-turn, bringing him round to face us square on — his eyes are closed as his face comes round, calm, his mouth one small closed line. He comes to rest facing us and holds completely still, eyes closed. Then his eyes open, calm and level, straight into the lens, and he looks at us. He gives one small, slow, settled nod, and holds, looking at us.
+
+His eyes stay shut, two short calm curved lines, from the moment his face comes round until the moment they open, and from then on they stay open and on the lens in every frame. From the moment his face comes round it is the same face in every frame: short blonde hair, light stubble, a navy T-shirt. His mouth stays one small closed straight line in every frame. His hands stay on the armrests in every frame, away from the keyboard. The chair stays on the same spot in every frame — it turns on the spot and goes nowhere — and he stays the same size in every frame. The small purple star creature frozen mid-spin on the floor at the left and the small blue cloud creature frozen mid-leap on the server rack at the right stay exactly as they are, completely motionless, in every frame — time has stopped for them. The keyboard along the bottom of the frame stays still in every frame, and the wrecked room stays the same drawing in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

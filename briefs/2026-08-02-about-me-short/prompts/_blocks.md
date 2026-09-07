@@ -393,3 +393,86 @@ shows — `claude-sitting-v*`), and a mascot's rest pose carries its M1 task acr
     applies to every rotation, not just head-turns.
 14. **Re-rolling the same prompt is a real variety lever** (beat 9 v2: the cannon TOPPLED, unprompted). Buy
     the identical re-roll before buying a rewrite when the notes are "variety", not "wrong".
+
+---
+
+## WAVE 3 FINDINGS — beats 11–20, 2026-09-06. 33 generations, 33 first-roll landings, 0 re-rolls, 372 cr.
+
+15. **Delete the breath, keep the mouth.** Sean's held beat (12) needed a breath on a face that had opened its mouth under two
+    closed-mouth phrasings (S10). Written as *"his shoulders lift slowly and sink"* with no breath word and *"his mouth stays one
+    small closed straight line in every frame"*, the mouth held for all 7s. Law 8 is now paid for on the face it was written about.
+16. **A destination still beats a rotation.** The swivel's still already faced us, eyes shut; the clip opened him side-on with the
+    face in PROFILE and turned him square. The facing law held through a rotation because the model was never asked to turn a
+    back into a face (beat 9 v3's failure) — it turned a profile into a front.
+17. **The micro-task goes FIRST, then a settle, then it repeats.** With absolute time cues forbidden, ordering is the only way to
+    guarantee a complete beat early in a 7s clip for a ≤5s cut. All three pit stops completed the task inside ~1.5s.
+18. **A colour change by keyframes works** (beat 18, grey → green, both ends ≥0.965), and the model will invent a route for the
+    colour to travel (up the cable). A two-keyframe screen change works a second time (beat 17, dark → the rocketing line).
+19. **The sentence test passed.** A four-line hand-lettered question on a monitor closeup landed first roll; the film's "caps land"
+    finding extends to a full sentence. Typewriter reveal is post regardless (`post/typewriter_reveal.py`).
+20. **A UI is a drawing; the cursor is a sprite.** The replay page (dash-text, a tiny grey buy button) landed as an S08 edit; the
+    cursor is `post/cursor_overlay.py` — exact, loopable, never enters the corner. The model never had to hold a UI.
+21. **The rest-pose law has an exemption: a still that is never animated.** A freeze-frame (beat 11) can be the most mid-action
+    drawing in the film because nothing has to move from it.
+22. **The sigh breaks the face constant on purpose.** Every deflate clip put a frown or an O-mouth mid-sag where the prompt said
+    "the same grin in every frame". That is acting, not drift — read the constant as a return-to, not a lock, on an emotional beat.
+23. **The normaliser needs a wall in the top band.** S11 (a monitor closeup under a cork board) read CHECK and blew out at gain 1.2;
+    any closeup with no wall in the upper band uses the raw plate. `layout_hold` likewise reads ~0.87 on the sketch-buried S05
+    plate at BOTH ends — line boil over hundreds of small drawings, not a re-camera. Trust the eye on busy plates.
+24. **`gpt_image_2` 2k high billed 6.5 cr per image this session**, not the 8.5 in every doc (33 generations reconciled to the
+    credit: 21 images × 6.5 + 12 clips × 24.5 = 372). Budget at 6.5 until it moves again.
+25. **The NE hole is behind the S09 lens.** A "sum of the chaos" wide from the CRT's POV carries three of four wrecks; Grok's
+    rubble + the rocket's nose at the right edge stand in for the fourth. Check the ground plan before promising a frame.
+
+---
+
+## WAVE 3b FINDINGS — beats 10.5–20 executed from Sean's rulings, 2026-09-06 (afternoon). 26 generations, 25 first-roll landings, 1 miss (the SHIP 2kf), 1 fallback, 367.5 cr (2,860.5 → 2,493, to the credit).
+
+26. **A 503 on CREATE can be a live job; a "no response received" on create was not.** The S18 START exited 3 with no json — `generate list`
+    showed it completed and billed; `higgsfield generate wait <full-uuid> --json` (the 8-char prefix is rejected) fetched it. The Grok relief's
+    first create ("request failed (no response received)") was NOT billed. Law 5 generalised: after ANY create error, read the list before spending.
+27. **The seedance rate is linear and the long roll does not spread when the prompt carries the events.** 3.5 cr/s measured at 5s (17.5), 7s (24.5)
+    and 10s (35). The 10s delegation filled with five events (four point-and-nods + a settle) at full snap — Sean's slow-motion worry is answered on
+    the sheet: duration is safe when the event count scales with it (law 6, the other way round).
+28. **An edit end-frame breaks the 2kf when the re-render redraws a COUNTABLE structure.** The SHIP END edit re-drew the small-key cluster; the clip
+    morphed from the START keyboard to the END keyboard at the press (0.975→0.630 vs START). Beats 8/17/18 survived because their end-frame change
+    was a hole, a screen, a colour — nothing the eye counts. Rule: an end frame that re-draws a grid (keys, binders, bricks) gets composed by region
+    (screen_swap) or the roll goes single-image. The single-image fallback (60b) is the same events without the second drawing.
+29. **The cheapest ensemble twin is a room edit around the approved cast.** For 18.5 the locked five-character composite was edited with the wrecked
+    plate as a SECOND reference ("take the room from image 2, keep the people from image 1") — one 6.5 roll, five identities held by eye. When the
+    cast is already approved in a frame, wreck the room around them rather than re-compositing the cast; the chained route (answer 3) is for a frame
+    the cast has never been in.
+30. **A relief sigh is a happy-face constant plus no sag word.** "Drops soft and loose … its smile spreads wide" with "the same happy face in every
+    frame" turned all four sighs from distress (v1) to relief (v2) in one roll each. The held breath BALLOONS a soft body (Codex ~3×): state SIZE as a
+    constant on a breath too — law 12 generalised from a whirl to an inhale.
+31. **Law 16 confirmed twice: the model backs a facing-us still up into a turn.** Beat 13.1 opened with him ¾-turned and squared up in ~1s, exactly
+    as beat 12 did (f0 0.76, last 0.99). Budget ~1s at the head of any facing-the-lens clip, or cut past it.
+32. **A confused look-up is an eye-lead head turn and it lands as one.** The 10.5 2kf went fists → eyes flick → head snaps → arms drop → hold, both
+    keyframes ≥0.99. The AFTER still that faces the camera three-quarters is what made the face readable; the BEFORE hides it on purpose.
+33. **The room-bible solver grew two keys for the new setups** (`make_shot_roughs.py`): `omit=["south"]` removes a wall AND its fixtures so a cutaway
+    lens can stand behind the wall plane (S15-A), and `who(..., z0=)` raises a cast block's foot so a close-up aims at the head-and-shoulders instead of
+    pitching into the lap (S19, S16). Both inert when absent; the six M1 roughs stayed byte-identical.
+
+34. **The chained single-character edit route holds identity on the CLI** (S15-A, 2026-09-06 evening): five edits onto the plate, one character at a
+    time, far-to-near, eye-verified between — five first rolls, `verify_edit` PASS at four steps and a 1-px CHECK at one, every earlier figure and
+    the plate byte-close each time. The S09 failures were the MATTE (clipped ears, cut Codex) and the ONE-PASS (Codex/Gemini conflated), never the
+    single edit. Answer 3's route, now proven; the web app is the fallback, not the default.
+35. **A 2kf transition off a locked hold** (green USER → ANOTHER PROBLEM!) lands the beat-3/10 alarm shape on the first roll when the prompt is the
+    alarm-2 prompt with the start state swapped: hold / flash / bang on / the SET rocks / hold. Reuse the shape; change only the two states.
+36. **The mime lives in the clip, not the still.** "His lips move as he mouths a short, clear instruction … his face turning with it" plus DROPPING
+    the closed-mouth constant gave a living face on the calm still (16 v2); the determined still (v2b) only changes the opening expression. Write
+    the acting into the motion prompt first; re-draw the still only when the opening face itself is the note.
+37. **A two-keyframe wide whose END turns a small figure to face the lens ZOOMS him, and no constant stops it.** Three rolls (7s, 7s, 5s) off the
+    same START/END pair: the swivel lands with the right face at ~1.4s, then the model rolls him and his chair forward to a third of the frame
+    (0.65 vs both keyframes by the end). Tried and failed: "turns on the spot and goes nowhere", "the same small far-away size", "nothing comes
+    closer to the camera", START upscaled to the END's exact size, no face words, 5s. The single-image roll held his size but invented his face
+    (law 13). The two failures are complementary, so the honest cut is: the 2kf's first ~1.6s (chaos + the swivel at the right scale) → the END
+    still as the freeze. Do not buy a fourth; hand the kit over (`S15-WEBAPP-KIT.md`).
+38. **The freeze IS the END keyframe.** When a beat ends on a record-scratch freeze, build the END frame as the freeze (everyone mid-action, law 21)
+    and cut to the STILL — the clip only has to get there. This also gives 13.1 its background for free: the two mascots in that lens are edited
+    into the S16 still in the freeze's poses (a 2-ref edit: the scene + the freeze as pose reference) and stated frozen in the clip. Both first roll.
+39. **Law 13 has an exit: a back-view rotation is safe when the END keyframe carries the face.** 13.1 v3 turned him a full 180° from his back to
+    the lens without inventing a face — the 2kf's END (his real face, eyes open) anchored every mid-turn frame, and the face-constant was written
+    "from the moment his face comes round". First roll, 0.994/0.993, no zoom (law 37 did not fire — the figure is already big in a medium, so the
+    model had no face to enlarge). The wide's zoom and the close-up's success are the same mechanism from two distances: the model brings a face to
+    a readable size; give it one at that size and it stays put.

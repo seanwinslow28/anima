@@ -1,0 +1,16 @@
+# S08 — ALARM #3, THE STING — beat 20. gpt_image_2 EDIT of normalised/S08-crt-closeup-v1.png. 8.5 cr. 2026-09-06.
+# Q4's lean, taken: PROBLEM! (the beat-3 design), not PROBLEM (STILL!) — the film's last image rhymes with its first, the loop
+#   restarting on a NEW user's problem. Same S08 framing as beats 18/19, so the sting is a hard cut where ONLY the screen
+#   changes: the green smile → PROBLEM! → red flood (post) → black, zero linger. A still + post; no clip is bought.
+# (STILL!) exists at $0 (normalised/S08-alarm2-v1.png) if Sean overrules.
+# RUN: motion/gen_image_ref.sh prompts/edits/S08-alarm3-problem-sting.txt normalised/S08-crt-closeup-v1.png 16:9 composites/M3/S08-alarm3.json
+# RESULT: composites/M3/S08-alarm3-v1.png -> normalised/, 6.5 cr, first roll, job d95fef39. LANDED: PROBLEM! across the upper screen, the jagged line falling to the lower right — the beat-3 design on the S08 framing. Red flood + black are post (post/m3_roughcut.py does a rough of both).
+# RELEASED 2026-09-06 (Sean): "Regenerate an image that says ANOTHER PROBLEM! in the same frame." PROBLEM! superseded, kept → prompts/edits/S08-alarm4-another-problem.txt.
+
+Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same fixtures, same paper and palette.
+
+Change ONE thing: the television's dark screen is now lit and pale, and on it, drawn in the same graphite line as the rest of the picture, is the single word PROBLEM! in big plain capitals with an exclamation mark, filling the width of the screen across its upper half, and beneath it a jagged line falling steeply from upper left to lower right, ending in a small arrowhead in the lower right corner of the screen.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.
+
+The only text anywhere in the picture is PROBLEM! on the television screen.

@@ -1,0 +1,12 @@
+# 15 · GEMINI'S SIGH OF RELIEF — v2, 5s. 2026-09-06. Same ruling + arc as 52. Start: normalised/S05-gemini-stateC-v1.png. ≈17.5 cr.
+# Law 12: the star's SIZE and FOOTING are both stated as constants. Law 23: layout_hold reads ~0.87 on this plate — line boil, not a re-camera.
+# RUN: motion/generate.sh prompts/motion/54-M3-S05-gemini-relief-sigh-5s.txt normalised/S05-gemini-stateC-v1.png motion/m3-beat15/S05-gemini-relief-v2.json 5
+# RESULT: motion/m3-beat15/S05-gemini-relief-v2.mp4, 5.04s, 17.5 cr, first roll. LANDED (sheet): stretches tall, all points spread, mouth open / the whoosh drop / wipe / hop / beams at the wall. RELIEF. Layout 0.901/0.902 — the busy-plate correlation (law 23), the same by eye. Size + footing held.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The small blue-purple star creature standing beside the buried worktable draws in a huge breath that stretches it up tall and stiff with all five points spread wide, holds it for a beat, and lets it all out in one big happy whoosh — its whole body drops soft and loose, its points relax, its arms fall, its eyes squeeze shut and its little smile spreads wide. It wipes the back of one arm across its brow in one quick sweep and flicks it away. It gives one small happy hop on the spot, lands on the same spot, and settles, beaming at the wall of sketches, eyes open.
+
+Its face is exactly two round dark eyes and one small open smile, the same two eyes and the same happy smile in every frame, and it has the same five points in every frame. It stays standing on the same spot on the floor in every frame. It stays small, shorter than the worktable beside it, in every frame. The wall stays covered edge to edge with taped sketches in every frame, including the first frame; the sketches on the floor, the cabinet and the worktable lie still in every frame; the string lights, the worktable, the tape rolls, the jar of pens and the cabinet with its boxes stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

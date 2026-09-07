@@ -1,0 +1,17 @@
+# S18 — THE SHIP KEY, START frame. NEW SETUP, beat 17: one extreme close-up of Sean's keyboard where one big key reads SHIP; a finger rests
+#   beside it. The END frame (the key pressed down under the finger) is an edit of this, pasted back over the START by region so ONLY the key
+#   changes (post/screen_swap.py; law 10 + the S07 lesson). 2026-09-06. gpt_image_2 2k high 16:9, 6.5 cr.
+# Sean's ruling: "We won't go with the twin. It feels off. One extreme closeup of Sean's keyboard. The key says SHIP — Sean's finger presses
+#   down on it. Start frame and end frame." SHIP is plot text (the mute-parity rule), the only text in the picture.
+# RUN: motion/gen_image_refs.sh prompts/plates-rev2/S18-ship-key-START.txt plates/rev2/S18-start.json normalised/S02-plate-v1.png refs/turnaround-views/sean-v1.png
+# RESULT: plates/rev2/S18-ship-key-start-v1.png -> normalised/, 6.5 cr, first roll, job 42ae4c3a. LANDED: one big SHIP key three times the others, the right index finger resting on the small keys beside it, the desk top above. RECOVERED BY ID: the create call returned an HTTP 503 AFTER the job was made (exit 3, no json) — `higgsfield generate list` showed it completed; `generate wait <full-uuid> --json` fetched it. Law 5 extended: a 503 on CREATE can also be a live job. *** BEAT 17's START FRAME ***
+
+Image 1 is the FIXTURE AND STYLE BIBLE: the same keyboard and wooden desk top, in the same drawing style, line weight, paper colour and palette. Do NOT copy its camera or framing — this is one corner of that keyboard seen from very close. Image 2 is the CHARACTER whose hand this is: a young man with fair skin and a navy T-shirt; use it only for the look of his hand.
+
+CAMERA: an extreme close-up, low and from the front, looking slightly down across the right-hand end of the keyboard. In the centre of the frame, on the keyboard, is ONE big key, three times the size of the ordinary keys around it, a plain rounded rectangle with the word SHIP hand-lettered in graphite capitals across its face. The ordinary keys around it are small blank rectangles. An adult right hand enters from the lower right of the frame: the index finger is extended and rests lightly on the keyboard beside the SHIP key, touching the keys next to it, hovering just off the big key itself; the other fingers are curled back. The key is NOT pressed: it stands at its full height like the others. The wooden desk top shows along the top of the frame. Nothing else is in frame.
+
+The hand is drawn simply and correctly: one hand, five fingers, the index finger extended. Light coloured-pencil skin wash.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. The only text anywhere in the picture is the word SHIP on the big key.

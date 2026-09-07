@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-06T18:50:55.302328Z",
+    "display_name": "Seedance 2.0",
+    "id": "95f17a28-b85d-47b7-93c6-955fbd0745a7",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 5,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "18a2427c-de99-498b-a057-98a984b85195",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/18a2427c-de99-498b-a057-98a984b85195_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe small blue-purple star creature standing beside the buried worktable draws in a huge breath that stretches it up tall and stiff with all five points spread wide, holds it for a beat, and lets it all out in one big happy whoosh — its whole body drops soft and loose, its points relax, its arms fall, its eyes squeeze shut and its little smile spreads wide. It wipes the back of one arm across its brow in one quick sweep and flicks it away. It gives one small happy hop on the spot, lands on the same spot, and settles, beaming at the wall of sketches, eyes open.\n\nIts face is exactly two round dark eyes and one small open smile, the same two eyes and the same happy smile in every frame, and it has the same five points in every frame. It stays standing on the same spot on the floor in every frame. It stays small, shorter than the worktable beside it, in every frame. The wall stays covered edge to edge with taped sketches in every frame, including the first frame; the sketches on the floor, the cabinet and the worktable lie still in every frame; the string lights, the worktable, the tape rolls, the jar of pens and the cabinet with its boxes stay the same drawings in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_185055_95f17a28-b85d-47b7-93c6-955fbd0745a7.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_185055_95f17a28-b85d-47b7-93c6-955fbd0745a7_thumbnail.webp"
+  }
+]

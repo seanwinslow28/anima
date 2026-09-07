@@ -1,0 +1,11 @@
+# S15-A END frame, chain 4/5 — CODEX mid-leap at the rack. 6.5 cr. Never 'its eyes' (law 3).
+# RUN: motion/composite.sh prompts/composites-S15/end/E4-codex-mid-leap.txt refs/turnaround-views/codex-v2.png normalised/S15-A-end-3.png composites/S15/E4-codex.json
+# RESULT: composites/S15/E4-codex-v1.png -> normalised/ (= S15-A-end-4.png), 6.5 cr, first roll. LANDED: Codex in the air up the front of the rack, both stubby arms up, body stretched, speed lines beneath; the chevron-and-bar face tipped at the screen. Everything else held (verify vs end-3 0.536 / 0.908 / (0,0) PASS).
+
+Image 1 is the CHARACTER: a small rounded periwinkle-blue cloud creature with a bracket-and-dash face, two small brows, and short stubby arms. Image 2 is the SCENE, in which that same character is already drawn.
+
+Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same wreck, same paper and palette, and every OTHER character in the picture exactly as drawn. This is a very wide cutaway of a whole room, so the character is a small part of the picture.
+
+Change ONE thing: the small blue cloud creature at the foot of the server rack on the left is now caught mid-action, in the air a little way up the front of the rack in the middle of a leap towards the big screen of code above it — both stubby arms thrown up, its puffy body stretched a little taller, a short cluster of speed lines beneath it where it left the floor. It stays beside the same rack at the same small size, with the same pale bracket-and-dash face tipped up at the screen. Nothing else about it changes.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

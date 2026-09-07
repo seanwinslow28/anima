@@ -1,0 +1,15 @@
+# S15-A chain 5/5 — GEMINI near-right on the open floor, where her (removed) wall would be, beside the drifts of sketches. 6.5 cr. 2026-09-06.
+# Scene = normalised/S15-A-chain-4.png. Ref = refs/turnaround-views/gemini-v2.png (¾ front). Size AND footing stated (law 12). The nearest figure to the lens.
+# RUN: motion/composite.sh prompts/composites-S15/S15-A-5-gemini.txt refs/turnaround-views/gemini-v2.png normalised/S15-A-chain-4.png composites/S15/S15-A-5-gemini.json
+# RESULT: composites/S15/S15-A-5-gemini-v1.png -> normalised/ (= S15-A-chain-5.png = **S15-A-all-v1.png, the beat 11/12 START STILL**), 6.5 cr, first roll. LANDED: Gemini near-right on the open floor by the sketch drift, ¾ front, eyes down, the biggest figure on the floor; all four others + the plate held (verify vs chain-4 0.313 / 0.840 / (0,0) PASS). **THE CHAIN WORKED: five single-character edits, five first rolls, 32.5 cr, identity held at every step** — answer 3's route, proven on the CLI.
+
+Image 1 is the CHARACTER: a small rounded lavender-and-blue cartoon star with a soft round belly, five points, two dot eyes and a small smiling mouth. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same wreck, same palette, and every character already in the picture exactly as drawn. This is a very wide cutaway of a whole room, so the character is a small part of the picture.
+
+POSITION: standing on the open floor in the LOWER RIGHT of the picture, near the camera, beside the drifts of small taped sketches that spill across the floor at the near end of the right wall, its whole body on the open floor and clear of the shelving and the crates. It is the nearest figure to the camera, so it is drawn larger than any other creature on the floor.
+SCALE — draw it SMALL in the room, though near to us: it stands only thigh-high to a grown adult. Its head would not reach the seat of the office chair at the desk if it stood beside it, and it is shorter than the tall binder shelving is wide. It is a small creature, never person-sized.
+FACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its mouth, its round belly, all five points of the star and both feet. It is NOT seen from behind and NOT in profile. Its eyes are turned down at the loose sketches on the floor beside its feet; it is absorbed in those and never looks into the camera.
+POSE: it stands still and upright at rest, both arms hanging down at its sides, both feet flat on the floor. Draw it with a light coloured-pencil wash and a soft graphite contact shadow on the floor beneath it.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

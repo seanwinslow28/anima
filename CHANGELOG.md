@@ -1,5 +1,45 @@
 # Changelog
 
+## 2026-09-06 — about-me-short / Movement 3, wave 3b: Sean's rulings executed (beats 10.5–20)
+
+**What changed.** The wave-3b continuation ran end to end under `/creative-director`: `_LOCKED-M3/` created with the six ✓S packages
+(numbering `NN_beatB.B_Sxx_slug` from 16, gaps reserved for open beats — the M1/M2 integer form breaks on sub-beats; README says so);
+a duration argument on `motion/generate.sh` / `generate2kf.sh` (default 7; 3.5 cr/s confirmed at 5/7/10s); three new Sean cameras roughed
+at $0 in the room bible (`room-bible/m3_candidates.py` + `m3-candidates/sheets/`; solver gained inert `omit=` and `z0=` keys); then **26
+generations, 25 first-roll, 367.5 cr** (2,860.5 → 2,493, reconciled to the credit): the Grok BUY-button pit stop (START/END/2kf), ANOTHER PROBLEM!, the
+S19 side close-up (plate, BEFORE, AFTER, 2kf), the S16 monitors'-POV (plate, still, clip), the S17 hands (still, clip), the S18 SHIP key
+(START, END, 2kf + single-image fallback), the beat-16 delegation (Sean facing us + a **10s** clip with no slow motion), four RELIEF sighs at 5s,
+the S09 state-C plate and the 18.5 twin (route a: one room-edit around the locked five, identities held) + its clip, and the M3 rough cut v2
+(58.6s; 108.7s of the 2:00 with M1+M2). **Held for Sean:** the S15 super-wide A/B pick (plate prompt written for A). Laws 26–33 appended to
+`prompts/_blocks.md`; tracker wave-3b table in `M1-STORYBOARD.md`; review packet `CONTINUATION-2026-09-06-wave-3b-review.md`.
+
+**Evening addendum (Sean's 17:55 rulings, 164 cr → balance 2,329).** Locked 10.5 / 13.2 / 15 ×4 / 16.5 Grok / 17 / 18.5 into `_LOCKED-M3/`;
+beat 16 re-rolled two ways with the mime written into the clip (v2 calm still, v2b determined still — Sean picks); beat 20 got its flash-and-shake
+2kf transition off the green hold; both S15 plates generated (A cutaway, B real lens); **the five-character chain ran on A, five first rolls, identity
+held at every step (law 34)**; the beat 11/12 wide clip landed (chaos first, the swivel last); rough cut v3. Owed: the freeze-frame pick, then 13.1's
+background mascots frozen to match. Laws 34–36. Review packet addendum.
+
+**Evening addendum 2 (19:21 rulings, 130 cr → balance 2,199).** Beats 16 (v2b) and 20 locked. The S15 wide's v1 rejected on law 13 and rebuilt as a
+two-keyframe off Sean's deblurred start with a second five-step chain for the END/freeze frame (5/5 first roll); three 2kf rolls all zoomed him after
+the swivel (law 37 — stop rule applied, kit written); the rough cut v4 uses the clip's first 1.6s and the END still as the freeze (law 38). 13.1
+rebuilt with Gemini and Codex frozen behind him in the freeze's poses (still + clip, both first roll).
+
+**2026-09-07 addendum (the session's 37.5 cr; balance 1,174.5 after ~987 of Sean's own web-app rolls on the wide).** Sean's own S15 roll off the kit locked as `_LOCKED-M3/17` (ends on the freeze). 13.1 rebuilt as
+the full 180° swivel he asked for: a 2kf between a back-view START and an eyes-open END (both edits of the frozen composite) — first roll, his own face
+through the turn, the pair frozen; law 39 (a back-view rotation is safe when the END keyframe carries the face). Rough cut v6.
+
+**Why.** Sean's 10:51 rulings + 13:53 answers (recorded in the 3b continuation) settle every open beat; this wave builds them. Two deviations
+recorded with reasons: the 18.5 ensemble was built as a room-edit around Sean's own locked composite (1 roll) instead of five chained edits
+(answer 3's route stays the fallback, unspent); the SHIP END's screen_swap paste was skipped because the edit re-drew the key cluster (law 28),
+and the 2kf duly morphed — the single-image fallback is the honest alternative, both go to his eye.
+
+## 2026-09-06 — about-me-short: Movement 3 wave 3 — beats 11–20 built end to end (372 cr, 33/33 first-roll landings, 0 re-rolls)
+
+- Ran the wave-3 continuation under `/creative-director`: Phase 0 grounded in the locked state and the fourteen wave-2 laws, the four open questions roughed at $0 with a stated lean (`briefs/2026-08-02-about-me-short/m3-roughs/`), then the 30/60/90 order executed. Question 1 (typed or spoken) turned out to be already answered by the studio brief's 2026-08-31 amendment; the tracker's flag was stale. Question 4 taken as PROBLEM! and rolled. Questions 2 (the freeze) and 3 (the old button) are held for Sean with pictures.
+- Built every ruling-independent asset for beats 12–20: the swivel composite + clip (the closed mouth held — law 8 confirmed), the S11 monitor-closeup plate + the chat box carrying the full locked question (first roll), three state-C corner plates as edits of the locked M1 plates + three composites + four sigh clips + three pit-stop clips, the replay page + a $0 cursor overlay, the rocketing graph edit + two-keyframe clip + the earned SHIP IT, the USER's grey→green two-keyframe clip (colour change by keyframes proven), the PROBLEM! sting still. A $0 labelled rough cut of the whole movement (`motion/m3-roughcut/M3-roughcut-v1.mp4`, 43.6s).
+- Four $0 post tools: `post/fetch_result.py`, `post/cursor_overlay.py`, `post/typewriter_reveal.py`, `post/m3_roughcut.py`. Eleven new laws appended to `prompts/_blocks.md` (§ Wave 3 findings 15–25), incl. the measured price correction (`gpt_image_2` 2k high = 6.5 cr, not 8.5) and the ground-plan catch that the NE hole is behind the S09 lens.
+- Nothing locked; review packet at `briefs/2026-08-02-about-me-short/CONTINUATION-2026-09-06-wave-3-review.md`. Branch `about-me-short/m3-wave-3`, record and media as separate commits.
+
 ## 2026-09-05 — about-me-short: Movement 2 wave 2 — beats 5–10 all have a first-roll package (257.5 cr, 23/23 first-roll landings)
 
 **What.** Executed `briefs/2026-08-02-about-me-short/CONTINUATION-2026-09-05-movement-2-wave-2.md`

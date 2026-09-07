@@ -1,0 +1,16 @@
+# S06B — THE OLD BUTTON arrives in Grok's corner: beat 16's START frame. HELD for Sean's ruling on Q3 (the wave-3 doc's question 3).
+# gpt_image_2 EDIT of _LOCKED-M2/13_beat8_S06B_end-frame.png (the NE bible, Grok + hammer at rest). 8.5 cr. 2026-09-06.
+# THE PROP (Q3's lean): a big pencil-drawn BUY button, Grok-and-a-half tall, standing on the rubble — the replay's tiny hidden button
+#   blown up to a thing you can hit with a hammer. The one word BUY is the only text (it is plot text: the mute-parity rule).
+# Rough: m3-roughs/Q3-old-button-rough.jpg. Beat 16 = two keyframes: this (button whole) → S06B-old-button-END (splinters), law 10.
+# ROLLED 2026-09-06 (Sean, Q3 = yes: "Roll that."). Price now 6.5 (law 24).
+# RUN: motion/gen_image_ref.sh prompts/edits/S06B-old-button-START.txt _LOCKED-M2/13_beat8_S06B_end-frame.png 16:9 composites/M3/S06B-old-button-start.json
+# RESULT: composites/M3/S06B-old-button-start-v1.png -> normalised/, 6.5 cr, first roll, job 07ef7891. LANDED: a huge rounded BUY key, half again Grok's height, standing on the rubble and leaning back on the wall between the bench and the rocket; Grok's eyes are on it, hammer in hand, grin intact; the hole, rocket, darts, crates, binders all held. The only text is BUY.
+
+Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same small grey creature holding the sledgehammer in the same spot, same hole in the wall, same rocket, same rubble, same fixtures, same paper and palette.
+
+Change ONE thing: standing upright on the rubble on the open floor at the LEFT of the creature, between the storage bench and the rocket, is a huge drawn web-page button — a big rounded rectangle, taller than the creature by half again, like a giant key from a keyboard: a thick outer outline, a pale inner face, a slight drop shadow, and the single word BUY in big plain capitals across its face. It stands on its bottom edge on the floor and leans back a little against the wall. It is drawn in the same graphite line as the rest of the picture.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.
+
+The only text anywhere in the picture is the word BUY on the big button.

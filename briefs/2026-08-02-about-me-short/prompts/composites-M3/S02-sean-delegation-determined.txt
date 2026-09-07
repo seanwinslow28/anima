@@ -1,0 +1,11 @@
+# S02 — SEAN FACING US, DETERMINED: beat 16's alternative start still (route v2b). EDIT of normalised/S02-sean-delegation-v1.png. 6.5 cr. 2026-09-06 17:55.
+# Sean's other route: "re-generate the photo so he has a more determined face as he delegates." ONE change: the face. The clip (56b) is the same
+#   mime prompt on both stills; his eye picks between the calm-smile start and the determined start.
+# RUN: motion/gen_image_ref.sh prompts/composites-M3/S02-sean-delegation-determined.txt normalised/S02-sean-delegation-v1.png 16:9 composites/M3/S02-sean-delegation-determined.json
+# RESULT: composites/M3/S02-sean-delegation-determined-v1.png -> normalised/, 6.5 cr, first roll. LANDED: brows down and together, eyes sharp, a firm set mouth, chin up — a coach about to call the play; everything else byte-close (verify 0.308 / 0.815 / (0,0) PASS). *** BEAT 16's ALTERNATIVE START (route v2b) *** -> the same mime prompt 56b.
+
+Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same desk, monitors, cork board, whiteboard, printer bench, shelf, lamp, mug, bell and striped cannon, same chair on the same spot, same man in the same seated pose with his forearms on the armrests, same paper and palette.
+
+Change ONE thing: his expression. His face is now DETERMINED — both brows drawn down and a little together, his eyes sharp and focused, looking out into the room a little to one side of the camera, his mouth set in a firm straight line with the corners just turned up, his chin lifted a touch and his head a fraction forward, like a coach about to call the play. Everything else about him — his short blonde hair, the stubble, the navy T-shirt, the grey jeans and sneakers, the position of his arms, hands, legs and feet — stays exactly as drawn.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.

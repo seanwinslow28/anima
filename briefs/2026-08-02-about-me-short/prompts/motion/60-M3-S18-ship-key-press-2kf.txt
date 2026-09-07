@@ -1,0 +1,16 @@
+# 17 · THE SHIP KEY — one finger presses it. v1, 2kf, 7s. 2026-09-06.
+# Sean's ruling: "One extreme closeup of Sean's keyboard. The key says SHIP — Sean's finger presses down on it. Start frame and end frame." START =
+#   normalised/S18-ship-key-start-v1.png (finger beside the key), END = normalised/S18-ship-key-end-v1.png (the START with ONLY the key+finger
+#   rectangle pasted from the END edit — post/screen_swap.py, law 10). Anticipation / action / settle: the finger lifts, hovers, drops, the key sinks,
+#   holds pressed. One whole beat then a hold (anticipation-action-settle.png); the cut owns the hold.
+# NOTE 2026-09-06: the screen_swap paste was SKIPPED — the END edit re-rendered the key cluster, a paste would seam. Raw END used; measure layout vs both.
+# RUN: motion/generate2kf.sh prompts/motion/60-M3-S18-ship-key-press-2kf.txt normalised/S18-ship-key-start-v1.png normalised/S18-ship-key-end-v1.png motion/m3-beat17/S18-ship-key-v1.json
+# RESULT: motion/m3-beat17/S18-ship-key-v1.mp4, 24.5 cr, first roll — **A MISS, the S07 lesson came true**: the finger lifts, hovers and comes down onto SHIP (frames 1-6) but the keyboard MORPHS from the START drawing to the END drawing at the press (small-key cluster pops): layout 0.975 → 0.630 vs START, 0.647 → 0.974 vs END. Usable only if the cut lands before ~3s. Fallback rolled: prompts/motion/60b (single-image off the START, the model sinks the key itself).
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The index finger resting beside the big SHIP key lifts off the keyboard, hovers over the big key for a beat, and comes down onto it, pressing the key down into the keyboard with one clean firm push; the key sinks and stays sunk under the fingertip. The finger holds it down, still. Then the finger presses it once more, a small extra push, and holds it down.
+
+The big key reads SHIP in every frame. The small keys around it stay blank rectangles in the same places in every frame. There is exactly one hand with five fingers in every frame, and it stays at the lower right of the frame in every frame. The keyboard stays on the same spot on the wooden desk top in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

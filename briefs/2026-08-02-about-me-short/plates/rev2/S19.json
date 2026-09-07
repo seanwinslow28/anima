@@ -1,0 +1,48 @@
+[
+  {
+    "created_at": "2026-09-06T18:43:03.113615Z",
+    "display_name": "GPT Image 2",
+    "id": "fee98dd4-1294-45f7-8a84-cd07c2a5889a",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_184303_fee98dd4-1294-45f7-8a84-cd07c2a5889a_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "daa2cafe-9a7d-468f-b263-43457e1cc26a",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/daa2cafe-9a7d-468f-b263-43457e1cc26a_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "68111fb5-dfea-4bc3-b80a-a010828c122a",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/68111fb5-dfea-4bc3-b80a-a010828c122a_resize.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "2c917919-eb47-40e6-8671-a21a3172b9c9",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/2c917919-eb47-40e6-8671-a21a3172b9c9.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 and Image 2 are the FIXTURE AND STYLE BIBLES: the same long wooden desk, the same three monitors, the same office chair, lamp, blue mug, cork board, shelf of binders with the trailing plant, whiteboard and low printer bench, in the same drawing style, line weight, paper colour and palette. Preserve the exact design of every fixture. Do NOT copy their cameras or their framing — this is the same desk seen from its right-hand END.\nImage 3 is the COMPOSITION ROUGH for the target camera. Follow its camera, perspective, horizon and left-to-right placement exactly; replace each grey block with the corresponding fixture; remove every guide mark and every green block — the green block marks where a person will sit and is NOT drawn.\n\nCAMERA: a medium-close shot of the desk from its right-hand end, taken from the open floor beside the desk at the eye level of a seated person, looking along the desk towards the far end of the room. The desk runs diagonally away from us from the lower right of the frame towards the middle left. The three monitors stand on it seen at a steep raking angle, their screens turned away from us towards the chair; the cork board hangs above them; the empty office chair sits at the desk in the middle of the frame, seen from its side and a little from behind.\n\nPERSPECTIVE — draw it deliberately. The vanishing point is far off to the LEFT, beyond the frame, at the height of the seated eye. The desk top, its drawers, the monitor bezels and the cork board all converge towards it; every fixture on this wall shows its RIGHT-HAND face, and the fixtures further along the wall are drawn smaller and packed closer. Vertical lines stay vertical. The wall behind the desk is one flat plane running away to the left; the floor is a wedge in the lower left.\n\nVISIBLE, left to right: far off at the left, small, the whiteboard of half-erased diagrams and below it the low printer bench, both foreshortened; then the long desk with the three monitors on their stands, the keyboard and mouse, a few loose sheets of paper; the empty swivel office chair pulled up to the desk with its back three-quarters to us; above, the cork board of pinned notes and photographs and, nearer, the shelf of ring binders with the trailing plant; nearest the camera at the right, the end of the desk with the desk lamp and the blue mug, and the small brass bell on its wall bracket high at the right edge with its pull cord. Scattered over the desk top and the floor around the chair are a few curling paper streamers and small confetti dots in faint colour; on the floor at the far right, near the frame edge, the fat striped confetti cannon lies on its side beside its fallen three-legged tripod, one long streamer trailing from its mouth.\n\nOUT OF FRAME: the television, the dartboard, the server rack, the moodboard, the doorway, the paper towers.\nThe room is empty of characters and people. The chair is empty.\n\nWarm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_184303_fee98dd4-1294-45f7-8a84-cd07c2a5889a.png",
+    "status": "completed"
+  }
+]

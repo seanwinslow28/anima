@@ -1,0 +1,11 @@
+# S15-A END frame, chain 2/5 — CLAUDE mid-fling at the towers. 6.5 cr.
+# RUN: motion/composite.sh prompts/composites-S15/end/E2-claude-flinging.txt refs/turnaround-views/claude-sitting-v2.png normalised/S15-A-end-1.png composites/S15/E2-claude.json
+# RESULT: composites/S15/E2-claude-v1.png -> normalised/ (= S15-A-end-2.png), 6.5 cr, first roll. LANDED: Claude mid-fling, one arm-nub up, a sheet in hand, six pages frozen in the air around the towers; it reads as standing rather than sitting and the pencil is out of sight — a freeze-frame nit at 720p, accepted. Sean + the room held (verify vs end-1 0.391 / 0.865 / (0,0) PASS).
+
+Image 1 is the CHARACTER: a small rounded terracotta-orange cartoon creature, a soft cube with four stubby legs, small nubs for arms, and two dot eyes. Image 2 is the SCENE, in which that same character is already drawn.
+
+Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same wreck, same paper and palette, and every OTHER character in the picture exactly as drawn. This is a very wide cutaway of a whole room, so the character is a small part of the picture.
+
+Change ONE thing: the small orange cube creature sitting at the foot of the towers of paper in the far left corner is now caught mid-action, flinging a finished page over its shoulder — one arm-nub thrown up high behind it, a sheet of paper in the air just above and behind it, and three or four more loose sheets frozen in the air around it at different angles, mid-fall. It still sits on the same spot at the same tiny size, still holds exactly ONE pencil in its other arm-nub, its two dot eyes wide. Nothing else about it changes.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

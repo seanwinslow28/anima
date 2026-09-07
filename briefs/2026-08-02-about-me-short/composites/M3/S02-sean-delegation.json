@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-06T18:42:43.100357Z",
+    "display_name": "GPT Image 2",
+    "id": "bb7396a9-4082-4353-b3a8-c8a561b59dfd",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_184243_bb7396a9-4082-4353-b3a8-c8a561b59dfd_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "f26e26cb-20e1-4467-9708-9009f51883e9",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/f26e26cb-20e1-4467-9708-9009f51883e9.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "a168f52e-51cf-451b-bd22-a0344a446a88",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/a168f52e-51cf-451b-bd22-a0344a446a88_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a young man with short blonde hair, light stubble, blue eyes, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the SCENE, in which the same man sits at the desk with his back to us.\n\nChange ONE thing in Image 2: the man and his office chair are now turned right round to face us. Keep Image 2 unchanged in every other respect — same camera, same framing, same desk, monitors, cork board, whiteboard, printer bench, shelf, lamp, mug, bell and striped cannon, same paper and palette.\n\nPOSITION: he sits in the same office chair on the same spot in front of the desk, but the chair has swivelled a half turn so its back is now towards the desk and the monitors, and he sits facing us. Do not draw a second chair and do not move the desk.\nSCALE: the same full-grown adult at the same size as before — seated, his head rises above the chair back and sits in front of the middle monitor, his shoulders as wide as the chair back.\nFACING — this is the important part: he is turned three-quarters TOWARDS US, his back to the desk and the monitors. His whole face is visible — both eyes, the stubble, his mouth, his full head of hair — and his chest, both arms and both knees. He is NOT seen from behind and NOT in profile. His eyes are open and level, looking out into the room a little to one side of the camera, never into the lens. His expression is a calm, warm, closed-mouth smile.\nPOSE: he sits upright and still, at rest, both forearms resting along the armrests of the chair, both hands relaxed, both feet flat on the floor. Draw a soft graphite contact shadow on the floor beneath his feet and the chair.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_184243_bb7396a9-4082-4353-b3a8-c8a561b59dfd.png",
+    "status": "completed"
+  }
+]

@@ -1,0 +1,18 @@
+# S03 · CLAUDE at the foot of its wreck — beats 15 + 16 start frame, onto the state-C plate (plates/rev2/S03-stateC → normalised). 2026-09-06.
+# gpt_image_2 edit, 2 refs: refs/turnaround-views/claude-sitting-v2.png (¾ front, SITTING WRITING — the rest pose it holds in every
+#   still, S09 continuity rule) + normalised/S03-stateC-v1.png. 8.5 cr.
+# STAGING (law 6): the builder small at the foot of its own build, ¾ front, eyeline on the task — the four corners cut as a set.
+# LOCKS: pencil COUNT (law 4: exactly one pencil); red eyes are ON-MODEL; the wash. Scale law: a TALL anchor (the towers) + a ceiling.
+# RUN: motion/composite.sh prompts/composites-M3/S03-claude-stateC.txt refs/turnaround-views/claude-sitting-v2.png normalised/S03-stateC-v1.png composites/M3/S03-claude-stateC.json
+# RESULT: composites/M3/S03-claude-stateC-v1.png -> normalised/, 6.5 cr, first roll, job 79966d9f. LANDED: sitting writing on the carpet of sheets at the foot of the towers, ONE pencil, red eyes (on-model), eyes down at the sheet, tiny. verify 0.289/0.831 PASS. *** THE BEAT-15/16 CLAUDE START FRAME ***
+
+Image 1 is the CHARACTER: a small terracotta-orange cube creature with two small dark dot eyes and two short brows, sitting on the floor writing on a sheet of paper with one pencil. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same towers of paper, same sheets on the floor, same fixtures, same palette.
+
+POSITION: sitting on the floor in the open space in front of the towers of paper, a little left of centre, between the small supply desk and the bookshelf, on top of the loose sheets that carpet the floor, with one sheet of paper on the floor in front of it that it is writing on. It does not cover the desk or the bookshelf.
+SCALE — draw it SMALL: it is only knee-high to a grown adult. Sitting, the top of its head reaches barely a tenth of the way up the towers of paper behind it, and it is shorter than the bookshelf's lower shelf is tall. It is a tiny creature, never person-sized.
+FACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, both brows, its full face, its body, both arms and both feet. It is NOT seen from behind and NOT in profile. Its eyes are turned down at the sheet of paper in front of it; it is absorbed in writing and never looks into the camera.
+POSE: it sits still and upright at rest on the floor, holding exactly ONE pencil in one hand, the pencil tip resting on the sheet — there is only one pencil anywhere in the picture. Draw it in the same hand as the room — graphite line with a light terracotta coloured-pencil wash over its body, the same line weight as the furniture — with a soft graphite contact shadow pooled on the floor beneath it.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

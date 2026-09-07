@@ -1,0 +1,14 @@
+# 17 · THE SHIP KEY — v2, SINGLE-IMAGE fallback (no end frame). 7s. 2026-09-06.
+# The 2kf (motion/60) morphed the keyboard at the press because the END edit had re-drawn the key cluster (the S07 lesson: two subtly different
+#   drawings → the model reconciles them mid-clip). Here the START is the only drawing and the model sinks the key itself. Sean ruled 'start frame
+#   and end frame'; this is the honest fallback with the same events, not a rewrite — both clips go to his eye.
+# RUN: motion/generate.sh prompts/motion/60b-M3-S18-ship-key-press-single.txt normalised/S18-ship-key-start-v1.png motion/m3-beat17/S18-ship-key-v2-single.json
+# RESULT: motion/m3-beat17/S18-ship-key-v2-single.mp4, 24.5 cr, first roll. LANDED (sheet): the finger lifts / hovers over SHIP / comes down and PRESSES / holds / lifts a little and presses again / holds. The keyboard stays ONE drawing throughout — layout 0.979/0.980 vs the START. The key's sink is subtle (a shade on its face), the finger press reads. **The session's lean for beat 17 over the 2kf v1** (which morphs the keys). Sean's eye owed.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The index finger resting beside the big SHIP key lifts off the keyboard, hovers over the big key for a beat, and comes straight down onto it, pressing the key down into the keyboard with one clean firm push: the big key sinks under the fingertip until its top is level with the keyboard's frame, and stays sunk. The finger holds it down, still. Then the finger lifts a little and presses it down once more, a small extra push, and holds it down.
+
+The big key reads SHIP in every frame and stays in the same place on the keyboard in every frame. The small keys around it stay exactly the same small blank rectangles in exactly the same places in every frame. There is exactly one hand with five fingers in every frame, and it stays at the lower right of the frame in every frame. The keyboard stays on the same spot on the wooden desk top in every frame, drawn the same way in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

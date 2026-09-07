@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-06T10:33:53.188747Z",
+    "display_name": "Seedance 2.0",
+    "id": "4866d06e-89c5-47f0-8dc5-cc35b382433a",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "89ad5e92-ae09-4851-9a15-a15f8ba66050",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/89ad5e92-ae09-4851-9a15-a15f8ba66050_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe young man in the office chair, eyes closed, both palms held out flat and pressed gently downward in front of his chest, finishes the last few degrees of the chair's slow turn towards us and comes to rest, square to us. He holds completely still. His shoulders lift slowly and sink slowly, once. He holds still again, longer. His shoulders lift and sink a second time, slower and smaller. Then his eyes open, calm, and he looks down at the floor a few feet in front of his chair, and holds.\n\nHis eyes stay shut, two short calm curved lines, in every frame until the moment they open. His mouth stays one small closed straight line in every frame. His hands stay held out low in front of his chest, palms down, fingers together, in every frame. His short blonde hair, his stubble and his navy T-shirt are the same in every frame. The chair stays on the same spot on the floor in every frame. The three monitors behind him stay the same three dark screens in every frame, and the desk, the cork board, the whiteboard, the shelf of binders, the lamp, the bell and everything else in the room stay the same drawings in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103353_4866d06e-89c5-47f0-8dc5-cc35b382433a.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103353_4866d06e-89c5-47f0-8dc5-cc35b382433a_thumbnail.webp"
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-06T18:54:07.799688Z",
+    "display_name": "GPT Image 2",
+    "id": "0cc04bc9-356d-4f61-bd2e-01e4f1c6fa42",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_185407_0cc04bc9-356d-4f61-bd2e-01e4f1c6fa42_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "4bbeea66-8413-4d6c-a618-ab5f5a94cf7e",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/4bbeea66-8413-4d6c-a618-ab5f5a94cf7e_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same keyboard, same small blank keys, same wooden desk top, same paper and palette.\n\nChange ONE thing: the index finger has moved onto the big SHIP key and is pressing it down — the fingertip rests in the middle of the key's face, and the key is sunk down into the keyboard, its top now level with the keyboard's frame and its side walls hidden, so that it sits visibly lower than the small keys around it. The word SHIP stays on its face, partly covered by the fingertip. The rest of the hand follows the finger a little, the other fingers still curled back. Draw a small soft graphite shadow around the sunk key. Nothing else moves.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.\n\nThe only text anywhere in the picture is the word SHIP on the big key.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_185407_0cc04bc9-356d-4f61-bd2e-01e4f1c6fa42.png",
+    "status": "completed"
+  }
+]

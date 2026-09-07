@@ -1,0 +1,20 @@
+# S11 — THE CHAT BOX with THE QUESTION. Beat 13's insert. gpt_image_2, 2 refs: normalised/S11-monitor-closeup-v1.png (the scene) +
+#   refs/user-looktest/D-torso.png (the grey USER, for the avatar). 8.5 cr. 2026-09-06.
+# THE ONE PLACE THE FILM NEEDS A FULL SENTENCE OF TEXT. The S07/S08 edits prove capitals land; this is the sentence test. If the
+#   model fumbles the sentence, post letters it over this still ($0) — the typewriter reveal is post either way.
+# THE LOCKED LINE (lines-v1, verbatim, typed not spoken — the brief's 08-31 amendment): "Can you show me what happened the last
+#   time you tried to check out?" The grey USER is the recipient in the header; the message is Sean's, outgoing.
+# RUN: motion/gen_image_refs.sh prompts/edits/S11-chat-box-the-question.txt composites/M3/S11-chat-box.json normalised/S11-monitor-closeup-v1.png refs/user-looktest/D-torso.png
+# RESULT: composites/M3/S11-chat-box-v1.png -> normalised/ (raw, gain 1.0 — the S11 family), 6.5 cr, first roll, job 94093e7e. *** THE SENTENCE LANDED *** hand-lettered in clean graphite capitals over four lines, the grey USER avatar in the header, an empty text box with a cursor beneath. The typewriter reveal: post/typewriter_reveal.py -> motion/m3-beat13/S11-chat-typewriter-v1.mp4 (3.2s typing + 1.5s hold, \$0).
+
+Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same three monitors, keyboard, mouse, desk, cork board, lamp and mug, same paper and palette. Image 2 is a small grey faceless figure with a crosshair on its blank round head and the word USER on its shirt: use it only as the design of the avatar described below.
+
+Change ONE thing: the middle monitor's dark screen is now lit pale and shows a plain chat window filling the screen. Across the top of the window is a header bar with, at its left, a small round avatar: the head and shoulders of image 2's grey figure, blank head, crosshair, the word USER on its shirt, drawn small. Beneath the header, one message bubble fills most of the screen, and inside it, hand-lettered in plain clear graphite capitals large enough to read easily, spread over three lines, is the question:
+
+CAN YOU SHOW ME WHAT HAPPENED THE LAST TIME YOU TRIED TO CHECK OUT?
+
+Beneath the bubble, along the bottom of the window, is an empty text-entry box with a short vertical cursor line at its left end. Everything on the screen is drawn in graphite line in the same hand as the rest of the picture, the way a pencil-test animator draws a screen: hand-ruled boxes, slightly wobbly lines, a faint pale wash on the header bar.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.
+
+The only text anywhere in the picture is the question on the middle screen and the word USER on the avatar's shirt.

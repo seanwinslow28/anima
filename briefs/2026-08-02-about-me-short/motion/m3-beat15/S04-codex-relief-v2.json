@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-06T18:50:56.252614Z",
+    "display_name": "Seedance 2.0",
+    "id": "78e60857-719b-4134-b242-c27a8227e860",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 5,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "34425039-b9d0-4772-839e-7742a00b5849",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/34425039-b9d0-4772-839e-7742a00b5849_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe small lavender cloud creature standing at the foot of the server rack draws in a huge breath that puffs it up tall and round and stiff, holds it for a beat, and lets it all out in one big happy whoosh — its whole puffy body drops soft and loose, its stubby arms fall to its sides, its pale chevron tips up into a happy arc. It wipes one stubby arm across its brow in one quick sweep and flicks it away. It gives one small happy hop on the spot, lands on the same spot, and settles, bouncing gently, its face tipped up at the screen.\n\nIts face is exactly one pale chevron and one short straight bar, the same chevron and the same bar in every frame, and it is happy in every frame. It stays standing on the same spot on the floor in every frame. It stays small, no taller than a quarter of the black server rack beside it, in every frame. The big screen stays out on its arm over the counter, lit and full of the same dense lines of code, in every frame; the spilled cables lie still in every frame; the server rack, the coffee machine, the jug, the mugs, the counter, the cabinet with its boxes, the taped sketches and the doorway stay the same drawings in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_185056_78e60857-719b-4134-b242-c27a8227e860.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_185056_78e60857-719b-4134-b242-c27a8227e860_thumbnail.webp"
+  }
+]

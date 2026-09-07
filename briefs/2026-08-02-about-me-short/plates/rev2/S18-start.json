@@ -1,0 +1,38 @@
+{
+  "created_at": "2026-09-06T18:42:40.727764Z",
+  "display_name": "GPT Image 2",
+  "id": "42ae4c3a-af69-48ea-b7c5-ffbbafa07db5",
+  "job_type": "gpt_image_2",
+  "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_184240_42ae4c3a-af69-48ea-b7c5-ffbbafa07db5_min.webp",
+  "params": {
+    "aspect_ratio": "16:9",
+    "height": 1520,
+    "medias": [
+      {
+        "data": {
+          "id": "8708ca2a-98c6-4570-bc14-98f83221272c",
+          "type": "media_input",
+          "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/8708ca2a-98c6-4570-bc14-98f83221272c_resize.jpg"
+        },
+        "role": "image"
+      },
+      {
+        "data": {
+          "id": "1ebfccae-4f9e-49aa-ac85-50d8484978b9",
+          "type": "media_input",
+          "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/1ebfccae-4f9e-49aa-ac85-50d8484978b9.png"
+        },
+        "role": "image"
+      }
+    ],
+    "model": "videotape-alpha",
+    "prompt": "Image 1 is the FIXTURE AND STYLE BIBLE: the same keyboard and wooden desk top, in the same drawing style, line weight, paper colour and palette. Do NOT copy its camera or framing — this is one corner of that keyboard seen from very close. Image 2 is the CHARACTER whose hand this is: a young man with fair skin and a navy T-shirt; use it only for the look of his hand.\n\nCAMERA: an extreme close-up, low and from the front, looking slightly down across the right-hand end of the keyboard. In the centre of the frame, on the keyboard, is ONE big key, three times the size of the ordinary keys around it, a plain rounded rectangle with the word SHIP hand-lettered in graphite capitals across its face. The ordinary keys around it are small blank rectangles. An adult right hand enters from the lower right of the frame: the index finger is extended and rests lightly on the keyboard beside the SHIP key, touching the keys next to it, hovering just off the big key itself; the other fingers are curled back. The key is NOT pressed: it stands at its full height like the others. The wooden desk top shows along the top of the frame. Nothing else is in frame.\n\nThe hand is drawn simply and correctly: one hand, five fingers, the index finger extended. Light coloured-pencil skin wash.\n\nWarm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. The only text anywhere in the picture is the word SHIP on the big key.",
+    "quality": "high",
+    "reference_elements": [],
+    "remove_bg": false,
+    "resolution": "2k",
+    "width": 2688
+  },
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_184240_42ae4c3a-af69-48ea-b7c5-ffbbafa07db5.png",
+  "status": "completed"
+}

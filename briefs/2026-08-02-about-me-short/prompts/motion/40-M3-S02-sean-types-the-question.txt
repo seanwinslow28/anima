@@ -1,0 +1,19 @@
+# 13 · SEAN TYPES THE QUESTION — v1, 2026-09-06. S02, his back, the coffee-clip precedent (M1 beat 2: hands on the keyboard = a rest pose).
+# seedance_2_0 fast 7s 720p · start: normalised/S02-cannon-fix-v1.png (the locked beat-9/17 start frame — hands on the keyboard, cannon quiet)
+# THE CUT: beat 12 ends on Sean at S10 facing us, eyes closed; beat 13 opens HERE at his back — the turn-back is the cut, so no
+#   rotation is asked of the model (the facing law, law 13). The question itself is NEVER in this clip: it lands on the S11
+#   insert (a post typewriter reveal over the chat-box edit). This clip is the typing: lean in / one rattling burst / read /
+#   a second burst / the ENTER tap with a small flourish / sit back. A loop-ish shape (burst, pause, burst) fills the 7s.
+# CONSTANTS: hair, navy tee, chair at the desk, the three monitors DARK with faint code (the "glowing" lesson), bell hanging,
+#   cannon quiet on its tripod, desk/cork board/shelf/whiteboard. Zero negation; speed verbs; no absolute time cues.
+# RUN: motion/generate.sh prompts/motion/40-M3-S02-sean-types-the-question.txt normalised/S02-cannon-fix-v1.png motion/m3-beat13/S02-sean-types-v1.json
+# RESULT: motion/m3-beat13/S02-sean-types-v1.mp4, 24.5 cr, first roll, job ca6c1cf2. LANDED: leans in / a rattling burst / head tips / a second burst / the ENTER tap / sits back. Layout 0.981/0.982. Monitors stayed dark. ONE FLAG for the eye: mid-clip his head turns towards PROFILE (a partial face from behind, ~2 frames of the sheet) — at 720p a nit; the cut can trim around it.
+# RELEASED 2026-09-06 (Sean): beat 13 is now three calm shots (13.1 monitors-POV medium / 13.2 hands ECU / 13.3 the chat box). This from-behind typing clip is released, kept on disk with its diagnosis.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The young man at the desk, seen from behind, sits still for a beat with both hands resting on the keyboard, then leans in towards the middle monitor and types in one quick rattling burst, both hands bouncing across the keys, his shoulders bobbing with them. He stops dead, tips his head a little to one side as he reads the screen, then types a second, shorter burst, and taps one last key with one firm finger and a small flick of the wrist. He sits back in the chair, both hands settling on the edge of the desk, and holds still.
+
+The back of his head, his short blonde hair and his navy T-shirt are the same in every frame. The chair stays at the desk in the same spot in every frame. The three monitors stay the same three dark screens with the same faint lines of code in every frame, and the desk, the cork board, the shelf of binders and the whiteboard stay the same drawings in every frame. The small brass bell hangs still on its bracket and the fat striped confetti cannon stands quiet on its tripod in the same spots in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

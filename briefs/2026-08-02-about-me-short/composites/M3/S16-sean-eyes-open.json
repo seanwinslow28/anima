@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-07T19:48:36.097008Z",
+    "display_name": "GPT Image 2",
+    "id": "76dded8b-de90-4be6-b85a-41186dab08b5",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260907_194836_76dded8b-de90-4be6-b85a-41186dab08b5_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "5769b151-21b8-4593-95b0-5dec50252a44",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/5769b151-21b8-4593-95b0-5dec50252a44_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same young man in the same chair in the same pose with his hands on the armrests, same keyboard along the bottom, same wrecked room, same small purple star creature frozen mid-spin at the left and same small blue cloud creature frozen mid-leap on the server rack at the right, same paper and palette.\n\nChange ONE thing: his eyes are now OPEN — both eyes open, calm and level, blue, looking straight into the camera at us, his brows relaxed, his head level, his mouth still one small closed line. Nothing else about him or the room changes.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260907_194836_76dded8b-de90-4be6-b85a-41186dab08b5.png",
+    "status": "completed"
+  }
+]

@@ -1,0 +1,14 @@
+# S16 — SEAN'S BACK TO THE LENS (chair turned 180°, facing the frozen room): beat 13.1 v3's START still. EDIT of normalised/S16-sean-mascots-frozen-v1.png. 6.5 cr. 2026-09-07.
+# Sean (15:46): "make it so Sean's doing a full 180 degree swivel. If the model doesn't get his face right, then we'll just go a similar route to what
+#   you've already generated for 13.1." So: a 2kf — START = this (his back to us, the frozen pair behind), END = the same still with his eyes OPEN on
+#   the lens (S16-sean-eyes-OPEN-frozen-bg.txt); the swivel and the eyes-closed hold live in the clip (58c). Law 13's risk is taken knowingly, with
+#   the END frame anchoring his real face; v2 (58b) is the fallback Sean named.
+# Ref = refs/turnaround-views/sean-v5.png (back view). The chair turns in place (the S02 delegation precedent).
+# RUN: motion/composite.sh prompts/composites-M3/S16-sean-BACK-to-lens-frozen-bg.txt refs/turnaround-views/sean-v5.png normalised/S16-sean-mascots-frozen-v1.png composites/M3/S16-sean-back.json
+# RESULT: composites/M3/S16-sean-back-v1.png -> normalised/, 6.5 cr, first roll. LANDED: the chair turned, its back to us, the back of his blonde head and navy shirt, forearms on the armrests; Gemini + Codex frozen, the room and keyboard held (verify 0.217 / 0.708 / (0,0) PASS). *** 13.1 v3's START ***
+
+Image 1 is the CHARACTER: a young man with short blonde hair, a navy T-shirt, grey jeans and grey sneakers, seen from behind. Image 2 is the SCENE, in which the same man sits in an office chair facing us with his eyes closed.
+
+Change ONE thing in Image 2: the man and his office chair have turned right round, a half turn, so that the chair's back is now towards us and he sits with his BACK to us, facing away into the room. We see the back of his short blonde hair, the back of his navy T-shirt, his shoulders, and the chair back in front of his body; his face is not visible. Both his forearms rest on the armrests. He stays in the same chair on the same spot at the same size; do not draw a second chair and do not move the keyboard. Keep Image 2 unchanged in every other respect — same camera, same framing, same keyboard along the bottom, same wrecked room, same small purple star creature frozen mid-spin at the left and same small blue cloud creature frozen mid-leap on the server rack at the right, same paper and palette.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

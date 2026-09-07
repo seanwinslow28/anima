@@ -1,0 +1,25 @@
+# S09 · THE CRT'S POV, WRECKED AND AT REST (room state C). Beat 18.5 (the celebration). 2026-09-06. 6.5 cr.
+# Sean's ruling: "Visual twin of normalised/S09-all-webapp-v2.png — but the room is looking like the big mess they just created." So this is
+#   an EDIT of the locked clean S09 plate (normalised/S09-room-reacts-v1.png; law 1: a wrecked return is an edit, not a re-angle), state C =
+#   every wreck at rest: the fifty everywhere on the LEFT wall + the floor (S05 stateC), the popped code screen at the rack on the FAR wall
+#   (S04 stateC), the paper canyon at the far wall's RIGHT end where the two towers stood (S03 stateC), and — because the NE hole is BEHIND
+#   this lens (law 25) — Grok's rubble and the rocket's nose intruding at the RIGHT edge stand in for the fourth. The chair stays turned to the
+#   room as it was. The plate is character-free; the five characters are CHAINED single-character edits on top (answer 3).
+# RUN: motion/gen_image_ref.sh prompts/plates-rev2/S09-stateC-wreck.txt normalised/S09-room-reacts-v1.png 16:9 plates/rev2/S09-stateC.json
+# RESULT: plates/rev2/S09-stateC-v1.png -> normalised/, 6.5 cr, first roll, job 2117f3c9. LANDED: every wreck in place at rest — the fifty floor-to-ceiling on the left + drifts burying the worktable, the popped code screen on the rack, the three flagged towers at the far wall's right end out of the top of frame, the rubble + rocket nose at the right edge, streamers at the desk, sheets across the floor; the chair turned to the room. *** THE S09 STATE-C PLATE *** (the chained-ensemble fallback base for 18.5).
+
+Edit this drawing. Keep the same camera, the same very wide high framing, the same three walls and two corner seams, the same floor, paper, line and colour, and every fixture where it is: the moodboard wall and worktable at the left, the water cooler, the coffee counter, the server rack, the doorway, the binder shelf and the supply desk on the far wall, the desk with its three monitors, lamp and mug, the cork board, the whiteboard, the printer bench and the filing cabinet on the right wall, and the empty office chair turned out towards the room.
+
+Wreck the room, and leave the wreck at rest — nothing in the air, everything settled:
+
+On the LEFT wall, the moodboard has exploded: every inch of that wall from floor to ceiling is taped over with small square sketches of shopping bags, checkout buttons, packaging, price tags, storefront signs and little round cartoon creatures, sketches taped over sketches, and they spill across the floor in front of the wall in overlapping drifts that half-bury the worktable and the cartons.
+
+On the FAR wall, at the left, a wide flat screen has popped out of the front of the black server rack on a metal arm and hangs out into the room, its face full of dense rows of small dark dashes and blocks like code, with loose cabling spilling from the rack around it. At the far wall's right end, where the two leaning towers of paper stood, there are now three enormous towers of loose paper fringed with hundreds of small coloured sticky flags, rising from the floor right out of the top of the frame, with loose sheets carpeting the floor around their feet and heaped against the supply desk and the shelf.
+
+At the RIGHT edge of the frame, in the near corner beyond the desk, a spill of plaster rubble, broken laths and dust has come across the floor from out of frame, with the pointed nose of a big cardboard rocket poking into the frame from the right, and a few darts stuck in the wall.
+
+Across the desk and the floor around the chair lie a few curling paper streamers and small confetti dots. The whole floor between the walls is scattered with loose sheets of paper lying flat.
+
+Warm cream drawing paper throughout, a pale putty cream, never white and never yellow. The floor is the same cream a half-step darker. Walls and floor are flat, quiet, and low-contrast — the room is a pale ground, and colour lives only on small props. Graphite line and cross-hatch shadow carry all the form. Overall value stays high-key and even: no dark corners, no pooled shadow, no colour cast, no vignette, no dramatic lighting.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. The room is empty of characters and people. Do not add any text.

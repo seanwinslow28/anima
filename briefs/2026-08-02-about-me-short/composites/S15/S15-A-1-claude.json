@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-06T22:01:42.754226Z",
+    "display_name": "GPT Image 2",
+    "id": "60d84f12-51de-4cfc-a12c-e3d6dd844bf7",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_220142_60d84f12-51de-4cfc-a12c-e3d6dd844bf7_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "3d07b709-82f7-49c4-8be8-535b4b9c8a06",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/3d07b709-82f7-49c4-8be8-535b4b9c8a06.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "82487709-cf26-487d-82b5-eed4668de4cd",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/82487709-cf26-487d-82b5-eed4668de4cd_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a small rounded terracotta-orange cartoon creature, a soft cube with four stubby legs, small nubs for arms, and two dot eyes, sitting on the floor writing on a sheet of paper with one pencil. Image 2 is the BACKGROUND SCENE.\n\nAdd the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same wreck, same palette, and every character already in the picture exactly as drawn. This is a very wide cutaway of a whole room, so the character is a small part of the picture.\n\nPOSITION: in the far LEFT corner of the room, sitting on the floor at the foot of the three enormous flagged towers of paper, on the loose sheets in front of them, just clear of the small supply desk. It is far from the camera, so it is drawn very small.\nSCALE — draw it TINY: it is a knee-high creature seen from across the room. Sitting, the top of its head reaches only about the height of the supply desk's top beside it, and it is far shorter than the shelf of ring binders. It is a small creature, never person-sized.\nFACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its face, both arm-nubs. It is NOT seen from behind and NOT in profile. Its eyes are turned down at the sheet of paper in front of it; it is absorbed in its writing and never looks into the camera.\nPOSE: it sits still on the floor at rest, one arm-nub holding exactly ONE pencil to the sheet of paper in front of it — only one pencil anywhere in the picture — the other arm-nub resting. Draw it with a soft graphite contact shadow on the floor beneath it.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_220142_60d84f12-51de-4cfc-a12c-e3d6dd844bf7.png",
+    "status": "completed"
+  }
+]

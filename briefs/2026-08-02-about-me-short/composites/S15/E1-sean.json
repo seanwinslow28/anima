@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-06T23:23:13.692663Z",
+    "display_name": "GPT Image 2",
+    "id": "9d88d683-0f53-4d93-9203-c6468e9822fc",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_232313_9d88d683-0f53-4d93-9203-c6468e9822fc_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "f0c678dd-0f6e-488d-9f94-f9e44730ec25",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/f0c678dd-0f6e-488d-9f94-f9e44730ec25.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "cc001d83-e8c6-4485-9718-1d99d59c19ba",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/cc001d83-e8c6-4485-9718-1d99d59c19ba.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a young man with short blonde hair, light stubble, blue eyes, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the SCENE, in which that same character is already drawn.\n\nKeep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same wreck, same paper and palette, and every OTHER character in the picture exactly as drawn. This is a very wide cutaway of a whole room, so the character is a small part of the picture.\n\nChange ONE thing: the man in the office chair at the desk in the centre of the far wall has spun his chair right round, so the chair's back is now to the desk and the monitors and he sits FACING US, looking out across the whole room. His whole face is visible — the short blonde hair, both eyes, the stubble, his mouth — drawn as the same young man as Image 1. His expression is dismay: both brows up, eyes wide, mouth open a little. Both hands grip the armrests, both feet on the floor. He stays in the same chair on the same spot at the same size; do not draw a second chair and do not move the desk.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_232313_9d88d683-0f53-4d93-9203-c6468e9822fc.png",
+    "status": "completed"
+  }
+]

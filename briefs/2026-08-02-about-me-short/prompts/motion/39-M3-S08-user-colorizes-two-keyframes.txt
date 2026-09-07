@@ -1,0 +1,20 @@
+# 18 · THE USER COLORIZES — v1, 2026-09-06. The cheapest, surest beat on the board: two LOCKED stills, one two-keyframe roll.
+# seedance_2_0 fast 7s 720p · start: refs/user-looktest/S08-grey-v2.png (grey, arms down, blank) · end: refs/user-looktest/S08-green-v2.png
+#   (green, enormous grin, thumbs up, action lines). Same S08 plate, same framing, the figure differs only in colour + pose.
+# WHAT THE ROLL PROVES besides the beat: a COLOUR CHANGE by keyframes on this route (never bought before).
+# THE SHAPE: hold blank / the green floods UP through the figure / the grin splits open / the thumb SNAPS up (anticipation is
+#   the flood, action is the snap, overshoot is the extra push, settle is the beam). One whole acting beat, then a hold — the
+#   cut owns the hold and beat 19's VO runs over the last frame. Rest-pose law satisfied by construction (start = arms down).
+# CONSTANTS: the figure on the screen, USER on the shirt, the TV + shelf + brackets + cable + binders + sketches. Zero negation.
+# WATCH FOR: the figure stepping OFF the screen into the room; a second USER; the green leaking onto the TV bezel; the mouth
+#   or eyes appearing on the blank head before the grin (it has no eyes — ever).
+# RUN: motion/generate2kf.sh prompts/motion/39-M3-S08-user-colorizes-two-keyframes.txt refs/user-looktest/S08-grey-v2.png refs/user-looktest/S08-green-v2.png motion/m3-beat18/S08-user-colorizes-v1.json
+# RESULT: motion/m3-beat18/S08-user-colorizes-v1.mp4, 24.5 cr, first roll, job e159e580. LANDED: grey holds ~1.5s / the GREEN TRAVELS UP THE CABLE into the set (the model's own gag) / the figure floods green / the grin + thumb SNAP on with the action lines / holds beaming. Layout 0.982/0.972 vs the grey start, 0.965/0.983 vs the green end — a COLOUR CHANGE BY KEYFRAMES is proven on this route. USER on the shirt held; no eyes appeared. The green cable is Sean's call (charming or a nit). Sean's eye owed.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The small grey figure on the television screen stands blank and still for a beat, arms at its sides. Then bright green colour floods up through it from its feet to the top of its head in one quick rising wash, and the instant the green reaches its face an enormous grin splits open across its blank head, its arm snaps up beside its head with the fist closed and the thumb sticking straight up, and short radiating lines pop out around its head. It holds there beaming, thumb up, and gives the thumb one small extra push upward, then settles.
+
+The figure stays inside the television screen as a picture on the screen in every frame, drawn in the same graphite line, and the word USER stays on its shirt in every frame. Its head stays a blank round head with a crosshair on it in every frame, with no eyes. The television, its shelf and brackets, the hanging cable, the shelf of binders at the left and the taped sketches at the right stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

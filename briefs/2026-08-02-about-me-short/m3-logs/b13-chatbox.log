@@ -1,0 +1,17 @@
+prompt bytes: 1659
+--- prompt sent ---
+Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same three monitors, keyboard, mouse, desk, cork board, lamp and mug, same paper and palette. Image 2 is a small grey faceless figure with a crosshair on its blank round head and the word USER on its shirt: use it only as the design of the avatar described below.
+
+Change ONE thing: the middle monitor's dark screen is now lit pale and shows a plain chat window filling the screen. Across the top of the window is a header bar with, at its left, a small round avatar: the head and shoulders of image 2's grey figure, blank head, crosshair, the word USER on its shirt, drawn small. Beneath the header, one message bubble fills most of the screen, and inside it, hand-lettered in plain clear graphite capitals large enough to read easily, spread over three lines, is the question:
+
+CAN YOU SHOW ME WHAT HAPPENED THE LAST TIME YOU TRIED TO CHECK OUT?
+
+Beneath the bubble, along the bottom of the window, is an empty text-entry box with a short vertical cursor line at its left end. Everything on the screen is drawn in graphite line in the same hand as the rest of the picture, the way a pencil-test animator draws a screen: hand-ruled boxes, slightly wobbly lines, a faint pale wash on the header bar.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D.
+
+The only text anywhere in the picture is the question on the middle screen and the word USER on the avatar's shirt.
+--- end ---
+refs: normalised/S11-monitor-closeup-v1.png refs/user-looktest/D-torso.png
+job json -> composites/M3/S11-chat-box.json
+exit 0

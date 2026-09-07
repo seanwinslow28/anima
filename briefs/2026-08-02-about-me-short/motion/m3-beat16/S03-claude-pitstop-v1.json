@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-06T10:36:52.852648Z",
+    "display_name": "Seedance 2.0",
+    "id": "4e9e5d0d-e4e0-42fa-9522-d337c60409a5",
+    "job_type": "seedance_2_0",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "duration": 7,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "a239154f-d1a2-4c14-901e-073e26148c26",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/a239154f-d1a2-4c14-901e-073e26148c26_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "mode": "fast",
+      "model": "seedance_2_0_fast",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.\n\nThe small terracotta cube creature snatches one fresh sheet of paper off the floor, slaps it flat in front of it, and writes exactly one short line across it in one fast decisive stroke of the pencil, its whole body bouncing once with the stroke. It snaps the sheet up and holds it out at arm's length, admiring the single line, and gives one crisp little nod. It sets the sheet down, snatches a second fresh sheet, and writes the same single line again, even faster, and holds that one up too.\n\nIts face is exactly two small dark dot eyes and two short brows, the same two eyes and two brows in every frame. It holds exactly one pencil in every frame. It stays sitting in the same spot on the floor in every frame. It stays small, tinier than the bookshelf's lower shelf, in every frame. The three towers of paper stand in the same places and reach out of the top of the frame in every frame; the loose sheets on the floor lie still in every frame; the small desk, the bookshelf of binders and the grey filing cabinet stay the same drawings in every frame.\n\nSquash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "720p",
+      "speedramp": "auto",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103652_4e9e5d0d-e4e0-42fa-9522-d337c60409a5.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103652_4e9e5d0d-e4e0-42fa-9522-d337c60409a5_thumbnail.webp"
+  }
+]

@@ -1,0 +1,14 @@
+# 15 · GEMINI SIGHS — v1, 2026-09-06. The same deflate beat, before the buried wall. The S05 lesson: the wall is full in every frame incl. the first.
+# seedance_2_0 fast 7s 720p · start: normalised/S05-gemini-stateC-v1.png
+# CONSTANTS: face (two eyes + small open smile — the squint-shut nit from beat 7 is why it is stated); five points; size; the sketches stay.
+# RUN: motion/generate.sh prompts/motion/44-M3-S05-gemini-sigh.txt normalised/S05-gemini-stateC-v1.png motion/m3-beat15/S05-gemini-sigh-v1.json
+# RESULT: motion/m3-beat15/S05-gemini-sigh-v1.mp4, 24.5 cr, first roll, job 25f961dc. LANDED: scans the wall / stretches into a tall SPIKE / puddle-flat / back up. Layout 0.865/0.865 — LOW AT BOTH ENDS AND EQUAL: the sketch-covered plate's line boil defeats the 160x90 correlation, not a re-camera (the plate is the same by eye). The drop is at ~t=3.0–4.7s.
+# BANKED 2026-09-06 (Sean): beat 15 is a sigh of RELIEF ("They're all supposed to look happy, not upset") — this v1 DISTRESS sigh is banked as a 'beat 10.x distress' candidate for Sean to place, not deleted. Relief re-roll at 5s → prompts/motion/54-M3-S05-gemini-relief-sigh-5s.txt.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The small blue-purple star creature standing beside the buried worktable looks up and across the whole wall of sketches, its head turning slowly from one end to the other. It stretches itself up tall and stiff, all five points spread, then everything drops at once: its whole body sags and squashes down into itself, its points droop, its arms flop, a long deflating slump. It bobs back up small, looks at the wall again, and sags a second time, smaller. Then it lifts its head with a small relieved grin, gives one little shrug, and settles.
+
+Its face is exactly two round dark eyes and one small open smile, the same two eyes and the same smile in every frame, and it has the same five points in every frame. It stays standing on the same spot on the floor in every frame. It stays small, shorter than the worktable beside it, in every frame. The wall stays covered edge to edge with taped sketches in every frame, including the first frame; the sketches on the floor, the cabinet and the worktable lie still in every frame; the string lights, the worktable, the tape rolls, the jar of pens and the cabinet with its boxes stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

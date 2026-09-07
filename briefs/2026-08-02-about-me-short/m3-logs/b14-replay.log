@@ -1,0 +1,15 @@
+prompt bytes: 1919
+--- prompt sent ---
+Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same television, shelf and brackets, same cable, same shelf of binders and taped sketches, same paper and palette.
+
+Image 2 is a layout guide for what goes ON the television screen only. Ignore its red lines, its black arrow and its caption entirely; use only the arrangement of boxes inside the screen.
+
+Change ONE thing: the television's dark screen is now lit and pale, and on it is a drawing of a cluttered online shop's product page, laid out as image 2 arranges it: a menu bar across the top; a wide advertising banner beneath it; a big framed picture of a paper shopping bag at the left; beside the picture the product's title, its price, and a stack of boxes and buttons; a row of four small related-item pictures beneath; a thin scrollbar down the right edge; and a wide cookie-notice bar across the bottom of the screen with its own small button. Every word of text on the page is drawn as this film draws text: rows of small graphite dashes and short blocks, zero letters. The one important detail: the shop's real buy button is TINY — a small, thin-lined, pale grey box tucked into the bottom right corner of the page, half hidden behind the cookie bar, easy to miss. Draw no cursor and no arrow anywhere.
+
+Draw the whole page in graphite line in the same hand as the rest of the picture, the way a pencil-test animator would draw a web page — hand-ruled boxes, slightly wobbly lines, cross-hatch on the picture, a faint pale wash on the banner and the buttons. It is a picture on the television.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any legible text or letters anywhere in the picture.
+--- end ---
+refs: normalised/S08-crt-closeup-v1.png m3-roughs/B14-replay-page-rough.png
+job json -> composites/M3/S08-replay-page.json
+exit 0

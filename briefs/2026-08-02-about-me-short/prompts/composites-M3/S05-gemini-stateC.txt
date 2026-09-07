@@ -1,0 +1,17 @@
+# S05 · GEMINI before its wreck — beats 15 + 16 start frame, onto the state-C plate (plates/rev2/S05-stateC → normalised). 2026-09-06.
+# gpt_image_2 edit, 2 refs: refs/turnaround-views/gemini-v2.png (¾ front, all five points) + normalised/S05-stateC-v1.png. 8.5 cr.
+# STAGING (law 6): small on the floor beside the near end of the buried worktable, ¾ front, eyes UP at the wall. Scale law: the worktable
+#   is a SHORT anchor (2.4 ft, the 1.78x miss) — so the ceiling is stated twice and against the string lights too.
+# RUN: motion/composite.sh prompts/composites-M3/S05-gemini-stateC.txt refs/turnaround-views/gemini-v2.png normalised/S05-stateC-v1.png composites/M3/S05-gemini-stateC.json
+# RESULT: composites/M3/S05-gemini-stateC-v1.png -> normalised/, 6.5 cr, first roll, job e9ad16b5. LANDED by eye: ¾ front beside the worktable, all five points, eyes up at the wall, ~worktable height (asked shorter; within the 20%). verify 0.064/0.325 shift (-6,-2) CHECK — the sketch-covered plate re-rendered whole (law 1's regrow on a busy plate); the drawing is the same by eye. *** THE BEAT-15/16 GEMINI START FRAME ***
+
+Image 1 is the CHARACTER: a small blue-purple five-pointed star creature with two round dark eyes and one small open smile, two arms and two feet. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same wall buried in sketches, same worktable and cabinet, same sketches on the floor, same palette.
+
+POSITION: standing on the floor on top of the loose sketches, in the open floor just to the LEFT of the near end of the worktable, a little right of centre frame. It does not cover the worktable or the cabinet.
+SCALE — draw it SMALL: it stands only thigh-high to a grown adult. Standing on the floor beside the worktable, the top of its head does NOT reach the worktable's top — it is shorter than the worktable is tall — and it is tiny beneath the string lights far above it, no bigger than one of the taped sketches on the wall. It is a small creature, never person-sized.
+FACING — this is the important part: the character is turned three-quarters TOWARDS US. Its whole front is visible — both eyes, its smile, all five points, both arms and both feet. It is NOT seen from behind and NOT in profile. Its eyes are turned up and to its side at the wall of sketches; it is absorbed in that and never looks into the camera.
+POSE: it stands still and upright at rest, both arms hanging down at its sides, both feet flat on the floor. Draw it in the same hand as the room — graphite line with a light blue-purple coloured-pencil wash over its body, the same line weight as the furniture — with a soft graphite contact shadow pooled on the floor beneath it.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

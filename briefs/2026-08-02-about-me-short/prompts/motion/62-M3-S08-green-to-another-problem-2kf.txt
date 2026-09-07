@@ -1,0 +1,16 @@
+# 20 · THE STING TRANSITION — the green USER → the CRT flashes and shakes → ANOTHER PROBLEM!. 2kf, 5s. 2026-09-06 17:55.
+# Sean: "we should do a transition from the Green Happy User into the ANOTHER PROBLEM screen. Having it directly cut looks awkward. The CRT screen
+#   should flash again like in _LOCKED-M1/07_beat3_S07_alarm-pushin.mp4 — The TV flashes on and the CRT TV shakes."
+# The beat-10 alarm (motion/30, locked as _LOCKED-M2/15) is the exact precedent on this framing: dark → flash → bangs on → the set jolts → holds.
+#   START = refs/user-looktest/S08-green-v2.png (the beat-19 hold), END = normalised/S08-alarm4-v1.png (ANOTHER PROBLEM!). 5s (≈17.5): the cut is
+#   ~1s + the instant black in post. The blink is post (S07: not bought); the shake is written as the SET jolting (law 9).
+# RUN: motion/generate2kf.sh prompts/motion/62-M3-S08-green-to-another-problem-2kf.txt refs/user-looktest/S08-green-v2.png normalised/S08-alarm4-v1.png motion/m3-beat20/S08-sting-transition-v1.json 5
+# RESULT: motion/m3-beat20/S08-sting-transition-v1.mp4, 5.04s, 17.5 cr, 2kf, first roll. LANDED (sheet): the green USER holds ~1.2s / one white FLASH / ANOTHER PROBLEM! bangs on / the set ROCKS on its shelf, the cable swings / holds. Layout 0.991 vs the green start, 0.991 vs the ANOTHER PROBLEM! end. The instant black is post. Sean's eye owed.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The television shows the beaming green figure with its thumb up, holding still for one beat. Then its screen flares pale in one hard flash and the green figure is gone — the words ANOTHER PROBLEM! bang on above a jagged line falling to the lower right, and the whole picture jolts with it: the television rocks on its shelf, the shelf brackets shiver, the taped sketches on the wall flutter, and the hanging cable swings hard and settles. The screen stays lit and holds on ANOTHER PROBLEM!, and the sketches settle back against the wall.
+
+From the moment it flashes, the screen shows the same words ANOTHER PROBLEM! and the same falling line in every frame. The television, its shelf and brackets, the shelf of binders at the left and the taped sketches at the right stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

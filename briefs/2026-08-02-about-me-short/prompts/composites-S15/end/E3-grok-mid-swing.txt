@@ -1,0 +1,11 @@
+# S15-A END frame, chain 3/5 — GROK mid-swing at the hole. 6.5 cr. The Grok identity line verbatim.
+# RUN: motion/composite.sh prompts/composites-S15/end/E3-grok-mid-swing.txt refs/turnaround-views/grok2-v2.png normalised/S15-A-end-2.png composites/S15/E3-grok.json
+# RESULT: composites/S15/E3-grok-v1.png -> normalised/ (= S15-A-end-3.png), 6.5 cr, first roll. LANDED: the sledgehammer high over its head in both hands, body coiled, plaster chips in the air, the grin + round eyes + ears held, feet on the rubble. Everything else held (verify vs end-2 0.510 / 0.903 / (0,0) PASS).
+
+Image 1 is the CHARACTER: a round grey cartoon creature with big pointed ears, a wide friendly cartoon grin, small bright eyes and a tufted tail. Image 2 is the SCENE, in which that same character is already drawn.
+
+Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same wreck, same paper and palette, and every OTHER character in the picture exactly as drawn. This is a very wide cutaway of a whole room, so the character is a small part of the picture.
+
+Change ONE thing: the round grey creature standing on the rubble by the rocket in the far right corner is now caught mid-action, the heavy sledgehammer raised high over its head in both hands at the top of a swing, its whole body coiled and leaning back, both feet still planted on the rubble, a few chips of plaster frozen in the air beside it. It stays on the same spot at the same small size, with the same two bright eyes, the same wide grin of small teeth and the same two pointed ears. Nothing else about it changes.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

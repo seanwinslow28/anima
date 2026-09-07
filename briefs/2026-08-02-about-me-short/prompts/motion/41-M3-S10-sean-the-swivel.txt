@@ -1,0 +1,21 @@
+# 12 · THE SWIVEL — v1, 2026-09-06. PROTECTED. The film's only quiet beat; held 2–3s past comfort (the CUT holds the last frame).
+# seedance_2_0 fast 7s 720p · start: normalised/S10-sean-swivel-v1.png (the eyes-closed, palms-down composite: the DESTINATION pose)
+# THE DOC'S LEAN, taken as v1: the chair finishes its LAST FEW DEGREES of turn towards us and settles; the shoulders lift slowly and
+#   sink (the "breath" is written on the SHOULDERS ONLY — law 8: the closed-mouth constant did not survive a breath on his face,
+#   two phrasings; so the event that opens the mouth is deleted, not rephrased); a hold; a second slow lift and sink; then, last,
+#   his eyes OPEN and look down at the floor in front of him — the beat-4 eyeline, the decision arriving. No swivel back (the
+#   turn-back is the cut to beat 13 at S02). Ruling 6: a leader's scale — small, still, one gesture.
+# THE FACING LAW: the still already faces us with the eyes closed, so the rotation the clip performs is a few degrees INTO the lens
+#   from a visible face, never from his back (beat 9 v3's invented face).
+# CONSTANTS: mouth one small closed line; hands palms-down held at chest height; chair on the spot; the three monitors DARK; fixtures.
+# IF THE MOUTH OPENS: post breathes the still (a 1% torso scale on a held frame) — no re-roll (the S10 discipline).
+# RUN: motion/generate.sh prompts/motion/41-M3-S10-sean-the-swivel.txt normalised/S10-sean-swivel-v1.png motion/m3-beat12/S10-sean-swivel-v1.json
+# RESULT: motion/m3-beat12/S10-sean-swivel-v1.mp4, 24.5 cr, first roll, job 4866d06e. THE SWIVEL LANDED: opens with the chair side-on, his face already visible in PROFILE with the eyes shut (the facing law held — no invented face) / rotates square over ~1s / holds dead still, eyes closed, palms down, ~4.5s / the shoulders lift and sink / his eyes OPEN on the last beat, looking slightly down towards the lens = at the crew from this mascot-height camera (the beat-4 eyeline arriving as the decision). THE MOUTH HELD CLOSED THROUGHOUT (FACE-sheet.png): law 8 confirmed — write the breath on the shoulders, never the face. Layout f0 0.891 (the side-on start = the turn, not a re-camera) / last 0.987. Sean's eye owed; the cut holds the last frame past comfort.
+
+1950s theatrical cartoon slapstick, hand-drawn colored-pencil pencil-test animation on cream paper, held on twos with visible line boil. Fixed camera, locked tripod, one continuous shot.
+
+The young man in the office chair, eyes closed, both palms held out flat and pressed gently downward in front of his chest, finishes the last few degrees of the chair's slow turn towards us and comes to rest, square to us. He holds completely still. His shoulders lift slowly and sink slowly, once. He holds still again, longer. His shoulders lift and sink a second time, slower and smaller. Then his eyes open, calm, and he looks down at the floor a few feet in front of his chair, and holds.
+
+His eyes stay shut, two short calm curved lines, in every frame until the moment they open. His mouth stays one small closed straight line in every frame. His hands stay held out low in front of his chest, palms down, fingers together, in every frame. His short blonde hair, his stubble and his navy T-shirt are the same in every frame. The chair stays on the same spot on the floor in every frame. The three monitors behind him stay the same three dark screens in every frame, and the desk, the cork board, the whiteboard, the shelf of binders, the lamp, the bell and everything else in the room stay the same drawings in every frame.
+
+Squash and stretch on every accent, smear frames through the fast arcs, snappy timing, elastic overshoot, comic energy.

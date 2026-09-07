@@ -1,0 +1,40 @@
+[
+  {
+    "created_at": "2026-09-07T19:48:38.017224Z",
+    "display_name": "GPT Image 2",
+    "id": "80ae3552-a56e-43a8-bf29-0aa41f2676c5",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260907_194838_80ae3552-a56e-43a8-bf29-0aa41f2676c5_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "fbe2a0e3-637a-4dc8-8e86-69ed2b611440",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/fbe2a0e3-637a-4dc8-8e86-69ed2b611440.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "b29ef7ea-f157-449b-87d6-ed65f07c66a4",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/b29ef7ea-f157-449b-87d6-ed65f07c66a4_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the CHARACTER: a young man with short blonde hair, a navy T-shirt, grey jeans and grey sneakers, seen from behind. Image 2 is the SCENE, in which the same man sits in an office chair facing us with his eyes closed.\n\nChange ONE thing in Image 2: the man and his office chair have turned right round, a half turn, so that the chair's back is now towards us and he sits with his BACK to us, facing away into the room. We see the back of his short blonde hair, the back of his navy T-shirt, his shoulders, and the chair back in front of his body; his face is not visible. Both his forearms rest on the armrests. He stays in the same chair on the same spot at the same size; do not draw a second chair and do not move the keyboard. Keep Image 2 unchanged in every other respect — same camera, same framing, same keyboard along the bottom, same wrecked room, same small purple star creature frozen mid-spin at the left and same small blue cloud creature frozen mid-leap on the server rack at the right, same paper and palette.\n\nHand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260907_194838_80ae3552-a56e-43a8-bf29-0aa41f2676c5.png",
+    "status": "completed"
+  }
+]

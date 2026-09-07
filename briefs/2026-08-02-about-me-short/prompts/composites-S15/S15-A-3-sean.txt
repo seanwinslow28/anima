@@ -1,0 +1,16 @@
+# S15-A chain 3/5 — SEAN at the desk, back to the room, hands on the keyboard (the coffee-clip rest pose). 6.5 cr. 2026-09-06.
+# Scene = normalised/S15-A-chain-2.png. Ref = refs/turnaround-views/sean-v5.png (back view). The clip turns him round; the still holds the destination's OPPOSITE on
+#   purpose because the swivel TO the room is the beat — and his face is drawn in the S10 close-up, not here (he is ~7% of frame height).
+# RUN: motion/composite.sh prompts/composites-S15/S15-A-3-sean.txt refs/turnaround-views/sean-v5.png normalised/S15-A-chain-2.png composites/S15/S15-A-3-sean.json
+# RESULT: composites/S15/S15-A-3-sean-v1.png -> normalised/ (= S15-A-chain-3.png), 6.5 cr, first roll. LANDED: Sean in the chair at the desk, back square to us, hands on the keyboard, head above the chair back below the cork board; Claude, Grok and the plate held by eye. verify vs chain-2 0.220 / 0.751 / shift (1,0) = CHECK on the 1-px shift only (a re-render nudge; every fixture in place). Eye-verified before step 4.
+
+Image 1 is the CHARACTER: a young man with short blonde hair, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same fixtures, same wreck, same palette, and every character already in the picture exactly as drawn. This is a very wide cutaway of a whole room, so the character is a small part of the picture.
+
+POSITION: sitting in the office chair that is already in the scene, pulled up to the long desk with the three monitors in the centre of the far wall, in the same spot — do not move the chair and do not draw a second chair.
+SCALE: a full-grown adult at that desk, seen from across the room — seated, the top of his head rises a little above the chair back and sits below the cork board on the wall. He is the largest figure the desk could hold, and no larger.
+FACING: he is seen from directly behind, his back square to us, facing the monitors. The back of his blonde head and his shoulders are what we see; his face is not visible.
+POSE: he sits still and upright at rest, both hands resting flat on the keyboard, feet on the floor under the desk.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

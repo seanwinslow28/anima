@@ -1,0 +1,12 @@
+# S19 — SEAN LOOKS UP AT THE CRT, confused: beat 10.5's AFTER still. EDIT of normalised/S19-sean-before-v1.png. 6.5 cr. 2026-09-06.
+# Sean (answer 1): "The after is him looking up at the CRT alarm looking confused." The CRT is off frame behind-right of the camera, so the look
+#   is up and to the right, TOWARDS us: his face turns from hidden (BEFORE) to ¾ visible — the eye-lead head turn is the beat. Arms down.
+#   Face: brows up, mouth a small round o — confused, not alarmed. Only he changes; the desk, chair, streamers and cannon stay.
+# RUN: motion/gen_image_ref.sh prompts/edits/S19-sean-AFTER-looks-up.txt normalised/S19-sean-before-v1.png 16:9 composites/M3/S19-sean-after.json
+# RESULT: composites/M3/S19-sean-after-v1.png -> normalised/, 6.5 cr, first roll, job 6658eeac. LANDED: head turned round and tipped UP over his right shoulder towards us, brows high, eyes wide, small o mouth — confused; arms down on the armrests; body still to the desk; the plate held. verify vs BEFORE 0.278 / 0.771 / (0,0) = PASS (a surgical edit). *** BEAT 10.5's END *** -> prompts/motion/59.
+
+Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same desk, monitors, chair, cork board, shelf, lamp, mug, bell, whiteboard, printer bench, streamers, confetti and fallen cannon, same paper and palette.
+
+Change ONE thing: the young man in the chair has dropped his arms and turned his head. Both arms are now down, his forearms resting on the chair's armrests, hands relaxed. His head has turned round towards us and tipped UP: he is looking up and over his right shoulder, past the camera, towards the upper right corner of the frame, at something high up off frame. Because of the turn his face is now three-quarters visible to us — both eyes, both brows, his nose, his mouth, the stubble on his jaw. His expression is confused: both brows raised high, eyes wide open, mouth a small round o. He stays seated in the same chair on the same spot, his body still facing the desk; only his head and arms have changed. Same short blonde hair, same navy T-shirt.
+
+Hand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.

@@ -1,0 +1,18 @@
+# S16 — SEAN EYES CLOSED, with GEMINI and CODEX FROZEN behind him in the freeze's poses. Beat 13.1's start still, v2. 2026-09-06 19:21. gpt_image_2, 2 refs, 6.5 cr.
+# Sean (17:55): "once we figure out the freeze frame from the continuous shot of Beats 11/12, then we have to make it so the mascot characters are frozen
+#   behind Sean in the same pose as the Beat 11/12 record scratch." With the wide now a 2kf, the END frame IS the freeze (normalised/S15-A-end-5.png).
+#   From the monitors' POV (S16, looking south) the two mascots in frame are Gemini (near the far wall / worktable) and Codex (at the rack, right);
+#   Claude and Grok are behind the lens. Image 1 = the S16 still (scene); Image 2 = the freeze frame (the POSE reference for the two).
+#   Then the 13.1 clip re-rolls off this still (prompts/motion/58, same prompt) — the frozen pair must stay frozen: their stillness is stated.
+# RUN: motion/gen_image_refs.sh prompts/composites-M3/S16-sean-eyes-closed-mascots-frozen.txt composites/M3/S16-sean-mascots-frozen.json normalised/S16-sean-eyes-closed-v1.png normalised/S15-A-end-5.png
+# RESULT: composites/M3/S16-sean-mascots-frozen-v1.png -> normalised/, 6.5 cr, first roll. LANDED: Gemini frozen mid-spin on the floor at LEFT (arms out, smear arcs, sketches in the air), Codex frozen mid-leap on the rack at RIGHT (arms up, speed lines) — geometrically where the SE and SW spots fall from the monitors' POV; Sean, the keyboard and the wreck untouched (verify vs the S16 still 0.225 / 0.750 / (0,0) PASS). *** BEAT 13.1's START, v2 *** -> prompts/motion/58b.
+
+Image 1 is the SCENE: a young man sitting in an office chair facing us with his eyes closed, a keyboard along the bottom of the frame, and a wrecked office behind him. Image 2 is a very wide view of the same office in which two small creatures are caught mid-action: a small lavender-and-blue cartoon STAR spinning on the spot with its arms flung out and small sketches flying around it, and a small periwinkle-blue CLOUD creature with a bracket-and-dash face leaping up the front of a black server rack with its arms up. Use Image 2 only for the exact poses of those two creatures.
+
+Add those two creatures to Image 1, frozen in exactly those mid-action poses, as if time had stopped. Keep Image 1 unchanged in every other respect — same camera, same framing, same young man with his eyes closed in the same chair, same keyboard, same fixtures, same wreck, same paper and palette.
+
+THE STAR: standing on the floor in the middle distance behind the man's LEFT shoulder (the right side of the picture as we look at it is the server rack; place the star on the open floor in front of the far wall of taped sketches, a little left of centre), frozen mid-spin — body leaning into the turn, both arms flung straight out sideways, two points streaked into short curved smear arcs, a ring of small curved motion lines at its waist, three small square sketches frozen in the air around it. Small: thigh-high to a grown adult, shorter than the worktable behind it.
+THE CLOUD: frozen in the air a little way up the front of the tall black server rack on the RIGHT, in the middle of a leap towards the big screen of code above it — both stubby arms up, body stretched a little taller, a short cluster of speed lines beneath it, its pale bracket-and-dash face tipped up at the screen. Small: a quarter of the rack tall.
+Both creatures are three-quarters towards us; neither looks into the camera. Light coloured-pencil wash on both, a soft graphite contact shadow beneath the star.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

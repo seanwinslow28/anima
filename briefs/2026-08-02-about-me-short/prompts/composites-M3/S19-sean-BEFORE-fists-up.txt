@@ -1,0 +1,18 @@
+# S19 — SEAN, FISTS UP, from the side: beat 10.5's BEFORE still. 2026-09-06. gpt_image_2 edit, 2 refs (sean-v4 profile + the S19 plate), 6.5 cr.
+# Sean (answer 1): "The before is the side angle of him celebrating the false SHIPPED celebration in Beat 9 (fists up — see
+#   m3-roughs/B10.5-before-pose-candidates.png)." A HELD pose (fine as a start: arms overhead are a position, not an instant). He faces the
+#   desk, so from this camera he is ¾ BACK; the AFTER (an edit of this) turns his head up-right at the CRT, i.e. towards us — the eye-lead
+#   head turn is the whole beat (eye-lead-head-turn.png). Face constant is stated on the AFTER, where the face first reads.
+# RUN: motion/composite.sh prompts/composites-M3/S19-sean-BEFORE-fists-up.txt refs/turnaround-views/sean-v4.png normalised/S19-side-closeup-v1.png composites/M3/S19-sean-before.json
+# RESULT: composites/M3/S19-sean-before-v1.png -> normalised/, 6.5 cr, first roll. LANDED: fists high, ¾ back from his right, face turned to the monitors (right cheek + stubble visible, no eye contact), seated, the plate held. *** BEAT 10.5's START *** -> the AFTER is an edit of this.
+
+Image 1 is the CHARACTER: a young man with short blonde hair, light stubble, a navy T-shirt, grey jeans and grey sneakers. Image 2 is the BACKGROUND SCENE.
+
+Add the character to Image 2. Keep Image 2 unchanged in every other respect — same camera, same framing, same desk, monitors, chair, cork board, shelf, lamp, mug, bell, whiteboard, printer bench, streamers and fallen cannon, same paper and palette.
+
+POSITION: sitting in the office chair that is already in the scene, pulled up to the desk, facing the desk and the monitors. Do not draw a second chair and do not move the desk or the chair.
+SCALE: a full-grown adult in that chair — seated, his head rises clear above the chair back, his shoulders as wide as the chair back, his head level with the middle of the monitors.
+FACING: he faces the desk, so we see him from his RIGHT side and a little from behind — a three-quarter back view. His face is turned towards the monitors and mostly hidden from us; we see his right ear, his right cheek and jaw with its stubble, and the back and side of his short blonde hair. He does NOT look at us.
+POSE — a held pose: both arms are thrown straight up over his head in celebration, both hands clenched into fists, elbows nearly straight, the fists high above the top of the cork board's lower edge; his back is straight and his chest lifted; both feet are on the floor under the desk. Draw a soft graphite contact shadow on the floor beneath the chair.
+
+Hand-drawn animation pencil test: graphite line, cross-hatch shadow, light coloured-pencil wash, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no 3D. Do not add any text.

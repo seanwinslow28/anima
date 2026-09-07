@@ -1,0 +1,32 @@
+[
+  {
+    "created_at": "2026-09-06T10:34:07.485222Z",
+    "display_name": "GPT Image 2",
+    "id": "3f93ea30-ee6a-4b9a-88e4-147504a2517a",
+    "job_type": "gpt_image_2",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103407_3f93ea30-ee6a-4b9a-88e4-147504a2517a_min.webp",
+    "params": {
+      "aspect_ratio": "16:9",
+      "height": 1520,
+      "medias": [
+        {
+          "data": {
+            "id": "252f5aa6-bce2-4317-a63b-987977438e41",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/252f5aa6-bce2-4317-a63b-987977438e41_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "videotape-alpha",
+      "prompt": "Image 1 is the scene. Keep it exactly as it is — same camera, same framing, same fixtures, same paper and palette.\n\nChange ONE thing: the television's dark screen is now lit and pale, and on it, drawn in the same graphite line as the rest of the picture, is a single jagged line that starts low in the lower left corner of the screen, dips once, and then climbs steeply up and to the right, steeper and steeper, ending in a small arrowhead that shoots right off the top edge of the screen near its upper right corner. Beneath the line, two short faint axis lines along the left and bottom edges of the screen. Nothing else on the screen.\n\nHand-drawn animation pencil test: graphite line, visible construction lines, cross-hatch shadow, light coloured-pencil wash on props only, paper tooth showing — no flat vector fill, no digital gradients, no painterly rendering, no photographic lighting, no 3D. Do not add any text.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2688
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2xmSJyWXDrRoLvJRHdIjzLB7yZ2/hf_20260906_103407_3f93ea30-ee6a-4b9a-88e4-147504a2517a.png",
+    "status": "completed"
+  }
+]
