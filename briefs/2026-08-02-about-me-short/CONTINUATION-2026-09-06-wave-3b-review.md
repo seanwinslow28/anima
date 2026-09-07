@@ -118,7 +118,7 @@ poses (the freeze as pose reference), then the clip re-rolled off it — the pai
 
 ---
 
-## ADDENDUM 3 — 2026-09-07 15:46: Sean's S15 winner locked; 13.1 rebuilt as the full 180° swivel (37.5 cr; balance 2,199 → 2,161.5)
+## ADDENDUM 3 — 2026-09-07 15:46: Sean's S15 winner locked; 13.1 rebuilt as the full 180° swivel (the session spent 37.5 cr; balance 2,199 → **1,174.5** — the other ~987 is Sean's own web-app rolls on the wide, measured, not the CLI's)
 
 **The wide is Sean's own roll** off the kit (`motion/m3-beat11/S15-wide-chaos-v5-winner.mp4`, 13.04s): the scale holds through the swivel and it
 ends on the freeze. **Locked as `_LOCKED-M3/17`** with the START, END and freeze frames. The CLI's v2–v4 stay as law 37's record.
