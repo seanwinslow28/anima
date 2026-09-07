@@ -316,3 +316,4 @@ Review packet: [`CONTINUATION-2026-09-07-post-review.md`](CONTINUATION-2026-09-0
 | Story check | ✓ the spine reads cold; the gap opens at Step one and closes at the step-back line; the swivel is protected; the sting reads as a loop. **One beat owed:** the fix is implied, never shown (the new button / fixed page never appears; the graph twin was released) — accept for now, a 6.5 cr "page, fixed" still if a blind read stumbles. M3 trims A/B/C with leans (→ ~55–59s; ~40s is not reachable without cutting a floor) | Sean rules |
 
 **Spend: 0.** Balance 1,174.5. Nothing generated, edited or re-rolled; the two rough cuts are trims of locked material.
+| Audio prompts for ElevenLabs | ✓ `AUDIO-PROMPTS-v1.md` — 4 music sections (bed / pit-stop build / settle / optional title sting) × 2–3 variants, 24 SFX cues × 2–3 variants sized to the v8 windows, the alarm family as one escalating sound, CapCut mix notes | Sean generates + edits in CapCut; the gaps wait for his ear |

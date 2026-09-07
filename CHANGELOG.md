@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-09-07 — about-me-short: AUDIO-PROMPTS-v1.md — music + SFX prompt variations for ElevenLabs ($0)
+
+**What changed.** Added `briefs/2026-08-02-about-me-short/AUDIO-PROMPTS-v1.md`: four music sections (the 1950s brochure bed, the pit-stop
+build, the settle, an optional title sting) with 2–3 prompt variants each and where each cue goes in the v8 cut, and the 24-cue SFX list as
+ElevenLabs prompts (2–3 variants per cue, durations sized to the v8 windows + tail, loop flags, the alarm family generated as one escalating
+sound, the transient-on-the-cut rule, "no words" on the sighs and the cheer), plus five CapCut mix notes. **Why.** Sean is editing the film
+himself in CapCut before ruling the remaining gaps; the prompts let the audio be generated straight into the bin. Companion to
+`VO-SCRIPT-v1.md` and the SFX list in `POST-CHECKLIST.md`.
+
 ## 2026-09-07 — about-me-short: post kickoff — the VO script, the first whole-film assembly, the stopwatch read, the gap check, the story check ($0)
 
 **What changed.** The post-kickoff continuation ran end to end under `/creative-director` (Phase 0 only; no lock re-opened, nothing
