@@ -22,10 +22,8 @@ L = "_LOCKED-M2/"; M = "motion/"; N = "normalised/"
 #    Every trim is a first guess for Sean to argue with. SHIP = the single-image v2 if it landed, else the 2kf v1 (cut before the morph).
 import os as _os
 _SHIP = M+"m3-beat17/S18-ship-key-v2-single.mp4" if _os.path.exists(M+"m3-beat17/S18-ship-key-v2-single.mp4") else M+"m3-beat17/S18-ship-key-v1.mp4"
-_WIDE = M+"m3-beat11/S15-wide-chaos-v4-2kf.mp4"     # the 2kf v4: chaos + the swivel completing at the right scale by ~1.4s
-_FREEZE = N+"S15-A-end-5.png"                          # the END still IS the freeze (Sean facing us, everyone mid-chaos)
-_WIDE_SHOTS = [("clip", _WIDE, 0.0, 1.6, "11/12 · THE WIDE (S15-A 2kf v4): the chaos, the swivel — cut before the scale drift"),
-               ("still", _FREEZE, 1.2, "11/12 · THE FREEZE = the END still (record scratch)")]
+_WIDE = "_LOCKED-M3/17_beat11_S15_the-wide.mp4"        # Sean's own v5 (13.04s): chaos, the swivel at the right scale, ends on the freeze
+_WIDE_SHOTS = [("clip", _WIDE, 2.0, 5.5, "11/12 · THE WIDE (locked, Sean's v5): the chaos, the swivel, the freeze")]
 _DELEG = "_LOCKED-M3/27_beat16_S02_the-delegation.mp4"   # locked 19:21 (v2b)
 SHOTS = [
     ("clip", "_LOCKED-M3/16_beat10.5_S19_sean-notices.mp4", 1.6, 2.6, "10.5 · Sean alone notices (locked)"),

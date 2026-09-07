@@ -17,7 +17,7 @@ as the packages land, and nothing already locked ever renumbers.
 | # | File | Beat | Setup | What happens |
 |---|---|---|---|---|
 | 16 | `16_beat10.5_S19_sean-notices.mp4` | 10.5 | S19 · the side close-up | Fists held with a shake, the head snaps round and up at the CRT (towards us), the arms drop, the confused hold. Two keyframes (`16_…_start-frame.png` → `16_…_end-frame.png`) |
-| 17 | *(reserved)* | 11/12 | S15 · the super wide | The wrecked room; the swivel to the chaos; the record scratch; the freeze. OPEN |
+| 17 | `17_beat11_S15_the-wide.mp4` | 11/12 | S15-A · the super wide (cutaway) | The four wrong-builds at full chaos; Sean's chair swivels round at the desk and he takes it in; the room freezes mid-action. **Sean's own roll (v5, 13.04s)** off the kit's START/END (`17_…_start-frame.png` → `17_…_end-frame.png`); it ends on the freeze — `17_…_freeze-frame.png` is the record-scratch still and 13.1's background reference |
 | 18 | `18_beat12_S10_the-swivel.mp4` | 12 | S10 · Sean's station from the room | The chair rotates square, holds ~4.5s with the eyes closed, the shoulders lift and sink. **The cut ends BEFORE the eyes open** (answer 4) — the eyes open once, in 13.1. Start `18_…_start-frame.png` |
 | 19 | *(reserved)* | 13.1 | S16 · the monitors' POV | Sean turns back to the lens, opens his eyes on us, a small nod. OPEN |
 | 20 | `20_beat13.2_S17_the-hands.mp4` | 13.2 | S17 · the hands | Extreme close-up: single key presses, a still pause, three more, one Enter reach, back to rest. Start `20_…_start-frame.png` |
@@ -35,7 +35,7 @@ as the packages land, and nothing already locked ever renumbers.
 | 35 | `35_beat19_S08_the-button-hold.png` | 19 | S08 | THE BUTTON: hold on the green USER while the VO runs (post; the rough cut holds it 4s) |
 | 36 | `36_beat20_S08_sting-transition.mp4` | 20 | S08 | The green USER holds, one white flash, ANOTHER PROBLEM! bangs on, the set rocks, the cable swings, holds. Two keyframes (`36_…_start-frame.png` → `36_…_end-frame.png`), 5s. Red flood + instant black are post |
 
-**Locked 2026-09-06 19:21** — Sean: beat 16 = v2b (*"Lock S02-sean-delegation-v2b-determined-mime.mp4"*), beat 20 (*"The transition is great. Locked."*). **Locked 2026-09-06 17:55** — Sean on the wave-3b packages: 10.5 (*"This is great, Locked."*), 13.2, 15 ×4, 16.5 Grok, 17, 18.5 (*"perfect! Locked."*). **Locked 2026-09-06 10:51** — Sean on the wave-3 packages: beat 12 (*"looks good, we'll keep that"*), 13.3 (*"is perfect. I'll crop in
+**Locked 2026-09-07 15:46** — Sean: the S15 wide, his own v5 (*"Here's the winner for S15"*). **Locked 2026-09-06 19:21** — Sean: beat 16 = v2b (*"Lock S02-sean-delegation-v2b-determined-mime.mp4"*), beat 20 (*"The transition is great. Locked."*). **Locked 2026-09-06 17:55** — Sean on the wave-3b packages: 10.5 (*"This is great, Locked."*), 13.2, 15 ×4, 16.5 Grok, 17, 18.5 (*"perfect! Locked."*). **Locked 2026-09-06 10:51** — Sean on the wave-3 packages: beat 12 (*"looks good, we'll keep that"*), 13.3 (*"is perfect. I'll crop in
 using CapCut"*), 14 (*"This works perfectly. This is locked."*), 16.5 ×3 (*"they're perfect"*), 18 and 19 (*"Locked."*). The released
 takes (the beat-13 typing clip, both beat-17 clips, the graph edit, the PROBLEM! sting) stay in `motion/m3-beat13/`, `motion/m3-beat17/` and
 `normalised/` with `# RELEASED` lines in their prompt headers (`prompts/motion/40, 50, 51`; `prompts/edits/S08-graph-rockets.txt`,
