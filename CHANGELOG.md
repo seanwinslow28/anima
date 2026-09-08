@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-08 — about-me-short / post: the narrator voice shortlist for ElevenLabs Voice Changer ($0)
+
+- Sean is recording the VO himself but wants to audition ElevenLabs voices through Voice Changer for the Goofy "How To" (John McLeish) register. Added [`briefs/2026-08-02-about-me-short/VOICE-SHORTLIST-2026-09-08.md`](briefs/2026-08-02-about-me-short/VOICE-SHORTLIST-2026-09-08.md): six library voices ranked by timbre fit with IDs (lean: The Golden Age Announcer vs The Golden Age Radio Host; The Master Demonstrator as tie-break), the settings for a serene speech-to-speech read (stability 65–75, similarity 70–75, style 0), the CapCut 1952 EQ treatment, and an audition protocol.
+- The load-bearing finding, from ElevenLabs' own Voice Changer guide: speech-to-speech preserves the source's pacing, emotion AND accent — the target lends only the throat. So the 1952-serene performance must already be in Sean's recording; the shortlist chooses a timbre, not a delivery.
+- The audition is written to double as the brief's never-performed scratch-narration gate (GAPS-2026-09-07 item 1): one dry recording of the three registers, run through each candidate unchanged, laid under the v8 rough, blind-judged with the un-changed take as a fifth clip. ElevenLabs Default voices expire 31 Dec 2026 — calibrate with them, do not ship on them.
+
 ## 2026-09-07 — about-me-short: AUDIO-PROMPTS-v1.md — music + SFX prompt variations for ElevenLabs ($0)
 
 **What changed.** Added `briefs/2026-08-02-about-me-short/AUDIO-PROMPTS-v1.md`: four music sections (the 1950s brochure bed, the pit-stop
