@@ -1,6 +1,6 @@
 # VOICE SHORTLIST — ElevenLabs voices for the "How To" narrator, via Voice Changer · 2026-09-08
 
-*Companion to `VO-SCRIPT-v1.md` (the lines, the delivery notes, the take list) and `AUDIO-PROMPTS-v1.md` (music + SFX).
+*Corrected 2026-09-08 §2: A/B/C are share-link voices, not library entries — see the links. Companion to `VO-SCRIPT-v1.md` (the lines, the delivery notes, the take list) and `AUDIO-PROMPTS-v1.md` (music + SFX).
 $0. Research from ElevenLabs' own library pages and Voice Changer docs (sources at the foot); nothing here has been
 auditioned by ear yet. That audition is the protocol in §4, and it doubles as the scratch-narration gate the brief asks for.*
 
@@ -23,7 +23,26 @@ voice, and you get an American accent in that voice's throat. Which means:
 
 ## 2. The shortlist
 
-All from the public Voice Library unless marked *default*. IDs are for the library search box (paste the ID) or the API.
+**Correction 2026-09-08 (after Sean searched the library and found nothing):** A, B and C are real ElevenLabs voices, but
+they are **share-link voices from ElevenLabs' own showcase account, not published Voice Library entries** — so they never
+show up in the library's search by name or ID. Each of ElevenLabs' `/voice-library/<category>` landing pages links its
+featured voices as `/app/voice-lab/share/<owner-id>/<voice-id>`; opening that link while logged in adds the voice to
+**My Voices** (ElevenLabs' documented "share a voice" mechanism). D and F *are* library-indexed and open with
+`/app/voice-library?voiceId=<id>`. Links below; all three share links returned HTTP 200 on 2026-09-08.
+
+**Owner id for the share links:** `779d91788b0d9e364d32e0a0e4273ec722b92887fa710d82f50b2d034a9fb97b`
+
+| # | Voice | Open it here (logged in) |
+|---|---|---|
+| A | The Golden Age Announcer | https://elevenlabs.io/app/voice-lab/share/779d91788b0d9e364d32e0a0e4273ec722b92887fa710d82f50b2d034a9fb97b/awuP1IX9V7hxeGp0B3cF |
+| B | The Golden Age Radio Host | https://elevenlabs.io/app/voice-lab/share/779d91788b0d9e364d32e0a0e4273ec722b92887fa710d82f50b2d034a9fb97b/nDetGehLv9T8RrbPvtvW |
+| C | The Master Demonstrator | https://elevenlabs.io/app/voice-lab/share/779d91788b0d9e364d32e0a0e4273ec722b92887fa710d82f50b2d034a9fb97b/8FhiNDf0kdTIIpJdPdzg |
+| D | Knox Dark | https://elevenlabs.io/app/voice-library?voiceId=dPah2VEoifKnZT37774q |
+| F | David Castlemore | https://elevenlabs.io/app/voice-library?voiceId=XjLkpWUlnhS8i7gGz3lZ |
+
+Once added, they appear in **My Voices** and in the Voice Changer's voice picker like any other. If a share link ever
+404s, the showcase voice was withdrawn; the library-indexed D/F and the audition protocol still stand.
+
 Ranked by fit to the target timbre. **Lean: A and B, auditioned against each other; C is the tie-break.**
 
 | # | Voice | ID | What it is | Why it fits | Watch for |
