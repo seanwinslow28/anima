@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-09-13 — about-me-short / post: the music cues rewritten for Google Lyria 3.5 ($0)
+
+- Sean is testing Lyria 3.5 in AI Studio alongside ElevenLabs for the score. Added [`briefs/2026-08-02-about-me-short/LYRIA-PROMPTS-2026-09-13.md`](briefs/2026-08-02-about-me-short/LYRIA-PROMPTS-2026-09-13.md): the four cues from `AUDIO-PROMPTS-v1.md` (brochure bed, pit-stop build, settle, title sting) rewritten in Google's published grammar — genre+era → exact instruments → numeric BPM → key → mood → structure tags/timestamps, exclusions as prose — plus a Lyria-only "whole cycle-1 score" prompt with the two alarm drops and the record-scratch stop written in at the v8 timecodes, and a working method (Clip Preview for palette, 3.5 for the renders, title card + freeze frame attached as image input).
+- The question Sean asked — can Lyria research the Goofy "How To" shorts if named — is answered no, from Google's own docs: the model is single-turn and does not browse; references must be era + instrumentation + production texture; the artist-intent filter blocks named-performer requests. The doc carries a trait table translating what the 1952 shorts sound like into promptable terms, and a $0.16 controlled A/B if Sean wants to test the naming anyway.
+
 ## 2026-09-08 — about-me-short / post: the narrator voice shortlist for ElevenLabs Voice Changer ($0)
 
 - Sean is recording the VO himself but wants to audition ElevenLabs voices through Voice Changer for the Goofy "How To" (John McLeish) register. Added [`briefs/2026-08-02-about-me-short/VOICE-SHORTLIST-2026-09-08.md`](briefs/2026-08-02-about-me-short/VOICE-SHORTLIST-2026-09-08.md): six library voices ranked by timbre fit with IDs (lean: The Golden Age Announcer vs The Golden Age Radio Host; The Master Demonstrator as tie-break), the settings for a serene speech-to-speech read (stability 65–75, similarity 70–75, style 0), the CapCut 1952 EQ treatment, and an audition protocol.
