@@ -313,7 +313,7 @@ eleven-sfx:
     prompt: "A CRT power-on click and high whine rising, 0.5 seconds."
   - id: G-flash
     name: white-noise flash
-    seconds: 0.4
+    seconds: 0.5
     influence: 0.8
     prompt: "A short white-noise burst like a CRT flashing, 0.2 seconds, dry."
 
@@ -333,7 +333,7 @@ eleven-music:
   - id: M-B1
     name: pit-stop build · lean
     seconds: 13
-    prompt: "Instrumental. 1950s cartoon-short action cue, 12 seconds: a fast, precise, rising figure on xylophone and pizzicato strings with a brisk snare roll underneath and a muted trumpet stabbing on each beat, building in quick steps, mechanical and cheerful like a well-oiled machine, then a clean hard stop on the final beat, no ring-out. Vintage mono. No vocals, no synths, no cymbal crash at the end, no fade."
+    prompt: "Instrumental. 1950s cartoon-short action cue, 12 seconds: a fast, precise, rising figure on xylophone and pizzicato strings with a brisk snare roll underneath and a muted trumpet punching each beat, building in quick steps, mechanical and cheerful like a well-oiled machine, then a clean hard stop on the final beat, no ring-out. Vintage mono. No vocals, no synths, no cymbal crash at the end, no fade."
   - id: M-B2
     name: pit-stop build · stopwatch
     seconds: 13
@@ -354,32 +354,41 @@ eleven-music:
 lyria:
   - id: LY-A1
     name: brochure bed · lean
+    seconds: 50
     images: [_LOCKED-M1/01_beat1_S01_title-card.png]
     prompt: "1950s educational-film library cue, light orchestral, small studio orchestra. Clarinet and flute carrying a tidy cheerful melody, pizzicato strings, brushed snare, a soft tuba on the downbeats, a muted trumpet answering the phrase ends. 120 BPM, key of F major. Mood: pleasant, orderly, officious, like a public-information short about a well-run office. Mono 1950s optical-soundtrack warmth, slight tape hiss, gently compressed. [Intro] four bars of the melody, light. [Main] the full arrangement repeating the tune with small variations, steady, never building. [Outro] returns to the intro figure so it loops. About 50 seconds. Instrumental only, no vocals, no modern drum kit, no synthesizers, no comedic hits, no mickey-mousing, no stingers, no swells, no big finish."
   - id: LY-A2
     name: brochure bed · woodwind
+    seconds: 50
     images: [_LOCKED-M1/01_beat1_S01_title-card.png]
     prompt: "Mid-century instructional-short score, chamber-sized. A bassoon and clarinet duet walking a neat little tune over plucked double bass and a light woodblock, a muted trumpet interjecting politely, strings only as soft pizzicato. 112 BPM, key of Bb major. Mood: cheerful, unhurried, orderly. Recorded on a 1950s optical soundtrack: mono, warm, a little hiss. Steady from start to finish, repeats naturally as a loop. About 50 seconds. Instrumental only, no vocals, no synthesizers, no percussion hits, no slapstick stingers, no crescendo."
   - id: LY-A3
     name: brochure bed · busier (Movement 2)
+    seconds: 35
     images: [_LOCKED-M3/17_beat11_S15_freeze-frame.png]
     prompt: "1950s cartoon-short underscore for a bustling montage, light orchestral. Quick pizzicato strings and xylophone runs, a chattering clarinet line, brushed drums with a walking upright bass, muted brass on the offbeats. 132 BPM, key of F major. Mood: bustling, brisk, polite, orderly. Vintage mono recording with tape warmth. [Main] busy and even throughout, no rise and fall. About 35 seconds. Instrumental only, no vocals, no drum fills, no mickey-mousing hits, no synthesizers, no swells, no ending flourish."
   - id: LY-B1
     name: pit-stop build · lean
-    prompt: "1950s cartoon-short action cue, light orchestral. A fast precise rising figure on xylophone and pizzicato strings, a brisk snare roll underneath, muted trumpet stabbing on each beat, woodwinds climbing in tight sixteenth notes. 144 BPM, key of G major, modulating up a step halfway. Mood: mechanical, delighted, precise, like a well-oiled machine. Vintage mono. [0:00-0:06] the figure begins low and tidy. [0:06-0:11] it climbs and thickens, brass joins. [0:11-0:12] a clean hard stop on the final beat, no ring-out, no cymbal. About 12 seconds. Instrumental only, no vocals, no synthesizers, no crash cymbal, no fade, no reverb tail."
+    seconds: 12
+    prompt: "1950s cartoon-short action cue, light orchestral. A fast precise rising figure on xylophone and pizzicato strings, a brisk snare roll underneath, muted trumpet punching each beat, woodwinds climbing in tight sixteenth notes. 144 BPM, key of G major, modulating up a step halfway. Mood: mechanical, delighted, precise, like a well-oiled machine. Vintage mono. [0:00-0:06] the figure begins low and tidy. [0:06-0:11] it climbs and thickens, brass joins. [0:11-0:12] a clean hard stop on the final beat, no ring-out, no cymbal. About 12 seconds. Instrumental only, no vocals, no synthesizers, no crash cymbal, no fade, no reverb tail."
   - id: LY-B2
     name: pit-stop build · stopwatch
+    seconds: 12
     prompt: "Short accelerating vintage orchestral build, 1950s library style. Woodwinds climbing a scale in sixteenth notes, timpani ticking like a stopwatch, plucked bass, brass entering only in the last four seconds. Starts at 132 BPM and pushes forward, key of G major. Mood: urgent, tidy, cheerful. Warm hissy mono. Ends on a single clean stop. About 12 seconds. Instrumental only, no vocals, no crash cymbal, no reverb tail, no synthesizers."
   - id: LY-C1
     name: the settle · lean
+    seconds: 8
     prompt: "Warm brief 1950s orchestral resolution, light orchestral. Strings and a solo clarinet landing on a soft major chord, one gentle glockenspiel note, muted brass warming underneath. 90 BPM, key of F major. Mood: content, modest, resolved. Vintage mono recording. Settles to silence without a swell. About 8 seconds. Instrumental only, no vocals, no build, no cymbal, no big finish, no synthesizers."
   - id: LY-C2
     name: the settle · harp
+    seconds: 8
     prompt: "A mid-century film cue's happy ending in miniature: a small string section and a harp arpeggio resolving to a held soft chord, a flute holding the top note, then a natural fade. 84 BPM, key of C major. Mood: warm, tidy, small. 1950s mono. About 8 seconds. Instrumental only, no vocals, no crescendo, no drums, no synthesizers."
   - id: LY-D1
     name: title sting (optional)
+    seconds: 3
     prompt: "A three-second 1950s cartoon title flourish: a quick ascending woodwind and xylophone figure ending on a bright muted-brass chord. 126 BPM, key of F major. Mood: cheerful, vintage. Mono. Ends on the chord, short decay. Instrumental only, no vocals, no synthesizers, no drum hit, no reverb tail."
   - id: LY-FULL
     name: the whole cycle-1 score, alarms written in
+    seconds: 50
     images: [_LOCKED-M1/01_beat1_S01_title-card.png, _LOCKED-M3/17_beat11_S15_freeze-frame.png]
     prompt: "1950s educational-film library cue, light orchestral, small studio orchestra: clarinet and flute melody, pizzicato strings, brushed snare, soft tuba downbeats, muted trumpet answers. 120 BPM, key of F major. Mood: pleasant, orderly, officious. Mono 1950s optical-soundtrack warmth, slight tape hiss. [0:00-0:04] a bright four-bar title figure, tidy and confident. [0:04-0:12] the main tune, light and steady under narration, nothing rises. [0:12-0:14] the music drops out completely, two seconds of silence. [0:14-0:39] the tune returns slightly busier: xylophone runs join, walking bass, still polite and even, no build. [0:39-0:41] the music drops out again, silence. [0:41-0:50] the busy tune resumes, then at 0:50 it stops dead mid-phrase, no ring-out. About 50 seconds. Instrumental only, no vocals, no modern drum kit, no synthesizers, no comedic hits, no mickey-mousing, no stingers, no swells, no fade."
