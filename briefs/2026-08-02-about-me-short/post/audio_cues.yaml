@@ -1,0 +1,385 @@
+# AUDIO CUES — the machine-readable copy of AUDIO-PROMPTS-v1.md (SFX + ElevenLabs music) and
+# LYRIA-PROMPTS-2026-09-13.md (Lyria music). Edit the prompts HERE once the sheets are settled; the
+# sheets are the reasoning, this file is what runs. seconds = window + tail. influence = prompt_influence
+# (high for literal single-event cues, low for textures). loop = ElevenLabs loop flag.
+
+eleven-sfx:
+  # ── the alarm family ──────────────────────────────────────────────────────────
+  - id: A1a
+    name: ALARM #1 · CRT + two-tone klaxon
+    seconds: 3.0
+    influence: 0.6
+    prompt: "An old CRT television clicking on with a soft electric thunk and a faint high whine, followed immediately by a small office alarm: a repeating two-tone electronic klaxon, mid-sized, urgent but not painful, about 2 seconds, slightly muffled as if from a wall-mounted TV speaker. No voices, no music, no sirens."
+  - id: A1b
+    name: ALARM #1 · cartoon awooga
+    seconds: 3.0
+    influence: 0.6
+    prompt: "A vintage cartoon problem alarm: a brassy 'awooga'-style klaxon repeating three times, cartoonish and springy, with a tiny red-light buzz underneath, 2.5 seconds, mono, a little tinny. No voices, no music."
+  - id: A1c
+    name: ALARM #1 · tabletop bell + beeps
+    seconds: 3.0
+    influence: 0.6
+    prompt: "A tabletop alarm bell hammering fast for two seconds, tinny and insistent, with a short electronic beep pattern layered on top, heard through a small TV speaker. No speech, no music."
+  - id: A2a
+    name: ALARM #2 · klaxon, bigger
+    seconds: 4.0
+    influence: 0.6
+    prompt: "An old CRT television clicking on with a soft electric thunk, then a small office alarm: a repeating two-tone electronic klaxon from a wall-mounted TV speaker — louder, closer, with more bass, a second lower klaxon tone added underneath, a crackle of speaker distortion, and the rattle of a wall shelf and a loose cable shaking with it, 3.5 seconds. No voices, no music, no sirens."
+  - id: A2b
+    name: ALARM #2 · awooga, bigger
+    seconds: 4.0
+    influence: 0.6
+    prompt: "A vintage cartoon problem alarm: a brassy 'awooga'-style klaxon repeating, cartoonish and springy, with a red-light buzz underneath — louder, closer, with more bass, a second lower klaxon tone added underneath, a crackle of speaker distortion, and the rattle of a wall shelf and a loose cable shaking with it, 3.5 seconds, mono. No voices, no music."
+  - id: A3a
+    name: ALARM #3 · the sting (klaxon)
+    seconds: 2.5
+    influence: 0.7
+    prompt: "Starting with a sharp white-flash electric crack at the very first frame, then the loudest office alarm: a repeating two-tone electronic klaxon with a lower klaxon underneath, heavy bass, speaker distortion, a wall shelf rattling hard, a cable swinging and tapping the wall, 2 seconds, then cut dead to silence, no tail, no reverb. No voices, no music."
+  - id: A3b
+    name: ALARM #3 · the sting (awooga)
+    seconds: 2.5
+    influence: 0.7
+    prompt: "Starting with a sharp white-flash electric crack at the very first frame, then the loudest cartoon 'awooga' klaxon with a lower klaxon underneath, heavy bass, speaker distortion, a wall shelf rattling hard, a cable swinging and tapping the wall, 2 seconds, then cut dead to silence, no tail, no reverb. No voices, no music."
+  - id: A3-crack
+    name: the crack alone
+    seconds: 0.5
+    influence: 0.8
+    prompt: "A single sharp electric crack, like a CRT flashing white with a power surge, 0.3 seconds, dry, no tail."
+  # ── Movement 1 ────────────────────────────────────────────────────────────────
+  - id: S02-whoosh
+    name: the push-in whoosh
+    seconds: 1.0
+    influence: 0.5
+    prompt: "A soft, short air whoosh, like a camera rushing toward a television, 0.8 seconds, low and airy, no impact at the end."
+  - id: S02-whoosh-alt
+    name: the push-in zip
+    seconds: 0.8
+    influence: 0.5
+    prompt: "A quick cartoon zip-in swish, light, 0.6 seconds, no impact, no ring."
+  - id: RT-crt
+    name: room tone, CRT on
+    seconds: 10
+    influence: 0.2
+    loop: true
+    prompt: "Quiet office room tone: a fridge hum, a faint server fan, an old CRT's high whine barely audible, a coffee machine ticking as it cools. Steady, no events, no voices. Loops."
+  - id: RT-quiet
+    name: room tone, CRT off
+    seconds: 10
+    influence: 0.2
+    loop: true
+    prompt: "Quiet office room tone: a fridge hum, a faint server fan, a coffee machine ticking as it cools. Steady, no events, no voices, no electronic whine. Loops."
+  # ── Movement 2 ────────────────────────────────────────────────────────────────
+  - id: S03-go
+    name: the GO
+    seconds: 1.5
+    influence: 0.5
+    prompt: "An office chair swivelling quickly on its base, a short squeak and a wheel clack, then two crisp finger snaps in a row, dry, close. No voice."
+  - id: S03-go-alt
+    name: the GO alt
+    seconds: 1.5
+    influence: 0.5
+    prompt: "A quick chair spin with a springy cartoon creak, then a single sharp finger-flick snap. No voice, no music."
+  - id: S04-claude
+    name: Claude, the paper storm
+    seconds: 4.5
+    influence: 0.4
+    loop: true
+    prompt: "Furious pencil scribbling on paper at high speed, pages being flipped and flung into the air, a flutter of many sheets falling, a stack of paper thumping as more lands on it, continuous, cartoonish energy. No voices, no music."
+  - id: S04-claude-alt
+    name: Claude, the paper storm alt
+    seconds: 4.5
+    influence: 0.4
+    loop: true
+    prompt: "Rapid pencil-on-paper writing, paper rustling and whooshing as sheets fly, small springy boings as a plush toy bounces up and down, 4 seconds, looping. No voices."
+  - id: S05-codex
+    name: Codex, the screen and the code flood
+    seconds: 4.7
+    influence: 0.5
+    prompt: "A heavy thump on a metal server rack, then a mechanical arm swinging a monitor out with a clank and a click, then extremely fast keyboard typing, hundreds of keys a second, building to a bright electronic zip as a screen floods with text, ending on a soft flash tone. No voices, no music."
+  - id: S05-codex-alt
+    name: Codex alt
+    seconds: 4.7
+    influence: 0.5
+    prompt: "A server tower being hit, a screen popping out on an arm with a metallic sproing, then cartoon hammer-typing on a keyboard at impossible speed, a rising electronic data-stream whir, 4 seconds. No voices."
+  - id: S06-gemini
+    name: Gemini, the whirlwind
+    seconds: 4.5
+    influence: 0.5
+    prompt: "A cartoon tornado spin: a fast whirling whoosh with a rising, wobbling pitch, paper sheets slapping onto a wall rapidly one after another, a wet sticky-tape rip on each, the spin stopping dead then starting again, 4 seconds. No voices, no music."
+  - id: S06-gemini-alt
+    name: Gemini alt
+    seconds: 4.5
+    influence: 0.5
+    prompt: "A Tasmanian-devil-style spinning whirlwind whoosh, cyclical and fast, with dozens of quick paper slaps and tape peels, two spins with a hard stop between, 4 seconds. No voices, no music."
+  - id: S07-grok
+    name: Grok, the wall
+    seconds: 5.0
+    influence: 0.5
+    prompt: "A sledgehammer swing whoosh, a heavy smash into a plaster wall, bricks and plaster crumbling and raining down, a big hollow object being dragged across a floor through rubble, one soft pat on metal. Cartoonish but weighty. No voices, no music."
+  - id: S07-grok-alt
+    name: Grok alt
+    seconds: 5.0
+    influence: 0.5
+    prompt: "A cartoon wall demolition: a big hammer swing whoosh, a crunching plaster impact with debris scatter, a dust hiss, a heavy drag of something metal through gravel, one hollow tap. 4.5 seconds. No voices."
+  - id: S08-hollow
+    name: the hollow ship
+    seconds: 4.3
+    influence: 0.5
+    prompt: "A single heavy keyboard key slammed hard, then a weak, sputtering party-cannon misfire: a small pop, a fizzle, a few streamers flopping out, then a metal cannon tipping and falling off a tripod with a clatter and a roll, and a brass bell giving one dull, muffled, hollow clank instead of a ring. No voices, no music, no cheering."
+  - id: S08-hollow-alt
+    name: the hollow ship alt
+    seconds: 4.0
+    influence: 0.5
+    prompt: "A hard key slam, a deflated confetti-cannon pfft with a paper flutter, a tripod toppling with a clang, and a sad, damped bell thud. 3.5 seconds, cartoonish. No voices, no music."
+  - id: BELL-hollow
+    name: the bell, hollow, alone
+    seconds: 0.8
+    influence: 0.8
+    prompt: "A single brass desk bell struck once but muffled by a hand, a dead hollow clunk with no ring, 0.5 seconds."
+  - id: BELL-earned
+    name: the bell, earned, alone
+    seconds: 2.5
+    influence: 0.8
+    prompt: "A single brass bell struck cleanly, bright and full, ringing out for 2 seconds, close, vintage, no reverb hall."
+  # ── the hinge ─────────────────────────────────────────────────────────────────
+  - id: S10-notice
+    name: Sean notices (optional)
+    seconds: 1.2
+    influence: 0.5
+    prompt: "A faint fabric rustle of two fists shaking, then a small sharp intake of breath, no voice, 1 second."
+  - id: S11-chaosbed
+    name: the chaos bed
+    seconds: 5.5
+    influence: 0.3
+    prompt: "A chaotic room: paper storms, hammering, a tornado whoosh, fast typing, rubble, all layered thin and distant like it is happening across a large room, 5 seconds, continuous. No voices, no music."
+  - id: S11-scratch
+    name: the record scratch
+    seconds: 1.0
+    influence: 0.8
+    prompt: "A vinyl record scratch: the needle dragged hard across a record, a sharp zip, then absolute silence, 0.8 seconds, dry, no tail."
+  - id: S11-scratch-alt
+    name: the record scratch alt
+    seconds: 0.8
+    influence: 0.8
+    prompt: "A classic cartoon record-scratch stop, short and harsh, then dead silence, 0.6 seconds."
+  - id: S12-swivel
+    name: the swivel
+    seconds: 2.5
+    influence: 0.6
+    prompt: "A single slow office-chair swivel, a long low creak and a quiet wheel roll, 2 seconds, then stillness. No voice."
+  - id: S13-turnback
+    name: the turn back
+    seconds: 2.0
+    influence: 0.6
+    prompt: "A single slow office-chair swivel in the opposite direction, slightly quicker, a low creak and a quiet wheel roll, 1.5 seconds, then stillness. No voice."
+  - id: S14-keys
+    name: the keys
+    seconds: 2.5
+    influence: 0.7
+    prompt: "Slow, deliberate single presses on a mechanical keyboard: one, a pause, three more, one heavier Enter key, close and dry, 2 seconds. No voice."
+  - id: S14-typewriter
+    name: the typewriter
+    seconds: 4.0
+    influence: 0.6
+    prompt: "A manual typewriter typing steadily at a measured pace, each key a distinct clack, four short lines with a soft carriage return between them, 3.5 seconds, close, vintage. No bell, no voice."
+  - id: S14-typewriter-alt
+    name: the typewriter alt
+    seconds: 4.0
+    influence: 0.6
+    prompt: "Gentle typewriter clacks at a calm rhythm, four lines, a quiet return after each, ending with one slightly firmer key, 3.5 seconds. No bell, no voice."
+  - id: S14-send
+    name: the send chime
+    seconds: 0.8
+    influence: 0.8
+    prompt: "A single soft digital send chime, one low-to-high two-note blip, 0.5 seconds, small and polite."
+  - id: S15-replay
+    name: the replay
+    seconds: 6.5
+    influence: 0.4
+    loop: true
+    prompt: "An old CRT television humming with a faint high whine, and a computer mouse sliding on a desk in slow circles, the small rolling scrape of a mouse moving and pausing, three circles, never a click. 6 seconds, loops. No voices, no music."
+  - id: S15-replay-alt
+    name: the replay alt
+    seconds: 6.5
+    influence: 0.4
+    loop: true
+    prompt: "A screen-recording playback: soft CRT hum, a cursor's mouse movement as gentle desk scuffs in loops, a tiny hover blip now and then, no click ever, loops. No voices, no music."
+  # ── the exhale and the fix ────────────────────────────────────────────────────
+  - id: S16-sigh-claude
+    name: sigh · Claude
+    seconds: 1.3
+    influence: 0.6
+    prompt: "A small plush creature's sigh of relief: a soft cartoon exhale like air leaving a cushion, a gentle squeak at the end, 1 second. No words, no speech."
+  - id: S16-sigh-codex
+    name: sigh · Codex
+    seconds: 1.5
+    influence: 0.6
+    prompt: "A big held breath released in a whoosh, like a balloon deflating with a soft rubbery flutter, 1.2 seconds. No words, no speech."
+  - id: S16-sigh-gemini
+    name: sigh · Gemini
+    seconds: 1.3
+    influence: 0.6
+    prompt: "A light, bubbly cartoon exhale with a little sparkle glissando and a tiny hop-land thump, 1 second. No words, no speech."
+  - id: S16-sigh-grok
+    name: sigh · Grok
+    seconds: 1.5
+    influence: 0.6
+    prompt: "A gravelly little creature exhaling in relief, a brow-wipe swish, a small satisfied grunt with no words, 1.2 seconds. No speech."
+  - id: S17-point
+    name: a pointing swish
+    seconds: 0.5
+    influence: 0.7
+    prompt: "A quick soft pointing swish, a hand cutting the air, 0.3 seconds, dry."
+  - id: S18-pit-claude
+    name: pit stop · Claude
+    seconds: 1.0
+    influence: 0.7
+    prompt: "One fast pencil stroke on paper, then a sheet of paper snapped up and held with a crisp flick, 0.8 seconds. No voice."
+  - id: S18-pit-codex
+    name: pit stop · Codex
+    seconds: 1.1
+    influence: 0.7
+    prompt: "A single sharp mechanical key tap, then a small springy hop and a soft landing thump, 0.9 seconds. No voice."
+  - id: S18-pit-gemini
+    name: pit stop · Gemini
+    seconds: 1.2
+    influence: 0.7
+    prompt: "A sketch snatched with a quick paper whip, a flourish swish, slapped onto a wall with one firm smack and a tape peel, a tiny corner nudge, 1 second. No voice."
+  - id: S18-pit-grok
+    name: pit stop · Grok
+    seconds: 1.4
+    influence: 0.7
+    prompt: "A hammer hoisted with a short whoosh and smashed into a big wooden button, wood splintering into three pieces, a puff of dust, a small hop-land and two hand-dusting claps, 1.2 seconds, cartoonish. No voice."
+  - id: S18-wheelgun
+    name: the pit-stop wheel gun (optional bed)
+    seconds: 4.5
+    influence: 0.5
+    prompt: "An F1 pit-stop pneumatic wheel-gun rattle, four quick bursts, 4 seconds, distant. No voices, no engine."
+  - id: S19-shipkey
+    name: the SHIP key
+    seconds: 0.6
+    influence: 0.8
+    prompt: "A single clean, satisfying mechanical key press, deep and solid, one click, dry, 0.3 seconds."
+  - id: S20-colorize
+    name: the colorize
+    seconds: 2.0
+    influence: 0.5
+    prompt: "A soft rising electric tone travelling upward, like a current climbing a cable, warm and gentle, 1.5 seconds, ending in a small bright bloom and a quick cartoon thumbs-up snap. No voices, no music."
+  - id: S20-colorize-alt
+    name: the colorize alt
+    seconds: 2.2
+    influence: 0.5
+    prompt: "A gentle magical fill-up sound, a smooth glissando up with a warm glow at the top, then one crisp snap, 2 seconds. No voices, no music."
+  - id: S21-cheer
+    name: the cheer
+    seconds: 2.8
+    influence: 0.5
+    prompt: "A small cartoon crowd of five creatures cheering wordlessly: whoops, a squeak, a happy trill, a gravelly whoop, an excited yelp, plus an office chair spinning and a springy hop, 2.5 seconds. No words, no language, no laughter track, no applause."
+  - id: S21-cheer-alt
+    name: the cheer alt
+    seconds: 2.8
+    influence: 0.5
+    prompt: "Five joyful non-verbal cartoon exclamations layered together, high and low, with a chair spin creak and a small jump landing, 2.5 seconds. No speech, no words, no applause."
+  - id: S21-whoop
+    name: one wordless whoop
+    seconds: 0.8
+    influence: 0.7
+    prompt: "A single wordless man's happy whoop, short, 0.5 seconds, no words."
+  # ── glue ──────────────────────────────────────────────────────────────────────
+  - id: G-paper
+    name: paper flutter
+    seconds: 1.2
+    influence: 0.6
+    prompt: "Paper flutter, a single sheet falling and settling, 1 second. No voice."
+  - id: G-boing
+    name: cartoon spring boing
+    seconds: 0.6
+    influence: 0.8
+    prompt: "A soft cartoon spring boing, small, 0.4 seconds."
+  - id: G-dart
+    name: dart into plaster
+    seconds: 0.8
+    influence: 0.8
+    prompt: "A dart thrown and thudding into plaster next to a dartboard, 0.6 seconds."
+  - id: G-mug
+    name: coffee mug
+    seconds: 1.0
+    influence: 0.7
+    prompt: "A coffee mug lifted and set down on a wooden desk, one clink, 0.8 seconds. No drinking sound, no voice."
+  - id: G-crt-on
+    name: CRT power-on
+    seconds: 0.7
+    influence: 0.8
+    prompt: "A CRT power-on click and high whine rising, 0.5 seconds."
+  - id: G-flash
+    name: white-noise flash
+    seconds: 0.4
+    influence: 0.8
+    prompt: "A short white-noise burst like a CRT flashing, 0.2 seconds, dry."
+
+eleven-music:
+  - id: M-A1
+    name: brochure bed · lean
+    seconds: 50
+    prompt: "Instrumental. 1950s educational film library cue, light orchestral: pizzicato strings, clarinet and flute carrying a cheerful, orderly melody, brushed snare, a soft tuba on the downbeats, bright and brisk at about 120 BPM. Mono-era warmth, slight tape hiss, gently compressed. Pleasant and officious, like a public-information short about workplace tidiness. Loops cleanly. No vocals, no modern drums, no synths, no comedic sound effects, no swells."
+  - id: M-A2
+    name: brochure bed · woodwind
+    seconds: 50
+    prompt: "Instrumental. Mid-century instructional-short score: a bassoon and clarinet duet walking a tidy little tune over plucked double bass and a light woodblock, a muted trumpet answering now and then, major key, moderate tempo, cheerful and unhurried, recorded on an old optical soundtrack with a little warmth and hiss. Repeats in a loop. No vocals, no synthesizers, no percussion hits, no slapstick stingers."
+  - id: M-A3
+    name: brochure bed · busier (Movement 2)
+    seconds: 36
+    prompt: "Instrumental. 1950s cartoon-short underscore for a busy montage: quick pizzicato strings and xylophone runs, a chattering clarinet line, brushed drums with a walking bass, upbeat and bustling but still polite and orderly, about 132 BPM, vintage mono recording. No vocals, no drum fills, no mickey-mousing hits, no synths, no swells or big finishes."
+  - id: M-B1
+    name: pit-stop build · lean
+    seconds: 13
+    prompt: "Instrumental. 1950s cartoon-short action cue, 12 seconds: a fast, precise, rising figure on xylophone and pizzicato strings with a brisk snare roll underneath and a muted trumpet stabbing on each beat, building in quick steps, mechanical and cheerful like a well-oiled machine, then a clean hard stop on the final beat, no ring-out. Vintage mono. No vocals, no synths, no cymbal crash at the end, no fade."
+  - id: M-B2
+    name: pit-stop build · stopwatch
+    seconds: 13
+    prompt: "Instrumental. A short accelerating vintage orchestral build, about 12 seconds: woodwinds climbing a scale in tight sixteenth notes, timpani ticking like a stopwatch, brass entering in the last four seconds, tempo pushing forward, ending on a single clean stop. 1950s library recording, warm and hissy. No vocals, no crash cymbal, no reverb tail, no synths."
+  - id: M-C1
+    name: the settle · lean
+    seconds: 9
+    prompt: "Instrumental. A warm, brief 1950s orchestral resolution, 8 seconds: strings and a solo clarinet landing on a soft major chord, a gentle glockenspiel note, light and content, then settling to silence without a swell. Vintage mono recording. No vocals, no build, no cymbal, no big finish, no synths."
+  - id: M-C2
+    name: the settle · harp
+    seconds: 9
+    prompt: "Instrumental. 8 seconds of a mid-century film cue's happy ending in miniature: a small string section and a harp arpeggio resolving to a held soft chord, muted brass warming underneath, then fading naturally. Warm, modest, tidy. No vocals, no crescendo, no synths, no drums."
+  - id: M-D1
+    name: title sting (optional)
+    seconds: 4
+    prompt: "Instrumental. A 3-second 1950s cartoon title flourish: a quick ascending woodwind and xylophone figure ending on a bright brass chord, cheerful, vintage mono. No vocals, no synths, no drum hit, no reverb tail."
+
+lyria:
+  - id: LY-A1
+    name: brochure bed · lean
+    images: [_LOCKED-M1/01_beat1_S01_title-card.png]
+    prompt: "1950s educational-film library cue, light orchestral, small studio orchestra. Clarinet and flute carrying a tidy cheerful melody, pizzicato strings, brushed snare, a soft tuba on the downbeats, a muted trumpet answering the phrase ends. 120 BPM, key of F major. Mood: pleasant, orderly, officious, like a public-information short about a well-run office. Mono 1950s optical-soundtrack warmth, slight tape hiss, gently compressed. [Intro] four bars of the melody, light. [Main] the full arrangement repeating the tune with small variations, steady, never building. [Outro] returns to the intro figure so it loops. About 50 seconds. Instrumental only, no vocals, no modern drum kit, no synthesizers, no comedic hits, no mickey-mousing, no stingers, no swells, no big finish."
+  - id: LY-A2
+    name: brochure bed · woodwind
+    images: [_LOCKED-M1/01_beat1_S01_title-card.png]
+    prompt: "Mid-century instructional-short score, chamber-sized. A bassoon and clarinet duet walking a neat little tune over plucked double bass and a light woodblock, a muted trumpet interjecting politely, strings only as soft pizzicato. 112 BPM, key of Bb major. Mood: cheerful, unhurried, orderly. Recorded on a 1950s optical soundtrack: mono, warm, a little hiss. Steady from start to finish, repeats naturally as a loop. About 50 seconds. Instrumental only, no vocals, no synthesizers, no percussion hits, no slapstick stingers, no crescendo."
+  - id: LY-A3
+    name: brochure bed · busier (Movement 2)
+    images: [_LOCKED-M3/17_beat11_S15_freeze-frame.png]
+    prompt: "1950s cartoon-short underscore for a bustling montage, light orchestral. Quick pizzicato strings and xylophone runs, a chattering clarinet line, brushed drums with a walking upright bass, muted brass on the offbeats. 132 BPM, key of F major. Mood: bustling, brisk, polite, orderly. Vintage mono recording with tape warmth. [Main] busy and even throughout, no rise and fall. About 35 seconds. Instrumental only, no vocals, no drum fills, no mickey-mousing hits, no synthesizers, no swells, no ending flourish."
+  - id: LY-B1
+    name: pit-stop build · lean
+    prompt: "1950s cartoon-short action cue, light orchestral. A fast precise rising figure on xylophone and pizzicato strings, a brisk snare roll underneath, muted trumpet stabbing on each beat, woodwinds climbing in tight sixteenth notes. 144 BPM, key of G major, modulating up a step halfway. Mood: mechanical, delighted, precise, like a well-oiled machine. Vintage mono. [0:00-0:06] the figure begins low and tidy. [0:06-0:11] it climbs and thickens, brass joins. [0:11-0:12] a clean hard stop on the final beat, no ring-out, no cymbal. About 12 seconds. Instrumental only, no vocals, no synthesizers, no crash cymbal, no fade, no reverb tail."
+  - id: LY-B2
+    name: pit-stop build · stopwatch
+    prompt: "Short accelerating vintage orchestral build, 1950s library style. Woodwinds climbing a scale in sixteenth notes, timpani ticking like a stopwatch, plucked bass, brass entering only in the last four seconds. Starts at 132 BPM and pushes forward, key of G major. Mood: urgent, tidy, cheerful. Warm hissy mono. Ends on a single clean stop. About 12 seconds. Instrumental only, no vocals, no crash cymbal, no reverb tail, no synthesizers."
+  - id: LY-C1
+    name: the settle · lean
+    prompt: "Warm brief 1950s orchestral resolution, light orchestral. Strings and a solo clarinet landing on a soft major chord, one gentle glockenspiel note, muted brass warming underneath. 90 BPM, key of F major. Mood: content, modest, resolved. Vintage mono recording. Settles to silence without a swell. About 8 seconds. Instrumental only, no vocals, no build, no cymbal, no big finish, no synthesizers."
+  - id: LY-C2
+    name: the settle · harp
+    prompt: "A mid-century film cue's happy ending in miniature: a small string section and a harp arpeggio resolving to a held soft chord, a flute holding the top note, then a natural fade. 84 BPM, key of C major. Mood: warm, tidy, small. 1950s mono. About 8 seconds. Instrumental only, no vocals, no crescendo, no drums, no synthesizers."
+  - id: LY-D1
+    name: title sting (optional)
+    prompt: "A three-second 1950s cartoon title flourish: a quick ascending woodwind and xylophone figure ending on a bright muted-brass chord. 126 BPM, key of F major. Mood: cheerful, vintage. Mono. Ends on the chord, short decay. Instrumental only, no vocals, no synthesizers, no drum hit, no reverb tail."
+  - id: LY-FULL
+    name: the whole cycle-1 score, alarms written in
+    images: [_LOCKED-M1/01_beat1_S01_title-card.png, _LOCKED-M3/17_beat11_S15_freeze-frame.png]
+    prompt: "1950s educational-film library cue, light orchestral, small studio orchestra: clarinet and flute melody, pizzicato strings, brushed snare, soft tuba downbeats, muted trumpet answers. 120 BPM, key of F major. Mood: pleasant, orderly, officious. Mono 1950s optical-soundtrack warmth, slight tape hiss. [0:00-0:04] a bright four-bar title figure, tidy and confident. [0:04-0:12] the main tune, light and steady under narration, nothing rises. [0:12-0:14] the music drops out completely, two seconds of silence. [0:14-0:39] the tune returns slightly busier: xylophone runs join, walking bass, still polite and even, no build. [0:39-0:41] the music drops out again, silence. [0:41-0:50] the busy tune resumes, then at 0:50 it stops dead mid-phrase, no ring-out. About 50 seconds. Instrumental only, no vocals, no modern drum kit, no synthesizers, no comedic hits, no mickey-mousing, no stingers, no swells, no fade."
