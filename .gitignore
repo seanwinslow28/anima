@@ -83,3 +83,10 @@ characters/claude-mascot/source-refs/old/
 # node_modules is empty and package-lock.json is an empty stub; never version them.
 node_modules/
 package-lock.json
+
+# Local-only writing-skill references: personal voice material, never versioned.
+.claude/skills/writing-critique/references/baseline-corpus.md
+.claude/skills/writing-voice-modes/references/calibration-notes.md
+.claude/skills/writing-voice-modes/references/cheese-bank.md
+.claude/skills/writing-voice-modes/references/reference-universe.md
+.claude/skills/writing-voice-modes/references/voice-samples.md
