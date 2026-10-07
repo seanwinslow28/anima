@@ -748,3 +748,7 @@ Active Act 2 prompts live under `prompts/act2/`. Shipped Act 1 keyframe + transi
 > If the loop plays smoothly and the character is recognizably itself in its intended medium, it ships.
 
 This is the inherited north star from the pencil-test era — adapted from the original sprite pipeline's "if it plays cleanly in Phaser, it ships." The final piece in its target medium (browser GIF/WebM loop, public museum walkthrough, wherever the work lives) is the ultimate arbiter of quality. Everything else — phase counts, critic tiers, manifest schemas — is in service of that one test.
+
+## Issue tracker
+
+Wayfinder maps and their tickets live in this repo's GitHub Issues (`seanwinslow28/anima`) via the `gh` CLI. See `docs/agents/issue-tracker.md`. The About-Me short map moved here from the archived `code-brain` tracker on 2026-10-06.
