@@ -15,6 +15,7 @@ Decide how much to prompt — and which single lever to pull — for each image/
 - Unsure whether to add or cut detail from a prompt
 - Matching a specific art style or register (flat, pencil, painterly, pixel, watercolor, 3D…)
 - Compositing or placing a character into a pre-made background/scene
+- Re-angling a designed location — a NEW camera on the same set (reconstruction, not edit)
 - Driving a motion from a single start frame, or between start+end frames
 - Diagnosing a result that drifted, cropped, over-rendered, under-moved, froze, or lost identity
 - **Not for:** engineering an LLM/system prompt → `prompt-engineering`; the full 7-layer image-prompt construction framework + refinement tips → `image-generator-prompt-science`; the canonical Seedance v4 template → `seedance-prompting`; actually running a generation → the `gemini-*` / `openai-image-gen` / `higgsfield-*` skills
@@ -40,6 +41,7 @@ In every surface: a **reference image carries identity**; **the text carries onl
 | **Image gen (scratch)** | none | more is fine — spend words on **composition, not identity/style-prose** | literal-noun drift (name an object → get exactly it); no identity melt |
 | **Image edit (identity)** | 1 (character) | **terse — lock, ONE change, style token, stop** | breaks framing + drifts style + hallucinates prose details (NOT the face) |
 | **Compositing (char→scene)** | 2 (char + bg) | **~50–70 words; command scale + position, protect the background** | verbose *scene* prose regenerates the background |
+| **Re-angle (same location, NEW camera)** | 2 (location = world-bible + a composition rough) | **reconstruction, NOT an edit — role-split the refs, state the camera + screen placement + what's out of frame** | telling an edit surface "keep every fixture" + "new camera" returns the source framing with added dressing |
 | **Video (start+end)** | 2 frames | **~80 words, action not mechanics** | too few → under-directs; too many → collapses; re-describing the subject is wasted |
 | **Video (single frame)** | 1 frame | **match technique to the motion type** | wrong technique → under-travelled motion or a frozen subject |
 
@@ -53,11 +55,33 @@ In every surface: a **reference image carries identity**; **the text carries onl
   - *Pixel-art:* "hard pixel grid, limited palette, dithering — no anti-aliasing, no soft gradients."
 - **Image edit:** role-tag the reference (*"Image 1 is the character reference"*), enumerate the identity-lock to HOLD, state the **ONE** change, append `[STYLE]`, end with *"Do not add any text."* Then stop.
 - **Compositing:** *"Image 1 is the character. Image 2 is the background scene."* + identity-lock + **one scale clause** (size is not inferred) + **one position clause in words** (beats a drawn marker) + *"keep Image 2 unchanged"* + `[STYLE]` + anti-text. **Never re-describe the scene.** For a specific pose, hand-draw a **solid** silhouette (carries pose only — still command size in text).
+- **Re-angle / spatial reconstruction (a designed location from a NEW camera):** an
+  edit surface preserves framing BY DESIGN, so "keep every fixture" + "render from a
+  new position" is a contradiction the model resolves by keeping the camera and
+  adding dressing. Re-angles are **fresh reconstructions of the same world**, not
+  edits. The working pattern (proven on the FIRST LICKS W1.5 party-yard cascade,
+  2026-08-05, after the edit approach failed a full batch):
+  - **Image 1 = the master plate as a WORLD/STYLE/FIXTURE BIBLE only** — an explicit
+    role clause: *"Preserve its fixture designs, materials, palette, light, and
+    rendering. Do NOT copy its camera, framing, horizon, perspective, or
+    screen-space layout."*
+  - **Image 2 = a cheap monochrome COMPOSITION ROUGH** for the target camera —
+    *"Follow its camera, perspective, horizon, and left-to-right placement; replace
+    its rough shapes with the corresponding fixtures; remove every guide mark."*
+  - **The prompt then states three things explicitly:** CAMERA (position, compass
+    direction, shot character) · VISIBLE LEFT→RIGHT (screen-space arrangement) ·
+    OUT OF FRAME (what's behind the lens — naming it is what keeps it out).
+  - Gate the method: approve the $0 roughs first, prove ONE re-angle before running
+    the batch, and when an angle *invents* a new zone of the location, ratify that
+    plate before any other angle that shows the same zone (it becomes the zone's
+    bible — otherwise its fixtures drift between angles).
+  - True **surgical edits stay edits**: same camera + ONE change (remove an object,
+    re-key the hour/season) is exactly what the edit surface is for.
 - **Video motion:** frames carry identity — the prompt is for motion. **Match technique to motion:** big body moves → terse imperative, **cut "settle/hold/then descends"** (it dampens); throws/directional → vivid ~80w; effects → evocative verbs, not step-by-step mechanics; small moves → anything. **Pair every effect with a subject motion** (static subject stays frozen). The model can **generate objects/effects not in the frame**. **Locked vs free camera is a dial:** "fixed camera, locked tripod" = one shot; drop it + name shots/angles (whip-pan, low-angle, push-in, hard cut, slow-mo) = a multi-shot cut sequence. **Lead with a genre anchor; use NO negation** (video models here have no negative-prompt support — the opposite of the image path).
 
 ## Tooling (Higgsfield CLI) + model notes
 
-Model-specific facts behind the universal rules: **NB2** (`nano_banana_flash`) holds identity so well that over-prompting an edit breaks *framing/style*, not the face; **gpt-image** (`gpt_image_2`) renders painterly by default (the anti-render clause matters most there); **Seedance** (`seedance_2_0`) has no negative-prompt support.
+Model-specific facts behind the universal rules: **NB2** (`nano_banana_flash`) holds identity so well that over-prompting an edit breaks *framing/style*, not the face — and it *tolerates* re-angle-via-edit (the FIRST LICKS W1 location angle sets were NB2 edits); **gpt-image** (`gpt_image_2`) renders painterly by default (the anti-render clause matters most there) and its edit path is **surgical-only — it will NOT re-camera from an edit instruction**; use the re-angle reconstruction pattern above (OpenAI's own image-gen prompting guide draws the same surgical-edit vs scene-reconstruction line); **Seedance** (`seedance_2_0`) has no negative-prompt support.
 
 ```bash
 higgsfield generate create nano_banana_flash --prompt "$(cat p.txt)" --image char.png [--image bg.png] --aspect_ratio 16:9 --resolution 2k --json --wait   # edit / composite

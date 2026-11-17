@@ -109,6 +109,35 @@ Samurai-Jack cherry-blossom still drove the tree-meditation framing/backlight wh
 the frame rendered in `primal-sketch-grit`. Use sparingly and always scoped — an
 unscoped off-register reference will pull the style with it.
 
+## (h) Re-angling a designed location — the two-reference reconstruction (2026-08-05)
+
+A new camera on a designed set is **not an edit** — an edit surface preserves
+framing by design, so "keep every fixture" + "render from a new position" is a
+contradiction the model resolves by returning the source framing with added
+dressing. This burned a full nine-plate batch on the FIRST LICKS W1.5 party-yard
+cascade (gpt-image-2) before the method below recovered it cleanly. **Transport
+provenance matters:** the W1 angle sets that DID work as edits ran on NB2
+(Gemini image) — NB2 tolerates re-angle-via-edit; gpt-image's edit path is
+surgical-only. On gpt-image, re-angles are **fresh spatial reconstructions**:
+
+- **Image 1 = the ratified master as a WORLD/STYLE/FIXTURE BIBLE only**, with an
+  explicit role clause: *"Preserve its fixture designs, materials, palette, light,
+  and rendering. Do NOT copy its camera, framing, horizon, perspective, or
+  screen-space layout."*
+- **Image 2 = a monochrome COMPOSITION ROUGH** for the target camera ($0 to make,
+  approve the roughs before any generation): *"Follow its camera, perspective,
+  horizon, and left-to-right placement; replace its rough shapes with the
+  corresponding fixtures; remove every guide mark."*
+- **The prompt states three blocks explicitly:** CAMERA (position, compass
+  direction, shot character) · VISIBLE LEFT→RIGHT (screen-space arrangement) ·
+  OUT OF FRAME (what's behind the lens — naming it is what keeps it out).
+- **Gates:** prove ONE re-angle before the batch; and when an angle *invents* an
+  unseen zone of the location, ratify that plate first — it becomes the zone's
+  bible for every other angle that shows it (skip this and the zone's fixtures
+  drift between angles).
+- **True surgical edits stay edits** on any transport: same camera + ONE change
+  (remove the piñata, dawn re-key, night re-key) is the edit surface's home turf.
+
 ## (e) Register research — read before you write a route
 
 Before writing any candidate prompt in a register, **read
